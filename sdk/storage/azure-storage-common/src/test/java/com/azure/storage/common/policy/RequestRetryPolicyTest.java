@@ -8,9 +8,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
@@ -31,6 +35,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -211,6 +217,91 @@ public class RequestRetryPolicyTest {
 
         StepVerifier.create(sendRequest(pipeline)).expectError(TimeoutException.class).verify(Duration.ofSeconds(5));
         assertEquals(maxTries, attempts.get());
+    }
+
+    @Test
+    public void timedOutSyncAttemptDoesNotModifyRetryAndClosesLateResponse() {
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicInteger closeCalls = new AtomicInteger();
+        CountDownLatch releaseFirstAttempt = new CountDownLatch(1);
+        CountDownLatch lateResponseClosed = new CountDownLatch(1);
+        HttpPipelinePolicy blockingPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                int attempt = attempts.incrementAndGet();
+                if (attempt == 1) {
+                    // Model a policy that resumes after cancellation, such as a non-interruptible token-cache lock.
+                    awaitIgnoringInterrupts(releaseFirstAttempt);
+                    context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, "first");
+                    context.setData("attempt", "first");
+                } else {
+                    context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, "second");
+                    context.setData("attempt", "second");
+                    releaseFirstAttempt.countDown();
+                    awaitIgnoringInterrupts(lateResponseClosed);
+                    assertEquals("second",
+                        context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+                    assertEquals("second", context.getData("attempt").orElse(null));
+                }
+                return next.processSync();
+            }
+        };
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options), blockingPolicy)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    if ("first".equals(context.getData("attempt").orElse(null))) {
+                        return new MockHttpResponse(request, 200) {
+                            @Override
+                            public void close() {
+                                closeCalls.incrementAndGet();
+                                super.close();
+                                lateResponseClosed.countDown();
+                            }
+                        };
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(8), () -> {
+                HttpResponse response = sendRequestSync(pipeline);
+                assertEquals("second", response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+                assertEquals(2, attempts.get());
+                assertEquals(1, closeCalls.get());
+                response.close();
+            });
+        } finally {
+            releaseFirstAttempt.countDown();
+        }
+    }
+
+    private static void awaitIgnoringInterrupts(CountDownLatch latch) {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        boolean interrupted = false;
+        try {
+            while (true) {
+                try {
+                    Assertions.assertTrue(latch.await(Math.max(0, deadline - System.nanoTime()), TimeUnit.NANOSECONDS),
+                        "Timed out waiting for the other attempt");
+                    return;
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                }
+            }
+        } finally {
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     @Test

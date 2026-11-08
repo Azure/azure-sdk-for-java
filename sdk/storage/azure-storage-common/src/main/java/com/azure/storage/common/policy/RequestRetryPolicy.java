@@ -269,8 +269,13 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             // and would likely never complete.
             // TODO (alzimmer): Think about not adding this if it's over a certain length, like 1 year.
             if (this.requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
+                // A cancelled worker may keep running. Isolate its request and context from subsequent retries.
+                HttpPipelineNextSyncPolicy attemptNext
+                    = next.clone(context.getHttpRequest().copy(), context.getContext());
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
-                httpResponseMono = httpResponseMono.subscribeOn(Schedulers.boundedElastic())
+                // A sink discards responses returned after cancellation, including when the transport ignores interruption.
+                httpResponseMono = Mono.<HttpResponse>create(sink -> sink.success(attemptNext.processSync()))
+                    .subscribeOn(Schedulers.boundedElastic())
                     .timeout(this.requestRetryOptions.getTryTimeoutDuration())
                     .doOnDiscard(HttpResponse.class, HttpResponse::close);
             }
