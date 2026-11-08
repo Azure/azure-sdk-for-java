@@ -9,9 +9,12 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -27,6 +30,10 @@ import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
  */
 public class ActiveClientTokenManager implements TokenManager {
     private static final ClientLogger LOGGER = new ClientLogger(ActiveClientTokenManager.class);
+    // Cancellation must not interrupt authorization initiation: it can be writing to the connection's shared IO pipe.
+    // The Executor adapter lets Reactor cancel queued work without cancelling the underlying running scheduler task.
+    private static final Scheduler REFRESH_SCHEDULER
+        = Schedulers.fromExecutor(task -> Mono.fromRunnable(task).subscribeOn(Schedulers.boundedElastic()).subscribe());
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<ClaimsBasedSecurityNode> cbsNode;
@@ -36,7 +43,7 @@ public class ActiveClientTokenManager implements TokenManager {
     private final Sinks.Many<Duration> durationSource = Sinks.many().multicast().onBackpressureBuffer();
     private final AtomicReference<Duration> lastRefreshInterval = new AtomicReference<>(Duration.ofMinutes(1));
 
-    private volatile Disposable subscription;
+    private final Disposable.Swap subscription = Disposables.swap();
 
     /**
      * Creates an instance of {@link ActiveClientTokenManager}.
@@ -69,12 +76,22 @@ public class ActiveClientTokenManager implements TokenManager {
      */
     @Override
     public Mono<Long> authorize() {
+        return Mono.defer(this::authorizeInternal);
+    }
+
+    private Mono<Long> authorizeInternal() {
         if (hasDisposed.get()) {
             return Mono.error(
                 new AzureException("Cannot authorize with CBS node when this token manager has been disposed of."));
         }
 
-        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, scopes)).map(expiresOn -> {
+        return cbsNode.flatMap(cbsNode -> {
+            if (hasDisposed.get()) {
+                return Mono.<OffsetDateTime>error(
+                    new AzureException("Cannot authorize with CBS node when this token manager has been disposed of."));
+            }
+            return cbsNode.authorize(tokenAudience, scopes);
+        }).map(expiresOn -> {
             final Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
 
             // We want to refresh the token when 90% of the time before expiry has elapsed.
@@ -84,7 +101,7 @@ public class ActiveClientTokenManager implements TokenManager {
             final long refreshIntervalMS = refreshSeconds * 1000;
 
             // If this is the first time authorize is called, the task will not have been scheduled yet.
-            if (!hasScheduled.getAndSet(true)) {
+            if (!hasDisposed.get() && !hasScheduled.getAndSet(true)) {
                 LOGGER.atInfo().addKeyValue("scopes", scopes).log("Scheduling refresh token task.");
 
                 final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
@@ -94,7 +111,7 @@ public class ActiveClientTokenManager implements TokenManager {
                     return false;
                 });
 
-                subscription = scheduleRefreshTokenTask(firstInterval);
+                subscription.update(scheduleRefreshTokenTask(firstInterval));
             }
 
             return refreshIntervalMS;
@@ -119,9 +136,7 @@ public class ActiveClientTokenManager implements TokenManager {
             return false;
         });
 
-        if (subscription != null) {
-            subscription.dispose();
-        }
+        subscription.dispose();
     }
 
     private Disposable scheduleRefreshTokenTask(Duration initialRefresh) {
@@ -134,6 +149,7 @@ public class ActiveClientTokenManager implements TokenManager {
         });
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
+            .publishOn(REFRESH_SCHEDULER, 1)
             .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
 
@@ -185,11 +201,12 @@ public class ActiveClientTokenManager implements TokenManager {
                     .addKeyValue("scopes", scopes)
                     .addKeyValue("audience", tokenAudience)
                     .log("Error occurred while refreshing token that is not retriable. Not scheduling"
-                        + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
+                        + " refresh task.", error);
 
                 // This hasn't been disposed yet.
                 if (!hasDisposed.getAndSet(true)) {
                     hasScheduled.set(false);
+                    subscription.dispose();
                     durationSource.emitComplete((signalType, emitResult) -> {
                         addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
                             .log("Could not close durationSource.");
