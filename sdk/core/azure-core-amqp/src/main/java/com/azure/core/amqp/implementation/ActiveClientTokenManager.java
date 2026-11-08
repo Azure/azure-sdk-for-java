@@ -33,7 +33,7 @@ public class ActiveClientTokenManager implements TokenManager {
     // Cancellation must not interrupt authorization initiation: it can be writing to the connection's shared IO pipe.
     // The Executor adapter lets Reactor cancel queued work without cancelling the underlying running scheduler task.
     private static final Scheduler REFRESH_SCHEDULER
-        = Schedulers.fromExecutor(task -> Mono.fromRunnable(task).subscribeOn(Schedulers.boundedElastic()).subscribe());
+        = Schedulers.fromExecutor(task -> Schedulers.boundedElastic().schedule(task));
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<ClaimsBasedSecurityNode> cbsNode;
@@ -149,6 +149,7 @@ public class ActiveClientTokenManager implements TokenManager {
         });
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
+            .onBackpressureDrop()
             .publishOn(REFRESH_SCHEDULER, 1)
             .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
