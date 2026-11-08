@@ -271,7 +271,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             if (this.requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
                 httpResponseMono = httpResponseMono.subscribeOn(Schedulers.boundedElastic())
-                    .timeout(this.requestRetryOptions.getTryTimeoutDuration());
+                    .timeout(this.requestRetryOptions.getTryTimeoutDuration())
+                    .doOnDiscard(HttpResponse.class, HttpResponse::close);
             }
 
             HttpResponse response = httpResponseMono.block();
