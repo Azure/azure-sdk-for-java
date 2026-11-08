@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed sends remaining pending when a sender link closes during message encoding, and removed queued sends when cancelled.
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)

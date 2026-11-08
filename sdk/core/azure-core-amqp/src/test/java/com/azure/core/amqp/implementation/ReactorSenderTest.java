@@ -28,6 +28,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
@@ -37,6 +38,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -44,16 +47,21 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,6 +77,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -184,6 +193,131 @@ public class ReactorSenderTest {
         StepVerifier.create(reactorSender.getLinkSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(sender).getRemoteMaxMessageSize();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void linkClosesDuringEncoding(boolean terminalError) throws Exception {
+        final SendLinkHandler realHandler = createActiveHandler();
+        final Message encodingMessage = spy(message);
+        doAnswer(invocation -> {
+            terminateHandler(realHandler, terminalError);
+            assertTrue(reactorSender.isDisposed());
+            return invocation.callRealMethod();
+        }).when(encodingMessage).encode(any(byte[].class), anyInt(), anyInt());
+
+        StepVerifier.create(reactorSender.send(encodingMessage))
+            .expectErrorSatisfies(
+                error -> assertTrue(error instanceof AmqpException && ((AmqpException) error).isTransient()))
+            .verify(VERIFY_TIMEOUT);
+
+        assertNoPendingSends();
+        verify(sender, never()).delivery(any(byte[].class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void linkClosesDuringBatchEncoding(boolean terminalError) throws Exception {
+        final SendLinkHandler realHandler = createActiveHandler();
+        final Message encodingMessage = spy(message);
+        doAnswer(invocation -> {
+            terminateHandler(realHandler, terminalError);
+            return invocation.callRealMethod();
+        }).when(encodingMessage).encode(any(byte[].class), anyInt(), anyInt());
+
+        StepVerifier.create(reactorSender.send(Arrays.asList(encodingMessage, message)))
+            .expectErrorSatisfies(
+                error -> assertTrue(error instanceof AmqpException && ((AmqpException) error).isTransient()))
+            .verify(VERIFY_TIMEOUT);
+
+        assertNoPendingSends();
+        verify(sender, never()).delivery(any(byte[].class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void linkClosesAfterEnqueue(boolean terminalError) throws Exception {
+        final SendLinkHandler realHandler = createActiveHandler();
+        when(sender.getCredit()).thenReturn(0);
+
+        StepVerifier.create(reactorSender.send(message)).then(() -> {
+            assertPendingSends(1);
+            terminateHandler(realHandler, terminalError);
+        }).expectError(AmqpException.class).verify(VERIFY_TIMEOUT);
+
+        assertNoPendingSends();
+        StepVerifier.create(reactorSender.send(message))
+            .expectError(IllegalStateException.class)
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void cancellationRemovesQueuedSend(boolean batch) throws Exception {
+        createActiveHandler();
+        when(sender.getCredit()).thenReturn(0);
+        final Mono<Void> send
+            = batch ? reactorSender.send(Arrays.asList(message, message)) : reactorSender.send(message);
+
+        StepVerifier.create(send).then(() -> assertPendingSends(1)).thenCancel().verify(VERIFY_TIMEOUT);
+
+        assertNoPendingSends();
+    }
+
+    @Test
+    void timeoutRemovesQueuedSend() throws Exception {
+        createActiveHandler();
+        when(sender.getCredit()).thenReturn(0);
+        final Sinks.One<Void> timeout = Sinks.one();
+
+        StepVerifier.create(reactorSender.send(message).timeout(timeout.asMono())).then(() -> {
+            assertPendingSends(1);
+            timeout.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+        }).expectError(TimeoutException.class).verify(VERIFY_TIMEOUT);
+
+        assertNoPendingSends();
+    }
+
+    private SendLinkHandler createActiveHandler() throws IOException {
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+        final SendLinkHandler realHandler
+            = new SendLinkHandler("connectionId", HOSTNAME, "linkName", ENTITY_PATH, AmqpMetricsProvider.noop());
+        final Event event = mock(Event.class);
+        when(event.getSender()).thenReturn(sender);
+        realHandler.onLinkFlow(event);
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, realHandler, reactorProvider,
+            tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        return realHandler;
+    }
+
+    private void terminateHandler(SendLinkHandler realHandler, boolean terminalError) {
+        if (terminalError) {
+            realHandler
+                .onError(new AmqpException(true, "Link failed during send.", realHandler.getErrorContext(sender)));
+        } else {
+            final Event event = mock(Event.class);
+            when(event.getLink()).thenReturn(sender);
+            realHandler.onLinkRemoteClose(event);
+        }
+    }
+
+    private void assertNoPendingSends() {
+        assertPendingSends(0);
+    }
+
+    private void assertPendingSends(int expected) {
+        Assertions.assertDoesNotThrow(() -> {
+            final Field map = ReactorSender.class.getDeclaredField("pendingSendsMap");
+            map.setAccessible(true);
+            assertEquals(expected, ((Map<?, ?>) map.get(reactorSender)).size());
+            final Field queue = ReactorSender.class.getDeclaredField("pendingSendsQueue");
+            queue.setAccessible(true);
+            assertEquals(expected, ((Collection<?>) queue.get(reactorSender)).size());
+        });
     }
 
     /**

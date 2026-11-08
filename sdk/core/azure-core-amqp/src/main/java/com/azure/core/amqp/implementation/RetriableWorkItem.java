@@ -25,6 +25,7 @@ class RetriableWorkItem {
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
     private boolean waitingForAck;
+    private volatile boolean cancelled;
     private Exception lastKnownException;
 
     private final AmqpMetricsProvider metricsProvider;
@@ -112,6 +113,14 @@ class RetriableWorkItem {
 
     boolean isWaitingForAck() {
         return this.waitingForAck;
+    }
+
+    void cancel() {
+        cancelled = true;
+    }
+
+    boolean isCancelled() {
+        return cancelled;
     }
 
     void send(Sender sender) {
