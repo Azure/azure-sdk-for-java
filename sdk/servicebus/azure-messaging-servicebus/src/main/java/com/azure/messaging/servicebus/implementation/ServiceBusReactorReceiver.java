@@ -74,7 +74,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions) {
         super(connection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
-            new AmqpMetricsProvider(null, connection.getFullyQualifiedNamespace(), entityPath));
+            new AmqpMetricsProvider(null, connection.getFullyQualifiedNamespace(), entityPath), true);
         this.receiver = receiver;
         this.isSettled = receiver.getSenderSettleMode() == SenderSettleMode.SETTLED;
 
@@ -149,6 +149,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 return new SessionProperties(String.valueOf(sessionIdObject), sessionLockedUntil);
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+
+        subscribeToLifecycle(connection);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final ReceiveLinkHandlerWrapper handler;
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
-    private final Disposable subscriptions;
+    private final Disposable.Composite subscriptions = Disposables.composite();
     // Indicates if this ReactorReceiver is disposed or disposal is in progress.
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     // A Mono that signals completion when the disposal/closing of ReactorReceiver is completed.
@@ -75,6 +75,28 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions, metricsProvider,
+            false);
+    }
+
+    /**
+     * Creates a receiver, optionally deferring lifecycle subscriptions until subclass initialization completes.
+     * A subclass that defers subscriptions must call {@link #subscribeToLifecycle(AmqpConnection)} once at the
+     * end of its constructor.
+     *
+     * @param amqpConnection The connection that owns this receiver.
+     * @param entityPath The entity path.
+     * @param receiver The Proton receiver.
+     * @param handler The receive link handler.
+     * @param tokenManager The token manager.
+     * @param dispatcher The reactor dispatcher.
+     * @param retryOptions The retry options.
+     * @param metricsProvider The metrics provider.
+     * @param deferLifecycleSubscriptions Whether the subclass will start lifecycle subscriptions.
+     */
+    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider, boolean deferLifecycleSubscriptions) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
@@ -174,10 +196,21 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             completeClose();
         }).cache(1);
 
+        if (!deferLifecycleSubscriptions) {
+            subscribeToLifecycle(amqpConnection);
+        }
+    }
+
+    /**
+     * Subscribes to lifecycle signals, which may synchronously invoke receiver close callbacks.
+     *
+     * @param amqpConnection The connection that owns this receiver.
+     */
+    protected final void subscribeToLifecycle(AmqpConnection amqpConnection) {
+        subscriptions
+            .add(endpointStates.subscribe(null, e -> logger.warning("Receive link endpoint state signaled error.", e)));
         //@formatter:off
-        this.subscriptions = Disposables.composite(
-            this.endpointStates.subscribe(null, e -> logger.warning("Receive link endpoint state signaled error.", e)),
-            this.tokenManager.getAuthorizationResults()
+        subscriptions.add(tokenManager.getAuthorizationResults()
                 .onErrorResume(error -> {
                     // When we encounter an error refreshing authorization results, close the receive link.
                     final Mono<Void> operation =
@@ -196,12 +229,12 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                             .log("Authorization completed.");
 
                         closeAsync("Authorization completed. Disposing.", null).subscribe();
-                    }),
+                    }));
 
-            amqpConnection.getShutdownSignals().flatMap(signal -> {
-                logger.verbose("Shutdown signal received.");
-                return closeAsync("Connection shutdown.", null);
-            }).subscribe());
+        subscriptions.add(amqpConnection.getShutdownSignals().flatMap(signal -> {
+            logger.verbose("Shutdown signal received.");
+            return closeAsync("Connection shutdown.", null);
+        }).subscribe());
         //@formatter:on
     }
 
