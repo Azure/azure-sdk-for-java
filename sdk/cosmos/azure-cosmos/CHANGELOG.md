@@ -9,7 +9,7 @@
 
 #### Bugs Fixed
 * Fixed concurrent response parsing throwing decoder state exceptions when fallback UTF-8 decoding is enabled. - See [Issue 51084](https://github.com/Azure/azure-sdk-for-java/issues/51084) and [PR 51151](https://github.com/Azure/azure-sdk-for-java/pull/51151)
-* Fixed EPK change feed processor startup so failed partition discovery or lease creation prevents initialization from being marked complete. Latest-version processors now honor the restart lease verification option.
+* Fixed EPK change feed processor startup so failed partition discovery or lease creation prevents initialization from being marked complete. Latest-version processors now honor the restart lease verification option. - See [PR 51165](https://github.com/Azure/azure-sdk-for-java/pull/51165)
 * Fixed hybrid search reciprocal rank fusion (RRF) results being ranked incorrectly when component scores are tied. Each result now receives a unique ordinal rank, with deterministic tie-breaking based on the decoded document ID portion of `_rid`. - See [PR 50940](https://github.com/Azure/azure-sdk-for-java/pull/50940)
 * Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
