@@ -5,7 +5,7 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEvent;
@@ -88,11 +88,10 @@ public class VoiceAgentConversationsTests {
         assertNotNull(endpoint, "FOUNDRY_PROJECT_ENDPOINT is required for live parity testing.");
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live parity testing.");
         String agentName = "test-voice-read-sync-" + UUID.randomUUID();
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
+        VoiceAgentsConversationsClient conversations = builder.buildVoiceAgentsConversationsClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -203,16 +202,14 @@ public class VoiceAgentConversationsTests {
         transport.get(PATH + "/items/user-1", 200, USER_ITEM);
     }
 
-    private static BetaVoiceAgentsConversationsClient client(HttpClient transport) {
+    private static VoiceAgentsConversationsClient client(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
             .httpClient(transport)
-            .allowPreview(true)
-            .beta()
-            .buildBetaVoiceAgentsConversationsClient();
+            .buildVoiceAgentsConversationsClient();
     }
 
-    private static void assertPersistedConversation(BetaVoiceAgentsConversationsClient client, String agentName,
+    private static void assertPersistedConversation(VoiceAgentsConversationsClient client, String agentName,
         String conversationId) {
         try {
             assertTrue(client.listAgentConversations(agentName)

@@ -101,8 +101,7 @@ public class VoiceAgentCrudTests {
         transport.expect(HttpMethod.DELETE, path, null, object("deleted", true, "name", AGENT));
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
-            .httpClient(transport)
-            .allowPreview(true);
+            .httpClient(transport);
         runScenario(builder, AGENT, MODEL, scenario);
         assertTrue(transport.requests.isEmpty(), "All expected REST operations must be exercised.");
     }
@@ -118,9 +117,8 @@ public class VoiceAgentCrudTests {
         if (scenario != Scenario.GENERATE) {
             assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for this live test.");
         }
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         runScenario(builder, "test-voice-crud-sync-" + UUID.randomUUID(), model, scenario);
     }
 
@@ -129,9 +127,8 @@ public class VoiceAgentCrudTests {
         boolean created = false;
         try {
             if (scenario == Scenario.GENERATE) {
-                AgentDetails generated = builder.beta()
-                    .buildBetaAgentsClient()
-                    .createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)));
+                AgentDetails generated
+                    = client.createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)));
                 created = true;
                 validateAgent(generated, name, null);
                 VoiceAgentDefinition voice

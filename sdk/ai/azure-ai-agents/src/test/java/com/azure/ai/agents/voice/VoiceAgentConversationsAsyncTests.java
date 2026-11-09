@@ -6,7 +6,7 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
+import com.azure.ai.agents.VoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
@@ -85,12 +85,10 @@ public class VoiceAgentConversationsAsyncTests {
         assertNotNull(endpoint, "FOUNDRY_PROJECT_ENDPOINT is required for live parity testing.");
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live parity testing.");
         String agentName = "test-voice-read-" + UUID.randomUUID();
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
-        BetaVoiceAgentsConversationsAsyncClient conversations
-            = builder.beta().buildBetaVoiceAgentsConversationsAsyncClient();
+        VoiceAgentsConversationsAsyncClient conversations = builder.buildVoiceAgentsConversationsAsyncClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -201,16 +199,14 @@ public class VoiceAgentConversationsAsyncTests {
         transport.get(PATH + "/items/user-1", 200, USER_ITEM);
     }
 
-    private static BetaVoiceAgentsConversationsAsyncClient client(HttpClient transport) {
+    private static VoiceAgentsConversationsAsyncClient client(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
             .httpClient(transport)
-            .allowPreview(true)
-            .beta()
-            .buildBetaVoiceAgentsConversationsAsyncClient();
+            .buildVoiceAgentsConversationsAsyncClient();
     }
 
-    private static void assertPersistedConversation(BetaVoiceAgentsConversationsAsyncClient client, String agentName,
+    private static void assertPersistedConversation(VoiceAgentsConversationsAsyncClient client, String agentName,
         String conversationId) {
         try {
             assertEquals(Boolean.TRUE,
