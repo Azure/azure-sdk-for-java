@@ -1,0 +1,1437 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
+import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTransportSerializer;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import io.micrometer.core.instrument.Tag;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.ReferenceCountUtil;
+import io.netty.util.ResourceLeakDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+/**
+ * While this class is public, but it is not part of our published public APIs.
+ * This is meant to be internally used only by our sdk.
+ *
+ * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
+ */
+public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer, AutoCloseable {
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
+    private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
+    private static final int GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 30;
+    private static final int STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 60;
+    private static final List<String> headersNeedToBeEscaped = Arrays.asList(
+        HttpConstants.HttpHeaders.PARTITION_KEY,
+        HttpConstants.HttpHeaders.POST_TRIGGER_EXCLUDE,
+        HttpConstants.HttpHeaders.POST_TRIGGER_INCLUDE,
+        HttpConstants.HttpHeaders.PRE_TRIGGER_EXCLUDE,
+        HttpConstants.HttpHeaders.PRE_TRIGGER_INCLUDE
+    );
+
+    private final DiagnosticsClientContext clientContext;
+    private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
+    private final Map<String, String> defaultHeaders;
+    private final HttpClient httpClient;
+    private final QueryCompatibilityMode queryCompatibilityMode;
+    protected final GlobalEndpointManager globalEndpointManager;
+    private ConsistencyLevel defaultConsistencyLevel;
+    private ISessionContainer sessionContainer;
+    private ThroughputControlStore throughputControlStore;
+    private boolean useMultipleWriteLocations;
+    private RxPartitionKeyRangeCache partitionKeyRangeCache;
+    private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
+    private RxClientCollectionCache collectionCache;
+    private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private final Map<String, String> additionalHeaders;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
+    private final ConcurrentHashMap<String, Tag> serviceEndpointMetricTags;
+
+    public RxGatewayStoreModel(
+        DiagnosticsClientContext clientContext,
+        ISessionContainer sessionContainer,
+        ConsistencyLevel defaultConsistencyLevel,
+        QueryCompatibilityMode queryCompatibilityMode,
+        UserAgentContainer userAgentContainer,
+        GlobalEndpointManager globalEndpointManager,
+        HttpClient httpClient,
+        ApiType apiType,
+        Map<String, String> additionalHeaders) {
+
+        this(clientContext, sessionContainer, defaultConsistencyLevel, queryCompatibilityMode, userAgentContainer,
+            globalEndpointManager, httpClient, apiType, additionalHeaders, null);
+    }
+
+    public RxGatewayStoreModel(
+        DiagnosticsClientContext clientContext,
+        ISessionContainer sessionContainer,
+        ConsistencyLevel defaultConsistencyLevel,
+        QueryCompatibilityMode queryCompatibilityMode,
+        UserAgentContainer userAgentContainer,
+        GlobalEndpointManager globalEndpointManager,
+        HttpClient httpClient,
+        ApiType apiType,
+        Map<String, String> additionalHeaders,
+        CosmosClientTelemetryConfig clientTelemetryConfig) {
+
+        this.clientContext = clientContext;
+        this.clientTelemetryConfig = clientTelemetryConfig;
+        this.serviceEndpointMetricTags = new ConcurrentHashMap<>();
+
+        if (userAgentContainer == null) {
+            userAgentContainer = new UserAgentContainer();
+        }
+
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
+
+        this.defaultConsistencyLevel = defaultConsistencyLevel;
+        this.globalEndpointManager = globalEndpointManager;
+        this.queryCompatibilityMode = queryCompatibilityMode;
+
+        this.httpClient = httpClient;
+        this.sessionContainer = sessionContainer;
+        this.additionalHeaders = additionalHeaders;
+    }
+
+    public RxGatewayStoreModel(RxGatewayStoreModel inner) {
+        this.clientContext = inner.clientContext;
+        this.clientTelemetryConfig = inner.clientTelemetryConfig;
+        this.serviceEndpointMetricTags = inner.serviceEndpointMetricTags;
+        this.defaultHeaders = inner.defaultHeaders;
+        this.defaultConsistencyLevel = inner.defaultConsistencyLevel;
+        this.globalEndpointManager = inner.globalEndpointManager;
+        this.queryCompatibilityMode = inner.queryCompatibilityMode;
+
+        this.httpClient = inner.httpClient;
+        this.sessionContainer = inner.sessionContainer;
+        this.additionalHeaders = inner.additionalHeaders;
+    }
+
+    public Tag getServiceEndpointMetricTag(URI requestUri) {
+        if (!isServiceEndpointMetricTagEnabled() || requestUri == null) {
+            return null;
+        }
+
+        if (!"https".equalsIgnoreCase(requestUri.getScheme())
+            || requestUri.getRawAuthority() == null
+            || requestUri.getHost() == null) {
+
+            logger.debug("Cannot create ServiceEndpoint metric tag: destination is not a valid HTTPS endpoint.");
+            return null;
+        }
+
+        String authority = requestUri.getRawAuthority();
+        Tag cachedTag = serviceEndpointMetricTags.get(authority);
+        if (cachedTag != null) {
+            return cachedTag;
+        }
+
+        return serviceEndpointMetricTags.computeIfAbsent(authority, ignored -> {
+            int port = requestUri.getPort() == -1 ? 443 : requestUri.getPort();
+            String endpoint = requestUri.getHost() + "_" + port;
+            return Tag.of(TagName.ServiceEndpoint.toString(), ClientTelemetryMetrics.escape(endpoint));
+        });
+    }
+
+    private boolean isServiceEndpointMetricTagEnabled() {
+        if (this.clientTelemetryConfig == null) {
+            return false;
+        }
+
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+        return accessor.isClientMetricsEnabled(this.clientTelemetryConfig)
+            && accessor.getMetricCategories(this.clientTelemetryConfig).contains(MetricCategory.RequestSummary)
+            && accessor.getMetricTagNames(this.clientTelemetryConfig).contains(TagName.ServiceEndpoint);
+    }
+
+    @Override
+    public void close() {
+        this.serviceEndpointMetricTags.clear();
+    }
+
+    protected Map<String, String> getDefaultHeaders(
+        ApiType apiType,
+        UserAgentContainer userAgentContainer) {
+
+        checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
+
+        Map<String, String> defaultHeaders = new HashMap<>(6 * 4 / 3); // load factor is 0.75
+        defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
+            "no-cache");
+        defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
+            HttpConstants.Versions.CURRENT_VERSION);
+        defaultHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
+
+        if (apiType != null) {
+            defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
+
+        String userAgent = userAgentContainer == null
+            ? UserAgentContainer.BASE_USER_AGENT_STRING
+            : userAgentContainer.getUserAgent();
+
+        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
+
+        return defaultHeaders;
+    }
+
+    void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
+        this.gatewayServiceConfigurationReader = gatewayServiceConfigurationReader;
+    }
+
+    public void setPartitionKeyRangeCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
+    }
+
+    public void setUseMultipleWriteLocations(boolean useMultipleWriteLocations) {
+        this.useMultipleWriteLocations = useMultipleWriteLocations;
+    }
+
+    public void setSessionContainer(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
+    }
+
+    boolean isUseMultipleWriteLocations() {
+        return useMultipleWriteLocations;
+    }
+
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache() {
+        return partitionKeyRangeCache;
+    }
+
+    GatewayServiceConfigurationReader getGatewayServiceConfigurationReader() {
+        return gatewayServiceConfigurationReader;
+    }
+
+    RxClientCollectionCache getCollectionCache() {
+        return collectionCache;
+    }
+
+    public void setCollectionCache(RxClientCollectionCache collectionCache) {
+        this.collectionCache = collectionCache;
+    }
+
+    @Override
+    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
+        HttpMethod method = getHttpMethod(request);
+        HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
+
+        Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
+        return new HttpRequest(method,
+            requestUri,
+            requestUri.getPort(),
+            httpHeaders,
+            contentAsByteArray);
+    }
+
+    @Override
+    public StoreResponse unwrapToStoreResponse(
+        String endpoint,
+        RxDocumentServiceRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        ByteBuf retainedContent) {
+
+        checkNotNull(headers, "Argument 'headers' must not be null.");
+        checkNotNull(
+            retainedContent,
+            "Argument 'retainedContent' must not be null - use empty ByteBuf when theres is no payload.");
+
+        if (leakDetectionDebuggingEnabled) {
+            retainedContent.touch(
+                "RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: " + retainedContent.refCnt());
+            logger.debug("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
+        }
+
+        // If there is any error in the header response this throws exception
+        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, retainedContent);
+
+        int size;
+        if ((size = retainedContent.readableBytes()) > 0) {
+            if (leakDetectionDebuggingEnabled) {
+                retainedContent.touch("RxGatewayStoreModel before creating StoreResponse - refCnt: " + retainedContent.refCnt());
+                logger.debug("RxGatewayStoreModel before creating StoreResponse - refCnt: {}", retainedContent.refCnt());
+            }
+
+            return new StoreResponse(
+                endpoint,
+                statusCode,
+                headers,
+                new ByteBufInputStream(retainedContent, true),
+                size);
+        } else {
+            retainedContent.release();
+        }
+
+        return new StoreResponse(
+            endpoint,
+            statusCode,
+            headers,
+            null,
+            0);
+    }
+
+    private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
+        if (request.getOperationType() != OperationType.QueryPlan) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+        }
+
+        switch (this.queryCompatibilityMode) {
+            case SqlQuery:
+                request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE,
+                    RuntimeConstants.MediaTypes.SQL);
+                break;
+            case Default:
+            case Query:
+            default:
+                request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE,
+                    RuntimeConstants.MediaTypes.QUERY_JSON);
+                break;
+        }
+        return this.performRequest(request);
+    }
+
+    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request) {
+        try {
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+            }
+
+            // Apply client-level additional headers (e.g., workload-id) to all requests
+            // including metadata requests (collection cache, partition key range, etc.)
+            if (this.additionalHeaders != null && !this.additionalHeaders.isEmpty()) {
+                for (Map.Entry<String, String> entry : this.additionalHeaders.entrySet()) {
+                    // Only set if not already present — request-level headers take precedence
+                    if (!request.getHeaders().containsKey(entry.getKey())) {
+                        request.getHeaders().put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+
+            this.applyGatewayRetryWithHeaders(request);
+
+            URI uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri.toString();
+
+            if (this.throughputControlStore != null) {
+                return this.throughputControlStore.processRequest(request, Mono.defer(() -> this.performRequestInternal(request, uri)));
+            }
+
+            return this.performRequestInternal(request, uri);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    protected boolean partitionKeyRangeResolutionNeeded(RxDocumentServiceRequest request) {
+        return false;
+    }
+
+    protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
+        request.getHeaders().put(HttpConstants.HttpHeaders.NO_RETRY_449, "true");
+    }
+
+    /**
+     * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
+     *
+     * @param request
+     * @param requestUri
+     * @return Flux<RxDocumentServiceResponse>
+     */
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        if (!partitionKeyRangeResolutionNeeded(request)) {
+            return this.performRequestInternalCore(request, requestUri);
+        }
+
+        return this
+            .resolvePartitionKeyRangeByPkRangeId(request)
+            .flatMap((pkRange) -> {
+                request.requestContext.resolvedPartitionKeyRange = pkRange;
+                return this.performRequestInternalCore(request, requestUri);
+            });
+    }
+
+    /**
+     * Resolves contention between the {@code x-ms-consistency-level} and
+     * {@code x-ms-cosmos-read-consistency-strategy} request headers so that, after this method runs,
+     * the request carries <b>at most one</b> of the two.
+     *
+     * <p>Both Gateway transports reject requests that carry both headers simultaneously:</p>
+     * <ul>
+     *   <li>Gateway V1 (HTTP) — rejects with HTTP 400.</li>
+     *   <li>Gateway V2 / thin-client proxy (RNTBD) — rejects with HTTP 400.</li>
+     * </ul>
+     *
+     * <p><b>Priority rules</b> (highest to lowest):</p>
+     * <ol>
+     *   <li><b>Request-level {@code ReadConsistencyStrategy}</b> on {@code requestContext}
+     *       beats the client-level value carried in the header.</li>
+     *   <li><b>{@code ReadConsistencyStrategy}</b> beats {@code ConsistencyLevel} —
+     *       when a non-{@code DEFAULT} {@code ReadConsistencyStrategy} is effective, the
+     *       {@code ConsistencyLevel} header is stripped.</li>
+     *   <li><b>{@code DEFAULT} {@code ReadConsistencyStrategy} is transparent</b> —
+     *       the {@code ConsistencyLevel} header is left untouched.</li>
+     * </ol>
+     *
+     * <p>Once resolved, GW V1 serializes the surviving header as HTTP; GW V2
+     * ({@code ThinClientStoreModel}) encodes it as RNTBD.</p>
+     *
+     * <p><b>Java SDK-specific behavior.</b> When a non-{@code DEFAULT} {@code ReadConsistencyStrategy}
+     * is effective, the {@code ConsistencyLevel} header is proactively stripped from the request.
+     * The .NET SDK does <em>not</em> strip this header. This divergence is intentional —
+     * it prevents the dual-header HTTP 400 rejection described above, which the compute gateway and
+     * thin-client proxy enforce.</p>
+     *
+     * <p><b>Thread safety.</b> Availability-strategy clones each receive their own deep-copied
+     * {@link java.util.HashMap} of headers (see {@link RxDocumentServiceRequest#clone()}), so
+     * concurrent hedged requests do not race on the same map instance. The mutations performed
+     * here ({@code remove(CONSISTENCY_LEVEL)} and {@code put(READ_CONSISTENCY_STRATEGY, ...)})
+     * are therefore safe by isolation — each clone mutates its own map.</p>
+     *
+     * @param request the in-flight request whose consistency headers are normalized in place.
+     */
+    private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
+        resolveEffectiveConsistencyHeaders(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
+    }
+
+    /**
+     * Core normalization logic — {@code public static} for direct unit testing from cross-package
+     * test classes (e.g. {@code RntbdReadConsistencyStrategyHeaderTests} in {@code azure-cosmos-tests}).
+     * Avoids test drift from duplicated simulation logic.
+     *
+     * <p>Behavior is identical to the instance overload {@link #resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest)};
+     * see that method's javadoc for the priority rules.</p>
+     */
+    public static void resolveEffectiveConsistencyHeaders(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
+
+        ReadConsistencyStrategy effectiveRCS =
+            resolveEffectiveReadConsistencyStrategy(headers, requestContextReadConsistencyStrategy);
+
+        if (effectiveRCS != null) {
+            // Non-DEFAULT RCS wins — strip ConsistencyLevel to prevent dual-header rejection
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+            // Ensure the RCS header is set (requestContext-level may not have been written to headers yet)
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRCS.toString());
+        } else {
+            // No effective RCS — clean up any DEFAULT sentinel header, let ConsistencyLevel govern
+            String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (!Strings.isNullOrEmpty(rcsHeader)) {
+                headers.remove(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            }
+        }
+    }
+
+    /**
+     * Resolves the effective non-DEFAULT {@link ReadConsistencyStrategy} for a request.
+     *
+     * <p>Priority: requestContext RCS (request-level) &gt; header RCS (client-level).
+     * Returns {@code null} when no non-DEFAULT RCS is active — callers should fall through
+     * to {@code ConsistencyLevel} or account-default logic.</p>
+     *
+     * <p>This is the single source of truth for "which RCS wins?" and is consumed by both
+     * {@link #resolveEffectiveConsistencyHeaders(Map, ReadConsistencyStrategy)} (header mutation) and
+     * {@link #isEffectiveSessionConsistency} (session-token decision).</p>
+     */
+    private static ReadConsistencyStrategy resolveEffectiveReadConsistencyStrategy(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
+
+        // Request-level (requestContext) takes priority over client-level (header)
+        if (requestContextReadConsistencyStrategy != null
+            && requestContextReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+            return requestContextReadConsistencyStrategy;
+        }
+
+        // Client-level from header
+        String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+        if (!Strings.isNullOrEmpty(rcsHeader)) {
+            for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
+                if (candidate != ReadConsistencyStrategy.DEFAULT
+                    && candidate.toString().equals(rcsHeader)) {
+                    return candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
+
+        try {
+            // Canonicalize consistency headers before wire serialization.
+            // Both GW V1 (HTTP) and GW V2 (RNTBD via ThinClientStoreModel) read from
+            // request.getHeaders() — this ensures only the winning header reaches the wire.
+            resolveEffectiveConsistencyHeaders(request);
+
+            HttpRequest httpRequest = request
+                .getEffectiveHttpTransportSerializer(this)
+                .wrapInHttpRequest(request, requestUri);
+
+            // Capture the request record early so it's available on both success and error paths.
+            // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
+            request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
+
+            if (this.gatewayServerErrorInjector != null) {
+                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
+                    httpRequest, request, httpResponseMono);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+            }
+
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    private HttpHeaders getHttpRequestHeaders(Map<String, String> headers) {
+        HttpHeaders httpHeaders = new HttpHeaders(HttpUtils.mapCapacityForSize(this.defaultHeaders.size() + headers.size()));
+        // Add default headers.
+        for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
+            if (!headers.containsKey(entry.getKey())) {
+                // populate default header only if there is no overwrite by the request header
+                if (headersNeedToBeEscaped.contains(entry.getKey())) {
+                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
+                } else {
+                    httpHeaders.set(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
+        // Add override headers.
+        if (headers != null) {
+            for (Entry<String, String> entry : headers.entrySet()) {
+                if (entry.getValue() == null) {
+                    // netty doesn't allow setting null value in header
+                    httpHeaders.set(entry.getKey(), "");
+                } else {
+                    if (headersNeedToBeEscaped.contains(entry.getKey())) {
+                        httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
+                    } else {
+                        httpHeaders.set(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        return httpHeaders;
+    }
+
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+    }
+
+    private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
+        URI rootUri = request.getEndpointOverride();
+        if (rootUri == null) {
+            if (request.getIsMedia()) {
+                // For media read request, always use the write endpoint.
+                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
+            } else {
+                rootUri = getRootUri(request);
+            }
+        }
+
+        String path = PathsHelper.generatePath(request.getResourceType(), request, request.isFeed);
+        if (request.getResourceType().equals(ResourceType.DatabaseAccount)) {
+            path = StringUtils.EMPTY;
+        }
+
+        // allow using http connections if customer opt in to use http for vnext emulator
+        String scheme = HTTP_CONNECTION_WITHOUT_TLS_ALLOWED ? rootUri.getScheme() : "https";
+
+        return new URI(scheme,
+            null,
+            rootUri.getHost(),
+            rootUri.getPort(),
+            ensureSlashPrefixed(path),
+            null,  // Query string not used.
+            null);
+    }
+
+    private String ensureSlashPrefixed(String path) {
+        if (path == null) {
+            return null;
+        }
+
+        if (path.startsWith("/")) {
+            return path;
+        }
+
+        return "/" + path;
+    }
+
+    /**
+     * Transforms the reactor netty's client response Observable to RxDocumentServiceResponse Observable.
+     *
+     *
+     * Once the customer code subscribes to the observable returned by the CRUD APIs,
+     * the subscription goes up till it reaches the source reactor netty's observable, and at that point the HTTP invocation will be made.
+     *
+     * @param httpResponseMono
+     * @param request
+     * @return {@link Mono}
+     */
+    private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
+                                                                      RxDocumentServiceRequest request,
+                                                                      HttpRequest httpRequest) {
+
+        Tag serviceEndpointMetricTag = getServiceEndpointMetricTag(httpRequest.uri());
+        return httpResponseMono
+            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
+            .flatMap(httpResponse -> {
+
+                // header key/value pairs
+                HttpHeaders httpResponseHeaders = httpResponse.headers();
+                int httpResponseStatus = httpResponse.statusCode();
+
+                // Track the retained ByteBuf so we can release it as a safety net in doFinally
+                // if cancellation races with publishOn's async delivery and doOnDiscard doesn't fire.
+                final AtomicReference<ByteBuf> retainedBufRef = new AtomicReference<>();
+
+                Mono<ByteBuf> contentObservable = httpResponse
+                    .body()
+                    .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+                    .map(bodyByteBuf -> {
+                        if (leakDetectionDebuggingEnabled) {
+                            bodyByteBuf.touch("RxGatewayStoreModel - buffer after aggregate before retain - refCnt: " + bodyByteBuf.refCnt());
+                            logger.debug("RxGatewayStoreModel - buffer after aggregate before retain  - refCnt: {}", bodyByteBuf.refCnt());
+                        }
+
+                        if (bodyByteBuf != Unpooled.EMPTY_BUFFER) {
+                            // +1 for our downstream work since Reactor Netty (ByteBufFlux) auto-releases buffer
+                            bodyByteBuf.retain();
+                        }
+
+                        retainedBufRef.set(bodyByteBuf);
+
+                        if (leakDetectionDebuggingEnabled) {
+                            bodyByteBuf.touch("RxGatewayStoreModel - touch retained buffer  - refCnt: " + bodyByteBuf.refCnt());
+                            logger.debug("RxGatewayStoreModel - touch retained buffer  - refCnt: {}", bodyByteBuf.refCnt());
+                        }
+
+                        return bodyByteBuf;
+                    })
+                    .doOnDiscard(ByteBuf.class, buf -> {
+                        retainedBufRef.compareAndSet(buf, null);
+                        if (buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
+                                buf.touch("RxGatewayStoreModel - doOnDiscard - begin - refCnt: " + buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doOnDiscard - begin - refCnt: {}", buf.refCnt());
+                            }
+
+                            // there could be a race with the catch in the .map operator below
+                            // so, use safeRelease
+                            safeSilentRelease(buf);
+                        }
+                    })
+                    .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+
+                return contentObservable
+                    .map(content -> {
+
+                        if (leakDetectionDebuggingEnabled) {
+                            content.touch("RxGatewayStoreModel - before capturing transport timeline - refCnt: " + content.refCnt());
+                            logger.debug("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
+                        }
+
+                        // Capture transport client request timeline
+                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
+                        if (reactorNettyRequestRecord != null) {
+                            reactorNettyRequestRecord.setTimeCompleted(Instant.now());
+                        }
+
+                        if (leakDetectionDebuggingEnabled) {
+                            content.touch("RxGatewayStoreModel - before creating StoreResponse - refCnt: " + content.refCnt());
+                            logger.debug("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
+                        }
+                        StoreResponse rsp = request
+                            .getEffectiveHttpTransportSerializer(this)
+                            .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
+
+                        // Only clear retainedBufRef AFTER StoreResponse successfully takes ownership.
+                        // If unwrapToStoreResponse throws, retainedBufRef remains set so doFinally
+                        // will release the buffer — avoiding a double-release race with doOnDiscard.
+                        retainedBufRef.compareAndSet(content, null);
+
+                        rsp.setRequestUri(httpRequest.uri());
+                        rsp.setServiceEndpointMetricTag(serviceEndpointMetricTag);
+
+                        if (reactorNettyRequestRecord != null) {
+                            rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                            if (this.gatewayServerErrorInjector != null) {
+                                // only configure when fault injection is used
+                                rsp.setFaultInjectionRuleId(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                                rsp.setFaultInjectionRuleEvaluationResults(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                            }
+                        }
+
+                        if (request.requestContext.cosmosDiagnostics != null) {
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
+                        }
+
+                        return rsp;
+                    })
+                    .doOnDiscard(ByteBuf.class, buf -> {
+                        // This handles the case where the retained buffer is discarded after the map operation
+                        // but before unwrapToStoreResponse takes ownership (e.g., during cancellation)
+                        retainedBufRef.compareAndSet(buf, null);
+                        if (buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
+                                buf.touch("RxGatewayStoreModel - doOnDiscard after map - refCnt: " + buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
+                            }
+                            safeSilentRelease(buf);
+                        }
+                    })
+                    .doFinally(signal -> {
+                        // Safety net: release any retained ByteBuf that wasn't consumed or discarded.
+                        // This handles edge cases where cancellation racing with publishOn's async
+                        // delivery prevents the doOnDiscard handler from firing.
+                        ByteBuf buf = retainedBufRef.getAndSet(null);
+                        if (buf != null && buf != Unpooled.EMPTY_BUFFER && buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
+                                buf.touch("RxGatewayStoreModel - doFinally safety net - signal: " + signal + " - refCnt: " + buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doFinally safety net releasing ByteBuf - signal: {}, refCnt: {}", signal, buf.refCnt());
+                            }
+                            safeSilentRelease(buf);
+                        }
+                    })
+                    .single();
+
+            }).map(rsp -> {
+                RxDocumentServiceResponse rxDocumentServiceResponse;
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+                    rxDocumentServiceResponse =
+                        new RxDocumentServiceResponse(this.clientContext, rsp,
+                            httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+
+                } else {
+                    rxDocumentServiceResponse =
+                        new RxDocumentServiceResponse(this.clientContext, rsp);
+                }
+                rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+                return rxDocumentServiceResponse;
+            }).onErrorResume(throwable -> {
+                Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+                if (!(unwrappedException instanceof Exception)) {
+                    // fatal error
+                    logger.error("Unexpected failure " + unwrappedException.getMessage(), unwrappedException);
+                    return Mono.error(unwrappedException);
+                }
+
+                Exception exception = (Exception) unwrappedException;
+                CosmosException dce;
+                if (!(exception instanceof CosmosException)) {
+                    int statusCode = 0;
+                    if (WebExceptionUtility.isNetworkFailure(exception)) {
+
+                        // wrap in CosmosException
+                        logger.error("Network failure", exception);
+
+                        if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                            statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                        } else {
+                            statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+                        }
+                    }
+
+                    dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
+                    BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+                } else {
+                    dce = (CosmosException) exception;
+                    if (!Exceptions.isCommonlyExpectedExceptionPossiblyCausingNoisyLogs(dce.getStatusCode(), dce.getSubStatusCode())) {
+                        logger.error("Non-network failure", exception);
+                    } else {
+                        logger.trace("Common/expected non-network failure", exception);
+                    }
+                }
+
+                if (WebExceptionUtility.isNetworkFailure(dce)) {
+                    if (WebExceptionUtility.isHttp2PingTimeoutClose(dce)) {
+                        // PING-keepalive-driven close is a LOCAL transport failure (NAT idle reap, LB
+                        // shedding, etc.); the regional gateway is NOT known to be unhealthy. Stamp a
+                        // dedicated subStatusCode so ClientRetryPolicy can route this to in-region retry
+                        // WITHOUT marking the endpoint unavailable. Check BEFORE the read-timeout
+                        // branch -- a PING ACK timeout is not the same thing as an HTTP response read
+                        // timeout, and the two branches lead to different (though similar) retry paths.
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED);
+                    } else if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                    } else {
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                    }
+                }
+
+                cosmosExceptionAccessor()
+                    .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
+
+                if (request.requestContext.cosmosDiagnostics != null) {
+                    if (httpRequest.reactorNettyRequestRecord() != null) {
+                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                        BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        cosmosExceptionAccessor()
+                            .setFaultInjectionRuleId(
+                                dce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                        cosmosExceptionAccessor()
+                            .setFaultInjectionEvaluationResults(
+                                dce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                    }
+
+                    recordGatewayFailure(request, dce, serviceEndpointMetricTag);
+                }
+
+                return Mono.error(dce);
+            }).doFinally(signalType -> {
+
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+
+                    OperationCancelledException oce = new OperationCancelledException("", httpRequest.uri());
+
+                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
+                    RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                    long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
+
+                    GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+
+                    request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                    // The endpoint is known at request-send time and should not be lost on cancellation.
+                    cosmosExceptionAccessor()
+                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+
+                    if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+
+                        CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
+                            request.requestContext.getCrossRegionAvailabilityContext();
+
+                        if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null && availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled() && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()) {
+
+                            BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                            cosmosExceptionAccessor()
+                                .setFaultInjectionRuleId(
+                                    oce,
+                                    request.faultInjectionRequestContext
+                                        .getFaultInjectionRuleId(transportRequestId));
+
+                            cosmosExceptionAccessor()
+                                .setFaultInjectionEvaluationResults(
+                                    oce,
+                                    request.faultInjectionRequestContext
+                                        .getFaultInjectionRuleEvaluationResults(transportRequestId));
+
+                            recordGatewayFailure(request, oce, serviceEndpointMetricTag);
+                        }
+                    }
+                }
+            });
+    }
+
+    private void recordGatewayFailure(
+        RxDocumentServiceRequest request, CosmosException exception, Tag serviceEndpointMetricTag) {
+
+        StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            exception, request, serviceEndpointMetricTag);
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics)
+            .recordGatewayResponse(request, diagnostics, this.globalEndpointManager);
+        BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+    }
+
+    private void validateOrThrow(RxDocumentServiceRequest request,
+                                 HttpResponseStatus status,
+                                 HttpHeaders headers,
+                                 ByteBuf retainedBodyAsByteBuf) {
+
+        int statusCode = status.code();
+
+        if (statusCode >= HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
+            String statusCodeString = status.reasonPhrase() != null
+                ? status.reasonPhrase().replace(" ", "")
+                : "";
+
+            String body = retainedBodyAsByteBuf.readableBytes() > 0
+                ? retainedBodyAsByteBuf.toString(StandardCharsets.UTF_8)
+                : null;
+
+            safeSilentRelease(retainedBodyAsByteBuf);
+
+            CosmosError cosmosError;
+            if (StringUtils.isNotEmpty(body)) {
+                try {
+                    cosmosError = new CosmosError(body);
+                } catch (IllegalArgumentException | ClassCastException jsonParseError) {
+                    // Gateway V2 / thin-client error responses (notably query-plan generation
+                    // failures) can carry a raw, non-JSON body (optionally NUL-padded) or a non-object
+                    // JSON value (scalar, array) instead of a serialized CosmosError. Parsing it throws
+                    // (IllegalArgumentException for non-JSON, ClassCastException for valid non-object
+                    // JSON) and, upstream, the real HTTP status code is lost and the failure surfaces
+                    // as statusCode 0. Fall back to the raw (sanitized) body as the message so the
+                    // actual status code is preserved on the thrown CosmosException.
+                    logger.debug("Failed to parse gateway error body as CosmosError; "
+                        + "falling back to raw body. statusCode: {}", statusCodeString, jsonParseError);
+                    cosmosError = new CosmosError(statusCodeString, sanitizeErrorBody(body));
+                }
+            } else {
+                cosmosError = new CosmosError();
+            }
+            cosmosError = new CosmosError(statusCodeString,
+                String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
+                cosmosError.getPartitionedQueryExecutionInfo());
+
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toLowerCaseMap());
+            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            throw dce;
+        }
+    }
+
+    private static String sanitizeErrorBody(String body) {
+        // Proxies may NUL-pad fixed-size buffers; strip padding and surrounding whitespace so the
+        // preserved error message is readable. If stripping leaves nothing, keep the original body.
+        String sanitized = body.replace("\u0000", "").trim();
+        return sanitized.isEmpty() ? body : sanitized;
+    }
+
+    private static HttpMethod getHttpMethod(RxDocumentServiceRequest request) {
+        switch (request.getOperationType()) {
+            case Create:
+            case Batch:
+            case Upsert:
+            case ExecuteJavaScript:
+            case SqlQuery:
+            case Query:
+            case QueryPlan:
+                return HttpMethod.POST;
+            case Patch:
+                return HttpMethod.PATCH;
+            case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return HttpMethod.POST;
+                }
+                return HttpMethod.DELETE;
+            case Read:
+            case ReadFeed:
+                return HttpMethod.GET;
+            case Replace:
+                return HttpMethod.PUT;
+            default:
+                throw new IllegalStateException(
+                    "Operation type " + request.getOperationType() + " cannot be processed in RxGatewayStoreModel.");
+        }
+    }
+
+    private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request) {
+        switch (request.getOperationType()) {
+            case Create:
+            case Batch:
+            case Patch:
+            case Upsert:
+            case Delete:
+            case ExecuteJavaScript:
+            case Read:
+            case ReadFeed:
+            case Replace:
+                return this.performRequest(request);
+
+            case SqlQuery:
+            case Query:
+            case QueryPlan:
+                return this.query(request);
+            default:
+                throw new IllegalStateException("Unknown operation setType " + request.getOperationType());
+        }
+    }
+
+    private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
+
+        if (request.requestContext.cosmosDiagnostics == null) {
+            request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        }
+
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<RxDocumentServiceResponse>> funcDelegate =
+            retryPolicyArg -> {
+                this.applyGatewayRetryPolicyArg(request, retryPolicyArg);
+                return invokeAsyncInternal(request).single();
+            };
+
+        GatewayRetryWithRetryPolicy gatewayRetryWithRetryPolicy = new GatewayRetryWithRetryPolicy(
+            request,
+            this.globalEndpointManager,
+            this.getGatewayRetryWithTimeoutInSeconds());
+
+        return BackoffRetryUtility.executeAsync(
+            funcDelegate,
+            gatewayRetryWithRetryPolicy,
+            null,
+            Duration.ZERO,
+            request,
+            null);
+    }
+
+    private void applyGatewayRetryPolicyArg(
+        RxDocumentServiceRequest request,
+        Quadruple<Boolean, Boolean, Duration, Integer> retryPolicyArg) {
+
+        if (retryPolicyArg == null || !Boolean.TRUE.equals(retryPolicyArg.getValue1())) {
+            return;
+        }
+
+        Duration remainingTime = retryPolicyArg.getValue2();
+        Integer retryAttemptCount = retryPolicyArg.getValue3();
+
+        if (remainingTime != null) {
+            request.setResponseTimeout(remainingTime);
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
+                Long.toString(remainingTime.toMillis()));
+        }
+
+        if (retryAttemptCount != null) {
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.CLIENT_RETRY_ATTEMPT_COUNT,
+                retryAttemptCount.toString());
+        }
+    }
+
+    private int getGatewayRetryWithTimeoutInSeconds() {
+        ConsistencyLevel effectiveConsistencyLevel = this.gatewayServiceConfigurationReader != null
+            ? this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel()
+            : this.defaultConsistencyLevel;
+
+        return effectiveConsistencyLevel == ConsistencyLevel.STRONG
+            ? STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS
+            : GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS;
+    }
+
+    @Override
+    public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
+
+        return responseObs.onErrorResume(
+            e -> {
+                CosmosException dce = Utils.as(e, CosmosException.class);
+
+                if (dce == null) {
+                    logger.error("unexpected failure {}", e.getMessage(), e);
+                    return Mono.error(e);
+                }
+
+                if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
+                    (dce.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
+                        dce.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                        (
+                            dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
+                                !Exceptions.isSubStatusCode(dce,
+                                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
+                    this.captureSessionToken(request, dce.getResponseHeaders());
+                }
+
+                if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
+                    if (request.requestContext.cosmosDiagnostics != null) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                    }
+                }
+
+                return Mono.error(dce);
+            }
+        ).flatMap(response ->
+            this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
+        );
+    }
+
+    @Override
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.throughputControlStore = throughputControlStore;
+    }
+
+    @Override
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return Flux.empty();
+    }
+
+    @Override
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
+        if (this.gatewayServerErrorInjector == null) {
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs, collectionCache, partitionKeyRangeCache);
+        }
+
+        this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        //no-op
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        //no-op
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        //no-op
+    }
+
+    public Map<String, String> getDefaultHeaders() {
+        return this.defaultHeaders;
+    }
+
+    private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+        if (request.getResourceType() == ResourceType.DocumentCollection &&
+            request.getOperationType() == OperationType.Delete) {
+
+            String resourceId;
+            if (request.getIsNameBased()) {
+                resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
+            } else {
+                resourceId = request.getResourceId();
+            }
+            this.sessionContainer.clearTokenByResourceId(resourceId);
+        } else {
+            this.sessionContainer.setSessionToken(request, responseHeaders);
+        }
+    }
+
+    private Mono<Void> captureSessionTokenAndHandlePartitionSplit(RxDocumentServiceRequest request,
+                                                                  Map<String, String> responseHeaders) {
+        this.captureSessionToken(request, responseHeaders);
+        if (request.requestContext.resolvedPartitionKeyRange != null &&
+            StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
+            StringUtils.isNotEmpty(responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) &&
+            !responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID).equals(request.requestContext.resolvedPartitionKeyRange.getId())) {
+            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid)
+                .flatMap(collectionRoutingMapValueHolder -> Mono.empty());
+        }
+        return Mono.empty();
+    }
+
+    private Mono<Void> addIntendedCollectionRidAndSessionToken(RxDocumentServiceRequest request) {
+        return applySessionToken(request).then(addIntendedCollectionRid(request));
+    }
+
+    private Mono<Void> addIntendedCollectionRid(RxDocumentServiceRequest request) {
+        if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
+                if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
+                        request.requestContext.resolvedCollectionRid);
+                } else {
+                    request.intendedCollectionRidPassedIntoSDK = true;
+                }
+                return Mono.empty();
+            });
+        }
+        return Mono.empty();
+    }
+
+    protected Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeId(RxDocumentServiceRequest request) {
+        Objects.requireNonNull(
+            request,
+            "Parameter 'request' is required and cannot be null");
+
+        Objects.requireNonNull(
+            this.partitionKeyRangeCache,
+            "Parameter 'this::partitionKeyRangeCache' is required and cannot be null");
+
+        Objects.requireNonNull(
+            this.collectionCache,
+            "Parameter 'this::collectionCache' is required and cannot be null");
+
+        PartitionKeyRangeIdentity pkRangeId = request.getPartitionKeyRangeIdentity();
+        Objects.requireNonNull(
+            pkRangeId,
+            "Parameter 'request::getPartitionKeyRangeIdentity()' is required and cannot be null");
+
+        MetadataDiagnosticsContext metadataCtx = BridgeInternal
+            .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        if (pkRangeId.getCollectionRid() != null) {
+            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx);
+        }
+
+        return this.collectionCache.resolveCollectionAsync(
+            metadataCtx,
+            request)
+            .flatMap(collectionHolder -> resolvePartitionKeyRangeByPkRangeIdCore(
+                pkRangeId,
+                collectionHolder.v.getResourceId(),
+                metadataCtx));
+    }
+
+    private Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeIdCore(
+        PartitionKeyRangeIdentity pkRangeId,
+        String effectiveCollectionRid,
+        MetadataDiagnosticsContext metadataCtx) {
+
+        Objects.requireNonNull(pkRangeId, "Parameter 'pkRangeId' is required and cannot be null");
+        Objects.requireNonNull(
+            this.partitionKeyRangeCache,
+            "Parameter 'this::partitionKeyRangeCache' is required and cannot be null");
+
+        return partitionKeyRangeCache
+            .tryLookupAsync(
+                metadataCtx,
+                effectiveCollectionRid,
+               null,
+               null
+            )
+            .flatMap(collectionRoutingMapValueHolder -> {
+
+           PartitionKeyRange range =
+               collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(pkRangeId.getPartitionKeyRangeId());
+
+           return Mono.just(range);
+       });
+    }
+
+    /**
+     * Determines if the effective consistency for this request is Session — needed by
+     * {@link #applySessionToken} to decide whether to attach/remove session tokens.
+     * <p>
+     * Pure read — no side effects, no header mutation.
+     * Uses {@link #resolveEffectiveReadConsistencyStrategy} for the RCS priority chain,
+     * then falls through to ConsistencyLevel / account-default if no RCS is active.
+     */
+    private boolean isEffectiveSessionConsistency(RxDocumentServiceRequest request) {
+        ReadConsistencyStrategy effectiveRCS = resolveEffectiveReadConsistencyStrategy(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
+
+        if (effectiveRCS != null) {
+            return effectiveRCS == ReadConsistencyStrategy.SESSION;
+        }
+
+        // No RCS active — fall through to ConsistencyLevel header
+        String clHeader = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        if (!Strings.isNullOrEmpty(clHeader)) {
+            return ConsistencyLevel.SESSION.toString().equalsIgnoreCase(clHeader);
+        }
+
+        // Fall back to account default
+        return this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION;
+    }
+
+    private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
+        Map<String, String> headers = request.getHeaders();
+        Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
+
+        // Master resource operations don't require session token.
+        if (isMasterOperation(request.getResourceType(), request.getOperationType())) {
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            return Mono.empty();
+        }
+
+        // Determine if the effective consistency is Session — needed to decide whether to
+        // attach/remove session tokens. This is a pure read with no side-effects; it does NOT
+        // call RequestHelper.getReadConsistencyStrategyToUse() which mutates x-ms-consistency-level
+        // (a Direct-mode telemetry concern that is harmful in Gateway mode).
+        boolean sessionConsistency = isEffectiveSessionConsistency(request);
+
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (!sessionConsistency ||
+                (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            return Mono.empty(); //User is explicitly controlling the session.
+        }
+
+        if (!sessionConsistency ||
+            (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+            return Mono.empty();
+            // Only apply the session token in case of session consistency and if request is read only,
+            // apply token for write request only if batch operation or multi master
+        }
+
+        if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
+                flatMap(collectionValueHolder -> {
+
+                    if (collectionValueHolder == null || collectionValueHolder.v == null) {
+                        //Apply the ambient session.
+                        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                        if (!Strings.isNullOrEmpty(sessionToken)) {
+                            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                        }
+                        return Mono.empty();
+                    }
+                    return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collectionValueHolder.v.getResourceId(),
+                        null,
+                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                            return Mono.empty();
+                        }
+                        String partitionKeyRangeId =
+                            request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            if (request.requestContext.resolvedPartitionKeyRange == null) {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
+                                    sessionContainer);
+                            } else {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                            }
+                        } else if (partitionKeyInternal != null) {
+                            String effectivePartitionKeyString = StringUtils.isNotEmpty(request.getEffectivePartitionKey()) ?
+                                request.getEffectivePartitionKey() : PartitionKeyInternalHelper
+                                .getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                        } else {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                        }
+
+                        return Mono.empty();
+                    });
+                });
+        } else {
+            //Apply the ambient session.
+            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+            if (!Strings.isNullOrEmpty(sessionToken)) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+            }
+            return Mono.empty();
+        }
+    }
+
+    private static boolean isMasterOperation(ResourceType resourceType, OperationType operationType) {
+        // Stored procedures, trigger, and user defined functions CRUD operations are done on
+        // master so they do not require the session token.
+        // Stored procedures execute is not a master operation
+        return ReplicatedResourceClientUtils.isMasterResource(resourceType) ||
+            isStoredProcedureMasterOperation(resourceType, operationType) ||
+            operationType == OperationType.QueryPlan;
+    }
+
+    private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
+        return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
+    }
+
+    static void safeSilentRelease(Object msg) {
+        try {
+            ReferenceCountUtil.release(msg);
+        } catch (Throwable t) {
+            // ReferenceCountUtil.safeRelease(msg); would always log teh warning below - which is unnecessary
+            // in this class - we only needs this for a race condition rarely double-releasing
+            // logger.warn("Failed to release a message: {}", msg, t);
+        }
+    }
+}

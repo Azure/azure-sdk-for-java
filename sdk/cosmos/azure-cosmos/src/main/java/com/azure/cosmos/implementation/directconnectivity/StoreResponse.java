@@ -1,0 +1,413 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.directconnectivity;
+
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.micrometer.core.instrument.Tag;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.IllegalReferenceCountException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+/**
+ * Used internally to represents a response from the store.
+ */
+public class StoreResponse {
+    private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
+
+    // Initial capacity for the replica-status map. Chosen to avoid resizing in
+    // the common case where only a handful of replica status entries are tracked.
+    private static final int REPLICA_STATUS_MAP_INITIAL_CAPACITY = 6;
+
+    final private int status;
+    final private String[] responseHeaderNames;
+    final private String[] responseHeaderValues;
+    private int requestPayloadLength;
+    private RequestTimeline requestTimeline;
+    private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics channelStatistics;
+    private int rntbdRequestLength;
+    private int rntbdResponseLength;
+    private final Map<String, Set<String>> replicaStatusList;
+    private String faultInjectionRuleId;
+    private List<String> faultInjectionRuleEvaluationResults;
+
+    private final JsonNodeStorePayload responsePayload;
+    private final String endpoint;
+    private URI requestUri;
+    private Tag serviceEndpointMetricTag;
+
+    public StoreResponse(
+            String endpoint,
+            int status,
+            Map<String, String> headerMap,
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint != null ? endpoint : "";
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
+    }
+
+    /**
+     * Creates a StoreResponse directly from HttpHeaders, avoiding intermediate HashMap allocation.
+     * Header names are stored as lowercase keys (matching HttpHeaders internal representation).
+     * The OWNER_FULL_NAME header value is URL-decoded inline (equivalent to HttpUtils.unescape).
+     */
+    public StoreResponse(
+            String endpoint,
+            int status,
+            HttpHeaders httpHeaders,
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+
+        int headerCount = httpHeaders.size();
+        responseHeaderNames = new String[headerCount];
+        responseHeaderValues = new String[headerCount];
+        this.endpoint = endpoint != null ? endpoint : "";
+
+        httpHeaders.populateLowerCaseHeaders(responseHeaderNames, responseHeaderValues);
+
+        // URL-decode OWNER_FULL_NAME header value inline (replaces HttpUtils.unescape).
+        // This is kept separate from populateLowerCaseHeaders because HttpHeaders is a
+        // general-purpose HTTP class and should not contain Cosmos-specific URL-decoding logic.
+        for (int i = 0; i < headerCount; i++) {
+            if (HttpConstants.HttpHeaders.OWNER_FULL_NAME.equalsIgnoreCase(responseHeaderNames[i])) {
+                responseHeaderValues[i] = HttpUtils.urlDecode(responseHeaderValues[i]);
+                break;
+            }
+        }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
+    }
+
+    private StoreResponse(
+        String endpoint,
+        int status,
+        Map<String, String> headerMap,
+        JsonNodeStorePayload responsePayload) {
+
+        checkNotNull(endpoint, "Parameter 'endpoint' must not be null.");
+
+        requestTimeline = RequestTimeline.empty();
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint;
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = responsePayload;
+    }
+
+    private static JsonNodeStorePayload parseResponsePayload(
+        ByteBufInputStream contentStream,
+        int responsePayloadLength,
+        String[] headerNames,
+        String[] headerValues) {
+
+        if (contentStream == null) {
+            return null;
+        }
+        try {
+            return new JsonNodeStorePayload(contentStream, responsePayloadLength, headerNames, headerValues);
+        } finally {
+            try {
+                contentStream.close();
+            } catch (Throwable e) {
+                if (!(e instanceof IllegalReferenceCountException)) {
+                    logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                }
+            }
+        }
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String[] getResponseHeaderNames() {
+        return responseHeaderNames;
+    }
+
+    public String[] getResponseHeaderValues() {
+        return responseHeaderValues;
+    }
+
+    public void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    public void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    public int getRntbdRequestLength() {
+        return rntbdRequestLength;
+    }
+
+    public int getRntbdResponseLength() {
+        return rntbdResponseLength;
+    }
+
+    public int getRequestPayloadLength() {
+        return requestPayloadLength;
+    }
+
+    public void setRequestPayloadLength(int requestPayloadLength) {
+        this.requestPayloadLength = requestPayloadLength;
+    }
+
+    public JsonNode getResponseBodyAsJson() {
+        if (this.responsePayload == null) {
+            return null;
+        }
+
+        return this.responsePayload.getPayload();
+    }
+
+    public int getResponseBodyLength() {
+        if (this.responsePayload == null) {
+            return 0;
+        }
+
+        return this.responsePayload.getResponsePayloadSize();
+    }
+
+    public long getLSN() {
+        String lsnString = this.getHeaderValue(WFConstants.BackendHeaders.LSN);
+        if (StringUtils.isNotEmpty(lsnString)) {
+            return Long.parseLong(lsnString);
+        }
+
+        return -1;
+    }
+
+    // NOTE: Only used in local test through transport client interceptor
+    public void setGCLSN(long gclsn) {
+        this.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(gclsn));
+    }
+
+    public String getPartitionKeyRangeId() {
+        return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
+    }
+
+    public String getActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
+    }
+
+    public String getCorrelatedActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+    }
+
+    public String getHeaderValue(String attribute) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return null;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
+                return responseHeaderValues[i];
+            }
+        }
+
+        return null;
+    }
+
+    //NOTE: only used for testing purpose to change the response header value
+    void setHeaderValue(String headerName, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
+                responseHeaderValues[i] = value;
+                break;
+            }
+        }
+    }
+
+    public double getRequestCharge() {
+        String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.parseDouble(value);
+    }
+
+    public String getSessionTokenString() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+    }
+
+    public void setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
+    }
+
+    RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
+    }
+
+    public void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        this.channelAcquisitionTimeline = channelAcquisitionTimeline;
+    }
+
+    RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
+    }
+
+    public void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getEndpointStatistics() {
+        return this.rntbdEndpointStatistics;
+    }
+
+    public void setChannelStatistics(RntbdChannelStatistics channelStatistics) {
+        this.channelStatistics = channelStatistics;
+    }
+
+    public RntbdChannelStatistics getChannelStatistics() {
+        return this.channelStatistics;
+    }
+
+    int getSubStatusCode() {
+        int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
+        String subStatusCodeString = this.getHeaderValue(WFConstants.BackendHeaders.SUB_STATUS);
+        if (StringUtils.isNotEmpty(subStatusCodeString)) {
+            try {
+                subStatusCode = Integer.parseInt(subStatusCodeString);
+            } catch (NumberFormatException e) {
+                // If value cannot be parsed as Integer, return Unknown.
+            }
+        }
+        return subStatusCode;
+    }
+
+    public long getNumberOfReadRegions() {
+        long numberOfReadRegions = -1L;
+        String numberOfReadRegionsString = this.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        if (StringUtils.isNotEmpty(numberOfReadRegionsString)) {
+            try {
+                return Long.parseLong(numberOfReadRegionsString);
+            } catch (NumberFormatException e) {
+                logger.warn("Failed to parse NUMBER_OF_READ_REGIONS header value: {}. Returning -1.", numberOfReadRegionsString);
+            }
+        }
+        return numberOfReadRegions;
+    }
+
+    public Map<String, Set<String>> getReplicaStatusList() {
+        return this.replicaStatusList;
+    }
+
+    public String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
+    }
+
+    public void setFaultInjectionRuleId(String faultInjectionRuleId) {
+        this.faultInjectionRuleId = faultInjectionRuleId;
+    }
+
+    public List<String> getFaultInjectionRuleEvaluationResults() {
+        return this.faultInjectionRuleEvaluationResults;
+    }
+
+    public void setFaultInjectionRuleEvaluationResults(List<String> results) {
+        this.faultInjectionRuleEvaluationResults = results;
+    }
+
+    public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+
+        Map<String, String> headers = new HashMap<>(HttpUtils.mapCapacityForSize(this.responseHeaderNames.length));
+        for (int i = 0; i < this.responseHeaderNames.length; i++) {
+            String headerName = this.responseHeaderNames[i];
+            if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+                double currentRequestCharge = this.getRequestCharge();
+                double newRequestCharge = currentRequestCharge + additionalRequestCharge;
+                headers.put(headerName, String.valueOf(newRequestCharge));
+            } else {
+                headers.put(headerName, this.responseHeaderValues[i]);
+            }
+        }
+
+        StoreResponse remappedResponse = new StoreResponse(
+            this.endpoint,
+            newStatusCode,
+            headers,
+            this.responsePayload);
+        remappedResponse.requestUri = this.requestUri;
+        remappedResponse.serviceEndpointMetricTag = this.serviceEndpointMetricTag;
+        return remappedResponse;
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    @JsonIgnore
+    public URI getRequestUri() {
+        return this.requestUri;
+    }
+
+    public void setRequestUri(URI requestUri) {
+        this.requestUri = requestUri;
+    }
+
+    @JsonIgnore
+    public Tag getServiceEndpointMetricTag() {
+        return this.serviceEndpointMetricTag;
+    }
+
+    public void setServiceEndpointMetricTag(Tag serviceEndpointMetricTag) {
+        this.serviceEndpointMetricTag = serviceEndpointMetricTag;
+    }
+}

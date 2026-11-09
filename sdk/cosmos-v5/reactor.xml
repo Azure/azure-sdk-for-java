@@ -1,0 +1,23 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>cosmos-v5-foundation-build</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>Isolated Cosmos v5 foundation reactor (not for distribution)</name>
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+  <!-- Opt in with -f; never combine this reactor with the root/v4 reactor. -->
+  <modules>
+    <module>../parents/azure-sdk-parent</module>
+    <module>../parents/clientcore-parent</module>
+    <module>../clientcore/core</module>
+    <module>../parents/azure-client-sdk-parent-v2</module>
+    <module>../core-v2/azure-core</module>
+    <module>azure-cosmos/foundation.xml</module>
+  </modules>
+</project>

@@ -1,0 +1,873 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
+
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
+import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker implements AutoCloseable {
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+    private static final Map<String, String> EMPTY_MAP = new HashMap<>();
+    private static final String BASE_EXCEPTION_MESSAGE = "FAILED IN Per-Partition Circuit Breaker: ";
+
+    private final GlobalEndpointManager globalEndpointManager;
+    private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
+    private LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
+    private ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
+    private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
+    private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
+    private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
+    private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
+    private final Logger failbackLogger;
+    private final Object latestFailbackMessageByRegionLock = new Object();
+    private volatile Map<String, String> latestFailbackMessageByRegion = Collections.emptyMap();
+
+    public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
+        this(globalEndpointManager, logger);
+    }
+
+    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(
+        GlobalEndpointManager globalEndpointManager,
+        Logger failbackLogger) {
+
+        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
+        this.globalEndpointManager = globalEndpointManager;
+        this.failbackLogger = checkNotNull(failbackLogger, "Argument 'failbackLogger' cannot be null!");
+
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+        this.consecutiveExceptionBasedCircuitBreaker = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
+        this.locationSpecificHealthContextTransitionHandler
+            = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
+        this.globalAddressResolverSnapshot = new AtomicReference<>();
+        this.regionalRoutingContextToRegion = new ConcurrentHashMap<>();
+    }
+
+    public void init() {
+        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()
+            && this.isPartitionRecoveryTaskRunning.compareAndSet(false, true)) {
+
+            this.partitionRecoveryDisposable.set(this.updateStaleLocationInfo()
+                .subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_CHECK_BOUNDED_ELASTIC)
+                .subscribe());
+        }
+    }
+
+    public void handleLocationExceptionForPartitionKeyRange(
+        RxDocumentServiceRequest request,
+        RegionalRoutingContext failedRegionalRoutingContext,
+        boolean isCancellationException) {
+
+        try {
+            checkNotNull(request, "Argument 'request' cannot be null!");
+            checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+
+            PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+            PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+
+            // in scenarios where partition is splitting or invalid partition (name cache is stale) then resolvedPartitionKeyRange could be set to null
+            // no reason to circuit break a partition key range which is effectively won't be used in the future
+            if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+                logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid partition (name cache is stale), partitionKeyRange: " +
+                    resolvedPartitionKeyRangeForCircuitBreaker +
+                    " and operationType: " +
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
+                return;
+            }
+
+            // in scenarios where resolvedPartitionKeyRangeForCircuitBreaker is null, we cannot circuit break at partition level
+            // if the exception is due to a cancellation, then we don't have enough information to decide if we should circuit break or not
+            // so we skip circuit breaking in this case if cancellation kick in ungracefully (e.g. user cancelled the request, or end-to-end timeout on the operation before routing decision is made)
+            // if the exception is not due to a cancellation, then we should have enough information to decide if we should circuit break or not
+            // so we proceed with circuit breaking in this case
+            if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
+                logger.warn("Skipping circuit breaking for operation as partitionKeyRange information isn't available for an e2e timeout cancelled request with operationType: " +
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
+                return;
+            }
+
+            checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
+
+            String collectionResourceId = request.getResourceId();
+            checkNotNull(request, collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
+
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, collectionResourceId);
+
+            AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
+            AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
+
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
+
+                if (partitionLevelLocationUnavailabilityInfoAsVal == null) {
+                    partitionLevelLocationUnavailabilityInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+                }
+
+                isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoAsVal.handleException(
+                    partitionKeyRangeWrapperAsKey,
+                    failedRegionalRoutingContext,
+                    request.isReadOnlyRequest()));
+
+                if (isFailureThresholdBreached.get()) {
+
+                    UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts = request.isReadOnlyRequest() ?
+                        this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request.requestContext.getExcludeRegions()) :
+                        this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request.requestContext.getExcludeRegions());
+
+                    isFailoverPossible.set(
+                        partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableRegionalRoutingContexts));
+                }
+
+                this.publishSnapshot(request, partitionLevelLocationUnavailabilityInfoAsVal);
+                return partitionLevelLocationUnavailabilityInfoAsVal;
+            });
+
+            // set to true if and only if failure threshold exceeded for the region
+            // and if failover is possible
+            // a failover is only possible when there are available regions left to fail over to
+            if (isFailoverPossible.get()) {
+                return;
+            }
+
+            logger.warn("It is not possible to mark region " +
+                this.globalEndpointManager.getRegionName(
+                failedRegionalRoutingContext.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create) + " as Unavailable as " +
+                " all regions will be Unavailable in that case, will remove health status tracking for this partitionKeyRange : " +
+                resolvedPartitionKeyRangeForCircuitBreaker +
+                " and collectionResourceId : " +
+                collectionResourceId +
+                " and operationType: " +
+                request.getOperationType());
+
+            // no regions to fail over to
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.remove(partitionKeyRangeWrapper);
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
+        }
+    }
+
+    public void handleLocationSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
+
+        try {
+            checkNotNull(request, "Argument 'request' cannot be null!");
+            checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+
+            PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+            PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+
+            // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
+            // no reason to circuit break a partition key range which is effectively won't be used in the future
+            if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+                return;
+            }
+
+            checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
+
+            String resourceId = request.getResourceId();
+
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, resourceId);
+            RegionalRoutingContext succeededRegionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
+
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionKeyRangeToFailoverInfoAsVal) -> {
+
+                if (partitionKeyRangeToFailoverInfoAsVal == null) {
+                    partitionKeyRangeToFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+                }
+
+                partitionKeyRangeToFailoverInfoAsVal.handleSuccess(
+                    partitionKeyRangeWrapper,
+                    succeededRegionalRoutingContext,
+                    request.isReadOnlyRequest());
+
+                this.publishSnapshot(request, partitionKeyRangeToFailoverInfoAsVal);
+                return partitionKeyRangeToFailoverInfoAsVal;
+            });
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
+        }
+    }
+
+    public List<String> getUnavailableRegionsForPartitionKeyRange(
+        RxDocumentServiceRequest request,
+        String collectionResourceId,
+        PartitionKeyRange partitionKeyRange) {
+
+        try {
+            if (!this.isPerPartitionLevelCircuitBreakingApplicable(request)) {
+                return Collections.emptyList();
+            }
+
+            checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
+            checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
+
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId);
+
+            PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
+                this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+            List<String> unavailableRegions = new ArrayList<>();
+            this.publishSnapshot(request, partitionLevelLocationUnavailabilityInfoSnapshot);
+
+            if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
+                Map<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
+                    partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
+
+                PriorityQueue<RegionalRoutingContext> unavailableRoutingContexts = new PriorityQueue<>((endpoint1, endpoint2) -> {
+
+                    LocationSpecificHealthContext locationSpecificHealthContextForEndpoint1
+                        = locationEndpointToFailureMetricsForPartition.get(endpoint1);
+                    LocationSpecificHealthContext locationSpecificHealthContextForEndpoint2
+                        = locationEndpointToFailureMetricsForPartition.get(endpoint2);
+
+                    if (locationSpecificHealthContextForEndpoint1 == null || locationSpecificHealthContextForEndpoint2 == null) {
+                        return 0;
+                    }
+
+                    return locationSpecificHealthContextForEndpoint1.getUnavailableSince().compareTo(locationSpecificHealthContextForEndpoint2.getUnavailableSince());
+                });
+
+                for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+
+                    RegionalRoutingContext regionalRoutingContext = pair.getKey();
+                    LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
+
+                    if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                        unavailableRoutingContexts.add(regionalRoutingContext);
+                    }
+                }
+
+                while (!unavailableRoutingContexts.isEmpty()) {
+                    RegionalRoutingContext unavailableRegionalRoutingContext = unavailableRoutingContexts.poll();
+                    URI unavailableEndpoint = unavailableRegionalRoutingContext.getGatewayRegionalEndpoint();
+                    unavailableRegions.add(this.globalEndpointManager.getRegionName(unavailableEndpoint, request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create));
+                }
+            }
+
+            return UnmodifiableList.unmodifiableList(unavailableRegions);
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
+        }
+    }
+
+    private void publishSnapshot(
+        RxDocumentServiceRequest request,
+        PartitionLevelLocationUnavailabilityInfo info) {
+
+        request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+            .setPerPartitionCircuitBreakerInfoHolder(
+                info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext,
+                this.latestFailbackMessageByRegion);
+    }
+
+    private Flux<?> updateStaleLocationInfo() {
+        return Mono.just(1)
+            .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
+            .repeat(() -> !this.isClosed.get())
+            .doOnNext(ignore -> this.clearLatestFailbackMessagesIfNoBacklog())
+            .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()), 1, 1)
+            .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
+
+                logger.debug("Background updateStaleLocationInfo kicking in...");
+
+                try {
+                    PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
+
+                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
+
+                        List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
+
+                        for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+
+                            RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
+                            LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
+
+                            if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
+                                locationToLocationSpecificHealthContextList.add(
+                                    Pair.of(
+                                        partitionKeyRangeWrapper,
+                                        Pair.of(
+                                            locationWithStaleUnavailabilityInfo,
+                                            locationSpecificHealthContext)));
+                            }
+                        }
+
+                        if (locationToLocationSpecificHealthContextList.isEmpty()) {
+                            return Flux.empty();
+                        } else {
+                            return Flux.fromIterable(locationToLocationSpecificHealthContextList);
+                        }
+                    } else {
+                        return Mono.empty();
+                    }
+                } catch (Exception e) {
+                    this.logFailbackFailure(
+                        partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey(),
+                        null,
+                        "SCAN_UNAVAILABLE_PARTITIONS",
+                        e);
+                    return Flux.empty();
+                }
+            }, 1, 1)
+            .flatMap(locationToLocationSpecificHealthContextPair -> {
+
+                PartitionKeyRangeWrapper partitionKeyRangeWrapper = locationToLocationSpecificHealthContextPair.getLeft();
+                RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationSpecificHealthContextPair.getRight().getLeft();
+                PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo
+                    = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+                Instant failbackAttemptTime = Instant.now();
+
+                try {
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
+                        partitionLevelLocationUnavailabilityInfo.recordFailbackAttempt(
+                            locationWithStaleUnavailabilityInfo,
+                            failbackAttemptTime);
+
+                        GlobalAddressResolver globalAddressResolver = this.globalAddressResolverSnapshot.get();
+
+                        if (globalAddressResolver != null) {
+
+                            GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
+
+                            if (gatewayAddressCache != null) {
+
+                                return gatewayAddressCache
+                                    .submitOpenConnectionTasks(
+                                        partitionKeyRangeWrapper.getPartitionKeyRange(),
+                                        partitionKeyRangeWrapper.getCollectionResourceId(),
+                                        false)
+                                    .timeout(this.getPartitionRecoveryAttemptTimeout())
+                                    .onErrorResume(throwable -> this.shouldForceRefreshAddresses(throwable)
+                                        ? gatewayAddressCache
+                                            .submitOpenConnectionTasks(
+                                                partitionKeyRangeWrapper.getPartitionKeyRange(),
+                                                partitionKeyRangeWrapper.getCollectionResourceId(),
+                                                true)
+                                            .timeout(this.getPartitionRecoveryAttemptTimeout())
+                                        : Flux.error(throwable))
+                                    .doOnComplete(() -> {
+
+                                        logger.debug("Partition health recovery query for partitionKeyRange : " +
+                                            partitionKeyRangeWrapper.getPartitionKeyRange() +
+                                            " and collectionResourceId : "
+                                            + partitionKeyRangeWrapper.getCollectionResourceId() +
+                                            " has succeeded...");
+
+                                        partitionLevelLocationUnavailabilityInfo.recordFailbackSuccess(
+                                            partitionKeyRangeWrapper,
+                                            locationWithStaleUnavailabilityInfo,
+                                            failbackAttemptTime);
+                                    })
+                                    .onErrorResume(throwable -> {
+                                        partitionLevelLocationUnavailabilityInfo.recordFailbackFailure(
+                                            locationWithStaleUnavailabilityInfo,
+                                            failbackAttemptTime,
+                                            "OPEN_CONNECTION_TASK",
+                                            throwable);
+                                        this.logFailbackFailure(
+                                            partitionKeyRangeWrapper,
+                                            locationWithStaleUnavailabilityInfo,
+                                            "OPEN_CONNECTION_TASK",
+                                            throwable);
+                                        return Mono.empty();
+                                    });
+                            } else {
+                                IllegalStateException failure
+                                    = new IllegalStateException("GatewayAddressCache is not available.");
+                                partitionLevelLocationUnavailabilityInfo.recordFailbackFailure(
+                                    locationWithStaleUnavailabilityInfo,
+                                    failbackAttemptTime,
+                                    "RESOLVE_GATEWAY_ADDRESS_CACHE",
+                                    failure);
+                                this.logFailbackFailure(
+                                    partitionKeyRangeWrapper,
+                                    locationWithStaleUnavailabilityInfo,
+                                    "RESOLVE_GATEWAY_ADDRESS_CACHE",
+                                    failure);
+                            }
+                        } else {
+                            partitionLevelLocationUnavailabilityInfo.recordFailbackSuccess(
+                                partitionKeyRangeWrapper,
+                                locationWithStaleUnavailabilityInfo,
+                                failbackAttemptTime);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
+                        partitionLevelLocationUnavailabilityInfo.recordFailbackFailure(
+                            locationWithStaleUnavailabilityInfo,
+                            failbackAttemptTime,
+                            "RECOVERY_PIPELINE",
+                            e);
+                    }
+                    this.logFailbackFailure(
+                        partitionKeyRangeWrapper,
+                        locationWithStaleUnavailabilityInfo,
+                        "RECOVERY_PIPELINE",
+                        e);
+                    return Flux.empty();
+                }
+
+                return Flux.empty();
+            }, 1, 1)
+            .onErrorResume(throwable -> {
+                this.logFailbackFailure(null, null, "RECOVERY_STREAM", throwable);
+                return Flux.empty();
+            });
+    }
+
+    private Duration getPartitionRecoveryAttemptTimeout() {
+        return Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds());
+    }
+
+    private boolean shouldForceRefreshAddresses(Throwable throwable) {
+        return throwable instanceof TimeoutException
+            || throwable instanceof Exception
+            && WebExceptionUtility.isNetworkFailure((Exception) throwable);
+    }
+
+    void logFailbackFailure(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        RegionalRoutingContext regionalRoutingContext,
+        String stage,
+        Throwable throwable) {
+
+        String collectionResourceId = partitionKeyRangeWrapper == null
+            ? StringUtils.EMPTY
+            : partitionKeyRangeWrapper.getCollectionResourceId();
+        String partitionKeyRangeId = partitionKeyRangeWrapper == null
+            || partitionKeyRangeWrapper.getPartitionKeyRange() == null
+            ? StringUtils.EMPTY
+            : partitionKeyRangeWrapper.getPartitionKeyRange().getId();
+        String exceptionType = throwable == null
+            ? StringUtils.EMPTY
+            : throwable.getClass().getName();
+        String exceptionMessage = throwable == null || throwable.getMessage() == null
+            ? StringUtils.EMPTY
+            : throwable.getMessage();
+        String region = this.resolveRegionName(regionalRoutingContext);
+        String message = "PPCB failback failed: collectionResourceId="
+            + collectionResourceId
+            + ", partitionKeyRangeId="
+            + partitionKeyRangeId
+            + ", region="
+            + region
+            + ", stage="
+            + stage
+            + ", exceptionType="
+            + exceptionType
+            + ", exceptionMessage="
+            + exceptionMessage;
+
+        if (!StringUtils.isEmpty(region)) {
+            this.recordLatestFailbackMessage(region, exceptionMessage);
+        }
+        this.failbackLogger.warn(message, throwable);
+    }
+
+    private void recordLatestFailbackMessage(
+        String region,
+        String failureMessage) {
+
+        synchronized (this.latestFailbackMessageByRegionLock) {
+            Map<String, String> updatedMessages = new LinkedHashMap<>(this.latestFailbackMessageByRegion);
+            updatedMessages.put(region, failureMessage);
+            this.latestFailbackMessageByRegion = Collections.unmodifiableMap(updatedMessages);
+        }
+    }
+
+    private void clearLatestFailbackMessagesIfNoBacklog() {
+        synchronized (this.latestFailbackMessageByRegionLock) {
+            for (PartitionLevelLocationUnavailabilityInfo info
+                : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.values()) {
+
+                for (LocationSpecificHealthContext healthContext
+                    : info.locationEndpointToLocationSpecificContextForPartition.values()) {
+
+                    if (!healthContext.isRegionAvailableToProcessRequests()) {
+                        return;
+                    }
+                }
+            }
+
+            this.latestFailbackMessageByRegion = Collections.emptyMap();
+        }
+    }
+
+    Map<String, String> getLatestFailbackMessageByRegion() {
+        return this.latestFailbackMessageByRegion;
+    }
+
+    private String resolveRegionName(RegionalRoutingContext regionalRoutingContext) {
+        if (regionalRoutingContext == null) {
+            return StringUtils.EMPTY;
+        }
+
+        String region = this.regionalRoutingContextToRegion.get(regionalRoutingContext);
+        if (!StringUtils.isEmpty(region)) {
+            return region;
+        }
+
+        return this.globalEndpointManager.getRegionName(
+            regionalRoutingContext.getGatewayRegionalEndpoint(),
+            OperationType.Read);
+    }
+
+    public boolean isPerPartitionLevelCircuitBreakingApplicable(RxDocumentServiceRequest request) {
+
+        if (!this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
+            return false;
+        }
+
+        // could be a possible scenario when end-to-end timeout set on the operation is negative
+        // failing the operation with a NullPointerException would suppress the real issue in this case
+        // so when request is null - circuit breaking is effectively disabled
+        if (request == null) {
+            return false;
+        }
+
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
+
+        if (request.requestContext == null) {
+            return false;
+        }
+
+        GlobalEndpointManager globalEndpointManager = this.globalEndpointManager;
+
+        if (!globalEndpointManager.canUseMultipleWriteLocations(request)) {
+
+            if (!request.isReadOnlyRequest()) {
+                return false;
+            }
+
+            UnmodifiableList<RegionalRoutingContext> applicableReadEndpoints = globalEndpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList());
+
+            return applicableReadEndpoints != null && applicableReadEndpoints.size() > 1;
+        }
+
+        UnmodifiableList<RegionalRoutingContext> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteRegionalRoutingContexts(Collections.emptyList());
+
+        return applicableWriteEndpoints != null && applicableWriteEndpoints.size() > 1;
+    }
+
+    public void setGlobalAddressResolver(GlobalAddressResolver globalAddressResolver) {
+        this.globalAddressResolverSnapshot.set(globalAddressResolver);
+    }
+
+    @Override
+    public void close() {
+        this.isClosed.set(true);
+        Disposable disposable = this.partitionRecoveryDisposable.getAndSet(null);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
+
+    private class PartitionLevelLocationUnavailabilityInfo {
+
+        private final ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
+        private final ConcurrentHashMap<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext;
+        private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
+
+        private PartitionLevelLocationUnavailabilityInfo() {
+            this.locationEndpointToLocationSpecificContextForPartition = new ConcurrentHashMap<>();
+            this.regionToLocationSpecificHealthContext = new ConcurrentHashMap<>();
+            this.locationSpecificHealthContextTransitionHandler = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationSpecificHealthContextTransitionHandler;
+        }
+
+        private boolean handleException(
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+            RegionalRoutingContext regionalRoutingContextWithAnException,
+            boolean isReadOnlyRequest) {
+
+            AtomicBoolean isExceptionThresholdBreached = new AtomicBoolean(false);
+
+            this.locationEndpointToLocationSpecificContextForPartition.compute(regionalRoutingContextWithAnException, (regionalRoutingContextAsKey, locationSpecificContextAsVal) -> {
+
+                if (locationSpecificContextAsVal == null) {
+
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(0)
+                        .withExceptionCountForWriteForCircuitBreaking(0)
+                        .withSuccessCountForReadForRecovery(0)
+                        .withExceptionCountForReadForCircuitBreaking(0)
+                        .withUnavailableSince(Instant.MAX)
+                        .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
+                        .withExceptionThresholdBreached(false)
+                        .build();
+                }
+
+                LocationSpecificHealthContext locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleException(
+                    locationSpecificContextAsVal,
+                    partitionKeyRangeWrapper,
+                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.getOrDefault(regionalRoutingContextWithAnException, StringUtils.EMPTY),
+                    isReadOnlyRequest);
+
+
+                if (GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(regionalRoutingContextAsKey) == null) {
+
+                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.put(
+                        regionalRoutingContextAsKey,
+                        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                            .this.globalEndpointManager
+                            .getRegionName(regionalRoutingContextAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                }
+
+                String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(regionalRoutingContextAsKey);
+                this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+
+                isExceptionThresholdBreached.set(locationSpecificHealthContextAfterTransition.isExceptionThresholdBreached());
+                return locationSpecificHealthContextAfterTransition;
+            });
+
+            return isExceptionThresholdBreached.get();
+        }
+
+        private void handleSuccess(
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+            RegionalRoutingContext succeededLocation,
+            boolean isReadOnlyRequest) {
+
+            this.locationEndpointToLocationSpecificContextForPartition.compute(succeededLocation, (locationAsKey, locationSpecificContextAsVal) -> {
+
+                LocationSpecificHealthContext locationSpecificHealthContextAfterTransition;
+
+                if (locationSpecificContextAsVal == null) {
+
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(0)
+                        .withExceptionCountForWriteForCircuitBreaking(0)
+                        .withSuccessCountForReadForRecovery(0)
+                        .withExceptionCountForReadForCircuitBreaking(0)
+                        .withUnavailableSince(Instant.MAX)
+                        .withLocationHealthStatus(LocationHealthStatus.Healthy)
+                        .withExceptionThresholdBreached(false)
+                        .build();
+                }
+
+                locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
+                    locationSpecificContextAsVal,
+                    partitionKeyRangeWrapper,
+                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.getOrDefault(succeededLocation, StringUtils.EMPTY),
+                    false,
+                    isReadOnlyRequest);
+
+                // used only for building diagnostics - so creating a lookup for URI and region name
+
+                if (GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(locationAsKey) == null) {
+                    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.put(
+                        locationAsKey,
+                        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                            .this.globalEndpointManager
+                            .getRegionName(locationAsKey.getGatewayRegionalEndpoint(), isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                }
+
+                String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(locationAsKey);
+                this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+
+                return locationSpecificHealthContextAfterTransition;
+            });
+        }
+
+        private void recordFailbackAttempt(
+            RegionalRoutingContext regionalRoutingContext,
+            Instant attemptTime) {
+
+            this.updateFailbackDiagnostics(
+                regionalRoutingContext,
+                attemptTime,
+                LocationSpecificHealthContext.FailbackOutcome.Attempting,
+                null,
+                null);
+        }
+
+        private void recordFailbackSuccess(
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+            RegionalRoutingContext regionalRoutingContext,
+            Instant attemptTime) {
+
+            this.locationEndpointToLocationSpecificContextForPartition.computeIfPresent(
+                regionalRoutingContext,
+                (routingContext, healthContext) -> {
+                    LocationSpecificHealthContext updatedContext
+                        = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
+                            healthContext,
+                            partitionKeyRangeWrapper,
+                            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this
+                                .regionalRoutingContextToRegion.getOrDefault(routingContext, StringUtils.EMPTY),
+                            false,
+                            true)
+                        .withFailbackAttempt(
+                            attemptTime,
+                            LocationSpecificHealthContext.FailbackOutcome.Succeeded,
+                            null,
+                            null);
+                    this.updateRegionDiagnostics(routingContext, updatedContext);
+                    return updatedContext;
+                });
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this
+                .clearLatestFailbackMessagesIfNoBacklog();
+        }
+
+        private void recordFailbackFailure(
+            RegionalRoutingContext regionalRoutingContext,
+            Instant attemptTime,
+            String failureStage,
+            Throwable failure) {
+
+            this.updateFailbackDiagnostics(
+                regionalRoutingContext,
+                attemptTime,
+                LocationSpecificHealthContext.FailbackOutcome.Failed,
+                failureStage,
+                failure);
+        }
+
+        private void updateFailbackDiagnostics(
+            RegionalRoutingContext regionalRoutingContext,
+            Instant attemptTime,
+            LocationSpecificHealthContext.FailbackOutcome outcome,
+            String failureStage,
+            Throwable failure) {
+
+            this.locationEndpointToLocationSpecificContextForPartition.computeIfPresent(
+                regionalRoutingContext,
+                (routingContext, healthContext) -> {
+                    LocationSpecificHealthContext updatedContext = healthContext.withFailbackAttempt(
+                        attemptTime,
+                        outcome,
+                        failureStage,
+                        failure);
+                    this.updateRegionDiagnostics(routingContext, updatedContext);
+                    return updatedContext;
+                });
+        }
+
+        private void updateRegionDiagnostics(
+            RegionalRoutingContext regionalRoutingContext,
+            LocationSpecificHealthContext healthContext) {
+
+            String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this
+                .regionalRoutingContextToRegion.getOrDefault(regionalRoutingContext, StringUtils.EMPTY);
+            this.regionToLocationSpecificHealthContext.put(region, healthContext);
+        }
+
+        public boolean areLocationsAvailableForPartitionKeyRange(List<RegionalRoutingContext> availableLocationsAtAccountLevel) {
+
+            for (RegionalRoutingContext availableLocation : availableLocationsAtAccountLevel) {
+                if (!this.locationEndpointToLocationSpecificContextForPartition.containsKey(availableLocation)) {
+                    return true;
+                } else {
+                    LocationSpecificHealthContext locationSpecificHealthContextSnapshot = this.locationEndpointToLocationSpecificContextForPartition.get(availableLocation);
+
+                    if (locationSpecificHealthContextSnapshot.isRegionAvailableToProcessRequests()) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public ConsecutiveExceptionBasedCircuitBreaker getConsecutiveExceptionBasedCircuitBreaker() {
+        return this.consecutiveExceptionBasedCircuitBreaker;
+    }
+
+    public PartitionLevelCircuitBreakerConfig getCircuitBreakerConfig() {
+        return this.consecutiveExceptionBasedCircuitBreaker.getPartitionLevelCircuitBreakerConfig();
+    }
+
+    public synchronized void resetCircuitBreakerConfig(PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig) {
+        this.consecutiveExceptionBasedCircuitBreaker
+            = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
+
+        this.locationSpecificHealthContextTransitionHandler
+            = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
+
+        this.clear();
+    }
+
+    private void clear() {
+        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.clear();
+        this.regionalRoutingContextToRegion.clear();
+    }
+
+    private static CosmosException wrapAsCosmosException(RxDocumentServiceRequest request, Exception innerException) {
+        CosmosDiagnostics cosmosDiagnostics = null;
+        String resourceAddress = null;
+
+        if (request != null) {
+
+            if (request.requestContext != null) {
+                cosmosDiagnostics = request.requestContext.cosmosDiagnostics;
+                resourceAddress = request.requestContext.resourcePhysicalAddress != null
+                    ? request.requestContext.resourcePhysicalAddress
+                    : "N/A";
+            }
+        }
+
+        CosmosException cosmosException = BridgeInternal.createCosmosException(
+            BASE_EXCEPTION_MESSAGE + innerException.getMessage(),
+            innerException,
+            EMPTY_MAP,
+            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            resourceAddress);
+
+        cosmosException = BridgeInternal.setCosmosDiagnostics(cosmosException, cosmosDiagnostics);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PPCB_INVALID_STATE);
+
+        throw cosmosException;
+    }
+}

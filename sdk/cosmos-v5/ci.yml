@@ -1,0 +1,42 @@
+# Feature-branch validation only. No release, signing or remote Maven deployment.
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - feature/cosmos/vnext
+  paths:
+    include:
+      - sdk/cosmos-v5/
+      - sdk/core-v2/azure-core/
+      - sdk/clientcore/core/
+      - sdk/parents/
+      - eng/versioning/
+      - eng/lintingconfigs/
+      - eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+      - eng/pipelines/templates/stages/1es-redirect.yml
+      - pom.xml
+
+pr:
+  branches:
+    include:
+      - feature/cosmos/vnext
+  paths:
+    include:
+      - sdk/cosmos-v5/
+      - sdk/core-v2/azure-core/
+      - sdk/clientcore/core/
+      - sdk/parents/
+      - eng/versioning/
+      - eng/lintingconfigs/
+      - eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+      - eng/pipelines/templates/stages/1es-redirect.yml
+      - pom.xml
+
+extends:
+  template: /eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+  parameters:
+    ServiceDirectory: cosmos-v5
+    SDKType: client
+    # Do not register a second com.azure:azure-cosmos with shared package/release tooling.
+    Artifacts: []
+    AdditionalModules: []

@@ -30,7 +30,7 @@ extends:
                   outputs:
                     - output: pipelineArtifact
                       artifactName: foundation-validation-java${{ javaVersion }}
-                      targetPath: $(Build.SourcesDirectory)/sdk/cosmos/azure-cosmos/target
+                      targetPath: $(Build.SourcesDirectory)/sdk/cosmos-v5/azure-cosmos/target
                       condition: succeededOrFailed()
                       isProduction: false
                       sbomEnabled: false
@@ -42,14 +42,14 @@ extends:
                       jdkArchitectureOption: x64
                       jdkSourceOption: PreInstalled
                   - script: |
-                      python3 sdk/cosmos/azure-cosmos/verify-foundation.py --maven-repository "$(Agent.TempDirectory)/cosmos-foundation-java${{ javaVersion }}-$(Build.BuildId)-$(System.JobAttempt)"
+                      python3 sdk/cosmos-v5/azure-cosmos/verify-foundation.py --maven-repository "$(Agent.TempDirectory)/cosmos-foundation-java${{ javaVersion }}-$(Build.BuildId)-$(System.JobAttempt)"
                     displayName: Cold reactor bootstrap and foundation verification
                     workingDirectory: $(Build.SourcesDirectory)
                   - task: PublishTestResults@2
                     condition: succeededOrFailed()
                     inputs:
                       testResultsFormat: JUnit
-                      testResultsFiles: sdk/cosmos/azure-cosmos/target/surefire-reports/TEST-*.xml
+                      testResultsFiles: sdk/cosmos-v5/azure-cosmos/target/surefire-reports/TEST-*.xml
                       failTaskOnFailedTests: true
                       failTaskOnMissingResultsFile: true
                       testRunTitle: Cosmos v5 foundation - Java ${{ javaVersion }}
