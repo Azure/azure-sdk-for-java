@@ -167,9 +167,9 @@ public final class RequestRetryOptions {
      * Gets the maximum time allowed for a request until it is considered timed out.
      * This timeout applies to each attempt for both synchronous and asynchronous clients and excludes retry delays.
      * It does not limit the total duration of an operation across all attempts.
-     * Synchronous requests with multiple attempts and a finite timeout buffer non-file request bodies before the first
-     * attempt so that a timed-out attempt cannot interfere with a retry's body reader. File-backed bodies stream from
-     * independent readers.
+     * Synchronous requests with a finite timeout and multiple attempts buffer bodies that cannot supply independent
+     * readers. Buffering has its own timeout equal to the attempt timeout. If buffering times out, the request fails
+     * before sending.
      * Timed synchronous attempts use a process-wide worker pool. Set the positive integer configuration
      * {@code AZURE_STORAGE_SYNC_ATTEMPT_MAX_THREADS} before the first timed request to override the default of
      * ten workers per available processor. If all workers are occupied, an attempt fails immediately with

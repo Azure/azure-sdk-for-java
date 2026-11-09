@@ -45,6 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -241,7 +242,19 @@ public class RequestRetryPolicyTest {
         Path file = directory.resolve("request.bin");
         byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
         Files.write(file, payload);
-        BinaryData body = BinaryData.fromFile(file);
+        assertTimedSyncRetriesKeepBody(BinaryData.fromFile(file));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void timedSyncRetriesKeepInMemoryBody(boolean bufferList) {
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        assertTimedSyncRetriesKeepBody(bufferList
+            ? BinaryData.fromListByteBuffer(Collections.singletonList(ByteBuffer.wrap(payload)))
+            : BinaryData.fromBytes(payload));
+    }
+
+    private static void assertTimedSyncRetriesKeepBody(BinaryData body) {
         AtomicInteger attempts = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null)))
@@ -338,6 +351,60 @@ public class RequestRetryPolicyTest {
             release.countDown();
             executor.shutdownNow();
         }
+    }
+
+    @Test
+    public void timedSyncBodyPreparationTimesOutBeforeSending() {
+        CountDownLatch release = new CountDownLatch(1);
+        AtomicBoolean readStarted = new AtomicBoolean();
+        AtomicInteger sends = new AtomicInteger();
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1 }) {
+            @Override
+            public synchronized int read(byte[] bytes, int offset, int length) {
+                readStarted.set(true);
+                awaitIgnoringInterrupts(release);
+                return super.read(bytes, offset, length);
+            }
+        }, 1L);
+        Assertions.assertTrue(body.isReplayable());
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    return new MockHttpResponse(request, 200);
+                }
+            }).build();
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(4), () -> {
+                HttpRequest request = new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body);
+                RuntimeException error
+                    = Assertions.assertThrows(RuntimeException.class, () -> pipeline.sendSync(request, Context.NONE));
+                Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+                Assertions.assertTrue(readStarted.get());
+                assertEquals(0, sends.get());
+            });
+        } finally {
+            release.countDown();
+        }
+    }
+
+    @Test
+    public void timedSyncAttemptPropagatesFatalErrorWithoutRetrying() {
+        LinkageError failure = new LinkageError("transport linkage failure");
+        AtomicInteger sends = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    throw failure;
+                }
+            }).build();
+        Assertions.assertSame(failure, Assertions.assertThrows(LinkageError.class, () -> sendRequestSync(pipeline)));
+        assertEquals(1, sends.get());
     }
 
     @Test

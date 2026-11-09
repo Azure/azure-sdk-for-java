@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.61.0` to version `1.62.0-beta.1` for synchronous request timeout support.
+
 ## 12.0.0-beta.42 (2026-11-05)
 
 ### Features Added

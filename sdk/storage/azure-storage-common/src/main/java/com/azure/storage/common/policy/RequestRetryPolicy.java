@@ -12,8 +12,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.ListByteBufferContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Contexts;
@@ -38,6 +44,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 /**
  * This is a request policy in an {@link com.azure.core.http.HttpPipeline} for retrying a given HTTP request. The
@@ -99,11 +106,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
         if (requestRetryOptions.getMaxTries() > 1 && originalRequestBody != null) {
             if (requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
-                // Replayable streams can still share a reader. Buffer before scheduling potentially overlapping tries.
-                if (!(BinaryDataHelper.getContent(originalRequestBody) instanceof FileContent)) {
-                    originalHttpRequest.setBody(BinaryData
+                // Mark/reset streams can share a reader even when replayable. Publish only a completed snapshot.
+                if (!hasIndependentBodyReaders(originalRequestBody)) {
+                    originalHttpRequest.setBody(submitTimedSyncWork(() -> BinaryData
                         .fromFlux(originalRequestBody.toFluxByteBuffer(), originalRequestBody.getLength(), true)
-                        .block());
+                        .block()).block());
                 }
             } else if (!originalRequestBody.isReplayable()) {
                 originalHttpRequest.setBody(originalRequestBody.toReplayableBinaryData());
@@ -111,6 +118,41 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         }
 
         return this.attemptSync(context, next, originalHttpRequest, considerSecondary, 1, 1, null);
+    }
+
+    private static boolean hasIndependentBodyReaders(BinaryData body) {
+        BinaryDataContent content = BinaryDataHelper.getContent(body);
+        return content instanceof FileContent
+            || content instanceof ByteArrayContent
+            || content instanceof ByteBufferContent
+            || content instanceof ListByteBufferContent
+            || content instanceof StringContent
+            || (content instanceof FluxByteBufferContent && content.isReplayable());
+    }
+
+    private <T> Mono<T> submitTimedSyncWork(Supplier<T> operation) {
+        return Mono.<T>create(sink -> {
+            ThreadPoolExecutor executor
+                = syncAttemptExecutor == null ? SyncAttemptExecutor.INSTANCE : syncAttemptExecutor;
+            FutureTask<Void> task = new FutureTask<>(() -> {
+                try {
+                    sink.success(operation.get());
+                } catch (Throwable error) {
+                    // FutureTask captures a rethrown error. Signal it before letting the worker terminate.
+                    sink.error(error);
+                    Exceptions.throwIfFatal(error);
+                }
+            }, null);
+            sink.onCancel(() -> task.cancel(true));
+            try {
+                executor.execute(task);
+            } catch (RejectedExecutionException e) {
+                // Fail at admission. Retrying immediately would add load to an already saturated executor.
+                sink.error(new RejectedExecutionException("No synchronous Storage attempt worker is available. "
+                    + "The worker limit is " + executor.getMaximumPoolSize() + " (" + SYNC_ATTEMPT_MAX_THREADS + ").",
+                    e));
+            }
+        }).timeout(requestRetryOptions.getTryTimeoutDuration());
     }
 
     @Override
@@ -313,30 +355,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     = next.clone(context.getHttpRequest().copy(), context.getContext());
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
                 // A sink discards responses returned after cancellation, including when the transport ignores interruption.
-                httpResponseMono = Mono.<HttpResponse>create(sink -> {
-                    ThreadPoolExecutor executor
-                        = syncAttemptExecutor == null ? SyncAttemptExecutor.INSTANCE : syncAttemptExecutor;
-                    FutureTask<Void> task = new FutureTask<>(() -> {
-                        try {
-                            sink.success(attemptNext.processSync());
-                        } catch (Throwable error) {
-                            Exceptions.throwIfFatal(error);
-                            sink.error(error);
-                        }
-                    }, null);
-                    sink.onCancel(() -> task.cancel(true));
-                    try {
-                        executor.execute(task);
-                    } catch (RejectedExecutionException e) {
-                        // Fail at admission. Retrying immediately would add load to an already saturated executor.
-                        sink.error(new RejectedExecutionException(
-                            "No synchronous Storage attempt worker is available. " + "The worker limit is "
-                                + executor.getMaximumPoolSize() + " (" + SYNC_ATTEMPT_MAX_THREADS + ").",
-                            e));
-                    }
-                })
-                    .timeout(this.requestRetryOptions.getTryTimeoutDuration())
-                    .doOnDiscard(HttpResponse.class, HttpResponse::close);
+                httpResponseMono = submitTimedSyncWork(attemptNext::processSync).doOnDiscard(HttpResponse.class,
+                    HttpResponse::close);
             }
 
             HttpResponse response = httpResponseMono.block();
