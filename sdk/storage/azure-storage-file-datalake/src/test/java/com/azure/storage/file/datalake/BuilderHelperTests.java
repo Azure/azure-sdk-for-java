@@ -69,9 +69,10 @@ public class BuilderHelperTests {
         = CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    private static final String UA_PATTERN
-        = "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/"
-            + CLIENT_VERSION + " " + "(.)*";
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
+    private static final String UA_PATTERN = "azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+        + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setHeader(HttpHeaderName.CONTENT_LENGTH, "0")
