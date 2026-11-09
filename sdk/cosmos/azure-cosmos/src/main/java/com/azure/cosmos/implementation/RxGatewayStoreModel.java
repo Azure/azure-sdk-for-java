@@ -1205,24 +1205,23 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
             if (request.useThinClientMode
                 && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
-                && !StringUtils.isEmpty(request.requestContext.resolvedCollectionRid)) {
+                && !StringUtils.isEmpty(request.requestContext.resolvedCollectionRid)
+                && StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
                 // Keep the intended RID aligned with the token prepared for this request.
-                return Mono.fromRunnable(() -> setIntendedCollectionRidHeader(request));
+                return Mono.fromRunnable(() -> request.getHeaders().put(
+                    INTENDED_COLLECTION_RID_HEADER, request.requestContext.resolvedCollectionRid));
             }
             return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
-                setIntendedCollectionRidHeader(request);
+                if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
+                        request.requestContext.resolvedCollectionRid);
+                } else {
+                    request.intendedCollectionRidPassedIntoSDK = true;
+                }
                 return Mono.empty();
             });
         }
         return Mono.empty();
-    }
-
-    private void setIntendedCollectionRidHeader(RxDocumentServiceRequest request) {
-        if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
-            request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER, request.requestContext.resolvedCollectionRid);
-        } else {
-            request.intendedCollectionRidPassedIntoSDK = true;
-        }
     }
 
     protected Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeId(RxDocumentServiceRequest request) {
@@ -1323,20 +1322,41 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!shouldApplySessionToken(request)) {
-            if (!Strings.isNullOrEmpty(headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (request.useThinClientMode
+            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            if (!shouldApplySessionToken(request)) {
                 headers.remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
             return Mono.empty();
         }
 
-        if (request.useThinClientMode
-            && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
-            // The operation layer has already prepared this token, including intentional omission.
+        // Master resource operations don't require session token.
+        if (isMasterOperation(request.getResourceType(), request.getOperationType())) {
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
             return Mono.empty();
         }
-        if (!Strings.isNullOrEmpty(headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+
+        // Determine if the effective consistency is Session — needed to decide whether to
+        // attach/remove session tokens. This is a pure read with no side-effects; it does NOT
+        // call RequestHelper.getReadConsistencyStrategyToUse() which mutates x-ms-consistency-level
+        // (a Direct-mode telemetry concern that is harmful in Gateway mode).
+        boolean sessionConsistency = isEffectiveSessionConsistency(request);
+
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (!sessionConsistency ||
+                (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
             return Mono.empty(); //User is explicitly controlling the session.
+        }
+
+        if (!sessionConsistency ||
+            (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+            return Mono.empty();
+            // Only apply the session token in case of session consistency and if request is read only,
+            // apply token for write request only if batch operation or multi master
         }
 
         if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
