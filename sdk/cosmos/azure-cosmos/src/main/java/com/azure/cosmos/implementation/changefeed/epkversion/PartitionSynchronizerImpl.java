@@ -164,9 +164,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     .collect(Collectors.toList());
 
                 return Flux.fromIterable(partitionKeyRanges)
-                    .filter(pkRange -> !isCoveredByLeases(pkRange, leaseRanges))
-                    .flatMap(pkRange -> {
-                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                    .concatMapIterable(pkRange -> getUncoveredRanges(pkRange, leaseRanges))
+                    .flatMap(range -> {
+                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(range);
                         logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
                         return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
                             .doOnNext(lease -> logger.info("Added new lease document for feed range {}", lease.getLeaseToken()));
@@ -174,21 +174,30 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             });
     }
 
-    private static boolean isCoveredByLeases(PartitionKeyRange partition, List<Range<String>> sortedLeaseRanges) {
-        // EPK ranges are half-open. Extend coverage through overlapping or adjacent leases until a gap is found.
-        String coveredThrough = partition.getMinInclusive();
+    private static List<Range<String>> getUncoveredRanges(
+        PartitionKeyRange partition, List<Range<String>> sortedLeaseRanges) {
+
+        List<Range<String>> uncoveredRanges = new ArrayList<>();
+        String cursor = partition.getMinInclusive();
+        String partitionEnd = partition.getMaxExclusive();
         for (Range<String> leaseRange : sortedLeaseRanges) {
-            if (leaseRange.getMin().compareTo(coveredThrough) > 0) {
-                return false;
+            if (leaseRange.getMin().compareTo(partitionEnd) >= 0) {
+                break;
             }
-            if (leaseRange.getMax().compareTo(coveredThrough) > 0) {
-                coveredThrough = leaseRange.getMax();
-                if (coveredThrough.compareTo(partition.getMaxExclusive()) >= 0) {
-                    return true;
+            if (leaseRange.getMin().compareTo(cursor) > 0) {
+                uncoveredRanges.add(new Range<>(cursor, leaseRange.getMin(), true, false));
+            }
+            if (leaseRange.getMax().compareTo(cursor) > 0) {
+                cursor = leaseRange.getMax();
+                if (cursor.compareTo(partitionEnd) >= 0) {
+                    return uncoveredRanges;
                 }
             }
         }
-        return false;
+        if (cursor.compareTo(partitionEnd) < 0) {
+            uncoveredRanges.add(new Range<>(cursor, partitionEnd, true, false));
+        }
+        return uncoveredRanges;
     }
 
     /***
