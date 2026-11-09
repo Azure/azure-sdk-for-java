@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.42-private (2026-11-09)
+## 12.0.0-private.42 (2026-11-09)
 
 ### Features Added
 - Provides a private general availability (GA) release of the STG105 features.

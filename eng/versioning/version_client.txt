@@ -182,9 +182,9 @@ com.azure.v2:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure.v2:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-blob;12.37.2;12.38.0-private
 com.azure:azure-storage-blob-batch;12.33.2;12.34.0-private
-com.azure:azure-storage-blob-changefeed;12.0.0-beta.40;12.0.0-beta.42-private
+com.azure:azure-storage-blob-changefeed;12.0.0-beta.40;12.0.0-private.42
 com.azure:azure-storage-blob-cryptography;12.36.2;12.37.0-private
-com.azure:azure-storage-blob-nio;12.0.0-beta.41;12.0.0-beta.43-private
+com.azure:azure-storage-blob-nio;12.0.0-beta.41;12.0.0-private.43
 com.azure:azure-storage-common;12.36.2;12.37.0-private
 com.azure:azure-storage-file-share;12.33.2;12.34.0-private
 com.azure:azure-storage-file-datalake;12.30.2;12.31.0-private
