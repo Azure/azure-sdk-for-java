@@ -48,6 +48,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -291,6 +293,50 @@ public class RequestRetryPolicyTest {
             } else {
                 shared.setExecutorService(previous);
             }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 2, 3 })
+    public void timedSyncAttemptAfterStalledWorkers(int workerLimit) {
+        ThreadPoolExecutor executor = RequestRetryPolicy.createSyncAttemptExecutor(workerLimit);
+        CountDownLatch release = new CountDownLatch(1);
+        AtomicInteger sends = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 1, 1, 1L, 1L, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options, executor))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    if ("stalled".equals(request.getUrl().getHost())) {
+                        awaitIgnoringInterrupts(release);
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+        try {
+            for (int i = 0; i < 2; i++) {
+                RuntimeException error = Assertions.assertThrows(RuntimeException.class,
+                    () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://stalled/"), Context.NONE));
+                Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+            }
+            assertEquals(2, sends.get());
+            HttpRequest healthy = new HttpRequest(HttpMethod.GET, "http://healthy/");
+            if (workerLimit == 2) {
+                RejectedExecutionException error = Assertions.assertThrows(RejectedExecutionException.class,
+                    () -> pipeline.sendSync(healthy, Context.NONE));
+                Assertions.assertTrue(error.getMessage().contains("The worker limit is 2"));
+                assertEquals(2, sends.get());
+            } else {
+                try (HttpResponse response = pipeline.sendSync(healthy, Context.NONE)) {
+                    assertEquals(200, response.getStatusCode());
+                }
+                assertEquals(3, sends.get());
+            }
+        } finally {
+            release.countDown();
+            executor.shutdownNow();
         }
     }
 

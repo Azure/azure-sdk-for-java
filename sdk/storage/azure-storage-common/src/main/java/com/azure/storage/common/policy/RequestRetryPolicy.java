@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
@@ -29,8 +30,9 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -44,26 +46,27 @@ import java.util.concurrent.atomic.AtomicInteger;
  * backoff are supported. The policy must only be used directly when creating a custom pipeline.
  */
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
+    private static final String SYNC_ATTEMPT_MAX_THREADS = "AZURE_STORAGE_SYNC_ATTEMPT_MAX_THREADS";
+
     // Initialize only for finite timeouts. Daemon threads retire after an idle minute.
     private static final class SyncAttemptExecutor {
-        private static final ThreadPoolExecutor INSTANCE = createExecutor();
+        private static final ThreadPoolExecutor INSTANCE
+            = createSyncAttemptExecutor(Math.max(1, Configuration.getGlobalConfiguration()
+                .get(SYNC_ATTEMPT_MAX_THREADS, 10 * Runtime.getRuntime().availableProcessors())));
+    }
 
-        private static ThreadPoolExecutor createExecutor() {
-            int threads = Math.max(2, Runtime.getRuntime().availableProcessors());
-            AtomicInteger threadNumber = new AtomicInteger();
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(threads, threads, 60, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(256), task -> {
-                    Thread thread = new Thread(task, "azure-storage-sync-attempt-" + threadNumber.incrementAndGet());
-                    thread.setDaemon(true);
-                    return thread;
-                });
-            executor.allowCoreThreadTimeOut(true);
-            return executor;
-        }
+    static ThreadPoolExecutor createSyncAttemptExecutor(int maxThreads) {
+        AtomicInteger threadNumber = new AtomicInteger();
+        return new ThreadPoolExecutor(0, maxThreads, 60, TimeUnit.SECONDS, new SynchronousQueue<>(), task -> {
+            Thread thread = new Thread(task, "azure-storage-sync-attempt-" + threadNumber.incrementAndGet());
+            thread.setDaemon(true);
+            return thread;
+        });
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
+    private final ThreadPoolExecutor syncAttemptExecutor;
     private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE
         = HttpHeaderName.fromString("x-ms-copy-source-error-code");
     private static final HttpHeaderName X_MS_COPY_SOURCE_STATUS_CODE
@@ -75,7 +78,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @param requestRetryOptions Retry options for the policy.
      */
     public RequestRetryPolicy(RequestRetryOptions requestRetryOptions) {
+        this(requestRetryOptions, null);
+    }
+
+    RequestRetryPolicy(RequestRetryOptions requestRetryOptions, ThreadPoolExecutor syncAttemptExecutor) {
         this.requestRetryOptions = requestRetryOptions;
+        this.syncAttemptExecutor = syncAttemptExecutor;
     }
 
     @Override
@@ -306,7 +314,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
                 // A sink discards responses returned after cancellation, including when the transport ignores interruption.
                 httpResponseMono = Mono.<HttpResponse>create(sink -> {
-                    ThreadPoolExecutor executor = SyncAttemptExecutor.INSTANCE;
+                    ThreadPoolExecutor executor
+                        = syncAttemptExecutor == null ? SyncAttemptExecutor.INSTANCE : syncAttemptExecutor;
                     FutureTask<Void> task = new FutureTask<>(() -> {
                         try {
                             sink.success(attemptNext.processSync());
@@ -315,11 +324,16 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                             sink.error(error);
                         }
                     }, null);
-                    executor.execute(task);
-                    sink.onCancel(() -> {
-                        task.cancel(true);
-                        executor.remove(task);
-                    });
+                    sink.onCancel(() -> task.cancel(true));
+                    try {
+                        executor.execute(task);
+                    } catch (RejectedExecutionException e) {
+                        // Fail at admission. Retrying immediately would add load to an already saturated executor.
+                        sink.error(new RejectedExecutionException(
+                            "No synchronous Storage attempt worker is available. " + "The worker limit is "
+                                + executor.getMaximumPoolSize() + " (" + SYNC_ATTEMPT_MAX_THREADS + ").",
+                            e));
+                    }
                 })
                     .timeout(this.requestRetryOptions.getTryTimeoutDuration())
                     .doOnDiscard(HttpResponse.class, HttpResponse::close);

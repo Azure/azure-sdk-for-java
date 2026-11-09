@@ -170,6 +170,10 @@ public final class RequestRetryOptions {
      * Synchronous requests with multiple attempts and a finite timeout buffer non-file request bodies before the first
      * attempt so that a timed-out attempt cannot interfere with a retry's body reader. File-backed bodies stream from
      * independent readers.
+     * Timed synchronous attempts use a process-wide worker pool. Set the positive integer configuration
+     * {@code AZURE_STORAGE_SYNC_ATTEMPT_MAX_THREADS} before the first timed request to override the default of
+     * ten workers per available processor. If all workers are occupied, an attempt fails immediately with
+     * {@link java.util.concurrent.RejectedExecutionException} without retrying.
      *
      * @return the maximum time allowed for a request until it is considered timed out.
      */
