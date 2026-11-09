@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -210,9 +211,10 @@ public class ParallelDocumentQueryExecutionContext<T>
         }
     }
 
-    private static class EmptyPagesFilterTransformer<T>
+    static class EmptyPagesFilterTransformer<T>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
+        private final List<FeedRangeEpkImpl> feedRanges;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private final UUID correlatedActivityId;
@@ -228,8 +230,10 @@ public class ParallelDocumentQueryExecutionContext<T>
             RequestChargeTracker tracker,
             CosmosQueryRequestOptions options,
             UUID correlatedActivityId,
-            Supplier<String> operationContextTextProvider) {
+            Supplier<String> operationContextTextProvider,
+            List<FeedRangeEpkImpl> feedRanges) {
 
+            this.feedRanges = feedRanges;
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
             }
@@ -314,7 +318,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         public Flux<FeedResponse<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             // Emit an empty page so the downstream observables know when there are no more
             // results.
-            return source.filter(documentProducerFeedResponse -> {
+            Flux<DocumentProducer<T>.DocumentProducerFeedResponse> pages = source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
                         && !qryOptAccessor().getAllowEmptyPages(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
@@ -351,55 +355,80 @@ public class ParallelDocumentQueryExecutionContext<T>
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
                 if (charge > 0) {
-                    return new ValueHolder<>(plusCharge(documentProducerFeedResponse,
-                            charge));
+                    return plusCharge(documentProducerFeedResponse, charge);
                 } else {
-                    return new ValueHolder<>(documentProducerFeedResponse);
+                    return documentProducerFeedResponse;
                 }
-            }).concatWith(Flux.just(new ValueHolder<>(null))).map(heldValue -> {
-                DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse = heldValue.v;
-                // CREATE pairs from the stream to allow the observables downstream to "peek"
-                // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
+            });
+
+            if (feedRanges != null) {
+                pages = pages.map(current -> {
+                    String token = current.pageResult.getContinuationToken();
+                    if (token != null) {
+                        return addCompositeContinuationToken(current,
+                            new CompositeContinuationToken(token, current.sourceFeedRange.getRange()).toJson());
+                    }
+                    // The remaining ranges are already known; do not fetch the next page just to find its range.
+                    String end = current.sourceFeedRange.getRange().getMax();
+                    for (FeedRangeEpkImpl range : feedRanges) {
+                        if (range.getRange().getMax().compareTo(end) > 0) {
+                            String start = range.getRange().getMin().compareTo(end) < 0
+                                ? end : range.getRange().getMin();
+                            return addCompositeContinuationToken(current,
+                                new CompositeContinuationToken(null,
+                                    new Range<>(start, range.getRange().getMax(), true, false)).toJson());
+                        }
+                    }
+                    return addCompositeContinuationToken(current, null);
+                });
+            } else {
+                pages = pages.map(ValueHolder::new).concatWith(Flux.just(new ValueHolder<>(null))).map(heldValue -> {
+                    DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse = heldValue.v;
+                    // CREATE pairs from the stream to allow the observables downstream to "peek"
+                    // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
                     ImmutablePair<DocumentProducer<T>.DocumentProducerFeedResponse, DocumentProducer<T>.DocumentProducerFeedResponse> previousCurrent = new ImmutablePair<>(
                         this.previousPage,
                         documentProducerFeedResponse);
                     this.previousPage = documentProducerFeedResponse;
                     return previousCurrent;
-            }).skip(1).map(currentNext -> {
-                // remove the (null, 1)
-                // Add the continuation token based on the current and next page.
-                DocumentProducer<T>.DocumentProducerFeedResponse current = currentNext.left;
-                DocumentProducer<T>.DocumentProducerFeedResponse next = currentNext.right;
+                }).skip(1).map(currentNext -> {
+                    // remove the (null, 1)
+                    // Add the continuation token based on the current and next page.
+                    DocumentProducer<T>.DocumentProducerFeedResponse current = currentNext.left;
+                    DocumentProducer<T>.DocumentProducerFeedResponse next = currentNext.right;
 
-                String compositeContinuationToken;
-                String backendContinuationToken = current.pageResult.getContinuationToken();
-                if (backendContinuationToken == null) {
-                    // We just finished reading the last document from a partition
-                    if (next == null) {
-                        // It was the last partition and we are done
-                        compositeContinuationToken = null;
+                    String compositeContinuationToken;
+                    String backendContinuationToken = current.pageResult.getContinuationToken();
+                    if (backendContinuationToken == null) {
+                        // We just finished reading the last document from a partition
+                        if (next == null) {
+                            // It was the last partition and we are done
+                            compositeContinuationToken = null;
+                        } else {
+                            // It wasn't the last partition, so we need to give the next range, but with a
+                            // null continuation
+                            CompositeContinuationToken compositeContinuationTokenDom =
+                                new CompositeContinuationToken(null, next.sourceFeedRange.getRange());
+                            compositeContinuationToken = compositeContinuationTokenDom.toJson();
+                        }
                     } else {
-                        // It wasn't the last partition, so we need to give the next range, but with a
-                        // null continuation
-                        CompositeContinuationToken compositeContinuationTokenDom =
-                            new CompositeContinuationToken(null, next.sourceFeedRange.getRange());
+                        // We are in the middle of reading a partition,
+                        // so give back this partition with a backend continuation token
+                        CompositeContinuationToken compositeContinuationTokenDom = new CompositeContinuationToken(
+                                backendContinuationToken,
+                                current.sourceFeedRange.getRange());
                         compositeContinuationToken = compositeContinuationTokenDom.toJson();
                     }
-                } else {
-                    // We are in the middle of reading a partition,
-                    // so give back this partition with a backend continuation token
-                    CompositeContinuationToken compositeContinuationTokenDom = new CompositeContinuationToken(
-                            backendContinuationToken,
-                            current.sourceFeedRange.getRange());
-                    compositeContinuationToken = compositeContinuationTokenDom.toJson();
-                }
 
-                DocumentProducer<T>.DocumentProducerFeedResponse page;
-                page = this.addCompositeContinuationToken(current,
-                        compositeContinuationToken);
+                    DocumentProducer<T>.DocumentProducerFeedResponse page;
+                    page = this.addCompositeContinuationToken(current,
+                            compositeContinuationToken);
 
-                return page;
-            }).map(documentProducerFeedResponse -> {
+                    return page;
+                });
+            }
+
+            return pages.map(documentProducerFeedResponse -> {
                 // merge query metrics for any empty pages after a non-empty page.
                 mergeAndResetQueryMetrics(documentProducerFeedResponse.pageResult);
 
@@ -473,12 +502,20 @@ public class ParallelDocumentQueryExecutionContext<T>
                 fluxPrefetch,
                 this.getOperationContextTextProvider().get());
         }
-        return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .transformDeferred(new EmptyPagesFilterTransformer<>(
-                new RequestChargeTracker(),
-                this.cosmosQueryRequestOptions,
-                correlatedActivityId,
-                this.getOperationContextTextProvider()));
+        boolean noPrefetch = Integer.valueOf(0).equals(cosmosQueryRequestOptions.getMaxPrefetchPageCount());
+        Flux<DocumentProducer<T>.DocumentProducerFeedResponse> pages = noPrefetch
+            ? Flux.fromIterable(obs).concatMap(pageFlux -> pageFlux, 0)
+            : Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch);
+        return pages.transformDeferred(source -> {
+            EmptyPagesFilterTransformer<T> transformer = new EmptyPagesFilterTransformer<>(
+                new RequestChargeTracker(), this.cosmosQueryRequestOptions, correlatedActivityId,
+                this.getOperationContextTextProvider(), noPrefetch
+                    ? partitionKeyRangeToContinuationTokenMap.keySet().stream()
+                        .sorted(Comparator.comparing(range -> range.getRange().getMin()))
+                        .collect(Collectors.toList())
+                    : null);
+            return transformer.apply(source);
+        });
     }
 
     @Override

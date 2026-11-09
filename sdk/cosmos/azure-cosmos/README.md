@@ -232,6 +232,26 @@ We have a get started sample app available [here][getting_started].
 
 Also, we have more examples [examples project][samples].
 
+### Retrieve one query page
+
+When serving one page per call, set `maxPrefetchPageCount` to zero to avoid fetching the next backend
+page speculatively. Keep the returned continuation token and pass it to the next call.
+
+```java readme-sample-querySinglePage
+CosmosQueryRequestOptions options = new CosmosQueryRequestOptions()
+    .setPartitionKey(new PartitionKey("<partition-key-value>"))
+    .setMaxPrefetchPageCount(0);
+cosmosAsyncContainer.queryItems("SELECT * FROM c", options, Passenger.class)
+    .byPage(continuationToken, 20)
+    .next()
+    .subscribe(page -> System.out.println("Next continuation token: " + page.getContinuationToken()));
+```
+
+Initialize `continuationToken` to `null` for the first call and use your container's partition key value.
+Cross-partition queries, including `ORDER BY`, can require multiple backend requests for one result
+page. Synchronous iteration and downstream Reactor operators can also request additional pages.
+Leaving this option unset preserves the default prefetch behavior for continuous iteration.
+
 ## Troubleshooting
 
 ### General
