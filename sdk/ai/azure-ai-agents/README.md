@@ -1192,10 +1192,10 @@ leaving headroom below the service's 63-character limit.
 
 | Scenario | Runnable sample |
 |---|---|
-| Synchronous multi-turn text | [GptLiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
-| Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
-| Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
-| Responses backend function tool | [GptLiveFunctionToolSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
+| Synchronous multi-turn text | [GptLiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
+| Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
+| Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
+| Responses backend function tool | [GptLiveFunctionToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
 
 #### Read persisted GPT Live conversations and audio
 
@@ -1204,10 +1204,10 @@ or delete resources.
 
 | Scenario | Runnable sample |
 |---|---|
-| Synchronous history and transcripts | [GptLiveReadConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationSample.java) |
-| Asynchronous history and transcripts | [GptLiveReadConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAsyncSample.java) |
-| Synchronous stored audio download | [GptLiveReadConversationAudioSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioSample.java) |
-| Asynchronous stored audio download | [GptLiveReadConversationAudioAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioAsyncSample.java) |
+| Synchronous history and transcripts | [GptLiveReadConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationSample.java) |
+| Asynchronous history and transcripts | [GptLiveReadConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAsyncSample.java) |
+| Synchronous stored audio download | [GptLiveReadConversationAudioSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioSample.java) |
+| Asynchronous stored audio download | [GptLiveReadConversationAudioAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioAsyncSample.java) |
 
 Use an agent/session configured with `store=true` and retain the agent. With either text WebSocket example or the
 microphone/speaker example, set
