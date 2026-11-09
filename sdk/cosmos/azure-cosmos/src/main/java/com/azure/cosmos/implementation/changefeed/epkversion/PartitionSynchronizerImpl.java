@@ -72,17 +72,14 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
-                .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
-                .onErrorResume(throwable -> {
-                    logger.error("Create lease failed", throwable);
-                    return Mono.empty();
-                });
+        return this.getPartitionKeyRanges()
+            .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
+            .doOnError(throwable -> logger.error("Create lease failed", throwable));
     }
 
     @Override
     public Mono<Void> createMissingLeases(List<Lease> pkRangeIdVersionLeases) {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+        return this.getPartitionKeyRanges()
             .flatMap(pkRangeList -> {
                 if (logger.isInfoEnabled()) {
                     StringBuilder sb = new StringBuilder();
@@ -103,6 +100,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 logger.error("Create missing leases from pkRangeIdVersion leases failed", throwable);
                 return Mono.error(throwable);
             });
+    }
+
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRanges() {
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+            .filter(ranges -> !ranges.isEmpty())
+            .switchIfEmpty(Mono.error(new IllegalStateException("No partition key ranges found for change feed initialization")));
     }
 
     @Override
@@ -179,7 +182,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
                                 //  We are creating the lease for the whole pkRange.
                                 return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
-                                    .doOnSuccess((lease) -> {
+                                    .doOnNext(lease -> {
                                         logger.info("Added new lease document for feed range {}", lease.getLeaseToken());
                                     });
                                 }, this.degreeOfParallelism);

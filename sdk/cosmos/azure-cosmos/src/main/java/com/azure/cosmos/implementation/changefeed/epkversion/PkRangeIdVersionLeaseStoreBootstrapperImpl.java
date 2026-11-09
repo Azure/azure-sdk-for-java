@@ -87,17 +87,27 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
+                this.isLockAcquired = false;
+                this.isPkRangeIdVersionLeaseStoreLockAcquired = false;
 
+                Mono<Void> validation = Mono.empty();
                 if (initialized) {
-                    return this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease();
-                } else {
+                    validation = this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease();
+                    if (!this.changeFeedProcessorOptions.isLeaseVerificationEnabledOnRestart()) {
+                        return validation;
+                    }
+                }
+
+                return validation.then(Mono.defer(() -> {
                     logger.info("Acquire initialization lock");
-                    return this.acquireInitializationLock()
+                    return this.acquireInitializationLock(initialized)
                         .flatMap(lockAcquired -> {
 
                             if (!lockAcquired) {
                                 logger.info("Another instance is initializing the store");
                                 return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
+                            } else if (initialized) {
+                                return this.synchronizer.createMissingLeases().thenReturn(lockAcquired);
                             } else {
                                 return this.pkRangeIdVersionLeaseStoreManager.isInitialized()
                                     .flatMap(pkRangeIdVersionLeaseStoreInitialized -> {
@@ -110,18 +120,21 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             }
                         })
                         .onErrorResume(throwable -> {
-                            logger.warn("Unexpected exception caught while initializing the lock", throwable);
-                            return Mono.just(this.isLockAcquired);
+                            return this.isLockAcquired
+                                ? this.leaseStore.releaseInitializationLock()
+                                    .then(Mono.defer(this::releasePkRangeIdVersionLeaseStoreLock))
+                                    .then(Mono.error(throwable))
+                                : Mono.error(throwable);
                         })
                         .flatMap(lockAcquired -> {
                             if (this.isLockAcquired) {
                                 return this.leaseStore.releaseInitializationLock()
-                                    .then(this.releasePkRangeIdVersionLeaseStoreLock());
+                                    .then(Mono.defer(this::releasePkRangeIdVersionLeaseStoreLock));
                             }
 
                             return Mono.just(lockAcquired);
                         });
-                }
+                }));
             })
             .repeat(() -> !this.isInitialized)
             .then();
@@ -199,13 +212,15 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             .thenReturn(this.isLockAcquired);
     }
 
-    private Mono<Boolean> acquireInitializationLock() {
+    private Mono<Boolean> acquireInitializationLock(boolean initialized) {
         return this.leaseStore.acquireInitializationLock(this.lockTime)
             .flatMap(isLockAcquired -> {
                 this.isLockAcquired = isLockAcquired;
 
                 if (!isLockAcquired) {
                     return Mono.just(Boolean.FALSE);
+                } else if (initialized) {
+                    return Mono.just(Boolean.TRUE);
                 } else {
                     return this.pkRangeIdVersionLeaseStoreManager.isInitialized()
                         .flatMap(pkRangeIdVersionLeaseStoreInitialized -> {

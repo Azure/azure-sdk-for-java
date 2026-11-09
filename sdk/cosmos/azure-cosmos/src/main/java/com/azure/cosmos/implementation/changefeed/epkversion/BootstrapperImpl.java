@@ -82,6 +82,7 @@ class BootstrapperImpl implements Bootstrapper {
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
+                this.isLockAcquired = false;
                 Mono<Void> previousOperation = Mono.empty();
                 if (initialized) {
                     if (!this.changeFeedProcessorOptions.isLeaseVerificationEnabledOnRestart()) {
@@ -102,14 +103,15 @@ class BootstrapperImpl implements Bootstrapper {
                             return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                         } else {
                             return this.synchronizer.createMissingLeases()
-                                .then(!isInitialized
-                                    ? this.leaseStore.markInitialized().flatMap((initSucceeded) -> Mono.just(lockAcquired))
-                                    : Mono.just(lockAcquired));
+                                .then(Mono.defer(() -> initialized
+                                    ? Mono.just(lockAcquired)
+                                    : this.leaseStore.markInitialized().thenReturn(lockAcquired)));
                         }
                     })
                     .onErrorResume(throwable -> {
-                        logger.warn("Unexpected exception caught while initializing the lock", throwable);
-                        return Mono.just(this.isLockAcquired);
+                        return this.isLockAcquired
+                            ? this.leaseStore.releaseInitializationLock().then(Mono.error(throwable))
+                            : Mono.error(throwable);
                     })
                     .flatMap(lockAcquired -> {
                         if (this.isLockAcquired) {

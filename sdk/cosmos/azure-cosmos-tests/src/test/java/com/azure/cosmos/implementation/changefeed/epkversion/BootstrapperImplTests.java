@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
+import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
@@ -14,7 +16,9 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -22,8 +26,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
@@ -36,6 +43,113 @@ public class BootstrapperImplTests {
         "{\"token\":\"%s\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}" +
         "]," +
         "\"PKRangeId\":\"%s\"}";
+
+    @DataProvider
+    public Object[][] initializationFailures() {
+        return new Object[][] {
+            {ChangeFeedMode.FULL_FIDELITY, true},
+            {ChangeFeedMode.FULL_FIDELITY, false},
+            {ChangeFeedMode.INCREMENTAL, true},
+            {ChangeFeedMode.INCREMENTAL, false}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "initializationFailures")
+    public void initializationFailureLeavesStoreUnmarkedAndRetryCreatesMissingLeases(
+        ChangeFeedMode mode, boolean discoveryFails) {
+
+        Duration lockTime = Duration.ofSeconds(5);
+        ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
+        ChangeFeedContextClient contextClient = Mockito.mock(ChangeFeedContextClient.class);
+        LeaseStoreManager epkStore = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager pkStore = Mockito.mock(LeaseStoreManager.class);
+        PartitionKeyRange firstRange = new PartitionKeyRange("0", "", "AA");
+        PartitionKeyRange secondRange = new PartitionKeyRange("1", "AA", "FF");
+        List<PartitionKeyRange> ranges = Arrays.asList(firstRange, secondRange);
+        FeedRangeEpkImpl firstFeedRange = new FeedRangeEpkImpl(firstRange.toRange());
+        FeedRangeEpkImpl secondFeedRange = new FeedRangeEpkImpl(secondRange.toRange());
+        Lease firstLease = new ServiceItemLeaseV1().withLeaseToken("-AA").withFeedRange(firstFeedRange);
+        Lease secondLease = new ServiceItemLeaseV1().withLeaseToken("AA-FF").withFeedRange(secondFeedRange);
+        RuntimeException failure = new IllegalStateException("Initialization failed");
+
+        Mockito.when(contextClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
+            .thenReturn(discoveryFails ? Mono.error(failure) : Mono.just(ranges), Mono.just(ranges));
+        Mockito.when(epkStore.getAllLeases())
+            .thenReturn(Flux.empty(), Flux.just(firstLease));
+        Mockito.when(epkStore.createLeaseIfNotExist(Mockito.any(FeedRangeEpkImpl.class), Mockito.isNull()))
+            .thenAnswer(invocation -> {
+                FeedRangeEpkImpl feedRange = invocation.getArgument(0);
+                return feedRange.getRange().equals(firstRange.toRange())
+                    ? Mono.just(firstLease)
+                    : Mono.just(secondLease);
+            });
+        if (!discoveryFails) {
+            Mockito.when(epkStore.createLeaseIfNotExist(Mockito.eq(secondFeedRange), Mockito.isNull()))
+                .thenReturn(Mono.error(failure), Mono.just(secondLease));
+        }
+
+        Mockito.when(epkStore.isInitialized()).thenReturn(Mono.just(false), Mono.just(false), Mono.just(true));
+        Mockito.when(epkStore.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
+        Mockito.when(epkStore.releaseInitializationLock()).thenReturn(Mono.just(true));
+        Mockito.when(epkStore.markInitialized()).thenReturn(Mono.just(true));
+        Mockito.when(epkStore.getTopLeases(1)).thenReturn(Flux.empty());
+        Mockito.when(pkStore.isInitialized()).thenReturn(Mono.just(false));
+        Mockito.when(pkStore.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
+        Mockito.when(pkStore.releaseInitializationLock()).thenReturn(Mono.just(true));
+        Mockito.when(pkStore.markInitialized()).thenReturn(Mono.just(true));
+        Mockito.when(pkStore.getTopLeases(1)).thenReturn(Flux.empty());
+
+        PartitionSynchronizer synchronizer = new PartitionSynchronizerImpl(
+            contextClient, "container", epkStore, epkStore, 1, 1, options, mode);
+        Bootstrapper bootstrapper = mode == ChangeFeedMode.INCREMENTAL
+            ? new PkRangeIdVersionLeaseStoreBootstrapperImpl(
+                synchronizer, epkStore, lockTime, lockTime, pkStore, epkStore, options, mode)
+            : new BootstrapperImpl(
+                synchronizer, epkStore, lockTime, lockTime, epkStore, pkStore, options, mode);
+
+        StepVerifier.create(bootstrapper.initialize()).expectErrorMatches(error -> error == failure).verify(lockTime);
+        Mockito.verify(epkStore, Mockito.never()).markInitialized();
+        Mockito.verify(pkStore, Mockito.never()).markInitialized();
+        Mockito.verify(epkStore).releaseInitializationLock();
+        if (mode == ChangeFeedMode.INCREMENTAL) {
+            Mockito.verify(pkStore).releaseInitializationLock();
+        }
+
+        StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
+        Mockito.verify(epkStore).createLeaseIfNotExist(Mockito.eq(firstFeedRange), Mockito.isNull());
+        Mockito.verify(epkStore, times(discoveryFails ? 1 : 2))
+            .createLeaseIfNotExist(Mockito.eq(secondFeedRange), Mockito.isNull());
+        Mockito.verify(epkStore).markInitialized();
+        if (mode == ChangeFeedMode.INCREMENTAL) {
+            Mockito.verify(pkStore).markInitialized();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void latestVersionVerifiesLeasesOnRestartWhenEnabled() {
+        Duration lockTime = Duration.ofSeconds(5);
+        ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
+        PartitionSynchronizer synchronizer = Mockito.mock(PartitionSynchronizer.class);
+        LeaseStoreManager epkStore = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager pkStore = Mockito.mock(LeaseStoreManager.class);
+        Mockito.when(epkStore.isInitialized()).thenReturn(Mono.just(true));
+        Mockito.when(epkStore.getTopLeases(1)).thenReturn(Flux.empty());
+        Mockito.when(epkStore.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
+        Mockito.when(epkStore.releaseInitializationLock()).thenReturn(Mono.just(true));
+        Mockito.when(synchronizer.createMissingLeases()).thenReturn(Mono.empty());
+        Bootstrapper bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
+            synchronizer, epkStore, lockTime, lockTime, pkStore, epkStore, options, ChangeFeedMode.INCREMENTAL);
+
+        StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
+        Mockito.verifyNoInteractions(synchronizer, pkStore);
+
+        options.setLeaseVerificationEnabledOnRestart(true);
+        StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
+        Mockito.verify(synchronizer).createMissingLeases();
+        Mockito.verify(epkStore).releaseInitializationLock();
+        Mockito.verify(epkStore, Mockito.never()).markInitialized();
+        Mockito.verifyNoInteractions(pkStore);
+    }
 
     @DataProvider(name = "leaseProvider")
     public Object[][] leaseProvider() {
