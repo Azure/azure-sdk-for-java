@@ -28,15 +28,6 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
-    private DocumentServiceRequestContext.SessionTokenState sessionTokenState;
-
-    public DocumentServiceRequestContext.SessionTokenState getSessionTokenState() {
-        return this.sessionTokenState;
-    }
-
-    public void setSessionTokenState(DocumentServiceRequestContext.SessionTokenState state) {
-        this.sessionTokenState = state;
-    }
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,

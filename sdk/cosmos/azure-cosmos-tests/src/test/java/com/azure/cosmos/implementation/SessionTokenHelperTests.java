@@ -45,55 +45,43 @@ public class SessionTokenHelperTests {
     }
 
     @Test(groups = "unit", dataProvider = "scopedOutcomes")
-    public void preparedStateIsReusedWithoutScopingAgain(boolean unmatched) {
-        CollectionRoutingMap map = Mockito.spy(routingMap(
-            new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF")));
-        DocumentCollection collection = new DocumentCollection();
-        collection.setResourceId(map.getCollectionUniqueId());
-        RxDocumentServiceRequest request = scopeRequest(collection.getResourceId(), "0", Collections.emptyList());
+    public void explicitSelectionAndApplicationUseExistingRequestFields(boolean unmatched) {
+        RxDocumentServiceRequest request = scopeRequest("ccZ1ANCszwk=", "0", Collections.emptyList());
         String original = unmatched ? "1:1#100,1:1#200" : "0:1#100,1:1#200";
-        request.setOriginalSessionToken(original);
-        assertThat(SessionTokenHelper.prepareExplicitSessionToken(request, collection, map)).isTrue();
-        DocumentServiceRequestContext.SessionTokenState prepared = request.requestContext.getSessionTokenState();
-        Mockito.clearInvocations(map);
+        ISessionToken token = SessionTokenHelper.resolveExplicitSessionToken(request, original);
+        SessionTokenHelper.applyScopedSessionToken(request, original, token);
         for (int i = 0; i < 8; i++) {
             RxDocumentServiceRequest clone = request.clone();
-            clone.requestContext.sessionToken = null;
-            assertThat(SessionTokenHelper.prepareExplicitSessionToken(clone, collection, map)).isTrue();
-            assertThat(clone.requestContext.getSessionTokenState()).isSameAs(prepared);
+            assertThat(clone.requestContext.sessionToken).isSameAs(token);
+            assertThat(clone.getOriginalSessionToken()).isEqualTo(original);
+            assertThat(clone.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                .isEqualTo(unmatched ? null : "0:1#100");
         }
-        Mockito.verify(map, Mockito.times(8)).tryGetRangeByPartitionKeyRangeId("0");
-        Mockito.verify(map, Mockito.never()).tryGetRangeByPartitionKeyRangeId("1");
         if (unmatched) {
-            assertThat(prepared.getToken()).isNull();
+            assertThat(token).isNull();
         } else {
-            assertThat(prepared.getToken().convertToString()).isEqualTo("1#100");
+            assertThat(token.convertToString()).isEqualTo("1#100");
         }
     }
 
     @Test(groups = "unit")
-    public void transportIsDecidedBeforeParsingAndSiblingScopesRemainIndependent() {
-        CollectionRoutingMap parentMap = routingMap(
-            new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"));
-        DocumentCollection collection = new DocumentCollection();
-        collection.setResourceId(parentMap.getCollectionUniqueId());
-        RxDocumentServiceRequest request = scopeRequest(collection.getResourceId(), "1", Collections.emptyList());
+    public void malformedExplicitProgressDoesNotMutateSiblingRequests() {
+        RxDocumentServiceRequest request = scopeRequest("ccZ1ANCszwk=", "1", Collections.emptyList());
         request.setOriginalSessionToken("0:1#100,2:future");
-        assertThat(SessionTokenHelper.prepareExplicitSessionToken(request, collection, parentMap)).isFalse();
-        DocumentServiceRequestContext.SessionTokenState fallback = request.requestContext.getSessionTokenState();
-        RxDocumentServiceRequest sibling = request.clone();
-        CollectionRoutingMap childMap = routingMap(
-            new PartitionKeyRange("0", "", "80"),
-            new PartitionKeyRange("2", "80", "FF", Collections.singletonList("1")));
-        sibling.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("2"));
-        assertThatThrownBy(() -> SessionTokenHelper.prepareExplicitSessionToken(sibling, collection, childMap))
+        assertThatThrownBy(() -> SessionTokenHelper.resolveExplicitSessionToken(request, request.getOriginalSessionToken()))
             .hasRootCauseInstanceOf(BadRequestException.class);
-        assertThat(request.requestContext.getSessionTokenState()).isSameAs(fallback);
+        RxDocumentServiceRequest sibling = request.clone();
+        sibling.requestContext.resolvedPartitionKeyRange =
+            new PartitionKeyRange("2", "80", "FF", Collections.singletonList("1"));
+        sibling.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("2"));
+        assertThatThrownBy(() -> SessionTokenHelper.resolveExplicitSessionToken(sibling, sibling.getOriginalSessionToken()))
+            .hasRootCauseInstanceOf(BadRequestException.class);
         sibling.setOriginalSessionToken("0:1#100,2:1#200");
-        assertThat(SessionTokenHelper.prepareExplicitSessionToken(sibling, collection, childMap)).isTrue();
-        assertThat(sibling.requestContext.getSessionTokenState()).isNotSameAs(fallback);
-        assertThat(sibling.requestContext.getSessionTokenState().getToken().convertToString()).isEqualTo("1#200");
-        assertThat(request.requestContext.getSessionTokenState().useThinClient()).isFalse();
+        SessionTokenHelper.applyScopedSessionToken(sibling, sibling.getOriginalSessionToken(),
+            SessionTokenHelper.resolveExplicitSessionToken(sibling, sibling.getOriginalSessionToken()));
+        assertThat(sibling.requestContext.sessionToken.convertToString()).isEqualTo("1#200");
+        assertThat(request.requestContext.sessionToken).isNull();
+        assertThat(request.getOriginalSessionToken()).isEqualTo("0:1#100,2:future");
     }
 
     private static RxDocumentServiceRequest scopeRequest(String collectionRid, String rangeId, List<String> parents) {
@@ -219,10 +207,14 @@ public class SessionTokenHelperTests {
     }
 
     static CollectionRoutingMap routingMap(PartitionKeyRange... ranges) {
+        return routingMap("ccZ1ANCszwk=", ranges);
+    }
+
+    static CollectionRoutingMap routingMap(String collectionRid, PartitionKeyRange... ranges) {
         return InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
             Arrays.stream(ranges).map(range -> new ImmutablePair<PartitionKeyRange,
                 com.azure.cosmos.implementation.routing.IServerIdentity>(range, null)).collect(Collectors.toList()),
-            "ccZ1ANCszwk=", null);
+            collectionRid, null);
     }
 
     @Test(groups = "unit")

@@ -62,6 +62,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -109,9 +110,13 @@ public class ThinClientSessionTokenTest {
                 new PartitionKeyRange("3", epk + "80", "FF", Collections.singletonList("1")));
             fixture.map = metadataHasChildren ? childMap : SessionTokenHelperTests.routingMap(
                 new PartitionKeyRange("0", "", epk), new PartitionKeyRange("1", epk, "FF"));
+            fixture.refreshedMap = childMap;
+            CollectionRoutingMap initialMap = fixture.map;
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, original, null);
             request.setPartitionKeyInternal(key);
             request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, key.toJson());
+            request.properties = new HashMap<>();
+            request.properties.put("scoping-test", "properties");
             RxDocumentClientImpl client = fixture.client();
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover failover =
                 Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
@@ -129,16 +134,21 @@ public class ThinClientSessionTokenTest {
 
             dispatch(client, request).block(Duration.ofSeconds(5));
 
-            String expectedInitialToken = metadataHasChildren ? expectedScopedToken : original;
-            int expectedInitialPort = metadataHasChildren ? 10250 : 443;
+            String expectedInitialToken = expectedScopedToken;
+            int expectedInitialPort = 10250;
             assertThat(fixture.wireTokens).as(scenario).containsExactly(expectedInitialToken);
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(expectedInitialPort);
             assertThat(fixture.endpoints).extracting(URI::getHost).containsExactly("localhost");
-            assertThat(request.useThinClientMode).isEqualTo(metadataHasChildren);
+            assertThat(request.useThinClientMode).isTrue();
             assertThat(request.getOriginalSessionToken()).isEqualTo(original);
             assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expectedInitialToken);
             assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.ranges, Mockito.times(metadataHasChildren ? 1 : 2))
+                .tryLookupAsync(any(), any(), any(), any());
+            if (!metadataHasChildren) {
+                verify(fixture.ranges).tryLookupAsync(
+                    any(), Mockito.eq(RID), Mockito.same(initialMap), Mockito.same(request.properties));
+            }
             ISessionToken initialScopedToken = request.requestContext.sessionToken;
 
             fixture.map = childMap;
@@ -169,7 +179,7 @@ public class ThinClientSessionTokenTest {
         return new Object[][] {
             {ORIGINAL, "0:1#100#1=90#2=-1", 10250},
             {"1:1#200,1:1#100", null, 10250},
-            {"2:1#200,0:1#100", "2:1#200,0:1#100", 443}
+            {"2:1#200,0:1#100", null, 10250}
         };
     }
 
@@ -206,12 +216,12 @@ public class ThinClientSessionTokenTest {
             assertThat(result.get(5, TimeUnit.SECONDS)).isNotNull();
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0).requestContext).isNotSameAs(attempts.get(1).requestContext);
-            assertThat(attempts.get(0).requestContext.getSessionTokenState()).isNotNull()
-                .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
+            assertThat(attempts.get(0).requestContext.sessionToken)
+                .isSameAs(attempts.get(1).requestContext.sessionToken);
             assertThat(fixture.wireTokens).containsExactly(expected, expected);
             assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(port, port);
-            verify(fixture.collections, Mockito.times(3)).resolveCollectionAsync(any(), any());
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.collections).resolveCollectionAsync(any(), any());
+            verify(fixture.ranges, Mockito.times(expected == null ? 2 : 1)).tryLookupAsync(any(), any(), any(), any());
             assertThat(options.getSessionToken()).isEqualTo(original);
         }
     }
@@ -224,16 +234,25 @@ public class ThinClientSessionTokenTest {
         };
     }
 
-    @Test(groups = "unit", dataProvider = "scopedOutcomes", dataProviderClass = SessionTokenHelperTests.class)
-    public void pointPreparationFailureOrTimeoutNeverStartsAHedge(boolean timeout) throws Exception {
+    @DataProvider
+    public Object[][] preparationFailures() {
+        return new Object[][] {{false, false}, {true, false}, {false, true}, {true, true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "preparationFailures")
+    public void pointPreparationFailureOrTimeoutNeverStartsAHedge(boolean timeout, boolean duringRefresh) throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentClientImpl client = fixture.fullClient();
             RuntimeException metadataFailure = new IllegalStateException("metadata failure before hedging");
-            Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any()))
-                .thenReturn(timeout ? Mono.never() : Mono.error(metadataFailure));
+            Mockito.when(fixture.ranges.tryLookupAsync(any(), any(), any(), any())).thenAnswer(invocation -> {
+                if (duringRefresh && invocation.getArgument(2) == null) {
+                    return Mono.just(new Utils.ValueHolder<>(fixture.map));
+                }
+                return timeout ? Mono.never() : Mono.error(metadataFailure);
+            });
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey("customer"));
-            options.setSessionToken(ORIGINAL);
+            options.setSessionToken(duringRefresh ? "0:1#100,unknown:1#200" : ORIGINAL);
             options.setCosmosEndToEndLatencyPolicyConfig(
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(200))
                     .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
@@ -250,7 +269,7 @@ public class ThinClientSessionTokenTest {
                 assertThat(failure).isSameAs(metadataFailure);
             }
             assertThat(fixture.sentRequests).isEmpty();
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.ranges, Mockito.times(duringRefresh ? 2 : 1)).tryLookupAsync(any(), any(), any(), any());
         }
     }
 
@@ -259,7 +278,7 @@ public class ThinClientSessionTokenTest {
         return new Object[][] {
             {ORIGINAL, false, "0:1#100#1=90#2=-1", "0:1#100#1=90#2=-1", 10250},
             {ORIGINAL, true, "0:1#100#1=90#2=-1", "2:1#100#1=90#2=-1", 10250},
-            {"2:1#200,1:1#100", true, "2:1#200,1:1#100", "2:1#200", 443}
+            {"2:1#200,1:1#100", true, null, "2:1#200", 10250}
         };
     }
 
@@ -305,14 +324,63 @@ public class ThinClientSessionTokenTest {
             assertThat(attemptEndpoints).extracting(URI::getPort).containsExactly(firstPort, 10250);
             assertThat(attemptEndpoints).extracting(URI::getHost).containsExactly("localhost", "localhost");
             if (split) {
-                assertThat(attempts.get(1).requestContext.getSessionTokenState())
-                    .isNotSameAs(attempts.get(0).requestContext.getSessionTokenState());
+                assertThat(attempts.get(1).requestContext.sessionToken)
+                    .isNotSameAs(attempts.get(0).requestContext.sessionToken);
             } else {
-                assertThat(attempts.get(1).requestContext.getSessionTokenState())
-                    .isSameAs(attempts.get(0).requestContext.getSessionTokenState());
+                assertThat(attempts.get(1).requestContext.sessionToken)
+                    .isSameAs(attempts.get(0).requestContext.sessionToken);
             }
-            verify(fixture.ranges, Mockito.times(2)).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.ranges, Mockito.times(firstToken == null ? 3 : 2)).tryLookupAsync(any(), any(), any(), any());
             assertThat(options.getSessionToken()).isEqualTo(original);
+        }
+    }
+
+    // Verify retry-time RID mutation cannot make an old prepared token look valid for a recreated container.
+    @Test(groups = "unit")
+    public void recreatedContainerDoesNotReuseMutatedAttemptScope() throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentClientImpl client = fixture.fullClient();
+            String recreatedRid = "ccZ1ANCszwo=";
+            List<RxDocumentServiceRequest> attempts = new ArrayList<>();
+            IServerErrorInjector injector = Mockito.mock(IServerErrorInjector.class);
+            Mockito.when(injector.injectServerResponseError(any(), any())).thenAnswer(invocation -> {
+                RxDocumentServiceRequest attempt =
+                    ((FaultInjectionRequestArgs) invocation.getArgument(0)).getServiceRequest();
+                attempts.add(attempt);
+                if (attempts.size() != 1) {
+                    return false;
+                }
+                attempt.requestContext.resolvedCollectionRid = recreatedRid;
+                DocumentCollection recreated = new DocumentCollection();
+                recreated.setResourceId(recreatedRid);
+                recreated.setPartitionKey(fixture.definition);
+                Mockito.doAnswer(lookup -> {
+                    RxDocumentServiceRequest request = lookup.getArgument(1);
+                    request.requestContext.resolvedCollectionRid = recreatedRid;
+                    request.setResourceId(recreatedRid);
+                    return Mono.just(new Utils.ValueHolder<>(recreated));
+                }).when(fixture.collections).resolveCollectionAsync(any(), any());
+                fixture.map = SessionTokenHelperTests.routingMap(recreatedRid,
+                    new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"));
+                Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
+                failure.v = new RequestRateTooLargeException();
+                return true;
+            });
+            fixture.inject(injector);
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(ORIGINAL);
+            Method read = RxDocumentClientImpl.class.getDeclaredMethod(
+                "readDocument", String.class, String.class, RequestOptions.class, DiagnosticsClientContext.class);
+            read.setAccessible(true);
+            ((Mono<?>) read.invoke(client, "/dbs/db/colls/coll/docs/item", "item", options, fixture.context))
+                .block(Duration.ofSeconds(5));
+            assertThat(attempts).hasSize(2);
+            assertThat(attempts.get(1).requestContext.resolvedCollectionRid).isEqualTo(recreatedRid);
+            assertThat(attempts.get(1).requestContext.sessionToken)
+                .isNotSameAs(attempts.get(0).requestContext.sessionToken);
+            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
+            assertThat(options.getSessionToken()).isEqualTo(ORIGINAL);
         }
     }
 
@@ -357,7 +425,47 @@ public class ThinClientSessionTokenTest {
     }
 
     @DataProvider
-    public Object[][] fallbackOperations() {
+    public Object[][] retriedWrites() {
+        return new Object[][] {{OperationType.Create}, {OperationType.Upsert}};
+    }
+
+    // Verify pre-hedge preparation and retry reconstruction preserve the supplied item ID and payload.
+    @Test(groups = "unit", dataProvider = "retriedWrites")
+    public void itemIdAndPayloadRemainStableAcrossRetries(OperationType operation) throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            fixture.thin.setUseMultipleWriteLocations(true);
+            RxDocumentClientImpl client = fixture.fullClient();
+            List<byte[]> bodies = new ArrayList<>();
+            IServerErrorInjector injector = Mockito.mock(IServerErrorInjector.class);
+            Mockito.when(injector.injectServerResponseError(any(), any())).thenAnswer(invocation -> {
+                RxDocumentServiceRequest request =
+                    ((FaultInjectionRequestArgs) invocation.getArgument(0)).getServiceRequest();
+                bodies.add(request.getContentAsByteArray());
+                if (bodies.size() == 1) {
+                    Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
+                    failure.v = new RequestRateTooLargeException();
+                    return true;
+                }
+                return false;
+            });
+            fixture.inject(injector);
+            RequestOptions options = new RequestOptions();
+            options.setPartitionKey(new PartitionKey("customer"));
+            options.setSessionToken(ORIGINAL);
+            Document item = new Document("{\"id\":\"item\",\"pk\":\"customer\",\"value\":1}");
+            Mono<ResourceResponse<Document>> result = operation == OperationType.Create
+                ? client.createDocument("/dbs/db/colls/coll", item, options, false)
+                : client.upsertDocument("/dbs/db/colls/coll", item, options, false);
+            assertThat(result.block(Duration.ofSeconds(5))).isNotNull();
+            assertThat(bodies).hasSize(2);
+            assertThat(bodies.get(1)).containsExactly(bodies.get(0));
+            assertThat(new Document(new String(bodies.get(0), StandardCharsets.UTF_8)).getId()).isEqualTo("item");
+            assertThat(options.getSessionToken()).isEqualTo(ORIGINAL);
+        }
+    }
+
+    @DataProvider
+    public Object[][] unscopedOperations() {
         return new Object[][] {
             {OperationType.Read, false}, {OperationType.Read, true},
             {OperationType.Query, false}, {OperationType.Query, true},
@@ -365,15 +473,17 @@ public class ThinClientSessionTokenTest {
         };
     }
 
-    @Test(groups = "unit", dataProvider = "fallbackOperations")
-    public void unresolvedScopeSelectsClassicBeforeSendingInSameRegion(
+    @Test(groups = "unit", dataProvider = "unscopedOperations")
+    public void unscopedProgressWarnsAndStaysOnV2InSameRegion(
         OperationType operation, boolean recreateRequest) throws Exception {
         try (Fixture fixture = new Fixture()) {
             fixture.thin.setUseMultipleWriteLocations(true);
             fixture.classic.setUseMultipleWriteLocations(true);
             DocumentClientRetryPolicy policy = fixture.retryPolicy();
             RxDocumentClientImpl client = fixture.client();
-            RxDocumentServiceRequest original = fixture.request(operation, ORIGINAL, null);
+            String callerToken = ORIGINAL + ",unknown:1#300";
+            RxDocumentServiceRequest original = fixture.request(operation, callerToken, null);
+            original.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
             original.setContentBytes("{\"id\":\"item\",\"pk\":\"customer\"}".getBytes(StandardCharsets.UTF_8));
             original.setResponseTimeout(Duration.ofSeconds(5));
             original.requestContext.setExcludeRegions(Collections.singletonList("North Europe"));
@@ -397,15 +507,19 @@ public class ThinClientSessionTokenTest {
             }, policy).block(Duration.ofSeconds(5));
 
             assertThat(attempts).hasSize(1);
-            assertThat(attemptedEndpoints).extracting(URI::getPort).containsExactly(443);
+            assertThat(attemptedEndpoints).extracting(URI::getPort).containsExactly(10250);
             assertThat(attemptedEndpoints).extracting(URI::getHost).containsExactly("localhost");
-            assertThat(fixture.wireTokens).containsExactly(ORIGINAL);
+            assertThat(fixture.wireTokens).containsExactly((String) null);
             assertThat(fixture.sentRequests).hasSize(1);
             assertThat(attempts.get(0).getContentAsByteArray()).containsExactly(original.getContentAsByteArray());
-            assertThat(attempts.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(ORIGINAL);
+            assertThat(attempts.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            assertThat(attempts.get(0).getOriginalSessionToken()).isEqualTo(callerToken);
+            assertThat(attempts.get(0).requestContext.getSessionTokenEvaluationResults()).singleElement()
+                .asString().contains("NOT enforced", "Verify that the token belongs to this container", "CosmosDiagnostics")
+                .doesNotContain(callerToken);
             assertThat(attempts.get(0).requestContext.getExcludeRegions())
                 .containsExactly("North Europe");
-            assertThat(attempts.get(0).useThinClientMode).isFalse();
+            assertThat(attempts.get(0).useThinClientMode).isTrue();
             assertThat(attempts.get(0).useGatewayMode).isFalse();
             assertThat(policy.getRetryContext().getRetryCount()).isZero();
             verify(fixture.endpointManager, never()).markEndpointUnavailableForRead(any());
@@ -414,7 +528,7 @@ public class ThinClientSessionTokenTest {
             verify(fixture.automaticFailover, never())
                 .tryMarkEndpointAsUnavailableForPartitionKeyRange(any(), Mockito.anyBoolean());
 
-            // A sibling operation's policy must not inherit the transport decision.
+            // A sibling operation must not inherit the token omission.
             RxDocumentServiceRequest sibling = fixture.request(operation, ORIGINAL, "0");
             fixture.retryPolicy().onBeforeSendRequest(sibling);
             assertThat(sibling.useGatewayMode).isFalse();
@@ -422,7 +536,7 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit")
-    public void unresolvedScopePreservesFilterWithoutSendingThinRequest() throws Exception {
+    public void unresolvedScopePreservesFilterOnV2WithoutCallerProgress() throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
             request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "10");
@@ -435,17 +549,19 @@ public class ThinClientSessionTokenTest {
                 policy.onBeforeSendRequest(request);
                 return dispatch(client, request);
             }, policy).block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly(ORIGINAL);
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443);
-            assertThat(fixture.sentRequests.get(0).headers().value(HttpConstants.HttpHeaders.START_EPK)).isEqualTo("10");
-            assertThat(fixture.sentRequests.get(0).headers().value(HttpConstants.HttpHeaders.END_EPK)).isEqualTo("FF");
+            assertThat(fixture.wireTokens).containsExactly((String) null);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+            assertThat(fixture.encodedTokens.get(0).get(RntbdRequestHeader.StartEpk.id()))
+                .containsExactly("10".getBytes(StandardCharsets.UTF_8));
+            assertThat(fixture.encodedTokens.get(0).get(RntbdRequestHeader.EndEpk.id()))
+                .containsExactly("FF".getBytes(StandardCharsets.UTF_8));
             assertThat(policy.getRetryContext().getRetryCount()).isZero();
         }
     }
 
     @Test(groups = "unit")
     public void injectedBadRequestIsNotRetriedOnEitherTransport() throws Exception {
-        for (boolean fallback : new boolean[] {false, true}) {
+        for (boolean classic : new boolean[] {false, true}) {
             try (Fixture fixture = new Fixture()) {
                 List<CosmosException> injectedErrors = new CopyOnWriteArrayList<>();
                 AtomicInteger injected = new AtomicInteger();
@@ -460,23 +576,24 @@ public class ThinClientSessionTokenTest {
                 fixture.inject(injector);
                 DocumentClientRetryPolicy policy = fixture.retryPolicy();
                 RxDocumentClientImpl client = fixture.client();
-                RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, fallback ? null : "0");
+                RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
+                request.useGatewayMode = classic;
                 Throwable failure = catchThrowable(() -> BackoffRetryUtility.executeRetry(() -> {
                     policy.onBeforeSendRequest(request);
                     return dispatch(client, request);
                 }, policy).block(Duration.ofSeconds(5)));
-                assertThat(injected.get()).as("Injected errors; fallback=%s, failure=%s", fallback, failure)
+                assertThat(injected.get()).as("Injected errors; classic=%s, failure=%s", classic, failure)
                     .isEqualTo(1);
                 assertThat(failure).isSameAs(injectedErrors.get(injectedErrors.size() - 1));
                 assertThat(fixture.sentRequests).isEmpty();
-                assertThat(request.useThinClientMode).isEqualTo(!fallback);
-                assertThat(request.useGatewayMode).isFalse();
+                assertThat(request.useThinClientMode).isEqualTo(!classic);
+                assertThat(request.useGatewayMode).isEqualTo(classic);
             }
         }
     }
 
     @Test(groups = "unit")
-    public void injectedThrottleRetriesAndReevaluatesTransportWithoutLosingProgress() throws Exception {
+    public void injectedThrottleRetriesAfterScopeRefreshStayOnV2() throws Exception {
         try (Fixture fixture = new Fixture()) {
             DocumentClientRetryPolicy policy = fixture.retryPolicy();
             RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
@@ -493,7 +610,7 @@ public class ThinClientSessionTokenTest {
                     fixture.map = SessionTokenHelperTests.routingMap(
                         new PartitionKeyRange("2", "", "FF", Arrays.asList("0", "1")));
                     request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "2"));
-                    request.requestContext.resolvedPartitionKeyRange = fixture.map.getRangeByPartitionKeyRangeId("2");
+                    setResolvedRange(request, fixture.map.getRangeByPartitionKeyRangeId("2"));
                     Utils.ValueHolder<CosmosException> failure = invocation.getArgument(1);
                     failure.v = new RequestRateTooLargeException();
                     return true;
@@ -506,7 +623,7 @@ public class ThinClientSessionTokenTest {
                 policy.onBeforeSendRequest(request);
                 return dispatch(client, request);
             }, policy).block(Duration.ofSeconds(5));
-            assertThat(attemptedEndpoints).extracting(URI::getPort).containsExactly(443, 10250);
+            assertThat(attemptedEndpoints).extracting(URI::getPort).containsExactly(10250, 10250);
             assertThat(attemptedEndpoints).extracting(URI::getHost).containsExactly("localhost", "localhost");
             assertThat(fixture.wireTokens).containsExactly("2:1#200#1=180#2=150");
             assertThat(policy.getRetryContext().getRetryCount()).isEqualTo(1);
@@ -519,10 +636,12 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit")
-    public void cancellationStopsClassicFallbackWithoutReplayingAgain() throws Exception {
+    public void cancellationStopsV2AfterUnscopedProgress() throws Exception {
         try (Fixture fixture = new Fixture()) {
             fixture.delayFirstResponse = true;
-            RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, null);
+            String original = ORIGINAL + ",unknown:1#300";
+            RxDocumentServiceRequest request = fixture.request(OperationType.Query, original, null);
+            request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
             DocumentClientRetryPolicy policy = fixture.retryPolicy();
             RxDocumentClientImpl client = fixture.client();
             List<Throwable> errors = new CopyOnWriteArrayList<>();
@@ -533,9 +652,10 @@ public class ThinClientSessionTokenTest {
             fixture.primaryRequestSent.asMono().block(Duration.ofSeconds(5));
             subscription.dispose();
             assertThat(errors).isEmpty();
-            assertThat(fixture.wireTokens).containsExactly(ORIGINAL);
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443);
-            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(ORIGINAL);
+            assertThat(fixture.wireTokens).containsExactly((String) null);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            assertThat(request.getOriginalSessionToken()).isEqualTo(original);
             assertThat(policy.getRetryContext().getRetryCount()).isZero();
         }
     }
@@ -589,13 +709,13 @@ public class ThinClientSessionTokenTest {
             fixture.classic.setUseMultipleWriteLocations(true);
             RxDocumentClientImpl client = fixture.client();
             RxDocumentServiceRequest request = fixture.request(
-                OperationType.Create, ORIGINAL, "classic".equals(scenario) ? null : "0");
+                OperationType.Create, ORIGINAL, "0");
+            request.useGatewayMode = "classic".equals(scenario);
             if ("thin-unresolved".equals(scenario) || "metadata-error".equals(scenario)) {
                 request.requestContext.resolvedPartitionKeyRange = null;
             } else if ("thin".equals(scenario)) {
-                request.captureOriginalSessionToken();
                 request.useThinClientMode = true;
-                fixture.thin.tryPrepareExplicitSessionToken(request).block(Duration.ofSeconds(5));
+                prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
             }
             OperationContext context = Mockito.mock(OperationContext.class);
             String correlationId = "00000000-0000-0000-0000-000000000001";
@@ -626,7 +746,7 @@ public class ThinClientSessionTokenTest {
                 assertThat(fixture.sentRequests).isEmpty();
             } else {
                 RxDocumentServiceResponse response = dispatch(client, request, tuple).block(Duration.ofSeconds(5));
-                assertThat(events).containsExactly("thin".equals(scenario)
+                assertThat(events).containsExactly(("thin".equals(scenario) || "classic".equals(scenario))
                     ? new String[] {"request", "response"} : new String[] {"prepare", "request", "response"});
                 verify(listener).requestListener(context, request);
                 verify(listener).responseListener(context, response);
@@ -676,20 +796,20 @@ public class ThinClientSessionTokenTest {
     @DataProvider
     public Object[][] hedges() {
         return new Object[][] {
-            {false, ORIGINAL, "0:1#100#1=90#2=-1", false},
-            {true, ORIGINAL, "0:1#100#1=90#2=-1", false},
-            {false, "0:1#100,1:1#200", "0:1#100", false},
-            {true, "0:1#100,1:1#200", "0:1#100", false},
-            {false, "1:1#100,1:1#200", null, false},
-            {true, "1:1#100,1:1#200", null, false},
-            {false, ORIGINAL, "0:1#100#1=90#2=-1", true},
-            {true, ORIGINAL, "0:1#100#1=90#2=-1", true}
+            {false, ORIGINAL, "0:1#100#1=90#2=-1"},
+            {true, ORIGINAL, "0:1#100#1=90#2=-1"},
+            {false, "0:1#100,1:1#200", "0:1#100"},
+            {true, "0:1#100,1:1#200", "0:1#100"},
+            {false, "1:1#100,1:1#200", null},
+            {true, "1:1#100,1:1#200", null},
+            {false, ORIGINAL + ",unknown:1#300", null},
+            {true, ORIGINAL + ",unknown:1#300", null}
         };
     }
 
     @Test(groups = "unit", dataProvider = "hedges")
     public void actualAvailabilityStrategiesPreserveBothAttempts(
-        boolean feed, String original, String expected, boolean fallbackPrimary)
+        boolean feed, String original, String expected)
         throws Exception {
         try (Fixture fixture = new Fixture()) {
             fixture.delayFirstResponse = true;
@@ -707,7 +827,6 @@ public class ThinClientSessionTokenTest {
                 parent.requestContext.setEndToEndOperationLatencyPolicyConfig(policy);
                 executeFeedWithAvailability(client, parent, fixture::retryPolicy, (retry, request) -> {
                     attempts.add(request);
-                    setHedgeScope(request, fallbackPrimary);
                     DocumentClientRetryPolicy retryPolicy = retry.get();
                     policies.add(retryPolicy);
                     return BackoffRetryUtility.executeRetry(() -> {
@@ -715,24 +834,21 @@ public class ThinClientSessionTokenTest {
                         return dispatch(client, request);
                     }, retryPolicy);
                 }).block(Duration.ofSeconds(5));
-                assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
+                assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
+                assertThat(parent.getOriginalSessionToken()).isEqualTo(original);
                 assertThat(parent.useGatewayMode).isFalse();
             } else {
                 RequestOptions options = new RequestOptions();
                 options.setSessionToken(original);
                 options.setCosmosEndToEndLatencyPolicyConfig(policy);
                 RxDocumentServiceRequest prepared = fixture.request(OperationType.Read, original, "0");
-                prepared.captureOriginalSessionToken();
                 prepared.useThinClientMode = true;
-                fixture.thin.tryPrepareExplicitSessionToken(prepared).block(Duration.ofSeconds(5));
+                prepareSessionToken(fixture.thin, prepared).block(Duration.ofSeconds(5));
                 executePointWithAvailability(client, options, fixture.context,
                     (copy, availability) -> Mono.defer(() -> {
-                        RxDocumentServiceRequest request = fixture.request(
-                            OperationType.Read, copy.getSessionToken(), "0");
+                        RxDocumentServiceRequest request = clonePrepared(prepared);
                         request.requestContext.setCrossRegionAvailabilityContext(availability);
-                        request.requestContext.setSessionTokenState(prepared.requestContext.getSessionTokenState());
                         request.requestContext.setExcludeRegions(copy.getExcludedRegions());
-                        setHedgeScope(request, fallbackPrimary);
                         attempts.add(request);
                         DocumentClientRetryPolicy retryPolicy = fixture.retryPolicy();
                         policies.add(retryPolicy);
@@ -748,12 +864,10 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
-            if (!fallbackPrimary) {
-                assertThat(attempts.get(0).requestContext.getSessionTokenState())
-                    .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
-            }
+            assertThat(attempts.get(0).requestContext.sessionToken)
+                .isSameAs(attempts.get(1).requestContext.sessionToken);
             assertThat(attempts.get(0).requestContext).isNotSameAs(attempts.get(1).requestContext);
-            if (!fallbackPrimary && expected != null) {
+            if (expected != null) {
                 assertThat(attempts.get(0).requestContext.sessionToken)
                     .isSameAs(attempts.get(1).requestContext.sessionToken);
             }
@@ -764,26 +878,26 @@ public class ThinClientSessionTokenTest {
                 }
             }
             assertThat(attempts.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
-                .isEqualTo(fallbackPrimary ? original : expected);
+                .isEqualTo(expected);
             assertThat(attempts.get(1).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
             assertThat(attempts.get(0).useGatewayMode).isFalse();
             assertThat(attempts.get(1).useGatewayMode).isFalse();
-            assertThat(attempts.get(0).useThinClientMode).isEqualTo(!fallbackPrimary);
+            assertThat(attempts.get(0).useThinClientMode).isTrue();
             assertThat(attempts.get(1).useThinClientMode).isTrue();
             assertThat(policies).allSatisfy(retry -> assertThat(retry.getRetryContext().getRetryCount()).isZero());
-            assertThat(fixture.wireTokens).containsExactlyInAnyOrder(fallbackPrimary ? original : expected, expected);
+            assertThat(fixture.wireTokens).containsExactlyInAnyOrder(expected, expected);
             assertThat(fixture.endpoints).extracting(URI::getHost).containsExactlyInAnyOrder("localhost", "secondary");
             assertThat(fixture.endpoints).extracting(URI::getPort)
-                .containsExactlyInAnyOrder(fallbackPrimary ? 443 : 10250, 10250);
+                .containsExactlyInAnyOrder(10250, 10250);
         }
     }
 
-    private static void setHedgeScope(RxDocumentServiceRequest request, boolean fallbackPrimary) {
-        List<String> excluded = request.requestContext.getExcludeRegions();
-        if (fallbackPrimary && (excluded == null || !excluded.contains("East US"))) {
-            request.setPartitionKeyRangeIdentity(null);
-            request.requestContext.resolvedPartitionKeyRange = null;
-        }
+    private static void setResolvedRange(RxDocumentServiceRequest request, PartitionKeyRange range)
+        throws ReflectiveOperationException {
+        Method setter = RxDocumentClientImpl.class.getDeclaredMethod(
+            "setResolvedPartitionKeyRange", RxDocumentServiceRequest.class, PartitionKeyRange.class);
+        setter.setAccessible(true);
+        setter.invoke(null, request, range);
     }
 
     private static void setField(RxDocumentClientImpl client, String name, Object value) throws ReflectiveOperationException {
@@ -823,7 +937,6 @@ public class ThinClientSessionTokenTest {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "2");
             PartitionKeyInternal key = Mockito.mock(PartitionKeyInternal.class);
             request.setPartitionKeyInternal(key);
-            request.captureOriginalSessionToken();
             request.useThinClientMode = true;
             prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
             fixture.thin.setCollectionCache(null);
@@ -838,6 +951,22 @@ public class ThinClientSessionTokenTest {
         }
     }
 
+    // Verify dispatch uses the prepared collection RID instead of resolving a potentially different scope again.
+    @Test(groups = "unit")
+    public void preparedTokenKeepsItsCollectionRidAtDispatch() throws Exception {
+        try (Fixture fixture = new Fixture()) {
+            RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
+            request.useThinClientMode = true;
+            prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
+            Mockito.doReturn(Mono.error(new IllegalStateException("Unexpected second collection lookup")))
+                .when(fixture.collections).resolveCollectionAsync(any(), any());
+            fixture.processMessage(request).block(Duration.ofSeconds(5));
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER)).isEqualTo(RID);
+            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
+            verify(fixture.collections).resolveCollectionAsync(any(), any());
+        }
+    }
+
     @Test(groups = "unit", dataProvider = "transportChanges")
     public void repeatedAttemptsAndClonesReusePreparedProgress(String original, String expected) {
         try (Fixture fixture = new Fixture()) {
@@ -846,7 +975,7 @@ public class ThinClientSessionTokenTest {
             operation.block(Duration.ofSeconds(5));
             ISessionToken prepared = request.requestContext.sessionToken;
             operation.block(Duration.ofSeconds(5));
-            RxDocumentServiceRequest clone = request.clone();
+            RxDocumentServiceRequest clone = clonePrepared(request);
             fixture.processMessage(clone).block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).containsExactly(expected, expected, expected);
             if (expected != null) {
@@ -856,21 +985,21 @@ public class ThinClientSessionTokenTest {
                 assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
                 assertThat(clone.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
             }
-            assertThat(request.requestContext.getSessionTokenState()).isSameAs(clone.requestContext.getSessionTokenState());
+            assertThat(request.requestContext.sessionToken).isSameAs(clone.requestContext.sessionToken);
             verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
             verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
         }
     }
 
     @Test(groups = "unit")
-    public void changedParentLineageRescopesOriginalProgress() {
+    public void changedParentLineageRescopesOriginalProgress() throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "0");
             fixture.processMessage(request).block(Duration.ofSeconds(5));
             ISessionToken first = request.requestContext.sessionToken;
             fixture.map = SessionTokenHelperTests.routingMap(
                 new PartitionKeyRange("0", "", "FF", Collections.singletonList("1")));
-            request.requestContext.resolvedPartitionKeyRange = fixture.map.getRangeByPartitionKeyRangeId("0");
+            setResolvedRange(request, fixture.map.getRangeByPartitionKeyRangeId("0"));
             fixture.processMessage(request).block(Duration.ofSeconds(5));
             assertThat(request.requestContext.sessionToken).isNotSameAs(first);
             assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1", "0:1#200#1=180#2=150");
@@ -907,15 +1036,13 @@ public class ThinClientSessionTokenTest {
                         Duration.ofMillis(10), Duration.ofMillis(10))).build());
             List<RxDocumentServiceRequest> attempts = new ArrayList<>();
             RxDocumentServiceRequest prepared = fixture.request(OperationType.Read, original, "0");
-            prepared.captureOriginalSessionToken();
             prepared.useThinClientMode = true;
-            fixture.thin.tryPrepareExplicitSessionToken(prepared).block(Duration.ofSeconds(5));
+            prepareSessionToken(fixture.thin, prepared).block(Duration.ofSeconds(5));
             executePointWithAvailability(client, options, fixture.context, (copy, availability) -> {
                 DocumentClientRetryPolicy policy = fixture.retryPolicy();
                 return BackoffRetryUtility.executeRetry(() -> {
-                    RxDocumentServiceRequest request = fixture.request(OperationType.Read, copy.getSessionToken(), "0");
+                    RxDocumentServiceRequest request = clonePrepared(prepared);
                     request.requestContext.setCrossRegionAvailabilityContext(availability);
-                    request.requestContext.setSessionTokenState(prepared.requestContext.getSessionTokenState());
                     attempts.add(request);
                     policy.onBeforeSendRequest(request);
                     return dispatch(client, request);
@@ -924,8 +1051,8 @@ public class ThinClientSessionTokenTest {
 
             assertThat(attempts).hasSize(2);
             assertThat(attempts.get(0)).isNotSameAs(attempts.get(1));
-            assertThat(attempts.get(0).requestContext.getSessionTokenState())
-                .isSameAs(attempts.get(1).requestContext.getSessionTokenState());
+            assertThat(attempts.get(0).requestContext.sessionToken)
+                .isSameAs(attempts.get(1).requestContext.sessionToken);
             if (expected != null) {
                 assertThat(attempts.get(1).requestContext.sessionToken)
                     .isSameAs(attempts.get(0).requestContext.sessionToken);
@@ -939,36 +1066,31 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit", dataProvider = "transportChanges")
-    public void concurrentClonesReuseAlreadyPreparedSessionState(String original, String expected) throws Exception {
+    public void concurrentClonesReuseAlreadyPreparedNativeToken(String original, String expected) throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest parent = fixture.request(OperationType.Query, original, "0");
-            parent.captureOriginalSessionToken();
             parent.useThinClientMode = true;
-            fixture.thin.tryPrepareExplicitSessionToken(parent).block(Duration.ofSeconds(5));
-            SessionTokenHelper.setOriginalSessionToken(parent, original);
+            prepareSessionToken(fixture.thin, parent).block(Duration.ofSeconds(5));
             List<RxDocumentServiceRequest> attempts = new ArrayList<>();
-            List<Future<Boolean>> results = new ArrayList<>();
+            List<Future<?>> results = new ArrayList<>();
             ExecutorService executor = Executors.newFixedThreadPool(8);
             CyclicBarrier start = new CyclicBarrier(8);
             try {
                 for (int i = 0; i < 8; i++) {
-                    RxDocumentServiceRequest request = parent.clone();
-                    request.captureOriginalSessionToken();
+                    RxDocumentServiceRequest request = clonePrepared(parent);
                     request.useThinClientMode = true;
                     attempts.add(request);
                     results.add(executor.submit(() -> {
                         start.await(5, TimeUnit.SECONDS);
-                        return fixture.thin.tryPrepareExplicitSessionToken(request).block(Duration.ofSeconds(5));
+                        return prepareSessionToken(fixture.thin, request).block(Duration.ofSeconds(5));
                     }));
                 }
-                for (Future<Boolean> result : results) {
-                    assertThat(result.get(5, TimeUnit.SECONDS)).isTrue();
+                for (Future<?> result : results) {
+                    assertThat(result.get(5, TimeUnit.SECONDS)).isIn(attempts);
                 }
-                DocumentServiceRequestContext.SessionTokenState state = parent.requestContext.getSessionTokenState();
-                assertThat(state).isNotNull();
                 for (RxDocumentServiceRequest attempt : attempts) {
                     assertThat(attempt.requestContext).isNotSameAs(parent.requestContext);
-                    assertThat(attempt.requestContext.getSessionTokenState()).isSameAs(parent.requestContext.getSessionTokenState());
+                    assertThat(attempt.requestContext.sessionToken).isSameAs(parent.requestContext.sessionToken);
                     assertThat(attempt.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
                     if (expected != null) {
                         assertThat(attempt.requestContext.sessionToken).isSameAs(attempts.get(0).requestContext.sessionToken);
@@ -976,7 +1098,8 @@ public class ThinClientSessionTokenTest {
                         assertThat(attempt.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
                     }
                 }
-                assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(original);
+                assertThat(parent.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(expected);
+                assertThat(parent.getOriginalSessionToken()).isEqualTo(original);
                 assertThat(fixture.sentRequests).isEmpty();
             } finally {
                 executor.shutdownNow();
@@ -1109,15 +1232,20 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit", dataProvider = "scopedOutcomes", dataProviderClass = SessionTokenHelperTests.class)
-    public void unknownRangePreservesFullTokenWithoutReportingOmission(boolean unmatched) {
+    public void unknownRangeRefreshesThenWarnsWithoutAmbientSubstitution(boolean unmatched) {
         try (Fixture fixture = new Fixture()) {
             String original = (unmatched ? "1:1#100" : "0:1#100") + ",unknown:1#200";
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, original, "0");
             fixture.processMessage(request).block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly(original);
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443);
-            assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            assertThat(fixture.wireTokens).containsExactly((String) null);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+            assertThat(request.getOriginalSessionToken()).isEqualTo(original);
+            assertThat(request.requestContext.getSessionTokenEvaluationResults()).singleElement()
+                .asString().contains("unknown_range_or_ancestry", "NOT enforced", "CosmosDiagnostics")
+                .doesNotContain(original);
+            verify(fixture.ranges, Mockito.times(2)).tryLookupAsync(any(), any(), any(), any());
+            verify(fixture.sessions, never()).resolveGlobalSessionToken(any());
+            verify(fixture.sessions, never()).resolvePartitionLocalSessionToken(any(), any());
         }
     }
 
@@ -1130,6 +1258,32 @@ public class ThinClientSessionTokenTest {
             assertThatThrownBy(() -> fixture.processMessage(request).block(Duration.ofSeconds(5)))
                 .isInstanceOf(NotFoundException.class);
             assertThat(fixture.sentRequests).isEmpty();
+        }
+    }
+
+    // Verify a missing physical identity is refreshed once, then either resolved or reported as range-gone.
+    @Test(groups = "unit", dataProvider = "scopedOutcomes", dataProviderClass = SessionTokenHelperTests.class)
+    public void missingTargetRefreshesBeforeRangeGone(boolean resolves) {
+        try (Fixture fixture = new Fixture()) {
+            fixture.map = SessionTokenHelperTests.routingMap(new PartitionKeyRange("0", "", "FF"));
+            CollectionRoutingMap previous = fixture.map;
+            fixture.refreshedMap = resolves ? SessionTokenHelperTests.routingMap(
+                new PartitionKeyRange("1", "", "FF", Collections.singletonList("0"))) : fixture.map;
+            RxDocumentServiceRequest request = fixture.request(OperationType.ReadFeed, "0:1#100,1:1#200", "1");
+            if (resolves) {
+                fixture.processMessage(request).block(Duration.ofSeconds(5));
+                assertThat(fixture.wireTokens).containsExactly("1:1#200");
+                assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+            } else {
+                assertThatThrownBy(() -> fixture.processMessage(request).block(Duration.ofSeconds(5)))
+                    .isInstanceOf(PartitionKeyRangeGoneException.class);
+                assertThat(fixture.sentRequests).isEmpty();
+                assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                    .isEqualTo("0:1#100,1:1#200");
+            }
+            verify(fixture.ranges).tryLookupAsync(
+                any(), Mockito.eq(RID), Mockito.same(previous), Mockito.isNull());
+            assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
         }
     }
 
@@ -1169,7 +1323,6 @@ public class ThinClientSessionTokenTest {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, ORIGINAL, "1");
             request.requestContext.resolvedPartitionKeyRange = null;
-            request.captureOriginalSessionToken();
             request.useThinClientMode = true;
             request.requestContext.cosmosDiagnostics = cosmosDiagnostics;
             ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
@@ -1187,11 +1340,28 @@ public class ThinClientSessionTokenTest {
     private static Mono<?> prepareSessionToken(RxGatewayStoreModel store, RxDocumentServiceRequest request)
         throws Exception {
         if (request.useThinClientMode && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
-            return store.tryPrepareExplicitSessionToken(request);
+            RxDocumentClientImpl client = Mockito.mock(RxDocumentClientImpl.class, Mockito.CALLS_REAL_METHODS);
+            ThinClientConnectivityConfig connectivity = Mockito.mock(ThinClientConnectivityConfig.class);
+            Mockito.when(connectivity.canThinClientBeUsed()).thenReturn(true);
+            setField(client, "thinClientConnectivityConfig", connectivity);
+            setField(client, "globalEndpointManager", store.globalEndpointManager);
+            setField(client, "thinProxy", store);
+            setField(client, "collectionCache", store.getCollectionCache());
+            setField(client, "partitionKeyRangeCache", store.getPartitionKeyRangeCache());
+            Method preparation = RxDocumentClientImpl.class.getDeclaredMethod(
+                "prepareSessionTokenForAttempt", RxDocumentServiceRequest.class);
+            preparation.setAccessible(true);
+            return (Mono<?>) preparation.invoke(client, request);
         }
         Method method = RxGatewayStoreModel.class.getDeclaredMethod("applySessionToken", RxDocumentServiceRequest.class);
         method.setAccessible(true);
         return (Mono<?>) method.invoke(store, request);
+    }
+
+    private static RxDocumentServiceRequest clonePrepared(RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest clone = request.clone();
+        clone.requestContext.getSessionTokenEvaluationResults().addAll(request.requestContext.getSessionTokenEvaluationResults());
+        return clone;
     }
 
     @DataProvider
@@ -1220,7 +1390,6 @@ public class ThinClientSessionTokenTest {
                 store.setPartitionKeyRangeCache(null);
             }
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, explicit ? ORIGINAL : null, null);
-            request.captureOriginalSessionToken();
             request.useThinClientMode = useThinClient;
             Mono<?> preparation = prepareSessionToken(store, request);
             if (explicit) {
@@ -1302,7 +1471,6 @@ public class ThinClientSessionTokenTest {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Read, explicit ? ORIGINAL : null, null);
             request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(new Object[] {"customer"}, true));
-            request.captureOriginalSessionToken();
             request.useThinClientMode = useThinClient;
             request.properties = Collections.singletonMap("session-metadata-test", "value");
             RuntimeException failure = new IllegalStateException("metadata lookup failed");
@@ -1401,7 +1569,7 @@ public class ThinClientSessionTokenTest {
     }
 
     @Test(groups = "unit")
-    public void eachSubscriptionUsesOperationResolvedRangeAndTransport() {
+    public void eachSubscriptionUsesOperationResolvedRangeAndTransport() throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentServiceRequest request = fixture.request(OperationType.Query, ORIGINAL, "0");
             request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "10");
@@ -1416,22 +1584,24 @@ public class ThinClientSessionTokenTest {
                 .containsExactly("20".getBytes(StandardCharsets.UTF_8));
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "FF");
             request.setPartitionKeyRangeIdentity(null);
-            request.requestContext.resolvedPartitionKeyRange = null;
+            setResolvedRange(request, null);
             operation.block(Duration.ofSeconds(5));
-            assertThat(fixture.sentRequests.get(1).headers().value(HttpConstants.HttpHeaders.START_EPK)).isEqualTo("10");
-            assertThat(fixture.sentRequests.get(1).headers().value(HttpConstants.HttpHeaders.END_EPK)).isEqualTo("FF");
+            assertThat(fixture.encodedTokens.get(1).get(RntbdRequestHeader.StartEpk.id()))
+                .containsExactly("10".getBytes(StandardCharsets.UTF_8));
+            assertThat(fixture.encodedTokens.get(1).get(RntbdRequestHeader.EndEpk.id()))
+                .containsExactly("FF".getBytes(StandardCharsets.UTF_8));
             request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "20");
             request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(RID, "0"));
-            request.requestContext.resolvedPartitionKeyRange = fixture.map.getRangeByPartitionKeyRangeId("0");
+            setResolvedRange(request, fixture.map.getRangeByPartitionKeyRangeId("0"));
             operation.block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1", ORIGINAL, "0:1#100#1=90#2=-1");
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250, 443, 10250);
+            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1", null, "0:1#100#1=90#2=-1");
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250, 10250, 10250);
             assertThat(request.useGatewayMode).isFalse();
         }
     }
 
     @Test(groups = "unit")
-    public void unresolvedHierarchicalKeyAndConflictingIdentitySelectClassicBeforeDispatch() {
+    public void unresolvedPrefixOmitsProgressButConflictingIdentityRemainsAnError() {
         try (Fixture fixture = new Fixture()) {
             fixture.definition.setKind(PartitionKind.MULTI_HASH);
             fixture.definition.setPaths(Arrays.asList("/tenant", "/user"));
@@ -1440,9 +1610,11 @@ public class ThinClientSessionTokenTest {
             fixture.processMessage(request).block(Duration.ofSeconds(5));
             RxDocumentServiceRequest conflicting = fixture.request(OperationType.Read, ORIGINAL, "0");
             conflicting.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("other-collection", "0"));
-            fixture.processMessage(conflicting).block(Duration.ofSeconds(5));
-            assertThat(fixture.wireTokens).containsExactly(ORIGINAL, ORIGINAL);
-            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(443, 443);
+            assertThatThrownBy(() -> fixture.processMessage(conflicting).block(Duration.ofSeconds(5)))
+                .isInstanceOf(PartitionKeyRangeGoneException.class);
+            assertThat(fixture.wireTokens).containsExactly((String) null);
+            assertThat(fixture.endpoints).extracting(URI::getPort).containsExactly(10250);
+            assertThat(conflicting.requestContext.getSessionTokenEvaluationResults()).isEmpty();
         }
     }
 
@@ -1549,6 +1721,7 @@ public class ThinClientSessionTokenTest {
         final List<Map<Short, byte[]>> encodedTokens = new CopyOnWriteArrayList<>();
         CollectionRoutingMap map = SessionTokenHelperTests.routingMap(
             new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"));
+        CollectionRoutingMap refreshedMap;
         boolean delayFirstResponse;
         final Sinks.Empty<Void> primaryRequestSent = Sinks.empty();
 
@@ -1564,7 +1737,12 @@ public class ThinClientSessionTokenTest {
                 return Mono.just(new Utils.ValueHolder<>(collection));
             });
             Mockito.when(ranges.tryLookupAsync(any(), any(), any(), any()))
-                .thenAnswer(invocation -> Mono.just(new Utils.ValueHolder<>(map)));
+                .thenAnswer(invocation -> {
+                    if (invocation.getArgument(2) != null && refreshedMap != null) {
+                        map = refreshedMap;
+                    }
+                    return Mono.just(new Utils.ValueHolder<>(map));
+                });
             GatewayServiceConfigurationReader configuration = Mockito.mock(GatewayServiceConfigurationReader.class);
             Mockito.when(configuration.getDefaultConsistencyLevel()).thenReturn(ConsistencyLevel.SESSION);
             RegionalRoutingContext region = new RegionalRoutingContext(URI.create("https://localhost:443"));
@@ -1652,6 +1830,8 @@ public class ThinClientSessionTokenTest {
             setField(client, "thinProxy", thin);
             setField(client, "gatewayProxy", classic);
             setField(client, "storeModel", classic);
+            setField(client, "collectionCache", collections);
+            setField(client, "partitionKeyRangeCache", ranges);
             return client;
         }
 
@@ -1700,6 +1880,7 @@ public class ThinClientSessionTokenTest {
             request.setPartitionKeyDefinition(definition);
             request.setResponseTimeout(Duration.ofSeconds(5));
             request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, token);
+            request.setOriginalSessionToken(token);
             if (operation == OperationType.ReadFeed) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
             }

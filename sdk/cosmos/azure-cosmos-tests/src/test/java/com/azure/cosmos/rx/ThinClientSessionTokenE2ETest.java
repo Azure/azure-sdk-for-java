@@ -50,7 +50,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
-import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,9 +172,9 @@ public class ThinClientSessionTokenE2ETest {
         return new Object[][] {{true, false}, {false, false}, {true, true}, {false, true}};
     }
 
-    // Verify known unrelated progress can stay on V2 while unknown ranges retain the full token on classic Gateway.
+    // Verify unmatched progress is omitted with diagnostics after refresh without switching away from Gateway V2.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "targetProgress", timeOut = 90000)
-    public void unrelatedProgressUsesVerifiedScopeOrClassicGateway(boolean includeTargetProgress, boolean unknownRange) {
+    public void unrelatedProgressRefreshesAndStaysOnV2(boolean includeTargetProgress, boolean unknownRange) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
             Map.Entry<String, ObjectNode> target = representatives.entrySet().iterator().next();
@@ -196,15 +195,10 @@ public class ThinClientSessionTokenE2ETest {
                 .readItem(item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
                 .block(WAIT);
             assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));
-            if (unknownRange) {
-                assertThat(response.getDiagnostics().getDiagnosticsContext().getRequestInfo()).isNotEmpty()
-                    .allSatisfy(info -> {
-                        URI endpoint = URI.create(info.getEndpoint());
-                        assertThat(endpoint.getScheme()).isEqualTo("https");
-                        assertThat(endpoint.getPort()).isIn(-1, 443);
-                    });
-            } else {
-                TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
+            TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
+            if (unknownRange || !includeTargetProgress) {
+                assertThat(response.getDiagnostics().toString())
+                    .contains("compound_session_token_scope_unresolved_after_refresh", "NOT enforced", "CosmosDiagnostics");
             }
             assertThat(options.getSessionToken()).isEqualTo(original);
         }

@@ -23,11 +23,8 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -84,54 +81,7 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
-    private SessionTokenState sessionTokenState;
-
     public DocumentServiceRequestContext() {}
-
-    public SessionTokenState getSessionTokenState() {
-        return this.sessionTokenState;
-    }
-
-    public void setSessionTokenState(SessionTokenState state) {
-        this.sessionTokenState = state;
-    }
-
-    public static final class SessionTokenState {
-        private final String originalToken;
-        private final String collectionRid;
-        private final String rangeId;
-        private final Set<String> parents;
-        private final ISessionToken token;
-        private final boolean useThinClient;
-
-        public SessionTokenState(String originalToken, String collectionRid, PartitionKeyRange range,
-            ISessionToken token, boolean useThinClient) {
-            this.originalToken = originalToken;
-            this.collectionRid = collectionRid;
-            this.rangeId = range == null ? null : range.getId();
-            this.parents = range == null || range.getParents() == null
-                ? Collections.emptySet() : new HashSet<>(range.getParents());
-            this.token = token;
-            this.useThinClient = useThinClient;
-        }
-
-        public boolean matches(RxDocumentServiceRequest request, String originalToken) {
-            PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-            return Objects.equals(this.originalToken, originalToken)
-                && Objects.equals(this.collectionRid, request.requestContext.resolvedCollectionRid)
-                && Objects.equals(this.rangeId, range == null ? null : range.getId())
-                && this.parents.equals(range == null || range.getParents() == null
-                    ? Collections.emptySet() : new HashSet<>(range.getParents()));
-        }
-
-        public ISessionToken getToken() {
-            return this.token;
-        }
-
-        public boolean useThinClient() {
-            return this.useThinClient;
-        }
-    }
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -198,7 +148,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.timeoutHelper = this.timeoutHelper;
         context.resolvedCollectionRid = this.resolvedCollectionRid;
         context.sessionToken = this.sessionToken;
-        context.sessionTokenState = this.sessionTokenState;
         context.quorumSelectedLSN = this.quorumSelectedLSN;
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
         context.cachedWriteResponse = this.cachedWriteResponse;
@@ -258,10 +207,6 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setCrossRegionAvailabilityContext(CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
         this.crossRegionAvailabilityContextForRequest = crossRegionAvailabilityContextForRequest;
-        if (crossRegionAvailabilityContextForRequest != null
-            && crossRegionAvailabilityContextForRequest.getSessionTokenState() != null) {
-            this.sessionTokenState = crossRegionAvailabilityContextForRequest.getSessionTokenState();
-        }
     }
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest getCrossRegionAvailabilityContext() {
@@ -342,3 +287,4 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.barrierType = barrierType;
     }
 }
+

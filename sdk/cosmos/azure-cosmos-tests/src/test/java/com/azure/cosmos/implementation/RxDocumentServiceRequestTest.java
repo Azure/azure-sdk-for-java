@@ -34,7 +34,7 @@ public class RxDocumentServiceRequestTest {
     private static final Set<String> CLONE_ACCOUNTED_FIELDS = new HashSet<>(Arrays.asList(
         "clientContext", "forcePartitionKeyRangeRefresh", "forceCollectionRoutingMapRefresh", "resourceId",
         "resourceType", "headers", "continuation", "isMedia", "isNameBased", "operationType", "resourceAddress",
-        "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken", "originalSessionTokenCaptured",
+        "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken",
         "partitionKeyRangeIdentity",
         "defaultReplicaIndex", "isAddressRefresh", "isForcedAddressRefresh", "requestContext",
         "faultInjectionRequestContext", "partitionKeyInternal", "partitionKeyDefinition", "effectivePartitionKey",
@@ -474,38 +474,36 @@ public class RxDocumentServiceRequestTest {
             if (token != null) {
                 original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, token);
             }
-            original.captureOriginalSessionToken();
+            original.setOriginalSessionToken(token);
             original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, "0:1#999");
             RxDocumentServiceRequest clone = original.clone();
-            clone.captureOriginalSessionToken();
             assertThat(clone.getOriginalSessionToken()).isEqualTo(token);
             assertThat(original.getOriginalSessionToken()).isEqualTo(token);
         }
     }
 
     @Test(groups = "unit")
-    public void clonesCarryAlreadyPreparedSessionState() {
+    public void clonesCarryAlreadyPreparedNativeSessionToken() {
         RxDocumentServiceRequest original = RxDocumentServiceRequest.createFromName(
             mockDiagnosticsClientContext(), OperationType.Query, "/dbs/db/colls/coll/docs", ResourceType.Document);
         original.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, "0:1#100,1:1#200");
-        original.captureOriginalSessionToken();
+        original.setOriginalSessionToken("0:1#100,1:1#200");
         original.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("0"));
         DocumentCollection collection = new DocumentCollection();
         collection.setResourceId("ccZ1ANCszwk=");
         original.requestContext.resolvedCollectionRid = collection.getResourceId();
-        assertThat(SessionTokenHelper.prepareExplicitSessionToken(original, collection,
-            SessionTokenHelperTests.routingMap(new PartitionKeyRange("0", "", "80"), new PartitionKeyRange("1", "80", "FF"))))
-            .isTrue();
+        original.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "80");
+        SessionTokenHelper.applyScopedSessionToken(original, original.getOriginalSessionToken(),
+            SessionTokenHelper.resolveExplicitSessionToken(original, original.getOriginalSessionToken()));
         RxDocumentServiceRequest first = original.clone();
         RxDocumentServiceRequest second = original.clone();
-        assertThat(first.requestContext.getSessionTokenState()).isNotNull()
-            .isSameAs(original.requestContext.getSessionTokenState());
-        assertThat(second.requestContext.getSessionTokenState()).isSameAs(first.requestContext.getSessionTokenState());
+        assertThat(first.requestContext.sessionToken).isNotNull().isSameAs(original.requestContext.sessionToken);
+        assertThat(second.requestContext.sessionToken).isSameAs(first.requestContext.sessionToken);
 
-        first.captureOriginalSessionToken();
         first.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        assertThat(first.clone().requestContext.getSessionTokenState()).isSameAs(first.requestContext.getSessionTokenState());
-        assertThat(original.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo("0:1#100,1:1#200");
+        assertThat(first.clone().requestContext.sessionToken).isSameAs(first.requestContext.sessionToken);
+        assertThat(first.getOriginalSessionToken()).isEqualTo("0:1#100,1:1#200");
+        assertThat(original.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo("0:1#100");
     }
 
     @Test(groups = { "unit" })

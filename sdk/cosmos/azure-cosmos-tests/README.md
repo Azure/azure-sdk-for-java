@@ -33,7 +33,7 @@ Use a global `ACCOUNT_HOST` for an account with **at least two Gateway V2 region
 and configure credentials through the existing `cosmos-v4.properties` mechanism.
 The global endpoint and two regional endpoints isolate the positive stale reader,
 the split observer, and a separate stale reader for the negative control. This prevents
-either metadata polling or the positive fallback read from refreshing the negative
+either metadata polling or the positive refreshed read from refreshing the negative
 control's endpoint-shared routing cache. Only the test's own database/container is
 changed or deleted.
 
@@ -46,16 +46,34 @@ mvn -f sdk\cosmos\pom.xml -pl azure-cosmos-tests -am test-compile failsafe:integ
 ```
 
 The test calls `readItem` with parent progress/current child metadata, child
-progress/current child metadata, and child progress/stale parent metadata.
+progress/current child metadata, and child progress/stale parent metadata. The
+stale reader refreshes its routing map before sending the scoped token through V2.
 Observation-only HTTP wrappers record the actual session headers (including decoded
-Gateway V2 bytes) and forward every request to the real service. An advanced-child
-progress control must fail with 404/1002 instead of succeeding after progress is lost.
+Gateway V2 bytes) and forward every request to the real service. A mixed lower-parent
+and advanced-child progress control must refresh the stale map, stay on V2, and fail
+with 404/1002 instead of succeeding after the child's progress is lost.
 When the initial container has a single range, the parent compound token concatenates
 two genuine responses from that parent; no partition ID or progress is fabricated.
 
 No custom group override is needed; the endpoint-probe suite includes this test
 automatically. It is not part of the force-enabled `thinclient` group. Provisioned
 throughput incurs charges; let the unconditional cleanup finish when debugging.
+
+Explicit compound tokens use the existing target/parent token selection. An unresolved
+target, no matching progress, or an unknown token range triggers one routing-map refresh.
+The unknown-range check also applies when a parent token matches: V2 can route by EPK to
+a split child without rejecting the client's stale parent map.
+
+If refreshed metadata still cannot establish the scope, the request stays on V2 but
+omits the caller's token; ambient cached progress is not substituted. The WARN message
+and `sessionTokenEvaluationResults` diagnostics explain that the supplied session progress
+is **not enforced**, include a safe reason and request identifiers, and advise checking
+the token/container association and capturing diagnostics for recurring cases. Full
+session tokens are not included in this warning. Do not blindly retry non-idempotent
+writes in response to it. Metadata and token-parsing failures remain errors rather than
+being converted to this weaker-consistency outcome. A fixed physical range that is still
+missing after refresh retains normal range-gone handling; omitting a token does not
+make an invalid physical route usable.
 
 ## Troubleshooting
 n/a

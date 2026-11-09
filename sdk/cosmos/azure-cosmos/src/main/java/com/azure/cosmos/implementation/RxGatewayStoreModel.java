@@ -28,7 +28,8 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -60,7 +61,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
@@ -1203,17 +1203,26 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     private Mono<Void> addIntendedCollectionRid(RxDocumentServiceRequest request) {
         if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
+            if (request.useThinClientMode
+                && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+                && !StringUtils.isEmpty(request.requestContext.resolvedCollectionRid)) {
+                // Keep the intended RID aligned with the token prepared for this request.
+                return Mono.fromRunnable(() -> setIntendedCollectionRidHeader(request));
+            }
             return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
-                if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
-                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
-                        request.requestContext.resolvedCollectionRid);
-                } else {
-                    request.intendedCollectionRidPassedIntoSDK = true;
-                }
+                setIntendedCollectionRidHeader(request);
                 return Mono.empty();
             });
         }
         return Mono.empty();
+    }
+
+    private void setIntendedCollectionRidHeader(RxDocumentServiceRequest request) {
+        if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+            request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER, request.requestContext.resolvedCollectionRid);
+        } else {
+            request.intendedCollectionRidPassedIntoSDK = true;
+        }
     }
 
     protected Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeId(RxDocumentServiceRequest request) {
@@ -1303,59 +1312,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION;
     }
 
-    private boolean shouldApplySessionToken(RxDocumentServiceRequest request) {
+    public boolean shouldApplySessionToken(RxDocumentServiceRequest request) {
         return !isMasterOperation(request.getResourceType(), request.getOperationType())
             && isEffectiveSessionConsistency(request)
             && (request.isReadOnlyRequest() || request.getOperationType() == OperationType.Batch
                 || this.useMultipleWriteLocations);
-    }
-
-    // False tells the operation layer to select classic Gateway before dispatch.
-    public Mono<Boolean> tryPrepareExplicitSessionToken(RxDocumentServiceRequest request) {
-        if (!shouldApplySessionToken(request)) {
-            return Mono.just(true);
-        }
-
-        return Mono.defer(() -> {
-            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
-            request.requestContext.sessionToken = null;
-            PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-            PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-            DocumentServiceRequestContext.SessionTokenState prepared = request.requestContext.getSessionTokenState();
-            if (prepared != null && prepared.matches(request, request.getOriginalSessionToken())
-                && (identity == null
-                || (range != null && range.getId().equals(identity.getPartitionKeyRangeId())
-                    && (identity.getCollectionRid() == null
-                        || identity.getCollectionRid().equals(request.requestContext.resolvedCollectionRid))))) {
-                if (prepared.useThinClient()) {
-                    SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
-                }
-                return Mono.just(prepared.useThinClient());
-            }
-
-            if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
-                return Mono.error(new IllegalStateException("Session token resolution requires metadata caches."));
-            }
-            return resolveSessionTokenMetadata(request, request.properties, (collection, routingMap) -> {
-                if (collection == null) {
-                    return Mono.error(new NotFoundException("Collection could not be resolved."));
-                }
-                if (routingMap == null) {
-                    return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
-                }
-                if (!SessionTokenHelper.prepareExplicitSessionToken(request, collection, routingMap)) {
-                    return Mono.just(false);
-                }
-                SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
-                return Mono.just(true);
-            });
-        });
-    }
-
-    public boolean tryPrepareExplicitSessionToken(
-        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
-        return !shouldApplySessionToken(request)
-            || SessionTokenHelper.prepareExplicitSessionToken(request, collection, routingMap);
     }
 
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
@@ -1378,61 +1339,79 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty(); //User is explicitly controlling the session.
         }
 
-        return applyAmbientSessionToken(request);
-    }
+        if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
+                flatMap(collectionValueHolder -> {
 
-    private Mono<Void> applyAmbientSessionToken(RxDocumentServiceRequest request) {
-        return Mono.defer(() -> {
-            if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
-                applyGlobalSessionToken(request);
-                return Mono.empty();
-            }
-            return resolveSessionTokenMetadata(request, null, (collection, routingMap) -> {
-                if (collection == null || routingMap == null) {
-                    applyGlobalSessionToken(request);
-                    return Mono.empty();
-                }
-                PartitionKeyRange range = SessionTokenHelper.resolveSessionTokenRange(
-                    request, collection, routingMap, false);
-                String rangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-                if (range != null || StringUtils.isNotEmpty(rangeId) || request.getPartitionKeyInternal() != null) {
-                    request.requestContext.resolvedPartitionKeyRange = range;
-                    if (range == null && StringUtils.isNotEmpty(rangeId)) {
-                        SessionTokenHelper.setPartitionLocalSessionToken(request, rangeId, this.sessionContainer);
-                    } else {
-                        SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
+                    if (collectionValueHolder == null || collectionValueHolder.v == null) {
+                        //Apply the ambient session.
+                        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                        if (!Strings.isNullOrEmpty(sessionToken)) {
+                            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                        }
+                        return Mono.empty();
                     }
-                } else {
-                    applyGlobalSessionToken(request);
-                }
-                return Mono.empty();
-            });
-        });
-    }
+                    return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collectionValueHolder.v.getResourceId(),
+                        null,
+                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
-    private <T> Mono<T> resolveSessionTokenMetadata(
-        RxDocumentServiceRequest request,
-        Map<String, Object> properties,
-        BiFunction<DocumentCollection, CollectionRoutingMap, Mono<T>> onMetadataResolved) {
-        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
-            .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
-        MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
-        return this.collectionCache.resolveCollectionAsync(diagnostics, request).flatMap(collectionHolder -> {
-            // Each caller decides whether absent metadata permits ambient fallback or requires an error.
-            if (collectionHolder == null || collectionHolder.v == null) {
-                return onMetadataResolved.apply(null, null);
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                            return Mono.empty();
+                        }
+                        String partitionKeyRangeId =
+                            request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            if (request.requestContext.resolvedPartitionKeyRange == null) {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
+                                    sessionContainer);
+                            } else {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                            }
+                        } else if (partitionKeyInternal != null) {
+                            String effectivePartitionKeyString = StringUtils.isNotEmpty(request.getEffectivePartitionKey()) ?
+                                request.getEffectivePartitionKey() : PartitionKeyInternalHelper
+                                .getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                        } else {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                        }
+
+                        return Mono.empty();
+                    });
+                });
+        } else {
+            //Apply the ambient session.
+            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+            if (!Strings.isNullOrEmpty(sessionToken)) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
             }
-            DocumentCollection collection = collectionHolder.v;
-            return this.partitionKeyRangeCache.tryLookupAsync(
-                diagnostics, collection.getResourceId(), null, properties)
-                .flatMap(mapHolder -> onMetadataResolved.apply(collection, mapHolder == null ? null : mapHolder.v));
-        });
-    }
-
-    private void applyGlobalSessionToken(RxDocumentServiceRequest request) {
-        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
-        if (!Strings.isNullOrEmpty(sessionToken)) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+            return Mono.empty();
         }
     }
 

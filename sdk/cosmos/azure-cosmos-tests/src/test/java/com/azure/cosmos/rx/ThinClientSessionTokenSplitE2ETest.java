@@ -94,7 +94,7 @@ public class ThinClientSessionTokenSplitE2ETest {
                 .build());
     }
 
-    // Verify parent inheritance, child scoping, and stale-metadata fallback through point reads after a real split.
+    // Verify parent inheritance, child scoping, and stale-metadata refresh through V2 reads after a real split.
     @Test(groups = "thinclientEndpointProbe", timeOut = 1200000)
     public void pointReadsPreserveCompoundProgressAcrossRealSplit() throws Exception {
         assertThat(Configs.isThinClientEnabled()).as("Endpoint-probe coverage must not force Gateway V2 on or off").isNull();
@@ -219,13 +219,18 @@ public class ThinClientSessionTokenSplitE2ETest {
             readAndAssert(currentContainer, item, childCompound,
                 child.getId() + ":" + childProgress.get(child.getId()).convertToString(), true, freshRequests);
             assertStale(staleReader, beforeSplit, parentId, child.getId());
-            readAndAssert(staleContainer, item, childCompound, childCompound, false, staleRequests);
+            readAndAssert(staleContainer, item, childCompound,
+                child.getId() + ":" + childProgress.get(child.getId()).convertToString(), true, staleRequests);
+            assertThat(routingMap(staleReader, null).tryGetRangeByPartitionKeyRangeId(child.getId())).isNotNull();
 
             assertStale(negativeReader, negativeBeforeSplit, parentId, child.getId());
             Map<String, ISessionToken> advanced = new LinkedHashMap<>(childProgress);
             ISessionToken target = advanced.get(child.getId());
             advanced.put(child.getId(), ConsistencyTestsBase.createSessionToken(target, target.getLSN() + 1000000));
+            advanced.put(parentId, parentProgress);
             String advancedCompound = combine(advanced);
+            String expectedAdvanced = child.getId() + ":"
+                + advanced.get(child.getId()).merge(parentProgress).convertToString();
             negativeRequests.clear();
             assertThatThrownBy(() -> negativeContainer.readItem(
                 item.get("id").asText(), new PartitionKey(item.get("pk").asText()),
@@ -233,10 +238,14 @@ public class ThinClientSessionTokenSplitE2ETest {
                 .isInstanceOfSatisfying(CosmosException.class, error -> {
                     assertThat(error.getStatusCode()).isEqualTo(404);
                     assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+                    assertThat(error.getDiagnostics().toString())
+                        .doesNotContain("compound_session_token_scope_unresolved_after_refresh");
                 });
             assertThat(negativeRequests.requests).isNotEmpty();
-            assertThat(negativeRequests.requests.get(0).getRight()).isEqualTo(advancedCompound);
-            assertThat(negativeRequests.requests.get(0).getLeft().getPort()).isIn(-1, 443);
+            assertThat(negativeRequests.requests).allSatisfy(attempt -> {
+                assertThat(attempt.getRight()).isEqualTo(expectedAdvanced);
+                assertThat(attempt.getLeft().getPort()).isEqualTo(10250);
+            });
         }
     }
 

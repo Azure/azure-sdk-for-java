@@ -61,7 +61,6 @@ public class RxDocumentServiceRequest implements Cloneable {
     private final UUID activityId;
 
     private volatile String originalSessionToken;
-    private boolean originalSessionTokenCaptured;
     private volatile PartitionKeyRangeIdentity partitionKeyRangeIdentity;
     private volatile Integer defaultReplicaIndex;
 
@@ -932,13 +931,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         return originalSessionToken;
     }
 
-    void captureOriginalSessionToken() {
-        if (!this.originalSessionTokenCaptured) {
-            this.originalSessionToken = this.headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-            this.originalSessionTokenCaptured = true;
-        }
-    }
-
     public void setOriginalSessionToken(String originalSessionToken) {
         this.originalSessionToken = originalSessionToken;
     }
@@ -1082,7 +1074,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setForceNameCacheRefresh(this.isForceNameCacheRefresh());
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
-        rxDocumentServiceRequest.originalSessionTokenCaptured = this.originalSessionTokenCaptured;
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
         rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
