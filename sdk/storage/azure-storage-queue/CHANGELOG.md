@@ -1,6 +1,6 @@
 # Release History
 
-## 12.33.0 (2026-11-06)
+## 12.33.0-private (2026-11-09)
 
 ### Features Added
 - Provides a private general availability (GA) release of the STG105 features.
@@ -10,7 +10,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-common` from `12.37.0-beta.1` to version `12.37.0`.
+- Upgraded `azure-storage-common` from `12.37.0-beta.1` to version `12.37.0-private`.
 
 ## 12.33.0-beta.1 (2026-11-05)
 
