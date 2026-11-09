@@ -30,6 +30,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.atLeast;
@@ -44,19 +45,27 @@ public class BootstrapperImplTests {
         "]," +
         "\"PKRangeId\":\"%s\"}";
 
+    private enum InitializationFailure {
+        DISCOVERY_ERROR,
+        EMPTY_RANGES,
+        LEASE_CREATION_ERROR
+    }
+
     @DataProvider
     public Object[][] initializationFailures() {
         return new Object[][] {
-            {ChangeFeedMode.FULL_FIDELITY, true},
-            {ChangeFeedMode.FULL_FIDELITY, false},
-            {ChangeFeedMode.INCREMENTAL, true},
-            {ChangeFeedMode.INCREMENTAL, false}
+            {ChangeFeedMode.FULL_FIDELITY, InitializationFailure.DISCOVERY_ERROR},
+            {ChangeFeedMode.FULL_FIDELITY, InitializationFailure.EMPTY_RANGES},
+            {ChangeFeedMode.FULL_FIDELITY, InitializationFailure.LEASE_CREATION_ERROR},
+            {ChangeFeedMode.INCREMENTAL, InitializationFailure.DISCOVERY_ERROR},
+            {ChangeFeedMode.INCREMENTAL, InitializationFailure.EMPTY_RANGES},
+            {ChangeFeedMode.INCREMENTAL, InitializationFailure.LEASE_CREATION_ERROR}
         };
     }
 
     @Test(groups = {"unit"}, dataProvider = "initializationFailures")
     public void initializationFailureLeavesStoreUnmarkedAndRetryCreatesMissingLeases(
-        ChangeFeedMode mode, boolean discoveryFails) {
+        ChangeFeedMode mode, InitializationFailure failureType) {
 
         Duration lockTime = Duration.ofSeconds(5);
         ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
@@ -72,8 +81,21 @@ public class BootstrapperImplTests {
         Lease secondLease = new ServiceItemLeaseV1().withLeaseToken("AA-FF").withFeedRange(secondFeedRange);
         RuntimeException failure = new IllegalStateException("Initialization failed");
 
+        boolean leaseCreationFails = failureType == InitializationFailure.LEASE_CREATION_ERROR;
+        Mono<List<PartitionKeyRange>> initialDiscovery;
+        switch (failureType) {
+            case DISCOVERY_ERROR:
+                initialDiscovery = Mono.error(failure);
+                break;
+            case EMPTY_RANGES:
+                initialDiscovery = Mono.just(Collections.emptyList());
+                break;
+            default:
+                initialDiscovery = Mono.just(ranges);
+                break;
+        }
         Mockito.when(contextClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
-            .thenReturn(discoveryFails ? Mono.error(failure) : Mono.just(ranges), Mono.just(ranges));
+            .thenReturn(initialDiscovery, Mono.just(ranges));
         Mockito.when(epkStore.getAllLeases())
             .thenReturn(Flux.empty(), Flux.just(firstLease));
         Mockito.when(epkStore.createLeaseIfNotExist(Mockito.any(FeedRangeEpkImpl.class), Mockito.isNull()))
@@ -83,7 +105,7 @@ public class BootstrapperImplTests {
                     ? Mono.just(firstLease)
                     : Mono.just(secondLease);
             });
-        if (!discoveryFails) {
+        if (leaseCreationFails) {
             Mockito.when(epkStore.createLeaseIfNotExist(Mockito.eq(secondFeedRange), Mockito.isNull()))
                 .thenReturn(Mono.error(failure), Mono.just(secondLease));
         }
@@ -101,7 +123,7 @@ public class BootstrapperImplTests {
 
         RuntimeException epkReleaseFailure = new IllegalStateException("EPK lock release failed");
         RuntimeException pkReleaseFailure = new IllegalStateException("PK lock release failed");
-        if (!discoveryFails) {
+        if (leaseCreationFails) {
             Mockito.when(epkStore.releaseInitializationLock()).thenReturn(Mono.error(epkReleaseFailure), Mono.just(true));
             Mockito.when(pkStore.releaseInitializationLock()).thenReturn(Mono.error(pkReleaseFailure), Mono.just(true));
         }
@@ -116,8 +138,13 @@ public class BootstrapperImplTests {
 
         StepVerifier.create(bootstrapper.initialize())
             .expectErrorSatisfies(error -> {
-                Assert.assertSame(error, failure);
-                Throwable[] expectedSuppressed = discoveryFails
+                if (failureType == InitializationFailure.EMPTY_RANGES) {
+                    Assert.assertTrue(error instanceof IllegalStateException);
+                    Assert.assertEquals(error.getMessage(), "No partition key ranges found for change feed initialization");
+                } else {
+                    Assert.assertSame(error, failure);
+                }
+                Throwable[] expectedSuppressed = !leaseCreationFails
                     ? new Throwable[0]
                     : mode == ChangeFeedMode.INCREMENTAL
                         ? new Throwable[] {epkReleaseFailure, pkReleaseFailure}
@@ -125,6 +152,10 @@ public class BootstrapperImplTests {
                 Assert.assertEquals(error.getSuppressed(), expectedSuppressed);
             })
             .verify(lockTime);
+        if (!leaseCreationFails) {
+            Mockito.verify(epkStore, Mockito.never())
+                .createLeaseIfNotExist(Mockito.any(FeedRangeEpkImpl.class), Mockito.isNull());
+        }
         Mockito.verify(epkStore, Mockito.never()).markInitialized();
         Mockito.verify(pkStore, Mockito.never()).markInitialized();
         Mockito.verify(epkStore).releaseInitializationLock();
@@ -134,7 +165,7 @@ public class BootstrapperImplTests {
 
         StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
         Mockito.verify(epkStore).createLeaseIfNotExist(Mockito.eq(firstFeedRange), Mockito.isNull());
-        Mockito.verify(epkStore, times(discoveryFails ? 1 : 2))
+        Mockito.verify(epkStore, times(leaseCreationFails ? 2 : 1))
             .createLeaseIfNotExist(Mockito.eq(secondFeedRange), Mockito.isNull());
         Mockito.verify(epkStore).markInitialized();
         if (mode == ChangeFeedMode.INCREMENTAL) {
