@@ -56,7 +56,10 @@ public final class RealtimeResponseContentPartAddedEvent extends RealtimeServerE
     @Generated
     private final long contentIndex;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The content part that was added.
+     */
+    @Generated
     private final Part part;
 
     /**

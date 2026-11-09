@@ -143,8 +143,8 @@ public final class RealtimeConversationItemInputAudioTranscriptionSegmentEvent e
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("speaker", this.speaker);
-        jsonWriter.writeDoubleField("start", this.startTime);
-        jsonWriter.writeDoubleField("end", this.endTime);
+        jsonWriter.writeDoubleField("start", this.start);
+        jsonWriter.writeDoubleField("end", this.end);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -169,8 +169,8 @@ public final class RealtimeConversationItemInputAudioTranscriptionSegmentEvent e
             String text = null;
             String id = null;
             String speaker = null;
-            Duration startTime = null;
-            Duration endTime = null;
+            Duration start = null;
+            Duration end = null;
             RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_SEGMENT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -188,9 +188,9 @@ public final class RealtimeConversationItemInputAudioTranscriptionSegmentEvent e
                 } else if ("speaker".equals(fieldName)) {
                     speaker = reader.getString();
                 } else if ("start".equals(fieldName)) {
-                    startTime = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
+                    start = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else if ("end".equals(fieldName)) {
-                    endTime = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
+                    end = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else {
@@ -199,23 +199,11 @@ public final class RealtimeConversationItemInputAudioTranscriptionSegmentEvent e
             }
             RealtimeConversationItemInputAudioTranscriptionSegmentEvent deserializedRealtimeConversationItemInputAudioTranscriptionSegmentEvent
                 = new RealtimeConversationItemInputAudioTranscriptionSegmentEvent(eventId, itemId, contentIndex, text,
-                    id, speaker, startTime, endTime);
+                    id, speaker, start, end);
             deserializedRealtimeConversationItemInputAudioTranscriptionSegmentEvent.type = type;
             return deserializedRealtimeConversationItemInputAudioTranscriptionSegmentEvent;
         });
     }
-
-    /*
-     * Start time of the segment in seconds.
-     */
-    @Generated
-    private final double startTime;
-
-    /*
-     * End time of the segment in seconds.
-     */
-    @Generated
-    private final double endTime;
 
     /**
      * Creates an instance of RealtimeConversationItemInputAudioTranscriptionSegmentEvent class.
@@ -226,47 +214,59 @@ public final class RealtimeConversationItemInputAudioTranscriptionSegmentEvent e
      * @param text the text value to set.
      * @param id the id value to set.
      * @param speaker the speaker value to set.
-     * @param startTime the startTime value to set.
-     * @param endTime the endTime value to set.
+     * @param start the start value to set.
+     * @param end the end value to set.
      */
     @Generated
     private RealtimeConversationItemInputAudioTranscriptionSegmentEvent(String eventId, String itemId,
-        long contentIndex, String text, String id, String speaker, Duration startTime, Duration endTime) {
+        long contentIndex, String text, String id, String speaker, Duration start, Duration end) {
         this.eventId = eventId;
         this.itemId = itemId;
         this.contentIndex = contentIndex;
         this.text = text;
         this.id = id;
         this.speaker = speaker;
-        if (startTime == null) {
-            this.startTime = 0.0;
+        if (start == null) {
+            this.start = 0.0;
         } else {
-            this.startTime = (double) startTime.toNanos() / 1000_000_000L;
+            this.start = (double) start.toNanos() / 1000_000_000L;
         }
-        if (endTime == null) {
-            this.endTime = 0.0;
+        if (end == null) {
+            this.end = 0.0;
         } else {
-            this.endTime = (double) endTime.toNanos() / 1000_000_000L;
+            this.end = (double) end.toNanos() / 1000_000_000L;
         }
     }
 
-    /**
-     * Get the startTime property: Start time of the segment in seconds.
-     *
-     * @return the startTime value.
+    /*
+     * Start time of the segment in seconds.
      */
     @Generated
-    public Duration getStartTime() {
-        return Duration.ofNanos((long) (this.startTime * 1000_000_000L));
+    private final double start;
+
+    /*
+     * End time of the segment in seconds.
+     */
+    @Generated
+    private final double end;
+
+    /**
+     * Get the start property: Start time of the segment in seconds.
+     *
+     * @return the start value.
+     */
+    @Generated
+    public Duration getStart() {
+        return Duration.ofNanos((long) (this.start * 1000_000_000L));
     }
 
     /**
-     * Get the endTime property: End time of the segment in seconds.
+     * Get the end property: End time of the segment in seconds.
      *
-     * @return the endTime value.
+     * @return the end value.
      */
     @Generated
-    public Duration getEndTime() {
-        return Duration.ofNanos((long) (this.endTime * 1000_000_000L));
+    public Duration getEnd() {
+        return Duration.ofNanos((long) (this.end * 1000_000_000L));
     }
 }

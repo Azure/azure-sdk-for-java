@@ -34,8 +34,8 @@ public class RealtimeTimestampSerializationTests {
             + "\"text\":\"hello\",\"id\":\"segment-1\",\"speaker\":\"speaker-1\",\"start\":0.125,\"end\":1.875}";
         RealtimeConversationItemInputAudioTranscriptionSegmentEvent segment
             = deserialize(input, RealtimeConversationItemInputAudioTranscriptionSegmentEvent::fromJson);
-        assertEquals(Duration.ofMillis(125), segment.getStartTime());
-        assertEquals(Duration.ofMillis(1875), segment.getEndTime());
+        assertEquals(Duration.ofMillis(125), segment.getStart());
+        assertEquals(Duration.ofMillis(1875), segment.getEnd());
 
         String json = serialize(segment);
         assertTrue(json.contains("\"start\":0.125"));
@@ -44,8 +44,8 @@ public class RealtimeTimestampSerializationTests {
         assertFalse(json.contains("\"endTime\""));
         RealtimeConversationItemInputAudioTranscriptionSegmentEvent roundTripped
             = deserialize(json, RealtimeConversationItemInputAudioTranscriptionSegmentEvent::fromJson);
-        assertEquals(segment.getStartTime(), roundTripped.getStartTime());
-        assertEquals(segment.getEndTime(), roundTripped.getEndTime());
+        assertEquals(segment.getStart(), roundTripped.getStart());
+        assertEquals(segment.getEnd(), roundTripped.getEnd());
     }
 
     @Test

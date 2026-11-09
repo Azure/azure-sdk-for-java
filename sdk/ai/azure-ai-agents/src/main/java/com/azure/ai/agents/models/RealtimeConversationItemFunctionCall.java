@@ -34,7 +34,10 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     @Generated
     private String id;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The status of the item. Has no effect on the conversation.
+     */
+    @Generated
     private Status status;
 
     /*
