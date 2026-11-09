@@ -52,11 +52,6 @@ public final class ConnectionProperties implements JsonSerializable<ConnectionPr
     private String certificateIssuer;
 
     /*
-     * The dSTS principal name used to authenticate the connection.
-     */
-    private String dstsPrincipal;
-
-    /*
      * The regional Chaos Studio data-plane endpoint assigned to this connection.
      * Clients and agents use this endpoint to reach the Chaos Studio data plane
      * for the connection.
@@ -204,26 +199,6 @@ public final class ConnectionProperties implements JsonSerializable<ConnectionPr
     }
 
     /**
-     * Get the dstsPrincipal property: The dSTS principal name used to authenticate the connection.
-     * 
-     * @return the dstsPrincipal value.
-     */
-    public String dstsPrincipal() {
-        return this.dstsPrincipal;
-    }
-
-    /**
-     * Set the dstsPrincipal property: The dSTS principal name used to authenticate the connection.
-     * 
-     * @param dstsPrincipal the dstsPrincipal value to set.
-     * @return the ConnectionProperties object itself.
-     */
-    public ConnectionProperties withDstsPrincipal(String dstsPrincipal) {
-        this.dstsPrincipal = dstsPrincipal;
-        return this;
-    }
-
-    /**
      * Get the dataPlaneEndpoint property: The regional Chaos Studio data-plane endpoint assigned to this connection.
      * Clients and agents use this endpoint to reach the Chaos Studio data plane
      * for the connection.
@@ -264,7 +239,6 @@ public final class ConnectionProperties implements JsonSerializable<ConnectionPr
         jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("certificateSubjectName", this.certificateSubjectName);
         jsonWriter.writeStringField("certificateIssuer", this.certificateIssuer);
-        jsonWriter.writeStringField("dstsPrincipal", this.dstsPrincipal);
         return jsonWriter.writeEndObject();
     }
 
@@ -296,8 +270,6 @@ public final class ConnectionProperties implements JsonSerializable<ConnectionPr
                     deserializedConnectionProperties.certificateSubjectName = reader.getString();
                 } else if ("certificateIssuer".equals(fieldName)) {
                     deserializedConnectionProperties.certificateIssuer = reader.getString();
-                } else if ("dstsPrincipal".equals(fieldName)) {
-                    deserializedConnectionProperties.dstsPrincipal = reader.getString();
                 } else if ("dataPlaneEndpoint".equals(fieldName)) {
                     deserializedConnectionProperties.dataPlaneEndpoint = reader.getString();
                 } else if ("status".equals(fieldName)) {
