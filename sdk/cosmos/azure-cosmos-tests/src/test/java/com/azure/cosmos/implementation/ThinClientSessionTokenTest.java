@@ -3,6 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
@@ -35,8 +39,12 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.rx.ThinClientSessionTokenSplitE2ETest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -1483,6 +1491,44 @@ public class ThinClientSessionTokenTest {
             fixture.processMessage(request).block(Duration.ofSeconds(5));
             assertThat(fixture.wireTokens).containsExactly((String) null);
             verify(fixture.ranges, never()).tryLookupAsync(any(), any(), any(), any());
+        }
+    }
+
+    // Verify the live split wait tolerates a metadata refresh that takes longer than its polling interval.
+    @Test(groups = "unit", timeOut = 60000)
+    public void liveSplitPollingWaitsForSlowMetadata() throws Exception {
+        try (CosmosAsyncClient observer = Mockito.mock(CosmosAsyncClient.class)) {
+            RxDocumentClientImpl documentClient = Mockito.mock(RxDocumentClientImpl.class);
+            RxPartitionKeyRangeCache ranges = Mockito.mock(RxPartitionKeyRangeCache.class);
+            Mockito.when(CosmosBridgeInternal.getAsyncDocumentClient(observer)).thenReturn(documentClient);
+            Mockito.when(documentClient.getPartitionKeyRangeCache()).thenReturn(ranges);
+            CollectionRoutingMap before = SessionTokenHelperTests.routingMap(new PartitionKeyRange("0", "", "FF"));
+            PartitionKeyRange left = new PartitionKeyRange("1", "", "80");
+            PartitionKeyRange right = new PartitionKeyRange("2", "80", "FF");
+            left.setParents(Collections.singletonList("0"));
+            right.setParents(Collections.singletonList("0"));
+            CollectionRoutingMap after = SessionTokenHelperTests.routingMap(left, right);
+            Mockito.when(ranges.tryLookupAsync(null, RID, null, null))
+                .thenReturn(Mono.just(new Utils.ValueHolder<>(before)));
+            Mockito.when(ranges.tryLookupAsync(null, RID, before, null))
+                .thenReturn(Mono.delay(Duration.ofSeconds(12)).thenReturn(new Utils.ValueHolder<>(after)));
+
+            CosmosAsyncContainer container = Mockito.mock(CosmosAsyncContainer.class);
+            ThroughputResponse throughput = Mockito.mock(ThroughputResponse.class);
+            Mockito.when(throughput.getProperties()).thenReturn(ThroughputProperties.createManualThroughput(10100));
+            Mockito.when(container.readThroughput()).thenReturn(Mono.just(throughput));
+            ThinClientSessionTokenSplitE2ETest splitTest =
+                new ThinClientSessionTokenSplitE2ETest(new CosmosClientBuilder());
+            FieldUtils.writeField(splitTest, "currentContainer", container, true);
+            FieldUtils.writeField(splitTest, "collectionRid", RID, true);
+            FieldUtils.writeField(splitTest, "beforeSplit", before, true);
+            Method awaitSplit = ThinClientSessionTokenSplitE2ETest.class
+                .getDeclaredMethod("awaitSplit", CosmosAsyncClient.class);
+            awaitSplit.setAccessible(true);
+
+            assertThat(awaitSplit.invoke(splitTest, observer)).isSameAs(after);
+            verify(ranges).tryLookupAsync(null, RID, before, null);
+            verify(container).readThroughput();
         }
     }
 

@@ -20,9 +20,11 @@ HTTP/2 but leaves `COSMOS.THINCLIENT_ENABLED` unset so the connectivity probe de
 whether Gateway V2 is available.
 
 `ThinClientSessionTokenSplitE2ETest` creates an owned container at **400 RU/s manual
-throughput**, then raises it to **10,100 RU/s**. It waits up to **15 minutes**, polling
-every **10 seconds**, for actual parent-to-child partition metadata. Each poll logs
-the throughput replacement's pending status, current RU/s, and observed ranges.
+throughput**, then raises it to **10,100 RU/s**. It uses the same blocking split-wait
+pattern as the vector-search split test: a **15-minute** deadline, **10 seconds**
+between polls, and `SplitTimeoutException` if the partition count does not increase.
+Polls run sequentially, so a slow metadata refresh cannot accumulate timer ticks.
+Each poll logs the throughput replacement's pending status, current RU/s, and observed ranges.
 The overall test timeout remains **20 minutes**. A completed throughput update alone
 is not accepted as proof of a split. If no split is observed, the test fails and cleans up.
 It does not inject synthetic ranges or increase throughput beyond 10,100 RU/s.

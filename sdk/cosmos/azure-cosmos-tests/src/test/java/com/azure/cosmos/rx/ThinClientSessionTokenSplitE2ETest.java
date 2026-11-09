@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
+import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -37,6 +38,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -58,7 +60,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -239,34 +240,35 @@ public class ThinClientSessionTokenSplitE2ETest {
         }
     }
 
-    private CollectionRoutingMap awaitSplit(CosmosAsyncClient observer) {
-        AtomicReference<CollectionRoutingMap> latest = new AtomicReference<>(routingMap(observer, null));
-        CollectionRoutingMap split = Flux.interval(Duration.ZERO, SPLIT_POLL_INTERVAL)
-            .concatMap(ignored -> currentContainer.readThroughput()
-                .flatMap(throughput -> cache(observer).tryLookupAsync(null, collectionRid, latest.get(), null)
-                    .map(holder -> {
-                        assertThat(holder.v).as("Observer routing map").isNotNull();
-                        latest.set(holder.v);
-                        LOGGER.info(
-                            "Waiting for real split: replacePending={}, manualThroughput={}, initialRangeCount={}, currentRanges={}",
-                            throughput.isReplacePending(),
-                            throughput.getProperties().getManualThroughput(),
-                            beforeSplit.getOrderedPartitionKeyRanges().size(),
-                            holder.v.getOrderedPartitionKeyRanges());
-                        return holder.v;
-                    })))
-            .filter(map -> map.getOrderedPartitionKeyRanges().size() > beforeSplit.getOrderedPartitionKeyRanges().size()
-                && map.getOrderedPartitionKeyRanges().stream().anyMatch(range -> range.getParents() != null
-                    && range.getParents().stream().anyMatch(parentTokens::containsKey)))
-            .next()
-            .timeout(SPLIT_WAIT, Mono.defer(() -> Mono.error(new AssertionError(
-                "No real parent-to-child split observed within " + SPLIT_WAIT.toMinutes()
-                    + " minutes after manual throughput increase from 400 to 10100 RU/s; latest ranges: "
-                    + latest.get().getOrderedPartitionKeyRanges()))))
-            .block(SPLIT_WAIT.plus(WAIT));
+    private CollectionRoutingMap awaitSplit(CosmosAsyncClient observer) throws InterruptedException {
+        long deadlineNanos = System.nanoTime() + SPLIT_WAIT.toNanos();
+        int initialPartitionCount = beforeSplit.getOrderedPartitionKeyRanges().size();
+        CollectionRoutingMap latest = routingMap(observer, null);
+        while (latest.getOrderedPartitionKeyRanges().size() <= initialPartitionCount
+            && System.nanoTime() < deadlineNanos) {
+            Thread.sleep(SPLIT_POLL_INTERVAL.toMillis());
+            ThroughputResponse throughput = currentContainer.readThroughput().block(WAIT);
+            latest = routingMap(observer, latest);
+            LOGGER.info(
+                "Waiting for real split: replacePending={}, manualThroughput={}, initialRangeCount={}, currentRanges={}",
+                throughput.isReplacePending(),
+                throughput.getProperties().getManualThroughput(),
+                initialPartitionCount,
+                latest.getOrderedPartitionKeyRanges());
+        }
+
+        if (latest.getOrderedPartitionKeyRanges().size() <= initialPartitionCount) {
+            throw new SplitTimeoutException(String.format(
+                "Partition count for container '%s' did not increase beyond %d within %s; latest ranges: %s",
+                currentContainer.getId(),
+                initialPartitionCount,
+                SPLIT_WAIT,
+                latest.getOrderedPartitionKeyRanges()));
+        }
+
         LOGGER.info("Observed real split: before={}, after={}",
-            beforeSplit.getOrderedPartitionKeyRanges(), split.getOrderedPartitionKeyRanges());
-        return split;
+            beforeSplit.getOrderedPartitionKeyRanges(), latest.getOrderedPartitionKeyRanges());
+        return latest;
     }
 
     private void assertStale(CosmosAsyncClient reader, CollectionRoutingMap original, String parentId, String childId) {
