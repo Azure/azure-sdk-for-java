@@ -930,41 +930,45 @@ public final class AgentsClientBuilder
 
     /**
      * Builds an instance of VoiceAgentsConversationsAsyncClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return an instance of VoiceAgentsConversationsAsyncClient.
      */
-    @Generated
     public VoiceAgentsConversationsAsyncClient buildVoiceAgentsConversationsAsyncClient() {
-        return new VoiceAgentsConversationsAsyncClient(buildInnerClient().getVoiceAgentsConversations());
+        return new VoiceAgentsConversationsAsyncClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsConversations());
     }
 
     /**
      * Builds an instance of VoiceAgentsTelephonyAsyncClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return an instance of VoiceAgentsTelephonyAsyncClient.
      */
-    @Generated
     public VoiceAgentsTelephonyAsyncClient buildVoiceAgentsTelephonyAsyncClient() {
-        return new VoiceAgentsTelephonyAsyncClient(buildInnerClient().getVoiceAgentsTelephonies());
+        return new VoiceAgentsTelephonyAsyncClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsTelephonies());
     }
 
     /**
      * Builds an instance of VoiceAgentsConversationsClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return an instance of VoiceAgentsConversationsClient.
      */
-    @Generated
     public VoiceAgentsConversationsClient buildVoiceAgentsConversationsClient() {
-        return new VoiceAgentsConversationsClient(buildInnerClient().getVoiceAgentsConversations());
+        return new VoiceAgentsConversationsClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsConversations());
     }
 
     /**
      * Builds an instance of VoiceAgentsTelephonyClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
      *
      * @return an instance of VoiceAgentsTelephonyClient.
      */
-    @Generated
     public VoiceAgentsTelephonyClient buildVoiceAgentsTelephonyClient() {
-        return new VoiceAgentsTelephonyClient(buildInnerClient().getVoiceAgentsTelephonies());
+        return new VoiceAgentsTelephonyClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsTelephonies());
     }
 }
