@@ -20,7 +20,7 @@ This package allows you to interact with Azure Blob Storage through the standard
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-beta.43</version>
+    <version>12.0.0-beta.42</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -330,4 +330,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [file_system]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystem.html
 [file_systems]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystems.html
+
 

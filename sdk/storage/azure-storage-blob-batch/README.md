@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.34.0</version>
+  <version>12.34.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -212,4 +212,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+
 
