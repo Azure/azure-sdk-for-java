@@ -7,7 +7,6 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConf
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
 import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
 import reactor.core.publisher.Mono;
@@ -19,11 +18,10 @@ import java.util.Objects;
  * An asynchronous client for opening realtime WebSocket sessions with Foundry voice agents.
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
-@Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentsWebSocketAsyncClient {
+public final class VoiceAgentsWebSocketAsyncClient {
     private final VoiceAgentWebSocketClientConfiguration configuration;
 
-    BetaVoiceAgentsWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
+    VoiceAgentsWebSocketAsyncClient(VoiceAgentWebSocketClientConfiguration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
@@ -33,7 +31,7 @@ public final class BetaVoiceAgentsWebSocketAsyncClient {
      * @param agentName the voice agent name.
      * @return a connected session.
      */
-    public Mono<BetaVoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
+    public Mono<VoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName) {
         return openWebSocketSession(agentName, new VoiceAgentWebSocketConnectionOptions());
     }
 
@@ -44,7 +42,7 @@ public final class BetaVoiceAgentsWebSocketAsyncClient {
      * @param options connection options.
      * @return a connected session.
      */
-    public Mono<BetaVoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
+    public Mono<VoiceAgentsWebSocketSessionAsyncClient> openWebSocketSession(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -56,8 +54,8 @@ public final class BetaVoiceAgentsWebSocketAsyncClient {
                 VoiceAgentWebSocketUtils.SUBPROTOCOL,
                 token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, optionsSnapshot, token));
             return transport.connect()
-                .thenReturn(new BetaVoiceAgentsWebSocketSessionAsyncClient(transport,
-                    optionsSnapshot.getMalformedEventHandler()));
+                .thenReturn(
+                    new VoiceAgentsWebSocketSessionAsyncClient(transport, optionsSnapshot.getMalformedEventHandler()));
         });
     }
 }

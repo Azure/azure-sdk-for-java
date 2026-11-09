@@ -27,8 +27,8 @@ public final class VoiceAgentPostCallConfiguration implements JsonSerializable<V
     private final List<VoiceAgentPostCallDestination> destinations;
 
     /*
-     * Additional content to include in each delivery. The transcript is always delivered. `audio` is not supported in
-     * this preview; the service rejects it when the agent version is saved.
+     * Additional content to include in each delivery. The transcript is always delivered; add `audio` to also deliver a
+     * URL to the merged call recording.
      */
     @Generated
     private List<VoiceAgentPostCallIncludeOption> include;
@@ -54,8 +54,8 @@ public final class VoiceAgentPostCallConfiguration implements JsonSerializable<V
     }
 
     /**
-     * Get the include property: Additional content to include in each delivery. The transcript is always delivered.
-     * `audio` is not supported in this preview; the service rejects it when the agent version is saved.
+     * Get the include property: Additional content to include in each delivery. The transcript is always delivered; add
+     * `audio` to also deliver a URL to the merged call recording.
      *
      * @return the include value.
      */
@@ -65,8 +65,8 @@ public final class VoiceAgentPostCallConfiguration implements JsonSerializable<V
     }
 
     /**
-     * Set the include property: Additional content to include in each delivery. The transcript is always delivered.
-     * `audio` is not supported in this preview; the service rejects it when the agent version is saved.
+     * Set the include property: Additional content to include in each delivery. The transcript is always delivered; add
+     * `audio` to also deliver a URL to the merged call recording.
      *
      * @param include the include value to set.
      * @return the VoiceAgentPostCallConfiguration object itself.

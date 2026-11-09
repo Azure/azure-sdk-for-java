@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentsLiveWebSocketSessionClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -85,20 +86,21 @@ public class VoiceAgentLiveWebSocketTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void handshakeUsesLiveRouteWithoutRealtimeSubprotocol(boolean async) throws Exception {
+    @CsvSource({ "false,false", "false,true", "true,false", "true,true" })
+    public void handshakeUsesLiveRouteWithoutRealtimeSubprotocol(boolean async, boolean allowPreview) throws Exception {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = VoiceAgentWebSocketSessionTests.tlsServer().host("localhost").port(0).handle((request, response) -> {
             requestUri.set(request.uri());
             headers.set(request.requestHeaders().copy());
-            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then());
+            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
+                WebsocketServerSpec.builder().protocols("realtime").build());
         }).bindNow();
-        AgentsClientBuilder builder
-            = builder().endpoint("https://localhost:" + server.port() + "/api/projects/project/")
-                .clientOptions(new ClientOptions().setApplicationId("live-app")
-                    .setHeaders(Arrays.asList(new Header("X-Custom", "value"), new Header("Authorization", "override"),
-                        new Header("Foundry-Features", "override"), new Header("Sec-WebSocket-Protocol", "realtime"))));
+        AgentsClientBuilder builder = builder().allowPreview(allowPreview)
+            .endpoint("https://localhost:" + server.port() + "/api/projects/project/")
+            .clientOptions(new ClientOptions().setApplicationId("live-app")
+                .setHeaders(Arrays.asList(new Header("X-Custom", "value"), new Header("Authorization", "override"),
+                    new Header("Foundry-Features", "override"), new Header("Sec-WebSocket-Protocol", "realtime"))));
         String inputs = "{\"name\":\"a & b/\u4f60\u597d\"}";
         VoiceAgentLiveWebSocketConnectionOptions options
             = new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(true)
@@ -138,6 +140,19 @@ public class VoiceAgentLiveWebSocketTests {
         assertEquals("value", headers.get().get("X-Custom"));
         assertTrue(headers.get().get(HttpHeaderNames.USER_AGENT).startsWith("live-app azsdk-java-"));
         assertFalse("override".equals(headers.get().get(HttpHeaderNames.AUTHORIZATION)));
+
+        if (async) {
+            VoiceAgentsWebSocketSessionAsyncClient session
+                = builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession("agent").block(TIMEOUT);
+            assertNotNull(session);
+            session.closeAsync().block(TIMEOUT);
+        } else {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent")) {
+                assertTrue(session.isOpen());
+            }
+        }
+        assertEquals(allowPreview ? "VoiceAgents=V1Preview" : null, headers.get().get("Foundry-Features"));
     }
 
     @Test
@@ -264,8 +279,7 @@ public class VoiceAgentLiveWebSocketTests {
                 assertNotNull(live);
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentsWebSocketSessionAsyncClient realtime = builder.beta()
-                .buildBetaVoiceAgentsWebSocketAsyncClient()
+            try (VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
                 .openWebSocketSession("agent", realtimeOptions)
                 .block(TIMEOUT)) {
                 assertNotNull(realtime);
@@ -276,8 +290,8 @@ public class VoiceAgentLiveWebSocketTests {
                 = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient().openWebSocketSession("agent", liveOptions)) {
                 assertTrue(live.isOpen());
             }
-            try (BetaVoiceAgentsWebSocketSessionClient realtime
-                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
+            try (VoiceAgentsWebSocketSessionClient realtime
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
                 assertTrue(realtime.isOpen());
             }
         }

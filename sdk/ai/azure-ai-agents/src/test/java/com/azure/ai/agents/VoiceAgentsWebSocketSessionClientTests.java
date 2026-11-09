@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BetaVoiceAgentsWebSocketSessionClientTests {
+public class VoiceAgentsWebSocketSessionClientTests {
     @Test
     public void connectionUriUsesSelectedTransport() throws Exception {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
-            "v1", "test-user-agent", null, null);
+            "v1", "test-user-agent", null, null, null);
 
         URI defaultUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent",
             new VoiceAgentWebSocketConnectionOptions());
@@ -56,7 +56,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
             URI.create("https://localhost:8443/project%20name/?discard=old&api-version=old"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
-            "v1", "test-user-agent", null, null);
+            "v1", "test-user-agent", null, null, null);
 
         URI realtimeUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, "agent/name",
             new VoiceAgentWebSocketConnectionOptions().setAgentSessionId("session & id"));
@@ -85,7 +85,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
-            "v1", "test-user-agent", null, proxyOptions);
+            "v1", "test-user-agent", null, proxyOptions, null);
         OkHttpClient client = WebSocketSessionTransport.createHttpClient(configuration,
             new WebSocketTransportOptions(new VoiceAgentWebSocketConnectionOptions()));
 
@@ -100,7 +100,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
     public void syncConnectionPreservesTokenFailure() {
         IllegalStateException failure = new IllegalStateException("Token unavailable");
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
-            URI.create("https://localhost"), request -> Mono.error(failure), "v1", "test-user-agent", null, null);
+            URI.create("https://localhost"), request -> Mono.error(failure), "v1", "test-user-agent", null, null, null);
 
         IllegalStateException actual = assertThrows(IllegalStateException.class,
             () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),
@@ -116,7 +116,7 @@ public class BetaVoiceAgentsWebSocketSessionClientTests {
         VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
-            "v1", "test-user-agent", null, null);
+            "v1", "test-user-agent", null, null, null);
 
         IllegalStateException actual = assertThrows(IllegalStateException.class,
             () -> WebSocketSessionTransport.connect(configuration, URI.create("wss://localhost/session"),

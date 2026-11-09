@@ -46,6 +46,7 @@ public class AgentsCustomizations extends Customization {
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
+        registerRealtimeWebSocketClients(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
@@ -765,6 +766,27 @@ public class AgentsCustomizations extends Customization {
                     + " but customized " + counts[i] + ".");
             }
         }
+    }
+
+    private void registerRealtimeWebSocketClients(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder was not generated."));
+            NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder has no service-client metadata."))
+                .asNormalAnnotationExpr();
+            com.github.javaparser.ast.expr.ArrayInitializerExpr clients = annotation.getPairs().stream()
+                .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder has no serviceClients list."))
+                .getValue()
+                .asArrayInitializerExpr();
+            for (String client : Arrays.asList("VoiceAgentsWebSocketClient", "VoiceAgentsWebSocketAsyncClient")) {
+                if (clients.getValues().stream().noneMatch(value -> (client + ".class").equals(value.toString()))) {
+                    clients.getValues().add(StaticJavaParser.parseExpression(client + ".class"));
+                }
+            }
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

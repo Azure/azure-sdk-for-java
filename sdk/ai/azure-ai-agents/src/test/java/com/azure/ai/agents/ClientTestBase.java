@@ -34,8 +34,23 @@ public class ClientTestBase extends TestProxyTestBase {
 
     protected AgentsClientBuilder getClientBuilder(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion,
         boolean allowPreview) {
-        AgentsClientBuilder builder = new AgentsClientBuilder()
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return getClientBuilder(httpClient, agentsServiceVersion, allowPreview, false);
+    }
+
+    protected AgentsClientBuilder getWebSocketClientBuilder(AgentsServiceVersion agentsServiceVersion) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            throw new IllegalStateException("Playback tests must not open native WebSocket connections.");
+        }
+        return getClientBuilder(null, agentsServiceVersion, true, true);
+    }
+
+    private AgentsClientBuilder getClientBuilder(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion,
+        boolean allowPreview, boolean webSocket) {
+        AgentsClientBuilder builder = new AgentsClientBuilder();
+        if (!webSocket) {
+            builder
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        }
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addCustomMatchers();
@@ -53,8 +68,10 @@ public class ClientTestBase extends TestProxyTestBase {
         if (testMode == TestMode.PLAYBACK) {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
+            if (!webSocket) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
             builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
@@ -124,9 +141,9 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
-    protected BetaVoiceAgentsTelephonyClient getVoiceAgentsTelephonySyncClient(HttpClient httpClient,
+    protected VoiceAgentsTelephonyClient getVoiceAgentsTelephonySyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion, true).beta().buildBetaVoiceAgentsTelephonyClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildVoiceAgentsTelephonyClient();
     }
 
     private void addTestRecordCustomSanitizers() {

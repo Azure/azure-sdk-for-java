@@ -47,8 +47,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         AgentsClientBuilder builder = builder(transport);
         IllegalStateException failure = new IllegalStateException("Conversation failed");
         Runnable conversation = () -> {
-            try (VoiceAgentLiveTextConversationSample.SampleAgent agent = VoiceAgentLiveTextConversationSample
-                .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME)) {
+            try (VoiceAgentLiveTextConversationSample.SampleAgent agent
+                = VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME)) {
                 assertNotNull(agent.details);
                 if (failConversation) {
                     throw failure;
@@ -71,8 +71,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         transport.expect(HttpMethod.POST, GENERATE, 200);
         transport.expect(HttpMethod.DELETE, AGENT, 200);
         AgentsClientBuilder builder = builder(transport);
-        try (VoiceAgentLiveTextConversationSample.SampleAgent agent = VoiceAgentLiveTextConversationSample
-            .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME)) {
+        try (VoiceAgentLiveTextConversationSample.SampleAgent agent
+            = VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME)) {
             assertNotNull(agent.details);
         }
         transport.assertConsumed();
@@ -84,9 +84,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         ScriptedTransport transport = new ScriptedTransport();
         transport.expect(HttpMethod.POST, GENERATE, status);
         AgentsClientBuilder builder = builder(transport);
-        HttpResponseException error
-            = assertThrows(HttpResponseException.class, () -> VoiceAgentLiveTextConversationSample
-                .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME));
+        HttpResponseException error = assertThrows(HttpResponseException.class,
+            () -> VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME));
         assertEquals(status, error.getResponse().getStatusCode());
         transport.assertConsumed();
     }
@@ -97,9 +96,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         transport.expect(HttpMethod.POST, GENERATE, 409);
         transport.expect(HttpMethod.DELETE, AGENT, 403);
         AgentsClientBuilder builder = builder(transport);
-        HttpResponseException error
-            = assertThrows(HttpResponseException.class, () -> VoiceAgentLiveTextConversationSample
-                .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME));
+        HttpResponseException error = assertThrows(HttpResponseException.class,
+            () -> VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME));
         assertEquals(403, error.getResponse().getStatusCode());
         transport.assertConsumed();
     }
@@ -111,9 +109,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         transport.expect(HttpMethod.DELETE, AGENT, 200);
         transport.expect(HttpMethod.POST, GENERATE, 409);
         AgentsClientBuilder builder = builder(transport);
-        HttpResponseException error
-            = assertThrows(HttpResponseException.class, () -> VoiceAgentLiveTextConversationSample
-                .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME));
+        HttpResponseException error = assertThrows(HttpResponseException.class,
+            () -> VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME));
         assertEquals(409, error.getResponse().getStatusCode());
         transport.assertConsumed();
     }
@@ -126,8 +123,8 @@ public class VoiceAgentLiveTextConversationSampleTests {
         AgentsClientBuilder builder = builder(transport);
         IllegalStateException failure = new IllegalStateException("Conversation failed");
         IllegalStateException error = assertThrows(IllegalStateException.class, () -> {
-            try (VoiceAgentLiveTextConversationSample.SampleAgent agent = VoiceAgentLiveTextConversationSample
-                .createAgent(builder.buildAgentsClient(), builder.beta().buildBetaAgentsClient(), NAME)) {
+            try (VoiceAgentLiveTextConversationSample.SampleAgent agent
+                = VoiceAgentLiveTextConversationSample.createAgent(builder.buildAgentsClient(), NAME)) {
                 assertNotNull(agent.details);
                 throw failure;
             }
@@ -143,8 +140,7 @@ public class VoiceAgentLiveTextConversationSampleTests {
             .credential(new MockTokenCredential())
             .configuration(Configuration.NONE)
             .httpClient(transport)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
-            .allowPreview(true);
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)));
     }
 
     private static final class ScriptedTransport implements HttpClient {

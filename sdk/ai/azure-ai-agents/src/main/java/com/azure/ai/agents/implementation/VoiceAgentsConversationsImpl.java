@@ -37,14 +37,14 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in BetaVoiceAgentsConversations.
+ * An instance of this class provides access to all the operations defined in VoiceAgentsConversations.
  */
-public final class BetaVoiceAgentsConversationsImpl {
+public final class VoiceAgentsConversationsImpl {
 
     /**
      * The proxy service used to perform REST calls.
      */
-    private final BetaVoiceAgentsConversationsService service;
+    private final VoiceAgentsConversationsService service;
 
     /**
      * The service client containing this operation class.
@@ -52,12 +52,12 @@ public final class BetaVoiceAgentsConversationsImpl {
     private final AgentsClientImpl client;
 
     /**
-     * Initializes an instance of BetaVoiceAgentsConversationsImpl.
+     * Initializes an instance of VoiceAgentsConversationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    BetaVoiceAgentsConversationsImpl(AgentsClientImpl client) {
-        this.service = RestProxy.create(BetaVoiceAgentsConversationsService.class, client.getHttpPipeline(),
+    VoiceAgentsConversationsImpl(AgentsClientImpl client) {
+        this.service = RestProxy.create(VoiceAgentsConversationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
@@ -72,12 +72,12 @@ public final class BetaVoiceAgentsConversationsImpl {
     }
 
     /**
-     * The interface defining all the services for AgentsClientBetaVoiceAgentsConversations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AgentsClientVoiceAgentsConversations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AgentsClientBetaVoiceAgentsConversations")
-    public interface BetaVoiceAgentsConversationsService {
+    @ServiceInterface(name = "AgentsClientVoiceAgentsConversations")
+    public interface VoiceAgentsConversationsService {
 
         @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations")
         @ExpectedResponses({ 200 })

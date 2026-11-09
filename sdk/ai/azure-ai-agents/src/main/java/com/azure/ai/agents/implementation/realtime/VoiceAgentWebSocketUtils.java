@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.implementation.realtime;
 
-import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
@@ -254,8 +253,9 @@ public final class VoiceAgentWebSocketUtils {
                 }
             }
         }
-        headers.set(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString());
+        if (configuration.getPreviewFeatures() != null) {
+            headers.set(HttpHeaderName.fromString("Foundry-Features"), configuration.getPreviewFeatures());
+        }
         return headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
     }
 
