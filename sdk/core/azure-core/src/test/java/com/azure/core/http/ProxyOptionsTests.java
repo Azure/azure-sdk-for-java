@@ -354,21 +354,23 @@ public class ProxyOptionsTests {
             = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
                 .put(JAVA_HTTPS_PROXY_HOST, "")
-                .put(JAVA_HTTP_PROXY_HOST, "")
-                .put(JAVA_NON_PROXY_HOSTS, "");
+                .put(JAVA_HTTP_PROXY_HOST, "");
         ConfigurationSource envVarHttpSource
             = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
                 .put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
                 .put(JAVA_HTTPS_PROXY_HOST, "")
-                .put(JAVA_HTTP_PROXY_HOST, "")
-                .put(JAVA_NON_PROXY_HOSTS, "");
+                .put(JAVA_HTTP_PROXY_HOST, "");
+
+        ConfigurationSource ignoredSystem = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
+            .put(JAVA_HTTPS_PROXY_HOST, "")
+            .put(JAVA_HTTP_PROXY_HOST, "");
 
         return Stream.of(
             // Java HTTPS configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, envVarHttpsSource).build()),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, ignoredSystem, envVarHttpsSource).build()),
 
             // Java HTTP configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, envVarHttpSource).build()));
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, ignoredSystem, envVarHttpSource).build()));
     }
 
     private static Configuration createJavaEnvConfiguration(String username, String password, String nonProxyHosts,
