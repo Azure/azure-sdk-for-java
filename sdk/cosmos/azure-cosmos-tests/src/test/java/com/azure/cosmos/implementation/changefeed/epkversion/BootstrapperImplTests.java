@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
+import com.azure.cosmos.implementation.changefeed.PartitionController;
+import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -136,7 +138,13 @@ public class BootstrapperImplTests {
             : new BootstrapperImpl(
                 synchronizer, epkStore, lockTime, lockTime, epkStore, pkStore, options, mode);
 
-        StepVerifier.create(bootstrapper.initialize())
+        PartitionController controller = Mockito.mock(PartitionController.class);
+        PartitionLoadBalancer loadBalancer = Mockito.mock(PartitionLoadBalancer.class);
+        Mockito.when(controller.initialize()).thenReturn(Mono.empty());
+        Mockito.when(loadBalancer.start()).thenReturn(Mono.empty());
+        PartitionManagerImpl manager = new PartitionManagerImpl(bootstrapper, controller, loadBalancer);
+
+        StepVerifier.create(manager.start())
             .expectErrorSatisfies(error -> {
                 if (failureType == InitializationFailure.EMPTY_RANGES) {
                     Assert.assertTrue(error instanceof IllegalStateException);
@@ -163,7 +171,10 @@ public class BootstrapperImplTests {
             Mockito.verify(pkStore).releaseInitializationLock();
         }
 
-        StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
+        Mockito.verifyNoInteractions(controller, loadBalancer);
+        StepVerifier.create(manager.start()).expectComplete().verify(lockTime);
+        Mockito.verify(controller).initialize();
+        Mockito.verify(loadBalancer).start();
         Mockito.verify(epkStore).createLeaseIfNotExist(Mockito.eq(firstFeedRange), Mockito.isNull());
         Mockito.verify(epkStore, times(leaseCreationFails ? 2 : 1))
             .createLeaseIfNotExist(Mockito.eq(secondFeedRange), Mockito.isNull());

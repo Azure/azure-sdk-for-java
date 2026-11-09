@@ -158,35 +158,37 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             //  when initializing, all leases will return empty list.
             .collectList()
             .flatMapMany(leaseList -> {
+                List<Range<String>> leaseRanges = leaseList.stream()
+                    .map(lease -> ((FeedRangeEpkImpl) lease.getFeedRange()).getRange())
+                    .sorted(MIN_RANGE_COMPARATOR)
+                    .collect(Collectors.toList());
+
                 return Flux.fromIterable(partitionKeyRanges)
-                           .flatMap(pkRange -> {
-                               // check if there are epk based leases for the partitionKeyRange
-                               // If there is at least one, then we assume there are others
-                               // that cover the rest of the full partition range
-                               // based on the fact that the lease store was always
-                               // initialized for the full collection
-                               // TODO:(kuthapar) what if some epkRange did not create successfully?
-                               boolean anyMatch = leaseList.stream().anyMatch(lease -> {
-                                   Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-                                   //  We are creating the lease for the whole pkRange, so even if we find at least one, we should be good.
-                                   //  This lease exists, no need to create one for this pkRange
-                                   return epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive());
-                               });
-                               //   If there is no match, it means leases don't exist for these pkranges.
-                               if (!anyMatch) {
-                                   return Mono.just(pkRange);
-                               }
-                               return Mono.empty();
-                           }).flatMap(pkRange -> {
-                                FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-                                logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
-                                //  We are creating the lease for the whole pkRange.
-                                return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
-                                    .doOnNext(lease -> {
-                                        logger.info("Added new lease document for feed range {}", lease.getLeaseToken());
-                                    });
-                                }, this.degreeOfParallelism);
+                    .filter(pkRange -> !isCoveredByLeases(pkRange, leaseRanges))
+                    .flatMap(pkRange -> {
+                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                        logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
+                        return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
+                            .doOnNext(lease -> logger.info("Added new lease document for feed range {}", lease.getLeaseToken()));
+                    }, this.degreeOfParallelism);
             });
+    }
+
+    private static boolean isCoveredByLeases(PartitionKeyRange partition, List<Range<String>> sortedLeaseRanges) {
+        // EPK ranges are half-open. Extend coverage through overlapping or adjacent leases until a gap is found.
+        String coveredThrough = partition.getMinInclusive();
+        for (Range<String> leaseRange : sortedLeaseRanges) {
+            if (leaseRange.getMin().compareTo(coveredThrough) > 0) {
+                return false;
+            }
+            if (leaseRange.getMax().compareTo(coveredThrough) > 0) {
+                coveredThrough = leaseRange.getMax();
+                if (coveredThrough.compareTo(partition.getMaxExclusive()) >= 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /***
