@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobUserAgentPropertiesTests {
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
 
     @Test
     public void userAgentPropertiesNotNull() {
@@ -125,8 +127,26 @@ public class BlobUserAgentPropertiesTests {
             new UserAgentTestCase().customHeader("custom UA header")
                 .policy("azure-storage-blob-cryptography", "12.11.0"),
             // Custom headers without spaces remain unchanged.
-            new UserAgentTestCase().customHeader("customUAheader")
-                .policy("azure-storage-blob-cryptography", "12.11.0"));
+            new UserAgentTestCase().customHeader("customUAheader").policy("azure-storage-blob-cryptography", "12.11.0"),
+            // Nightly dev-feed releases.
+            new UserAgentTestCase().baseSdk("azure-storage-blob", "12.38.0-alpha.20261109.1")
+                .policy("azure-storage-blob-batch", "12.34.0-alpha.20261109.1")
+                .expectAdditionalSdk("azure-storage-blob-batch", "12.34.0-alpha.20261109.1")
+                .platform("11.0.6", "Windows 10", "10.0"),
+            // Private release with a prepended application ID and no platform information.
+            new UserAgentTestCase().baseSdk("azure-storage-blob", "12.38.0-private")
+                .policy("azure-storage-blob-batch", "12.34.0-private")
+                .expectAdditionalSdk("azure-storage-blob-batch", "12.34.0-private")
+                .applicationId("prependappid"),
+            // SDK tokens that only start with azure-storage-blob remain unchanged.
+            new UserAgentTestCase().baseSdk("azure-storage-blob-batch", "12.8.0")
+                .policy("azure-storage-blob-cryptography", "12.11.0")
+                .platform("11.0.6", "Windows 10", "10.0"),
+            // The azure-storage-blob version being built.
+            new UserAgentTestCase().baseSdk("azure-storage-blob", BLOB_VERSION)
+                .policy("azure-storage-blob-batch", "12.8.0")
+                .expectAdditionalSdk("azure-storage-blob-batch", "12.8.0")
+                .platform("11.0.6", "Windows 10", "10.0"));
     }
 
     @Test

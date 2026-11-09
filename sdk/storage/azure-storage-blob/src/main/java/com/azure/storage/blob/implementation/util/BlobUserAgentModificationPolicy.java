@@ -25,8 +25,9 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientName;
     private final String clientVersion;
 
-    private static final String REGEX
-        = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?(?:-private)?)( .*?)?";
+    // Locates the azure-storage-blob token without constraining its version format, so GA, beta, private, dev-feed
+    // (alpha), and other pre-release versions are all handled.
+    private static final String REGEX = "(.*? )?(azsdk-java-azure-storage-blob/\\S+)( .*?)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     /**
