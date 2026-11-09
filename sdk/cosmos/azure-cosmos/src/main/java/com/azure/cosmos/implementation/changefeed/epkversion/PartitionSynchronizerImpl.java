@@ -216,16 +216,18 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                             return Mono.empty();
                         } else {
                             // The epk version lease does not exist, create one from pkRangeId version lease
-                            List<String> possibleMatchingPkRangeId = new ArrayList<>();
-                            possibleMatchingPkRangeId.add(partitionKeyRange.getId());
-                            if (partitionKeyRange.getParents() != null) {
-                                possibleMatchingPkRangeId.addAll(partitionKeyRange.getParents());
+                            Lease exactMatch = pkRangeIdVersionLeaseMap.get(partitionKeyRange.getId());
+                            if (exactMatch != null) {
+                                return Mono.just(Pair.of(partitionKeyRange, exactMatch));
                             }
 
                             List<Lease> matchedPkRangeIdVersionLeases = new ArrayList<>();
-                            for (String pkRangeId : possibleMatchingPkRangeId) {
-                                if (pkRangeIdVersionLeaseMap.containsKey(pkRangeId)) {
-                                    matchedPkRangeIdVersionLeases.add(pkRangeIdVersionLeaseMap.get(pkRangeId));
+                            if (partitionKeyRange.getParents() != null) {
+                                for (String parentId : partitionKeyRange.getParents()) {
+                                    Lease parentLease = pkRangeIdVersionLeaseMap.get(parentId);
+                                    if (parentLease != null) {
+                                        matchedPkRangeIdVersionLeases.add(parentLease);
+                                    }
                                 }
                             }
 
