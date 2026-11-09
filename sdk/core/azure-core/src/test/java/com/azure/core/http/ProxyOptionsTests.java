@@ -353,11 +353,15 @@ public class ProxyOptionsTests {
         ConfigurationSource envVarHttpsSource
             = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
-                .put(JAVA_NON_PROXY_HOSTS, null);
+                .put(JAVA_HTTPS_PROXY_HOST, "")
+                .put(JAVA_HTTP_PROXY_HOST, "")
+                .put(JAVA_NON_PROXY_HOSTS, "");
         ConfigurationSource envVarHttpSource
             = new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false")
                 .put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
-                .put(JAVA_NON_PROXY_HOSTS, null);
+                .put(JAVA_HTTPS_PROXY_HOST, "")
+                .put(JAVA_HTTP_PROXY_HOST, "")
+                .put(JAVA_NON_PROXY_HOSTS, "");
 
         return Stream.of(
             // Java HTTPS configuration without 'java.net.useSystemProxies' set.
