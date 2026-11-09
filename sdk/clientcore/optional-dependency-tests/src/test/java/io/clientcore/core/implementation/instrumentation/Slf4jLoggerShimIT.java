@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Integration tests for {@link Slf4jLoggerShim} verifying the reflective invocation behaviors.
+ * Integration tests for {@link Slf4jLoggerShim} verifying logging with SLF4J on the classpath.
  */
 @Isolated("Mutates System.properties")
 @Execution(ExecutionMode.SAME_THREAD)

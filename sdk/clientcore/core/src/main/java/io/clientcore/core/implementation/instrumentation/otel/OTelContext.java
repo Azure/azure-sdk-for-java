@@ -3,16 +3,13 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-
-import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_KEY_CLASS;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.context.ContextKey;
 
 /**
  * This class provides access to the OpenTelemetry context.
@@ -21,52 +18,31 @@ public class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
     private static final TracingScope NOOP_SCOPE = () -> {
     };
-    private static final FallbackInvoker CURRENT_INVOKER;
-    private static final FallbackInvoker MAKE_CURRENT_INVOKER;
-    private static final FallbackInvoker WITH_INVOKER;
-    private static final FallbackInvoker GET_INVOKER;
 
     // this context key will indicate if the span is created by client core
     // this is used to suppress multiple spans created for the same logical operation
     // such as convenience API on top of protocol methods when both as instrumented.
     // We might need to suppress logical server (consumer) spans in the future, but that
     // was not necessary so far
-    private static final Object CLIENT_CORE_SPAN_CONTEXT_KEY;
+    private static final ContextKey<OTelSpan> CLIENT_CORE_SPAN_CONTEXT_KEY;
+
+    private static final Object ROOT_CONTEXT;
 
     static {
-        ReflectiveInvoker currentInvoker = null;
-        ReflectiveInvoker makeCurrentInvoker = null;
-        ReflectiveInvoker withInvoker = null;
-        ReflectiveInvoker getInvoker = null;
-
-        Object clientCoreSpanContextKey = null;
+        ContextKey<OTelSpan> clientCoreSpanContextKey = null;
         Object rootContext = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                currentInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("current"));
-                makeCurrentInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("makeCurrent"));
-                withInvoker
-                    = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("with", CONTEXT_KEY_CLASS, Object.class));
-                getInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("get", CONTEXT_KEY_CLASS));
+                clientCoreSpanContextKey = ContextKey.named("client-core-span");
 
-                ReflectiveInvoker contextKeyNamedInvoker
-                    = getMethodInvoker(CONTEXT_KEY_CLASS, CONTEXT_KEY_CLASS.getMethod("named", String.class));
-
-                clientCoreSpanContextKey = contextKeyNamedInvoker.invoke("client-core-span");
-
-                ReflectiveInvoker rootInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("root"));
-                rootContext = rootInvoker.invoke();
-
+                rootContext = Context.root();
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
         }
 
-        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, rootContext, LOGGER);
-        MAKE_CURRENT_INVOKER = new FallbackInvoker(makeCurrentInvoker, NOOP_SCOPE, LOGGER);
-        WITH_INVOKER = new FallbackInvoker(withInvoker, LOGGER);
-        GET_INVOKER = new FallbackInvoker(getInvoker, LOGGER);
+        ROOT_CONTEXT = rootContext;
         CLIENT_CORE_SPAN_CONTEXT_KEY = clientCoreSpanContextKey;
     }
 
@@ -75,9 +51,9 @@ public class OTelContext {
      * @return the current OpenTelemetry context
      */
     public static Object getCurrent() {
-        Object currentContext = CURRENT_INVOKER.invoke();
-        assert CONTEXT_CLASS.isInstance(currentContext);
-        return currentContext;
+        return OTelInitializer.isInitialized()
+            ? FallbackInvoker.call(LOGGER, ROOT_CONTEXT, () -> Context.current())
+            : ROOT_CONTEXT;
     }
 
     /**
@@ -87,9 +63,9 @@ public class OTelContext {
      * @return an AutoCloseable that will restore the previous context when closed
      */
     public static AutoCloseable makeCurrent(Object context) {
-        Object scope = MAKE_CURRENT_INVOKER.invoke(context);
-        assert scope instanceof AutoCloseable;
-        return (AutoCloseable) scope;
+        return OTelInitializer.isInitialized()
+            ? FallbackInvoker.call(LOGGER, NOOP_SCOPE, () -> ((Context) context).makeCurrent())
+            : NOOP_SCOPE;
     }
 
     /**
@@ -99,7 +75,8 @@ public class OTelContext {
      * @return the updated context
      */
     public static Object markCoreSpan(Object context, OTelSpan span) {
-        Object updatedContext = WITH_INVOKER.invoke(context, CLIENT_CORE_SPAN_CONTEXT_KEY, span);
+        Object updatedContext
+            = FallbackInvoker.call(LOGGER, null, () -> ((Context) context).with(CLIENT_CORE_SPAN_CONTEXT_KEY, span));
         return updatedContext == null ? context : updatedContext;
     }
 
@@ -109,9 +86,7 @@ public class OTelContext {
      * @return the core span
      */
     public static OTelSpan getClientCoreSpan(Object context) {
-        Object clientCoreSpan = GET_INVOKER.invoke(context, CLIENT_CORE_SPAN_CONTEXT_KEY);
-        assert clientCoreSpan == null || clientCoreSpan instanceof OTelSpan;
-        return (OTelSpan) clientCoreSpan;
+        return FallbackInvoker.call(LOGGER, null, () -> ((Context) context).get(CLIENT_CORE_SPAN_CONTEXT_KEY));
     }
 
     /**
@@ -128,7 +103,7 @@ public class OTelContext {
             }
         }
 
-        Object currentContext = CURRENT_INVOKER.invoke();
+        Object currentContext = getCurrent();
         if (context != null) {
             Object spanContext = OTelSpanContext.toOTelSpanContext(context);
             Object span = OTelSpan.wrapSpanContext(spanContext);

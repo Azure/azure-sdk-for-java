@@ -9,6 +9,9 @@ module io.clientcore.core {
 
     requires java.net.http;
     requires jdk.httpserver;
+    requires static org.slf4j;
+    requires static io.opentelemetry.api;
+    requires static io.opentelemetry.context;
 
     // public API surface area
     exports io.clientcore.core.annotations;

@@ -4,7 +4,6 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.http.models.RequestContext;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
@@ -16,16 +15,22 @@ import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelTracer
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,63 +38,36 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.OPERATION_NAME_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_ADDRESS_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
 import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.UNKNOWN_LIBRARY_OPTIONS;
 import static io.clientcore.core.implementation.instrumentation.InstrumentationUtils.createOperationDurationHistogram;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.OTEL_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.W3C_PROPAGATOR_CLASS;
 
 /**
  * A {@link Instrumentation} implementation that uses OpenTelemetry.
  */
 public class OTelInstrumentation implements Instrumentation {
-    private static final FallbackInvoker GET_TRACER_PROVIDER_INVOKER;
-    private static final FallbackInvoker GET_METER_PROVIDER_INVOKER;
-    private static final FallbackInvoker GET_GLOBAL_OTEL_INVOKER;
 
     private static final Object NOOP_PROVIDER;
     private static final OTelTraceContextPropagator W3C_PROPAGATOR_INSTANCE;
     private static final ClientLogger LOGGER = new ClientLogger(OTelInstrumentation.class);
 
     static {
-        ReflectiveInvoker getTracerProviderInvoker = null;
-        ReflectiveInvoker getMeterProviderInvoker = null;
-        ReflectiveInvoker getGlobalOtelInvoker = null;
-
         Object noopProvider = null;
         Object w3cPropagatorInstance = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                getTracerProviderInvoker = getMethodInvoker(OTEL_CLASS, OTEL_CLASS.getMethod("getTracerProvider"));
-                getMeterProviderInvoker = getMethodInvoker(OTEL_CLASS, OTEL_CLASS.getMethod("getMeterProvider"));
-                getGlobalOtelInvoker = getMethodInvoker(GLOBAL_OTEL_CLASS, GLOBAL_OTEL_CLASS.getMethod("get"));
+                noopProvider = TracerProvider.noop();
 
-                ReflectiveInvoker noopProviderInvoker
-                    = getMethodInvoker(TRACER_PROVIDER_CLASS, TRACER_PROVIDER_CLASS.getMethod("noop"));
-                noopProvider = noopProviderInvoker.invoke();
-
-                ReflectiveInvoker w3cPropagatorInvoker
-                    = getMethodInvoker(W3C_PROPAGATOR_CLASS, W3C_PROPAGATOR_CLASS.getMethod("getInstance"));
-                w3cPropagatorInstance = w3cPropagatorInvoker.invoke();
-
+                w3cPropagatorInstance = W3CTraceContextPropagator.getInstance();
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
         }
 
-        GET_TRACER_PROVIDER_INVOKER = new FallbackInvoker(getTracerProviderInvoker, LOGGER);
-        GET_METER_PROVIDER_INVOKER = new FallbackInvoker(getMeterProviderInvoker, LOGGER);
-        GET_GLOBAL_OTEL_INVOKER = new FallbackInvoker(getGlobalOtelInvoker, LOGGER);
         NOOP_PROVIDER = noopProvider;
 
         W3C_PROPAGATOR_INSTANCE = new OTelTraceContextPropagator(w3cPropagatorInstance);
@@ -119,14 +97,17 @@ public class OTelInstrumentation implements Instrumentation {
     public OTelInstrumentation(InstrumentationOptions applicationOptions, SdkInstrumentationOptions sdkOptions,
         String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
-        if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
+        if (explicitOTel != null && !(explicitOTel instanceof OpenTelemetry)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("providerType", explicitOTel.getClass().getCanonicalName())
-                .addKeyValue("expectedType", OTEL_CLASS.getCanonicalName())
+                .addKeyValue("expectedType", OpenTelemetry.class.getCanonicalName())
                 .log("Unexpected telemetry provider type.", IllegalArgumentException::new);
         }
 
-        Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
+        Object otelInstance = explicitOTel;
+        if (otelInstance == null && OTelInitializer.isInitialized()) {
+            otelInstance = FallbackInvoker.call(LOGGER, null, () -> GlobalOpenTelemetry.get());
+        }
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
         this.isMetricsEnabled = applicationOptions == null || applicationOptions.isMetricsEnabled();
         this.allowNestedSpans
@@ -161,7 +142,8 @@ public class OTelInstrumentation implements Instrumentation {
     private static Tracer createTracer(boolean isTracingEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isTracingEnabled && OTelInitializer.isInitialized()) {
-            Object otelTracerProvider = GET_TRACER_PROVIDER_INVOKER.invoke(otelInstance);
+            Object otelTracerProvider
+                = FallbackInvoker.call(LOGGER, null, () -> ((OpenTelemetry) otelInstance).getTracerProvider());
 
             if (otelTracerProvider != null && otelTracerProvider != NOOP_PROVIDER) {
                 return new OTelTracer(otelTracerProvider, sdkOptions);
@@ -174,7 +156,8 @@ public class OTelInstrumentation implements Instrumentation {
     private static Meter createMeter(boolean isMetricsEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isMetricsEnabled && OTelInitializer.isInitialized()) {
-            Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(otelInstance);
+            Object otelMeterProvider
+                = FallbackInvoker.call(LOGGER, null, () -> ((OpenTelemetry) otelInstance).getMeterProvider());
 
             if (otelMeterProvider != null && otelMeterProvider != NOOP_PROVIDER) {
                 return new OTelMeter(otelMeterProvider, sdkOptions);
@@ -211,11 +194,11 @@ public class OTelInstrumentation implements Instrumentation {
             return (InstrumentationContext) context;
         } else if (context instanceof OTelSpan) {
             return ((OTelSpan) context).getInstrumentationContext();
-        } else if (SPAN_CLASS.isInstance(context)) {
+        } else if (context instanceof io.opentelemetry.api.trace.Span) {
             return OTelSpanContext.fromOTelSpan(context);
-        } else if (CONTEXT_CLASS.isInstance(context)) {
+        } else if (context instanceof Context) {
             return OTelSpanContext.fromOTelContext(context);
-        } else if (SPAN_CONTEXT_CLASS.isInstance(context)) {
+        } else if (context instanceof SpanContext) {
             return new OTelSpanContext(context, null);
         }
 

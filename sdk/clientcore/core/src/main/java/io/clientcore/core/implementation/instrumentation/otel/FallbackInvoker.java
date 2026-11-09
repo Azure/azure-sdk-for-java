@@ -3,117 +3,50 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.util.function.Supplier;
+
 /**
- * A wrapper around a {@link ReflectiveInvoker} that provides a fallback value if the invocation fails,
- * reports the error and suppresses exceptions.
+ * Runs OpenTelemetry operations with the existing disable-on-error behavior.
  */
-public class FallbackInvoker {
-    private final ReflectiveInvoker inner;
-    private final Object fallback;
-    private final ClientLogger logger;
-
-    /**
-     * Creates a new instance of {@link FallbackInvoker}.
-     * @param inner the inner invoker
-     * @param logger the logger to log error on.
-     */
-    public FallbackInvoker(ReflectiveInvoker inner, ClientLogger logger) {
-        this(inner, null, logger);
+public final class FallbackInvoker {
+    private FallbackInvoker() {
     }
 
     /**
-     * Creates a new instance of {@link FallbackInvoker}.
+     * Runs an OpenTelemetry operation and returns the fallback if telemetry is disabled or fails.
      *
-     * @param inner the inner invoker
+     * @param logger the logger
      * @param fallback the fallback value
-     * @param logger the logger to log error on.
+     * @param operation the operation
+     * @param <T> the result type
+     * @return the result or fallback
      */
-    public FallbackInvoker(ReflectiveInvoker inner, Object fallback, ClientLogger logger) {
-        this.inner = inner;
-        this.fallback = fallback;
-        this.logger = logger;
-    }
-
-    /**
-     * Invokes the inner invoker and returns the fallback value if the invocation fails.
-     *
-     * @return the result of the invocation or the fallback value
-     */
-    public Object invoke() {
-        try {
-            return inner.invoke();
-        } catch (Throwable t) {
-            OTelInitializer.runtimeError(logger, t);
+    public static <T> T call(ClientLogger logger, T fallback, Supplier<? extends T> operation) {
+        if (OTelInitializer.isInitialized()) {
+            try {
+                return operation.get();
+            } catch (Throwable t) {
+                OTelInitializer.runtimeError(logger, t);
+            }
         }
         return fallback;
     }
 
     /**
-     * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     * Runs an OpenTelemetry operation that has no result.
      *
-     * @param argOrTarget the argument or target
-     * @return the result of the invocation or the fallback value
+     * @param logger the logger
+     * @param operation the operation
      */
-    public Object invoke(Object argOrTarget) {
-        try {
-            return inner.invoke(argOrTarget);
-        } catch (Throwable t) {
-            OTelInitializer.runtimeError(logger, t);
+    public static void run(ClientLogger logger, Runnable operation) {
+        if (OTelInitializer.isInitialized()) {
+            try {
+                operation.run();
+            } catch (Throwable t) {
+                OTelInitializer.runtimeError(logger, t);
+            }
         }
-        return fallback;
-    }
-
-    /**
-     * Invokes the inner invoker and returns the fallback value if the invocation fails.
-     *
-     * @param argOrTarget the argument or target
-     * @param arg1 the first argument
-     * @return the result of the invocation or the fallback value
-     */
-    public Object invoke(Object argOrTarget, Object arg1) {
-        try {
-            return inner.invoke(argOrTarget, arg1);
-        } catch (Throwable t) {
-            OTelInitializer.runtimeError(logger, t);
-        }
-        return fallback;
-    }
-
-    /**
-     * Invokes the inner invoker and returns the fallback value if the invocation fails.
-     *
-     * @param argOrTarget the argument or target
-     * @param arg1 the first argument
-     * @param arg2 the second argument
-     * @return the result of the invocation or the fallback value
-     */
-    public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
-        try {
-            return inner.invoke(argOrTarget, arg1, arg2);
-        } catch (Throwable t) {
-            OTelInitializer.runtimeError(logger, t);
-        }
-        return fallback;
-    }
-
-    /**
-     * Invokes the inner invoker and returns the fallback value if the invocation fails.
-     *
-     * @param argOrTarget the argument or target
-     * @param arg1 the first argument
-     * @param arg2 the second argument
-     * @param arg3 the third argument
-     * @return the result of the invocation or the fallback value
-     */
-    public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {
-        try {
-            return inner.invoke(argOrTarget, arg1, arg2, arg3);
-        } catch (Throwable t) {
-            OTelInitializer.runtimeError(logger, t);
-        }
-        return fallback;
     }
 }
