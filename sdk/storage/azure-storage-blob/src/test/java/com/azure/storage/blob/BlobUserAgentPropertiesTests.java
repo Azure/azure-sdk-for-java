@@ -52,6 +52,14 @@ public class BlobUserAgentPropertiesTests {
 
     private static Stream<UserAgentTestCase> userAgentModificationPolicyTestSupplier() {
         return Stream.of(
+            new UserAgentTestCase().baseSdk("azure-storage-blob", "12.11.0-private")
+                .policy("azure-storage-blob-batch", "12.8.0-private")
+                .expectAdditionalSdk("azure-storage-blob-batch", "12.8.0-private")
+                .platform("11.0.6", "Windows 10", "10.0"),
+            new UserAgentTestCase().baseSdk("azure-storage-blob", "12.11.0-beta.2-private")
+                .policy("azure-storage-blob-batch", "12.8.0-beta.2-private")
+                .expectAdditionalSdk("azure-storage-blob-batch", "12.8.0-beta.2-private")
+                .platform("11.0.6", "Windows 10", "10.0"),
             new UserAgentTestCase().baseSdk("azure-storage-blob", "12.11.0-beta.2")
                 .policy("azure-storage-blob-batch", "12.8.0-beta.2")
                 .expectAdditionalSdk("azure-storage-blob-batch", "12.8.0-beta.2")

@@ -26,7 +26,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientVersion;
 
     private static final String REGEX
-        = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
+        = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?(?:-private)?)( .*?)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     /**
