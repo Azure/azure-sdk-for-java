@@ -25,8 +25,12 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.BinaryData;
 import com.openai.core.JsonValue;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ServerEvent;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.io.ByteArrayInputStream;
@@ -37,6 +41,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -132,32 +138,82 @@ abstract class VoiceAgentLiveConversationsTestBase extends ClientTestBase {
     }
 
     private String createStoredSession(AgentsClientBuilder builder, String agentName) {
-        AtomicReference<String> conversationId = new AtomicReference<>();
-        AtomicInteger audioBytes = new AtomicInteger();
-        Mono.usingWhen(
+        return Mono.usingWhen(
             builder.beta()
                 .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession(agentName, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(true)),
-            session -> GptLiveAudioConversationAsyncSample
-                .runConversationCoreAsync(session.receiveEvents().doOnNext(event -> {
-                    if (event.isSessionStarted()) {
-                        JsonValue id = event.asSessionStarted()._additionalProperties().get("conversation_id");
-                        assertNotNull(id, "A stored session must return a Foundry conversation ID.");
-                        assertTrue(id.asString().isPresent(), "The conversation ID must be a string.");
-                        conversationId.set(assertInstanceOf(String.class, id.asString().get(),
-                            "The conversation ID must be a string."));
-                    }
-                }), session::sendEvent, () -> "Stored Live REST test fixture", transcripts -> Mono.empty(),
-                    pcm -> audioBytes.addAndGet(pcm.length), () -> {
-                    }, true, true, false, () -> Mono.empty(), Mono.empty(), backend -> Mono.just(false),
-                    reason -> false)
+            session -> runStoredSession(session.receiveEvents(), session::sendEvent)
                 .onErrorMap(error -> new IllegalStateException("Live REST fixture session failed; close code="
                     + session.getCloseCode() + ", reason=" + session.getCloseReason(), error)),
             BetaVoiceAgentsLiveWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
             BetaVoiceAgentsLiveWebSocketSessionAsyncClient::closeAsync).block(TIMEOUT);
-        assertNotNull(conversationId.get());
-        assertTrue(audioBytes.get() > 0, "The fixture must generate actual synthetic speech, not only text.");
-        return conversationId.get();
+    }
+
+    static Mono<String> runStoredSession(Flux<ServerEvent> events, Function<ClientEvent, Mono<Void>> sendEvent) {
+        return Mono.defer(() -> {
+            AtomicReference<String> conversationId = new AtomicReference<>();
+            AtomicInteger audioBytes = new AtomicInteger();
+            AtomicBoolean closeRequested = new AtomicBoolean();
+            AtomicBoolean closed = new AtomicBoolean();
+            Sinks.Empty<Void> started = Sinks.empty();
+            Sinks.Empty<Void> completed = Sinks.empty();
+            Sinks.Empty<Void> stopAudio = Sinks.empty();
+            Sinks.Empty<Void> audioStopped = Sinks.empty();
+            Sinks.Many<Integer> audioActivity = Sinks.many().replay().latest();
+            Mono<Void> receive = events.takeUntil(ServerEvent::isSessionClosed).doOnNext(event -> {
+                GptLiveSampleUtils.checkError(event);
+                if (event.isSessionStarted()) {
+                    if (conversationId.get() != null) {
+                        throw new IllegalStateException("Duplicate session.started event.");
+                    }
+                    JsonValue id = event.asSessionStarted()._additionalProperties().get("conversation_id");
+                    assertNotNull(id, "A stored session must return a Foundry conversation ID.");
+                    assertTrue(id.asString().isPresent(), "The conversation ID must be a string.");
+                    conversationId.set(
+                        assertInstanceOf(String.class, id.asString().get(), "The conversation ID must be a string."));
+                    started.tryEmitEmpty();
+                } else if (event.isSessionOutputAudioDelta()) {
+                    audioActivity.tryEmitNext(audioBytes.addAndGet(GptLiveSampleUtils.decodeAudio(event).length));
+                } else if (event.isResponseEvent() && GptLiveSampleUtils.backendEvent(event).isCompleted()) {
+                    completed.tryEmitEmpty();
+                } else if (event.isSessionClosed()) {
+                    if (!closeRequested.get()
+                        || !"close_requested".equals(event.asSessionClosed().reason().toString())) {
+                        throw new IllegalStateException(
+                            "Unexpected Live fixture session closure: " + event.asSessionClosed().reason());
+                    }
+                    closed.set(true);
+                }
+            })
+                .then(Mono.defer(() -> closed.get()
+                    ? Mono.empty()
+                    : Mono.error(new IllegalStateException("Live fixture disconnected without session.closed."))));
+            Mono<Void> inputAudio = started.asMono()
+                .thenMany(Flux.interval(Duration.ZERO, Duration.ofMillis(20))
+                    .takeUntilOther(stopAudio.asMono())
+                    .concatMap(ignored -> sendEvent.apply(GptLiveSampleUtils.audio(new byte[960])), 1))
+                .then()
+                .doOnSuccess(ignored -> audioStopped.tryEmitEmpty());
+            Mono<Void> conversation = started.asMono()
+                .then(Mono.defer(() -> sendEvent.apply(GptLiveSampleUtils.userMessage("Say hello briefly."))
+                    .then(sendEvent.apply(GptLiveSampleUtils.responseCreate()))))
+                .then(completed.asMono())
+                // Backend completion can precede the last synthesized audio chunk.
+                .then(audioActivity.asFlux().switchMap(ignored -> Mono.delay(Duration.ofSeconds(1))).next())
+                .then(Mono.fromRunnable(() -> {
+                    assertTrue(audioBytes.get() > 0,
+                        "The fixture must generate actual synthetic speech, not only text.");
+                    stopAudio.tryEmitEmpty();
+                }))
+                .then(audioStopped.asMono())
+                .then(Mono.defer(() -> {
+                    closeRequested.set(true);
+                    return sendEvent.apply(GptLiveSampleUtils.closeSession());
+                }));
+            return Mono.when(receive, inputAudio, conversation)
+                .timeout(TIMEOUT)
+                .then(Mono.fromSupplier(conversationId::get));
+        });
     }
 
     private void awaitCompleted(BetaVoiceAgentsLiveConversationsClient client, String agentName,
