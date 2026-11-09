@@ -28,7 +28,7 @@ public final class TelephonyAddressType extends ExpandableStringEnum<TelephonyAd
     public static final TelephonyAddressType TEAMS = fromString("teams");
 
     /**
-     * A SIP or SIPS destination for transfer.
+     * A SIP or SIPS destination for transfer. SIP is in preview and requires the `VoiceAgents=V1Preview` opt-in.
      */
     @Generated
     public static final TelephonyAddressType SIP = fromString("sip");

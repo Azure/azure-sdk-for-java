@@ -29,6 +29,7 @@ public final class McpToolFilter implements JsonSerializable<McpToolFilter> {
     private List<String> toolNames;
 
     /*
+     * 
      * Indicates whether or not a tool modifies data or is read-only. If an
      * MCP server is [annotated with
      * `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
@@ -71,7 +72,8 @@ public final class McpToolFilter implements JsonSerializable<McpToolFilter> {
     }
 
     /**
-     * Get the readOnly property: Indicates whether or not a tool modifies data or is read-only. If an
+     * Get the readOnly property:
+     * Indicates whether or not a tool modifies data or is read-only. If an
      * MCP server is [annotated with
      * `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
      * it will match this filter.
@@ -84,7 +86,8 @@ public final class McpToolFilter implements JsonSerializable<McpToolFilter> {
     }
 
     /**
-     * Set the readOnly property: Indicates whether or not a tool modifies data or is read-only. If an
+     * Set the readOnly property:
+     * Indicates whether or not a tool modifies data or is read-only. If an
      * MCP server is [annotated with
      * `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
      * it will match this filter.

@@ -66,18 +66,18 @@ import java.util.stream.Collectors;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        BetaVoiceAgentsConversationsClient.class,
-        BetaVoiceAgentsLiveConversationsClient.class,
         BetaVoiceAgentsTelephonyClient.class,
+        BetaVoiceAgentsLiveConversationsClient.class,
         BetaMemoryStoresClient.class,
-        BetaAgentsClient.class,
+        VoiceAgentsConversationsClient.class,
+        VoiceAgentsTelephonyClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
-        BetaVoiceAgentsConversationsAsyncClient.class,
-        BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
+        BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
-        BetaAgentsAsyncClient.class,
+        VoiceAgentsConversationsAsyncClient.class,
+        VoiceAgentsTelephonyAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class,
         VoiceAgentsWebSocketClient.class,
@@ -1029,5 +1029,45 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
         return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsConversationsAsyncClient class.
+     *
+     * @return an instance of VoiceAgentsConversationsAsyncClient.
+     */
+    @Generated
+    public VoiceAgentsConversationsAsyncClient buildVoiceAgentsConversationsAsyncClient() {
+        return new VoiceAgentsConversationsAsyncClient(buildInnerClient().getVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsTelephonyAsyncClient class.
+     *
+     * @return an instance of VoiceAgentsTelephonyAsyncClient.
+     */
+    @Generated
+    public VoiceAgentsTelephonyAsyncClient buildVoiceAgentsTelephonyAsyncClient() {
+        return new VoiceAgentsTelephonyAsyncClient(buildInnerClient().getVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsConversationsClient class.
+     *
+     * @return an instance of VoiceAgentsConversationsClient.
+     */
+    @Generated
+    public VoiceAgentsConversationsClient buildVoiceAgentsConversationsClient() {
+        return new VoiceAgentsConversationsClient(buildInnerClient().getVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsTelephonyClient class.
+     *
+     * @return an instance of VoiceAgentsTelephonyClient.
+     */
+    @Generated
+    public VoiceAgentsTelephonyClient buildVoiceAgentsTelephonyClient() {
+        return new VoiceAgentsTelephonyClient(buildInnerClient().getVoiceAgentsTelephonies());
     }
 }
