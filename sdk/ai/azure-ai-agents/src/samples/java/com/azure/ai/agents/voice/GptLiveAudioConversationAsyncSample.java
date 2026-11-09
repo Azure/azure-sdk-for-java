@@ -10,16 +10,9 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
-import com.openai.models.responses.ResponseStreamEvent;
 import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import reactor.core.publisher.Flux;
+import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.publisher.Sinks;
 
 
@@ -92,11 +85,8 @@ public class GptLiveAudioConversationAsyncSample {
     static Mono<Void> runAudioConversationAsync(BetaVoiceAgentsLiveWebSocketSessionAsyncClient session,
         GptLiveSampleUtils.AudioProcessor processor, InputStream input) {
         return Mono.usingWhen(Mono.just(processor),
-            audio -> Mono.firstWithSignal(runConversationAsync(session.receiveEvents(), session::sendEvent,
-                () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
-                transcripts -> VoiceAgentLiveAudioConversationAsyncSample.waitForEnter(input)
-                    .then(closeAudioAsync(audio)).then(Mono.<String>empty()),
-                audio::queueAudio, () -> { }, true, audio), audio.failureSignalAsync()), GptLiveAudioConversationAsyncSample::closeAudioAsync,
+            audio -> Mono.firstWithSignal(runAudioSession(session, audio, input), audio.failureSignalAsync()),
+            GptLiveAudioConversationAsyncSample::closeAudioAsync,
             (audio, error) -> closeAudioAsync(audio), GptLiveAudioConversationAsyncSample::closeAudioAsync);
     }
 
@@ -104,112 +94,50 @@ public class GptLiveAudioConversationAsyncSample {
         return Mono.<Void>fromRunnable(audio::close).subscribeOn(Schedulers.boundedElastic());
     }
 
-    private static Mono<Void> runConversationAsync(Flux<ServerEvent> events,
-        Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails,
-        Function<GptLiveSampleUtils.AudioTranscriptPrinter, Mono<String>> nextPrompt,
-        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken, GptLiveSampleUtils.AudioProcessor microphone) {
-        Mono<Void> opening = microphone == null ? Mono.empty()
-            : Mono.defer(() -> sendEvent.apply(GptLiveSampleUtils.userMessage("Greet me briefly with: Hi, how can I help you today?"))
-                .then(sendEvent.apply(GptLiveSampleUtils.responseCreate()))
-                .then(Mono.fromRunnable(() -> System.out.println(
-                    "Opening greeting requested. Speak into the microphone. Press Enter to end the call."))));
-        return runConversationCoreAsync(events, sendEvent, closeDetails, nextPrompt, playAudio, drainAudio, spoken,
-            spoken && microphone == null, microphone == null && System.console() != null,
-            () -> Mono.fromRunnable(() -> {
-                if (microphone != null) {
-                    microphone.start();
-                }
-            }), opening, backend -> Mono.just(false), reason -> microphone != null);
-    }
-
-    static Mono<Void> runConversationCoreAsync(Flux<ServerEvent> events,
-        Function<ClientEvent, Mono<Void>> sendEvent, Supplier<String> closeDetails,
-        Function<GptLiveSampleUtils.AudioTranscriptPrinter, Mono<String>> nextPrompt,
-        Consumer<byte[]> playAudio, Runnable drainAudio, boolean spoken, boolean interactive, boolean inputEchoed,
-        Supplier<Mono<Void>> onStarted, Mono<Void> opening,
-        Function<ResponseStreamEvent, Mono<Boolean>> handleResponse, Predicate<String> acceptClose) {
+    private static Mono<Void> runAudioSession(BetaVoiceAgentsLiveWebSocketSessionAsyncClient session,
+        GptLiveSampleUtils.AudioProcessor audio, InputStream input) {
         return Mono.defer(() -> {
-            GptLiveSampleUtils.AudioTranscriptPrinter transcripts = new GptLiveSampleUtils.AudioTranscriptPrinter(inputEchoed, interactive);
-            GptLiveSampleUtils.Greeting greeting = new GptLiveSampleUtils.Greeting();
+            GptLiveSampleUtils.AudioTranscriptPrinter transcripts = new GptLiveSampleUtils.AudioTranscriptPrinter(false, false);
             Sinks.Empty<Void> ready = Sinks.empty();
             Sinks.Empty<Void> closed = Sinks.empty();
-            Sinks.Empty<Void> audioStarted = Sinks.empty();
-            Sinks.Empty<Void> stopAudio = Sinks.empty();
-            Sinks.Empty<Void> audioStopped = Sinks.empty();
-            AtomicReference<Sinks.Empty<Void>> responseCompleted = new AtomicReference<>();
-            GptLiveSampleUtils.ConversationEventHandler<Mono<Void>> handler
-                = new GptLiveSampleUtils.ConversationEventHandler<Mono<Void>>(spoken, closeDetails, acceptClose) {
-                    @Override
-                    Mono<Void> onStarted() {
-                        return Mono.defer(onStarted).doOnSuccess(ignored -> ready.tryEmitEmpty());
-                    }
-
-                    @Override
-                    Mono<Void> onResponse(ResponseStreamEvent event) {
-                        return Mono.defer(() -> handleResponse.apply(event)).defaultIfEmpty(false)
-                            .doOnNext(continuation -> {
-                                if (event.isCompleted() && completeResponse(continuation)) {
-                                    responseCompleted.getAndSet(null).tryEmitEmpty();
-                                }
-                            }).then();
-                    }
-
-                    @Override
-                    Mono<Void> onClosed() {
-                        return Mono.fromRunnable(() -> closed.tryEmitEmpty());
-                    }
-
-                    @Override
-                    Mono<Void> ignored() {
-                        return Mono.empty();
-                    }
-                };
-            Mono<Void> receive = events
+            AtomicBoolean started = new AtomicBoolean();
+            AtomicBoolean finalized = new AtomicBoolean();
+            Mono<Void> receive = session.receiveEvents()
                 .publishOn(Schedulers.boundedElastic(), 1)
                 .takeUntil(ServerEvent::isSessionClosed)
-                .concatMap(event -> Mono.defer(() -> {
-                    if (spoken) {
-                        transcripts.print(event);
-                        if (event.isSessionOutputAudioDelta()) {
-                            byte[] pcm = GptLiveSampleUtils.decodeAudio(event);
-                            playAudio.accept(pcm);
-                            greeting.onAudio(pcm);
-                        } else if (event.isSessionOutputTranscriptDelta()
-                            && !event.asSessionOutputTranscriptDelta().delta().trim().isEmpty()) {
-                            greeting.onTranscript();
-                        }
-                    } else {
-                        GptLiveSampleUtils.printEvent(event);
+                .doOnNext(event -> {
+                    transcripts.print(event);
+                    if (event.isSessionOutputAudioDelta()) {
+                        audio.queueAudio(GptLiveSampleUtils.decodeAudio(event));
                     }
-                    return handler.process(event);
-                }), 1)
-                .then(Mono.defer(() -> handler.awaitConversationAfterReceive() ? Mono.never() : Mono.empty()));
-            Mono<Void> audio = ready.asMono()
-                .thenMany(GptLiveSampleUtils.silenceFramesAsync().takeUntilOther(stopAudio.asMono())
-                    .concatMap(frame -> sendEvent.apply(frame).doOnSuccess(ignored -> audioStarted.tryEmitEmpty()), 1))
-                .then()
-                .doOnSuccess(ignored -> audioStopped.tryEmitEmpty())
-                .then(Mono.never());
-            Mono<Void> renderTranscripts = greeting.quietPeriodsAsync()
-                .doOnNext(ignored -> transcripts.endUtterance()).then();
+                    if (event.isSessionStarted()) {
+                        if (!started.compareAndSet(false, true)) {
+                            throw new IllegalStateException("Duplicate session.started event.");
+                        }
+                        audio.start();
+                        ready.tryEmitEmpty();
+                    } else if (event.isResponseEvent() && !started.get()
+                        && GptLiveSampleUtils.backendEvent(event).isCompleted()) {
+                        throw new IllegalStateException("Unexpected GPT Live response lifecycle event.");
+                    } else if (event.isSessionClosed()) {
+                        finalized.set(true);
+                        System.out.println("Live session closed (" + event.asSessionClosed().reason() + ").");
+                        closed.tryEmitEmpty();
+                    }
+                }).then(Mono.defer(() -> finalized.get() ? Mono.empty()
+                    : Mono.error(new IllegalStateException("GPT Live disconnected without session.closed."))));
             Mono<Void> conversation = ready.asMono().timeout(GptLiveSampleUtils.TIMEOUT)
-                .then(Mono.defer(() -> interactive ? audioStarted.asMono().timeout(GptLiveSampleUtils.TIMEOUT) : Mono.empty()))
-                .then(Mono.defer(() -> interactive
-                    ? sendEvent.apply(GptLiveSampleUtils.commentary("Hi, how can I help you today?"))
-                        .timeout(GptLiveSampleUtils.TIMEOUT)
-                        .then(greeting.awaitPlaybackAsync(drainAudio))
-                        .then(Mono.fromRunnable(transcripts::endUtterance))
-                    : opening))
-                .then(Mono.defer(() -> GptLiveSampleUtils.promptAsync(sendEvent, nextPrompt, responseCompleted, spoken, transcripts, handler)))
-                .then(Mono.defer(() -> {
-                    handler.requestClose();
-                    stopAudio.tryEmitEmpty();
-                    return (interactive ? audioStopped.asMono() : Mono.<Void>empty())
-                        .then(sendEvent.apply(GptLiveSampleUtils.closeSession()))
-                        .then(closed.asMono()).timeout(GptLiveSampleUtils.TIMEOUT);
-                }));
-            return interactive ? Mono.firstWithSignal(receive, audio, renderTranscripts, conversation)
-                : Mono.firstWithSignal(receive, conversation);
+                .then(Mono.defer(() -> session.sendEvent(GptLiveSampleUtils.userMessage(
+                    "Greet me briefly with: Hi, how can I help you today?"))
+                    .then(session.sendEvent(GptLiveSampleUtils.responseCreate()))
+                    .timeout(GptLiveSampleUtils.TIMEOUT)))
+                .then(Mono.fromRunnable(() -> System.out.println(
+                    "Opening greeting requested. Speak into the microphone. Press Enter to end the call.")))
+                .then(VoiceAgentLiveAudioConversationAsyncSample.waitForEnter(input))
+                .then(closeAudioAsync(audio))
+                .then(Mono.defer(() -> session.sendEvent(GptLiveSampleUtils.closeSession())
+                    .then(closed.asMono()).timeout(GptLiveSampleUtils.TIMEOUT)));
+            return Mono.firstWithSignal(receive, conversation);
         });
     }
 
