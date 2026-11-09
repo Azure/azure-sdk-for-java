@@ -158,6 +158,7 @@
           <classpathDependencyExcludes>
             <classpathDependencyExclude>io.opentelemetry:opentelemetry-api</classpathDependencyExclude>
             <classpathDependencyExclude>io.opentelemetry:opentelemetry-context</classpathDependencyExclude>
+            <classpathDependencyExclude>org.slf4j:slf4j-api</classpathDependencyExclude>
           </classpathDependencyExcludes>
         </configuration>
       </plugin>
