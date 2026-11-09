@@ -227,11 +227,15 @@ public class ThinClientSessionTokenTest {
     }
 
     @DataProvider
-    public Object[][] pointWrites() {
-        return new Object[][] {
-            {OperationType.Create}, {OperationType.Upsert}, {OperationType.Replace},
-            {OperationType.Patch}, {OperationType.Delete}
-        };
+    public Object[][] pointOperationsAndSessionTokens() {
+        List<Object[]> scenarios = new ArrayList<>();
+        for (OperationType operation : Arrays.asList(OperationType.Read, OperationType.Create, OperationType.Upsert,
+            OperationType.Replace, OperationType.Patch, OperationType.Delete)) {
+            for (String token : Arrays.asList(ORIGINAL, "0:1#100#1=90#2=-1", null)) {
+                scenarios.add(new Object[] {operation, token});
+            }
+        }
+        return scenarios.toArray(new Object[0][]);
     }
 
     @DataProvider
@@ -384,20 +388,25 @@ public class ThinClientSessionTokenTest {
         }
     }
 
-    @Test(groups = "unit", dataProvider = "pointWrites")
-    public void pointWritesPrepareCompoundProgressBeforeDispatch(OperationType operationType) throws Exception {
+    // Verify ordinary and compound preparation preserve caller progress through every CRUD entry point.
+    @Test(groups = "unit", dataProvider = "pointOperationsAndSessionTokens")
+    public void pointOperationsPreserveCallerProgressBeforeDispatch(OperationType operationType, String token)
+        throws Exception {
         try (Fixture fixture = new Fixture()) {
             RxDocumentClientImpl client = fixture.fullClient();
             fixture.thin.setUseMultipleWriteLocations(true);
             fixture.classic.setUseMultipleWriteLocations(true);
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey("customer"));
-            options.setSessionToken(ORIGINAL);
+            options.setSessionToken(token);
             options.setCosmosEndToEndLatencyPolicyConfig(
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5)).build());
             Document document = new Document("{\"id\":\"item\",\"pk\":\"customer\"}");
             Mono<ResourceResponse<Document>> result;
             switch (operationType) {
+                case Read:
+                    result = client.readDocument("/dbs/db/colls/coll/docs/item", "item", options);
+                    break;
                 case Create:
                     result = client.createDocument("/dbs/db/colls/coll", document, options, true);
                     break;
@@ -418,20 +427,26 @@ public class ThinClientSessionTokenTest {
                     throw new AssertionError(operationType);
             }
             assertThat(result.block(Duration.ofSeconds(5))).isNotNull();
-            assertThat(fixture.wireTokens).containsExactly("0:1#100#1=90#2=-1");
-            verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
-            assertThat(options.getSessionToken()).isEqualTo(ORIGINAL);
+            assertThat(fixture.wireTokens).containsExactly(token == null ? null : "0:1#100#1=90#2=-1");
+            if (token != null) {
+                verify(fixture.ranges).tryLookupAsync(any(), any(), any(), any());
+            }
+            verify(fixture.ranges, never()).tryLookupAsync(any(), any(), Mockito.notNull(), any());
+            assertThat(options.getSessionToken()).isEqualTo(token);
         }
     }
 
     @DataProvider
     public Object[][] retriedWrites() {
-        return new Object[][] {{OperationType.Create}, {OperationType.Upsert}};
+        return new Object[][] {
+            {OperationType.Create, ORIGINAL}, {OperationType.Create, "0:1#100#1=90#2=-1"},
+            {OperationType.Upsert, ORIGINAL}, {OperationType.Upsert, "0:1#100#1=90#2=-1"}
+        };
     }
 
-    // Verify pre-hedge preparation and retry reconstruction preserve the supplied item ID and payload.
+    // Verify retries preserve the supplied item ID and payload with or without compound preparation.
     @Test(groups = "unit", dataProvider = "retriedWrites")
-    public void itemIdAndPayloadRemainStableAcrossRetries(OperationType operation) throws Exception {
+    public void itemIdAndPayloadRemainStableAcrossRetries(OperationType operation, String token) throws Exception {
         try (Fixture fixture = new Fixture()) {
             fixture.thin.setUseMultipleWriteLocations(true);
             RxDocumentClientImpl client = fixture.fullClient();
@@ -451,7 +466,7 @@ public class ThinClientSessionTokenTest {
             fixture.inject(injector);
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey("customer"));
-            options.setSessionToken(ORIGINAL);
+            options.setSessionToken(token);
             Document item = new Document("{\"id\":\"item\",\"pk\":\"customer\",\"value\":1}");
             Mono<ResourceResponse<Document>> result = operation == OperationType.Create
                 ? client.createDocument("/dbs/db/colls/coll", item, options, false)
@@ -460,7 +475,7 @@ public class ThinClientSessionTokenTest {
             assertThat(bodies).hasSize(2);
             assertThat(bodies.get(1)).containsExactly(bodies.get(0));
             assertThat(new Document(new String(bodies.get(0), StandardCharsets.UTF_8)).getId()).isEqualTo("item");
-            assertThat(options.getSessionToken()).isEqualTo(ORIGINAL);
+            assertThat(options.getSessionToken()).isEqualTo(token);
         }
     }
 

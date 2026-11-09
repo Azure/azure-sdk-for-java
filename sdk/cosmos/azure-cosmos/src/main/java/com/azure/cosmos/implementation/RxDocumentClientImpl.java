@@ -3012,7 +3012,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
-                    createDocumentInternal(
+                    prepareCreateDocumentRequest(
                         collectionLink,
                         document,
                         nonNullRequestOptions,
@@ -3020,38 +3020,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        crossRegionAvailabilityContextForRxDocumentServiceRequest),
+                        crossRegionAvailabilityContextForRxDocumentServiceRequest)
+                        .flatMap(request -> create(
+                            request,
+                            finalRetryPolicyInstance,
+                            getOperationContextAndListenerTuple(nonNullRequestOptions)))
+                        .map(response -> toResourceResponse(
+                            response,
+                            Document.class)),
                 finalRetryPolicyInstance),
             scopedDiagnosticsFactory
         ), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> createDocumentInternal(
-        String collectionLink,
-        Object document,
-        RequestOptions options,
-        boolean disableAutomaticIdGeneration,
-        DocumentClientRetryPolicy requestRetryPolicy,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return prepareCreateDocumentRequest(
-            collectionLink,
-            document,
-            options,
-            disableAutomaticIdGeneration,
-            requestRetryPolicy,
-            clientContextOverride,
-            documentServiceRequestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> create(
-                request,
-                requestRetryPolicy,
-                getOperationContextAndListenerTuple(options)))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> prepareCreateDocumentRequest(
@@ -3451,7 +3430,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
-                    () -> upsertDocumentInternal(
+                    () -> prepareUpsertDocumentRequest(
                         collectionLink,
                         document,
                         nonNullRequestOptions,
@@ -3459,37 +3438,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        crossRegionAvailabilityContextForRequest),
+                        crossRegionAvailabilityContextForRequest)
+                        .flatMap(request -> upsert(
+                            request,
+                            finalRetryPolicyInstance,
+                            getOperationContextAndListenerTuple(nonNullRequestOptions)))
+                        .map(response -> toResourceResponse(
+                            response,
+                            Document.class)),
                     finalRetryPolicyInstance),
                 scopedDiagnosticsFactory), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> upsertDocumentInternal(
-        String collectionLink,
-        Object document,
-        RequestOptions options,
-        boolean disableAutomaticIdGeneration,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return prepareUpsertDocumentRequest(
-            collectionLink,
-            document,
-            options,
-            disableAutomaticIdGeneration,
-            retryPolicyInstance,
-            clientContextOverride,
-            requestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> upsert(
-                request,
-                retryPolicyInstance,
-                getOperationContextAndListenerTuple(options)))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> prepareUpsertDocumentRequest(
@@ -3649,7 +3607,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
-                    () -> replaceDocumentInternal(
+                    () -> prepareReplaceDocumentRequest(
                         documentLink,
                         itemId,
                         document,
@@ -3657,36 +3615,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRequestRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        crossRegionAvailabilityContextForRequest),
+                        crossRegionAvailabilityContextForRequest)
+                        .flatMap(request -> replace(
+                            request,
+                            finalRequestRetryPolicy))
+                        .map(response -> toResourceResponse(
+                            response,
+                            Document.class)),
                     finalRequestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(
-        String documentLink,
-        String itemId,
-        Object document,
-        RequestOptions options,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return prepareReplaceDocumentRequest(
-            documentLink,
-            itemId,
-            document,
-            options,
-            retryPolicyInstance,
-            clientContextOverride,
-            requestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> replace(
-                request,
-                retryPolicyInstance))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> prepareReplaceDocumentRequest(
@@ -3996,7 +3933,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
-                    () -> patchDocumentInternal(
+                    () -> preparePatchDocumentRequest(
                         documentLink,
                         itemId,
                         cosmosPatchOperations,
@@ -4004,36 +3941,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         documentClientRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        crossRegionAvailabilityContextForRequest),
+                        crossRegionAvailabilityContextForRequest)
+                        .flatMap(request -> patch(
+                            request,
+                            documentClientRetryPolicy))
+                        .map(response -> toResourceResponse(
+                            response,
+                            Document.class)),
                     documentClientRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> patchDocumentInternal(
-        String documentLink,
-        String itemId,
-        CosmosPatchOperations cosmosPatchOperations,
-        RequestOptions options,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return preparePatchDocumentRequest(
-            documentLink,
-            itemId,
-            cosmosPatchOperations,
-            options,
-            retryPolicyInstance,
-            clientContextOverride,
-            requestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> patch(
-                request,
-                retryPolicyInstance))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> preparePatchDocumentRequest(
@@ -4298,7 +4214,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
-                    () -> deleteDocumentInternal(
+                    () -> prepareDeleteDocumentRequest(
                         documentLink,
                         itemId,
                         internalObjectNode,
@@ -4306,37 +4222,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        crossRegionAvailabilityContextForRequest),
+                        crossRegionAvailabilityContextForRequest)
+                        .flatMap(request -> delete(
+                            request,
+                            requestRetryPolicy,
+                            getOperationContextAndListenerTuple(nonNullRequestOptions)))
+                        .map(response -> toResourceResponse(
+                            response,
+                            Document.class)),
                     requestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(
-        String documentLink,
-        String itemId,
-        InternalObjectNode internalObjectNode,
-        RequestOptions options,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return prepareDeleteDocumentRequest(
-            documentLink,
-            itemId,
-            internalObjectNode,
-            options,
-            retryPolicyInstance,
-            clientContextOverride,
-            requestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> delete(
-                request,
-                retryPolicyInstance,
-                getOperationContextAndListenerTuple(options)))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> prepareDeleteDocumentRequest(
@@ -4565,42 +4460,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
-                () -> readDocumentInternal(
+                () -> prepareReadDocumentRequest(
                     documentLink,
                     itemId,
                     nonNullRequestOptions,
                     retryPolicyInstance,
                     scopedDiagnosticsFactory,
                     requestReference,
-                    crossRegionAvailabilityContextForRequest),
+                    crossRegionAvailabilityContextForRequest)
+                    .flatMap(request -> read(
+                        request,
+                        retryPolicyInstance))
+                    .map(response -> toResourceResponse(
+                        response,
+                        Document.class)),
                 retryPolicyInstance),
             scopedDiagnosticsFactory
         ), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> readDocumentInternal(
-        String documentLink,
-        String itemId,
-        RequestOptions options,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        return prepareReadDocumentRequest(
-            documentLink,
-            itemId,
-            options,
-            retryPolicyInstance,
-            clientContextOverride,
-            requestReference,
-            crossRegionAvailabilityContextForRequest)
-            .flatMap(request -> read(
-                request,
-                retryPolicyInstance))
-            .map(response -> toResourceResponse(
-                response,
-                Document.class));
     }
 
     private Mono<RxDocumentServiceRequest> prepareReadDocumentRequest(
