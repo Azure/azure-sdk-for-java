@@ -71,7 +71,6 @@ import java.util.stream.Collectors;
         BetaMemoryStoresClient.class,
         VoiceAgentsConversationsClient.class,
         VoiceAgentsTelephonyClient.class,
-        VoiceAgentsWebSocketClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         AgentOptimizationJobsClient.class,
@@ -80,10 +79,11 @@ import java.util.stream.Collectors;
         BetaMemoryStoresAsyncClient.class,
         VoiceAgentsConversationsAsyncClient.class,
         VoiceAgentsTelephonyAsyncClient.class,
-        VoiceAgentsWebSocketAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class,
-        AgentOptimizationJobsAsyncClient.class })
+        AgentOptimizationJobsAsyncClient.class,
+        VoiceAgentsWebSocketClient.class,
+        VoiceAgentsWebSocketAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -869,7 +869,7 @@ public final class AgentsClientBuilder
      * destinations, and post-call configuration. Preview features are disabled by default.
      *
      * @return an asynchronous voice-agent WebSocket client.
-        * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
     public VoiceAgentsWebSocketAsyncClient buildVoiceAgentsWebSocketAsyncClient() {
         return new VoiceAgentsWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
@@ -886,7 +886,7 @@ public final class AgentsClientBuilder
      * destinations, and post-call configuration. Preview features are disabled by default.
      *
      * @return a synchronous voice-agent WebSocket client.
-        * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
      */
     public VoiceAgentsWebSocketClient buildVoiceAgentsWebSocketClient() {
         return new VoiceAgentsWebSocketClient(createVoiceAgentWebSocketConfiguration());

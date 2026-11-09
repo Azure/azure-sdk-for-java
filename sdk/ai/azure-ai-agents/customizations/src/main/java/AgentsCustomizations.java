@@ -10,6 +10,7 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
@@ -46,6 +47,7 @@ public class AgentsCustomizations extends Customization {
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
+        registerVoiceAgentWebSocketClients(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
@@ -765,6 +767,29 @@ public class AgentsCustomizations extends Customization {
                     + " but customized " + counts[i] + ".");
             }
         }
+    }
+
+    private void registerVoiceAgentWebSocketClients(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ArrayInitializerExpr serviceClients = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("AgentsClientBuilder was not generated"))
+                .getAnnotationByName("ServiceClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("ServiceClientBuilder annotation was not generated"))
+                .asNormalAnnotationExpr()
+                .getPairs()
+                .stream()
+                .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("ServiceClientBuilder.serviceClients was not generated"))
+                .getValue()
+                .asArrayInitializerExpr();
+            for (String client : Arrays.asList("VoiceAgentsWebSocketClient", "VoiceAgentsWebSocketAsyncClient")) {
+                String classLiteral = client + ".class";
+                if (serviceClients.getValues().stream().noneMatch(value -> classLiteral.equals(value.toString()))) {
+                    serviceClients.getValues().add(StaticJavaParser.parseExpression(classLiteral));
+                }
+            }
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
