@@ -230,9 +230,8 @@ class CampaignOperationLocationPollingStrategyTest {
         PollingStrategyOptions options = new PollingStrategyOptions(pipeline).setEndpoint(ENDPOINT)
             .setServiceVersion(AgentsServiceVersion.getLatest().getVersion())
             .setContext(context);
-        BetaVoiceAgentsTelephoniesImpl client
-            = new AgentsClientImpl(pipeline, ENDPOINT, AgentsServiceVersion.getLatest())
-                .getBetaVoiceAgentsTelephonies();
+        BetaVoiceAgentsCampaignsImpl client
+            = new AgentsClientImpl(pipeline, ENDPOINT, AgentsServiceVersion.getLatest()).getBetaVoiceAgentsCampaigns();
         if (async) {
             return PollerFlux.create(Duration.ofMillis(1), () -> Mono.just(initial),
                 new CampaignOperationLocationPollingStrategy<T, U>(options, requestOptions -> {

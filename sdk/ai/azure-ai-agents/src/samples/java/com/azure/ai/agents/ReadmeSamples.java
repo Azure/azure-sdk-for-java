@@ -57,14 +57,14 @@ public final class ReadmeSamples {
         // END: readme-sample-com.azure.ai.agents.live_connection_options
     }
 
-    public void realtimeForwardCompatibility(BetaVoiceAgentsWebSocketClient realtimeClient, String agentName) {
+    public void realtimeForwardCompatibility(VoiceAgentsWebSocketClient realtimeClient, String agentName) {
         // BEGIN: com.azure.ai.agents.realtime_forward_compatibility
         VoiceAgentWebSocketConnectionOptions options
             = new VoiceAgentWebSocketConnectionOptions()
                 .setReceiveBufferCapacity(512)
                 .setMaxMessageSize(8 * 1024 * 1024)
                 .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-        try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+        try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
             session.sendEvent(BinaryData.fromString(
                 "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
             for (RealtimeServerEvent event : session.receiveEvents()) {

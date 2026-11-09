@@ -5,7 +5,6 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.TelephonyBinding;
@@ -27,6 +26,7 @@ import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
+import com.azure.ai.agents.VoiceAgentsTelephonyClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
@@ -114,7 +114,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             SANITIZED_CONNECTION_1);
         String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
         AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
-        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String agentName = testResourceNamer.randomName("tel-bind-", 21);
         boolean agentCreated = false;
         String bindingId = null;
@@ -168,7 +168,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", DEFAULT_NUMBER_2, SANITIZED_NUMBER_2);
 
         AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
-        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String suffix = testResourceNamer.randomName("", 12);
         String inboundAgent = "tel-in-" + suffix;
         String outboundAgent = "tel-out-" + suffix;
@@ -284,7 +284,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         }
     }
 
-    private TelephonyCallSummary waitForInboundCall(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
+    private TelephonyCallSummary waitForInboundCall(VoiceAgentsTelephonyClient telephony, String agentName) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             for (TelephonyCallSummary call : telephony.listTelephonyCalls(agentName)) {
@@ -295,8 +295,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         throw new AssertionError("No inbound Twilio call arrived within " + CALL_TIMEOUT + ".");
     }
 
-    private void waitForDispatchedCallJob(BetaVoiceAgentsTelephonyClient telephony, String agentName,
-        String callJobId) {
+    private void waitForDispatchedCallJob(VoiceAgentsTelephonyClient telephony, String agentName, String callJobId) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             TelephonyCallJob callJob = telephony.getTelephonyCallJob(agentName, callJobId);
@@ -387,7 +386,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             .replace("|", "\\|");
     }
 
-    private static TelephonyBindingListItem findBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName,
+    private static TelephonyBindingListItem findBinding(VoiceAgentsTelephonyClient telephony, String agentName,
         String bindingId) {
         return telephony.listTelephonyBindings(agentName)
             .stream()
@@ -396,7 +395,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             .orElseThrow(() -> new AssertionError("Created binding was not listed."));
     }
 
-    private static void deleteBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
+    private static void deleteBinding(VoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
         telephony.listTelephonyBindings(agentName)
             .stream()
             .filter(item -> bindingId.equals(item.getId()))
@@ -409,7 +408,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         return bindingId.replace("+", "%2B");
     }
 
-    private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
+    private static String getTransferTargetsEtag(VoiceAgentsTelephonyClient telephony, String agentName) {
         return requireEtag(telephony.getTelephonyTransferTargetsWithResponse(agentName, new RequestOptions()),
             "telephony transfer targets");
     }

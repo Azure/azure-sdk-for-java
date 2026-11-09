@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -23,7 +22,6 @@ import java.util.Map;
  * Parameters accepted by a voice-agent `response.create` event.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentResponseCreateOptions implements JsonSerializable<VoiceAgentResponseCreateOptions> {
 
     /*

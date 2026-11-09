@@ -55,7 +55,6 @@ public class VoiceAgentWithToolsSample {
         AgentsClient client = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .allowPreview(true)
             .buildAgentsClient();
 
         RealtimeAudioFormats pcm = RealtimeAudioFormats.ofAudioPcm(

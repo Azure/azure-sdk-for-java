@@ -3,8 +3,6 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeErrorEvent;
 import com.azure.ai.agents.models.RealtimeResponseAudioDeltaEvent;
@@ -18,6 +16,8 @@ import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
+import com.azure.ai.agents.VoiceAgentsConversationsAsyncClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
@@ -71,7 +71,7 @@ final class VoiceAgentRealtimeSampleUtils {
         return event instanceof RealtimeResponseDoneEvent;
     }
 
-    static void readConversation(BetaVoiceAgentsConversationsClient conversations, String agentName,
+    static void readConversation(VoiceAgentsConversationsClient conversations, String agentName,
         String conversationId) {
         VoiceConversation conversation = conversations.getAgentConversation(agentName, conversationId);
         System.out.printf("Conversation %s: status=%s, created=%s%n", conversation.getId(),
@@ -82,7 +82,7 @@ final class VoiceAgentRealtimeSampleUtils {
         }
     }
 
-    static Mono<Void> readConversation(BetaVoiceAgentsConversationsAsyncClient conversations, String agentName,
+    static Mono<Void> readConversation(VoiceAgentsConversationsAsyncClient conversations, String agentName,
         String conversationId) {
         return conversations.getAgentConversation(agentName, conversationId)
             .doOnNext(conversation -> System.out.printf("Conversation %s: status=%s, created=%s%n",

@@ -20,7 +20,7 @@ public enum VoiceAgentTransferDestinationType {
      */
     TEAMS("teams"),
     /**
-     * A SIP or SIPS URI.
+     * A SIP or SIPS URI. SIP is in preview and requires the `VoiceAgents=V1Preview` opt-in.
      */
     SIP("sip");
 

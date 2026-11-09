@@ -6,41 +6,46 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 
 /**
- * Request modes supported by Model Router session affinity.
+ * Request strategies supported by Model Router session affinity.
  */
 @Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
-public enum SessionAffinityRequestMode {
+public enum SessionAffinityRequestStrategy {
 
     /**
      * Attempts to reuse the model associated with the selected conversation identifier.
      */
     STICKY("sticky"),
     /**
+     * Chooses between the associated model and a newly ranked model by balancing expected response quality and cache
+     * benefit.
+     */
+    ADAPTIVE("adaptive"),
+    /**
      * Disables affinity state lookup and update for this request.
      */
     NONE("none");
 
     /**
-     * The actual serialized value for a SessionAffinityRequestMode instance.
+     * The actual serialized value for a SessionAffinityRequestStrategy instance.
      */
     private final String value;
 
-    SessionAffinityRequestMode(String value) {
+    SessionAffinityRequestStrategy(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a SessionAffinityRequestMode instance.
+     * Parses a serialized value to a SessionAffinityRequestStrategy instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed SessionAffinityRequestMode object, or null if unable to parse.
+     * @return the parsed SessionAffinityRequestStrategy object, or null if unable to parse.
      */
-    public static SessionAffinityRequestMode fromString(String value) {
+    public static SessionAffinityRequestStrategy fromString(String value) {
         if (value == null) {
             return null;
         }
-        SessionAffinityRequestMode[] items = SessionAffinityRequestMode.values();
-        for (SessionAffinityRequestMode item : items) {
+        SessionAffinityRequestStrategy[] items = SessionAffinityRequestStrategy.values();
+        for (SessionAffinityRequestStrategy item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

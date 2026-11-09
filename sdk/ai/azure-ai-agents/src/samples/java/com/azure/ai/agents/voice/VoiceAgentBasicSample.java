@@ -36,7 +36,6 @@ public class VoiceAgentBasicSample {
         AgentsClient client = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .allowPreview(true)
             .buildAgentsClient();
         try {
             AgentVersionDetails created = client.createAgentVersion(agentName,

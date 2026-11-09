@@ -6,7 +6,7 @@ package com.azure.ai.agents.optimization;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -39,7 +39,7 @@ public class AgentOptimizationJobsSample {
 
         System.out.println("Recent succeeded optimization jobs:");
         for (AgentOptimizationJob job
-            : agentsClient.listOptimizationJobs(5, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, null)) {
+            : agentsClient.listOptimizationJobs(5, PageOrder.DESC, null, null, AgentOptimizationJobStatus.SUCCEEDED, null)) {
             System.out.println("  " + job.getId());
         }
 

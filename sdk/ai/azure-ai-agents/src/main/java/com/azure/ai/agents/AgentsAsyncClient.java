@@ -30,6 +30,7 @@ import com.azure.ai.agents.models.AgentOptimizationEstimateInputs;
 import com.azure.ai.agents.models.AgentOptimizationEstimateResult;
 import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeFileDetails;
@@ -38,7 +39,6 @@ import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
-import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.Microsoft365PublishDefaults;
 import com.azure.ai.agents.models.Microsoft365PublishResult;
 import com.azure.ai.agents.models.PageOrder;
@@ -4858,7 +4858,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4890,7 +4890,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -4945,7 +4945,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4977,7 +4977,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -4996,7 +4996,7 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5052,7 +5052,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5084,7 +5084,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5143,7 +5143,7 @@ public final class AgentsAsyncClient {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5190,7 +5190,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5222,7 +5222,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5294,7 +5294,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5326,7 +5326,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *     }
      *     run_duration_ms: long (Required)
      *     created_at: long (Required)
@@ -5344,8 +5344,8 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
-     * configuration along with {@link Response} on successful completion of {@link Mono}.
+     * @return agent optimization job resource — a long-running job that produces candidate changes or versioned skill
+     * packages along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5388,7 +5388,7 @@ public final class AgentsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5416,7 +5416,7 @@ public final class AgentsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of agent optimization job resource — a long-running job that produces
-     * candidate changes to a Foundry agent configuration.
+     * candidate changes or versioned skill packages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -5504,8 +5504,8 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
-     * configuration on successful completion of {@link Mono}.
+     * @return agent optimization job resource — a long-running job that produces candidate changes or versioned skill
+     * packages on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5554,7 +5554,7 @@ public final class AgentsAsyncClient {
      *         model: String (Required)
      *     }
      *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
      *         goal: String(improve_quality) (Optional)
      *         evaluation_configuration (Required): {
      *             training_set (Required): {
@@ -5672,8 +5672,11 @@ public final class AgentsAsyncClient {
     /**
      * List candidates for an agent optimization job
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
      * fields are omitted unless the client passes `expand=mutations`.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -5701,12 +5704,66 @@ public final class AgentsAsyncClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5745,7 +5802,9 @@ public final class AgentsAsyncClient {
     /**
      * Get a candidate for an agent optimization job
      *
-     * Retrieves a single candidate. Mutation values are always included.
+     * Retrieves a single candidate. Mutation values are always included. Skill optimization detail includes independent
+     * skill results, resolved context, and the persisted execution snapshot when available; these detail fields are
+     * omitted from candidate lists.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5754,12 +5813,66 @@ public final class AgentsAsyncClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5802,9 +5915,12 @@ public final class AgentsAsyncClient {
     /**
      * Promote a candidate for an agent optimization job
      *
-     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
-     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
-     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * Promotes a supported completed candidate to the Foundry agent stored in the parent job's target configuration. A
+     * skill-optimization candidate must be the evaluated learned candidate for a supported Prompt or Managed target;
+     * baseline, unevaluated, agentless, and unsupported-runtime skill candidates cannot be promoted. Skill promotion
+     * releases the exact evaluated candidate configuration without regenerating skills. Prompt-agent promotion creates
+     * a new agent version. Hosted-agent promotion currently records promotion metadata without deploying a new
+     * hosted-agent version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5813,12 +5929,66 @@ public final class AgentsAsyncClient {
      *     candidate_id: String (Required)
      *     job_id: String (Required)
      *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     status: String(generating/evaluating/completed/failed/skipped) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
      *     started_at: long (Required)
      *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         type: String(agent_optimization/prompt_optimization/skill_optimization) (Required)
+     *     }
+     *     execution_summary (Optional): {
+     *         updated_at: long (Required)
+     *         steps (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 status: String(not_started/in_progress/completed/failed/skipped/cancelled) (Required)
+     *                 summary: String (Optional)
+     *                 step_details (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *                 error_code: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     resolved_context (Optional): {
+     *         source_trace_ids (Optional): [
+     *             String (Optional)
+     *         ]
+     *         agent_skills (Optional): [
+     *              (Optional){
+     *                 type: String(foundry_skill) (Required)
+     *             }
+     *         ]
      *     }
      *     rationale: String (Optional)
+     *     files (Optional): [
+     *          (Optional){
+     *             path: String (Required)
+     *             type: String (Required)
+     *             size_in_bytes: long (Required)
+     *         }
+     *     ]
      *     agent_version: String (Optional)
      *     evaluation (Optional): {
      *         score: Double (Optional)
@@ -5884,8 +6054,11 @@ public final class AgentsAsyncClient {
     /**
      * List candidates for an agent optimization job
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
      * fields are omitted unless the client passes `expand=mutations`.
      *
      * @param jobId The ID of the parent optimization job.
@@ -5928,7 +6101,9 @@ public final class AgentsAsyncClient {
     /**
      * Get a candidate for an agent optimization job
      *
-     * Retrieves a single candidate. Mutation values are always included.
+     * Retrieves a single candidate. Mutation values are always included. Skill optimization detail includes independent
+     * skill results, resolved context, and the persisted execution snapshot when available; these detail fields are
+     * omitted from candidate lists.
      *
      * @param jobId The ID of the parent optimization job.
      * @param candidateId The candidate identifier.
@@ -5954,9 +6129,12 @@ public final class AgentsAsyncClient {
     /**
      * Promote a candidate for an agent optimization job
      *
-     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
-     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
-     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * Promotes a supported completed candidate to the Foundry agent stored in the parent job's target configuration. A
+     * skill-optimization candidate must be the evaluated learned candidate for a supported Prompt or Managed target;
+     * baseline, unevaluated, agentless, and unsupported-runtime skill candidates cannot be promoted. Skill promotion
+     * releases the exact evaluated candidate configuration without regenerating skills. Prompt-agent promotion creates
+     * a new agent version. Hosted-agent promotion currently records promotion metadata without deploying a new
+     * hosted-agent version.
      *
      * @param jobId The ID of the parent optimization job.
      * @param candidateId The candidate identifier.
@@ -6243,79 +6421,13 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * List agent optimization jobs
-     *
-     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
-     *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param status Filter to jobs in this lifecycle state.
-     * @param agentName Filter to jobs targeting this agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
-        String before, JobStatus status, String agentName) {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(after, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentOptimizationJob>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentOptimizationJob.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
      * List candidates for an agent optimization job
      *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * Lists candidates for the given optimization job with cursor pagination. Agent optimization can include the
+     * original baseline and multiple generated candidates; prompt and skill optimization generate a single candidate.
+     * Evaluated skill jobs also expose the original baseline for reporting through the existing evaluation field; the
+     * baseline is not a generated alternative. A generated skill candidate contains zero or more skill outcomes, not
+     * one candidate per skill. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
      * fields are omitted unless the client passes `expand=mutations`.
      *
      * @param jobId The ID of the parent optimization job.
@@ -6376,6 +6488,245 @@ public final class AgentsAsyncClient {
                     .map(protocolMethodData -> protocolMethodData.toObject(AgentOptimizationCandidate.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createAgentFromPromptWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentFromPromptWithResponseAsync(body, requestOptions);
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> createAgentFromPrompt(BinaryData body) {
+        // Generated convenience method for createAgentFromPromptWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createAgentFromPromptWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * List agent optimization jobs
+     *
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param status Filter to jobs in this lifecycle state.
+     * @param agentName Filter to jobs targeting this agent name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
+        String before, AgentOptimizationJobStatus status, String agentName) {
+        // Generated convenience method for listOptimizationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(after, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, AgentOptimizationJob>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(AgentOptimizationJob.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 }

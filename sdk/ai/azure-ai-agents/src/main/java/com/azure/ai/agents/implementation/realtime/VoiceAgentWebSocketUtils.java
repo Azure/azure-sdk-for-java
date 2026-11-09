@@ -254,8 +254,10 @@ public final class VoiceAgentWebSocketUtils {
                 }
             }
         }
-        headers.set(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString());
+        if (configuration.isAllowPreview()) {
+            headers.set(HttpHeaderName.fromString("Foundry-Features"),
+                AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString());
+        }
         return headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
     }
 

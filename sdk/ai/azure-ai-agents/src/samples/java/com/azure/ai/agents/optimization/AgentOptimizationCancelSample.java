@@ -6,7 +6,7 @@ package com.azure.ai.agents.optimization;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -49,7 +49,7 @@ public class AgentOptimizationCancelSample {
             job = agentsClient.getOptimizationJob(jobId);
             System.out.printf("Job %s status: %s%n", jobId, job.getStatus());
         }
-        if (!JobStatus.CANCELLED.equals(job.getStatus())) {
+        if (!AgentOptimizationJobStatus.CANCELLED.equals(job.getStatus())) {
             throw new IllegalStateException(
                 "Expected optimization job " + jobId + " to be cancelled, but status was " + job.getStatus() + ".");
         }

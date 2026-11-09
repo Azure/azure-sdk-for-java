@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Voice-agent management, prompt-based generation, telephony, and conversation REST APIs no longer require preview opt-in.
+- Promoted ordinary realtime WebSocket clients and session clients by removing their `Beta` prefixes and annotations.
+  Build `VoiceAgentsWebSocketClient` and `VoiceAgentsWebSocketAsyncClient` directly from `AgentsClientBuilder`.
+  Their handshakes no longer require preview opt-in by default; use `allowPreview(true)` for Handoff, SIP transfer
+  destinations, or `post_call`. GPT Live WebSocket clients remain beta and automatically opt in to preview.
 - Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
   destinations.
 - Added preview inline voice subagents and handoff configuration, runtime state, and session handoff events.
@@ -51,6 +56,13 @@
 
 ### Breaking Changes
 
+- Changed the status parameter of `AgentsClient.listOptimizationJobs(...)` and
+  `AgentsAsyncClient.listOptimizationJobs(...)`, and the return type of `AgentOptimizationJob.getStatus()`, from
+  `JobStatus` to `AgentOptimizationJobStatus`. Update optimization status filters and comparisons to use the new type,
+  which includes the terminal `SKIPPED` state.
+- Changed `PromptOptimizationConfiguration.getContext()` and `setContext(...)` from `List<OptimizationContext>` to
+  `List<SteeringPromptOptimizationContext>`. Prompt optimization supports only steering-prompt context; use skill
+  optimization for agent traces and skill references.
 - Renamed preview `VoiceAgentWebSocketConnectionOptions.getTransport()` and `setTransport(...)` to
   `getTransportType()` and `setTransportType(...)`.
 - Replaced preview transcription languages with OpenAI Java's `TranscriptionLanguage` and listed MCP tools with

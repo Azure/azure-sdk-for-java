@@ -8,7 +8,7 @@ import com.azure.ai.agents.models.AgentOptimizationCandidateExpand;
 import com.azure.ai.agents.models.AgentOptimizationCandidateStatus;
 import com.azure.ai.agents.models.AgentOptimizationEstimateResult;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
@@ -48,7 +48,7 @@ public class AgentOptimizationTests extends AgentOptimizationTestBase {
             PollResponse<AgentOptimizationJob> completed = poller.waitForCompletion(POLL_TIMEOUT);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, completed.getStatus());
             assertNotNull(completed.getValue());
-            assertEquals(JobStatus.SUCCEEDED, completed.getValue().getStatus());
+            assertEquals(AgentOptimizationJobStatus.SUCCEEDED, completed.getValue().getStatus());
             jobId = completed.getValue().getId();
             assertNotNull(jobId);
             String completedJobId = jobId;
@@ -56,7 +56,9 @@ public class AgentOptimizationTests extends AgentOptimizationTestBase {
             AgentOptimizationJob retrieved = client.getOptimizationJob(jobId);
             assertEquals(jobId, retrieved.getId());
             assertTrue(
-                client.listOptimizationJobs(10, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
+                client
+                    .listOptimizationJobs(10, PageOrder.DESC, null, null, AgentOptimizationJobStatus.SUCCEEDED,
+                        SUCCESS_AGENT_NAME)
                     .stream()
                     .anyMatch(job -> completedJobId.equals(job.getId())));
 
@@ -116,7 +118,7 @@ public class AgentOptimizationTests extends AgentOptimizationTestBase {
                 sleep(getOptimizationPollInterval().toMillis());
                 job = client.getOptimizationJob(jobId);
             }
-            assertEquals(JobStatus.CANCELLED, job.getStatus());
+            assertEquals(AgentOptimizationJobStatus.CANCELLED, job.getStatus());
 
             deleteCancelledOptimizationJob(client, jobId);
             jobId = null;

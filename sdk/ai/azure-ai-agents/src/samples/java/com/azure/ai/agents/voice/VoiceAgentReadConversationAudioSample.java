@@ -3,10 +3,10 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceRecording;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -34,11 +34,10 @@ public class VoiceAgentReadConversationAudioSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME");
         String conversationId = configuration.get("FOUNDRY_VOICE_CONVERSATION_ID");
-        BetaVoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
+        VoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .beta()
-            .buildBetaVoiceAgentsConversationsClient();
+            .buildVoiceAgentsConversationsClient();
 
         VoiceRecording recording = conversations.getAgentConversationAudio(agentName, conversationId);
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, duration=%s%n",

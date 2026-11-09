@@ -5,8 +5,6 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemType;
@@ -20,6 +18,8 @@ import com.azure.ai.agents.models.VoiceAgentFunctionTool;
 import com.azure.ai.agents.models.VoiceAgentTool;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
+import com.azure.ai.agents.VoiceAgentsWebSocketClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -61,10 +61,9 @@ public class VoiceAgentLiveFunctionToolSample {
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .allowPreview(true);
+            .endpoint(endpoint);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsWebSocketClient realtime = builder.beta().buildBetaVoiceAgentsWebSocketClient();
+        VoiceAgentsWebSocketClient realtime = builder.buildVoiceAgentsWebSocketClient();
 
         Map<String, Object> cityProperty = new LinkedHashMap<>();
         cityProperty.put("type", "string");
@@ -89,7 +88,7 @@ public class VoiceAgentLiveFunctionToolSample {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             System.out.println("Created voice agent: " + agentName);
-            try (BetaVoiceAgentsWebSocketSessionClient session = realtime.openWebSocketSession(agentName)) {
+            try (VoiceAgentsWebSocketSessionClient session = realtime.openWebSocketSession(agentName)) {
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
                 Future<?> response = receiver.submit(() -> receiveResponse(session));
                 try {
@@ -114,7 +113,7 @@ public class VoiceAgentLiveFunctionToolSample {
         }
     }
 
-    private static void receiveResponse(BetaVoiceAgentsWebSocketSessionClient session) {
+    private static void receiveResponse(VoiceAgentsWebSocketSessionClient session) {
         for (RealtimeServerEvent event : session.receiveEvents()) {
             if (event instanceof RealtimeResponseFunctionCallArgumentsDoneEvent) {
                 RealtimeResponseFunctionCallArgumentsDoneEvent call

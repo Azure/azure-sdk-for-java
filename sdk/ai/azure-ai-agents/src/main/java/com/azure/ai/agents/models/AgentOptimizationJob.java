@@ -17,8 +17,8 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- * Agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
- * configuration.
+ * Agent optimization job resource — a long-running job that produces candidate changes or versioned skill packages. For
+ * failed or skipped jobs, error explains the outcome; status distinguishes failure from a skip.
  */
 @Fluent
 public final class AgentOptimizationJob implements JsonSerializable<AgentOptimizationJob> {
@@ -39,10 +39,10 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      * Current lifecycle status.
      */
     @Generated
-    private JobStatus status;
+    private AgentOptimizationJobStatus status;
 
     /*
-     * Error details — populated only on failure.
+     * Failure or skip reason; status distinguishes the outcomes. Omitted otherwise.
      */
     @Generated
     private ApiError error;
@@ -91,12 +91,12 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      * @return the status value.
      */
     @Generated
-    public JobStatus getStatus() {
+    public AgentOptimizationJobStatus getStatus() {
         return this.status;
     }
 
     /**
-     * Get the error property: Error details — populated only on failure.
+     * Get the error property: Failure or skip reason; status distinguishes the outcomes. Omitted otherwise.
      *
      * @return the error value.
      */
@@ -163,7 +163,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     public static AgentOptimizationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            JobStatus status = null;
+            AgentOptimizationJobStatus status = null;
             AgentOptimizationModelConfiguration optimizationModelConfiguration = null;
             AgentOptimizationConfigurationBase optimizationConfiguration = null;
             long runDuration = 0L;
@@ -180,7 +180,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = JobStatus.fromString(reader.getString());
+                    status = AgentOptimizationJobStatus.fromString(reader.getString());
                 } else if ("optimization_model_configuration".equals(fieldName)) {
                     optimizationModelConfiguration = AgentOptimizationModelConfiguration.fromJson(reader);
                 } else if ("optimization_configuration".equals(fieldName)) {
@@ -228,8 +228,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     private String displayName;
 
     /*
-     * Foundry agent whose configuration is optimized. Omitted when the workflow does not target a registered Foundry
-     * agent.
+     * Foundry agent whose configuration is optimized, or a read-only trace and skill source for skill_optimization.
+     * Agentless skill optimization requires explicit agent_traces telemetry configuration with an exact agent_name.
+     * Skill optimization does not modify the target agent.
      */
     @Generated
     private AgentOptimizationTargetConfiguration targetConfiguration;
@@ -284,8 +285,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Get the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
-     * does not target a registered Foundry agent.
+     * Get the targetConfiguration property: Foundry agent whose configuration is optimized, or a read-only trace and
+     * skill source for skill_optimization. Agentless skill optimization requires explicit agent_traces telemetry
+     * configuration with an exact agent_name. Skill optimization does not modify the target agent.
      *
      * @return the targetConfiguration value.
      */
@@ -295,8 +297,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Set the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
-     * does not target a registered Foundry agent.
+     * Set the targetConfiguration property: Foundry agent whose configuration is optimized, or a read-only trace and
+     * skill source for skill_optimization. Agentless skill optimization requires explicit agent_traces telemetry
+     * configuration with an exact agent_name. Skill optimization does not modify the target agent.
      *
      * @param targetConfiguration the targetConfiguration value to set.
      * @return the AgentOptimizationJob object itself.

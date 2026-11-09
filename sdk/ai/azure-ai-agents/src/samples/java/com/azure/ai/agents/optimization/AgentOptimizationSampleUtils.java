@@ -10,12 +10,12 @@ import com.azure.ai.agents.models.AgentOptimizationEvaluationConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;
 import com.azure.ai.agents.models.AgentOptimizationFoundryAgentTargetConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.AgentOptimizationModelConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationSpace;
 import com.azure.ai.agents.models.AgentOptimizationTargetCompletionDatasetReferenceDataSource;
 import com.azure.ai.agents.models.AgentOptimizationTargetCompletionEvaluationSet;
 import com.azure.ai.agents.models.EvaluationModelConfiguration;
-import com.azure.ai.agents.models.JobStatus;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
@@ -67,21 +67,21 @@ final class AgentOptimizationSampleUtils {
         return Duration.ofMinutes(Integer.parseInt(configuration.get("POLL_TIMEOUT_MINUTES", "30")));
     }
 
-    static boolean isTerminal(JobStatus status) {
-        return JobStatus.SUCCEEDED.equals(status)
-            || JobStatus.FAILED.equals(status)
-            || JobStatus.CANCELLED.equals(status);
+    static boolean isTerminal(AgentOptimizationJobStatus status) {
+        return AgentOptimizationJobStatus.SUCCEEDED.equals(status)
+            || AgentOptimizationJobStatus.FAILED.equals(status)
+            || AgentOptimizationJobStatus.CANCELLED.equals(status);
     }
 
     static void throwIfUnsuccessful(AgentOptimizationJob job) {
-        if (JobStatus.FAILED.equals(job.getStatus())) {
+        if (AgentOptimizationJobStatus.FAILED.equals(job.getStatus())) {
             String message = job.getError() == null ? "No error details were returned." : job.getError().getMessage();
             throw new IllegalStateException("Optimization job " + job.getId() + " failed: " + message);
         }
-        if (JobStatus.CANCELLED.equals(job.getStatus())) {
+        if (AgentOptimizationJobStatus.CANCELLED.equals(job.getStatus())) {
             throw new IllegalStateException("Optimization job " + job.getId() + " was cancelled.");
         }
-        if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
+        if (!AgentOptimizationJobStatus.SUCCEEDED.equals(job.getStatus())) {
             throw new IllegalStateException(
                 "Optimization job " + job.getId() + " completed with unexpected status " + job.getStatus() + ".");
         }

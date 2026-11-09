@@ -10,13 +10,13 @@ import com.azure.ai.agents.models.AgentOptimizationEvaluationConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;
 import com.azure.ai.agents.models.AgentOptimizationFoundryAgentTargetConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.AgentOptimizationModelConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationSpace;
 import com.azure.ai.agents.models.AgentOptimizationTargetCompletionEvaluationSet;
 import com.azure.ai.agents.models.AgentOptimizationTargetCompletionInlineDataSource;
 import com.azure.ai.agents.models.AgentOptimizationTargetCompletionTestCase;
 import com.azure.ai.agents.models.EvaluationModelConfiguration;
-import com.azure.ai.agents.models.JobStatus;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestMode;
 import reactor.core.publisher.Mono;
@@ -48,10 +48,10 @@ abstract class AgentOptimizationTestBase extends ClientTestBase {
         return getTestMode() == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(10);
     }
 
-    static boolean isTerminal(JobStatus status) {
-        return JobStatus.SUCCEEDED.equals(status)
-            || JobStatus.FAILED.equals(status)
-            || JobStatus.CANCELLED.equals(status);
+    static boolean isTerminal(AgentOptimizationJobStatus status) {
+        return AgentOptimizationJobStatus.SUCCEEDED.equals(status)
+            || AgentOptimizationJobStatus.FAILED.equals(status)
+            || AgentOptimizationJobStatus.CANCELLED.equals(status);
     }
 
     void deleteCancelledOptimizationJob(AgentsClient client, String jobId) {

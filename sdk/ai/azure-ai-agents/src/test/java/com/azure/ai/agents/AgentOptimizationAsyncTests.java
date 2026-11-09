@@ -6,7 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentOptimizationCandidate;
 import com.azure.ai.agents.models.AgentOptimizationCandidateExpand;
 import com.azure.ai.agents.models.AgentOptimizationCandidateStatus;
-import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
@@ -45,7 +45,7 @@ public class AgentOptimizationAsyncTests extends AgentOptimizationTestBase {
                 .flatMap(completed -> {
                     assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, completed.getStatus());
                     assertNotNull(completed.getValue());
-                    assertEquals(JobStatus.SUCCEEDED, completed.getValue().getStatus());
+                    assertEquals(AgentOptimizationJobStatus.SUCCEEDED, completed.getValue().getStatus());
                     jobId.set(completed.getValue().getId());
                     assertNotNull(jobId.get());
                     return client.getOptimizationJob(jobId.get());
@@ -53,7 +53,8 @@ public class AgentOptimizationAsyncTests extends AgentOptimizationTestBase {
                 .flatMap(retrieved -> {
                     assertEquals(jobId.get(), retrieved.getId());
                     return client
-                        .listOptimizationJobs(10, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
+                        .listOptimizationJobs(10, PageOrder.DESC, null, null, AgentOptimizationJobStatus.SUCCEEDED,
+                            SUCCESS_AGENT_NAME)
                         .filter(job -> jobId.get().equals(job.getId()))
                         .hasElements();
                 })
@@ -108,7 +109,7 @@ public class AgentOptimizationAsyncTests extends AgentOptimizationTestBase {
                     : Mono.delay(getOptimizationPollInterval()).then(client.getOptimizationJob(jobId.get())))
                 .filter(job -> isTerminal(job.getStatus()))
                 .next()
-                .doOnNext(job -> assertEquals(JobStatus.CANCELLED, job.getStatus()))
+                .doOnNext(job -> assertEquals(AgentOptimizationJobStatus.CANCELLED, job.getStatus()))
                 .then(Mono.defer(() -> deleteCancelledOptimizationJob(client, jobId.get())))
                 .doOnSuccess(ignored -> jobId.set(null));
 

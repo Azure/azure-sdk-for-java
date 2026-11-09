@@ -124,9 +124,9 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
-    protected BetaVoiceAgentsTelephonyClient getVoiceAgentsTelephonySyncClient(HttpClient httpClient,
+    protected VoiceAgentsTelephonyClient getVoiceAgentsTelephonySyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion, true).beta().buildBetaVoiceAgentsTelephonyClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildVoiceAgentsTelephonyClient();
     }
 
     private void addTestRecordCustomSanitizers() {

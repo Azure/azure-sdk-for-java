@@ -7,7 +7,6 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConf
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.implementation.realtime.WebSocketTransportOptions;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,12 +17,11 @@ import java.util.Objects;
  * A synchronous client for opening realtime WebSocket sessions with Foundry voice agents.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
-@Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentsWebSocketClient {
-    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentsWebSocketClient.class);
+public final class VoiceAgentsWebSocketClient {
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentsWebSocketClient.class);
     private final VoiceAgentWebSocketClientConfiguration configuration;
 
-    BetaVoiceAgentsWebSocketClient(VoiceAgentWebSocketClientConfiguration configuration) {
+    VoiceAgentsWebSocketClient(VoiceAgentWebSocketClientConfiguration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
@@ -33,7 +31,7 @@ public final class BetaVoiceAgentsWebSocketClient {
      * @param agentName the voice agent name.
      * @return a connected session.
      */
-    public BetaVoiceAgentsWebSocketSessionClient openWebSocketSession(String agentName) {
+    public VoiceAgentsWebSocketSessionClient openWebSocketSession(String agentName) {
         return openWebSocketSession(agentName, new VoiceAgentWebSocketConnectionOptions());
     }
 
@@ -45,7 +43,7 @@ public final class BetaVoiceAgentsWebSocketClient {
      * @return a connected session.
      * @throws IllegalArgumentException if {@code agentName} is empty.
      */
-    public BetaVoiceAgentsWebSocketSessionClient openWebSocketSession(String agentName,
+    public VoiceAgentsWebSocketSessionClient openWebSocketSession(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         if (agentName.isEmpty()) {
@@ -53,7 +51,7 @@ public final class BetaVoiceAgentsWebSocketClient {
         }
         Objects.requireNonNull(options, "'options' cannot be null.");
         VoiceAgentWebSocketConnectionOptions snapshot = new VoiceAgentWebSocketConnectionOptions(options);
-        return new BetaVoiceAgentsWebSocketSessionClient(
+        return new VoiceAgentsWebSocketSessionClient(
             WebSocketSessionTransport.connect(configuration,
                 VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, snapshot),
                 new WebSocketTransportOptions(snapshot), VoiceAgentWebSocketUtils.SUBPROTOCOL,

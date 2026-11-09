@@ -6,8 +6,6 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -29,6 +27,8 @@ import com.azure.ai.agents.models.VoiceAgentFunctionTool;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -87,8 +87,8 @@ public class VoiceAgentRealtimeLiveTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition(scenario)));
             created = true;
-            try (BetaVoiceAgentsWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession(agentName)) {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession(agentName)) {
                 Turn turn = new Turn(scenario);
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(EVENT_TIMEOUT).iterator();
                 turn.accept(events.next()).forEach(session::sendEvent);
@@ -118,7 +118,7 @@ public class VoiceAgentRealtimeLiveTests {
                 .block(EVENT_TIMEOUT);
             created = true;
             Turn turn = new Turn(scenario);
-            Mono.usingWhen(builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
+            Mono.usingWhen(builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
                 session -> session.receiveEvents()
                     .timeout(EVENT_TIMEOUT)
                     .concatMap(event -> Flux.fromIterable(turn.accept(event))
@@ -130,8 +130,8 @@ public class VoiceAgentRealtimeLiveTests {
                     .timeout(RESPONSE_TIMEOUT)
                     .doOnNext(ignored -> turn.assertComplete())
                     .then(),
-                BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
-                BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
         } finally {
             if (created) {
                 agents.deleteAgent(agentName).block(EVENT_TIMEOUT);
@@ -231,9 +231,7 @@ public class VoiceAgentRealtimeLiveTests {
     private static AgentsClientBuilder liveBuilder() {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         assertNotNull(endpoint, "FOUNDRY_PROJECT_ENDPOINT is required for live testing.");
-        return new AgentsClientBuilder().endpoint(endpoint)
-            .allowPreview(true)
-            .credential(new DefaultAzureCredentialBuilder().build());
+        return new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
     }
 
     private static VoiceAgentDefinition definition(Scenario scenario) {

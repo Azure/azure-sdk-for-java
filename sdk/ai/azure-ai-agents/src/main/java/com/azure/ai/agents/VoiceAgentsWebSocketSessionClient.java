@@ -5,7 +5,6 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -33,14 +32,12 @@ import java.util.function.Consumer;
 /**
  * A synchronous bidirectional realtime session connected to a Foundry voice agent.
  */
-@Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentsWebSocketSessionClient implements AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentsWebSocketSessionClient.class);
+public final class VoiceAgentsWebSocketSessionClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentsWebSocketSessionClient.class);
     private final WebSocketSessionTransport transport;
     private final Consumer<Throwable> malformedEventHandler;
 
-    BetaVoiceAgentsWebSocketSessionClient(WebSocketSessionTransport transport,
-        Consumer<Throwable> malformedEventHandler) {
+    VoiceAgentsWebSocketSessionClient(WebSocketSessionTransport transport, Consumer<Throwable> malformedEventHandler) {
         this.transport = transport;
         this.malformedEventHandler = malformedEventHandler;
     }

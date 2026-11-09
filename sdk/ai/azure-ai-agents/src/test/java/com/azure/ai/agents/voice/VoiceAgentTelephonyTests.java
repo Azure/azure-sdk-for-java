@@ -4,8 +4,6 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
 import com.azure.ai.agents.models.TelephonyAddressType;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
@@ -20,6 +18,8 @@ import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
 import com.azure.ai.agents.models.TwilioTelephonyBinding;
 import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
+import com.azure.ai.agents.VoiceAgentsTelephonyAsyncClient;
+import com.azure.ai.agents.VoiceAgentsTelephonyClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -99,8 +99,8 @@ public class VoiceAgentTelephonyTests {
         transport.expect(HttpMethod.POST, CALL_JOBS + "/job-1:cancel", null, header(HttpHeaderName.IF_MATCH, "1"), 200,
             cancelledJobResponse, new HttpHeaders());
         AgentsClientBuilder builder = builder(transport);
-        BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
+        VoiceAgentsTelephonyClient syncClient = builder.buildVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyAsyncClient asyncClient = builder.buildVoiceAgentsTelephonyAsyncClient();
 
         TwilioTelephonyBinding bindingRequestModel
             = new TwilioTelephonyBinding(CONNECTION_1, NUMBER_1).setLabel("Java SDK test");
@@ -162,8 +162,8 @@ public class VoiceAgentTelephonyTests {
         transport.expect(HttpMethod.DELETE, bindingPath, null, header(HttpHeaderName.IF_MATCH, "*"), 204, null,
             new HttpHeaders());
         AgentsClientBuilder builder = builder(transport);
-        BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
+        VoiceAgentsTelephonyClient syncClient = builder.buildVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyAsyncClient asyncClient = builder.buildVoiceAgentsTelephonyAsyncClient();
 
         assertEquals("binding-1", call(async, () -> syncClient.getTelephonyBinding(AGENT, "binding-1"),
             () -> asyncClient.getTelephonyBinding(AGENT, "binding-1")).getId());
@@ -221,8 +221,8 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.PATCH, ROOT + "/bindings/" + MISSING, "{\"label\":\"Updated Java SDK test\"}");
         transport.notFound(HttpMethod.DELETE, ROOT + "/bindings/" + MISSING, null);
         AgentsClientBuilder builder = builder(transport);
-        BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
+        VoiceAgentsTelephonyClient syncClient = builder.buildVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyAsyncClient asyncClient = builder.buildVoiceAgentsTelephonyAsyncClient();
         assertEquals(0L,
             async
                 ? asyncClient.listTelephonyBindings(AGENT).count().block(TIMEOUT).longValue()
@@ -263,8 +263,8 @@ public class VoiceAgentTelephonyTests {
             "{\"target\":\"nonexistent-target\"}");
         transport.notFound(HttpMethod.POST, ROOT + "/calls/" + MISSING + ":end", null);
         AgentsClientBuilder builder = builder(transport);
-        BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
+        VoiceAgentsTelephonyClient syncClient = builder.buildVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyAsyncClient asyncClient = builder.buildVoiceAgentsTelephonyAsyncClient();
         assertEquals(0L,
             async
                 ? asyncClient.listTelephonyCalls(AGENT).count().block(TIMEOUT).longValue()
@@ -288,19 +288,15 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.GET, path + "/content", null);
         AgentsClientBuilder builder = builder(transport);
         assertNotFound(() -> call(async,
-            () -> builder.beta()
-                .buildBetaVoiceAgentsConversationsClient()
+            () -> builder.buildVoiceAgentsConversationsClient()
                 .getAgentConversationGeneratedAudioItem(AGENT, MISSING, MISSING),
-            () -> builder.beta()
-                .buildBetaVoiceAgentsConversationsAsyncClient()
+            () -> builder.buildVoiceAgentsConversationsAsyncClient()
                 .getAgentConversationGeneratedAudioItem(AGENT, MISSING, MISSING)),
             true);
         assertNotFound(() -> call(async,
-            () -> builder.beta()
-                .buildBetaVoiceAgentsConversationsClient()
+            () -> builder.buildVoiceAgentsConversationsClient()
                 .downloadAgentConversationGeneratedAudioItem(AGENT, MISSING, MISSING),
-            () -> builder.beta()
-                .buildBetaVoiceAgentsConversationsAsyncClient()
+            () -> builder.buildVoiceAgentsConversationsAsyncClient()
                 .downloadAgentConversationGeneratedAudioItem(AGENT, MISSING, MISSING)),
             false);
         transport.assertComplete();
@@ -313,8 +309,8 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.GET, CALL_JOBS + "/" + MISSING, null);
         transport.notFound(HttpMethod.POST, CALL_JOBS + "/" + MISSING + ":cancel", null);
         AgentsClientBuilder builder = builder(transport);
-        BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
+        VoiceAgentsTelephonyClient syncClient = builder.buildVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyAsyncClient asyncClient = builder.buildVoiceAgentsTelephonyAsyncClient();
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyCallJob(AGENT, MISSING),
             () -> asyncClient.getTelephonyCallJob(AGENT, MISSING)), true);
         assertNotFound(() -> call(async, () -> syncClient.cancelTelephonyCallJob(AGENT, MISSING, null),
@@ -357,8 +353,7 @@ public class VoiceAgentTelephonyTests {
     private static AgentsClientBuilder builder(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
-            .httpClient(transport)
-            .allowPreview(true);
+            .httpClient(transport);
     }
 
     private static final class ScriptedTransport implements HttpClient {

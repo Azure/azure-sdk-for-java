@@ -35,7 +35,6 @@ public class VoiceAgentBasicAsyncSample {
         AgentsAsyncClient client = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .allowPreview(true)
             .buildAgentsAsyncClient();
 
         client.createAgentVersion(agentName,
