@@ -62,8 +62,8 @@ public final class RealtimeErrorEvent extends RealtimeServerEvent {
      *
      * @return the error value.
      */
+    @Generated
     public RealtimeError getError() {
-        // AI Tooling: openai-java de-dup
         return this.error;
     }
 

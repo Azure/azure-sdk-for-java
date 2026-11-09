@@ -118,8 +118,8 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      *
      * @return the status value.
      */
+    @Generated
     public Status getStatus() {
-        // AI Tooling: openai-java de-dup
         return this.status;
     }
 
@@ -273,8 +273,8 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      * @param status the status value to set.
      * @return the RealtimeConversationItemFunctionCallOutput object itself.
      */
+    @Generated
     public RealtimeConversationItemFunctionCallOutput setStatus(Status status) {
-        // AI Tooling: openai-java de-dup
         this.status = status;
         return this;
     }

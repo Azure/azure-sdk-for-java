@@ -125,8 +125,8 @@ public final class RealtimeResponseContentPartAddedEvent extends RealtimeServerE
      *
      * @return the part value.
      */
+    @Generated
     public Part getPart() {
-        // AI Tooling: openai-java de-dup
         return this.part;
     }
 

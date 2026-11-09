@@ -124,8 +124,8 @@ public final class RealtimeConversationItemSystemMessage extends RealtimeConvers
      *
      * @return the status value.
      */
+    @Generated
     public Status getStatus() {
-        // AI Tooling: openai-java de-dup
         return this.status;
     }
 
@@ -134,8 +134,8 @@ public final class RealtimeConversationItemSystemMessage extends RealtimeConvers
      *
      * @return the content value.
      */
+    @Generated
     public List<Content> getContent() {
-        // AI Tooling: openai-java de-dup
         return this.content;
     }
 
@@ -241,8 +241,8 @@ public final class RealtimeConversationItemSystemMessage extends RealtimeConvers
      * @param status the status value to set.
      * @return the RealtimeConversationItemSystemMessage object itself.
      */
+    @Generated
     public RealtimeConversationItemSystemMessage setStatus(Status status) {
-        // AI Tooling: openai-java de-dup
         this.status = status;
         return this;
     }

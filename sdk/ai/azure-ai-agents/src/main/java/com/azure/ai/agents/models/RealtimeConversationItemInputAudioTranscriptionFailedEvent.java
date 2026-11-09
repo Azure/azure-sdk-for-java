@@ -94,8 +94,8 @@ public final class RealtimeConversationItemInputAudioTranscriptionFailedEvent ex
      *
      * @return the error value.
      */
+    @Generated
     public Error getError() {
-        // AI Tooling: openai-java de-dup
         return this.error;
     }
 
