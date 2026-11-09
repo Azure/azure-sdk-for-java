@@ -63,20 +63,20 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent optimization.
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent generation and optimization.
   When `allowPreview(true)` is configured, these clients can
   also use preview definitions, hosted-agent sessions, session files, and code package operations.
-- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Generate and create agents from high-level prompts.
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 - `VoiceAgentsWebSocketClient` / `VoiceAgentsWebSocketAsyncClient`: Open typed realtime WebSocket sessions with voice agents.
 - `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
-- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
-- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
+- `VoiceAgentsTelephonyClient` / `VoiceAgentsTelephonyAsyncClient`: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
+- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage outbound telephony campaigns.
+- `VoiceAgentsConversationsClient` / `VoiceAgentsConversationsAsyncClient`: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
 
 OpenAI conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s
-`ConversationService`. Persisted voice-agent conversation records use the beta voice conversation clients listed above.
+`ConversationService`. Persisted voice-agent conversation records use the voice conversation clients listed above.
 See the [OpenAI Conversation API documentation][openai_conversations_api_docs] for more information.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
@@ -90,9 +90,6 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
 AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-// Beta* clients automatically opt in to their preview service area.
-BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
-BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 // Responses sub-clients.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
@@ -196,11 +193,10 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,MicrosoftCopilot=V1Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
 | `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
-| `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsLiveConversationsClient` | `VoiceAgents=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 

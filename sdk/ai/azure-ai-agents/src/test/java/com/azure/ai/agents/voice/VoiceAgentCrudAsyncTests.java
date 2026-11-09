@@ -101,8 +101,7 @@ public class VoiceAgentCrudAsyncTests {
         transport.expect(HttpMethod.DELETE, path, null, object("deleted", true, "name", AGENT));
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
-            .httpClient(transport)
-            .allowPreview(true);
+            .httpClient(transport);
         StepVerifier.create(runScenario(builder, AGENT, MODEL, scenario)).expectComplete().verify(TIMEOUT);
         assertTrue(transport.requests.isEmpty(), "All expected REST operations must be exercised.");
     }
@@ -118,9 +117,8 @@ public class VoiceAgentCrudAsyncTests {
         if (scenario != Scenario.GENERATE) {
             assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for this live test.");
         }
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build());
         StepVerifier.create(runScenario(builder, "test-voice-crud-" + UUID.randomUUID(), model, scenario))
             .expectComplete()
             .verify(TIMEOUT);
@@ -129,9 +127,7 @@ public class VoiceAgentCrudAsyncTests {
     private static Mono<Void> runScenario(AgentsClientBuilder builder, String name, String model, Scenario scenario) {
         AgentsAsyncClient client = builder.buildAgentsAsyncClient();
         Mono<?> create = scenario == Scenario.GENERATE
-            ? builder.beta()
-                .buildBetaAgentsAsyncClient()
-                .createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)))
+            ? client.createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)))
             : client.createAgentVersion(name, new CreateAgentVersionInput(definition(model, INSTRUCTIONS)));
         return Mono.usingWhen(create, created -> {
             if (scenario == Scenario.GENERATE) {

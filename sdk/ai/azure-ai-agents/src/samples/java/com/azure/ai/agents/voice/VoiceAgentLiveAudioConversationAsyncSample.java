@@ -5,8 +5,7 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
+import com.azure.ai.agents.VoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.VoiceAgentsWebSocketAsyncClient;
 import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -78,20 +77,17 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .allowPreview(true);
+            .endpoint(endpoint);
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgents = builder.beta().buildBetaAgentsAsyncClient();
         VoiceAgentsWebSocketAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient();
-        BetaVoiceAgentsConversationsAsyncClient conversations
-            = builder.beta().buildBetaVoiceAgentsConversationsAsyncClient();
+        VoiceAgentsConversationsAsyncClient conversations = builder.buildVoiceAgentsConversationsAsyncClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");
         request.put("name", agentName);
         AtomicReference<String> conversationId = new AtomicReference<>();
 
-        betaAgents.createAgentFromPrompt(BinaryData.fromObject(request))
+        agents.createAgentFromPrompt(BinaryData.fromObject(request))
             .flatMap(generated -> {
                 VoiceAgentDefinition definition
                     = (VoiceAgentDefinition) generated.getVersions().getLatest().getDefinition();

@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.VoiceConversation;
@@ -31,11 +31,10 @@ public class VoiceAgentReadConversationSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME");
         String conversationId = configuration.get("FOUNDRY_VOICE_CONVERSATION_ID");
-        BetaVoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
+        VoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .beta()
-            .buildBetaVoiceAgentsConversationsClient();
+            .buildVoiceAgentsConversationsClient();
 
         VoiceConversation conversation = conversations.getAgentConversation(agentName, conversationId);
         System.out.printf("Conversation %s: status=%s, created=%s, usage=%s%n",
