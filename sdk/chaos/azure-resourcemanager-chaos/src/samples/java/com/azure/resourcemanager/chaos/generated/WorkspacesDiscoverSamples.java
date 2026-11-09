@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesDiscoverSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_Discover.json
+     * x-ms-original-file: 2026-11-01/Workspaces_Discover.json
      */
     /**
      * Sample code: Trigger resource discovery for the workspace.
