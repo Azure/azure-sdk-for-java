@@ -15,8 +15,7 @@ import java.util.Collection;
 public final class VoiceAgentPostCallIncludeOption extends ExpandableStringEnum<VoiceAgentPostCallIncludeOption> {
 
     /**
-     * A URL to the merged call recording. Not supported in this preview: the service rejects `audio` when the agent
-     * version is saved.
+     * A URL to the merged call recording.
      */
     @Generated
     public static final VoiceAgentPostCallIncludeOption AUDIO = fromString("audio");

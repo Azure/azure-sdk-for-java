@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -20,7 +19,6 @@ import java.io.IOException;
  * `error` events so that the client can identify the related Item.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeConversationItemInputAudioTranscriptionFailedEvent extends RealtimeServerEvent {
 
     /*

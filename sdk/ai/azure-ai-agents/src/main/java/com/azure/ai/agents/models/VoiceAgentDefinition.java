@@ -20,7 +20,6 @@ import java.util.Map;
  * `GET /agents/{agent_name}/endpoint/protocols/voice`. Every create or update produces a new immutable version.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
 
     /*
@@ -688,30 +687,33 @@ public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
 
     /*
      * Optional post-call delivery configuration. After each session ends, the service notifies the configured
-     * destinations.
+     * destinations. Post-call delivery is in preview and requires `VoiceAgents=V1Preview`.
      */
     @Generated
+    @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
     private VoiceAgentPostCallConfiguration postCall;
 
     /**
      * Get the postCall property: Optional post-call delivery configuration. After each session ends, the service
-     * notifies the configured destinations.
+     * notifies the configured destinations. Post-call delivery is in preview and requires `VoiceAgents=V1Preview`.
      *
      * @return the postCall value.
      */
     @Generated
+    @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
     public VoiceAgentPostCallConfiguration getPostCall() {
         return this.postCall;
     }
 
     /**
      * Set the postCall property: Optional post-call delivery configuration. After each session ends, the service
-     * notifies the configured destinations.
+     * notifies the configured destinations. Post-call delivery is in preview and requires `VoiceAgents=V1Preview`.
      *
      * @param postCall the postCall value to set.
      * @return the VoiceAgentDefinition object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
     public VoiceAgentDefinition setPostCall(VoiceAgentPostCallConfiguration postCall) {
         this.postCall = postCall;
         return this;

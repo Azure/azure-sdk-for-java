@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyAsyncClient;
+import com.azure.ai.agents.VoiceAgentsTelephonyClient;
+import com.azure.ai.agents.VoiceAgentsTelephonyAsyncClient;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.TelephonyCallJob;
 import com.azure.ai.agents.models.TelephonyCallJobCreate;
@@ -108,7 +108,7 @@ abstract class VoiceAgentTelephonyTestBase extends ClientTestBase {
     ScheduledCallJobResource createScheduledCallJob(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion, true);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsTelephonyClient client = builder.beta().buildBetaVoiceAgentsTelephonyClient();
+        VoiceAgentsTelephonyClient client = builder.buildVoiceAgentsTelephonyClient();
         String agentName = testResourceNamer.randomName("call-job-", 32);
         TelephonyCallJobCreate request = createCallJobRequest();
         agents.createAgentVersion(agentName, createDefinition());
@@ -121,7 +121,7 @@ abstract class VoiceAgentTelephonyTestBase extends ClientTestBase {
             assertEquals(TelephonyCallJobStatus.CANCELLED, cancelled.getStatus());
             assertEquals(0, cancelled.getAttemptCount());
             ScheduledCallJobResource resource = new ScheduledCallJobResource(agents, client,
-                builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient(), agentName, job.getId());
+                builder.buildVoiceAgentsTelephonyAsyncClient(), agentName, job.getId());
             ready = true;
             return resource;
         } finally {
@@ -132,15 +132,15 @@ abstract class VoiceAgentTelephonyTestBase extends ClientTestBase {
     }
 
     static final class ScheduledCallJobResource implements AutoCloseable {
-        final BetaVoiceAgentsTelephonyClient client;
-        final BetaVoiceAgentsTelephonyAsyncClient asyncClient;
+        final VoiceAgentsTelephonyClient client;
+        final VoiceAgentsTelephonyAsyncClient asyncClient;
         final String agentName;
         final String jobId;
         private final AgentsClient agents;
         boolean deleted;
 
-        ScheduledCallJobResource(AgentsClient agents, BetaVoiceAgentsTelephonyClient client,
-            BetaVoiceAgentsTelephonyAsyncClient asyncClient, String agentName, String jobId) {
+        ScheduledCallJobResource(AgentsClient agents, VoiceAgentsTelephonyClient client,
+            VoiceAgentsTelephonyAsyncClient asyncClient, String agentName, String jobId) {
             this.agents = agents;
             this.client = client;
             this.asyncClient = asyncClient;
