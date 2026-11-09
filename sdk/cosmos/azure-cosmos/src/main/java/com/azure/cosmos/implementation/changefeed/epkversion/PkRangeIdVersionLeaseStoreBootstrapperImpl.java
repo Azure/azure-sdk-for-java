@@ -104,6 +104,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                         .flatMap(lockAcquired -> {
 
                             if (!lockAcquired) {
+                                this.isInitialized = false;
                                 logger.info("Another instance is initializing the store");
                                 return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                             } else if (initialized) {
