@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -37,6 +38,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -57,6 +59,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
@@ -1619,5 +1622,32 @@ class ManagementChannelTests {
             .verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(any(Message.class), isNull());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void deleteMessagesTimesOutWithoutRetryingWhenResponseIsWithheld(boolean delayAuthorization) {
+        final Duration timeout = Duration.ofSeconds(2);
+        final AtomicInteger dispatches = new AtomicInteger();
+        managementChannel = new ManagementChannel(new ChannelCacheWrapper(Mono.just(requestResponseChannel)), NAMESPACE,
+            ENTITY_PATH, tokenManager, messageSerializer, timeout);
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.defer(() -> {
+            dispatches.incrementAndGet();
+            return Mono.never();
+        }));
+        if (delayAuthorization) {
+            when(tokenManager.authorize()).thenAnswer(ignored -> Mono.delay(timeout.dividedBy(2)).thenReturn(1000L));
+        }
+
+        StepVerifier.create(managementChannel.deleteMessages(500, OffsetDateTime.now(), null, null))
+            .expectSubscription()
+            .expectNoEvent(Duration.ofMillis(1500))
+            .expectErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR)
+            .verify(Duration.ofMillis(2500));
+
+        assertEquals(1, dispatches.get());
+        verify(requestResponseChannel).sendWithAck(any(Message.class), isNull());
+        assertFalse(requestResponseChannel.isDisposed());
     }
 }

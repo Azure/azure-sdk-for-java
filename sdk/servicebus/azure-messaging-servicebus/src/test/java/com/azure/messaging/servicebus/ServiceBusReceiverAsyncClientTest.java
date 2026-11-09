@@ -1725,6 +1725,22 @@ class ServiceBusReceiverAsyncClientTest {
             isNull());
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void synchronousPurgeAllowsMultipleBatchesBeyondOperationTimeout(boolean useOptions) {
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(500)))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(2)))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(0)));
+
+        try (ServiceBusReceiverClient client = new ServiceBusReceiverClient(receiver, false, Duration.ofSeconds(1))) {
+            assertEquals(502, (useOptions ? client.purgeMessages(new PurgeMessagesOptions()) : client.purgeMessages())
+                .getDeletedCount());
+        }
+
+        verify(managementNode, times(3)).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
     @Test
     void purgeMessagesSupportsPremiumBatchSize() {
         final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);

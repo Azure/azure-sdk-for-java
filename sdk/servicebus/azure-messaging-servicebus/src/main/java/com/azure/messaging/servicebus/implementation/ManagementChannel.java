@@ -513,7 +513,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Object responseBody = response.getBody();
             if (!(responseBody instanceof AmqpValue) || !(((AmqpValue) responseBody).getValue() instanceof Map)) {
                 return monoError(logger,
-                    new IllegalStateException("Batch delete returned a successful response with an invalid body."));
+                    new IllegalStateException("Batch delete returned a response with an invalid body."));
             }
 
             @SuppressWarnings("unchecked")
@@ -526,7 +526,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     new IllegalStateException("Batch delete response did not contain a valid message-count."));
             }
             return Mono.just(new DeleteMessagesResult((Integer) deletedCount));
-        });
+        })
+            .timeout(operationTimeout,
+                Mono.defer(() -> monoError(logger, new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
+                    "Batch delete timed out. The deletion outcome may be unknown.", getErrorContext()))));
     }
 
     /**

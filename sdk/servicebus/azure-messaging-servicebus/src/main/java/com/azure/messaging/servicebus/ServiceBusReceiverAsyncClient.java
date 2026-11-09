@@ -974,6 +974,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * is enabled. If an error, cancellation, or timeout occurs after dispatch, the purge can be partial and its exact
      * deletion outcome is unknown.
      *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
+     *
      * @return The result containing the total number of messages deleted by the service.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if any request fails.
@@ -988,6 +990,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * deferred, and scheduled messages remain. Currently, purge is not supported when partitioning is enabled. If an
      * error, cancellation, or timeout occurs after dispatch, the purge can be partial and its exact deletion outcome is
      * unknown.
+     *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
      *
      * @param options Options that configure the purge operation.
      * @return The result containing the total number of messages deleted by the service.

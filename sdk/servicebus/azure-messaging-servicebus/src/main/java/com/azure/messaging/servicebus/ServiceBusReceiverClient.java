@@ -374,12 +374,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * purge is not supported when partitioning is enabled. If an error, cancellation, or timeout occurs after dispatch,
      * the purge can be partial and its exact deletion outcome is unknown.
      *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
+     *
      * @return The result containing the total number of messages deleted by the service.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if any request fails.
      */
     public PurgeMessagesResult purgeMessages() {
-        return asyncClient.purgeMessages().block(operationTimeout);
+        return asyncClient.purgeMessages().block();
     }
 
     /**
@@ -388,6 +390,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * is not supported when partitioning is enabled. If an error, cancellation, or timeout occurs after dispatch, the
      * purge can be partial and its exact deletion outcome is unknown.
      *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
+     *
      * @param options Options that configure the purge operation.
      * @return The result containing the total number of messages deleted by the service.
      * @throws NullPointerException if {@code options} is null.
@@ -395,7 +399,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if any request fails.
      */
     public PurgeMessagesResult purgeMessages(PurgeMessagesOptions options) {
-        return asyncClient.purgeMessages(options).block(operationTimeout);
+        return asyncClient.purgeMessages(options).block();
     }
 
     /**
