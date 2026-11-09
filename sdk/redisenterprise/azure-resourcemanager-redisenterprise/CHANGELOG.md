@@ -1,14 +1,49 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (2026-11-09)
+
+- Azure Resource Manager Redis Enterprise client library for Java. This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.FirewallRule` was added
 
-### Bugs Fixed
+* `models.AccessPolicyAssignmentProvisioningError` was added
 
-### Other Changes
+#### `models.ClusterUpdate` was modified
+
+* `withFirewallRules(java.util.List)` was added
+* `firewallRules()` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withFirewallRules(java.util.List)` was added
+
+#### `models.AccessPolicyAssignment$Definition` was modified
+
+* `withAccessString(java.lang.String)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withFirewallRules(java.util.List)` was added
+
+#### `models.ClusterCommonProperties` was modified
+
+* `withFirewallRules(java.util.List)` was added
+* `firewallRules()` was added
+
+#### `models.AccessPolicyAssignment` was modified
+
+* `accessString()` was added
+* `provisioningError()` was added
+
+#### `models.Cluster` was modified
+
+* `firewallRules()` was added
+
+#### `models.AccessPolicyAssignment$Update` was modified
+
+* `withAccessString(java.lang.String)` was added
 
 ## 2.2.0 (2026-10-12)
 
