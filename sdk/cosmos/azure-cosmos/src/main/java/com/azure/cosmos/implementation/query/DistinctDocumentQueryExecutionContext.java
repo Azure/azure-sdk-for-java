@@ -40,7 +40,7 @@ public class DistinctDocumentQueryExecutionContext<T>
 
         this.component = component;
         this.distinctMap = DistinctMap.create(distinctQueryType, previousHash);
-        this.lastHash = new AtomicReference<>();
+        this.lastHash = new AtomicReference<>(previousHash);
     }
 
     public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
