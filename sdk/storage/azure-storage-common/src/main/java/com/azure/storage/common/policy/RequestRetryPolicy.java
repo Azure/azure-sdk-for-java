@@ -12,10 +12,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FileContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
@@ -28,9 +29,13 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This is a request policy in an {@link com.azure.core.http.HttpPipeline} for retrying a given HTTP request. The
@@ -39,6 +44,24 @@ import java.util.concurrent.TimeoutException;
  * backoff are supported. The policy must only be used directly when creating a custom pipeline.
  */
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
+    // Initialize only for finite timeouts. Daemon threads retire after an idle minute.
+    private static final class SyncAttemptExecutor {
+        private static final ThreadPoolExecutor INSTANCE = createExecutor();
+
+        private static ThreadPoolExecutor createExecutor() {
+            int threads = Math.max(2, Runtime.getRuntime().availableProcessors());
+            AtomicInteger threadNumber = new AtomicInteger();
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(threads, threads, 60, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(256), task -> {
+                    Thread thread = new Thread(task, "azure-storage-sync-attempt-" + threadNumber.incrementAndGet());
+                    thread.setDaemon(true);
+                    return thread;
+                });
+            executor.allowCoreThreadTimeOut(true);
+            return executor;
+        }
+    }
+
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
     private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE
@@ -69,9 +92,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         if (requestRetryOptions.getMaxTries() > 1 && originalRequestBody != null) {
             if (requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
                 // Replayable streams can still share a reader. Buffer before scheduling potentially overlapping tries.
-                originalHttpRequest.setBody(
-                    BinaryData.fromFlux(originalRequestBody.toFluxByteBuffer(), originalRequestBody.getLength(), true)
+                if (!(BinaryDataHelper.getContent(originalRequestBody) instanceof FileContent)) {
+                    originalHttpRequest.setBody(BinaryData
+                        .fromFlux(originalRequestBody.toFluxByteBuffer(), originalRequestBody.getLength(), true)
                         .block());
+                }
             } else if (!originalRequestBody.isReplayable()) {
                 originalHttpRequest.setBody(originalRequestBody.toReplayableBinaryData());
             }
@@ -281,17 +306,20 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 // Move the blocking call off the subscribing thread so the timeout can be armed before it completes.
                 // A sink discards responses returned after cancellation, including when the transport ignores interruption.
                 httpResponseMono = Mono.<HttpResponse>create(sink -> {
-                    // A cancelled task can ignore interruption. The shared executor keeps its thread occupied until
-                    // it returns, allowing retries to use other threads instead of reusing a cancelled scheduler worker.
-                    Future<?> task = SharedExecutorService.getInstance().submit(() -> {
+                    ThreadPoolExecutor executor = SyncAttemptExecutor.INSTANCE;
+                    FutureTask<Void> task = new FutureTask<>(() -> {
                         try {
                             sink.success(attemptNext.processSync());
                         } catch (Throwable error) {
                             Exceptions.throwIfFatal(error);
                             sink.error(error);
                         }
+                    }, null);
+                    executor.execute(task);
+                    sink.onCancel(() -> {
+                        task.cancel(true);
+                        executor.remove(task);
                     });
-                    sink.onCancel(() -> task.cancel(true));
                 })
                     .timeout(this.requestRetryOptions.getTryTimeoutDuration())
                     .doOnDiscard(HttpResponse.class, HttpResponse::close);

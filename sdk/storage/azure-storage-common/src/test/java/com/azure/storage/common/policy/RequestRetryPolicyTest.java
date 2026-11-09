@@ -20,9 +20,13 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.SharedExecutorService;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,10 +42,14 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link RequestRetryPolicy}.
  */
+@Isolated
 public class RequestRetryPolicyTest {
     static RequestRetryOptions retryTestOptions
         = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 4, 2, 100L, 1000L, "SecondaryHost");
@@ -223,6 +232,66 @@ public class RequestRetryPolicyTest {
 
         StepVerifier.create(sendRequest(pipeline)).expectError(TimeoutException.class).verify(Duration.ofSeconds(5));
         assertEquals(maxTries, attempts.get());
+    }
+
+    @Test
+    public void timedSyncRetriesKeepFileBackedBody(@TempDir Path directory) throws IOException {
+        Path file = directory.resolve("request.bin");
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        Files.write(file, payload);
+        BinaryData body = BinaryData.fromFile(file);
+        AtomicInteger attempts = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null)))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    Assertions.assertSame(body, request.getBodyAsBinaryData());
+                    return new MockHttpResponse(request, attempts.incrementAndGet() == 1 ? 503 : 200);
+                }
+            })
+            .build();
+        try (HttpResponse response
+            = pipeline.sendSync(new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(2, attempts.get());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void timedSyncAttemptDoesNotOccupySharedExecutor(boolean operationTimeout) {
+        SharedExecutorService shared = SharedExecutorService.getInstance();
+        ScheduledExecutorService previous = shared.getExecutorService();
+        ScheduledExecutorService singleWorker = Executors.newSingleThreadScheduledExecutor();
+        shared.setExecutorService(singleWorker);
+        try {
+            HttpPipeline pipeline = new HttpPipelineBuilder()
+                .policies(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 2, 1L, 1L, null)))
+                .httpClient(new NoOpHttpClient() {
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        // Model a transport that dispatches to Core's shared executor, as the JDK client does.
+                        if (!operationTimeout) {
+                            return StorageImplUtils.sendRequest(() -> new MockHttpResponse(request, 200),
+                                Duration.ofSeconds(3), IllegalStateException.class);
+                        }
+                        return new MockHttpResponse(request, 200);
+                    }
+                })
+                .build();
+            try (HttpResponse response = StorageImplUtils.sendRequest(() -> sendRequestSync(pipeline),
+                operationTimeout ? Duration.ofSeconds(3) : null, IllegalStateException.class)) {
+                assertEquals(200, response.getStatusCode());
+            }
+        } finally {
+            singleWorker.shutdownNow();
+            if (previous == null || previous.isShutdown()) {
+                shared.reset();
+            } else {
+                shared.setExecutorService(previous);
+            }
+        }
     }
 
     @Test
