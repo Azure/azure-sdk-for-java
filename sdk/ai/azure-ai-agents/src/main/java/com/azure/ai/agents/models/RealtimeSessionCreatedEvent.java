@@ -31,12 +31,6 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     private final String eventId;
 
     /*
-     * The session configuration.
-     */
-    @Generated
-    private final VoiceAgentSessionResponseConfiguration session;
-
-    /*
      * The session-scoped conversation id. When present, responses attached to the session conversation use the same
      * value in `response.created` and `response.done`.
      */
@@ -83,7 +77,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("event_id", this.eventId);
-        jsonWriter.writeJsonField("session", this.session);
+        jsonWriter.writeJsonField("session", this.sessionResponseConfiguration);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("conversation_id", this.conversationId);
         return jsonWriter.writeEndObject();
@@ -102,7 +96,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
     public static RealtimeSessionCreatedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            VoiceAgentSessionResponseConfiguration session = null;
+            VoiceAgentSessionResponseConfiguration sessionResponseConfiguration = null;
             RealtimeServerEventType type = RealtimeServerEventType.SESSION_CREATED;
             String conversationId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -111,7 +105,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
                 if ("event_id".equals(fieldName)) {
                     eventId = reader.getString();
                 } else if ("session".equals(fieldName)) {
-                    session = VoiceAgentSessionResponseConfiguration.fromJson(reader);
+                    sessionResponseConfiguration = VoiceAgentSessionResponseConfiguration.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else if ("conversation_id".equals(fieldName)) {
@@ -121,7 +115,7 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
                 }
             }
             RealtimeSessionCreatedEvent deserializedRealtimeSessionCreatedEvent
-                = new RealtimeSessionCreatedEvent(eventId, session);
+                = new RealtimeSessionCreatedEvent(eventId, sessionResponseConfiguration);
             deserializedRealtimeSessionCreatedEvent.type = type;
             deserializedRealtimeSessionCreatedEvent.conversationId = conversationId;
             return deserializedRealtimeSessionCreatedEvent;
@@ -132,21 +126,28 @@ public final class RealtimeSessionCreatedEvent extends RealtimeServerEvent {
      * Creates an instance of RealtimeSessionCreatedEvent class.
      *
      * @param eventId the eventId value to set.
-     * @param session the session value to set.
-     */
-    public RealtimeSessionCreatedEvent(String eventId, VoiceAgentSessionResponseConfiguration session) {
-        // AI Tooling: typed session
-        this.eventId = eventId;
-        this.session = session;
-    }
-
-    /**
-     * Get the session property: The session configuration.
-     *
-     * @return the session value.
+     * @param sessionResponseConfiguration the sessionResponseConfiguration value to set.
      */
     @Generated
-    public VoiceAgentSessionResponseConfiguration getSession() {
-        return this.session;
+    private RealtimeSessionCreatedEvent(String eventId,
+        VoiceAgentSessionResponseConfiguration sessionResponseConfiguration) {
+        this.eventId = eventId;
+        this.sessionResponseConfiguration = sessionResponseConfiguration;
+    }
+
+    /*
+     * The session configuration.
+     */
+    @Generated
+    private final VoiceAgentSessionResponseConfiguration sessionResponseConfiguration;
+
+    /**
+     * Get the sessionResponseConfiguration property: The session configuration.
+     *
+     * @return the sessionResponseConfiguration value.
+     */
+    @Generated
+    public VoiceAgentSessionResponseConfiguration getSessionResponseConfiguration() {
+        return this.sessionResponseConfiguration;
     }
 }
