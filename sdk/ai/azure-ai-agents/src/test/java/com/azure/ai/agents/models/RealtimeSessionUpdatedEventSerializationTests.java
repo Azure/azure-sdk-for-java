@@ -15,17 +15,18 @@ public class RealtimeSessionUpdatedEventSerializationTests {
 
     @Test
     public void sessionRoundTrips() throws IOException {
-        VoiceAgentSessionResponseConfiguration session = UnionTypeSerializationTestUtils.deserialize(
-            "{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"session\",\"model\":\"model\"}",
-            VoiceAgentSessionResponseConfiguration::fromJson);
-        RealtimeSessionUpdatedEvent event = new RealtimeSessionUpdatedEvent("event", session);
+        RealtimeSessionUpdatedEvent event = UnionTypeSerializationTestUtils.deserialize(
+            "{\"type\":\"session.updated\",\"event_id\":\"event\","
+                + "\"session\":{\"type\":\"realtime\",\"object\":\"realtime.session\",\"id\":\"session\",\"model\":\"model\"}}",
+            RealtimeSessionUpdatedEvent::fromJson);
 
         String json = UnionTypeSerializationTestUtils.serialize(event);
         RealtimeSessionUpdatedEvent result
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionUpdatedEvent::fromJson);
 
         assertTrue(json.contains("\"session\":{\"type\":\"realtime\""));
-        assertEquals("session", result.getSession().getId());
+        assertEquals("event", result.getEventId());
+        assertEquals("session", result.getSessionResponseConfiguration().getId());
     }
 
     @Test
@@ -33,6 +34,6 @@ public class RealtimeSessionUpdatedEventSerializationTests {
         RealtimeSessionUpdatedEvent event = UnionTypeSerializationTestUtils.deserialize(
             "{\"type\":\"session.updated\",\"event_id\":\"event\"}", RealtimeSessionUpdatedEvent::fromJson);
 
-        assertNull(event.getSession());
+        assertNull(event.getSessionResponseConfiguration());
     }
 }
