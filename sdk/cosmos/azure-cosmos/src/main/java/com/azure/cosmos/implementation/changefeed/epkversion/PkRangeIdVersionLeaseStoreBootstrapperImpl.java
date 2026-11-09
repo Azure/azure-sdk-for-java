@@ -122,8 +122,11 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                         })
                         .onErrorResume(throwable -> {
                             return this.isLockAcquired
-                                ? this.leaseStore.releaseInitializationLock()
-                                    .then(Mono.defer(this::releasePkRangeIdVersionLeaseStoreLock))
+                                ? BootstrapperImpl.releaseLockAfterFailure(this.leaseStore, throwable)
+                                    .then(this.isPkRangeIdVersionLeaseStoreLockAcquired
+                                        ? BootstrapperImpl.releaseLockAfterFailure(
+                                            this.pkRangeIdVersionLeaseStoreManager, throwable)
+                                        : Mono.empty())
                                     .then(Mono.error(throwable))
                                 : Mono.error(throwable);
                         })

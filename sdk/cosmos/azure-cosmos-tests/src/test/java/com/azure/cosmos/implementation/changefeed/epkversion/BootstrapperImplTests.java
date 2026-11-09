@@ -99,6 +99,13 @@ public class BootstrapperImplTests {
         Mockito.when(pkStore.markInitialized()).thenReturn(Mono.just(true));
         Mockito.when(pkStore.getTopLeases(1)).thenReturn(Flux.empty());
 
+        RuntimeException epkReleaseFailure = new IllegalStateException("EPK lock release failed");
+        RuntimeException pkReleaseFailure = new IllegalStateException("PK lock release failed");
+        if (!discoveryFails) {
+            Mockito.when(epkStore.releaseInitializationLock()).thenReturn(Mono.error(epkReleaseFailure), Mono.just(true));
+            Mockito.when(pkStore.releaseInitializationLock()).thenReturn(Mono.error(pkReleaseFailure), Mono.just(true));
+        }
+
         PartitionSynchronizer synchronizer = new PartitionSynchronizerImpl(
             contextClient, "container", epkStore, epkStore, 1, 1, options, mode);
         Bootstrapper bootstrapper = mode == ChangeFeedMode.INCREMENTAL
@@ -107,7 +114,17 @@ public class BootstrapperImplTests {
             : new BootstrapperImpl(
                 synchronizer, epkStore, lockTime, lockTime, epkStore, pkStore, options, mode);
 
-        StepVerifier.create(bootstrapper.initialize()).expectErrorMatches(error -> error == failure).verify(lockTime);
+        StepVerifier.create(bootstrapper.initialize())
+            .expectErrorSatisfies(error -> {
+                Assert.assertSame(error, failure);
+                Throwable[] expectedSuppressed = discoveryFails
+                    ? new Throwable[0]
+                    : mode == ChangeFeedMode.INCREMENTAL
+                        ? new Throwable[] {epkReleaseFailure, pkReleaseFailure}
+                        : new Throwable[] {epkReleaseFailure};
+                Assert.assertEquals(error.getSuppressed(), expectedSuppressed);
+            })
+            .verify(lockTime);
         Mockito.verify(epkStore, Mockito.never()).markInitialized();
         Mockito.verify(pkStore, Mockito.never()).markInitialized();
         Mockito.verify(epkStore).releaseInitializationLock();
@@ -125,30 +142,42 @@ public class BootstrapperImplTests {
         }
     }
 
-    @Test(groups = {"unit"})
-    public void latestVersionVerifiesLeasesOnRestartWhenEnabled() {
+    @DataProvider
+    public Object[][] epkChangeFeedModes() {
+        return new Object[][] {{ChangeFeedMode.FULL_FIDELITY}, {ChangeFeedMode.INCREMENTAL}};
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "epkChangeFeedModes")
+    public void verifiesLeasesOnRestartAfterLockAcquisitionIsRetried(ChangeFeedMode mode) {
         Duration lockTime = Duration.ofSeconds(5);
+        Duration sleepTime = Duration.ofMillis(1);
         ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
         PartitionSynchronizer synchronizer = Mockito.mock(PartitionSynchronizer.class);
         LeaseStoreManager epkStore = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkStore = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(epkStore.isInitialized()).thenReturn(Mono.just(true));
         Mockito.when(epkStore.getTopLeases(1)).thenReturn(Flux.empty());
-        Mockito.when(epkStore.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
+        Mockito.when(pkStore.getTopLeases(1)).thenReturn(Flux.empty());
+        Mockito.when(epkStore.acquireInitializationLock(lockTime)).thenReturn(Mono.just(false), Mono.just(true));
         Mockito.when(epkStore.releaseInitializationLock()).thenReturn(Mono.just(true));
         Mockito.when(synchronizer.createMissingLeases()).thenReturn(Mono.empty());
-        Bootstrapper bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
-            synchronizer, epkStore, lockTime, lockTime, pkStore, epkStore, options, ChangeFeedMode.INCREMENTAL);
+        Bootstrapper bootstrapper = mode == ChangeFeedMode.INCREMENTAL
+            ? new PkRangeIdVersionLeaseStoreBootstrapperImpl(
+                synchronizer, epkStore, lockTime, sleepTime, pkStore, epkStore, options, mode)
+            : new BootstrapperImpl(
+                synchronizer, epkStore, lockTime, sleepTime, epkStore, pkStore, options, mode);
 
         StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
-        Mockito.verifyNoInteractions(synchronizer, pkStore);
+        Mockito.verifyNoInteractions(synchronizer);
+        Mockito.verify(epkStore, Mockito.never()).acquireInitializationLock(lockTime);
 
         options.setLeaseVerificationEnabledOnRestart(true);
         StepVerifier.create(bootstrapper.initialize()).expectComplete().verify(lockTime);
         Mockito.verify(synchronizer).createMissingLeases();
+        Mockito.verify(epkStore, times(2)).acquireInitializationLock(lockTime);
         Mockito.verify(epkStore).releaseInitializationLock();
         Mockito.verify(epkStore, Mockito.never()).markInitialized();
-        Mockito.verifyNoInteractions(pkStore);
+        Mockito.verify(pkStore, Mockito.never()).acquireInitializationLock(lockTime);
     }
 
     @DataProvider(name = "leaseProvider")
