@@ -96,9 +96,9 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
      * @param transcript the transcript value to set.
      * @param usage the usage value to set.
      */
-    public RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId,
+    @Generated
+    private RealtimeConversationItemInputAudioTranscriptionCompletedEvent(String eventId, String itemId,
         long contentIndex, String transcript, Usage usage) {
-        // AI Tooling: openai-java de-dup
         this.eventId = eventId;
         this.itemId = itemId;
         this.contentIndex = contentIndex;
