@@ -65,7 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -79,10 +78,10 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
-    private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
-    private static final String JAVA_HTTP_PROXY_PORT = "http.proxyPort";
-    private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
-    private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String JAVA_HTTPS_PROXY_HOST = "https.proxyHost";
+    private static final String JAVA_HTTPS_PROXY_PORT = "https.proxyPort";
+    private static final String JAVA_HTTPS_PROXY_USER = "https.proxyUser";
+    private static final String JAVA_HTTPS_PROXY_PASSWORD = "https.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
@@ -330,8 +329,8 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
         Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier
-            = () -> new TestConfigurationSource().put(JAVA_HTTP_PROXY_HOST, "localhost")
-                .put(JAVA_HTTP_PROXY_PORT, "12345");
+            = () -> new TestConfigurationSource().put(JAVA_HTTPS_PROXY_HOST, "localhost")
+                .put(JAVA_HTTPS_PROXY_PORT, "12345");
 
         List<Arguments> arguments = new ArrayList<>();
 
@@ -353,8 +352,8 @@ public class NettyAsyncHttpClientBuilderTests {
          * HTTP proxy with authentication configured.
          */
         TestConfigurationSource javaProxyWithAuthentication = baseJavaProxyConfigurationSupplier.get()
-            .put(JAVA_HTTP_PROXY_USER, "1")
-            .put(JAVA_HTTP_PROXY_PASSWORD, "1");
+            .put(JAVA_HTTPS_PROXY_USER, "1")
+            .put(JAVA_HTTPS_PROXY_PASSWORD, "1");
         arguments.add(Arguments.of(true, true,
             new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), DEFAULT_URL));
 
@@ -412,7 +411,7 @@ public class NettyAsyncHttpClientBuilderTests {
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
         Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier
-            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
+            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTPS_PROXY_USER, "1").put(JAVA_HTTPS_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
@@ -539,19 +538,19 @@ public class NettyAsyncHttpClientBuilderTests {
                     switch (proxyType) {
                         case HTTP:
                             if (usesAzureHttpProxyHandler) {
-                                assertTrue(
-                                    proxyHandler instanceof com.azure.core.http.netty.implementation.HttpProxyHandler);
+                                assertInstanceOf(com.azure.core.http.netty.implementation.HttpProxyHandler.class,
+                                    proxyHandler);
                             } else {
-                                assertTrue(proxyHandler instanceof HttpProxyHandler);
+                                assertInstanceOf(HttpProxyHandler.class, proxyHandler);
                             }
                             break;
 
                         case SOCKS5:
-                            assertTrue(proxyHandler instanceof Socks5ProxyHandler);
+                            assertInstanceOf(Socks5ProxyHandler.class, proxyHandler);
                             break;
 
                         case SOCKS4:
-                            assertTrue(proxyHandler instanceof Socks4ProxyHandler);
+                            assertInstanceOf(Socks4ProxyHandler.class, proxyHandler);
                             break;
 
                         default:
