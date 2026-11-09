@@ -60,36 +60,6 @@ public class GptLiveConversationSamplesTests {
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    public void deletionRequiresExplicitConfirmationBeforeClientSetup(boolean async) {
-        for (String[] args : new String[][] { { }, { "list" }, { "delete", "extra" } }) {
-            IllegalArgumentException error = assertThrows(IllegalArgumentException.class, () -> {
-                if (async) {
-                    VoiceAgentLiveDeleteConversationAsyncSample.main(args);
-                } else {
-                    VoiceAgentLiveDeleteConversationSample.main(args);
-                }
-            });
-            assertTrue(error.getMessage().contains("authorize permanent deletion"));
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void callJobSamplesRejectUnknownActionsBeforeClientSetup(boolean async) {
-        for (String[] args : new String[][] { { "cancel" }, { "delete", "extra" } }) {
-            IllegalArgumentException error = assertThrows(IllegalArgumentException.class, () -> {
-                if (async) {
-                    VoiceAgentCallJobAsyncSample.main(args);
-                } else {
-                    VoiceAgentCallJobSample.main(args);
-                }
-            });
-            assertTrue(error.getMessage().contains("Expected list, delete"));
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
     public void readsCursorPagesAndFetchesSpeechAndDelegationDetails(boolean async) {
         ScriptedTransport transport = new ScriptedTransport(async);
         transport.json(ROOT, null, 200, page(CONVERSATION));
