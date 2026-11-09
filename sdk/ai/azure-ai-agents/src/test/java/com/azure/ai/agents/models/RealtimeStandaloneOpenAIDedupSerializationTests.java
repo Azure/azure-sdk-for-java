@@ -364,6 +364,7 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
         assertJsonFieldEquals(languages, event, "languages");
         assertJsonFieldEquals(usage, event, "usage");
         assertJsonFieldEquals(logprobs, event, "logprobs");
+        assertEquals("hello", event.getLogProbs().get(0).token());
         assertJsonFieldEquals("[]", event, "phrases");
         assertStable(event, RealtimeServerEvent::fromJson);
     }

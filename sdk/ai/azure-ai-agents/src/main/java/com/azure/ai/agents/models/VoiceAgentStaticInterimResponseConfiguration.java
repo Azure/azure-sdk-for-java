@@ -85,22 +85,12 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
      */
     @Generated
     @Override
-    public VoiceAgentStaticInterimResponseConfiguration setLatencyThresholdMs(Duration latencyThresholdMs) {
-        super.setLatencyThresholdMs(latencyThresholdMs);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("triggers", getTriggers(),
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        if (getLatencyThresholdMs() != null) {
-            jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThresholdMs().toMillis());
+        if (getLatencyThreshold() != null) {
+            jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThreshold().toMillis());
         }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("texts", this.texts, (writer, element) -> writer.writeString(element));
@@ -128,10 +118,10 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
                         = reader.readArray(reader1 -> VoiceAgentInterimResponseTrigger.fromString(reader1.getString()));
                     deserializedVoiceAgentStaticInterimResponseConfiguration.setTriggers(triggers);
                 } else if ("latency_threshold_ms".equals(fieldName)) {
-                    Long latencyThresholdMsHolder = reader.getNullable(JsonReader::getLong);
-                    if (latencyThresholdMsHolder != null) {
+                    Long latencyThresholdHolder = reader.getNullable(JsonReader::getLong);
+                    if (latencyThresholdHolder != null) {
                         deserializedVoiceAgentStaticInterimResponseConfiguration
-                            .setLatencyThresholdMs(Duration.ofMillis(latencyThresholdMsHolder));
+                            .setLatencyThreshold(Duration.ofMillis(latencyThresholdHolder));
                     }
                 } else if ("type".equals(fieldName)) {
                     deserializedVoiceAgentStaticInterimResponseConfiguration.type
@@ -145,5 +135,15 @@ public final class VoiceAgentStaticInterimResponseConfiguration extends VoiceAge
             }
             return deserializedVoiceAgentStaticInterimResponseConfiguration;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentStaticInterimResponseConfiguration setLatencyThreshold(Duration latencyThreshold) {
+        super.setLatencyThreshold(latencyThreshold);
+        return this;
     }
 }

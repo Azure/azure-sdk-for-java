@@ -41,9 +41,9 @@ public class VoiceAgentReadConversationAudioSample {
 
         VoiceRecording recording = conversations.getAgentConversationAudio(agentName, conversationId);
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, duration=%s%n",
-            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDurationMs());
-        if (recording.getBlobUri() != null) {
-            System.out.println("Recording is stored in customer storage: " + recording.getBlobUri());
+            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDuration());
+        if (recording.getBlobUrl() != null) {
+            System.out.println("Recording is stored in customer storage: " + recording.getBlobUrl());
         } else {
             Path output = Files.createTempFile(conversationId + "-", ".wav");
             Files.write(output, conversations.downloadAgentConversationAudio(agentName, conversationId).toBytes());
@@ -61,8 +61,8 @@ public class VoiceAgentReadConversationAudioSample {
             try {
                 VoiceAudioItem metadata = conversations.getAgentConversationAudioItem(
                     agentName, conversationId, itemId);
-                if (metadata.getBlobUri() != null) {
-                    System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUri());
+                if (metadata.getBlobUrl() != null) {
+                    System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUrl());
                 } else {
                     Path output = Files.createTempFile(conversationId + "-" + itemId + "-", ".wav");
                     Files.write(output, conversations.downloadAgentConversationAudioItem(

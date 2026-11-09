@@ -63,26 +63,6 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
     @Generated
     private Integer channels;
 
-    /*
-     * The offset from the session start at which this segment begins.
-     */
-    @Generated
-    private Long startOffsetMs;
-
-    /*
-     * The duration of the audio segment.
-     */
-    @Generated
-    private Long durationMs;
-
-    /*
-     * For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the customer's own storage,
-     * without a SAS token. The customer downloads it using their own storage credentials. Absent for Foundry-managed
-     * storage, where the bytes are streamed via the item's `/audio/content` route instead.
-     */
-    @Generated
-    private String blobUri;
-
     /**
      * Creates an instance of VoiceAudioItem class.
      *
@@ -166,44 +146,6 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
     }
 
     /**
-     * Get the startOffsetMs property: The offset from the session start at which this segment begins.
-     *
-     * @return the startOffsetMs value.
-     */
-    @Generated
-    public Duration getStartOffsetMs() {
-        if (this.startOffsetMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.startOffsetMs);
-    }
-
-    /**
-     * Get the durationMs property: The duration of the audio segment.
-     *
-     * @return the durationMs value.
-     */
-    @Generated
-    public Duration getDurationMs() {
-        if (this.durationMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.durationMs);
-    }
-
-    /**
-     * Get the blobUri property: For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the
-     * customer's own storage, without a SAS token. The customer downloads it using their own storage credentials.
-     * Absent for Foundry-managed storage, where the bytes are streamed via the item's `/audio/content` route instead.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -217,9 +159,9 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
         jsonWriter.writeStringField("codec", this.codec == null ? null : this.codec.toString());
         jsonWriter.writeNumberField("sample_rate", this.sampleRate);
         jsonWriter.writeNumberField("channels", this.channels);
-        jsonWriter.writeNumberField("start_offset_ms", this.startOffsetMs);
-        jsonWriter.writeNumberField("duration_ms", this.durationMs);
-        jsonWriter.writeStringField("blob_uri", this.blobUri);
+        jsonWriter.writeNumberField("start_offset_ms", this.offset);
+        jsonWriter.writeNumberField("duration_ms", this.duration);
+        jsonWriter.writeStringField("blob_uri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -242,9 +184,9 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
             VoiceAudioCodec codec = null;
             Integer sampleRate = null;
             Integer channels = null;
-            Long startOffsetMs = null;
-            Long durationMs = null;
-            String blobUri = null;
+            Long offset = null;
+            Long duration = null;
+            String blobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -263,11 +205,11 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
                 } else if ("channels".equals(fieldName)) {
                     channels = reader.getNullable(JsonReader::getInt);
                 } else if ("start_offset_ms".equals(fieldName)) {
-                    startOffsetMs = reader.getNullable(JsonReader::getLong);
+                    offset = reader.getNullable(JsonReader::getLong);
                 } else if ("duration_ms".equals(fieldName)) {
-                    durationMs = reader.getNullable(JsonReader::getLong);
+                    duration = reader.getNullable(JsonReader::getLong);
                 } else if ("blob_uri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -278,10 +220,68 @@ public final class VoiceAudioItem implements JsonSerializable<VoiceAudioItem> {
             deserializedVoiceAudioItem.codec = codec;
             deserializedVoiceAudioItem.sampleRate = sampleRate;
             deserializedVoiceAudioItem.channels = channels;
-            deserializedVoiceAudioItem.startOffsetMs = startOffsetMs;
-            deserializedVoiceAudioItem.durationMs = durationMs;
-            deserializedVoiceAudioItem.blobUri = blobUri;
+            deserializedVoiceAudioItem.offset = offset;
+            deserializedVoiceAudioItem.duration = duration;
+            deserializedVoiceAudioItem.blobUrl = blobUrl;
             return deserializedVoiceAudioItem;
         });
+    }
+
+    /*
+     * The offset from the session start at which this segment begins.
+     */
+    @Generated
+    private Long offset;
+
+    /*
+     * The duration of the audio segment.
+     */
+    @Generated
+    private Long duration;
+
+    /*
+     * For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the customer's own storage,
+     * without a SAS token. The customer downloads it using their own storage credentials. Absent for Foundry-managed
+     * storage, where the bytes are streamed via the item's `/audio/content` route instead.
+     */
+    @Generated
+    private String blobUrl;
+
+    /**
+     * Get the offset property: The offset from the session start at which this segment begins.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public Duration getOffset() {
+        if (this.offset == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.offset);
+    }
+
+    /**
+     * Get the duration property: The duration of the audio segment.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        if (this.duration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.duration);
+    }
+
+    /**
+     * Get the blobUrl property: For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the
+     * customer's own storage, without a SAS token. The customer downloads it using their own storage credentials.
+     * Absent for Foundry-managed storage, where the bytes are streamed via the item's `/audio/content` route instead.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }

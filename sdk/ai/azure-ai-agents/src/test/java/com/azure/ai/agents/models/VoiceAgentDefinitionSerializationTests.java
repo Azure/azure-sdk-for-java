@@ -31,7 +31,7 @@ public class VoiceAgentDefinitionSerializationTests {
             .build());
         VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration().setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection().setThreshold(0.5)
-                .setPrefixPaddingMs(300L)
+                .setPrefixPadding(Duration.ofMillis(300))
                 .setSilenceDuration(Duration.ofMillis(500))
                 .setIdleTimeout(Duration.ofMillis(1500)))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
@@ -59,6 +59,7 @@ public class VoiceAgentDefinitionSerializationTests {
         assertTrue(json.contains("\"voice_type\":\"azure-standard\""));
         assertTrue(json.contains("\"rate\":24000"));
         assertTrue(json.contains("\"type\":\"server_vad\""));
+        assertTrue(json.contains("\"prefix_padding_ms\":300"));
         assertTrue(json.contains("\"silence_duration_ms\":500"));
         assertTrue(json.contains("\"idle_timeout_ms\":1500"));
         assertTrue(json.contains("\"model\":\"whisper-1\""));
@@ -86,7 +87,7 @@ public class VoiceAgentDefinitionSerializationTests {
             = assertInstanceOf(VoiceAgentServerVadTurnDetection.class, deserializedInput.getTurnDetection());
         VoiceAgentServerVadTurnDetection originalVad = (VoiceAgentServerVadTurnDetection) input.getTurnDetection();
         assertEquals(originalVad.getThreshold(), deserializedVad.getThreshold());
-        assertEquals(originalVad.getPrefixPaddingMs(), deserializedVad.getPrefixPaddingMs());
+        assertEquals(originalVad.getPrefixPadding(), deserializedVad.getPrefixPadding());
         assertEquals(originalVad.getSilenceDuration(), deserializedVad.getSilenceDuration());
         assertEquals(originalVad.getIdleTimeout(), deserializedVad.getIdleTimeout());
         assertEquals(input.getTranscription().getModel(), deserializedInput.getTranscription().getModel());
