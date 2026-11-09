@@ -23,11 +23,6 @@ public final class ConnectionKind extends ExpandableStringEnum<ConnectionKind> {
     public static final ConnectionKind CHAOS_AGENT = fromString("ChaosAgent");
 
     /**
-     * A connection backed by Cloud Service Fault Injection (CSFI).
-     */
-    public static final ConnectionKind CSFI = fromString("Csfi");
-
-    /**
      * Creates a new instance of ConnectionKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

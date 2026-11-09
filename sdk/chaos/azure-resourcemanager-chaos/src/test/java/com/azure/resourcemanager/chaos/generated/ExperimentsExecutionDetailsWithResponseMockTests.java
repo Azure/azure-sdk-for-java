@@ -20,7 +20,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
     @Test
     public void testExecutionDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"type\":\"peuknijd\",\"id\":\"yespydjfbocyv\",\"name\":\"ulrtywikdmh\",\"properties\":{\"status\":\"uflgbhgauacdixm\",\"startedAt\":\"2021-04-01T08:16:50Z\",\"stoppedAt\":\"2021-09-01T23:44:15Z\",\"provisioningState\":\"Succeeded\",\"failureReason\":\"qg\",\"lastActionAt\":\"2021-08-22T18:10:50Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"eoqbvjhvefgwbmqj\",\"stepId\":\"ntasfaymxbu\",\"status\":\"zealbmqkyo\",\"branches\":[{},{}]}]}}}";
+            = "{\"type\":\"kondcb\",\"id\":\"imuvqejosovyrrl\",\"name\":\"esi\",\"properties\":{\"status\":\"tljqobbpih\",\"startedAt\":\"2021-06-04T21:54:47Z\",\"stoppedAt\":\"2021-11-03T13:16:28Z\",\"provisioningState\":\"Succeeded\",\"failureReason\":\"rqbrjbbmpxdlvyk\",\"lastActionAt\":\"2021-04-26T14:49:09Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"eqwjksgh\",\"stepId\":\"gzhxog\",\"status\":\"gsv\",\"branches\":[{},{}]},{\"stepName\":\"xibdafhrkmdyo\",\"stepId\":\"xfbvfb\",\"status\":\"y\",\"branches\":[{},{},{},{}]},{\"stepName\":\"wpg\",\"stepId\":\"eimawzovgkkumui\",\"status\":\"cjc\",\"branches\":[{}]},{\"stepName\":\"wsnsqowx\",\"stepId\":\"omlik\",\"status\":\"wvczcswkacve\",\"branches\":[{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecutionDetails response = manager.experiments()
-            .executionDetailsWithResponse("rweft", "wqejpmvsse", "aepwamcxtcz", com.azure.core.util.Context.NONE)
+            .executionDetailsWithResponse("dgycxnmskwhqjjy", "lurlpshhkvp", "dwqslsrhmpqvw",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

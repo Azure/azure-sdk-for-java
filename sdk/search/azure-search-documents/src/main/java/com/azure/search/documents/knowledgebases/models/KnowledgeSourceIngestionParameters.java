@@ -267,8 +267,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
         jsonWriter.writeJsonField("aiServices", this.aiServices);
-        jsonWriter.writeJsonField("assetStore", this.assetStore);
-        jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
         jsonWriter.writeStringField("networkAccessMode",
             this.networkAccessMode == null ? null : this.networkAccessMode.toString());
         return jsonWriter.writeEndObject();
@@ -315,10 +313,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
-                } else if ("assetStore".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.assetStore = AssetStore.fromJson(reader);
-                } else if ("freshnessPolicy".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.freshnessPolicy = FreshnessPolicy.fromJson(reader);
                 } else if ("networkAccessMode".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.networkAccessMode
                         = KnowledgeSourceNetworkAccessMode.fromString(reader.getString());
@@ -328,62 +322,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
             }
             return deserializedKnowledgeSourceIngestionParameters;
         });
-    }
-
-    /*
-     * Optional asset store configuration for storing extracted assets such as images.
-     */
-    @Generated
-    private AssetStore assetStore;
-
-    /*
-     * Optional freshness policy for biasing retrieval toward newer documents.
-     */
-    @Generated
-    private FreshnessPolicy freshnessPolicy;
-
-    /**
-     * Get the assetStore property: Optional asset store configuration for storing extracted assets such as images.
-     *
-     * @return the assetStore value.
-     */
-    @Generated
-    public AssetStore getAssetStore() {
-        return this.assetStore;
-    }
-
-    /**
-     * Set the assetStore property: Optional asset store configuration for storing extracted assets such as images.
-     *
-     * @param assetStore the assetStore value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setAssetStore(AssetStore assetStore) {
-        this.assetStore = assetStore;
-        return this;
-    }
-
-    /**
-     * Get the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
-     *
-     * @return the freshnessPolicy value.
-     */
-    @Generated
-    public FreshnessPolicy getFreshnessPolicy() {
-        return this.freshnessPolicy;
-    }
-
-    /**
-     * Set the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
-     *
-     * @param freshnessPolicy the freshnessPolicy value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setFreshnessPolicy(FreshnessPolicy freshnessPolicy) {
-        this.freshnessPolicy = freshnessPolicy;
-        return this;
     }
 
     /*
