@@ -4,16 +4,19 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
@@ -31,7 +34,10 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
@@ -53,6 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -88,6 +95,56 @@ public class DocumentProducerTest {
 
     private final String collectionRid = "myrid";
     private final String collectionLink = "/dbs/mydb/colls/mycol";
+
+    @Test(groups = "unit")
+    public void nonStreamingVectorTopRetainsWinningCandidatesAcrossPages() {
+        List<Range<String>> ranges = IntStream.range(0, 6)
+            .mapToObj(i -> new Range<>("0" + i, "0" + (i + 1), true, false))
+            .collect(Collectors.toList());
+        IDocumentQueryClient client = mockQueryClient(Collections.emptyList());
+        doReturn(CosmosItemSerializer.DEFAULT_SERIALIZER).when(client).getEffectiveItemSerializer(any());
+        doReturn(IDocumentQueryClient.QueryCompatibilityMode.Default).when(client).getQueryCompatibilityMode();
+
+        doAnswer(invocation -> {
+            RxDocumentServiceRequest request = invocation.getArgument(3);
+            Range<String> range = ((FeedRangeEpkImpl) request.getFeedRange()).getRange();
+            boolean winningRange = ranges.get(0).equals(range);
+            boolean firstPage = request.getHeaders().get(HttpConstants.HttpHeaders.CONTINUATION) == null;
+            int start = winningRange ? (firstPage ? 0 : 30) : 60 + ranges.indexOf(range);
+            int end = start + (winningRange ? 30 : 1);
+            List<Document> rows = IntStream.range(start, end)
+                .mapToObj(score -> new Document("{\"payload\":{\"id\":\"item-" + score
+                    + "\"},\"orderByItems\":[{\"item\":" + score + "}]}"))
+                .collect(Collectors.toList());
+            Map<String, String> headers = new HashMap<>();
+            headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, UUID.randomUUID().toString());
+            if (winningRange && firstPage) {
+                headers.put(HttpConstants.HttpHeaders.CONTINUATION, "next");
+            }
+            return Mono.just(ModelBridgeInternal.createFeedResponse(rows, headers));
+        }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any(), any());
+
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink(collectionLink);
+        QueryInfo queryInfo = new QueryInfo("{\"top\":60,\"orderBy\":[\"Ascending\"],"
+            + "\"orderByExpressions\":[\"VectorDistance(c.embedding, [0, 0])\"],\"hasNonStreamingOrderBy\":true}");
+        SqlQuerySpec query = new SqlQuerySpec("SELECT TOP 60 c.id FROM c ORDER BY VectorDistance(c.embedding, [0, 0])");
+        List<String> expectedIds = IntStream.range(0, 60)
+            .mapToObj(score -> "item-" + score)
+            .collect(Collectors.toList());
+
+        StepVerifier.create(DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
+                clientContext, client, ResourceType.Document, Document.class, query, new CosmosQueryRequestOptions(),
+                collectionLink, false, queryInfo, null, ranges, ranges, collection, UUID.randomUUID(), new AtomicBoolean())
+            .flatMap(IDocumentQueryExecutionContext::executeAsync)
+            .concatMapIterable(FeedResponse::getResults)
+            .map(Document::getId)
+            .collectList())
+            .assertNext(ids -> assertThat(ids).containsExactlyInAnyOrderElementsOf(expectedIds))
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+    }
 
     @DataProvider
     public Object[][] narrowedChildRanges() {
