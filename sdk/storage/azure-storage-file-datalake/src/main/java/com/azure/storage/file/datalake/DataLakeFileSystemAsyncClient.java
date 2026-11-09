@@ -565,7 +565,6 @@ public class DataLakeFileSystemAsyncClient {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return blobContainerAsyncClient
                 .deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

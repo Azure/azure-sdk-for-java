@@ -621,7 +621,12 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient
             = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
-        assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.deleteIfExistsWithResponse(null), 404);
+        StepVerifier.create(dataLakeFileSystemAsyncClient.deleteIfExistsWithResponse(null))
+            .assertNext(response -> {
+                assertEquals(404, response.getStatusCode());
+                assertFalse(response.getValue());
+            })
+            .verifyComplete();
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.exists()).expectNext(false).verifyComplete();
     }

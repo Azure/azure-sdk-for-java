@@ -557,7 +557,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient dataLakeFileSystemClient
             = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        assertEquals(404, dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null).getStatusCode());
+        Response<Boolean> response = dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null);
+        assertEquals(404, response.getStatusCode());
+        assertFalse(response.getValue());
         assertFalse(dataLakeFileSystemClient.exists());
     }
 
