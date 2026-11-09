@@ -4,8 +4,8 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
@@ -58,6 +58,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -90,8 +92,9 @@ public class VoiceAgentWebSocketSessionTests {
 
     private DisposableServer server;
 
-    @Test
-    public void handshakeUsesSdkManagedProtocolValues() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handshakeUsesSdkManagedProtocolValues(boolean allowPreview) {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = tlsServer().host("localhost").port(0).handle((request, response) -> {
@@ -111,14 +114,15 @@ public class VoiceAgentWebSocketSessionTests {
                         new Header("Foundry-Features", "override-feature"),
                         new Header("Sec-WebSocket-Protocol", "override-protocol"))));
 
-        BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent name");
+        VoiceAgentsWebSocketClient client = builder.allowPreview(allowPreview).buildVoiceAgentsWebSocketClient();
+        builder.allowPreview(!allowPreview);
+        VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent name");
         session.close();
         assertFalse(session.isOpen());
 
         assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
         assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals(allowPreview ? "VoiceAgents=V1Preview" : null, headers.get().get("Foundry-Features"));
         assertEquals("custom-value", headers.get().get("X-Custom"));
         assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
         String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
@@ -149,8 +153,8 @@ public class VoiceAgentWebSocketSessionTests {
                 .httpLogOptions(new HttpLogOptions().setApplicationId("log-app"))
                 .clientOptions(new ClientOptions());
 
-        BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent");
+        VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent");
         session.close();
 
         assertTrue(userAgent.get().startsWith("log-app azsdk-java-azure-ai-agents/"), userAgent.get());
@@ -167,8 +171,8 @@ public class VoiceAgentWebSocketSessionTests {
             .configuration(Configuration.NONE);
         String raw = "{\"type\": \"response.create\"}";
         BinaryData mapping = BinaryData.fromObject(Collections.singletonMap("type", "response.cancel"));
-        try (BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
+        try (VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
             assertThrows(IllegalArgumentException.class,
                 () -> session.sendEvent(BinaryData.fromString("not valid json")));
             session.sendEvent(new RealtimeResponseCreateEvent());
@@ -200,8 +204,8 @@ public class VoiceAgentWebSocketSessionTests {
             .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
             .configuration(Configuration.NONE);
         List<RealtimeServerEvent> events = new ArrayList<>();
-        try (BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
+        try (VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
             Iterator<RealtimeServerEvent> iterator = session.receiveEvents(Duration.ofSeconds(5)).iterator();
             events.add(iterator.next());
             events.add(iterator.next());
@@ -224,8 +228,8 @@ public class VoiceAgentWebSocketSessionTests {
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
             .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
             .configuration(Configuration.NONE);
-        try (BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
+        try (VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
             Iterator<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5)).iterator();
             assertWarningEvent(events.next());
             assertWarningEvent(events.next());
@@ -246,8 +250,8 @@ public class VoiceAgentWebSocketSessionTests {
                 .configuration(Configuration.NONE);
             List<RealtimeServerEvent> received = new ArrayList<>();
             boolean overflowError = strategy == VoiceAgentWebSocketOverflowStrategy.ERROR;
-            try (BetaVoiceAgentsWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
                 assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
                     while (session.isOpen()) {
                         Thread.yield();
@@ -282,8 +286,8 @@ public class VoiceAgentWebSocketSessionTests {
             .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
             .configuration(Configuration.NONE);
         assertThrows(RuntimeException.class, () -> {
-            try (BetaVoiceAgentsWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", options)) {
                 session.receiveEvents(Duration.ofSeconds(5)).iterator().next();
             }
         });
@@ -304,7 +308,7 @@ public class VoiceAgentWebSocketSessionTests {
             "https://example.com/#fragment" }) {
             AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint).credential(credential);
             assertThrows(IllegalArgumentException.class,
-                () -> builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent"));
+                () -> builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent"));
         }
         assertFalse(requested.get());
     }
@@ -322,13 +326,13 @@ public class VoiceAgentWebSocketSessionTests {
     public void syncReceiveStreamRejectsSecondIterator() {
         server = startServer(new CopyOnWriteArrayList<>(), new AtomicReference<>(), new AtomicReference<>(),
             new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(), false);
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
 
-        try (BetaVoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
+                .buildVoiceAgentsWebSocketClient();
+
+        try (VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
             Iterable<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5));
             events.iterator();
             IllegalStateException exception = assertThrows(IllegalStateException.class, events::iterator);
@@ -349,8 +353,8 @@ public class VoiceAgentWebSocketSessionTests {
             .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
             .configuration(Configuration.NONE);
         BinaryData payload = BinaryData.fromString("{\"type\":\"future.event\",\"value\":42}");
-        try (BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
+        try (VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
             assertThrows(IllegalArgumentException.class, () -> session.sendEvent(BinaryData.fromString("[]")));
             assertThrows(IllegalArgumentException.class, () -> session.sendEvent(BinaryData.fromString("{} {}")));
             session.sendEvent(payload);
@@ -368,8 +372,8 @@ public class VoiceAgentWebSocketSessionTests {
         AgentsClientBuilder builder
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
-        try (BetaVoiceAgentsWebSocketSessionClient session
-            = builder.beta().buildBetaVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
+        try (VoiceAgentsWebSocketSessionClient session
+            = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
             Iterator<RealtimeServerEvent> iterator = session.receiveEvents(Duration.ofMillis(20)).iterator();
             IllegalStateException timeout = assertThrows(IllegalStateException.class, iterator::hasNext);
             assertInstanceOf(TimeoutException.class, timeout.getCause());
@@ -400,12 +404,11 @@ public class VoiceAgentWebSocketSessionTests {
     public void syncConnectRejectsNullArguments() {
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client
-            = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
-                .credential(credential)
-                .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
+        VoiceAgentsWebSocketClient client = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
+            .credential(credential)
+            .configuration(Configuration.NONE)
+
+            .buildVoiceAgentsWebSocketClient();
 
         NullPointerException agentNameException
             = assertThrows(NullPointerException.class, () -> client.openWebSocketSession(null, tlsOptions()));
@@ -424,12 +427,12 @@ public class VoiceAgentWebSocketSessionTests {
             return response.send();
         }).bindNow();
         TokenCredential credential = request -> Mono.error(new IllegalStateException("token unavailable"));
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
+
+                .buildVoiceAgentsWebSocketClient();
 
         IllegalStateException exception
             = assertThrows(IllegalStateException.class, () -> client.openWebSocketSession("agent", tlsOptions()));
@@ -446,12 +449,12 @@ public class VoiceAgentWebSocketSessionTests {
             .bindNow();
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
+
+                .buildVoiceAgentsWebSocketClient();
 
         ResourceModifiedException exception = assertThrows(ResourceModifiedException.class,
             () -> client.openWebSocketSession("disabled-agent", tlsOptions()));
@@ -463,11 +466,11 @@ public class VoiceAgentWebSocketSessionTests {
     public void syncClientRejectsEmptyAgentName() {
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client = new AgentsClientBuilder().endpoint("https://example.com")
+        VoiceAgentsWebSocketClient client = new AgentsClientBuilder().endpoint("https://example.com")
             .credential(credential)
             .configuration(Configuration.NONE)
-            .beta()
-            .buildBetaVoiceAgentsWebSocketClient();
+
+            .buildVoiceAgentsWebSocketClient();
 
         IllegalArgumentException exception
             = assertThrows(IllegalArgumentException.class, () -> client.openWebSocketSession("", tlsOptions()));
@@ -480,14 +483,14 @@ public class VoiceAgentWebSocketSessionTests {
         server = frameWebSocketServer(frames);
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
 
-        try (BetaVoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
+                .buildVoiceAgentsWebSocketClient();
+
+        try (VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
             assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
                 while (session.isOpen()) {
                     Thread.yield();
@@ -505,14 +508,14 @@ public class VoiceAgentWebSocketSessionTests {
         server = frameWebSocketServer(frames);
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
 
-        try (BetaVoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
+                .buildVoiceAgentsWebSocketClient();
+
+        try (VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
             assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
                 Iterator<RealtimeServerEvent> events = session.receiveEvents().iterator();
                 int eventCount = 0;
@@ -536,14 +539,14 @@ public class VoiceAgentWebSocketSessionTests {
             new AtomicReference<>(), true);
         TokenCredential credential
             = request -> Mono.just(new AccessToken("sync-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketClient client
+        VoiceAgentsWebSocketClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketClient();
 
-        try (BetaVoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("sync-agent", tlsOptions())) {
+                .buildVoiceAgentsWebSocketClient();
+
+        try (VoiceAgentsWebSocketSessionClient session = client.openWebSocketSession("sync-agent", tlsOptions())) {
             Iterator<RealtimeServerEvent> events = session.receiveEvents().iterator();
             assertWarningEvent(events.next());
             session.sendFunctionCallOutput("call-1", "{\"temperature\":72}");

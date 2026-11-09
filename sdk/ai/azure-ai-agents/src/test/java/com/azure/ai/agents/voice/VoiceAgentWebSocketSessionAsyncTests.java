@@ -4,8 +4,8 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
@@ -53,6 +53,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -63,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -72,8 +75,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VoiceAgentWebSocketSessionAsyncTests {
     private DisposableServer server;
 
-    @Test
-    public void handshakeUsesSdkManagedProtocolValues() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handshakeUsesSdkManagedProtocolValues(boolean allowPreview) {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = VoiceAgentWebSocketSessionTests.tlsServer().host("localhost").port(0).handle((request, response) -> {
@@ -93,16 +97,17 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                         new Header("Foundry-Features", "override-feature"),
                         new Header("Sec-WebSocket-Protocol", "override-protocol"))));
 
-        BetaVoiceAgentsWebSocketSessionAsyncClient session = builder.beta()
-            .buildBetaVoiceAgentsWebSocketAsyncClient()
-            .openWebSocketSession("agent name")
-            .block(Duration.ofSeconds(5));
+        VoiceAgentsWebSocketAsyncClient client
+            = builder.allowPreview(allowPreview).buildVoiceAgentsWebSocketAsyncClient();
+        builder.allowPreview(!allowPreview);
+        VoiceAgentsWebSocketSessionAsyncClient session
+            = client.openWebSocketSession("agent name").block(Duration.ofSeconds(5));
         session.closeAsync().block(Duration.ofSeconds(5));
         assertFalse(session.isOpen());
 
         assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
         assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals(allowPreview ? "VoiceAgents=V1Preview" : null, headers.get().get("Foundry-Features"));
         assertEquals("custom-value", headers.get().get("X-Custom"));
         assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
         String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
@@ -133,10 +138,8 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 .httpLogOptions(new HttpLogOptions().setApplicationId("log-app"))
                 .clientOptions(new ClientOptions());
 
-        BetaVoiceAgentsWebSocketSessionAsyncClient session = builder.beta()
-            .buildBetaVoiceAgentsWebSocketAsyncClient()
-            .openWebSocketSession("agent")
-            .block(Duration.ofSeconds(5));
+        VoiceAgentsWebSocketSessionAsyncClient session
+            = builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession("agent").block(Duration.ofSeconds(5));
         session.closeAsync().block(Duration.ofSeconds(5));
 
         assertTrue(userAgent.get().startsWith("log-app azsdk-java-azure-ai-agents/"), userAgent.get());
@@ -168,8 +171,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         AgentsClientBuilder builder = builder(server.port());
         String raw = "{\"type\": \"response.create\"}";
         BinaryData mapping = BinaryData.fromObject(Collections.singletonMap("type", "response.cancel"));
-        BetaVoiceAgentsWebSocketSessionAsyncClient session = builder.beta()
-            .buildBetaVoiceAgentsWebSocketAsyncClient()
+        VoiceAgentsWebSocketSessionAsyncClient session = builder.buildVoiceAgentsWebSocketAsyncClient()
             .openWebSocketSession("agent", tlsOptions())
             .block(Duration.ofSeconds(5));
         try {
@@ -196,7 +198,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             new TextWebSocketFrame("{\"type\":\"session.created\",\"session\":{}}"),
             new TextWebSocketFrame("{\"type\":\"future.event\",\"foo\":\"bar\"}")));
         server = frameWebSocketServer(frames, false);
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block(Duration.ofSeconds(5));
         List<RealtimeServerEvent> events;
         try {
@@ -219,7 +221,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             new TextWebSocketFrame(warningJson()))), true);
         VoiceAgentWebSocketConnectionOptions options
             = tlsOptions().setMalformedEventHandler(error -> failures.incrementAndGet());
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", options).block(Duration.ofSeconds(5));
         StepVerifier.create(session.receiveEvents())
             .assertNext(this::assertWarningEvent)
@@ -236,7 +238,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 .map(index -> new TextWebSocketFrame("{\"type\":\"future.event\",\"index\":" + index + "}")), true);
             VoiceAgentWebSocketConnectionOptions options
                 = tlsOptions().setReceiveBufferCapacity(2).setOverflowStrategy(strategy);
-            BetaVoiceAgentsWebSocketSessionAsyncClient session
+            VoiceAgentsWebSocketSessionAsyncClient session
                 = createAsyncClient(server.port()).openWebSocketSession("agent", options).block(Duration.ofSeconds(5));
             boolean overflowError = strategy == VoiceAgentWebSocketOverflowStrategy.ERROR;
             List<RealtimeServerEvent> received = new ArrayList<>();
@@ -273,7 +275,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         VoiceAgentWebSocketConnectionOptions options
             = tlsOptions().setMaxMessageSize(16).setMalformedEventHandler(error -> recovered.set(true));
         StepVerifier.create(createAsyncClient(server.port()).openWebSocketSession("agent", options)
-            .flatMapMany(BetaVoiceAgentsWebSocketSessionAsyncClient::receiveEvents)).expectError().verify();
+            .flatMapMany(VoiceAgentsWebSocketSessionAsyncClient::receiveEvents)).expectError().verify();
         assertFalse(recovered.get());
     }
 
@@ -284,7 +286,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         RawRealtimeServerEvent copy = BinaryData.fromObject(event).toObject(RawRealtimeServerEvent.class);
         assertEquals(payload.toObject(Map.class), copy.getRawEvent().toObject(Map.class));
         server = oneShotWebSocketServer("{\"type\":42,\"value\":1}");
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block(Duration.ofSeconds(5));
         try {
             StepVerifier.create(session.receiveEvents())
@@ -313,8 +315,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             "https://user@example.com",
             "https://example.com/#fragment" }) {
             AgentsClientBuilder clientBuilder = new AgentsClientBuilder().endpoint(endpoint).credential(credential);
-            StepVerifier
-                .create(clientBuilder.beta().buildBetaVoiceAgentsWebSocketAsyncClient().openWebSocketSession("agent"))
+            StepVerifier.create(clientBuilder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession("agent"))
                 .expectError(IllegalArgumentException.class)
                 .verify();
         }
@@ -332,7 +333,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 WebsocketServerSpec.builder().protocols("realtime").build()))
             .bindNow();
         BinaryData payload = BinaryData.fromString("{\"type\":\"future.event\",\"value\":42}");
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block(Duration.ofSeconds(5));
         StepVerifier.create(session.sendEvent(BinaryData.fromString("[]")))
             .expectError(IllegalArgumentException.class)
@@ -350,7 +351,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     public void customCloseFrame() {
         server = startServer(new CopyOnWriteArrayList<>(), new AtomicReference<>(), new AtomicReference<>(),
             new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(), false);
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block(Duration.ofSeconds(5));
         assertNotNull(session);
         StepVerifier.create(session.closeAsync(1006, "invalid")).expectError(IllegalArgumentException.class).verify();
@@ -376,18 +377,17 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         };
         VoiceAgentWebSocketConnectionOptions options
             = tlsOptions().setStoreEnabled(true).setAgentVersionOverride("version 2");
-        BetaVoiceAgentsWebSocketAsyncClient client
+        VoiceAgentsWebSocketAsyncClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
                 .clientOptions(new ClientOptions().setApplicationId("test-app")
                     .setHeaders(Collections.singletonList(new Header("X-Test-Header", "test-value"))))
-                .beta()
-                .buildBetaVoiceAgentsWebSocketAsyncClient();
-        Mono<BetaVoiceAgentsWebSocketSessionAsyncClient> sessionMono
-            = client.openWebSocketSession("agent name", options);
+
+                .buildVoiceAgentsWebSocketAsyncClient();
+        Mono<VoiceAgentsWebSocketSessionAsyncClient> sessionMono = client.openWebSocketSession("agent name", options);
         options.setStoreEnabled(false).setAgentVersionOverride("mutated");
-        BetaVoiceAgentsWebSocketSessionAsyncClient session = sessionMono.block();
+        VoiceAgentsWebSocketSessionAsyncClient session = sessionMono.block();
         assertTrue(session.isOpen());
         StepVerifier.create(session.receiveEvents().take(4))
             .then(() -> session.sendText("hello").block())
@@ -401,7 +401,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .verifyComplete();
         assertEquals(Collections.singletonList("https://ai.azure.com/.default"), requestedScopes.get());
         assertEquals("Bearer test-token", authorization.get());
-        assertEquals("VoiceAgents=V1Preview", foundryFeatures.get());
+        assertNull(foundryFeatures.get());
         assertTrue(userAgent.get().startsWith("test-app azsdk-java-"));
         assertEquals("test-value", customHeader.get());
         String decodedUri = decode(requestUri.get());
@@ -428,12 +428,12 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             return response.send();
         }).bindNow();
         TokenCredential credential = request -> Mono.error(new IllegalStateException("token unavailable"));
-        BetaVoiceAgentsWebSocketAsyncClient client
+        VoiceAgentsWebSocketAsyncClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketAsyncClient();
+
+                .buildVoiceAgentsWebSocketAsyncClient();
         StepVerifier.create(client.openWebSocketSession("agent", tlsOptions()))
             .expectErrorMatches(
                 error -> error instanceof IllegalStateException && error.getMessage().contains("token unavailable"))
@@ -447,12 +447,12 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(), false);
         TokenCredential credential = request -> Mono.delay(Duration.ofMillis(1500))
             .map(ignored -> new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        BetaVoiceAgentsWebSocketAsyncClient client
+        VoiceAgentsWebSocketAsyncClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
                 .configuration(Configuration.NONE)
-                .beta()
-                .buildBetaVoiceAgentsWebSocketAsyncClient();
+
+                .buildVoiceAgentsWebSocketAsyncClient();
         VoiceAgentWebSocketConnectionOptions options = tlsOptions().setHandshakeTimeout(Duration.ofSeconds(1));
         StepVerifier.withVirtualTime(() -> client.openWebSocketSession("agent", options).flatMap(session -> {
             assertTrue(session.isOpen());
@@ -490,11 +490,11 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         AtomicBoolean tokenRequestCancelled = new AtomicBoolean();
         TokenCredential credential
             = request -> Mono.<AccessToken>never().doOnCancel(() -> tokenRequestCancelled.set(true));
-        BetaVoiceAgentsWebSocketAsyncClient client = new AgentsClientBuilder().endpoint("https://example.com")
+        VoiceAgentsWebSocketAsyncClient client = new AgentsClientBuilder().endpoint("https://example.com")
             .credential(credential)
             .configuration(Configuration.NONE)
-            .beta()
-            .buildBetaVoiceAgentsWebSocketAsyncClient();
+
+            .buildVoiceAgentsWebSocketAsyncClient();
         StepVerifier.create(client.openWebSocketSession("agent", tlsOptions())).thenCancel().verify();
         assertTrue(tokenRequestCancelled.get());
     }
@@ -502,7 +502,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     @Test
     public void unknownEventFallsBackToRealtimeServerEvent() {
         server = oneShotWebSocketServer("{\"type\":\"future.event\",\"value\":42}");
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).assertNext(event -> {
             assertEquals("future.event", event.getType().toString());
@@ -518,7 +518,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         int split = message.length() / 2;
         server = frameWebSocketServer(Flux.just(new TextWebSocketFrame(false, 0, message.substring(0, split)),
             new ContinuationWebSocketFrame(true, 0, message.substring(split))), true);
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
         session.close();
@@ -528,7 +528,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     public void binaryJsonFrameIsParsed() {
         server = frameWebSocketServer(
             Mono.just(new BinaryWebSocketFrame(Unpooled.copiedBuffer(warningJson(), StandardCharsets.UTF_8))), true);
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
         session.close();
@@ -537,7 +537,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     @Test
     public void malformedJsonTerminatesReceiveStream() {
         server = oneShotWebSocketServer("{not-json");
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).expectError().verify();
         assertFalse(session.isOpen());
@@ -547,7 +547,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     public void closeIsIdempotentAndSendAfterCloseFails() {
         server = startServer(new CopyOnWriteArrayList<>(), new AtomicReference<>(), new AtomicReference<>(),
             new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(), false);
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.closeAsync().then(session.closeAsync())).verifyComplete();
         StepVerifier.create(session.sendText("after close"))
@@ -559,7 +559,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
     @Test
     public void secureSessionUsesWssAndReceivesTypedEvent() throws Exception {
         server = oneShotWebSocketServer(warningJson());
-        BetaVoiceAgentsWebSocketSessionAsyncClient session
+        VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("secure-agent", tlsOptions())
                 .block(Duration.ofSeconds(5));
         assertEquals("wss", URI.create(session.getEndpoint()).getScheme());
@@ -572,8 +572,8 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
     }
 
-    private BetaVoiceAgentsWebSocketAsyncClient createAsyncClient(int port) {
-        return builder(port).configuration(Configuration.NONE).beta().buildBetaVoiceAgentsWebSocketAsyncClient();
+    private VoiceAgentsWebSocketAsyncClient createAsyncClient(int port) {
+        return builder(port).configuration(Configuration.NONE).buildVoiceAgentsWebSocketAsyncClient();
     }
 
     private static VoiceAgentWebSocketConnectionOptions tlsOptions() {

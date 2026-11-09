@@ -63,20 +63,20 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent optimization.
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent generation and optimization.
   When `allowPreview(true)` is configured, these clients can
   also use preview definitions, hosted-agent sessions, session files, and code package operations.
-- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Generate and create agents from high-level prompts.
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
-- `BetaVoiceAgentsWebSocketClient` / `BetaVoiceAgentsWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `VoiceAgentsWebSocketClient` / `VoiceAgentsWebSocketAsyncClient`: Open typed realtime WebSocket sessions with voice agents.
 - `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
-- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
-- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
+- `VoiceAgentsTelephonyClient` / `VoiceAgentsTelephonyAsyncClient`: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
+- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage outbound telephony campaigns.
+- `VoiceAgentsConversationsClient` / `VoiceAgentsConversationsAsyncClient`: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
 
 OpenAI conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s
-`ConversationService`. Persisted voice-agent conversation records use the beta voice conversation clients listed above.
+`ConversationService`. Persisted voice-agent conversation records use the voice conversation clients listed above.
 See the [OpenAI Conversation API documentation][openai_conversations_api_docs] for more information.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
@@ -90,9 +90,6 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
 AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-// Beta* clients automatically opt in to their preview service area.
-BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
-BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 // Responses sub-clients.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
@@ -196,22 +193,21 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,MicrosoftCopilot=V1Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
-| `BetaVoiceAgentsWebSocketClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsLiveWebSocketClient` / `BetaVoiceAgentsLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
-| `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsLiveConversationsClient` | `VoiceAgents=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ### Realtime voice-agent sessions
 
 Create and manage preview voice agents with `VoiceAgentDefinition` and an `AgentsClient` or `AgentsAsyncClient` built
-using `allowPreview(true)`. Use `BetaVoiceAgentsWebSocketClient` or `BetaVoiceAgentsWebSocketAsyncClient` to open a typed,
+using `allowPreview(true)`. Use `VoiceAgentsWebSocketClient` or `VoiceAgentsWebSocketAsyncClient` to open a typed,
 bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`,
-negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header
-automatically.
+negotiates the `realtime` WebSocket subprotocol, and sends the `Foundry-Features: VoiceAgents=V1Preview` header
+only when built with `allowPreview(true)`. GPT Live WebSocket clients always send that preview header,
+independently of `allowPreview`.
 
 The session API supports text and audio in the format configured on the voice agent, typed streaming server events,
 response cancellation, client-executed function tools, and optional persisted conversations. See
@@ -974,23 +970,25 @@ The following [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/
 
 Authenticate with `DefaultAzureCredential`. Every voice sample requires `FOUNDRY_PROJECT_ENDPOINT`. Samples that create explicit definitions optionally use `FOUNDRY_VOICE_MODEL`, `FOUNDRY_VOICE_MODEL_TYPE`, and `FOUNDRY_VOICE_AGENT_NAME`. The persisted-conversation samples require `FOUNDRY_VOICE_AGENT_NAME` and `FOUNDRY_VOICE_CONVERSATION_ID`.
 
-### Realtime voice-agent WebSocket examples (preview)
+### Realtime voice-agent WebSocket examples
 
 Realtime WebSocket sessions provide bidirectional text and audio communication with a voice agent. Create the voice agent before opening a session; the lifecycle samples above demonstrate how to create one.
 
 #### Create a realtime WebSocket client
 
-Build a synchronous or asynchronous preview client from the same `AgentsClientBuilder`. Beta clients automatically send the required preview feature header.
+Build a synchronous or asynchronous realtime client from `AgentsClientBuilder`.
+Realtime handshakes omit the preview feature header by default; set `allowPreview(true)` before building
+the client to opt into voice-agent preview features.
 
 ```java
 AgentsClientBuilder builder = new AgentsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint);
 
-BetaVoiceAgentsWebSocketClient realtimeClient
-    = builder.beta().buildBetaVoiceAgentsWebSocketClient();
-BetaVoiceAgentsWebSocketAsyncClient realtimeAsyncClient
-    = builder.beta().buildBetaVoiceAgentsWebSocketAsyncClient();
+VoiceAgentsWebSocketClient realtimeClient
+    = builder.buildVoiceAgentsWebSocketClient();
+VoiceAgentsWebSocketAsyncClient realtimeAsyncClient
+    = builder.buildVoiceAgentsWebSocketAsyncClient();
 ```
 
 #### Send a synchronous text turn
@@ -1019,7 +1017,7 @@ VoiceAgentWebSocketConnectionOptions options
         .setReceiveBufferCapacity(512)
         .setMaxMessageSize(8 * 1024 * 1024)
         .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
     session.sendEvent(BinaryData.fromString(
         "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
     for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -1040,7 +1038,7 @@ Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a c
 fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
-try (BetaVoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
+try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
     session.sendText("Hello! Tell me about the services you provide.");
     session.createResponse();
 
@@ -1076,9 +1074,9 @@ Mono.usingWhen(
         })
         .takeUntil(event -> event instanceof RealtimeResponseDoneEvent)
         .then(),
-    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync,
+    VoiceAgentsWebSocketSessionAsyncClient::closeAsync,
     (session, error) -> session.closeAsync(),
-    BetaVoiceAgentsWebSocketSessionAsyncClient::closeAsync)
+    VoiceAgentsWebSocketSessionAsyncClient::closeAsync)
     .block();
 ```
 
@@ -1189,12 +1187,12 @@ Generated agent names use `gpt-live-<scenario>-<UUID>` and fit the service's 63-
 
 | Scenario | Runnable sample |
 |---|---|
-| Synchronous multi-turn text | [GptLiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
-| Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
+| Synchronous multi-turn text | [GptLiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
+| Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
+| Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
+| Responses backend function tool | [GptLiveFunctionToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
 | Advanced synchronous console input and speaker | [GptLiveInteractiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationSample.java) |
 | Advanced asynchronous console input and speaker | [GptLiveInteractiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationAsyncSample.java) |
-| Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
-| Responses backend function tool | [GptLiveFunctionToolSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
 
 #### Read persisted GPT Live conversations and audio
 
@@ -1203,10 +1201,10 @@ or delete resources.
 
 | Scenario | Runnable sample |
 |---|---|
-| Synchronous history and transcripts | [GptLiveReadConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationSample.java) |
-| Asynchronous history and transcripts | [GptLiveReadConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAsyncSample.java) |
-| Synchronous stored audio download | [GptLiveReadConversationAudioSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioSample.java) |
-| Asynchronous stored audio download | [GptLiveReadConversationAudioAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioAsyncSample.java) |
+| Synchronous history and transcripts | [GptLiveReadConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationSample.java) |
+| Asynchronous history and transcripts | [GptLiveReadConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAsyncSample.java) |
+| Synchronous stored audio download | [GptLiveReadConversationAudioSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioSample.java) |
+| Asynchronous stored audio download | [GptLiveReadConversationAudioAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioAsyncSample.java) |
 
 Use an agent/session configured with `store=true` and retain the agent. With either text WebSocket example or the
 microphone/speaker example, set

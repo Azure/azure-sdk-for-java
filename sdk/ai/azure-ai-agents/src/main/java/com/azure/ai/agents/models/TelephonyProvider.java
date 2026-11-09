@@ -59,7 +59,7 @@ public final class TelephonyProvider extends ExpandableStringEnum<TelephonyProvi
     public static final TelephonyProvider TEAMS_PHONE_EXTENSIBILITY = fromString("teams_phone_extensibility");
 
     /**
-     * Session Initiation Protocol.
+     * Session Initiation Protocol. SIP is in preview and requires the `VoiceAgents=V1Preview` opt-in.
      */
     @Generated
     public static final TelephonyProvider SIP = fromString("sip");

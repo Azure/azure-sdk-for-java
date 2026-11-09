@@ -81,17 +81,17 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaVoiceAgentsConversationsImpl object to access its operations.
+     * The BetaVoiceAgentsTelephoniesImpl object to access its operations.
      */
-    private final BetaVoiceAgentsConversationsImpl betaVoiceAgentsConversations;
+    private final BetaVoiceAgentsTelephoniesImpl betaVoiceAgentsTelephonies;
 
     /**
-     * Gets the BetaVoiceAgentsConversationsImpl object to access its operations.
+     * Gets the BetaVoiceAgentsTelephoniesImpl object to access its operations.
      *
-     * @return the BetaVoiceAgentsConversationsImpl object.
+     * @return the BetaVoiceAgentsTelephoniesImpl object.
      */
-    public BetaVoiceAgentsConversationsImpl getBetaVoiceAgentsConversations() {
-        return this.betaVoiceAgentsConversations;
+    public BetaVoiceAgentsTelephoniesImpl getBetaVoiceAgentsTelephonies() {
+        return this.betaVoiceAgentsTelephonies;
     }
 
     /**
@@ -109,20 +109,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaVoiceAgentsTelephoniesImpl object to access its operations.
-     */
-    private final BetaVoiceAgentsTelephoniesImpl betaVoiceAgentsTelephonies;
-
-    /**
-     * Gets the BetaVoiceAgentsTelephoniesImpl object to access its operations.
-     *
-     * @return the BetaVoiceAgentsTelephoniesImpl object.
-     */
-    public BetaVoiceAgentsTelephoniesImpl getBetaVoiceAgentsTelephonies() {
-        return this.betaVoiceAgentsTelephonies;
-    }
-
-    /**
      * The BetaMemoryStoresImpl object to access its operations.
      */
     private final BetaMemoryStoresImpl betaMemoryStores;
@@ -137,17 +123,31 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaAgentsImpl object to access its operations.
+     * The VoiceAgentsConversationsImpl object to access its operations.
      */
-    private final BetaAgentsImpl betaAgents;
+    private final VoiceAgentsConversationsImpl voiceAgentsConversations;
 
     /**
-     * Gets the BetaAgentsImpl object to access its operations.
+     * Gets the VoiceAgentsConversationsImpl object to access its operations.
      *
-     * @return the BetaAgentsImpl object.
+     * @return the VoiceAgentsConversationsImpl object.
      */
-    public BetaAgentsImpl getBetaAgents() {
-        return this.betaAgents;
+    public VoiceAgentsConversationsImpl getVoiceAgentsConversations() {
+        return this.voiceAgentsConversations;
+    }
+
+    /**
+     * The VoiceAgentsTelephoniesImpl object to access its operations.
+     */
+    private final VoiceAgentsTelephoniesImpl voiceAgentsTelephonies;
+
+    /**
+     * Gets the VoiceAgentsTelephoniesImpl object to access its operations.
+     *
+     * @return the VoiceAgentsTelephoniesImpl object.
+     */
+    public VoiceAgentsTelephoniesImpl getVoiceAgentsTelephonies() {
+        return this.voiceAgentsTelephonies;
     }
 
     /**
@@ -226,11 +226,11 @@ public final class AgentsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.betaVoiceAgentsConversations = new BetaVoiceAgentsConversationsImpl(this);
-        this.betaVoiceAgentsLiveConversations = new BetaVoiceAgentsLiveConversationsImpl(this);
         this.betaVoiceAgentsTelephonies = new BetaVoiceAgentsTelephoniesImpl(this);
+        this.betaVoiceAgentsLiveConversations = new BetaVoiceAgentsLiveConversationsImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
-        this.betaAgents = new BetaAgentsImpl(this);
+        this.voiceAgentsConversations = new VoiceAgentsConversationsImpl(this);
+        this.voiceAgentsTelephonies = new VoiceAgentsTelephoniesImpl(this);
         this.agents = new AgentsImpl(this);
         this.toolboxes = new ToolboxesImpl(this);
     }

@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
@@ -32,7 +31,6 @@ import java.util.Objects;
  * all three getters return {@code null} for an unrecognized choice.</p>
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentToolChoice implements JsonSerializable<VoiceAgentToolChoice> {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentToolChoice.class);
 

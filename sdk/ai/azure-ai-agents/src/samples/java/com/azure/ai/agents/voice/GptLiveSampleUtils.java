@@ -524,6 +524,15 @@ final class GptLiveSampleUtils {
 
     static AgentResource createAgent(AgentsClientBuilder builder, String model, String backendModel,
         String scenario, boolean tools, boolean keepAgent) {
+        VoiceAgentLiveDefinition definition = createDefinition(model, backendModel, tools);
+        String agentName = createAgentName(scenario);
+        AgentsClient agents = builder.buildAgentsClient();
+        agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
+        System.out.println("Created GPT Live agent: " + agentName);
+        return new AgentResource(builder, agents, agentName, keepAgent);
+    }
+
+    static VoiceAgentLiveDefinition createDefinition(String model, String backendModel, boolean tools) {
         ResponsesDelegationConfig.Builder responses = ResponsesDelegationConfig.builder().model(backendModel)
                 .instructions(tools
                     ? "Use get_weather for weather requests. After receiving its result, answer briefly."
@@ -531,16 +540,11 @@ final class GptLiveSampleUtils {
         if (tools) {
             responses.addTool(GptLiveFunctionToolSample.weatherTool());
         }
-        VoiceAgentLiveDefinition definition = new VoiceAgentLiveDefinition(model)
+        return new VoiceAgentLiveDefinition(model)
                 .setInstructions("You are a helpful voice assistant. Delegate requests to your Responses backend.")
                 .setAudio(SessionConfig.Audio.builder()
                     .audioPcmFormat(com.openai.models.live.AudioFormat.AudioPcm.Rate._24000).build())
             .setDelegation(new VoiceAgentLiveResponsesDelegation(responses.build()));
-        String agentName = createAgentName(scenario);
-        AgentsClient agents = builder.buildAgentsClient();
-        agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
-        System.out.println("Created GPT Live agent: " + agentName);
-        return new AgentResource(builder, agents, agentName, keepAgent);
     }
 
     static String createAgentName(String scenario) {
