@@ -25,6 +25,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -148,7 +149,7 @@ public class PartitionSynchronizerImplTests {
     }
 
     @Test(groups = "unit")
-    public void createMissingLeasesFromPkRangeIdVersionLeases() {
+    public void createMissingLeasesFromPkRangeIdVersionLeasesAfterInterruptedSplit() {
         ChangeFeedContextClient feedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
         String feedContainerSelfLink = "/db/TestDB/coll/TestContainer";
         LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
@@ -165,21 +166,17 @@ public class PartitionSynchronizerImplTests {
             changeFeedProcessorOptions,
             ChangeFeedMode.INCREMENTAL);
 
-        List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
-        overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
-        overlappingRanges.add(new PartitionKeyRange("2", "BB", "DD"));
-        overlappingRanges.add(new PartitionKeyRange("3", "DD", "EE"));
+        List<String> parents = Collections.singletonList("0");
+        List<PartitionKeyRange> overlappingRanges = Arrays.asList(
+            new PartitionKeyRange("1", "AA", "BB", parents),
+            new PartitionKeyRange("2", "BB", "DD", parents),
+            new PartitionKeyRange("3", "DD", "EE"));
 
-        List<Lease> pkRangeIdVersionLeases = new ArrayList<>();
-
-        for (PartitionKeyRange partitionKeyRange : overlappingRanges) {
-            ServiceItemLease pkRangeIdVersionLease =
-                new ServiceItemLease()
-                    .withLeaseToken(partitionKeyRange.getId())
-                    .withETag(String.valueOf(partitionKeyRange.getId()));
-            pkRangeIdVersionLease.setId("TestLease-" + UUID.randomUUID());
-            pkRangeIdVersionLeases.add(pkRangeIdVersionLease);
-        }
+        List<Lease> pkRangeIdVersionLeases = Arrays.asList(
+            new ServiceItemLease().withLeaseToken("0").withContinuationToken("parent-checkpoint"),
+            new ServiceItemLease().withLeaseToken("1").withContinuationToken("child-checkpoint"),
+            new ServiceItemLease().withLeaseToken("3").withContinuationToken("other-checkpoint"));
+        List<String> expectedCheckpoints = Arrays.asList("child-checkpoint", "parent-checkpoint", "other-checkpoint");
 
         when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
             .thenReturn(Mono.just(overlappingRanges));
@@ -199,12 +196,12 @@ public class PartitionSynchronizerImplTests {
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().size()).isEqualTo(3);
         assertThat(continuationTokenArgumentCaptor.getAllValues().size()).isEqualTo(3);
 
-        for (int i = 0; i < pkRangeIdVersionLeases.size(); i++) {
+        for (int i = 0; i < overlappingRanges.size(); i++) {
             assertThat(feedRangeEpkArgumentCaptor.getAllValues().get(i).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
             ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationTokenArgumentCaptor.getAllValues().get(i));
             assertThat(changeFeedState.getFeedRange()).isInstanceOf(FeedRangeEpkImpl.class);
             assertThat(((FeedRangeEpkImpl)changeFeedState.getFeedRange()).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
-            assertThat(changeFeedState.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo(pkRangeIdVersionLeases.get(i).getContinuationToken());
+            assertThat(changeFeedState.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo(expectedCheckpoints.get(i));
         }
     }
 }
