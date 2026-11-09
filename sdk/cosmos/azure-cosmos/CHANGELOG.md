@@ -1,5 +1,19 @@
 ## Release History
 
+### 5.0.0-beta.1 (Unreleased)
+
+#### Breaking Changes
+
+* Retired the v4 implementation on `feature/cosmos/vnext` to establish the in-place v5 successor.
+  This foundation is not a functional SDK and must not be published or used by applications.
+  The v4 SDK continues to be maintained on `main`.
+* Raised the minimum Java version for the v5 foundation to Java 17.
+
+#### Other Changes
+
+* Added Core v2 dependency wiring, JUnit 5 foundation checks, module metadata, and nonpublishing validation.
+  Native integration and service client functionality will follow in separate changes.
+
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
