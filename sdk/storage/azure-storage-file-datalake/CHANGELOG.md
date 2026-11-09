@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `DataLakeFileSystemAsyncClient.createIfNotExists` and `createIfNotExistsWithResponse` to return `false` when the file system already exists.
 
 ### Other Changes
 

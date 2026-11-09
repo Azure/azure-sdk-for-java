@@ -412,7 +412,6 @@ public class DataLakeFileSystemAsyncClient {
             BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
                 .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
             return blobContainerAsyncClient.createIfNotExistsWithResponse(options)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
