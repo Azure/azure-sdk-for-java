@@ -257,7 +257,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     int effectiveSubStatusCode = 0;
                     if (itemResponse.getResponse() != null) {
                         effectiveStatusCode = itemResponse.getResponse().getStatusCode();
-                        effectiveSubStatusCode = itemResponse.getResponse().getStatusCode();
+                        effectiveSubStatusCode = itemResponse.getResponse().getSubStatusCode();
                     } else if (itemResponse.getException() != null && itemResponse.getException() instanceof CosmosException) {
                         CosmosException cosmosException = (CosmosException) itemResponse.getException();
                         effectiveStatusCode = cosmosException.getStatusCode();
