@@ -11,7 +11,7 @@ public final class RestorableMongodbDatabaseGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableMongodbDatabaseGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"jeuxsphlo\",\"operationType\":\"Recreate\",\"canUndelete\":\"ijpdvzvfbhwbdquf\",\"canUndeleteReason\":\"gnrglaqrwyamb\",\"eventTimestamp\":\"afebzxfkjq\",\"ownerId\":\"ibhlenntrv\",\"ownerResourceId\":\"psabdu\"}},\"id\":\"zmlghny\",\"name\":\"lpyeu\",\"type\":\"p\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"ekekzouyvewwpz\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"gldohgcandxfhh\",\"canUndeleteReason\":\"e\",\"eventTimestamp\":\"dqtdnnc\",\"ownerId\":\"pljdshvvfkdxcc\",\"ownerResourceId\":\"jjimhijz\"}},\"id\":\"njxm\",\"name\":\"s\",\"type\":\"ydw\"}")
             .toObject(RestorableMongodbDatabaseGetResultInner.class);
     }
 }

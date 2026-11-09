@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceEven
  */
 public final class MaintenanceEventsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/MaintenanceEventsListByServerWithFilter.json
+     * x-ms-original-file: 2026-07-01-preview/MaintenanceEventsListByServerWithFilter.json
      */
     /**
      * Sample code: List maintenance events filtered by status for a server.
@@ -26,7 +26,7 @@ public final class MaintenanceEventsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/MaintenanceEventsListByServer.json
+     * x-ms-original-file: 2026-07-01-preview/MaintenanceEventsListByServer.json
      */
     /**
      * Sample code: List ongoing and scheduled maintenance events for a server.

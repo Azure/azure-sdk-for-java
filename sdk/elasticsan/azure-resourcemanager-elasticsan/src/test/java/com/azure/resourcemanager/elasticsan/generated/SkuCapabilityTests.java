@@ -10,7 +10,7 @@ import com.azure.resourcemanager.elasticsan.models.SkuCapability;
 public final class SkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapability model = BinaryData.fromString("{\"name\":\"knalaulppg\",\"value\":\"tpnapnyiropuhpig\"}")
-            .toObject(SkuCapability.class);
+        SkuCapability model
+            = BinaryData.fromString("{\"name\":\"jzkzi\",\"value\":\"vvcnayr\"}").toObject(SkuCapability.class);
     }
 }

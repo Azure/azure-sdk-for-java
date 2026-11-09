@@ -19,43 +19,43 @@ public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Schedule model = BinaryData.fromString(
-            "{\"backupType\":\"FULL\",\"frequency\":\"daily\",\"runsEvery\":1670044751,\"weekOfMonth\":\"FOURTH\",\"dayOfWeek\":\"WEDNESDAY\",\"monthOfYear\":\"JULY\",\"dayOfMonth\":517393984,\"weeklyDays\":[\"WEDNESDAY\",\"WEDNESDAY\",\"SUNDAY\",\"FRIDAY\"],\"time\":\"v\",\"timeZone\":\"xmzsbbzogg\"}")
+            "{\"backupType\":\"FULL\",\"frequency\":\"weekly\",\"runsEvery\":521536914,\"weekOfMonth\":\"FIRST\",\"dayOfWeek\":\"THURSDAY\",\"monthOfYear\":\"MAY\",\"dayOfMonth\":2007375757,\"weeklyDays\":[\"SUNDAY\",\"SATURDAY\",\"WEDNESDAY\",\"SUNDAY\"],\"time\":\"szfkbe\",\"timeZone\":\"ewrmjmwvvjektc\"}")
             .toObject(Schedule.class);
         Assertions.assertEquals(BackUpType.FULL, model.backupType());
-        Assertions.assertEquals(Frequency.DAILY, model.frequency());
-        Assertions.assertEquals(1670044751, model.runsEvery());
-        Assertions.assertEquals(WeekOfMonth.FOURTH, model.weekOfMonth());
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.dayOfWeek());
-        Assertions.assertEquals(MonthOfYear.JULY, model.monthOfYear());
-        Assertions.assertEquals(517393984, model.dayOfMonth());
-        Assertions.assertEquals(WeeklyDays.WEDNESDAY, model.weeklyDays().get(0));
-        Assertions.assertEquals("v", model.time());
-        Assertions.assertEquals("xmzsbbzogg", model.timeZone());
+        Assertions.assertEquals(Frequency.WEEKLY, model.frequency());
+        Assertions.assertEquals(521536914, model.runsEvery());
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weekOfMonth());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.dayOfWeek());
+        Assertions.assertEquals(MonthOfYear.MAY, model.monthOfYear());
+        Assertions.assertEquals(2007375757, model.dayOfMonth());
+        Assertions.assertEquals(WeeklyDays.SUNDAY, model.weeklyDays().get(0));
+        Assertions.assertEquals("szfkbe", model.time());
+        Assertions.assertEquals("ewrmjmwvvjektc", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Schedule model = new Schedule().withBackupType(BackUpType.FULL)
-            .withFrequency(Frequency.DAILY)
-            .withRunsEvery(1670044751)
-            .withWeekOfMonth(WeekOfMonth.FOURTH)
-            .withDayOfWeek(DayOfWeek.WEDNESDAY)
-            .withMonthOfYear(MonthOfYear.JULY)
-            .withDayOfMonth(517393984)
+            .withFrequency(Frequency.WEEKLY)
+            .withRunsEvery(521536914)
+            .withWeekOfMonth(WeekOfMonth.FIRST)
+            .withDayOfWeek(DayOfWeek.THURSDAY)
+            .withMonthOfYear(MonthOfYear.MAY)
+            .withDayOfMonth(2007375757)
             .withWeeklyDays(
-                Arrays.asList(WeeklyDays.WEDNESDAY, WeeklyDays.WEDNESDAY, WeeklyDays.SUNDAY, WeeklyDays.FRIDAY))
-            .withTime("v")
-            .withTimeZone("xmzsbbzogg");
+                Arrays.asList(WeeklyDays.SUNDAY, WeeklyDays.SATURDAY, WeeklyDays.WEDNESDAY, WeeklyDays.SUNDAY))
+            .withTime("szfkbe")
+            .withTimeZone("ewrmjmwvvjektc");
         model = BinaryData.fromObject(model).toObject(Schedule.class);
         Assertions.assertEquals(BackUpType.FULL, model.backupType());
-        Assertions.assertEquals(Frequency.DAILY, model.frequency());
-        Assertions.assertEquals(1670044751, model.runsEvery());
-        Assertions.assertEquals(WeekOfMonth.FOURTH, model.weekOfMonth());
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.dayOfWeek());
-        Assertions.assertEquals(MonthOfYear.JULY, model.monthOfYear());
-        Assertions.assertEquals(517393984, model.dayOfMonth());
-        Assertions.assertEquals(WeeklyDays.WEDNESDAY, model.weeklyDays().get(0));
-        Assertions.assertEquals("v", model.time());
-        Assertions.assertEquals("xmzsbbzogg", model.timeZone());
+        Assertions.assertEquals(Frequency.WEEKLY, model.frequency());
+        Assertions.assertEquals(521536914, model.runsEvery());
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weekOfMonth());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.dayOfWeek());
+        Assertions.assertEquals(MonthOfYear.MAY, model.monthOfYear());
+        Assertions.assertEquals(2007375757, model.dayOfMonth());
+        Assertions.assertEquals(WeeklyDays.SUNDAY, model.weeklyDays().get(0));
+        Assertions.assertEquals("szfkbe", model.time());
+        Assertions.assertEquals("ewrmjmwvvjektc", model.timeZone());
     }
 }

@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
@@ -52,7 +52,7 @@ public abstract class AadBase extends ApiTestBase {
     
     protected final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(8);
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
         ConnectionStringBuilder csb = TestContext.getConnectionString();
         AadBase.endpoint = csb.getEndpoint();
@@ -97,7 +97,7 @@ public abstract class AadBase extends ApiTestBase {
         pReceiver.closeSync();
         ehc.closeSync();
         
-        Assert.assertTrue(found);
+        Assertions.assertTrue(found);
     }
 
     abstract String tokenGet(String authority, String clientId, String clientSecret, String audience, String extra)

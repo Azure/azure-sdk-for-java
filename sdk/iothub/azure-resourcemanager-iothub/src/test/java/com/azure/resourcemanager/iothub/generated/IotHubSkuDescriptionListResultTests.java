@@ -13,10 +13,10 @@ public final class IotHubSkuDescriptionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubSkuDescriptionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"pskrdqmh\",\"sku\":{\"name\":\"B1\",\"tier\":\"Basic\",\"capacity\":4538179811311563630},\"capacity\":{\"minimum\":9056885702416460224,\"maximum\":5303445195272830471,\"default\":7203686124674464131,\"scaleType\":\"Automatic\"}},{\"resourceType\":\"scwsv\",\"sku\":{\"name\":\"S1\",\"tier\":\"Free\",\"capacity\":616356203864725904},\"capacity\":{\"minimum\":3943589185235660851,\"maximum\":3102599931599102077,\"default\":3295305884788247631,\"scaleType\":\"Manual\"}}],\"nextLink\":\"ykvceoveil\"}")
+            "{\"value\":[{\"resourceType\":\"qsgzvahapj\",\"sku\":{\"name\":\"S3\",\"tier\":\"Standard\",\"capacity\":6168011718713142792},\"capacity\":{\"minimum\":7849186680726700556,\"maximum\":7002127645254942410,\"default\":5341138585693543198,\"scaleType\":\"Manual\"}}],\"nextLink\":\"lxkvu\"}")
             .toObject(IotHubSkuDescriptionListResult.class);
-        Assertions.assertEquals(IotHubSku.B1, model.value().get(0).sku().name());
-        Assertions.assertEquals(4538179811311563630L, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("ykvceoveil", model.nextLink());
+        Assertions.assertEquals(IotHubSku.S3, model.value().get(0).sku().name());
+        Assertions.assertEquals(6168011718713142792L, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("lxkvu", model.nextLink());
     }
 }

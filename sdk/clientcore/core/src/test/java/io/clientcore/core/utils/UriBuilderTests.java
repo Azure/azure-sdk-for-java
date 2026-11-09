@@ -9,6 +9,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -706,10 +708,15 @@ public class UriBuilderTests {
             return UriBuilder.parse("https://example" + i + ".com");
         }).collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
-        List<Future<UriBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks, 10, TimeUnit.SECONDS);
-        for (Future<UriBuilder> future : futures) {
-            assertTrue(future.isDone());
-            assertDoesNotThrow(() -> future.get());
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        try {
+            List<Future<UriBuilder>> futures = executorService.invokeAll(tasks, 10, TimeUnit.SECONDS);
+            for (Future<UriBuilder> future : futures) {
+                assertTrue(future.isDone());
+                assertDoesNotThrow(() -> future.get());
+            }
+        } finally {
+            executorService.shutdownNow();
         }
         assertEquals(20000, callCount.get());
     }

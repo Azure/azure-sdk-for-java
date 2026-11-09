@@ -4,8 +4,11 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.serializer.TypeReference;
+import java.util.Map;
 
 /**
  * Shared polling helpers for the Agents SDK.
@@ -17,8 +20,23 @@ import com.azure.core.util.polling.PollResponse;
  * <p>This class is package-private; it is <b>not</b> part of the public API.</p>
  */
 final class AgentsServicePollUtils {
+    private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE
+        = new TypeReference<Map<String, Object>>() {
+        };
 
     private AgentsServicePollUtils() {
+    }
+
+    static String getOptimizationPollingUrl(Object initialResponse, String endpoint) {
+        if (!(initialResponse instanceof BinaryData)) {
+            throw new IllegalStateException("The optimization create response did not contain a response body.");
+        }
+        Map<String, Object> job = ((BinaryData) initialResponse).toObject(MAP_TYPE_REFERENCE);
+        Object jobId = job.get("id");
+        if (jobId == null || jobId.toString().isEmpty()) {
+            throw new IllegalStateException("The optimization create response did not contain a job ID.");
+        }
+        return endpoint + (endpoint.endsWith("/") ? "" : "/") + "agent_optimization_jobs/" + jobId;
     }
 
     /**
@@ -47,7 +65,9 @@ final class AgentsServicePollUtils {
         String name = status.toString();
         if (MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)) {
+        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)
+            // Optimization jobs and telephony use "cancelled"; MemoryStoreUpdateStatus intentionally has no CANCELLED.
+            || "cancelled".equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.USER_CANCELLED;
         }
         return status;

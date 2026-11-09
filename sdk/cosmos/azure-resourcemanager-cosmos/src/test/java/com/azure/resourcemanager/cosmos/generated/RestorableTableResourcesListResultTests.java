@@ -12,8 +12,8 @@ public final class RestorableTableResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTableResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"zdqekivycpzcvd\",\"name\":\"ulrqtbht\",\"type\":\"zpzlpryf\"},{\"id\":\"mdutzfk\",\"name\":\"lnoud\",\"type\":\"gndj\"},{\"id\":\"prigg\",\"name\":\"yeqfcbuulpy\",\"type\":\"lq\"}],\"nextLink\":\"shtujcyoh\"}")
+            "{\"value\":[{\"id\":\"whgjsmbcsl\",\"name\":\"gsabdgdheronsdu\",\"type\":\"kzvzuatqhgzuyxtr\"}],\"nextLink\":\"dbqskgqjbvitptp\"}")
             .toObject(RestorableTableResourcesListResult.class);
-        Assertions.assertEquals("shtujcyoh", model.nextLink());
+        Assertions.assertEquals("dbqskgqjbvitptp", model.nextLink());
     }
 }

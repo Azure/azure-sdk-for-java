@@ -11,9 +11,10 @@ import com.microsoft.azure.eventhubs.exceptioncontracts.SendLargeMessageTest;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -23,15 +24,14 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class ProxySendLargeMessageTest extends ApiTestBase {
-    private static int proxyPort = 8899;
+    private static final int proxyPort = 8899;
     private static ProxyServer proxyServer;
     private static SendLargeMessageTest sendLargeMessageTest;
     private static ProxySelector defaultProxySelector;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         proxyServer = ProxyServer.create("localhost", proxyPort);
         proxyServer.start(t -> {
@@ -58,7 +58,7 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
         SendLargeMessageTest.initializeEventHubClients(connectionStringBuilder);
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws Exception {
         SendLargeMessageTest.cleanup();
 
@@ -69,18 +69,20 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Test()
-    public void sendMsgLargerThan64k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    @Test
+    public void sendMsgLargerThan64k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan64k();
     }
 
-    @Test(expected = PayloadSizeExceededException.class)
-    public void sendMsgLargerThan256K() throws EventHubException, InterruptedException, ExecutionException, IOException {
-        sendLargeMessageTest.sendMsgLargerThan1024K();
+    @Test
+    public void sendMsgLargerThan256K() {
+        Assertions.assertThrows(
+            PayloadSizeExceededException.class,
+            () -> sendLargeMessageTest.sendMsgLargerThan1024K());
     }
 
-    @Test()
-    public void sendMsgLargerThan128k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    @Test
+    public void sendMsgLargerThan128k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan128k();
     }
 }

@@ -234,14 +234,14 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment along with {@link Response} on successful completion of {@link Mono}.
+     * @return a goal assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GoalAssignmentInner>> getWithResponseAsync(String serviceGroupName,
@@ -254,14 +254,14 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment on successful completion of {@link Mono}.
+     * @return a goal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GoalAssignmentInner> getAsync(String serviceGroupName, String goalAssignmentName) {
@@ -270,15 +270,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment along with {@link Response}.
+     * @return a goal assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GoalAssignmentInner> getWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -289,14 +289,14 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment.
+     * @return a goal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoalAssignmentInner get(String serviceGroupName, String goalAssignmentName) {
@@ -304,16 +304,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String serviceGroupName,
@@ -327,15 +327,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -347,16 +347,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -368,15 +368,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link PollerFlux} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String serviceGroupName,
@@ -388,15 +389,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link SyncPoller} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String serviceGroupName, String goalAssignmentName,
@@ -406,16 +408,17 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link SyncPoller} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String serviceGroupName, String goalAssignmentName,
@@ -426,15 +429,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource on successful completion of {@link Mono}.
+     * @return a goal assignment resource in the Azure Resilience Management provider on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> createOrUpdateAsync(String serviceGroupName, String goalAssignmentName,
@@ -444,10 +448,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -459,10 +463,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,16 +480,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String serviceGroupName, String goalAssignmentName,
@@ -499,15 +503,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -519,16 +523,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource along with {@link Response}.
+     * @return a goal assignment resource in the Azure Resilience Management provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -540,15 +544,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link PollerFlux} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String serviceGroupName, String goalAssignmentName,
@@ -560,15 +565,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link SyncPoller} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String serviceGroupName, String goalAssignmentName,
@@ -578,16 +584,17 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of goal assignment a AzureResilienceProviderHub resource.
+     * @return the {@link SyncPoller} for polling of a goal assignment resource in the Azure Resilience Management
+     * provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String serviceGroupName, String goalAssignmentName,
@@ -597,15 +604,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return goal assignment a AzureResilienceProviderHub resource on successful completion of {@link Mono}.
+     * @return a goal assignment resource in the Azure Resilience Management provider on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner properties) {
@@ -614,10 +622,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -629,10 +637,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,15 +654,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for update goal resource along with {@link Response} on successful completion of
+     * @return response from updating goal resources along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -669,15 +677,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for update goal resource along with {@link Response}.
+     * @return response from updating goal resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateGoalResourcesWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -689,16 +697,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for update goal resource along with {@link Response}.
+     * @return response from updating goal resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateGoalResourcesWithResponse(String serviceGroupName, String goalAssignmentName,
@@ -710,15 +718,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response model for update goal resource.
+     * @return the {@link PollerFlux} for polling of response from updating goal resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateGoalResourcesAsync(String serviceGroupName,
@@ -730,15 +738,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for update goal resource.
+     * @return the {@link SyncPoller} for polling of response from updating goal resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGoalResources(String serviceGroupName,
@@ -748,16 +756,16 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response model for update goal resource.
+     * @return the {@link SyncPoller} for polling of response from updating goal resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGoalResources(String serviceGroupName,
@@ -768,15 +776,15 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response model for update goal resource on successful completion of {@link Mono}.
+     * @return response from updating goal resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateGoalResourcesAsync(String serviceGroupName, String goalAssignmentName,
@@ -786,10 +794,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -802,10 +810,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -823,7 +831,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -845,7 +853,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -863,7 +871,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -883,7 +891,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -903,7 +911,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -921,7 +929,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -940,7 +948,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -957,7 +965,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -972,7 +980,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -984,10 +992,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1003,10 +1011,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1019,10 +1027,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1037,10 +1045,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,10 +1062,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1070,10 +1078,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1088,10 +1096,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1104,10 +1112,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1118,10 +1126,10 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1133,11 +1141,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,11 +1165,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,11 +1187,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,11 +1210,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1224,11 +1232,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1244,11 +1252,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1266,11 +1274,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1286,11 +1294,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1302,11 +1310,11 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1320,7 +1328,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -1344,7 +1352,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -1361,7 +1369,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1378,7 +1386,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -1398,7 +1406,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -1420,7 +1428,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1437,7 +1445,7 @@ public final class GoalAssignmentsClientImpl implements GoalAssignmentsClient {
     }
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.

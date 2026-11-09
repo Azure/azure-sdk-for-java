@@ -25,7 +25,7 @@ public final class ExternalAuthProperties implements JsonSerializable<ExternalAu
     /*
      * Status of the external auth resource
      */
-    private ResourceStatus status;
+    private ExternalAuthResourceStatus status;
 
     /*
      * Token Issuer profile
@@ -64,7 +64,7 @@ public final class ExternalAuthProperties implements JsonSerializable<ExternalAu
      * 
      * @return the status value.
      */
-    public ResourceStatus status() {
+    public ExternalAuthResourceStatus status() {
         return this.status;
     }
 
@@ -168,7 +168,7 @@ public final class ExternalAuthProperties implements JsonSerializable<ExternalAu
                     deserializedExternalAuthProperties.provisioningState
                         = ExternalAuthProvisioningState.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedExternalAuthProperties.status = ResourceStatus.fromJson(reader);
+                    deserializedExternalAuthProperties.status = ExternalAuthResourceStatus.fromJson(reader);
                 } else if ("clients".equals(fieldName)) {
                     List<ExternalAuthClientProfile> clients
                         = reader.readArray(reader1 -> ExternalAuthClientProfile.fromJson(reader1));

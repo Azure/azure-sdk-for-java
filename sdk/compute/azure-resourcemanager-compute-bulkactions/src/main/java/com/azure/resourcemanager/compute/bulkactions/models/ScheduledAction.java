@@ -265,76 +265,76 @@ public interface ScheduledAction {
     ScheduledAction refresh(Context context);
 
     /**
-     * Adds resources to the specified scheduled action.
+     * Adds resources to the specified recurring bulk action.
      * 
-     * @param body The resources to add to the scheduled action.
+     * @param body The resources to add to the recurring bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(ResourceAttachRequest body);
 
     /**
-     * Adds resources to the specified scheduled action.
+     * Adds resources to the specified recurring bulk action.
      * 
-     * @param body The resources to add to the scheduled action.
+     * @param body The resources to add to the recurring bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(ResourceAttachRequest body, Context context);
 
     /**
-     * Removes resources from the specified scheduled action.
+     * Removes resources from the specified recurring bulk action.
      * 
-     * @param body The resources to remove from the scheduled action.
+     * @param body The resources to remove from the recurring bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(ResourceDetachRequest body);
 
     /**
-     * Removes resources from the specified scheduled action.
+     * Removes resources from the specified recurring bulk action.
      * 
-     * @param body The resources to remove from the scheduled action.
+     * @param body The resources to remove from the recurring bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(ResourceDetachRequest body, Context context);
 
     /**
-     * Updates resource-specific settings for the specified scheduled action.
+     * Updates resource-specific settings for the specified recurring bulk action.
      * 
      * @param body The resource-specific settings to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources along with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     Response<ResourceOperationResponse> patchResourcesWithResponse(ResourcePatchRequest body, Context context);
 
     /**
-     * Updates resource-specific settings for the specified scheduled action.
+     * Updates resource-specific settings for the specified recurring bulk action.
      * 
      * @param body The resource-specific settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse patchResources(ResourcePatchRequest body);
 
     /**
-     * Disables the specified scheduled action so future occurrences do not run.
+     * Disables the specified recurring bulk action so future occurrences do not run.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -342,7 +342,7 @@ public interface ScheduledAction {
     void disable();
 
     /**
-     * Disables the specified scheduled action so future occurrences do not run.
+     * Disables the specified recurring bulk action so future occurrences do not run.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,7 +352,7 @@ public interface ScheduledAction {
     void disable(Context context);
 
     /**
-     * Enables the specified scheduled action so new occurrences run.
+     * Enables the specified recurring bulk action so new occurrences run.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -360,7 +360,7 @@ public interface ScheduledAction {
     void enable();
 
     /**
-     * Enables the specified scheduled action so new occurrences run.
+     * Enables the specified recurring bulk action so new occurrences run.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,19 +370,19 @@ public interface ScheduledAction {
     void enable(Context context);
 
     /**
-     * Cancels the next occurrence of the specified scheduled action.
+     * Cancels the next occurrence of the specified recurring bulk action.
      * 
      * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(CancelOccurrenceRequest body);
 
     /**
-     * Cancels the next occurrence of the specified scheduled action.
+     * Cancels the next occurrence of the specified recurring bulk action.
      * 
      * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
@@ -390,27 +390,27 @@ public interface ScheduledAction {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(CancelOccurrenceRequest body, Context context);
 
     /**
-     * Runs the specified scheduled action immediately.
+     * Runs the specified recurring bulk action immediately.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a scheduled action.
+     * @return one scheduled execution of a recurring bulk action.
      */
     Occurrence triggerManualOccurrence();
 
     /**
-     * Runs the specified scheduled action immediately.
+     * Runs the specified recurring bulk action immediately.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a scheduled action.
+     * @return one scheduled execution of a recurring bulk action.
      */
     Occurrence triggerManualOccurrence(Context context);
 }

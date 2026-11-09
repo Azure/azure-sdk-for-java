@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/4.10.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
+  <!-- Exclude from spring related classes -->
+  <Match>
+    <And>
+      <Or>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureKeyCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureSasCredentialResolver"/>
+      </Or>
+      <Method name="resolve"/>
+    </And>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+</FindBugsFilter>

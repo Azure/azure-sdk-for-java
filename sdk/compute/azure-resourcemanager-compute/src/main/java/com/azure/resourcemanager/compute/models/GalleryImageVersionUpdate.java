@@ -10,6 +10,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionProperties;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -231,6 +232,15 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      */
     public ValidationsProfile validationsProfile() {
         return this.innerProperties() == null ? null : this.innerProperties().validationsProfile();
+    }
+
+    /**
+     * Get the imageMetadataProfiles property: The image metadata profiles associated with the gallery image version.
+     * 
+     * @return the imageMetadataProfiles value.
+     */
+    public List<ImageMetadataProfile> imageMetadataProfiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().imageMetadataProfiles();
     }
 
     /**

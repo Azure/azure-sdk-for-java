@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceProperties
 import java.io.IOException;
 
 /**
- * One scheduled execution of a scheduled action.
+ * One scheduled execution of a recurring bulk action.
  */
 @Immutable
 public final class OccurrenceInner extends ProxyResource {

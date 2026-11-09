@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlRoleAssignmentResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlRoleAssignmentResource model = BinaryData
-            .fromString("{\"roleDefinitionId\":\"jmyccxlzhcoxov\",\"scope\":\"khenlus\",\"principalId\":\"rd\"}")
-            .toObject(SqlRoleAssignmentResource.class);
-        Assertions.assertEquals("jmyccxlzhcoxov", model.roleDefinitionId());
-        Assertions.assertEquals("khenlus", model.scope());
-        Assertions.assertEquals("rd", model.principalId());
+        SqlRoleAssignmentResource model
+            = BinaryData.fromString("{\"roleDefinitionId\":\"ewxeiqbpsm\",\"scope\":\"mguaml\",\"principalId\":\"l\"}")
+                .toObject(SqlRoleAssignmentResource.class);
+        Assertions.assertEquals("ewxeiqbpsm", model.roleDefinitionId());
+        Assertions.assertEquals("mguaml", model.scope());
+        Assertions.assertEquals("l", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlRoleAssignmentResource model = new SqlRoleAssignmentResource().withRoleDefinitionId("jmyccxlzhcoxov")
-            .withScope("khenlus")
-            .withPrincipalId("rd");
+        SqlRoleAssignmentResource model = new SqlRoleAssignmentResource().withRoleDefinitionId("ewxeiqbpsm")
+            .withScope("mguaml")
+            .withPrincipalId("l");
         model = BinaryData.fromObject(model).toObject(SqlRoleAssignmentResource.class);
-        Assertions.assertEquals("jmyccxlzhcoxov", model.roleDefinitionId());
-        Assertions.assertEquals("khenlus", model.scope());
-        Assertions.assertEquals("rd", model.principalId());
+        Assertions.assertEquals("ewxeiqbpsm", model.roleDefinitionId());
+        Assertions.assertEquals("mguaml", model.scope());
+        Assertions.assertEquals("l", model.principalId());
     }
 }

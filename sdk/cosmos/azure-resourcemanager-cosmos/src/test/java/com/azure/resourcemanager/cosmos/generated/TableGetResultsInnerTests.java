@@ -15,18 +15,18 @@ public final class TableGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"oeoq\",\"_ts\":89.666664,\"_etag\":\"vefgwbmqjchntas\",\"id\":\"ay\",\"restoreParameters\":{\"restoreSource\":\"ulpzealb\",\"restoreTimestampInUtc\":\"2021-03-15T17:18:54Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":1419393058,\"autoscaleSettings\":{\"maxThroughput\":1939476525}}},\"location\":\"suah\",\"tags\":{\"biwsd\":\"xjcmmzrrsc\"},\"identity\":{\"principalId\":\"xqw\",\"tenantId\":\"iffjxcjrm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"foyzbamwineof\":{\"principalId\":\"bv\",\"clientId\":\"gjonmcy\"},\"boclzhzjknyuxgv\":{\"principalId\":\"kak\",\"clientId\":\"ldtve\"}}},\"id\":\"xpn\",\"name\":\"upzaamrdixtre\",\"type\":\"ids\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"yzjdnrqjbt\",\"_ts\":71.58526,\"_etag\":\"oqa\",\"id\":\"bzgyhfwwvuatbw\",\"restoreParameters\":{\"restoreSource\":\"mteuliyslp\",\"restoreTimestampInUtc\":\"2021-01-10T15:58:56Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"},\"options\":{\"throughput\":476641770,\"autoscaleSettings\":{\"maxThroughput\":601850943}}},\"location\":\"wbormcqmi\",\"tags\":{\"xjmcsmyqwixvcpw\":\"jqpkzfbo\",\"duoiqt\":\"kwywzwofalic\",\"vsknxrwzawnv\":\"mt\",\"ycvdimw\":\"bcfhzagxnv\"},\"identity\":{\"principalId\":\"e\",\"tenantId\":\"gy\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"osxw\":{\"principalId\":\"pweryekzk\",\"clientId\":\"meottawj\"}}},\"id\":\"nhjtf\",\"name\":\"p\",\"type\":\"dpmiljpn\"}")
             .toObject(TableGetResultsInner.class);
-        Assertions.assertEquals("suah", model.location());
-        Assertions.assertEquals("xjcmmzrrsc", model.tags().get("biwsd"));
+        Assertions.assertEquals("wbormcqmi", model.location());
+        Assertions.assertEquals("jqpkzfbo", model.tags().get("xjmcsmyqwixvcpw"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ay", model.resource().id());
-        Assertions.assertEquals("ulpzealb", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T17:18:54Z"),
+        Assertions.assertEquals("bzgyhfwwvuatbw", model.resource().id());
+        Assertions.assertEquals("mteuliyslp", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T15:58:56Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(1419393058, model.options().throughput());
-        Assertions.assertEquals(1939476525, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
+        Assertions.assertEquals(476641770, model.options().throughput());
+        Assertions.assertEquals(601850943, model.options().autoscaleSettings().maxThroughput());
     }
 }

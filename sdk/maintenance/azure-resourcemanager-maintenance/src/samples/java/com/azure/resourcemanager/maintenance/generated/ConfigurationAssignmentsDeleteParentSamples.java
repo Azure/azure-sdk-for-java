@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ConfigurationAssignmentsDeleteParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_DeleteParent.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_DeleteParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_DeleteParent.

@@ -8,6 +8,7 @@ import com.azure.resourcemanager.storagemover.models.AzureKeyVaultS3WithHmacCred
 import com.azure.resourcemanager.storagemover.models.AzureKeyVaultSmbCredentials;
 import com.azure.resourcemanager.storagemover.models.AzureMultiCloudConnectorEndpointProperties;
 import com.azure.resourcemanager.storagemover.models.AzureStorageBlobContainerEndpointProperties;
+import com.azure.resourcemanager.storagemover.models.AzureStorageBlobContainerEndpointUpdateProperties;
 import com.azure.resourcemanager.storagemover.models.AzureStorageNfsFileShareEndpointProperties;
 import com.azure.resourcemanager.storagemover.models.AzureStorageSmbFileShareEndpointProperties;
 import com.azure.resourcemanager.storagemover.models.Endpoint;
@@ -24,10 +25,13 @@ import com.azure.resourcemanager.storagemover.models.StorageMover;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 /**
- * Mirrors {@code EndpointTests.cs} from the .NET source-of-truth (16 methods).
+ * Mirrors the cross-language endpoint scenarios and adds May API coverage.
  *
  * <p>Each test self-provisions its own storage mover into the per-test resource
  * group so tests stay independent. The {@code S3WithHmac} test is intentionally
@@ -167,8 +171,8 @@ public class EndpointTests extends StorageMoverManagementTestBase {
         String endpointName = generateRandomResourceName("mcc-", 24);
 
         AzureMultiCloudConnectorEndpointProperties props
-            = new AzureMultiCloudConnectorEndpointProperties().withMultiCloudConnectorId(MULTI_CLOUD_CONNECTOR_ID)
-                .withAwsS3BucketId(AWS_S3_BUCKET_ID)
+            = new AzureMultiCloudConnectorEndpointProperties().withMultiCloudConnectorId(multiCloudConnectorId)
+                .withAwsS3BucketId(awsS3BucketId)
                 .withDescription("Test multi-cloud connector endpoint");
 
         Endpoint endpoint = storageMoverManager.endpoints()
@@ -306,8 +310,8 @@ public class EndpointTests extends StorageMoverManagementTestBase {
             .define(endpointName)
             .withExistingStorageMover(resourceGroupName, storageMoverName)
             .withProperties(
-                new AzureMultiCloudConnectorEndpointProperties().withMultiCloudConnectorId(MULTI_CLOUD_CONNECTOR_ID)
-                    .withAwsS3BucketId(AWS_S3_BUCKET_ID)
+                new AzureMultiCloudConnectorEndpointProperties().withMultiCloudConnectorId(multiCloudConnectorId)
+                    .withAwsS3BucketId(awsS3BucketId)
                     .withDescription("Multi-cloud connector source endpoint")
                     .withEndpointKind(EndpointKind.SOURCE))
             .create();
@@ -363,6 +367,22 @@ public class EndpointTests extends StorageMoverManagementTestBase {
                     .withEndpointKind(EndpointKind.TARGET))
                 .create();
         Assertions.assertEquals(EndpointKind.TARGET, endpoint.properties().endpointKind());
+    }
+
+    @Test
+    public void smbFileShareEndpointKindSourceSucceeds() {
+        String storageMoverName = createStorageMover("ek-smbfs-src");
+        String endpointName = generateRandomResourceName("smbfs-src-", 24);
+        Endpoint endpoint
+            = storageMoverManager.endpoints()
+                .define(endpointName)
+                .withExistingStorageMover(resourceGroupName, storageMoverName)
+                .withProperties(new AzureStorageSmbFileShareEndpointProperties()
+                    .withStorageAccountResourceId(FAKE_STORAGE_ACCOUNT_ID)
+                    .withFileShareName("testfileshare")
+                    .withEndpointKind(EndpointKind.SOURCE))
+                .create();
+        Assertions.assertEquals(EndpointKind.SOURCE, endpoint.properties().endpointKind());
     }
 
     @Test
@@ -424,25 +444,10 @@ public class EndpointTests extends StorageMoverManagementTestBase {
                     .define(endpointName)
                     .withExistingStorageMover(resourceGroupName, storageMoverName)
                     .withProperties(new AzureMultiCloudConnectorEndpointProperties()
-                        .withMultiCloudConnectorId(MULTI_CLOUD_CONNECTOR_ID)
-                        .withAwsS3BucketId(AWS_S3_BUCKET_ID)
+                        .withMultiCloudConnectorId(multiCloudConnectorId)
+                        .withAwsS3BucketId(awsS3BucketId)
                         .withEndpointKind(EndpointKind.TARGET))
                     .create());
-    }
-
-    @Test
-    public void smbFileShareEndpointKindSourceFails() {
-        String storageMoverName = createStorageMover("ek-smbfs-src-fail");
-        String endpointName = generateRandomResourceName("smbfs-src-", 24);
-        Assertions.assertThrows(ManagementException.class,
-            () -> storageMoverManager.endpoints()
-                .define(endpointName)
-                .withExistingStorageMover(resourceGroupName, storageMoverName)
-                .withProperties(new AzureStorageSmbFileShareEndpointProperties()
-                    .withStorageAccountResourceId(FAKE_STORAGE_ACCOUNT_ID)
-                    .withFileShareName("testfileshare")
-                    .withEndpointKind(EndpointKind.SOURCE))
-                .create());
     }
 
     @Test
@@ -460,6 +465,96 @@ public class EndpointTests extends StorageMoverManagementTestBase {
                 .create());
     }
 
+    @Test
+    public void blobContainerCrossTenantSettings() {
+        String moverName = createStorageMover("blob-xt");
+        String defaultName = generateRandomResourceName("blob-default-", 24);
+        Endpoint defaults
+            = storageMoverManager.endpoints()
+                .define(defaultName)
+                .withExistingStorageMover(resourceGroupName, moverName)
+                .withProperties(new AzureStorageBlobContainerEndpointProperties()
+                    .withStorageAccountResourceId(FAKE_STORAGE_ACCOUNT_ID)
+                    .withBlobContainerName("testcontainer"))
+                .create();
+        AzureStorageBlobContainerEndpointProperties defaultProperties
+            = (AzureStorageBlobContainerEndpointProperties) defaults.properties();
+        Assertions.assertEquals(Boolean.FALSE, defaultProperties.enableCrossTenantTransfer());
+        Assertions.assertEquals(Collections.emptyList(), defaultProperties.allowedStorageAccounts());
+
+        String endpointName = generateRandomResourceName("blob-xt-", 24);
+        for (List<String> invalidAllowList : Arrays.asList(null, Collections.<String>emptyList())) {
+            ManagementException exception = Assertions.assertThrows(ManagementException.class,
+                () -> storageMoverManager.endpoints()
+                    .define(endpointName)
+                    .withExistingStorageMover(resourceGroupName, moverName)
+                    .withProperties(new AzureStorageBlobContainerEndpointProperties()
+                        .withStorageAccountResourceId(FAKE_STORAGE_ACCOUNT_ID)
+                        .withBlobContainerName("testcontainer")
+                        .withEnableCrossTenantTransfer(true)
+                        .withAllowedStorageAccounts(invalidAllowList))
+                    .create());
+            Assertions.assertEquals(400, exception.getResponse().getStatusCode());
+            Assertions.assertEquals("InvalidRequestPropertyValue", exception.getValue().getCode());
+        }
+
+        String partnerAccountPrefix = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/partner"
+            + "/providers/Microsoft.Storage/storageAccounts/";
+        List<String> allowList
+            = Arrays.asList(partnerAccountPrefix + "partnerone", partnerAccountPrefix + "partnertwo");
+        Endpoint endpoint
+            = storageMoverManager.endpoints()
+                .define(endpointName)
+                .withExistingStorageMover(resourceGroupName, moverName)
+                .withProperties(new AzureStorageBlobContainerEndpointProperties()
+                    .withStorageAccountResourceId(FAKE_STORAGE_ACCOUNT_ID)
+                    .withBlobContainerName("testcontainer")
+                    .withEnableCrossTenantTransfer(true)
+                    .withAllowedStorageAccounts(allowList))
+                .create();
+        AzureStorageBlobContainerEndpointProperties properties
+            = (AzureStorageBlobContainerEndpointProperties) endpoint.properties();
+        Assertions.assertEquals(Boolean.TRUE, properties.enableCrossTenantTransfer());
+        Assertions.assertEquals(allowList, properties.allowedStorageAccounts());
+
+        endpoint = endpoint.refresh();
+        properties = (AzureStorageBlobContainerEndpointProperties) endpoint.properties();
+        Assertions.assertEquals(Boolean.TRUE, properties.enableCrossTenantTransfer());
+        Assertions.assertEquals(allowList, properties.allowedStorageAccounts());
+
+        List<String> replacement = Collections.singletonList(partnerAccountPrefix + "partnerthree");
+        endpoint = endpoint.update()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withProperties(
+                new AzureStorageBlobContainerEndpointUpdateProperties().withAllowedStorageAccounts(replacement))
+            .apply();
+        properties = (AzureStorageBlobContainerEndpointProperties) endpoint.properties();
+        Assertions.assertEquals(Boolean.TRUE, properties.enableCrossTenantTransfer());
+        Assertions.assertEquals(replacement, properties.allowedStorageAccounts());
+
+        endpoint = endpoint.update()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withProperties(
+                new AzureStorageBlobContainerEndpointUpdateProperties().withDescription("Cross-tenant endpoint"))
+            .apply();
+        properties = (AzureStorageBlobContainerEndpointProperties) endpoint.properties();
+        Assertions.assertEquals("Cross-tenant endpoint", properties.description());
+        Assertions.assertEquals(Boolean.TRUE, properties.enableCrossTenantTransfer());
+        Assertions.assertEquals(replacement, properties.allowedStorageAccounts());
+
+        endpoint = endpoint.update()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withProperties(new AzureStorageBlobContainerEndpointUpdateProperties().withEnableCrossTenantTransfer(false)
+                .withAllowedStorageAccounts(Collections.emptyList()))
+            .apply()
+            .refresh();
+        properties = (AzureStorageBlobContainerEndpointProperties) endpoint.properties();
+        Assertions.assertEquals(Boolean.FALSE, properties.enableCrossTenantTransfer());
+        Assertions.assertEquals(Collections.emptyList(), properties.allowedStorageAccounts());
+        storageMoverManager.endpoints().delete(resourceGroupName, moverName, endpointName);
+        storageMoverManager.endpoints().delete(resourceGroupName, moverName, defaultName);
+    }
+
     // -----------------------------------------------------------------------
     //  Helpers
     // -----------------------------------------------------------------------
@@ -467,7 +562,7 @@ public class EndpointTests extends StorageMoverManagementTestBase {
     private String createStorageMover(String prefix) {
         StorageMover sm = storageMoverManager.storageMovers()
             .define(generateRandomResourceName("sm-" + prefix + "-", 24))
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
         return sm.name();

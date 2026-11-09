@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -292,4 +293,44 @@ public class ChainedTokenCredentialTest {
         // Both requests should cause credential to be called as they have different scopes
         assertEquals(2, callCount.get());
     }
+
+    @Test
+    public void testSyncInterruptionIsNotReportedAsCredentialFailure() {
+        // A credential whose getTokenSync was interrupted rethrows the interruption; the chain must surface it as
+        // is, not as "<credential> authentication failed", and must not try the remaining credentials.
+        RuntimeException interruption = new RuntimeException("The token request was interrupted before it completed.",
+            new InterruptedException());
+        TokenCredential interrupted = new TokenCredential() {
+            @Override
+            public Mono<AccessToken> getToken(TokenRequestContext request) {
+                return Mono.error(interruption);
+            }
+
+            @Override
+            public AccessToken getTokenSync(TokenRequestContext request) {
+                throw interruption;
+            }
+        };
+        AtomicInteger nextCredentialCalls = new AtomicInteger();
+        TokenCredential next = new TokenCredential() {
+            @Override
+            public Mono<AccessToken> getToken(TokenRequestContext request) {
+                nextCredentialCalls.incrementAndGet();
+                return Mono.just(new AccessToken("next", OffsetDateTime.MAX));
+            }
+
+            @Override
+            public AccessToken getTokenSync(TokenRequestContext request) {
+                nextCredentialCalls.incrementAndGet();
+                return new AccessToken("next", OffsetDateTime.MAX);
+            }
+        };
+        ChainedTokenCredential chain = new ChainedTokenCredentialBuilder().addLast(interrupted).addLast(next).build();
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> chain.getTokenSync(REQUEST));
+
+        Assertions.assertSame(interruption, thrown);
+        Assertions.assertEquals(0, nextCredentialCalls.get());
+    }
+
 }

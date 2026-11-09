@@ -7,7 +7,6 @@ import com.azure.v2.identity.implementation.models.ClientOptions;
 import com.azure.v2.identity.implementation.models.ManagedIdentityClientOptions;
 import com.azure.v2.identity.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.util.concurrent.ExecutorService;
 
@@ -25,6 +24,9 @@ import java.util.concurrent.ExecutorService;
  * great secretless authentication experience. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">managed identity authentication
  * documentation</a>.</p>
+ *
+ * <p>Azure Arc-enabled servers support user-assigned managed identities selected by client ID, resource ID, or object
+ * ID.</p>
  *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
  *
@@ -109,12 +111,6 @@ public class ManagedIdentityCredentialBuilder extends EntraIdCredentialBuilderBa
     /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
-     *
-     * <p>
-     * If this is not configured, the {@link SharedExecutorService} will be used which is
-     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
-     * requests might starve and configuring a separate executor service should be considered.
-     * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
      * Azure SDK clients and should be shutdown before the application exits. </p>

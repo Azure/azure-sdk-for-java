@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -18,9 +19,10 @@ public class MosaicCollectionsPointAssetsGetPointAssets {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-point-assets.mosaic-collections-point-assets-get-point-assets
-        List<StacItemPointAsset> response
-            = dataClient.getCollectionPointAssets("naip-atl", -122.4194, 37.7749, null, null, null, null, null,
-                "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null, null);
+        List<StacItemPointAsset> response = dataClient.getCollectionPointAssets("naip-atl", -122.4194, 37.7749,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, "item-id-1,item-id-2",
+            "-180,-90,180,90", "{}", "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null,
+            (List<String>) null, (SelMethod) null, (String) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-point-assets.mosaic-collections-point-assets-get-point-assets
     }
 }

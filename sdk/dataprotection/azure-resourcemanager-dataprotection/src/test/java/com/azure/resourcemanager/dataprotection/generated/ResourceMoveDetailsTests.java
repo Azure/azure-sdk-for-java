@@ -12,12 +12,12 @@ public final class ResourceMoveDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceMoveDetails model = BinaryData.fromString(
-            "{\"operationId\":\"uaopppcqeq\",\"startTimeUtc\":\"lzdahzxctobgbkdm\",\"completionTimeUtc\":\"zpostmgrcfbu\",\"sourceResourcePath\":\"mfqjhhkxbp\",\"targetResourcePath\":\"ymjhxxjyngudivkr\"}")
+            "{\"operationId\":\"cq\",\"startTimeUtc\":\"xolzdahzx\",\"completionTimeUtc\":\"obgbkdmoizp\",\"sourceResourcePath\":\"tmgrcfbun\",\"targetResourcePath\":\"fqjhhkxbpvjymj\"}")
             .toObject(ResourceMoveDetails.class);
-        Assertions.assertEquals("uaopppcqeq", model.operationId());
-        Assertions.assertEquals("lzdahzxctobgbkdm", model.startTimeUtc());
-        Assertions.assertEquals("zpostmgrcfbu", model.completionTimeUtc());
-        Assertions.assertEquals("mfqjhhkxbp", model.sourceResourcePath());
-        Assertions.assertEquals("ymjhxxjyngudivkr", model.targetResourcePath());
+        Assertions.assertEquals("cq", model.operationId());
+        Assertions.assertEquals("xolzdahzx", model.startTimeUtc());
+        Assertions.assertEquals("obgbkdmoizp", model.completionTimeUtc());
+        Assertions.assertEquals("tmgrcfbun", model.sourceResourcePath());
+        Assertions.assertEquals("fqjhhkxbpvjymj", model.targetResourcePath());
     }
 }

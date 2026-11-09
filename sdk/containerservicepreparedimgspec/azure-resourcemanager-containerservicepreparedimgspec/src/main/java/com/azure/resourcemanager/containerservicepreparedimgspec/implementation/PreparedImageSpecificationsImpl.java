@@ -129,13 +129,16 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public PreparedImageSpecification getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String preparedImageSpecificationName
-            = ResourceManagerUtils.getValueFromIdByName(id, "preparedImageSpecifications");
+        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "preparedImageSpecificationName");
         if (preparedImageSpecificationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
@@ -145,13 +148,16 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public Response<PreparedImageSpecification> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String preparedImageSpecificationName
-            = ResourceManagerUtils.getValueFromIdByName(id, "preparedImageSpecifications");
+        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "preparedImageSpecificationName");
         if (preparedImageSpecificationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
@@ -160,13 +166,16 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String preparedImageSpecificationName
-            = ResourceManagerUtils.getValueFromIdByName(id, "preparedImageSpecifications");
+        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "preparedImageSpecificationName");
         if (preparedImageSpecificationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
@@ -176,13 +185,16 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String preparedImageSpecificationName
-            = ResourceManagerUtils.getValueFromIdByName(id, "preparedImageSpecifications");
+        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "preparedImageSpecificationName");
         if (preparedImageSpecificationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));

@@ -63,6 +63,11 @@ public final class RoutingEventStreamProperties implements JsonSerializable<Rout
      */
     private String sourceId;
 
+    /*
+     * The format of the message payload delivered to this endpoint.
+     */
+    private MessagePayloadFormat messagePayloadFormat;
+
     /**
      * Creates an instance of RoutingEventStreamProperties class.
      */
@@ -247,6 +252,26 @@ public final class RoutingEventStreamProperties implements JsonSerializable<Rout
     }
 
     /**
+     * Get the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @return the messagePayloadFormat value.
+     */
+    public MessagePayloadFormat messagePayloadFormat() {
+        return this.messagePayloadFormat;
+    }
+
+    /**
+     * Set the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @param messagePayloadFormat the messagePayloadFormat value to set.
+     * @return the RoutingEventStreamProperties object itself.
+     */
+    public RoutingEventStreamProperties withMessagePayloadFormat(MessagePayloadFormat messagePayloadFormat) {
+        this.messagePayloadFormat = messagePayloadFormat;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -261,6 +286,8 @@ public final class RoutingEventStreamProperties implements JsonSerializable<Rout
         jsonWriter.writeStringField("workspaceId", this.workspaceId);
         jsonWriter.writeStringField("eventStreamId", this.eventStreamId);
         jsonWriter.writeStringField("sourceId", this.sourceId);
+        jsonWriter.writeStringField("messagePayloadFormat",
+            this.messagePayloadFormat == null ? null : this.messagePayloadFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -299,6 +326,9 @@ public final class RoutingEventStreamProperties implements JsonSerializable<Rout
                     deserializedRoutingEventStreamProperties.eventStreamId = reader.getString();
                 } else if ("sourceId".equals(fieldName)) {
                     deserializedRoutingEventStreamProperties.sourceId = reader.getString();
+                } else if ("messagePayloadFormat".equals(fieldName)) {
+                    deserializedRoutingEventStreamProperties.messagePayloadFormat
+                        = MessagePayloadFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

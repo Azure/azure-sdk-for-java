@@ -135,8 +135,12 @@ public final class OrganizationResourceImpl
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationname = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/ArizeAi.ObservabilityEval/organizations/{organizationname}",
+            "resourceGroupName");
+        this.organizationname = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/ArizeAi.ObservabilityEval/organizations/{organizationname}",
+            "organizationname");
     }
 
     public OrganizationResource refresh() {

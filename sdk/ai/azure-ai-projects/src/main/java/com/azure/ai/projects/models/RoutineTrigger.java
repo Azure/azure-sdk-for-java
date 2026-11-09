@@ -29,7 +29,7 @@ public class RoutineTrigger implements JsonSerializable<RoutineTrigger> {
      * Creates an instance of RoutineTrigger class.
      */
     @Generated
-    public RoutineTrigger() {
+    protected RoutineTrigger() {
     }
 
     /**

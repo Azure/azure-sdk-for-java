@@ -42,6 +42,11 @@ public final class NspAccessRuleProperties implements JsonSerializable<NspAccess
      */
     private List<String> fullyQualifiedDomainNames;
 
+    /*
+     * Service Tags for inbound rules
+     */
+    private List<String> serviceTags;
+
     /**
      * Creates an instance of NspAccessRuleProperties class.
      */
@@ -94,6 +99,15 @@ public final class NspAccessRuleProperties implements JsonSerializable<NspAccess
     }
 
     /**
+     * Get the serviceTags property: Service Tags for inbound rules.
+     * 
+     * @return the serviceTags value.
+     */
+    public List<String> serviceTags() {
+        return this.serviceTags;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +131,7 @@ public final class NspAccessRuleProperties implements JsonSerializable<NspAccess
         jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("subscriptions", this.subscriptions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceTags", this.serviceTags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +167,9 @@ public final class NspAccessRuleProperties implements JsonSerializable<NspAccess
                 } else if ("fullyQualifiedDomainNames".equals(fieldName)) {
                     List<String> fullyQualifiedDomainNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedNspAccessRuleProperties.fullyQualifiedDomainNames = fullyQualifiedDomainNames;
+                } else if ("serviceTags".equals(fieldName)) {
+                    List<String> serviceTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNspAccessRuleProperties.serviceTags = serviceTags;
                 } else {
                     reader.skipChildren();
                 }

@@ -7,101 +7,73 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MessageBodyTests {
 
     @Test
     public void nullBinaryDataTest() {
-        try {
-            MessageBody.fromBinaryData(null);
-            Assert.fail("MessageBody created with null binary data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromBinaryData(null),
+            "MessageBody created with null binary data.");
     }
 
     @Test
     public void nullSequenceTest() {
-        try {
-            MessageBody.fromSequenceData(null);
-            Assert.fail("MessageBody created with null sequence data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromSequenceData(null),
+            "MessageBody created with null sequence data.");
     }
 
     @Test
     public void nullValueDataTest() {
-        try {
-            MessageBody.fromValueData(null);
-            Assert.fail("MessageBody created with null value data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromValueData(null),
+            "MessageBody created with null value data.");
     }
 
     @Test
     public void multipleDataSectionsTest() {
-        try {
-            ArrayList<byte[]> dataList = new ArrayList<>();
-            dataList.add(new byte[0]);
-            dataList.add(new byte[0]);
-            MessageBody.fromBinaryData(dataList);
-            Assert.fail("MessageBody created with null binary data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        ArrayList<byte[]> dataList = new ArrayList<>();
+        dataList.add(new byte[0]);
+        dataList.add(new byte[0]);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromBinaryData(dataList),
+            "MessageBody created with null binary data.");
     }
 
     @Test
     public void zeroDataSectionsTest() {
-        try {
-            ArrayList<byte[]> dataList = new ArrayList<>();
-            MessageBody.fromBinaryData(dataList);
-            Assert.fail("MessageBody created with null binary data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        ArrayList<byte[]> dataList = new ArrayList<>();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromBinaryData(dataList),
+            "MessageBody created with null binary data.");
     }
 
     @Test
     public void multipleSequenceSectionsTest() {
-        try {
-            ArrayList<List<Object>> sequenceList = new ArrayList<>();
-            ArrayList<Object> sequence1 = new ArrayList<>();
-            sequence1.add("hello");
-            ArrayList<Object> sequence2 = new ArrayList<>();
-            sequence2.add("howdy");
-            sequenceList.add(sequence1);
-            sequenceList.add(sequence2);
-            MessageBody.fromSequenceData(sequenceList);
-            Assert.fail("MessageBody created with null binary data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        ArrayList<List<Object>> sequenceList = new ArrayList<>();
+        ArrayList<Object> sequence1 = new ArrayList<>();
+        sequence1.add("hello");
+        ArrayList<Object> sequence2 = new ArrayList<>();
+        sequence2.add("howdy");
+        sequenceList.add(sequence1);
+        sequenceList.add(sequence2);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromSequenceData(sequenceList),
+            "MessageBody created with null binary data.");
     }
 
     @Test
     public void zeroSequenceSectionsTest() {
-        try {
-            ArrayList<List<Object>> sequenceList = new ArrayList<>();
-            MessageBody.fromSequenceData(sequenceList);
-            Assert.fail("MessageBody created with null binary data.");
-        } catch (IllegalArgumentException e) {
-            // passed
-        }
+        ArrayList<List<Object>> sequenceList = new ArrayList<>();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> MessageBody.fromSequenceData(sequenceList),
+            "MessageBody created with null binary data.");
     }
 
     @Test
     public void valueMessageBodyTest() {
         String value = "ValueBody";
         MessageBody body = MessageBody.fromValueData(value);
-        Assert.assertEquals("Message body type didn't match.", MessageBodyType.VALUE, body.getBodyType());
-        Assert.assertNull("MessageBody of value type has binary data.", body.getBinaryData());
-        Assert.assertNull("MessageBody of value type has sequence data.", body.getSequenceData());
-        Assert.assertEquals("Message body value didn't match", value, body.getValueData());
+        Assertions.assertEquals(MessageBodyType.VALUE, body.getBodyType(), "Message body type didn't match.");
+        Assertions.assertNull(body.getBinaryData(), "MessageBody of value type has binary data.");
+        Assertions.assertNull(body.getSequenceData(), "MessageBody of value type has sequence data.");
+        Assertions.assertEquals(value, body.getValueData(), "Message body value didn't match");
     }
 
     @Test
@@ -114,15 +86,15 @@ public class MessageBodyTests {
         sequence1.add(str2);
         sequenceList.add(sequence1);
         MessageBody body = MessageBody.fromSequenceData(sequenceList);
-        Assert.assertEquals("Message body type didn't match.", MessageBodyType.SEQUENCE, body.getBodyType());
-        Assert.assertNull("MessageBody of sequence type has binary data.", body.getBinaryData());
-        Assert.assertNull("MessageBody of sequence type has value data.", body.getValueData());
+        Assertions.assertEquals(MessageBodyType.SEQUENCE, body.getBodyType(), "Message body type didn't match.");
+        Assertions.assertNull(body.getBinaryData(), "MessageBody of sequence type has binary data.");
+        Assertions.assertNull(body.getValueData(), "MessageBody of sequence type has value data.");
         List<List<Object>> outputSequenceList = body.getSequenceData();
-        Assert.assertEquals("Message body sequence didn't match", 1, outputSequenceList.size());
+        Assertions.assertEquals(1, outputSequenceList.size(), "Message body sequence didn't match");
         List<Object> outputInnerSequence = outputSequenceList.get(0);
-        Assert.assertEquals("Message body sequence didn't match", 2, outputInnerSequence.size());
-        Assert.assertEquals("Message body sequence didn't match", str1, outputInnerSequence.get(0));
-        Assert.assertEquals("Message body sequence didn't match", str2, outputInnerSequence.get(1));
+        Assertions.assertEquals(2, outputInnerSequence.size(), "Message body sequence didn't match");
+        Assertions.assertEquals(str1, outputInnerSequence.get(0), "Message body sequence didn't match");
+        Assertions.assertEquals(str2, outputInnerSequence.get(1), "Message body sequence didn't match");
     }
 
     @Test
@@ -132,12 +104,12 @@ public class MessageBodyTests {
         ArrayList<byte[]> binaryDataList = new ArrayList<>();
         binaryDataList.add(binaryData);
         MessageBody body = MessageBody.fromBinaryData(binaryDataList);
-        Assert.assertEquals("Message body type didn't match.", MessageBodyType.BINARY, body.getBodyType());
-        Assert.assertNull("MessageBody of binary type has value data.", body.getValueData());
-        Assert.assertNull("MessageBody of binary type has sequence data.", body.getSequenceData());
+        Assertions.assertEquals(MessageBodyType.BINARY, body.getBodyType(), "Message body type didn't match.");
+        Assertions.assertNull(body.getValueData(), "MessageBody of binary type has value data.");
+        Assertions.assertNull(body.getSequenceData(), "MessageBody of binary type has sequence data.");
         List<byte[]> outputataList = body.getBinaryData();
-        Assert.assertEquals("Message body binary data didn't match", 1, outputataList.size());
+        Assertions.assertEquals(1, outputataList.size(), "Message body binary data didn't match");
         byte[] outputBinaryData = outputataList.get(0);
-        Assert.assertEquals("Message body sequence didn't match", binaryData, outputBinaryData);
+        Assertions.assertEquals(binaryData, outputBinaryData, "Message body sequence didn't match");
     }
 }

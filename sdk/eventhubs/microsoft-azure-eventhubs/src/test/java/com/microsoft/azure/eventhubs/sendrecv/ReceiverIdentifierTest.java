@@ -13,10 +13,10 @@ import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
 
     private static EventHubClient ehClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
@@ -40,7 +40,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
         TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
 
         for (PartitionReceiver receiver : RECEIVERS) {
@@ -52,7 +52,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void testReceiverIdentifierShowsUpInQuotaErrors() throws EventHubException {
 
         final String receiverIdentifierPrefix = UUID.randomUUID().toString();
@@ -64,11 +64,11 @@ public class ReceiverIdentifierTest extends ApiTestBase {
 
         try {
             ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
-            Assert.assertTrue(false);
+            Assertions.assertTrue(false);
         } catch (QuotaExceededException quotaError) {
             final String errorMsg = quotaError.getMessage();
             for (int receiverCount = 0; receiverCount < 5; receiverCount++) {
-                Assert.assertTrue(errorMsg.contains(receiverIdentifierPrefix + receiverCount));
+                Assertions.assertTrue(errorMsg.contains(receiverIdentifierPrefix + receiverCount));
             }
         }
     }

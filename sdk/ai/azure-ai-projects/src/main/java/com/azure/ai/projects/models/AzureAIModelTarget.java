@@ -11,7 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents a target specifying an Azure AI model for operations requiring model selection.
+ * A target that identifies an Azure AI model.
+ *
+ * See [evaluate administrator-connected
+ * models](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluate-admin-connected-models?tabs=python).
  */
 @Fluent
 public final class AzureAIModelTarget extends Target {
@@ -23,7 +26,7 @@ public final class AzureAIModelTarget extends Target {
     private String type = "azure_ai_model";
 
     /*
-     * The unique identifier of the Azure AI model.
+     * The name of the model deployment to invoke as the evaluation target.
      */
     @Generated
     private String model;
@@ -53,7 +56,7 @@ public final class AzureAIModelTarget extends Target {
     }
 
     /**
-     * Get the model property: The unique identifier of the Azure AI model.
+     * Get the model property: The name of the model deployment to invoke as the evaluation target.
      *
      * @return the model value.
      */
@@ -63,7 +66,7 @@ public final class AzureAIModelTarget extends Target {
     }
 
     /**
-     * Set the model property: The unique identifier of the Azure AI model.
+     * Set the model property: The name of the model deployment to invoke as the evaluation target.
      *
      * @param model the model value to set.
      * @return the AzureAIModelTarget object itself.

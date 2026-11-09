@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CountProtectedItemsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CountProtectedItemsRequest model
-            = BinaryData.fromString("{\"resourceIds\":[\"jmquxvypomgk\"]}").toObject(CountProtectedItemsRequest.class);
-        Assertions.assertEquals("jmquxvypomgk", model.resourceIds().get(0));
+        CountProtectedItemsRequest model = BinaryData.fromString("{\"resourceIds\":[\"pfpubjibww\",\"f\"]}")
+            .toObject(CountProtectedItemsRequest.class);
+        Assertions.assertEquals("pfpubjibww", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CountProtectedItemsRequest model
-            = new CountProtectedItemsRequest().withResourceIds(Arrays.asList("jmquxvypomgk"));
+            = new CountProtectedItemsRequest().withResourceIds(Arrays.asList("pfpubjibww", "f"));
         model = BinaryData.fromObject(model).toObject(CountProtectedItemsRequest.class);
-        Assertions.assertEquals("jmquxvypomgk", model.resourceIds().get(0));
+        Assertions.assertEquals("pfpubjibww", model.resourceIds().get(0));
     }
 }

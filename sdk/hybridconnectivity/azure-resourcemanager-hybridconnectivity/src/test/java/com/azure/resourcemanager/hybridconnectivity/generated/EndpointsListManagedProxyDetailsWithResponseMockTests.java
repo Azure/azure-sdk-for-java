@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class EndpointsListManagedProxyDetailsWithResponseMockTests {
     @Test
     public void testListManagedProxyDetailsWithResponse() throws Exception {
-        String responseStr = "{\"proxy\":\"zbn\",\"expiresOn\":1564863042825261686}";
+        String responseStr = "{\"proxy\":\"whhmhykojo\",\"expiresOn\":3465382466938026517}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,14 @@ public final class EndpointsListManagedProxyDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedProxyResource response = manager.endpoints()
-            .listManagedProxyDetailsWithResponse("mdnbbglzpswiy", "mcwyhzdxssadb",
-                new ManagedProxyRequest().withService("mnvdfzn").withHostname("ao").withServiceName(ServiceName.SSH),
+            .listManagedProxyDetailsWithResponse("aasipqi", "obyu",
+                new ManagedProxyRequest().withService("erpqlpqwcciuqg")
+                    .withHostname("butauvfb")
+                    .withServiceName(ServiceName.WAC),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zbn", response.proxy());
-        Assertions.assertEquals(1564863042825261686L, response.expiresOn());
+        Assertions.assertEquals("whhmhykojo", response.proxy());
+        Assertions.assertEquals(3465382466938026517L, response.expiresOn());
     }
 }

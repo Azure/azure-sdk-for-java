@@ -24,7 +24,7 @@ public final class ElasticBackupVaultsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"aombwiinjdl\",\"location\":\"ktl\",\"tags\":{\"kgfcfdruws\":\"wavvqxuajgcqwuly\",\"clhuulriqbyokv\":\"kxx\",\"fyhcdjw\":\"gbzsxebrslt\",\"agttpufpb\":\"uoard\"},\"id\":\"g\",\"name\":\"rholhujbfwxi\",\"type\":\"lkysolsyjp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"d\",\"location\":\"brdvce\",\"tags\":{\"gnmguz\":\"hitxnm\",\"kbd\":\"uwvorbalkjn\",\"gxiynecovagzk\":\"lltqstqkqs\",\"qiawzl\":\"eubanlxunpqcc\"},\"id\":\"klaslga\",\"name\":\"izuxlrarwpewsaud\",\"type\":\"ejtig\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,16 @@ public final class ElasticBackupVaultsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticBackupVault response = manager.elasticBackupVaults()
-            .define("ixv")
-            .withRegion("qvzfj")
-            .withExistingElasticAccount("alapdlndbe", "qb")
-            .withTags(mapOf("mphfkyezolgjzm", "ugzfeuzjl"))
+            .define("yjtkakvlb")
+            .withRegion("izjixwfgcd")
+            .withExistingElasticAccount("wgofmhx", "rjlvzklkvbgi")
+            .withTags(mapOf("mdmuqoh", "kcxwnujvqynvavi", "wjc", "ihraxqudd", "nnin", "jbrhlhpvzadbw",
+                "vztiucwviqllukh", "fhxrzfr"))
             .withProperties(new ElasticBackupVaultProperties())
             .create();
 
-        Assertions.assertEquals("ktl", response.location());
-        Assertions.assertEquals("wavvqxuajgcqwuly", response.tags().get("kgfcfdruws"));
+        Assertions.assertEquals("brdvce", response.location());
+        Assertions.assertEquals("hitxnm", response.tags().get("gnmguz"));
     }
 
     // Use "Map.of" if available

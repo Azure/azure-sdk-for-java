@@ -11,7 +11,7 @@ public final class ConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Condition model = BinaryData.fromString(
-            "{\"type\":\"Progressing\",\"status\":\"False\",\"lastTransitionTime\":\"2021-01-23T19:42:32Z\",\"reason\":\"ixuigdtopbobj\",\"message\":\"ghmewuam\"}")
+            "{\"type\":\"Available\",\"status\":\"True\",\"lastTransitionTime\":\"2021-09-17T10:09:05Z\",\"reason\":\"hcffcyddglmjthjq\",\"message\":\"wpyeicxmqciwqvh\"}")
             .toObject(Condition.class);
     }
 }

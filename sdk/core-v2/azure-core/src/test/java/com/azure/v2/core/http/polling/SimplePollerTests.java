@@ -34,7 +34,7 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS, activationOperationWithResponse,
-            pollOperation, (ignored1, ignore2) -> null, ignored -> null);
+            pollOperation, (ignored1, ignore2) -> null, ignored -> null, null);
 
         try {
             PollResponse<TestResponse> response = poller.waitForCompletion(Duration.ofSeconds(1));
@@ -49,53 +49,53 @@ public class SimplePollerTests {
     public void pollerConstructorPollIntervalZero() {
         assertThrows(IllegalArgumentException.class,
             () -> new SimplePoller<>(Duration.ZERO,
-                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-                (ignored1, ignored2) -> null, ignored -> null));
+                ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, ignored -> null, null));
     }
 
     @Test
     public void pollerConstructorPollIntervalNegative() {
         assertThrows(IllegalArgumentException.class,
             () -> new SimplePoller<>(Duration.ofSeconds(-1),
-                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-                (ignored1, ignored2) -> null, ignored -> null));
+                ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, ignored -> null, null));
     }
 
     @Test
     public void pollerConstructorPollIntervalNull() {
         assertThrows(NullPointerException.class,
-            () -> new SimplePoller<>(null, cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
-                ignored -> null, (ignored1, ignored2) -> null, ignored -> null));
+            () -> new SimplePoller<>(null, ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
+                ignored -> null, (ignored1, ignored2) -> null, ignored -> null, null));
     }
 
     @Test
     public void syncConstructorActivationOperationNull() {
         assertThrows(NullPointerException.class, () -> new SimplePoller<>(Duration.ofSeconds(1), null, ignored -> null,
-            (ignored1, ignored2) -> null, ignored -> null));
+            (ignored1, ignored2) -> null, ignored -> null, null));
     }
 
     @Test
     public void pollerConstructorPollOperationNull() {
         assertThrows(NullPointerException.class,
             () -> new SimplePoller<>(Duration.ofSeconds(1),
-                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), null,
-                (ignored1, ignored2) -> null, ignored -> null));
+                ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), null,
+                (ignored1, ignored2) -> null, ignored -> null, null));
     }
 
     @Test
     public void pollerConstructorCancelOperationNull() {
         assertThrows(NullPointerException.class,
             () -> new SimplePoller<>(Duration.ofSeconds(1),
-                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null, null,
-                ignored -> null));
+                ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null, null,
+                ignored -> null, null));
     }
 
     @Test
     public void pollerConstructorFetchResultOperationNull() {
         assertThrows(NullPointerException.class,
             () -> new SimplePoller<>(Duration.ofSeconds(1),
-                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-                (ignored1, ignored2) -> null, null));
+                ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, null, null));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class SimplePollerTests {
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt)),
-            ignored -> null, (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> null, (ignored1, ignored2) -> null, ignored -> null, null);
 
         Assertions.assertTrue(activationCalled[0]);
     }
@@ -125,8 +125,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new TestResponse("A")), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new TestResponse("A")), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null, null);
 
         PollResponse<TestResponse> pollResponse = poller.poll();
         Assertions.assertNotNull(pollResponse);
@@ -172,8 +172,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null, null);
 
         PollResponse<TestResponse> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
@@ -210,8 +210,8 @@ public class SimplePollerTests {
             = ignored -> new CertificateOutput("cert1");
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, fetchResultOperation);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, fetchResultOperation, null);
 
         CertificateOutput certificateOutput = poller.getFinalResult();
         Assertions.assertNotNull(certificateOutput);
@@ -248,8 +248,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, fetchResultOperation);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, fetchResultOperation, null);
 
         PollResponse<TestResponse> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
@@ -287,8 +287,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null, null);
 
         PollResponse<TestResponse> pollResponse = poller.waitUntil(matchStatus);
         assertEquals(matchStatus, pollResponse.getStatus());
@@ -314,8 +314,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null, null);
 
         RuntimeException exception = assertThrows(RuntimeException.class, poller::getFinalResult);
         assertTrue(exception.getMessage().contains("Polling operation failed!"));
@@ -346,8 +346,8 @@ public class SimplePollerTests {
         };
 
         Poller<TestResponse, CertificateOutput> poller = new SimplePoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null, null);
 
         PollResponse<TestResponse> pollResponse = poller.waitUntil(matchStatus);
         assertEquals(matchStatus, pollResponse.getStatus());

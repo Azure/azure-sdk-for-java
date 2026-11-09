@@ -15,16 +15,16 @@ public final class DnsPrivateZoneInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"rrjreafxtsgu\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"glikkxwslolb\",\"serial\":1671943968,\"version\":\"vuzlm\",\"viewId\":\"elfk\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-02-21T20:32:58Z\",\"provisioningState\":\"Failed\"},\"id\":\"pwjxezn\",\"name\":\"igbrnjw\",\"type\":\"wkpnbsaz\"}")
+            "{\"properties\":{\"ocid\":\"z\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"eqphchqnrnr\",\"serial\":98859103,\"version\":\"ehuwrykqgaifmvik\",\"viewId\":\"ydv\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-08-31T10:25:05Z\",\"provisioningState\":\"Canceled\"},\"id\":\"znxcvds\",\"name\":\"hnjivo\",\"type\":\"v\"}")
             .toObject(DnsPrivateZoneInner.class);
-        Assertions.assertEquals("rrjreafxtsgu", model.properties().ocid());
+        Assertions.assertEquals("z", model.properties().ocid());
         Assertions.assertFalse(model.properties().isProtected());
-        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING, model.properties().lifecycleState());
-        Assertions.assertEquals("glikkxwslolb", model.properties().self());
-        Assertions.assertEquals(1671943968, model.properties().serial());
-        Assertions.assertEquals("vuzlm", model.properties().version());
-        Assertions.assertEquals("elfk", model.properties().viewId());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.ACTIVE, model.properties().lifecycleState());
+        Assertions.assertEquals("eqphchqnrnr", model.properties().self());
+        Assertions.assertEquals(98859103, model.properties().serial());
+        Assertions.assertEquals("ehuwrykqgaifmvik", model.properties().version());
+        Assertions.assertEquals("ydv", model.properties().viewId());
         Assertions.assertEquals(ZoneType.SECONDARY, model.properties().zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T20:32:58Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T10:25:05Z"), model.properties().timeCreated());
     }
 }

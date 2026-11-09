@@ -16,23 +16,22 @@ public final class ExadbVmClusterUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadbVmClusterUpdate model = BinaryData.fromString(
-            "{\"zones\":[\"cact\",\"mwotey\"],\"tags\":{\"ouwifzmpjw\":\"luqovekqvg\",\"sphuagrttikteus\":\"ivqikfxcvhr\",\"kvyklxubyjaffmm\":\"c\",\"qcuubgqibrta\":\"bl\"},\"properties\":{\"nodeCount\":1066879045}}")
+            "{\"zones\":[\"dqohmc\",\"sldrizetpwbral\"],\"tags\":{\"p\":\"bphbqzmizakakank\"},\"properties\":{\"nodeCount\":1316748102}}")
             .toObject(ExadbVmClusterUpdate.class);
-        Assertions.assertEquals("cact", model.zones().get(0));
-        Assertions.assertEquals("luqovekqvg", model.tags().get("ouwifzmpjw"));
-        Assertions.assertEquals(1066879045, model.properties().nodeCount());
+        Assertions.assertEquals("dqohmc", model.zones().get(0));
+        Assertions.assertEquals("bphbqzmizakakank", model.tags().get("p"));
+        Assertions.assertEquals(1316748102, model.properties().nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExadbVmClusterUpdate model = new ExadbVmClusterUpdate().withZones(Arrays.asList("cact", "mwotey"))
-            .withTags(mapOf("ouwifzmpjw", "luqovekqvg", "sphuagrttikteus", "ivqikfxcvhr", "kvyklxubyjaffmm", "c",
-                "qcuubgqibrta", "bl"))
-            .withProperties(new ExadbVmClusterUpdateProperties().withNodeCount(1066879045));
+        ExadbVmClusterUpdate model = new ExadbVmClusterUpdate().withZones(Arrays.asList("dqohmc", "sldrizetpwbral"))
+            .withTags(mapOf("p", "bphbqzmizakakank"))
+            .withProperties(new ExadbVmClusterUpdateProperties().withNodeCount(1316748102));
         model = BinaryData.fromObject(model).toObject(ExadbVmClusterUpdate.class);
-        Assertions.assertEquals("cact", model.zones().get(0));
-        Assertions.assertEquals("luqovekqvg", model.tags().get("ouwifzmpjw"));
-        Assertions.assertEquals(1066879045, model.properties().nodeCount());
+        Assertions.assertEquals("dqohmc", model.zones().get(0));
+        Assertions.assertEquals("bphbqzmizakakank", model.tags().get("p"));
+        Assertions.assertEquals(1316748102, model.properties().nodeCount());
     }
 
     // Use "Map.of" if available

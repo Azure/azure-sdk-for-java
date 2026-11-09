@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteReimageRequest request for reimage operations.
+ * The virtual machines and configuration for a bulk reimage action.
  */
 @Fluent
 public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReimageRequest> {
     /*
-     * The execution parameters for the request
+     * The execution settings for the bulk action.
      */
     private ExecutionParameters executionParameters;
 
     /*
-     * The resources for the request
+     * The target virtual machines.
      */
     private Resources resources;
 
@@ -33,7 +33,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     private ResourcesWithContext resourcesWithContext;
 
     /*
-     * Reimage parameters including base profile and per-resource overrides
+     * The shared and per-virtual-machine reimage configuration.
      */
     private ReimagePayload reimageParameters;
 
@@ -44,7 +44,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Get the executionParameters property: The execution parameters for the request.
+     * Get the executionParameters property: The execution settings for the bulk action.
      * 
      * @return the executionParameters value.
      */
@@ -53,7 +53,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Set the executionParameters property: The execution parameters for the request.
+     * Set the executionParameters property: The execution settings for the bulk action.
      * 
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteReimageRequest object itself.
@@ -64,7 +64,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Get the resources property: The resources for the request.
+     * Get the resources property: The target virtual machines.
      * 
      * @return the resources value.
      */
@@ -73,7 +73,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Set the resources property: The resources for the request.
+     * Set the resources property: The target virtual machines.
      * 
      * @param resources the resources value to set.
      * @return the ExecuteReimageRequest object itself.
@@ -106,7 +106,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Get the reimageParameters property: Reimage parameters including base profile and per-resource overrides.
+     * Get the reimageParameters property: The shared and per-virtual-machine reimage configuration.
      * 
      * @return the reimageParameters value.
      */
@@ -115,7 +115,7 @@ public final class ExecuteReimageRequest implements JsonSerializable<ExecuteReim
     }
 
     /**
-     * Set the reimageParameters property: Reimage parameters including base profile and per-resource overrides.
+     * Set the reimageParameters property: The shared and per-virtual-machine reimage configuration.
      * 
      * @param reimageParameters the reimageParameters value to set.
      * @return the ExecuteReimageRequest object itself.

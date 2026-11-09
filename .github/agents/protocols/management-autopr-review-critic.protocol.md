@@ -15,6 +15,18 @@ The reviewer dispatches the critic once after self-verification.
 Missing PR, SHA, or candidate concerns produces one report-level
 `FAIL / missing-inputs`.
 
+## Verification tools
+
+Use the configured GitHub MCP tools for PR metadata, diffs, and repository
+content. When invoking them through the shell, use the `github` MCP wrapper
+commands. Do not use `gh api`; the critic sandbox does not provide the GitHub
+CLI token.
+
+If a repository read fails, retry once with the appropriate GitHub MCP tool.
+Classify a transport, authentication, or tool failure as `missing-inputs`, not
+`citation-mismatch`. Use `citation-mismatch` only after successfully reading
+the cited content at the session SHA.
+
 ## Verdicts
 
 | Verdict | Meaning | Reviewer action |

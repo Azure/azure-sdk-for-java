@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.secretsstoreextension.generated;
 
+import com.azure.resourcemanager.secretsstoreextension.models.AzureCloudName;
 import com.azure.resourcemanager.secretsstoreextension.models.AzureKeyVaultSecretProviderClassProperties;
 import com.azure.resourcemanager.secretsstoreextension.models.ExtendedLocation;
 import com.azure.resourcemanager.secretsstoreextension.models.ExtendedLocationType;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public final class AzureKeyVaultSecretProviderClassesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_CreateOrUpdate.
@@ -30,6 +31,7 @@ public final class AzureKeyVaultSecretProviderClassesCreateOrUpdateSamples {
             .withExistingResourceGroup("rg-ssc-example")
             .withTags(mapOf("example-tag", "example-tag-value"))
             .withProperties(new AzureKeyVaultSecretProviderClassProperties().withKeyvaultName("fakeTokenPlaceholder")
+                .withCloudName(AzureCloudName.AZURE_PUBLIC_CLOUD)
                 .withClientId("00000000-0000-0000-0000-000000000000")
                 .withTenantId("00000000-0000-0000-0000-000000000000")
                 .withObjects(

@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Request model for update goal resource.
+ * Request body for updating goal resources.
  */
 @Fluent
 public final class UpdateGoalResourceRequest implements JsonSerializable<UpdateGoalResourceRequest> {
     /*
-     * List of update goal resource.
+     * The goal resources to update.
      */
     private List<GoalResourceInner> resources;
 
@@ -30,7 +30,7 @@ public final class UpdateGoalResourceRequest implements JsonSerializable<UpdateG
     }
 
     /**
-     * Get the resources property: List of update goal resource.
+     * Get the resources property: The goal resources to update.
      * 
      * @return the resources value.
      */
@@ -39,7 +39,7 @@ public final class UpdateGoalResourceRequest implements JsonSerializable<UpdateG
     }
 
     /**
-     * Set the resources property: List of update goal resource.
+     * Set the resources property: The goal resources to update.
      * 
      * @param resources the resources value to set.
      * @return the UpdateGoalResourceRequest object itself.

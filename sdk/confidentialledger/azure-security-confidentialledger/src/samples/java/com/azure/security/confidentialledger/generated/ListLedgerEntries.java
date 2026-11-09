@@ -16,7 +16,8 @@ public class ListLedgerEntries {
             .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
             .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.list-ledger-entries.list-ledger-entries
-        PagedIterable<LedgerEntry> response = confidentialLedgerClient.listLedgerEntries(null, "2.15", "2.20", null);
+        PagedIterable<LedgerEntry> response
+            = confidentialLedgerClient.listLedgerEntries((String) null, "2.15", "2.20", (String) null);
         // END:com.azure.security.confidentialledger.generated.list-ledger-entries.list-ledger-entries
     }
 }

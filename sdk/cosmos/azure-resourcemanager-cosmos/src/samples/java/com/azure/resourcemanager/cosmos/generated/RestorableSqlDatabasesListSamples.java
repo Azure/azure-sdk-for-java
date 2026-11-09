@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class RestorableSqlDatabasesListSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBRestorableSqlDatabaseList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBRestorableSqlDatabaseList.json
      */
     /**
      * Sample code: CosmosDBRestorableSqlDatabaseList.

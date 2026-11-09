@@ -15,6 +15,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
@@ -150,6 +151,12 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * Cluster properties of a server.
      */
     private Cluster cluster;
+
+    /*
+     * Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified on
+     * create, it defaults to Disabled.
+     */
+    private FipsMode fipsMode;
 
     /**
      * Creates an instance of ServerProperties class.
@@ -564,6 +571,28 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
+     * Get the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @return the fipsMode value.
+     */
+    public FipsMode fipsMode() {
+        return this.fipsMode;
+    }
+
+    /**
+     * Set the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @param fipsMode the fipsMode value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withFipsMode(FipsMode fipsMode) {
+        this.fipsMode = fipsMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -588,6 +617,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeJsonField("replica", this.replica);
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeStringField("fipsMode", this.fipsMode == null ? null : this.fipsMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -653,6 +683,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                     deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("cluster".equals(fieldName)) {
                     deserializedServerProperties.cluster = Cluster.fromJson(reader);
+                } else if ("fipsMode".equals(fieldName)) {
+                    deserializedServerProperties.fipsMode = FipsMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

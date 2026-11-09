@@ -22,7 +22,7 @@ public final class UsageModelsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"display\":{\"description\":\"eg\"},\"modelName\":\"alzxwhcan\",\"targetType\":\"moy\"}]}";
+            = "{\"value\":[{\"display\":{\"description\":\"n\"},\"modelName\":\"puuw\",\"targetType\":\"tvuqjctzenkeifzz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class UsageModelsListMockTests {
 
         PagedIterable<UsageModel> response = manager.usageModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eg", response.iterator().next().display().description());
-        Assertions.assertEquals("alzxwhcan", response.iterator().next().modelName());
-        Assertions.assertEquals("moy", response.iterator().next().targetType());
+        Assertions.assertEquals("n", response.iterator().next().display().description());
+        Assertions.assertEquals("puuw", response.iterator().next().modelName());
+        Assertions.assertEquals("tvuqjctzenkeifzz", response.iterator().next().targetType());
     }
 }

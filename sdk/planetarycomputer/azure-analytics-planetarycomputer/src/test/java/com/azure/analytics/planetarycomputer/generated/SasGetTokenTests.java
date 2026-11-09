@@ -15,7 +15,7 @@ public final class SasGetTokenTests extends PlanetaryComputerProClientTestBase {
     @Disabled
     public void testSasGetTokenTests() {
         // method invocation
-        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", null);
+        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

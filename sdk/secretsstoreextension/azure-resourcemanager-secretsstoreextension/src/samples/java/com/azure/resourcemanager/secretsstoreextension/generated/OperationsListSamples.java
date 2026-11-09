@@ -9,7 +9,7 @@ package com.azure.resourcemanager.secretsstoreextension.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.

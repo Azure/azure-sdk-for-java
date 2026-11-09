@@ -16,14 +16,14 @@ public final class ListUpdatesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUpdatesResult model = BinaryData.fromString(
-            "{\"value\":[{\"maintenanceScope\":\"SQLManagedInstance\",\"impactType\":\"None\",\"status\":\"Completed\",\"impactDurationInSec\":1127167490,\"notBefore\":\"2021-05-07T21:37:49Z\",\"properties\":{\"resourceId\":\"zxbzpfzabglc\"}},{\"maintenanceScope\":\"Extension\",\"impactType\":\"None\",\"status\":\"InProgress\",\"impactDurationInSec\":683096645,\"notBefore\":\"2021-04-24T03:57:36Z\",\"properties\":{\"resourceId\":\"bovpl\"}}],\"nextLink\":\"bhvgy\"}")
+            "{\"value\":[{\"maintenanceScope\":\"Host\",\"impactType\":\"None\",\"status\":\"NoUpdatesPending\",\"impactDurationInSec\":148610242,\"notBefore\":\"2021-08-14T10:22:34Z\",\"properties\":{\"resourceId\":\"xbniwdjs\"}},{\"maintenanceScope\":\"SQLDB\",\"impactType\":\"Restart\",\"status\":\"InProgress\",\"impactDurationInSec\":1405817620,\"notBefore\":\"2021-04-13T23:02:25Z\",\"properties\":{\"resourceId\":\"hpzxbzpfzab\"}}],\"nextLink\":\"cuh\"}")
             .toObject(ListUpdatesResult.class);
-        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, model.value().get(0).maintenanceScope());
+        Assertions.assertEquals(MaintenanceScope.HOST, model.value().get(0).maintenanceScope());
         Assertions.assertEquals(ImpactType.NONE, model.value().get(0).impactType());
-        Assertions.assertEquals(UpdateStatus.COMPLETED, model.value().get(0).status());
-        Assertions.assertEquals(1127167490, model.value().get(0).impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T21:37:49Z"), model.value().get(0).notBefore());
-        Assertions.assertEquals("zxbzpfzabglc", model.value().get(0).resourceId());
-        Assertions.assertEquals("bhvgy", model.nextLink());
+        Assertions.assertEquals(UpdateStatus.NO_UPDATES_PENDING, model.value().get(0).status());
+        Assertions.assertEquals(148610242, model.value().get(0).impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T10:22:34Z"), model.value().get(0).notBefore());
+        Assertions.assertEquals("xbniwdjs", model.value().get(0).resourceId());
+        Assertions.assertEquals("cuh", model.nextLink());
     }
 }

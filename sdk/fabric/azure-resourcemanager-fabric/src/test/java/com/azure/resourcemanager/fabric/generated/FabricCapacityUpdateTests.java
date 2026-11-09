@@ -21,32 +21,34 @@ public final class FabricCapacityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityUpdate model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"upewnwreitjzy\",\"tier\":\"Fabric\"},\"tags\":{\"rkdtmlxh\":\"arhmofcqhsmy\",\"arcryuanzwuxzdxt\":\"kuksjtxukcdm\"},\"properties\":{\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":906261877},\"administration\":{\"members\":[\"pmrqobm\"]}}}")
+            "{\"sku\":{\"name\":\"rifkwm\",\"tier\":\"Fabric\"},\"tags\":{\"ipa\":\"siznto\",\"poyfdkfogkn\":\"uajpsquc\",\"eqsrdeupewnwreit\":\"gjofjd\",\"usarhmofc\":\"zyf\"},\"properties\":{\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":2032289729},\"administration\":{\"members\":[\"tmlxhekuksjtx\",\"kc\",\"mparcryuanzw\",\"xzdxtayrlhmwh\"]}}}")
             .toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("upewnwreitjzy", model.sku().name());
+        Assertions.assertEquals("rifkwm", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("arhmofcqhsmy", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals("siznto", model.tags().get("ipa"));
         Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
-        Assertions.assertEquals(906261877, model.properties().overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("pmrqobm", model.properties().administration().members().get(0));
+        Assertions.assertEquals(2032289729, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tmlxhekuksjtx", model.properties().administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricCapacityUpdate model
-            = new FabricCapacityUpdate().withSku(new RpSku().withName("upewnwreitjzy").withTier(RpSkuTier.FABRIC))
-                .withTags(mapOf("rkdtmlxh", "arhmofcqhsmy", "arcryuanzwuxzdxt", "kuksjtxukcdm"))
+            = new FabricCapacityUpdate().withSku(new RpSku().withName("rifkwm").withTier(RpSkuTier.FABRIC))
+                .withTags(
+                    mapOf("ipa", "siznto", "poyfdkfogkn", "uajpsquc", "eqsrdeupewnwreit", "gjofjd", "usarhmofc", "zyf"))
                 .withProperties(new FabricCapacityUpdateProperties()
                     .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
-                        .withThresholdCapacityUnitHours(906261877))
-                    .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("pmrqobm"))));
+                        .withThresholdCapacityUnitHours(2032289729))
+                    .withAdministration(new CapacityAdministration()
+                        .withMembers(Arrays.asList("tmlxhekuksjtx", "kc", "mparcryuanzw", "xzdxtayrlhmwh"))));
         model = BinaryData.fromObject(model).toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("upewnwreitjzy", model.sku().name());
+        Assertions.assertEquals("rifkwm", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("arhmofcqhsmy", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals("siznto", model.tags().get("ipa"));
         Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
-        Assertions.assertEquals(906261877, model.properties().overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("pmrqobm", model.properties().administration().members().get(0));
+        Assertions.assertEquals(2032289729, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tmlxhekuksjtx", model.properties().administration().members().get(0));
     }
 
     // Use "Map.of" if available

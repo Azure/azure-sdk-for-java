@@ -17,6 +17,11 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
     public static final StorageTargetType ISCSI = fromString("Iscsi");
 
     /**
+     * Direct attach storage target type.
+     */
+    public static final StorageTargetType DIRECT_ATTACH = fromString("DirectAttach");
+
+    /**
      * Static value None for StorageTargetType.
      */
     public static final StorageTargetType NONE = fromString("None");

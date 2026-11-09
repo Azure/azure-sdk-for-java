@@ -9,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
@@ -16,8 +18,10 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -32,11 +36,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -52,6 +60,7 @@ public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS
         = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
+    private static final String DFS_ENDPOINT = "https://account.dfs.core.windows.net/";
     private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
@@ -67,6 +76,75 @@ public class BuilderHelperTests {
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setHeader(HttpHeaderName.CONTENT_LENGTH, "0")
             .setBody(Flux.empty());
+    }
+
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportSync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(false);
+    }
+
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportAsync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(true);
+    }
+
+    private void customDfsSessionAcquisitionUsesDataLakeBuilderTransport(boolean async) {
+        AtomicInteger acquisitions = new AtomicInteger();
+        AtomicInteger reads = new AtomicInteger();
+        HttpHeaderName marker = HttpHeaderName.fromString("x-test-datalake");
+        HttpClient transport = request -> {
+            assertEquals("account.blob.core.windows.net", request.getUrl().getHost());
+            assertEquals("configured", request.getHeaders().getValue(marker));
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                acquisitions.incrementAndGet();
+                assertEquals("/filesystem", request.getUrl().getPath());
+                assertEquals("restype=container&comp=session", request.getUrl().getQuery());
+                String body = "<CreateSessionResult><Id>test-session</Id><Expiration>"
+                    + new DateTimeRfc1123(OffsetDateTime.now().plusHours(1))
+                    + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
+                    + "<SessionToken>datalake-session</SessionToken>"
+                    + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+                    + "</Credentials></CreateSessionResult>";
+                return Mono.just(new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
+                    .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/xml"));
+            }
+            reads.incrementAndGet();
+            assertEquals(HttpMethod.GET, request.getHttpMethod());
+            assertTrue(
+                request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session datalake-session:"));
+            return Mono.just(new MockHttpResponse(request, 200, "data".getBytes(StandardCharsets.UTF_8))
+                .addHeader(HttpHeaderName.CONTENT_LENGTH.toString(), "4")
+                .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/octet-stream")
+                .addHeader(HttpHeaderName.ETAG.toString(), "\"etag\"")
+                .addHeader(HttpHeaderName.LAST_MODIFIED.toString(),
+                    new DateTimeRfc1123(OffsetDateTime.now()).toString()));
+        };
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder().endpoint(DFS_ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(transport)
+            .addPolicy(new AddHeadersPolicy(new HttpHeaders().set(marker, "configured")))
+            .sessionContext(new SessionContext(DFS_ENDPOINT, new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED));
+        if (async) {
+            for (int i = 0; i < 2; i++) {
+                DataLakeServiceAsyncClient client = builder.buildAsyncClient();
+                StepVerifier.create(
+                    client.getFileSystemAsyncClient("filesystem").getFileAsyncClient("file" + i).read().collectList())
+                    .assertNext(buffers -> {
+                        assertEquals(4, buffers.stream().mapToInt(buffer -> buffer.remaining()).sum());
+                    })
+                    .verifyComplete();
+            }
+        } else {
+            for (int i = 0; i < 2; i++) {
+                DataLakeServiceClient client = builder.buildClient();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                client.getFileSystemClient("filesystem").getFileClient("file" + i).read(stream);
+                assertEquals("data", new String(stream.toByteArray(), StandardCharsets.UTF_8));
+            }
+        }
+        assertEquals(1, acquisitions.get(), "Independently built clients using the same options share acquisition.");
+        assertEquals(2, reads.get());
     }
 
     /**

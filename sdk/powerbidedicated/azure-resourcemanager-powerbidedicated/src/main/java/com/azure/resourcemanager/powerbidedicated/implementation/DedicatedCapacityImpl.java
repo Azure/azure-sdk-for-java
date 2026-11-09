@@ -156,8 +156,12 @@ public final class DedicatedCapacityImpl
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "resourceGroupName");
+        this.dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "dedicatedCapacityName");
     }
 
     public DedicatedCapacity refresh() {

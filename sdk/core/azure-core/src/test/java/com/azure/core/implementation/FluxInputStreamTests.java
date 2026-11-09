@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FluxInputStreamTests {
     private static final int KB = 1024;
     private static final int MB = KB * KB;
+    private static final long TEST_TIMEOUT_SECONDS = 60;
 
     /* Generates deterministic test data for FluxInputStream unit tests. */
     private Flux<ByteBuffer> generateData(int num) {
@@ -167,10 +168,10 @@ public class FluxInputStreamTests {
         closeThreadReference.set(closeThread);
 
         readThread.start();
-        assertTrue(subscribeEntered.await(5, TimeUnit.SECONDS));
+        assertTrue(subscribeEntered.await(TEST_TIMEOUT_SECONDS, TimeUnit.SECONDS));
         closeThread.start();
-        readThread.join(TimeUnit.SECONDS.toMillis(5));
-        closeThread.join(TimeUnit.SECONDS.toMillis(5));
+        readThread.join(TimeUnit.SECONDS.toMillis(TEST_TIMEOUT_SECONDS));
+        closeThread.join(TimeUnit.SECONDS.toMillis(TEST_TIMEOUT_SECONDS));
 
         assertFalse(readThread.isAlive());
         assertFalse(closeThread.isAlive());
@@ -235,7 +236,7 @@ public class FluxInputStreamTests {
     }
 
     private static void awaitThreadWaiting(AtomicReference<Thread> threadReference) {
-        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(TEST_TIMEOUT_SECONDS);
         while (System.nanoTime() < deadline) {
             Thread thread = threadReference.get();
             if (thread != null && thread.getState() == Thread.State.WAITING) {

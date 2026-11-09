@@ -22,7 +22,7 @@ public final class SecuritySettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"ApplyAndAutoCorrect\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Compliant\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"Compliant\",\"lastUpdated\":\"2021-12-03T19:28:38Z\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ckremgjlmsvdorsi\",\"name\":\"xxhyrkqakofa\",\"type\":\"freprfvm\"}";
+            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"ApplyAndAutoCorrect\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"Pending\",\"lastUpdated\":\"2021-02-26T02:54:30Z\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rlfqm\",\"name\":\"j\",\"type\":\"wynbfvvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SecuritySettingsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecuritySetting response = manager.securitySettings()
-            .define("vardlmzjotprrm")
-            .withExistingCluster("wfqjch", "vdrijanxndm")
-            .withSecuredCoreComplianceAssignment(ComplianceAssignmentType.AUDIT)
-            .withWdacComplianceAssignment(ComplianceAssignmentType.AUDIT)
+            .define("fwfctqvey")
+            .withExistingCluster("gj", "hy")
+            .withSecuredCoreComplianceAssignment(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT)
+            .withWdacComplianceAssignment(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT)
             .withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
                 ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT)
             .create();

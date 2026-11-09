@@ -15,20 +15,21 @@ public final class AutoImportJobUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoImportJobUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"lsfeaenwabfatkld\":\"r\",\"oulpjrv\":\"xbjhwuaanozjosph\"},\"properties\":{\"adminStatus\":\"Enable\"}}")
+            "{\"tags\":{\"dsyuuximerqfob\":\"zkoowtlmnguxawqa\",\"utwpfhp\":\"yznkby\",\"tdlmkkzevd\":\"gmhrskdsnfdsdoak\"},\"properties\":{\"adminStatus\":\"Disable\"}}")
             .toObject(AutoImportJobUpdate.class);
-        Assertions.assertEquals("r", model.tags().get("lsfeaenwabfatkld"));
-        Assertions.assertEquals(AutoImportJobUpdatePropertiesAdminStatus.ENABLE, model.adminStatus());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.tags().get("dsyuuximerqfob"));
+        Assertions.assertEquals(AutoImportJobUpdatePropertiesAdminStatus.DISABLE, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoImportJobUpdate model
-            = new AutoImportJobUpdate().withTags(mapOf("lsfeaenwabfatkld", "r", "oulpjrv", "xbjhwuaanozjosph"))
-                .withAdminStatus(AutoImportJobUpdatePropertiesAdminStatus.ENABLE);
+        AutoImportJobUpdate model = new AutoImportJobUpdate()
+            .withTags(
+                mapOf("dsyuuximerqfob", "zkoowtlmnguxawqa", "utwpfhp", "yznkby", "tdlmkkzevd", "gmhrskdsnfdsdoak"))
+            .withAdminStatus(AutoImportJobUpdatePropertiesAdminStatus.DISABLE);
         model = BinaryData.fromObject(model).toObject(AutoImportJobUpdate.class);
-        Assertions.assertEquals("r", model.tags().get("lsfeaenwabfatkld"));
-        Assertions.assertEquals(AutoImportJobUpdatePropertiesAdminStatus.ENABLE, model.adminStatus());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.tags().get("dsyuuximerqfob"));
+        Assertions.assertEquals(AutoImportJobUpdatePropertiesAdminStatus.DISABLE, model.adminStatus());
     }
 
     // Use "Map.of" if available

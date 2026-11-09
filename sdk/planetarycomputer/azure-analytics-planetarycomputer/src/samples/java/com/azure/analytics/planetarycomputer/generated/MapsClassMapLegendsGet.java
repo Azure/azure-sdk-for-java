@@ -17,7 +17,7 @@ public class MapsClassMapLegendsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-class-map-legend.maps-class-map-legends-get
-        ClassMapLegendResponse response = dataClient.getClassMapLegend("mtbs-severity", null, null);
+        ClassMapLegendResponse response = dataClient.getClassMapLegend("mtbs-severity", (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-class-map-legend.maps-class-map-legends-get
     }
 }

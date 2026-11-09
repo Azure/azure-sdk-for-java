@@ -9,6 +9,8 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.LayoutAwareRouting;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -18,7 +20,7 @@ import java.util.Set;
  * Extended options that may be passed when downloading a blob to a file.
  */
 @Fluent
-public class BlobDownloadToFileOptions {
+public class BlobDownloadToFileOptions implements ValidatableContent {
     private final String filePath;
     private BlobRange range;
     private ParallelTransferOptions parallelTransferOptions;
@@ -27,6 +29,7 @@ public class BlobDownloadToFileOptions {
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
     private ContentValidationAlgorithm contentValidationAlgorithm;
+    private LayoutAwareRouting layoutAwareRouting;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -174,8 +177,18 @@ public class BlobDownloadToFileOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
+    }
+
+    /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
     }
 
     /**
@@ -185,9 +198,21 @@ public class BlobDownloadToFileOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlobDownloadToFileOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
+        return this;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public BlobDownloadToFileOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
         return this;
     }
 }

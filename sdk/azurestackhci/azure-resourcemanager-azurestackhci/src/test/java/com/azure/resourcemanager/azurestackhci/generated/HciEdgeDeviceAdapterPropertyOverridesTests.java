@@ -11,7 +11,7 @@ public final class HciEdgeDeviceAdapterPropertyOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceAdapterPropertyOverrides model = BinaryData
-            .fromString("{\"jumboPacket\":\"x\",\"networkDirect\":\"m\",\"networkDirectTechnology\":\"jivyqlkjuv\"}")
+            .fromString("{\"jumboPacket\":\"w\",\"networkDirect\":\"ilkmk\",\"networkDirectTechnology\":\"olvdnd\"}")
             .toObject(HciEdgeDeviceAdapterPropertyOverrides.class);
     }
 }

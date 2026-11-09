@@ -511,6 +511,8 @@ stimuli:
       - MGMT-API-VERSION-OVERLAP must appear under Blocking.
 
   - name: missing-release-plan
+    tags:
+      rule: release-plan
     environment:
       skills:
         - ".."
@@ -540,3 +542,35 @@ stimuli:
       - Missing release-plan URL must produce MGMT-RELEASE-PLAN citing the PR description.
       - MGMT-RELEASE-PLAN must appear under Warning.
       - The reviewer may continue other review passes.
+
+  - name: table-release-plan-without-http-url
+    tags:
+      rule: release-plan
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-release-plan-table-no-url-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-missing-release-plan-java.diff"
+          dest: "pr-diff/026-NetworkLinks.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "release plan concern detected"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: output-matches
+        name: "release plan concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-RELEASE-PLAN\\]"
+      - type: prompt
+    rubric:
+      - The Release plan row has no HTTP(S) URL, so MGMT-RELEASE-PLAN must appear under Warning and cite the PR description.
+      - Neither the FTP link in the Release plan row nor the HTTPS Pipeline run link satisfies the release-plan rule.

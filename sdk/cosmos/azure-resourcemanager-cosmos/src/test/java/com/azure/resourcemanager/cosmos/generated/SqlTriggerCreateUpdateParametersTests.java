@@ -22,42 +22,44 @@ public final class SqlTriggerCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlTriggerCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"mfxapjwogqqno\",\"body\":\"udcdabtqwpwyawb\",\"triggerType\":\"Pre\",\"triggerOperation\":\"Delete\"},\"options\":{\"throughput\":1611232173,\"autoscaleSettings\":{\"maxThroughput\":1122336945}}},\"id\":\"exaoguya\",\"name\":\"ids\",\"type\":\"ultxijjumfq\",\"location\":\"z\",\"tags\":{\"jng\":\"nm\",\"bjwgnyfus\":\"qdqx\",\"fh\":\"zsvtuikzhajqgl\"},\"identity\":{\"principalId\":\"qryxyn\",\"tenantId\":\"zrdpsovwxznptgoe\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ioovzidsxwaab\":{\"principalId\":\"pfhvfslk\",\"clientId\":\"tjlrigjksky\"},\"kzobgopxlhsln\":{\"principalId\":\"ifrygzn\",\"clientId\":\"axri\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"wklsnoxaxmqe\",\"body\":\"lhhjnh\",\"triggerType\":\"Post\",\"triggerOperation\":\"Create\"},\"options\":{\"throughput\":1952545143,\"autoscaleSettings\":{\"maxThroughput\":837661803}}},\"id\":\"gbv\",\"name\":\"anarfdlpukhpyrne\",\"type\":\"jcpeogkhnmg\",\"location\":\"ouxddbhfhpfpazj\",\"tags\":{\"acn\":\"wjxhpdulon\",\"rljyoogwxhnsdu\":\"qwtehtuevr\"},\"identity\":{\"principalId\":\"bsre\",\"tenantId\":\"fqkfuarenl\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jboslcqxypok\":{\"principalId\":\"nvnaf\",\"clientId\":\"kyfede\"},\"ninvudbchaqdt\":{\"principalId\":\"minqcym\",\"clientId\":\"ngnbdxxew\"},\"xxdtddmflh\":{\"principalId\":\"ec\",\"clientId\":\"ct\"},\"xc\":{\"principalId\":\"tx\",\"clientId\":\"tznapxbannovv\"}}}}")
             .toObject(SqlTriggerCreateUpdateParameters.class);
-        Assertions.assertEquals("z", model.location());
-        Assertions.assertEquals("nm", model.tags().get("jng"));
+        Assertions.assertEquals("ouxddbhfhpfpazj", model.location());
+        Assertions.assertEquals("wjxhpdulon", model.tags().get("acn"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mfxapjwogqqno", model.resource().id());
-        Assertions.assertEquals("udcdabtqwpwyawb", model.resource().body());
-        Assertions.assertEquals(TriggerType.PRE, model.resource().triggerType());
-        Assertions.assertEquals(TriggerOperation.DELETE, model.resource().triggerOperation());
-        Assertions.assertEquals(1611232173, model.options().throughput());
-        Assertions.assertEquals(1122336945, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("wklsnoxaxmqe", model.resource().id());
+        Assertions.assertEquals("lhhjnh", model.resource().body());
+        Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
+        Assertions.assertEquals(TriggerOperation.CREATE, model.resource().triggerOperation());
+        Assertions.assertEquals(1952545143, model.options().throughput());
+        Assertions.assertEquals(837661803, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlTriggerCreateUpdateParameters model = new SqlTriggerCreateUpdateParameters().withLocation("z")
-            .withTags(mapOf("jng", "nm", "bjwgnyfus", "qdqx", "fh", "zsvtuikzhajqgl"))
+        SqlTriggerCreateUpdateParameters model = new SqlTriggerCreateUpdateParameters().withLocation("ouxddbhfhpfpazj")
+            .withTags(mapOf("acn", "wjxhpdulon", "rljyoogwxhnsdu", "qwtehtuevr"))
             .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ioovzidsxwaab", new ManagedServiceIdentityUserAssignedIdentities(),
-                    "kzobgopxlhsln", new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new SqlTriggerResource().withId("mfxapjwogqqno")
-                .withBody("udcdabtqwpwyawb")
-                .withTriggerType(TriggerType.PRE)
-                .withTriggerOperation(TriggerOperation.DELETE))
-            .withOptions(new CreateUpdateOptions().withThroughput(1611232173)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1122336945)));
+                .withUserAssignedIdentities(mapOf("jboslcqxypok", new ManagedServiceIdentityUserAssignedIdentities(),
+                    "ninvudbchaqdt", new ManagedServiceIdentityUserAssignedIdentities(), "xxdtddmflh",
+                    new ManagedServiceIdentityUserAssignedIdentities(), "xc",
+                    new ManagedServiceIdentityUserAssignedIdentities())))
+            .withResource(new SqlTriggerResource().withId("wklsnoxaxmqe")
+                .withBody("lhhjnh")
+                .withTriggerType(TriggerType.POST)
+                .withTriggerOperation(TriggerOperation.CREATE))
+            .withOptions(new CreateUpdateOptions().withThroughput(1952545143)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(837661803)));
         model = BinaryData.fromObject(model).toObject(SqlTriggerCreateUpdateParameters.class);
-        Assertions.assertEquals("z", model.location());
-        Assertions.assertEquals("nm", model.tags().get("jng"));
+        Assertions.assertEquals("ouxddbhfhpfpazj", model.location());
+        Assertions.assertEquals("wjxhpdulon", model.tags().get("acn"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mfxapjwogqqno", model.resource().id());
-        Assertions.assertEquals("udcdabtqwpwyawb", model.resource().body());
-        Assertions.assertEquals(TriggerType.PRE, model.resource().triggerType());
-        Assertions.assertEquals(TriggerOperation.DELETE, model.resource().triggerOperation());
-        Assertions.assertEquals(1611232173, model.options().throughput());
-        Assertions.assertEquals(1122336945, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("wklsnoxaxmqe", model.resource().id());
+        Assertions.assertEquals("lhhjnh", model.resource().body());
+        Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
+        Assertions.assertEquals(TriggerOperation.CREATE, model.resource().triggerOperation());
+        Assertions.assertEquals(1952545143, model.options().throughput());
+        Assertions.assertEquals(837661803, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available
