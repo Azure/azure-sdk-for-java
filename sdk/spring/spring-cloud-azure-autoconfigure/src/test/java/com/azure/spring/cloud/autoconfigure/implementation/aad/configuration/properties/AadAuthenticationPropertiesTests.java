@@ -6,7 +6,11 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pr
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtEncoder;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -24,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.PRIVATE_KEY_JWT;
 
+@Isolated("Run this by itself as it captures System.out")
+@ExtendWith(OutputCaptureExtension.class)
 class AadAuthenticationPropertiesTests {
 
     @Test
@@ -459,5 +465,82 @@ class AadAuthenticationPropertiesTests {
     void constructorWhenJwkSourceNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() -> new AadJwtEncoder(null))
                                             .withMessage("jwkSource cannot be null");
+    }
+
+    // New tests for allowed-group-names warning
+
+    @Test
+    void allowedGroupNamesConfiguredLogsWarning(CapturedOutput output) {
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
+            )
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertTrue(properties.isAllowedGroupNamesConfigured());
+                assertTrue(properties.getUserGroup().getAllowedGroupNames().contains("group1"));
+                assertTrue(properties.getUserGroup().getAllowedGroupNames().contains("group2"));
+
+                String allOutput = output.getAll();
+                assertThat(allOutput).contains("allowed-group-names");
+                assertThat(allOutput).contains("allowed-group-ids");
+                assertThat(allOutput).contains("mutable");
+                assertThat(allOutput).doesNotContain("group1");
+                assertThat(allOutput).doesNotContain("group2");
+            });
+    }
+
+    @Test
+    void allowedGroupNamesEmptyDoesNotLogWarning(CapturedOutput output) {
+        webApplicationContextRunner()
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.isAllowedGroupNamesConfigured()).isFalse();
+                assertThat(properties.getUserGroup().getAllowedGroupNames()).isEmpty();
+
+                String allOutput = output.getAll();
+                assertThat(allOutput).doesNotContain("allowed-group-names");
+                assertThat(allOutput).doesNotContain("mutable");
+            });
+    }
+
+    @Test
+    void allowedGroupIdsConfiguredDoesNotLogWarning(CapturedOutput output) {
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.user-group.allowed-group-ids=7c3a5d22-9093-42d7-b2eb-e72d06bf3718"
+            )
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertTrue(properties.isAllowedGroupIdsConfigured());
+                assertThat(properties.isAllowedGroupNamesConfigured()).isFalse();
+                assertTrue(properties.getUserGroup().getAllowedGroupIds()
+                    .contains("7c3a5d22-9093-42d7-b2eb-e72d06bf3718"));
+
+                String allOutput = output.getAll();
+                assertThat(allOutput).doesNotContain("allowed-group-names");
+                assertThat(allOutput).doesNotContain("mutable");
+            });
+    }
+
+    @Test
+    void allowedGroupNamesAndIdsBothConfiguredLogsWarning(CapturedOutput output) {
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-ids=7c3a5d22-9093-42d7-b2eb-e72d06bf3718"
+            )
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertTrue(properties.isAllowedGroupNamesConfigured());
+                assertTrue(properties.isAllowedGroupIdsConfigured());
+
+                String allOutput = output.getAll();
+                assertThat(allOutput).contains("allowed-group-names");
+                assertThat(allOutput).contains("allowed-group-ids");
+                assertThat(allOutput).contains("mutable");
+                assertThat(allOutput).doesNotContain("group1");
+                assertThat(allOutput).doesNotContain("7c3a5d22-9093-42d7-b2eb-e72d06bf3718");
+            });
     }
 }
