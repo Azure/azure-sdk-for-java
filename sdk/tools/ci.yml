@@ -1,4 +1,3 @@
-# CI validation only.
 trigger:
   branches:
     include:
