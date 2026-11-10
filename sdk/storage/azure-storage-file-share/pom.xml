@@ -78,14 +78,14 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <artifactId>azure-storage-common-private</artifactId>
+      <version>12.37.0</version> <!-- {x-version-update;com.azure:azure-storage-common-private;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <artifactId>azure-storage-common-private</artifactId>
+      <version>12.37.0</version> <!-- {x-version-update;com.azure:azure-storage-common-private;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -115,8 +115,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.38.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <artifactId>azure-storage-blob-private</artifactId>
+      <version>12.38.0</version> <!-- {x-version-update;com.azure:azure-storage-blob-private;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
