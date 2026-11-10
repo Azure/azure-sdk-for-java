@@ -35,7 +35,7 @@ public class Slf4jLoggerShim {
             OptionalDependency.load("org.slf4j.LoggerFactory");
             Slf4jAdapter.initialize();
             return true;
-        } catch (ReflectiveOperationException | LinkageError | RuntimeException e) {
+        } catch (Throwable e) {
             DEFAULT_LOGGER.log(VERBOSE, "Failed to initialize Slf4jLoggerShim.", e);
             return false;
         }
