@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * <p>Instances are created by {@link VoiceAgentsWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
  * subscriber to {@link #receiveEvents()}. Close the session when it is no longer needed.</p>
  */
-public final class VoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+public final class VoiceAgentsWebSocketSessionAsyncClient implements AsyncCloseable {
     private final WebSocketSessionAsyncTransport transport;
     private final Consumer<Throwable> malformedEventHandler;
 
@@ -257,13 +257,5 @@ public final class VoiceAgentsWebSocketSessionAsyncClient implements AsyncClosea
      */
     public Mono<Void> closeAsync(int code, String reason) {
         return transport.closeAsync(code, reason);
-    }
-
-    /**
-     * Closes the WebSocket session synchronously.
-     */
-    @Override
-    public void close() {
-        transport.close();
     }
 }

@@ -18,6 +18,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -74,6 +75,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ResourceLock("voice-agent-websocket-tls")
 public class VoiceAgentWebSocketSessionAsyncTests {
     private DisposableServer server;
+
+    @Test
+    public void sessionExposesOnlyAsynchronousClose() {
+        assertTrue(AsyncCloseable.class.isAssignableFrom(VoiceAgentsWebSocketSessionAsyncClient.class));
+        assertFalse(AutoCloseable.class.isAssignableFrom(VoiceAgentsWebSocketSessionAsyncClient.class));
+        assertThrows(NoSuchMethodException.class,
+            () -> VoiceAgentsWebSocketSessionAsyncClient.class.getMethod("close"));
+    }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -184,7 +193,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 .block(Duration.ofSeconds(5));
             StepVerifier.create(session.receiveEvents().take(3)).expectNextCount(3).verifyComplete();
         } finally {
-            session.close();
+            session.closeAsync().block(Duration.ofSeconds(5));
         }
         assertEquals(3, messages.size());
         assertEquals("response.create", BinaryData.fromString(messages.get(0)).toObject(Map.class).get("type"));
@@ -204,7 +213,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         try {
             events = session.receiveEvents().take(2).collectList().block(Duration.ofSeconds(5));
         } finally {
-            session.close();
+            session.closeAsync().block(Duration.ofSeconds(5));
         }
         assertEquals(2, events.size());
         assertInstanceOf(RealtimeSessionCreatedEvent.class, events.get(0));
@@ -227,7 +236,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .assertNext(this::assertWarningEvent)
             .assertNext(this::assertWarningEvent)
             .verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
         assertEquals(2, failures.get());
     }
 
@@ -255,7 +264,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             } else {
                 received.addAll(session.receiveEvents().collectList().block(Duration.ofSeconds(5)));
             }
-            session.close();
+            session.closeAsync().block(Duration.ofSeconds(5));
             if (!overflowError) {
                 assertEquals(2, received.size());
                 int first = strategy == VoiceAgentWebSocketOverflowStrategy.DROP_OLDEST ? 2 : 0;
@@ -293,7 +302,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 .assertNext(received -> assertInstanceOf(RawRealtimeServerEvent.class, received))
                 .verifyComplete();
         } finally {
-            session.close();
+            session.closeAsync().block(Duration.ofSeconds(5));
         }
         VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions();
         assertThrows(IllegalArgumentException.class, () -> options.setReceiveBufferCapacity(0));
@@ -343,7 +352,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .assertNext(received -> assertEquals(42,
                 ((RawRealtimeServerEvent) received).getRawEvent().toObject(Map.class).get("value")))
             .verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
         assertEquals(1, messages.size());
     }
 
@@ -416,7 +425,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             .expectErrorMatches(
                 error -> error instanceof IllegalStateException && error.getMessage().contains("Only one"))
             .verify();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
         assertFalse(session.isOpen());
     }
 
@@ -509,7 +518,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
             RawRealtimeServerEvent raw = assertInstanceOf(RawRealtimeServerEvent.class, event);
             assertEquals(42, raw.getRawEvent().toObject(Map.class).get("value"));
         }).verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
     }
 
     @Test
@@ -521,7 +530,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
     }
 
     @Test
@@ -531,7 +540,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         VoiceAgentsWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("agent", tlsOptions()).block();
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
     }
 
     @Test
@@ -564,7 +573,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
                 .block(Duration.ofSeconds(5));
         assertEquals("wss", URI.create(session.getEndpoint()).getScheme());
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
-        session.close();
+        session.closeAsync().block(Duration.ofSeconds(5));
     }
 
     private AgentsClientBuilder builder(int port) {
