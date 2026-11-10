@@ -27,7 +27,6 @@ import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTe
 @SuppressWarnings("unchecked")
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    static final OTelSpan NOOP_SPAN;
     private static final Object ERROR_TYPE_ATTRIBUTE_KEY;
     private static final TracingScope NOOP_SCOPE = () -> {
     };
@@ -39,22 +38,15 @@ public class OTelSpan implements Span {
     private OTelSpanContext spanContext;
 
     static {
-        OTelSpan noopSpan = null;
         Object errorTypeAttributeKey = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                Object invalidSpan = io.opentelemetry.api.trace.Span.getInvalid();
-                Object rootContext = OTelContext.getCurrent();
-
-                noopSpan = new OTelSpan(invalidSpan, rootContext);
                 errorTypeAttributeKey = OTelAttributeKey.getKey(ERROR_TYPE_KEY, "");
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
         }
-
-        NOOP_SPAN = noopSpan;
 
         ERROR_TYPE_ATTRIBUTE_KEY = errorTypeAttributeKey;
     }
@@ -155,10 +147,6 @@ public class OTelSpan implements Span {
      */
     public SpanKind getSpanKind() {
         return spanKind;
-    }
-
-    Object getOtelSpan() {
-        return otelSpan;
     }
 
     static OTelSpan createPropagatingSpan(OTelSpanContext spanContext) {

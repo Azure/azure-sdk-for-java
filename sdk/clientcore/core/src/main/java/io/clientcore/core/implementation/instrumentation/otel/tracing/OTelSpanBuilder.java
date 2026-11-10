@@ -92,7 +92,7 @@ public class OTelSpanBuilder implements SpanBuilder {
                     .setParent((Context) otelParentContext));
                 FallbackInvoker.run(LOGGER, () -> ((io.opentelemetry.api.trace.SpanBuilder) otelSpanBuilder)
                     .setSpanKind(toOtelSpanKind(spanKind)));
-                otelSpan = FallbackInvoker.call(LOGGER, OTelSpan.NOOP_SPAN.getOtelSpan(),
+                otelSpan = FallbackInvoker.call(LOGGER, null,
                     () -> ((io.opentelemetry.api.trace.SpanBuilder) otelSpanBuilder).startSpan());
             }
 
@@ -101,7 +101,7 @@ public class OTelSpanBuilder implements SpanBuilder {
             }
         }
 
-        return OTelSpan.NOOP_SPAN;
+        return Span.noop();
     }
 
     private static io.opentelemetry.api.trace.SpanKind toOtelSpanKind(SpanKind spanKind) {

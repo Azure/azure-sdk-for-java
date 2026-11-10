@@ -32,10 +32,10 @@ public class Slf4jLoggerShim {
 
     private static boolean isSlf4jAvailable() {
         try {
-            Class.forName("org.slf4j.LoggerFactory", false, Slf4jLoggerShim.class.getClassLoader());
+            OptionalDependency.load("org.slf4j.LoggerFactory");
             Slf4jAdapter.initialize();
             return true;
-        } catch (ClassNotFoundException | LinkageError | RuntimeException e) {
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException e) {
             DEFAULT_LOGGER.log(VERBOSE, "Failed to initialize Slf4jLoggerShim.", e);
             return false;
         }

@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
+import io.clientcore.core.implementation.instrumentation.OptionalDependency;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.context.Context;
@@ -19,6 +20,8 @@ public final class OTelInitializer {
     private static boolean isAvailable() {
         try {
             ClassLoader loader = OTelInitializer.class.getClassLoader();
+            OptionalDependency.load("io.opentelemetry.api.OpenTelemetry");
+            OptionalDependency.load("io.opentelemetry.context.Context");
             for (String className : new String[] {
                 "io.opentelemetry.api.common.AttributeKey",
                 "io.opentelemetry.api.common.Attributes",
@@ -54,7 +57,7 @@ public final class OTelInitializer {
             }
             // Class literals verify JPMS access without initializing the OpenTelemetry APIs.
             return OpenTelemetry.class.isInterface() && Context.class.isInterface();
-        } catch (ClassNotFoundException | LinkageError | SecurityException e) {
+        } catch (ReflectiveOperationException | LinkageError | SecurityException e) {
             LOGGER.atVerbose().setThrowable(e).log("OpenTelemetry was not initialized.");
             return false;
         }
