@@ -17,14 +17,14 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Update_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Update_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 02 - Update a recurring scheduled action schedule.
+     * Sample code: 02 - Update a recurring bulk action schedule.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroTwoSpaceHyphenMinusSpaceUpdateSpaceaSpacerecurringSpacescheduledSpaceactionSpaceschedule(
+    public static void zeroTwoSpaceHyphenMinusSpaceUpdateSpaceaSpacerecurringSpacebulkSpaceactionSpaceschedule(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .update("example-rg", "weekday-start",
@@ -38,15 +38,15 @@ public final class ScheduledActionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Update_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Update_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Update the action type of a recurring scheduled action.
+     * Sample code: 01 - Update the action type of a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceUpdateSpacetheSpaceactionSpacetypeSpaceofSpaceaSpacerecurringSpacescheduledSpaceaction(
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacetheSpaceactionSpacetypeSpaceofSpaceaSpacerecurringSpacebulkSpaceaction(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .update("example-rg", "weekday-start",

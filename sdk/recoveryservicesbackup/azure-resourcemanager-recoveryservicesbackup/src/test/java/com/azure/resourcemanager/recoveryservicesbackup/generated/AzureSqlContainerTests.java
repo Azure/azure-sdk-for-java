@@ -13,27 +13,27 @@ public final class AzureSqlContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlContainer model = BinaryData.fromString(
-            "{\"containerType\":\"AzureSqlContainer\",\"friendlyName\":\"auutpwoqhihe\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"zpnfqntcypsxj\",\"healthStatus\":\"oimwkslirc\",\"protectableObjectType\":\"jxv\",\"sourceLocation\":\"fceacvlhvygd\"}")
+            "{\"containerType\":\"AzureSqlContainer\",\"friendlyName\":\"zabs\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"phojeevyhy\",\"healthStatus\":\"gzfc\",\"protectableObjectType\":\"gomfgbeglq\",\"sourceLocation\":\"eohibet\"}")
             .toObject(AzureSqlContainer.class);
-        Assertions.assertEquals("auutpwoqhihe", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("zpnfqntcypsxj", model.registrationStatus());
-        Assertions.assertEquals("oimwkslirc", model.healthStatus());
-        Assertions.assertEquals("jxv", model.protectableObjectType());
+        Assertions.assertEquals("zabs", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("phojeevyhy", model.registrationStatus());
+        Assertions.assertEquals("gzfc", model.healthStatus());
+        Assertions.assertEquals("gomfgbeglq", model.protectableObjectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlContainer model = new AzureSqlContainer().withFriendlyName("auutpwoqhihe")
-            .withBackupManagementType(BackupManagementType.MAB)
-            .withRegistrationStatus("zpnfqntcypsxj")
-            .withHealthStatus("oimwkslirc")
-            .withProtectableObjectType("jxv");
+        AzureSqlContainer model = new AzureSqlContainer().withFriendlyName("zabs")
+            .withBackupManagementType(BackupManagementType.DPM)
+            .withRegistrationStatus("phojeevyhy")
+            .withHealthStatus("gzfc")
+            .withProtectableObjectType("gomfgbeglq");
         model = BinaryData.fromObject(model).toObject(AzureSqlContainer.class);
-        Assertions.assertEquals("auutpwoqhihe", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("zpnfqntcypsxj", model.registrationStatus());
-        Assertions.assertEquals("oimwkslirc", model.healthStatus());
-        Assertions.assertEquals("jxv", model.protectableObjectType());
+        Assertions.assertEquals("zabs", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("phojeevyhy", model.registrationStatus());
+        Assertions.assertEquals("gzfc", model.healthStatus());
+        Assertions.assertEquals("gomfgbeglq", model.protectableObjectType());
     }
 }

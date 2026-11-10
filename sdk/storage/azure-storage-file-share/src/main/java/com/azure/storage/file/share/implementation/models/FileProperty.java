@@ -68,6 +68,24 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
     @Generated
     private String eTag;
 
+    /*
+     * NFS only. The owner user identifier (UID) of the file.
+     */
+    @Generated
+    private String owner;
+
+    /*
+     * NFS only. The owner group identifier (GID) of the file.
+     */
+    @Generated
+    private String group;
+
+    /*
+     * NFS only. The mode of the file.
+     */
+    @Generated
+    private String fileMode;
+
     /**
      * Creates an instance of FileProperty class.
      * 
@@ -154,6 +172,36 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
         return this.eTag;
     }
 
+    /**
+     * Get the owner property: NFS only. The owner user identifier (UID) of the file.
+     * 
+     * @return the owner value.
+     */
+    @Generated
+    public String getOwner() {
+        return this.owner;
+    }
+
+    /**
+     * Get the group property: NFS only. The owner group identifier (GID) of the file.
+     * 
+     * @return the group value.
+     */
+    @Generated
+    public String getGroup() {
+        return this.group;
+    }
+
+    /**
+     * Get the fileMode property: NFS only. The mode of the file.
+     * 
+     * @return the fileMode value.
+     */
+    @Generated
+    public String getFileMode() {
+        return this.fileMode;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -176,6 +224,9 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
             this.changeTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.changeTime));
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
         xmlWriter.writeStringElement("Etag", this.eTag);
+        xmlWriter.writeStringElement("Uid", this.owner);
+        xmlWriter.writeStringElement("Gid", this.group);
+        xmlWriter.writeStringElement("Mode", this.fileMode);
         return xmlWriter.writeEndElement();
     }
 
@@ -216,6 +267,9 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
             OffsetDateTime changeTime = null;
             DateTimeRfc1123 lastModified = null;
             String eTag = null;
+            String owner = null;
+            String group = null;
+            String fileMode = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
@@ -236,6 +290,12 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
                     lastModified = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Etag".equals(elementName.getLocalPart())) {
                     eTag = reader.getStringElement();
+                } else if ("Uid".equals(elementName.getLocalPart())) {
+                    owner = reader.getStringElement();
+                } else if ("Gid".equals(elementName.getLocalPart())) {
+                    group = reader.getStringElement();
+                } else if ("Mode".equals(elementName.getLocalPart())) {
+                    fileMode = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
@@ -247,6 +307,9 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
             deserializedFileProperty.changeTime = changeTime;
             deserializedFileProperty.lastModified = lastModified;
             deserializedFileProperty.eTag = eTag;
+            deserializedFileProperty.owner = owner;
+            deserializedFileProperty.group = group;
+            deserializedFileProperty.fileMode = fileMode;
 
             return deserializedFileProperty;
         });

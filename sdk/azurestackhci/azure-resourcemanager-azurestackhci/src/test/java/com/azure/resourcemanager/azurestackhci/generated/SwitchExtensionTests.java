@@ -11,7 +11,8 @@ public final class SwitchExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SwitchExtension model = BinaryData
-            .fromString("{\"switchId\":\"oxnyuffatsg\",\"extensionName\":\"ipwcxbyu\",\"extensionEnabled\":true}")
+            .fromString(
+                "{\"switchId\":\"mxqhndvnoamldse\",\"extensionName\":\"ohdjhhflzok\",\"extensionEnabled\":false}")
             .toObject(SwitchExtension.class);
     }
 }

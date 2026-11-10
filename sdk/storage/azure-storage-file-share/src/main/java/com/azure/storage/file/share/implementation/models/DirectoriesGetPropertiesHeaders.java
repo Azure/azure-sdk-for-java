@@ -81,6 +81,12 @@ public final class DirectoriesGetPropertiesHeaders {
     private final String fileParentId;
 
     /*
+     * The x-ms-file-name property.
+     */
+    @Generated
+    private final String fileName;
+
+    /*
      * The x-ms-server-encrypted property.
      */
     @Generated
@@ -150,6 +156,8 @@ public final class DirectoriesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
 
+    private static final HttpHeaderName X_MS_FILE_NAME = HttpHeaderName.fromString("x-ms-file-name");
+
     private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
 
     private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
@@ -198,6 +206,7 @@ public final class DirectoriesGetPropertiesHeaders {
         }
         this.fileId = rawHeaders.getValue(X_MS_FILE_ID);
         this.fileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
+        this.fileName = rawHeaders.getValue(X_MS_FILE_NAME);
         String serverEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (serverEncrypted != null) {
             this.serverEncrypted = Boolean.parseBoolean(serverEncrypted);
@@ -335,6 +344,16 @@ public final class DirectoriesGetPropertiesHeaders {
     @Generated
     public String getFileParentId() {
         return this.fileParentId;
+    }
+
+    /**
+     * Get the fileName property: The x-ms-file-name property.
+     * 
+     * @return the fileName value.
+     */
+    @Generated
+    public String getFileName() {
+        return this.fileName;
     }
 
     /**

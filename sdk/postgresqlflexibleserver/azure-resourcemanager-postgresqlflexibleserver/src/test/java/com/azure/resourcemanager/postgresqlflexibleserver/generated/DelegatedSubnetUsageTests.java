@@ -10,8 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DelegatedSubnet
 public final class DelegatedSubnetUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnetUsage model
-            = BinaryData.fromString("{\"subnetName\":\"uxswqrntvl\",\"usage\":575631877171555982}")
-                .toObject(DelegatedSubnetUsage.class);
+        DelegatedSubnetUsage model = BinaryData.fromString("{\"subnetName\":\"iqbi\",\"usage\":5212550250239758699}")
+            .toObject(DelegatedSubnetUsage.class);
     }
 }

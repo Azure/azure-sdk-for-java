@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.core.util.Configuration;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -14,9 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PropertyConvertorUtils {
-
-    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-
     public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
         KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(environmentPropertyKey -> {
             String value = getPropertyValue(environmentPropertyKey);
@@ -41,11 +37,12 @@ public class PropertyConvertorUtils {
     }
 
     public static String getPropertyValue(String property) {
-        return GLOBAL_CONFIGURATION.get(property, System.getenv(property));
-    }
+        String value = System.getProperty(property);
+        if (value != null) {
+            return value;
+        }
 
-    public static String getPropertyValue(String property, String defaultValue) {
-        return GLOBAL_CONFIGURATION.get(property, defaultValue);
+        return System.getenv(property);
     }
 
 }

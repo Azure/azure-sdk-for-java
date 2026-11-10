@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 /**
- * The file permission format.
+ * Defines values for FilePermissionFormat.
  */
 public enum FilePermissionFormat {
     /**

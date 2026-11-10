@@ -157,6 +157,41 @@ public final class ExpansionJobInner extends Resource {
     }
 
     /**
+     * Get the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing. Optional,
+     * defaults to true.
+     * 
+     * @return the runRebalanceJob value.
+     */
+    public Boolean runRebalanceJob() {
+        return this.innerProperties() == null ? null : this.innerProperties().runRebalanceJob();
+    }
+
+    /**
+     * Set the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing. Optional,
+     * defaults to true.
+     * 
+     * @param runRebalanceJob the runRebalanceJob value to set.
+     * @return the ExpansionJobInner object itself.
+     */
+    public ExpansionJobInner withRunRebalanceJob(Boolean runRebalanceJob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpansionJobProperties();
+        }
+        this.innerProperties().withRunRebalanceJob(runRebalanceJob);
+        return this;
+    }
+
+    /**
+     * Get the rebalanceJobId property: Fully qualified ARM resource ID of the child rebalance job created by this
+     * expansion. Populated after RebalanceJob is created.
+     * 
+     * @return the rebalanceJobId value.
+     */
+    public String rebalanceJobId() {
+        return this.innerProperties() == null ? null : this.innerProperties().rebalanceJobId();
+    }
+
+    /**
      * Get the state property: The operational state of the expansion job. InProgress indicates the expansion is still
      * running. Completed indicates expansion finished successfully. Failed means the expansion was unable to complete
      * due to a fatal error. Deleting indicates the expansion is being rolled back.

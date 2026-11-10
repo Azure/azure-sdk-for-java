@@ -213,8 +213,12 @@ public final class ConfigurationStoreImpl
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationStores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "resourceGroupName");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}",
+            "configStoreName");
     }
 
     public ConfigurationStore refresh() {

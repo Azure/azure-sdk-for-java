@@ -4,12 +4,15 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
-import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.implementation.telemetry.GenAiInstrumentation;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -57,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -92,9 +94,8 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
@@ -102,6 +103,8 @@ public final class AgentsClientBuilder
 
     private static final String VOICE_AGENTS_PREVIEW_FEATURES
         = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
+
+    private static final String PIPELINE_AUTHENTICATION_PLACEHOLDER = "pipeline-authentication";
 
     private boolean allowPreview;
 
@@ -389,7 +392,21 @@ public final class AgentsClientBuilder
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
-        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures));
+    }
+
+    private HttpPipeline resolveOpenAIHttpPipeline(String foundryFeatures) {
+        HttpPipeline localPipeline = resolvePipeline(foundryFeatures);
+        if (pipeline != null && tokenCredential != null) {
+            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
+                new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
+        return localPipeline;
+    }
+
+    private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures,
+        OpenAITracingContextBridge contextBridge) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures), contextBridge);
     }
 
     /**
@@ -398,8 +415,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        return new ResponsesClient(getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        return new ResponsesClient(
+            getOpenAIClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -408,8 +429,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        return new ResponsesAsyncClient(
+            getOpenAIAsyncClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -480,8 +505,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -498,8 +522,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -522,7 +545,8 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsAsyncClient.
      */
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            new GenAiAgentTracing(createInstrumentation()));
     }
 
     /**
@@ -531,7 +555,42 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsClient.
      */
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            new GenAiAgentTracing(createInstrumentation()));
+    }
+
+    /**
+     * Builds the azure-core {@link com.azure.core.util.tracing.Tracer} for the agents clients from the configured
+     * {@link ClientOptions#getTracingOptions()}. The tracer is a no-op unless an OpenTelemetry implementation is
+     * present and tracing is enabled for the process.
+     *
+     * @return the tracer instance.
+     */
+    private com.azure.core.util.tracing.Tracer createTracer() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.LibraryTelemetryOptions telemetryOptions
+            = new com.azure.core.util.LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace("Microsoft.CognitiveServices")
+                .setSchemaUrl(GenAiInstrumentation.OTEL_SCHEMA_URL);
+        final com.azure.core.util.TracingOptions tracingOptions
+            = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
+        return com.azure.core.util.tracing.TracerProvider.getDefaultProvider()
+            .createTracer(telemetryOptions, tracingOptions);
+    }
+
+    private GenAiInstrumentation createInstrumentation() {
+        return createInstrumentation(createTracer());
+    }
+
+    private GenAiInstrumentation createInstrumentation(com.azure.core.util.tracing.Tracer tracer) {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.MetricsOptions metricsOptions
+            = this.clientOptions == null ? null : this.clientOptions.getMetricsOptions();
+        final com.azure.core.util.metrics.Meter meter = com.azure.core.util.metrics.MeterProvider.getDefaultProvider()
+            .createMeter(clientName, clientVersion, metricsOptions);
+        return new GenAiInstrumentation(this.endpoint, this.configuration, tracer, meter);
     }
 
     /**
@@ -584,7 +643,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an asynchronous beta Agents client for preview agent optimization operations.
+         * Builds an asynchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
@@ -647,7 +706,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * Builds a synchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the

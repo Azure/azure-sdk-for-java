@@ -36,17 +36,17 @@ public final class BackupResourceStorageConfigsNonCrrsPatchWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupResourceStorageConfigsNonCrrs()
-            .patchWithResponse("pxvjnzd", "vocoj",
+            .patchWithResponse("zfymcwmbupyvqyvl", "qiipsejb",
                 new BackupResourceConfigResourceInner()
-                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.INVALID)
-                        .withStorageType(StorageType.LOCALLY_REDUNDANT)
+                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.ZONE_REDUNDANT)
+                        .withStorageType(StorageType.INVALID)
                         .withStorageTypeState(StorageTypeState.INVALID)
                         .withCrossRegionRestoreFlag(true)
-                        .withDedupState(DedupState.ENABLED)
-                        .withXcoolState(XcoolState.INVALID))
-                    .withTags(mapOf("ilmhivzkwwwnc", "xv"))
-                    .withLocation("rzd")
-                    .withEtag("lskzptjxul"),
+                        .withDedupState(DedupState.INVALID)
+                        .withXcoolState(XcoolState.DISABLED))
+                    .withTags(mapOf("dpxot", "snuepywyjln", "weebiphryv", "diiaocqibzji", "w", "jw"))
+                    .withLocation("sratjhdhzyb")
+                    .withEtag("ijh"),
                 com.azure.core.util.Context.NONE);
 
     }

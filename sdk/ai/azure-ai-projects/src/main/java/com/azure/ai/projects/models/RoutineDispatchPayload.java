@@ -29,7 +29,7 @@ public class RoutineDispatchPayload implements JsonSerializable<RoutineDispatchP
      * Creates an instance of RoutineDispatchPayload class.
      */
     @Generated
-    public RoutineDispatchPayload() {
+    protected RoutineDispatchPayload() {
     }
 
     /**

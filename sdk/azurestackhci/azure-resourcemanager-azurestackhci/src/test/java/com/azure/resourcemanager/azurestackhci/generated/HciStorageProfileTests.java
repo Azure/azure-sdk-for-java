@@ -11,7 +11,7 @@ public final class HciStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciStorageProfile model = BinaryData.fromString(
-            "{\"poolableDisksCount\":5513165918276447064,\"disks\":[{\"id\":\"nictteajo\",\"sizeInBytes\":\"ygspnbonhpczykm\",\"type\":\"p\",\"model\":\"xqcsehch\",\"manufacturer\":\"ufmpqumqyjgy\",\"isSupported\":true}]}")
+            "{\"poolableDisksCount\":1910453689912487458,\"disks\":[{\"id\":\"wrpqafgfugsnnf\",\"sizeInBytes\":\"et\",\"type\":\"ypococtfjgtixr\",\"model\":\"zuyt\",\"manufacturer\":\"mlmuowol\",\"isSupported\":false},{\"id\":\"iropionszon\",\"sizeInBytes\":\"ngajinnixjawrtmj\",\"type\":\"myccx\",\"model\":\"hcoxov\",\"manufacturer\":\"khenlus\",\"isSupported\":false},{\"id\":\"dtjxtxrdcqt\",\"sizeInBytes\":\"idttgepus\",\"type\":\"yjtcvuwk\",\"model\":\"iziesfuughtuq\",\"manufacturer\":\"cjxeygt\",\"isSupported\":false},{\"id\":\"uicbuewmrsw\",\"sizeInBytes\":\"lx\",\"type\":\"rhwpus\",\"model\":\"baqehgpdoh\",\"manufacturer\":\"qatucoigebxnc\",\"isSupported\":true}]}")
             .toObject(HciStorageProfile.class);
     }
 }

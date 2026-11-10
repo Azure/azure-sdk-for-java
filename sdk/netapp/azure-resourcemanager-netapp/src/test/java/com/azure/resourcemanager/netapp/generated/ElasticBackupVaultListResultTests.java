@@ -12,10 +12,10 @@ public final class ElasticBackupVaultListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupVaultListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"kzjv\",\"location\":\"iirhgfgrwsd\",\"tags\":{\"bglbyvict\":\"atzv\"},\"id\":\"tbrxkjz\",\"name\":\"rgxffmshkw\",\"type\":\"bkgozxwopdbydpi\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"napxbiygnug\",\"location\":\"nfsm\",\"tags\":{\"iquvrehm\":\"tuxuuyilflq\",\"ytqj\":\"njhvsujztc\",\"auunfprnjletlx\":\"w\",\"ddoui\":\"mr\"},\"id\":\"amowaziynknlqwzd\",\"name\":\"piwhxqs\",\"type\":\"dtmaa\"}],\"nextLink\":\"uhuxylrjvmtyg\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"egizv\",\"location\":\"felisdjub\",\"tags\":{\"bsazgakg\":\"qigkx\",\"apvu\":\"cyrcmjdmspo\"},\"id\":\"rylniofrzg\",\"name\":\"zjedmstkvnlv\",\"type\":\"bcuiiz\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"eTag\":\"ansnvp\",\"location\":\"bmikost\",\"tags\":{\"fy\":\"kiwbuqnyoph\"},\"id\":\"sgcrpfbcunezzce\",\"name\":\"elfwy\",\"type\":\"wl\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"tnpsihclaf\",\"location\":\"aylp\",\"tags\":{\"mwqkchcxwaxf\":\"qqwzt\"},\"id\":\"w\",\"name\":\"jkjexf\",\"type\":\"eqvhpsylkk\"}],\"nextLink\":\"kbffmbmx\"}")
             .toObject(ElasticBackupVaultListResult.class);
-        Assertions.assertEquals("iirhgfgrwsd", model.value().get(0).location());
-        Assertions.assertEquals("atzv", model.value().get(0).tags().get("bglbyvict"));
-        Assertions.assertEquals("uhuxylrjvmtyg", model.nextLink());
+        Assertions.assertEquals("felisdjub", model.value().get(0).location());
+        Assertions.assertEquals("qigkx", model.value().get(0).tags().get("bsazgakg"));
+        Assertions.assertEquals("kbffmbmx", model.nextLink());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesGetMongoDBCollectionThroughputSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBCollectionThroughputGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionThroughputGet.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionThroughputGet.

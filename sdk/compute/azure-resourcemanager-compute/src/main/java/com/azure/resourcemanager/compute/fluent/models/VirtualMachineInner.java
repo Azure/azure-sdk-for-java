@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.FlexProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
@@ -343,6 +344,43 @@ public final class VirtualMachineInner extends Resource {
             this.innerProperties = new VirtualMachinePropertiesInner();
         }
         this.innerProperties().withHardwareProfile(hardwareProfile);
+        return this;
+    }
+
+    /**
+     * Get the flexProfile property: [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a
+     * compatible alternative VM size based on capacity and placement considerations, and returns the deployed size in
+     * hardwareProfile.vmSize. A request that adds flexProfile must omit hardwareProfile.vmSize. For a virtual machine
+     * that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed size is ignored, so a GET response can be
+     * sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request that omits flexProfile and
+     * sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null
+     * properties.availabilitySet, properties.capacityReservation, properties.host, properties.hostGroup,
+     * properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+     * 
+     * @return the flexProfile value.
+     */
+    public FlexProfile flexProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().flexProfile();
+    }
+
+    /**
+     * Set the flexProfile property: [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a
+     * compatible alternative VM size based on capacity and placement considerations, and returns the deployed size in
+     * hardwareProfile.vmSize. A request that adds flexProfile must omit hardwareProfile.vmSize. For a virtual machine
+     * that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed size is ignored, so a GET response can be
+     * sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request that omits flexProfile and
+     * sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null
+     * properties.availabilitySet, properties.capacityReservation, properties.host, properties.hostGroup,
+     * properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+     * 
+     * @param flexProfile the flexProfile value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withFlexProfile(FlexProfile flexProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withFlexProfile(flexProfile);
         return this;
     }
 

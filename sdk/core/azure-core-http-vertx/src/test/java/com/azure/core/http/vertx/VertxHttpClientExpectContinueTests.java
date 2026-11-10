@@ -22,6 +22,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class VertxHttpClientExpectContinueTests {
     private static final byte[] BODY = new byte[1024];
+    private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
+    private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(30);
+    // Keep this below the server's 500 ms settle window and the one-second continue fallback.
+    private static final Duration WRITE_TIMEOUT = Duration.ofMillis(250);
 
     @ParameterizedTest
     @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })
@@ -47,8 +52,9 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
-            HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpClient client
+                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
+            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response);
             assertEquals(201, response.getStatusCode());
@@ -70,8 +76,9 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
-            HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpClient client
+                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
+            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response, "the request did not complete");
             assertEquals(201, response.getStatusCode());
@@ -92,7 +99,7 @@ public class VertxHttpClientExpectContinueTests {
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
             HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response, "the request did not complete");
             assertEquals(401, response.getStatusCode());
@@ -111,7 +118,8 @@ public class VertxHttpClientExpectContinueTests {
             server.start();
 
             HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY)).block();
+            HttpResponse response
+                = client.send(new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY)).block(TEST_TIMEOUT);
 
             assertNotNull(response);
             assertEquals(201, response.getStatusCode());
@@ -170,7 +178,7 @@ public class VertxHttpClientExpectContinueTests {
         }
 
         boolean awaitRequest() throws InterruptedException {
-            return requestHandled.await(30, TimeUnit.SECONDS);
+            return requestHandled.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
         }
 
         private void serve() {
@@ -201,7 +209,7 @@ public class VertxHttpClientExpectContinueTests {
                     out.flush();
                 }
 
-                socket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(10));
+                socket.setSoTimeout((int) TEST_TIMEOUT.toMillis());
                 bodyBytesAfterContinue = readBody(in, contentLength - bodyBytesBeforeContinue);
 
                 out.write("HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n".getBytes(StandardCharsets.UTF_8));

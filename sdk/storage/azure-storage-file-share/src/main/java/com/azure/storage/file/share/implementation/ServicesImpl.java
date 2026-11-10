@@ -549,6 +549,7 @@ public final class ServicesImpl {
      *                 NextAllowedProvisionedIopsDowngradeTime: DateTimeRfc1123 (Optional)
      *                 NextAllowedProvisionedBandwidthDowngradeTime: DateTimeRfc1123 (Optional)
      *                 EnableSmbDirectoryLease: Boolean (Optional)
+     *                 Creation-Time: DateTimeRfc1123 (Optional)
      *             }
      *             Metadata (Optional): {
      *                 String: String (Required)
@@ -650,6 +651,7 @@ public final class ServicesImpl {
      *                 NextAllowedProvisionedIopsDowngradeTime: DateTimeRfc1123 (Optional)
      *                 NextAllowedProvisionedBandwidthDowngradeTime: DateTimeRfc1123 (Optional)
      *                 EnableSmbDirectoryLease: Boolean (Optional)
+     *                 Creation-Time: DateTimeRfc1123 (Optional)
      *             }
      *             Metadata (Optional): {
      *                 String: String (Required)

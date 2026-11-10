@@ -28,7 +28,7 @@ public final class ProjectConnectionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.projectConnections()
-            .deleteWithResponse("rusyzai", "npsjnpc", "plujyduonb", "awsaoplvvmnbkx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jkscecmbaajdfw", "dkqlvzkf", "kdesb", "jqtl", com.azure.core.util.Context.NONE);
 
     }
 }

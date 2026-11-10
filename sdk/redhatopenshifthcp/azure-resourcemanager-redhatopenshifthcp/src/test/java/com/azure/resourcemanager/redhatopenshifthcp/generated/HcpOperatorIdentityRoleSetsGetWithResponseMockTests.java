@@ -22,7 +22,7 @@ public final class HcpOperatorIdentityRoleSetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"mfwdgzxu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"vpa\",\"resourceId\":\"rsre\"}]},{\"name\":\"zvxurisjnhny\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"fq\",\"resourceId\":\"zgxmr\"},{\"name\":\"ublwpcesutrg\",\"resourceId\":\"upauut\"}]}],\"dataPlaneOperators\":[{\"name\":\"oqh\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"jqgwzp\",\"resourceId\":\"fqntcyp\"},{\"name\":\"xjvfoimwksl\",\"resourceId\":\"rcizjxvyd\"}]},{\"name\":\"ceacvlhvygdy\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"mrtwna\",\"resourceId\":\"jslb\"},{\"name\":\"wkojgcyztsfmzn\",\"resourceId\":\"aeqphchqnr\"},{\"name\":\"rpxeh\",\"resourceId\":\"wrykqgai\"}]}]},\"id\":\"viklb\",\"name\":\"dvk\",\"type\":\"bejdznxcv\"}";
+            = "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"vjlboxqvk\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"xhom\",\"resourceId\":\"ynhdwdigum\"}]},{\"name\":\"nraauzz\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"a\",\"resourceId\":\"ysdzhez\"},{\"name\":\"wva\",\"resourceId\":\"qyuvvfonkp\"},{\"name\":\"hqyikvy\",\"resourceId\":\"auy\"},{\"name\":\"vluwmncsttij\",\"resourceId\":\"y\"}]},{\"name\":\"vpo\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"sgsgbdhu\",\"resourceId\":\"qgnjdgkynscli\"}]},{\"name\":\"hzvhxnkomtkubo\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"nvdxzxhihfrbbc\",\"resourceId\":\"vqagtltdhlf\"},{\"name\":\"qojpy\",\"resourceId\":\"vgtrdcnifmzzs\"}]}],\"dataPlaneOperators\":[{\"name\":\"m\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"ysuxmprafwgck\",\"resourceId\":\"ocxvdfffwafqr\"},{\"name\":\"udaspavehh\",\"resourceId\":\"vkbunzozudh\"},{\"name\":\"xg\",\"resourceId\":\"moy\"},{\"name\":\"cdyuibhmfdnbzyd\",\"resourceId\":\"f\"}]},{\"name\":\"fcjnaeoisrvhmgor\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"kiscvwmzhwpl\",\"resourceId\":\"faxvxil\"},{\"name\":\"btgn\",\"resourceId\":\"nzeyqxtjj\"},{\"name\":\"zqlqhyc\",\"resourceId\":\"vodggxdbee\"}]},{\"name\":\"mieknlraria\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"uagydwqfbylyrf\",\"resourceId\":\"iagtc\"},{\"name\":\"jocqwogfnzjvusf\",\"resourceId\":\"ld\"},{\"name\":\"ozuxylfsbtkadpys\",\"resourceId\":\"wn\"},{\"name\":\"tgkbugrjqctojc\",\"resourceId\":\"isofieypefojyqd\"}]},{\"name\":\"cuplcplcwkhih\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"hzdsqtzbsrgnow\",\"resourceId\":\"jhf\"},{\"name\":\"mvec\",\"resourceId\":\"ctxmwoteyowcluq\"},{\"name\":\"vekqvgqo\",\"resourceId\":\"wifzmp\"}]}]},\"id\":\"yivqikfxcvhrfsp\",\"name\":\"uagrttikteusqc\",\"type\":\"kvyklxubyjaffmm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,22 +32,22 @@ public final class HcpOperatorIdentityRoleSetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HcpOperatorIdentityRoleSet response = manager.hcpOperatorIdentityRoleSets()
-            .getWithResponse("h", "yuspskas", com.azure.core.util.Context.NONE)
+            .getWithResponse("iayz", "iykhy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mfwdgzxu", response.properties().controlPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
+        Assertions.assertEquals("vjlboxqvk", response.properties().controlPlaneOperators().get(0).name());
+        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
             response.properties().controlPlaneOperators().get(0).required());
-        Assertions.assertEquals("vpa",
+        Assertions.assertEquals("xhom",
             response.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("rsre",
+        Assertions.assertEquals("ynhdwdigum",
             response.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
-        Assertions.assertEquals("oqh", response.properties().dataPlaneOperators().get(0).name());
+        Assertions.assertEquals("m", response.properties().dataPlaneOperators().get(0).name());
         Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
             response.properties().dataPlaneOperators().get(0).required());
-        Assertions.assertEquals("jqgwzp",
+        Assertions.assertEquals("ysuxmprafwgck",
             response.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("fqntcyp",
+        Assertions.assertEquals("ocxvdfffwafqr",
             response.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
     }
 }

@@ -11,8 +11,13 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.HttpUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,19 +39,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BODY;
-import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -239,43 +250,90 @@ public class VertxHttpClientTests {
     }
 
     @Test
-    public void perCallTimeout() {
-        HttpClient client = new VertxHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
-
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
-
-        // Verify a smaller timeout sent through Context times out the request.
-        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
-            .expectErrorMatches(e -> e instanceof TimeoutException)
-            .verify();
-
-        // Then verify not setting a timeout through Context does not time out the request.
-        StepVerifier.create(client.send(request)
-            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
-                Mono.just(response.getStatusCode()))))
-            .assertNext(tuple -> {
-                assertArraysEqual(SHORT_BODY, tuple.getT1());
-                assertEquals(200, tuple.getT2());
-            })
-            .verifyComplete();
+    public void perCallTimeout() throws Exception {
+        assertPerCallTimeout(false);
     }
 
     @Test
-    public void perCallTimeoutSync() {
-        HttpClient client = new VertxHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+    public void perCallTimeoutSync() throws Exception {
+        assertPerCallTimeout(true);
+    }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+    private static void assertPerCallTimeout(boolean synchronous) throws Exception {
+        Duration perCallTimeout = Duration.ofSeconds(1);
+        Duration testTimeout = Duration.ofMinutes(1);
+        Vertx vertx = Vertx.vertx(new VertxOptions().setEventLoopPoolSize(2));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        BlockingQueue<HttpServerRequest> received = new LinkedBlockingQueue<>();
+        List<Future<HttpResponse>> pending = new ArrayList<>();
+        try {
+            // Holding a request must not occupy a shared Jetty worker or block a Vert.x event loop.
+            HttpServer server = vertx.createHttpServer()
+                .requestHandler(received::add)
+                .listen(0, "localhost")
+                .toCompletionStage()
+                .toCompletableFuture()
+                .get(testTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            HttpClient client = new VertxHttpClientBuilder().vertx(vertx)
+                .configuration(Configuration.NONE)
+                .writeTimeout(Duration.ZERO)
+                .readTimeout(Duration.ZERO)
+                .responseTimeout(testTimeout.multipliedBy(2))
+                .build();
+            HttpRequest request
+                = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.actualPort() + "/timeout");
+            Context override = new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, perCallTimeout);
 
-        // Verify a smaller timeout sent through Context times out the request.
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
-        assertInstanceOf(TimeoutException.class, ex.getCause());
+            Future<HttpResponse> timed = sendTimeoutRequest(client, request, override, synchronous, executor);
+            pending.add(timed);
+            assertNotNull(received.poll(testTimeout.toMillis(), TimeUnit.MILLISECONDS),
+                "The timeout request never reached the server.");
+            // Never answer this request: the override must expire regardless of server scheduling delays.
+            ExecutionException error = assertThrows(ExecutionException.class,
+                () -> timed.get(testTimeout.toMillis(), TimeUnit.MILLISECONDS).close());
+            Throwable failure = error.getCause();
+            if (synchronous) {
+                failure = assertInstanceOf(RuntimeException.class, failure).getCause();
+            }
+            assertInstanceOf(TimeoutException.class, failure);
 
-        // Then verify not setting a timeout through Context does not time out the request.
-        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
-            assertEquals(200, response.getStatusCode());
-            assertArraysEqual(SHORT_BODY, response.getBodyAsByteArray().block());
+            Future<HttpResponse> normal = sendTimeoutRequest(client, request, Context.NONE, synchronous, executor);
+            pending.add(normal);
+            HttpServerRequest held = received.poll(testTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            assertNotNull(held, "The follow-up request never reached the server.");
+            // The same client/request must remain pending beyond the earlier override. An inherited one-second
+            // deadline would fail with ExecutionException instead of this test-side waiting timeout.
+            assertThrows(TimeoutException.class,
+                () -> normal.get(perCallTimeout.multipliedBy(2).toMillis(), TimeUnit.MILLISECONDS).close());
+            held.response()
+                .end(Buffer.buffer(SHORT_BODY))
+                .toCompletionStage()
+                .toCompletableFuture()
+                .get(testTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            try (HttpResponse response = normal.get(testTimeout.toMillis(), TimeUnit.MILLISECONDS)) {
+                assertEquals(200, response.getStatusCode());
+                assertArraysEqual(SHORT_BODY, response.getBodyAsByteArray().block(testTimeout));
+            }
+        } finally {
+            pending.forEach(result -> result.cancel(true));
+            try {
+                vertx.close()
+                    .toCompletionStage()
+                    .toCompletableFuture()
+                    .get(testTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            } finally {
+                executor.shutdownNow();
+                assertTrue(executor.awaitTermination(testTimeout.toMillis(), TimeUnit.MILLISECONDS),
+                    "The synchronous request worker did not stop.");
+            }
         }
+    }
+
+    private static Future<HttpResponse> sendTimeoutRequest(HttpClient client, HttpRequest request, Context context,
+        boolean synchronous, ExecutorService executor) {
+        return synchronous
+            ? executor.submit(() -> client.sendSync(request, context))
+            : client.send(request, context).toFuture();
     }
 
     private static Mono<HttpResponse> getResponse(String path) {

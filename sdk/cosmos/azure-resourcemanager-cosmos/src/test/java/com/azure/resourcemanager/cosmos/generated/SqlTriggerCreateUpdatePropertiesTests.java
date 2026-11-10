@@ -17,31 +17,31 @@ public final class SqlTriggerCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlTriggerCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"lxieixynllxecwcr\",\"body\":\"phslhcawjutifdw\",\"triggerType\":\"Post\",\"triggerOperation\":\"Update\"},\"options\":{\"throughput\":342779147,\"autoscaleSettings\":{\"maxThroughput\":1455188230}}}")
+            "{\"resource\":{\"id\":\"ytprwnwvroev\",\"body\":\"lyokrrrou\",\"triggerType\":\"Post\",\"triggerOperation\":\"Delete\"},\"options\":{\"throughput\":687704848,\"autoscaleSettings\":{\"maxThroughput\":238758843}}}")
             .toObject(SqlTriggerCreateUpdateProperties.class);
-        Assertions.assertEquals("lxieixynllxecwcr", model.resource().id());
-        Assertions.assertEquals("phslhcawjutifdw", model.resource().body());
+        Assertions.assertEquals("ytprwnwvroev", model.resource().id());
+        Assertions.assertEquals("lyokrrrou", model.resource().body());
         Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
-        Assertions.assertEquals(TriggerOperation.UPDATE, model.resource().triggerOperation());
-        Assertions.assertEquals(342779147, model.options().throughput());
-        Assertions.assertEquals(1455188230, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(TriggerOperation.DELETE, model.resource().triggerOperation());
+        Assertions.assertEquals(687704848, model.options().throughput());
+        Assertions.assertEquals(238758843, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlTriggerCreateUpdateProperties model = new SqlTriggerCreateUpdateProperties()
-            .withResource(new SqlTriggerResource().withId("lxieixynllxecwcr")
-                .withBody("phslhcawjutifdw")
+            .withResource(new SqlTriggerResource().withId("ytprwnwvroev")
+                .withBody("lyokrrrou")
                 .withTriggerType(TriggerType.POST)
-                .withTriggerOperation(TriggerOperation.UPDATE))
-            .withOptions(new CreateUpdateOptions().withThroughput(342779147)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1455188230)));
+                .withTriggerOperation(TriggerOperation.DELETE))
+            .withOptions(new CreateUpdateOptions().withThroughput(687704848)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(238758843)));
         model = BinaryData.fromObject(model).toObject(SqlTriggerCreateUpdateProperties.class);
-        Assertions.assertEquals("lxieixynllxecwcr", model.resource().id());
-        Assertions.assertEquals("phslhcawjutifdw", model.resource().body());
+        Assertions.assertEquals("ytprwnwvroev", model.resource().id());
+        Assertions.assertEquals("lyokrrrou", model.resource().body());
         Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
-        Assertions.assertEquals(TriggerOperation.UPDATE, model.resource().triggerOperation());
-        Assertions.assertEquals(342779147, model.options().throughput());
-        Assertions.assertEquals(1455188230, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(TriggerOperation.DELETE, model.resource().triggerOperation());
+        Assertions.assertEquals(687704848, model.options().throughput());
+        Assertions.assertEquals(238758843, model.options().autoscaleSettings().maxThroughput());
     }
 }

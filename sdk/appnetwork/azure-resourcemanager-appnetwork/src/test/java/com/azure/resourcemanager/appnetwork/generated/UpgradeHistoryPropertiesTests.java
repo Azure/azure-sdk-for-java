@@ -13,12 +13,12 @@ public final class UpgradeHistoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpgradeHistoryProperties model = BinaryData.fromString(
-            "{\"startTimestamp\":\"2021-05-12T02:27:32Z\",\"endTimestamp\":\"2021-04-07T03:00:59Z\",\"initiatedBy\":\"i\",\"fromVersion\":\"uxh\",\"toVersion\":\"yudxorrqnbp\",\"provisioningState\":\"Accepted\"}")
+            "{\"startTimestamp\":\"2021-04-02T02:52:26Z\",\"endTimestamp\":\"2021-08-01T10:52:51Z\",\"initiatedBy\":\"vfyexfw\",\"fromVersion\":\"ybcibvyvdcsit\",\"toVersion\":\"nnaamdectehfiqsc\",\"provisioningState\":\"Failed\"}")
             .toObject(UpgradeHistoryProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-12T02:27:32Z"), model.startTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-07T03:00:59Z"), model.endTimestamp());
-        Assertions.assertEquals("i", model.initiatedBy());
-        Assertions.assertEquals("uxh", model.fromVersion());
-        Assertions.assertEquals("yudxorrqnbp", model.toVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T02:52:26Z"), model.startTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T10:52:51Z"), model.endTimestamp());
+        Assertions.assertEquals("vfyexfw", model.initiatedBy());
+        Assertions.assertEquals("ybcibvyvdcsit", model.fromVersion());
+        Assertions.assertEquals("nnaamdectehfiqsc", model.toVersion());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnServerConfigurationsListRadiusSecretsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AllVpnServerConfigurationRadiusServerSecretsList.json
+     * x-ms-original-file: 2026-03-01/AllVpnServerConfigurationRadiusServerSecretsList.json
      */
     /**
      * Sample code: ListAllVpnServerConfigurationRadiusServerSecrets.

@@ -26,7 +26,7 @@ public final class ArcDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"model\":{\"format\":\"epqmjmoplukfykk\",\"name\":\"hsovadkrmj\"},\"extensionId\":\"mwqpdkesjqbzkqm\",\"runtime\":\"onnx-genai\",\"compute\":\"cpu\",\"deploymentTemplate\":\"riwbwggij\",\"vllmParameters\":{\"tensorParallelSize\":654093679,\"maxModelLen\":665702563,\"gpuMemoryUtilization\":81.03699,\"enforceEager\":true},\"replicas\":1255377388,\"resources\":{\"requests\":{\"cpu\":\"sbzrhdugquhtrgzf\",\"memory\":\"unjf\"},\"limits\":{\"cpu\":\"hiycbause\",\"memory\":\"czkvihvtuw\",\"gpu\":1287551818}},\"nodeSelector\":{\"wwunqhc\":\"zszoszjgzunkfnys\",\"slhip\":\"avoj\",\"vchyluqalpcufj\":\"ukvbljpxpr\",\"tiztqds\":\"f\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"hs\",\"provisioningState\":\"Canceled\",\"provisioningDetails\":{\"message\":\"ritrcwb\",\"lastOperationTimestamp\":\"2020-12-25T06:15:34Z\"},\"inferenceEndpoint\":\"yyefmxwoqotiiqb\",\"capabilities\":{\"mtistyikjh\":\"srv\",\"pypkennycntrq\":\"rlx\",\"oxtdyqavfx\":\"xwtdmbqjtsuhqh\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"zxsyaks\",\"id\":\"paamihwb\",\"name\":\"hvwt\",\"type\":\"pbgchcgsfzhb\"}]}";
+            = "{\"value\":[{\"properties\":{\"model\":{\"format\":\"fssrgrq\",\"name\":\"fnquollouurmuz\"},\"extensionId\":\"mbqqiehdhj\",\"runtime\":\"vllm\",\"compute\":\"cpu\",\"deploymentTemplate\":\"wnaxoxl\",\"vllmParameters\":{\"tensorParallelSize\":529599534,\"maxModelLen\":1581296532,\"gpuMemoryUtilization\":1.3326705,\"enforceEager\":false},\"replicas\":780928397,\"resources\":{\"requests\":{\"cpu\":\"vpaglyyh\",\"memory\":\"g\"},\"limits\":{\"cpu\":\"spmlutyj\",\"memory\":\"kedputocrb\",\"gpu\":1545684337}},\"nodeSelector\":{\"hgcmljzksqi\":\"mdrgcuzjmvkrwrjc\",\"hcaqpv\":\"ybqjvfio\",\"dswbsskgq\":\"szopeuku\",\"fsjbpwjwz\":\"emosq\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"dzymzkhxfpzcuud\",\"provisioningState\":\"Failed\",\"provisioningDetails\":{\"message\":\"j\",\"lastOperationTimestamp\":\"2021-03-16T23:40:13Z\"},\"inferenceEndpoint\":\"ibweua\",\"capabilities\":{\"coqxtvytzqlyldj\":\"xlz\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"xyrazz\",\"id\":\"jv\",\"name\":\"szbdbrlbozltyol\",\"type\":\"cbibtk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,25 +36,24 @@ public final class ArcDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ArcDeployment> response
-            = manager.arcDeployments().list("plbjuvlnhxnr", "jhinaegesbx", com.azure.core.util.Context.NONE);
+            = manager.arcDeployments().list("tlthrt", "pu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("epqmjmoplukfykk", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("hsovadkrmj", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("mwqpdkesjqbzkqm", response.iterator().next().properties().extensionId());
-        Assertions.assertEquals(ArcDeploymentRuntime.ONNX, response.iterator().next().properties().runtime());
+        Assertions.assertEquals("fssrgrq", response.iterator().next().properties().model().format());
+        Assertions.assertEquals("fnquollouurmuz", response.iterator().next().properties().model().name());
+        Assertions.assertEquals("mbqqiehdhj", response.iterator().next().properties().extensionId());
+        Assertions.assertEquals(ArcDeploymentRuntime.VLLM, response.iterator().next().properties().runtime());
         Assertions.assertEquals(ArcDeploymentComputeType.CPU, response.iterator().next().properties().compute());
-        Assertions.assertEquals("riwbwggij", response.iterator().next().properties().deploymentTemplate());
-        Assertions.assertEquals(1255377388, response.iterator().next().properties().replicas());
-        Assertions.assertEquals("sbzrhdugquhtrgzf",
-            response.iterator().next().properties().resources().requests().cpu());
-        Assertions.assertEquals("unjf", response.iterator().next().properties().resources().requests().memory());
-        Assertions.assertEquals("hiycbause", response.iterator().next().properties().resources().limits().cpu());
-        Assertions.assertEquals("czkvihvtuw", response.iterator().next().properties().resources().limits().memory());
-        Assertions.assertEquals(1287551818, response.iterator().next().properties().resources().limits().gpu());
-        Assertions.assertEquals("zszoszjgzunkfnys",
-            response.iterator().next().properties().nodeSelector().get("wwunqhc"));
+        Assertions.assertEquals("wnaxoxl", response.iterator().next().properties().deploymentTemplate());
+        Assertions.assertEquals(780928397, response.iterator().next().properties().replicas());
+        Assertions.assertEquals("vpaglyyh", response.iterator().next().properties().resources().requests().cpu());
+        Assertions.assertEquals("g", response.iterator().next().properties().resources().requests().memory());
+        Assertions.assertEquals("spmlutyj", response.iterator().next().properties().resources().limits().cpu());
+        Assertions.assertEquals("kedputocrb", response.iterator().next().properties().resources().limits().memory());
+        Assertions.assertEquals(1545684337, response.iterator().next().properties().resources().limits().gpu());
+        Assertions.assertEquals("mdrgcuzjmvkrwrjc",
+            response.iterator().next().properties().nodeSelector().get("hgcmljzksqi"));
         Assertions.assertEquals(DeploymentState.RUNNING, response.iterator().next().properties().deploymentState());
-        Assertions.assertEquals("hs", response.iterator().next().properties().raiPolicyName());
+        Assertions.assertEquals("dzymzkhxfpzcuud", response.iterator().next().properties().raiPolicyName());
         Assertions.assertEquals(ArcDeploymentSkuName.ARC, response.iterator().next().sku().name());
     }
 }

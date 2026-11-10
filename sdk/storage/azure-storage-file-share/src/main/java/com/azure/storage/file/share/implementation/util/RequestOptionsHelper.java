@@ -84,6 +84,24 @@ public final class RequestOptionsHelper {
     }
 
     /**
+     * Builds a {@link RequestOptions} that addresses a file or directory by ID ({@code {share}?fileid={fileId}}).
+     * <p>
+     * The service addresses a file or directory by ID with the share-level path plus a {@code fileid} query
+     * parameter. The spec does not model this addressing mode, so it is applied here on top of the regular file or
+     * directory operation (for example Get Properties or Get Hard Links).
+     *
+     * @param context The {@link Context} to thread through the pipeline.
+     * @param accountUrl The client's account-scoped base URL.
+     * @param shareName The share name.
+     * @param fileId The file ID of the file or directory.
+     * @return The scoped {@link RequestOptions}.
+     */
+    public static RequestOptions fileIdRequestOptions(Context context, String accountUrl, String shareName,
+        String fileId) {
+        return shareRequestOptions(context, accountUrl, shareName).addQueryParam("fileid", fileId);
+    }
+
+    /**
      * Adds a request callback that sets the request URL path to the account path plus the (percent-encoded) resource
      * path, preserving the route's query string.
      *

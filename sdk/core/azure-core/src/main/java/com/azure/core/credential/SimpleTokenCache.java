@@ -105,6 +105,10 @@ public class SimpleTokenCache {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
+        return acquireToken();
+    }
+
+    private Mono<AccessToken> acquireToken() {
         return Mono.defer(() -> {
             try {
                 if (wip.compareAndSet(null, Sinks.one())) {
@@ -156,10 +160,16 @@ public class SimpleTokenCache {
                             nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
                             return fallback.switchIfEmpty(Mono.error(() -> error));
                         } else { // NO REFRESH
-                            sinksOne.tryEmitEmpty();
+                            // Waiting callers are released by the cleanup below, once wip has been cleared.
                             return fallback;
                         }
-                    }).doOnError(sinksOne::tryEmitError), w -> w.set(null));
+                    }).doOnError(sinksOne::tryEmitError), w -> {
+                        w.set(null);
+                        // If the refresh ended without a token, because it was cancelled or completed empty, release the
+                        // callers waiting on it. This happens after wip is cleared so that they can start a new
+                        // acquisition. No-op if the refresh already completed the sink with a token or an error.
+                        sinksOne.tryEmitEmpty();
+                    });
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -168,15 +178,26 @@ public class SimpleTokenCache {
                     Sinks.One<AccessToken> sinksOne = wip.get();
                     if (sinksOne == null) {
                         // the refreshing thread has finished
-                        return Mono.just(cache);
+                        return validCachedTokenOrRefresh();
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
+                        return sinksOne.asMono().switchIfEmpty(validCachedTokenOrRefresh());
                     }
                 }
             } catch (Exception t) {
                 return Mono.error(t);
             }
+        });
+    }
+
+    /**
+     * Emits the currently cached token if it hasn't expired, otherwise starts a new token acquisition. This covers
+     * waiting callers whose refresh ended without a token, for example because the refreshing caller was cancelled.
+     */
+    private Mono<AccessToken> validCachedTokenOrRefresh() {
+        return Mono.defer(() -> {
+            AccessToken latest = cache;
+            return (latest != null && !latest.isExpired()) ? Mono.just(latest) : acquireToken();
         });
     }
 

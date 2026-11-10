@@ -12,12 +12,12 @@ public final class CapacityConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityConfig model = BinaryData.fromString(
-            "{\"minimum\":1003967781,\"maximum\":1927626418,\"step\":801364840,\"default\":296949281,\"allowedValues\":[2042838071,1572561560,591118108,533461500]}")
+            "{\"minimum\":1641130583,\"maximum\":123803740,\"step\":1309072810,\"default\":2063322926,\"allowedValues\":[1012286032]}")
             .toObject(CapacityConfig.class);
-        Assertions.assertEquals(1003967781, model.minimum());
-        Assertions.assertEquals(1927626418, model.maximum());
-        Assertions.assertEquals(801364840, model.step());
-        Assertions.assertEquals(296949281, model.defaultProperty());
-        Assertions.assertEquals(2042838071, model.allowedValues().get(0));
+        Assertions.assertEquals(1641130583, model.minimum());
+        Assertions.assertEquals(123803740, model.maximum());
+        Assertions.assertEquals(1309072810, model.step());
+        Assertions.assertEquals(2063322926, model.defaultProperty());
+        Assertions.assertEquals(1012286032, model.allowedValues().get(0));
     }
 }

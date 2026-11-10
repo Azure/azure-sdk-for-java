@@ -23,7 +23,7 @@ public final class AdministratorsMicrosoftEntrasListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"kwklsnoxaxmq\",\"objectId\":\"alhhjnhgwydyynfs\",\"tenantId\":\"hgbvqtan\"},\"id\":\"fdlpukhpyr\",\"name\":\"eizjcpeogkhnmg\",\"type\":\"ro\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"lajv\",\"objectId\":\"jchcsrlzknmzla\",\"tenantId\":\"updwv\"},\"id\":\"hcnzqt\",\"name\":\"jhmqrhvthla\",\"type\":\"wdcxsmlzzhz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class AdministratorsMicrosoftEntrasListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AdministratorMicrosoftEntra> response = manager.administratorsMicrosoftEntras()
-            .listByServer("ftbyrplro", "kpigqfusu", com.azure.core.util.Context.NONE);
+            .listByServer("pafolp", "mwamxqzragpgdph", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrincipalType.UNKNOWN, response.iterator().next().principalType());
-        Assertions.assertEquals("kwklsnoxaxmq", response.iterator().next().principalName());
-        Assertions.assertEquals("alhhjnhgwydyynfs", response.iterator().next().objectId());
-        Assertions.assertEquals("hgbvqtan", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, response.iterator().next().principalType());
+        Assertions.assertEquals("lajv", response.iterator().next().principalName());
+        Assertions.assertEquals("jchcsrlzknmzla", response.iterator().next().objectId());
+        Assertions.assertEquals("updwv", response.iterator().next().tenantId());
     }
 }

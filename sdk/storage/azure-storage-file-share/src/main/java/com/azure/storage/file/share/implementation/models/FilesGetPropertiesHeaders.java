@@ -171,6 +171,12 @@ public final class FilesGetPropertiesHeaders {
     private final String fileParentId;
 
     /*
+     * The x-ms-file-name property.
+     */
+    @Generated
+    private final String fileName;
+
+    /*
      * The x-ms-lease-duration property.
      */
     @Generated
@@ -274,6 +280,8 @@ public final class FilesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
 
+    private static final HttpHeaderName X_MS_FILE_NAME = HttpHeaderName.fromString("x-ms-file-name");
+
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
     private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
@@ -367,6 +375,7 @@ public final class FilesGetPropertiesHeaders {
         }
         this.fileId = rawHeaders.getValue(X_MS_FILE_ID);
         this.fileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
+        this.fileName = rawHeaders.getValue(X_MS_FILE_NAME);
         String leaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (leaseDuration != null) {
             this.leaseDuration = LeaseDurationType.fromString(leaseDuration);
@@ -665,6 +674,16 @@ public final class FilesGetPropertiesHeaders {
     @Generated
     public String getFileParentId() {
         return this.fileParentId;
+    }
+
+    /**
+     * Get the fileName property: The x-ms-file-name property.
+     * 
+     * @return the fileName value.
+     */
+    @Generated
+    public String getFileName() {
+        return this.fileName;
     }
 
     /**

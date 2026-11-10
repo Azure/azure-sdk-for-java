@@ -12,11 +12,11 @@ public final class ArcIdentityResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcIdentityResponseProperties model = BinaryData.fromString(
-            "{\"arcApplicationClientId\":\"utduqktapspwgcu\",\"arcApplicationTenantId\":\"tumkdosvqwhbm\",\"arcServicePrincipalObjectId\":\"bbjfddgmbmbexp\",\"arcApplicationObjectId\":\"htqqrolfp\"}")
+            "{\"arcApplicationClientId\":\"uigdtopbobjog\",\"arcApplicationTenantId\":\"e\",\"arcServicePrincipalObjectId\":\"a\",\"arcApplicationObjectId\":\"uhrzayvvt\"}")
             .toObject(ArcIdentityResponseProperties.class);
-        Assertions.assertEquals("utduqktapspwgcu", model.arcApplicationClientId());
-        Assertions.assertEquals("tumkdosvqwhbm", model.arcApplicationTenantId());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.arcServicePrincipalObjectId());
-        Assertions.assertEquals("htqqrolfp", model.arcApplicationObjectId());
+        Assertions.assertEquals("uigdtopbobjog", model.arcApplicationClientId());
+        Assertions.assertEquals("e", model.arcApplicationTenantId());
+        Assertions.assertEquals("a", model.arcServicePrincipalObjectId());
+        Assertions.assertEquals("uhrzayvvt", model.arcApplicationObjectId());
     }
 }

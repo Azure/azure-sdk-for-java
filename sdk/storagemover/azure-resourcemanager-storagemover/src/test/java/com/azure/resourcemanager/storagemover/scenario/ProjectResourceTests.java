@@ -18,7 +18,7 @@ public class ProjectResourceTests extends StorageMoverManagementTestBase {
         String storageMoverName = generateRandomResourceName("stomover-", 24);
         StorageMover storageMover = storageMoverManager.storageMovers()
             .define(storageMoverName)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
 

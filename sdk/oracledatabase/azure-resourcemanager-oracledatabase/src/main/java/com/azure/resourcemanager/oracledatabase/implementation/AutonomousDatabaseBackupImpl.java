@@ -109,10 +109,15 @@ public final class AutonomousDatabaseBackupImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.autonomousdatabasename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabases");
-        this.adbbackupid = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabaseBackups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "resourceGroupName");
+        this.autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "autonomousdatabasename");
+        this.adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "adbbackupid");
     }
 
     public AutonomousDatabaseBackup refresh() {

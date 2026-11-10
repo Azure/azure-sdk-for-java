@@ -27,6 +27,11 @@ public final class WorkspaceUpdate implements JsonSerializable<WorkspaceUpdate> 
      */
     private ResourceIdentity identity;
 
+    /*
+     * The resource-specific fields to update. Omitted fields are unchanged.
+     */
+    private WorkspaceUpdateProperties properties;
+
     /**
      * Creates an instance of WorkspaceUpdate class.
      */
@@ -74,6 +79,26 @@ public final class WorkspaceUpdate implements JsonSerializable<WorkspaceUpdate> 
     }
 
     /**
+     * Get the properties property: The resource-specific fields to update. Omitted fields are unchanged.
+     * 
+     * @return the properties value.
+     */
+    public WorkspaceUpdateProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific fields to update. Omitted fields are unchanged.
+     * 
+     * @param properties the properties value to set.
+     * @return the WorkspaceUpdate object itself.
+     */
+    public WorkspaceUpdate withProperties(WorkspaceUpdateProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,6 +106,7 @@ public final class WorkspaceUpdate implements JsonSerializable<WorkspaceUpdate> 
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +130,8 @@ public final class WorkspaceUpdate implements JsonSerializable<WorkspaceUpdate> 
                     deserializedWorkspaceUpdate.tags = tags;
                 } else if ("identity".equals(fieldName)) {
                     deserializedWorkspaceUpdate.identity = ResourceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspaceUpdate.properties = WorkspaceUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

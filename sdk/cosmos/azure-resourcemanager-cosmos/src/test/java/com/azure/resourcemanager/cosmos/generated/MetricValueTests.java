@@ -11,7 +11,7 @@ public final class MetricValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricValue model = BinaryData.fromString(
-            "{\"_count\":1736041382,\"average\":26.84480982437242,\"maximum\":67.51288030100136,\"minimum\":96.25353948241538,\"timestamp\":\"2021-08-07T17:01:26Z\",\"total\":27.563245298986118}")
+            "{\"_count\":2123049773,\"average\":71.0532838258196,\"maximum\":95.067817287676,\"minimum\":36.579743591782034,\"timestamp\":\"2021-07-03T19:13:03Z\",\"total\":3.0550660486482473}")
             .toObject(MetricValue.class);
     }
 }

@@ -65,11 +65,10 @@ public class OpenApiAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .input("Call the API and tell me what it returns.")
-                            .build())));
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .input("Call the API and tell me what it returns.")
+                        .build()));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

@@ -188,6 +188,12 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     @Generated
     private Boolean enableSmbDirectoryLease;
 
+    /*
+     * The creation time.
+     */
+    @Generated
+    private DateTimeRfc1123 creationTime;
+
     /**
      * Creates an instance of SharePropertiesInternal class.
      * 
@@ -496,6 +502,19 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
         return this.enableSmbDirectoryLease;
     }
 
+    /**
+     * Get the creationTime property: The creation time.
+     * 
+     * @return the creationTime value.
+     */
+    @Generated
+    public OffsetDateTime getCreationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.getDateTime();
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -540,6 +559,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
         xmlWriter.writeStringElement("NextAllowedProvisionedBandwidthDowngradeTime",
             Objects.toString(this.nextAllowedProvisionedBandwidthDowngradeTime, null));
         xmlWriter.writeBooleanElement("EnableSmbDirectoryLease", this.enableSmbDirectoryLease);
+        xmlWriter.writeStringElement("Creation-Time", Objects.toString(this.creationTime, null));
         return xmlWriter.writeEndElement();
     }
 
@@ -601,6 +621,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
             DateTimeRfc1123 nextAllowedProvisionedIopsDowngradeTime = null;
             DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime = null;
             Boolean enableSmbDirectoryLease = null;
+            DateTimeRfc1123 creationTime = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
@@ -661,6 +682,8 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                     nextAllowedProvisionedBandwidthDowngradeTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("EnableSmbDirectoryLease".equals(elementName.getLocalPart())) {
                     enableSmbDirectoryLease = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("Creation-Time".equals(elementName.getLocalPart())) {
+                    creationTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else {
                     reader.skipElement();
                 }
@@ -694,6 +717,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
             deserializedSharePropertiesInternal.nextAllowedProvisionedBandwidthDowngradeTime
                 = nextAllowedProvisionedBandwidthDowngradeTime;
             deserializedSharePropertiesInternal.enableSmbDirectoryLease = enableSmbDirectoryLease;
+            deserializedSharePropertiesInternal.creationTime = creationTime;
 
             return deserializedSharePropertiesInternal;
         });

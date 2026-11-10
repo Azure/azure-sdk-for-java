@@ -48,6 +48,12 @@ public final class FileItem implements XmlSerializable<FileItem> {
     @Generated
     private String permissionKey;
 
+    /*
+     * The link count of the file.
+     */
+    @Generated
+    private Long linkCount;
+
     /**
      * Creates an instance of FileItem class.
      * 
@@ -110,6 +116,16 @@ public final class FileItem implements XmlSerializable<FileItem> {
         return this.permissionKey;
     }
 
+    /**
+     * Get the linkCount property: The link count of the file.
+     * 
+     * @return the linkCount value.
+     */
+    @Generated
+    public Long getLinkCount() {
+        return this.linkCount;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -126,6 +142,7 @@ public final class FileItem implements XmlSerializable<FileItem> {
         xmlWriter.writeXml(this.properties, "Properties");
         xmlWriter.writeStringElement("Attributes", this.attributes);
         xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
+        xmlWriter.writeNumberElement("LinkCount", this.linkCount);
         return xmlWriter.writeEndElement();
     }
 
@@ -163,6 +180,7 @@ public final class FileItem implements XmlSerializable<FileItem> {
             FileProperty properties = null;
             String attributes = null;
             String permissionKey = null;
+            Long linkCount = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
@@ -176,6 +194,8 @@ public final class FileItem implements XmlSerializable<FileItem> {
                     attributes = reader.getStringElement();
                 } else if ("PermissionKey".equals(elementName.getLocalPart())) {
                     permissionKey = reader.getStringElement();
+                } else if ("LinkCount".equals(elementName.getLocalPart())) {
+                    linkCount = reader.getNullableElement(Long::parseLong);
                 } else {
                     reader.skipElement();
                 }
@@ -184,6 +204,7 @@ public final class FileItem implements XmlSerializable<FileItem> {
             deserializedFileItem.fileId = fileId;
             deserializedFileItem.attributes = attributes;
             deserializedFileItem.permissionKey = permissionKey;
+            deserializedFileItem.linkCount = linkCount;
 
             return deserializedFileItem;
         });

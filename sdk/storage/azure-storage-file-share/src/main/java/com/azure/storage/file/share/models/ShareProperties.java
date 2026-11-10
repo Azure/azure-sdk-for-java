@@ -32,6 +32,11 @@ import java.util.Objects;
 @Fluent
 public final class ShareProperties implements XmlSerializable<ShareProperties> {
     /*
+     * The creationTime property.
+     */
+    private DateTimeRfc1123 creationTime;
+
+    /*
      * The lastModified property.
      */
     private DateTimeRfc1123 lastModified;
@@ -174,10 +179,56 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Boolean enableSmbDirectoryLease;
 
+    /*
+     * Optional. Supported in version 2026-06-06 and above.
+     * Specifies whether change feed is enabled on the share.
+     */
+    private Boolean enableChangeFeed;
+
+    /*
+     * Optional. Supported in version 2026-06-06 and above.
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     */
+    private Integer changeFeedRetentionInDays;
+
+    /*
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
+     * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
+     */
+    private String changeFeedBlobContainerName;
+
     /**
      * Creates a new instance of {@link ShareProperties}.
      */
     public ShareProperties() {
+    }
+
+    /**
+     * Get the creationTime property: The creation time of the share.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime getCreationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.getDateTime();
+    }
+
+    /**
+     * Set the creationTime property: The creation time of the share.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
+        } else {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        }
+        return this;
     }
 
     /**
@@ -833,6 +884,68 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
+     * Optional. Supported in version 2026-06-06 and above.
+     * Specifies whether change feed is enabled on the share.
+     * @return the enableChangeFeed value, or {@code null} if not returned by the service.
+     */
+    public Boolean isChangeFeedEnabled() {
+        return enableChangeFeed;
+    }
+
+    /**
+     * Optional. Supported in version 2026-06-06 and above.
+     * Specifies whether change feed is enabled on the share.
+     * @param enableChangeFeed the enableChangeFeed value to set, or {@code null} if unavailable.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedEnabled(Boolean enableChangeFeed) {
+        this.enableChangeFeed = enableChangeFeed;
+        return this;
+    }
+
+    /**
+     * Optional. Supported in version 2026-06-06 and above.
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     * @return the changeFeedRetentionInDays value, or {@code null} if not returned by the service.
+     */
+    public Integer getChangeFeedRetentionInDays() {
+        return changeFeedRetentionInDays;
+    }
+
+    /**
+     * Optional. Supported in version 2026-06-06 and above.
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set, or {@code null} if unavailable.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedRetentionInDays(Integer changeFeedRetentionInDays) {
+        this.changeFeedRetentionInDays = changeFeedRetentionInDays;
+        return this;
+    }
+
+    /**
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
+     * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
+     * @return the blobContainerForChangeFeed value.
+     */
+    public String getChangeFeedBlobContainerName() {
+        return changeFeedBlobContainerName;
+    }
+
+    /**
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
+     * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
+     * @param changeFeedBlobContainerName the blobContainerForChangeFeed value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedBlobContainerName(String changeFeedBlobContainerName) {
+        this.changeFeedBlobContainerName = changeFeedBlobContainerName;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @deprecated {@link ShareProperties} is a read-only public projection of the {@code SharePropertiesInternal} wire
@@ -858,6 +971,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
 
+        xmlWriter.writeStringElement("Creation-Time", Objects.toString(this.creationTime, null));
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
         xmlWriter.writeStringElement("Etag", this.eTag);
         xmlWriter.writeIntElement("Quota", this.quota);
@@ -927,7 +1041,9 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
-                if ("Last-Modified".equals(elementName.getLocalPart())) {
+                if ("Creation-Time".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.creationTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Last-Modified".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Etag".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.eTag = reader.getStringElement();

@@ -3,11 +3,23 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.xml.XmlReader;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
+import java.time.OffsetDateTime;
 import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +27,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ModelTests {
+
+    @Test
+    void sharePropertiesChangeFeedDefaultsAndClearing() {
+        ShareProperties properties = new ShareProperties();
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+
+        properties.setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7);
+        properties.setChangeFeedEnabled(null).setChangeFeedRetentionInDays(null);
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+    }
 
     @Test
     void ntfsToAttributes() {
@@ -60,5 +84,30 @@ public class ModelTests {
     void uploadZeroLengthFails() {
         assertThrows(IllegalArgumentException.class,
             () -> new ShareFileUploadRangeOptions(new ByteArrayInputStream(new byte[0]), 0));
+    }
+
+    @Test
+    void shareCreationTimeIsMappedFromResponses() throws XMLStreamException {
+        OffsetDateTime creationTime = OffsetDateTime.parse("2026-10-01T12:00:00Z");
+        String creationTimeRfc1123 = new DateTimeRfc1123(creationTime).toString();
+        ShareProperties shareProperties = new ShareProperties().setCreationTime(creationTime);
+
+        assertEquals(creationTime, shareProperties.getCreationTime());
+
+        String propertiesXml = "<Properties><Last-Modified>" + creationTimeRfc1123 + "</Last-Modified>"
+            + "<Etag>etag</Etag><Quota>1</Quota><Creation-Time>" + creationTimeRfc1123
+            + "</Creation-Time></Properties>";
+        try (XmlReader xmlReader = XmlReader.fromString(propertiesXml)) {
+            assertEquals(creationTime,
+                ModelHelper.populateShareProperties(SharePropertiesInternal.fromXml(xmlReader, "Properties"))
+                    .getCreationTime());
+        }
+
+        HttpHeaders rawHeaders
+            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-share-creation-time"), creationTimeRfc1123)
+                .set(HttpHeaderName.fromString("x-ms-share-quota"), "1");
+        Response<SharesGetPropertiesHeaders> response
+            = new SimpleResponse<>(null, 200, rawHeaders, new SharesGetPropertiesHeaders(rawHeaders));
+        assertEquals(creationTime, ModelHelper.mapGetPropertiesResponse(response).getValue().getCreationTime());
     }
 }

@@ -243,7 +243,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -271,7 +270,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -389,9 +387,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -484,7 +480,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -506,7 +501,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -545,7 +539,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -575,9 +568,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -670,7 +661,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -692,7 +682,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -731,7 +720,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -960,8 +948,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -970,7 +956,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -985,12 +971,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -998,11 +980,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -1017,8 +994,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -1027,7 +1002,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -1042,12 +1017,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -1055,11 +1026,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -1125,10 +1091,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1141,7 +1106,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1152,10 +1116,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1168,7 +1131,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1365,27 +1327,24 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SynonymMap> getSynonymMaps() {
-        return getSynonymMaps(null, null, null, null);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all synonym maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return getSynonymMaps(null, null, null, null);
+        return listSynonymMaps(new RequestOptions());
+    }
+
+    /**
+     * Lists all matching synonym maps, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching synonym maps as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.listSynonymMapsAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SynonymMap.class));
     }
 
     /**
@@ -1395,7 +1354,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSynonymMapNames() {
-        return getSynonymMaps(java.util.Collections.singletonList("name"), null, null, null)
+        return listSynonymMaps(new RequestOptions().addQueryParam("$select", "name", false))
             .mapPage(SynonymMap::getName);
     }
 
@@ -1594,9 +1553,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndex>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1865,9 +1831,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListAliases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchAlias>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2042,9 +2015,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeBases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeBase>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2235,9 +2215,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSource>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2707,7 +2694,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2751,7 +2737,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2779,7 +2764,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2822,9 +2806,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -2917,7 +2899,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -2939,7 +2920,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -2978,7 +2958,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -3037,9 +3016,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3132,7 +3109,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3154,7 +3130,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3193,7 +3168,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -3238,9 +3212,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3333,7 +3305,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3355,7 +3326,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3394,7 +3364,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -3424,9 +3393,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3519,7 +3486,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3541,7 +3507,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3580,7 +3545,6 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
      *     sharePointConnectorAppRegistration (Optional): {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
@@ -3818,8 +3782,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3828,7 +3790,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3843,12 +3805,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3856,11 +3814,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -3904,8 +3857,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3914,7 +3865,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3929,12 +3880,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3942,11 +3889,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -3976,8 +3918,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3986,7 +3926,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -4001,12 +3941,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -4014,11 +3950,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -4033,8 +3964,6 @@ public final class SearchIndexAsyncClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
-     *             enableImageServing: Boolean (Optional)
-     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -4043,7 +3972,7 @@ public final class SearchIndexAsyncClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -4058,12 +3987,8 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -4071,11 +3996,6 @@ public final class SearchIndexAsyncClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -4104,10 +4024,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4120,7 +4039,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4161,10 +4079,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4177,7 +4094,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4203,10 +4119,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4219,7 +4134,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4230,10 +4144,9 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *     name: String (Required)
      *     description: String (Optional)
-     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4246,7 +4159,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4275,7 +4187,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Optional)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
      *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
@@ -4305,6 +4217,11 @@ public final class SearchIndexAsyncClient {
      *         totalSynchronization: int (Required)
      *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
+     *     }
+     *     fileCapacity (Optional): {
+     *         maxFileCount: int (Required)
+     *         remainingFileCount: int (Required)
+     *         maxFileSizeBytes: long (Required)
      *     }
      * }
      * }
@@ -4346,8 +4263,6 @@ public final class SearchIndexAsyncClient {
      *         synonymMaps (Required): (recursive schema, see synonymMaps above)
      *         skillsetCount (Required): (recursive schema, see skillsetCount above)
      *         vectorIndexSize (Required): (recursive schema, see vectorIndexSize above)
-     *         knowledgeBasesCount (Required): (recursive schema, see knowledgeBasesCount above)
-     *         knowledgeSourcesCount (Required): (recursive schema, see knowledgeSourcesCount above)
      *     }
      *     limits (Required): {
      *         maxFieldsPerIndex: Integer (Optional)
@@ -4356,9 +4271,8 @@ public final class SearchIndexAsyncClient {
      *         maxComplexObjectsInCollectionsPerDocument: Integer (Optional)
      *         maxStoragePerIndex: Long (Optional)
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
-     *         maxVectorIndexSizePerIndexInBytes: Long (Optional)
      *     }
-     *     indexersRuntime (Required): {
+     *     indexersRuntime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -4418,9 +4332,7 @@ public final class SearchIndexAsyncClient {
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
      *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabelId: Boolean (Optional)
-     *             sensitivityLabelName: Boolean (Optional)
-     *             sourceDocumentId: Boolean (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -4513,7 +4425,6 @@ public final class SearchIndexAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -4535,7 +4446,6 @@ public final class SearchIndexAsyncClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -4574,7 +4484,11 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4610,9 +4524,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4641,43 +4562,23 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+        return listIndexesWithSelectedProperties(select, new RequestOptions());
     }
 
     /**
-     * Lists all synonym maps available for a search service.
+     * Lists matching indexes with selected properties, following service-provided continuation links.
      *
-     * @param select Selects which top-level properties to retrieve.
-     * @param search A string used to narrow down the listing.
-     * @param pageSize The maximum number of items to return in a single page.
-     * @param searchType Specifies how the search parameter is interpreted.
-     * @return all matching synonym maps as paginated response with {@link PagedFlux}.
+     * @param select The top-level properties to retrieve, or {@code null} to use the service default.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexes as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SynonymMap> getSynonymMaps(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        RequestOptions requestOptions = new RequestOptions();
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select,
+        RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         if (select != null) {
             requestOptions.addQueryParam("$select",
                 select.stream()
@@ -4685,17 +4586,8 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        return serviceClient.getSynonymMapsAsync(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
+        return serviceClient.listIndexesWithSelectedPropertiesAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SearchIndexResponse.class));
     }
 
     /**
@@ -4757,9 +4649,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4825,8 +4724,8 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      *
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4835,9 +4734,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String name, String fileId,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteKnowledgeSourceFileWithResponseAsync(fileId, name, requestOptions);
+        return this.serviceClient.deleteKnowledgeSourceFileWithResponseAsync(name, fileId, requestOptions);
     }
 
     /**
@@ -4859,9 +4758,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4876,8 +4782,8 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      *
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4887,10 +4793,10 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeSourceFile(String fileId, String name) {
+    public Mono<Void> deleteKnowledgeSourceFile(String name, String fileId) {
         // Generated convenience method for deleteKnowledgeSourceFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteKnowledgeSourceFileWithResponse(fileId, name, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteKnowledgeSourceFileWithResponse(name, fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5000,9 +4906,16 @@ public final class SearchIndexAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -5019,8 +4932,8 @@ public final class SearchIndexAsyncClient {
      * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
      * file bytes.
      *
-     * @param fileId The unique identifier of the file to update.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
      * @param body The multipart/form-data body containing the metadata and content parts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5032,11 +4945,11 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String fileId, String name,
+    public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String name, String fileId,
         UpdateKnowledgeSourceFileRequest body) {
         // Generated convenience method for updateKnowledgeSourceFileWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return updateKnowledgeSourceFileWithResponseInternal(fileId, name,
+        return updateKnowledgeSourceFileWithResponseInternal(name, fileId,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
                 .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
                     body.getContent().getFilename())
@@ -5080,9 +4993,16 @@ public final class SearchIndexAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -5092,85 +5012,6 @@ public final class SearchIndexAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     fileId: String (Optional)
-     *     fileName: String (Optional)
-     *     fileSizeBytes: Long (Optional)
-     *     createdAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
-     *     errorMessage: String (Optional)
-     *     prefix: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *     extractionMode: String(minimal/standard) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String contentDisposition,
-        String name, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.uploadKnowledgeSourceFileWithResponseAsync(contentDisposition, name, file,
-            requestOptions);
-    }
-
-    /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFile(String contentDisposition, String name,
-        BinaryData file) {
-        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
     }
 
     /**
@@ -5242,8 +5083,8 @@ public final class SearchIndexAsyncClient {
      * }
      * </pre>
      *
-     * @param fileId The unique identifier of the file to update.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
      * @param body The multipart/form-data body containing the metadata and content parts.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5255,11 +5096,97 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternal(String fileId, String name,
+    Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternal(String name, String fileId,
         BinaryData body, RequestOptions requestOptions) {
         // Operation 'updateKnowledgeSourceFile' is of content-type 'multipart/form-data'. Protocol API is not usable
         // and hence not generated.
-        return this.serviceClient.updateKnowledgeSourceFileWithResponseInternalAsync(fileId, name, body,
+        return this.serviceClient.updateKnowledgeSourceFileWithResponseInternalAsync(name, fileId, body,
             requestOptions);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.listSynonymMapsAsync(requestOptions);
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFilesAsync(name, requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
     }
 }

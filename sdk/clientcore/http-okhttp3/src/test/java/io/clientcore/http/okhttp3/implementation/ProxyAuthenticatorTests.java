@@ -12,6 +12,7 @@ import okhttp3.Address;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.Dns;
+import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Protocol;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,7 +47,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ProxyAuthenticatorTests {
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
-    private static final Request DEFAULT_REQUEST = new Request.Builder().get().url("http://localhost:8888/get").build();
+    private static final Request DEFAULT_REQUEST
+        = new Request.Builder().method("CONNECT", null).url("https://localhost:8888/get").build();
     private static final Address DEFAULT_ADDRESS = new Address("localhost", 80, Dns.SYSTEM, SocketFactory.getDefault(),
         null, null, null, Authenticator.NONE, null, Collections.singletonList(Protocol.HTTP_1_1),
         Collections.singletonList(ConnectionSpec.MODERN_TLS), ProxySelector.getDefault());
@@ -112,6 +116,60 @@ public class ProxyAuthenticatorTests {
             Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic")
                 .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
                 .build(), DIGEST_PREDICATE));
+    }
+
+    /**
+     * Tests that non-CONNECT HTTPS challenges aren't retried, even when proxy credentials have been cached.
+     */
+    @ParameterizedTest
+    @MethodSource("authorizationIsAppliedSupplier")
+    public void nonConnectHttpsChallengesAreNotRetried(Headers challengeHeaders, Predicate<String> expectedPredicate) {
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(
+            ChallengeHandler.of(new DigestChallengeHandler("1", "1"), new BasicChallengeHandler("1", "1")));
+
+        Response connectResponse = mockResponse("This is a test", challengeHeaders);
+        Response httpsResponse
+            = connectResponse.newBuilder().request(DEFAULT_REQUEST.newBuilder().get().build()).build();
+
+        assertNull(proxyAuthenticator.authenticate(null, httpsResponse));
+
+        Request connectRequest = proxyAuthenticator.authenticate(null, connectResponse);
+        assertNotNull(connectRequest);
+        assertTrue(expectedPredicate.test(connectRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
+
+        assertNull(proxyAuthenticator.authenticate(null, httpsResponse));
+        assertNull(
+            proxyAuthenticator.authenticate(null, httpsResponse.newBuilder().message(PREEMPTIVE_AUTHENTICATE).build()));
+    }
+
+    /**
+     * Tests that cleartext HTTP proxy challenges apply Basic authentication with fresh and cached credentials.
+     */
+    @ParameterizedTest
+    @ValueSource(strings = { "GET", "POST" })
+    public void cleartextHttpBasicChallengesAreAuthenticated(String method) {
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new BasicChallengeHandler("1", "1")));
+        Request request = DEFAULT_REQUEST.newBuilder()
+            .url("http://localhost:8888/get")
+            .method(method, "POST".equals(method) ? new FormBody.Builder().add("key", "value").build() : null)
+            .build();
+        Response response
+            = mockResponse("This is a test", new Headers.Builder().add("Proxy-Authenticate: Basic").build())
+                .newBuilder()
+                .request(request)
+                .build();
+
+        Request authenticateRequest = proxyAuthenticator.authenticate(null, response);
+        assertNotNull(authenticateRequest);
+        assertEquals("Basic MTox", authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
+        assertEquals(request.method(), authenticateRequest.method());
+        assertEquals(request.url(), authenticateRequest.url());
+        assertSame(request.body(), authenticateRequest.body());
+
+        authenticateRequest = proxyAuthenticator.authenticate(null, response);
+        assertNotNull(authenticateRequest);
+        assertEquals("Basic MTox", authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
     }
 
     /**

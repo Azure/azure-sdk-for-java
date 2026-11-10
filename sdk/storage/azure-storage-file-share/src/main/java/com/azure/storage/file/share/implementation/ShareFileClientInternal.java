@@ -26,6 +26,7 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
@@ -38,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeader
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUrlHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
+import com.azure.storage.file.share.implementation.models.HardLinkList;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
@@ -369,6 +371,7 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
      * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
      * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
@@ -1597,6 +1600,116 @@ public final class ShareFileClientInternal {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> createHardLinkWithResponseInternal(String targetFile, RequestOptions requestOptions) {
         return this.serviceClient.createHardLinkWithResponseInternal(targetFile, requestOptions);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     HardLink (Required): [
+     *          (Required){
+     *             FileName (Required): {
+     *                 Encoded: Boolean (Optional)
+     *                 content: String (Optional)
+     *             }
+     *             ParentId: String (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
+     * modified.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
+     * resource.</td></tr>
+     * <tr><td>x-ms-content-type</td><td>String</td><td>The MIME content type of the file.</td></tr>
+     * <tr><td>x-ms-content-length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>x-ms-content-md5</td><td>byte[]</td><td>The MD5 hash of the full file content.</td></tr>
+     * <tr><td>x-ms-content-encoding</td><td>String</td><td>The content encodings that have been applied to the
+     * file.</td></tr>
+     * <tr><td>x-ms-content-language</td><td>String</td><td>The natural languages used by the file.</td></tr>
+     * <tr><td>x-ms-cache-control</td><td>String</td><td>The cache control of the file.</td></tr>
+     * <tr><td>x-ms-content-disposition</td><td>String</td><td>The Content-Disposition of the file.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>Conclusion time of the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>Only appears when x-ms-copy-status is failed or
+     * pending.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>String identifier for the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>Contains the number of bytes copied and the total bytes in the
+     * source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>URL up to 2 KB in length that specifies the source blob or
+     * file.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>State of the copy operation identified by x-ms-copy-id.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
+     * and application metadata are completely encrypted.</td></tr>
+     * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
+     * directory/file.</td></tr>
+     * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
+     * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
+     * <tr><td>x-ms-owner</td><td>String</td><td>NFS only. The owner.</td></tr>
+     * <tr><td>x-ms-group</td><td>String</td><td>NFS only. The owning group.</td></tr>
+     * <tr><td>x-ms-file-file-type</td><td>String</td><td>NFS only. The file type.</td></tr>
+     * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>A GMT date/time value generated by the service that indicates the
+     * time the response was initiated.</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of hard links for a file along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getHardLinksWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getHardLinksWithResponseInternal(requestOptions);
     }
 
     /**
@@ -4433,5 +4546,94 @@ public final class ShareFileClientInternal {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> protocolMethodResponse = createHardLinkWithResponseInternal(targetFile, requestOptions);
         return new FilesCreateHardLinkHeaders(protocolMethodResponse.getHeaders());
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param leaseId If specified, the lease ID must match the lease ID of the file.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link ResponseBase}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<FilesGetHardLinksHeaders, HardLinkList> getHardLinksWithResponse(String sharesnapshot,
+        Integer timeout, String leaseId, RequestOptions requestOptions) {
+        // Generated convenience method for getHardLinksWithResponseInternal
+        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (sharesnapshot != null) {
+            requestOptions.addQueryParam("sharesnapshot", sharesnapshot, false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (leaseId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+        }
+        Response<BinaryData> protocolMethodResponse = getHardLinksWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(HardLinkList.class, XML_SERIALIZER),
+            new FilesGetHardLinksHeaders(protocolMethodResponse.getHeaders()));
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param leaseId If specified, the lease ID must match the lease ID of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HardLinkList getHardLinks(String sharesnapshot, Integer timeout, String leaseId) {
+        // Generated convenience method for getHardLinksWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (sharesnapshot != null) {
+            requestOptions.addQueryParam("sharesnapshot", sharesnapshot, false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (leaseId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+        }
+        return getHardLinksWithResponseInternal(requestOptions).getValue().toObject(HardLinkList.class, XML_SERIALIZER);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HardLinkList getHardLinks() {
+        // Generated convenience method for getHardLinksWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return getHardLinksWithResponseInternal(requestOptions).getValue().toObject(HardLinkList.class, XML_SERIALIZER);
     }
 }

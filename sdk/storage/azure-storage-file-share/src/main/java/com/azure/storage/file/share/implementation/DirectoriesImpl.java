@@ -449,6 +449,7 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
      * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
      * and application metadata are completely encrypted.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -512,6 +513,7 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
      * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
      * and application metadata are completely encrypted.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -962,9 +964,13 @@ public final class DirectoriesImpl {
      *                     ChangeTime: OffsetDateTime (Optional)
      *                     Last-Modified: DateTimeRfc1123 (Optional)
      *                     Etag: String (Optional)
+     *                     Uid: String (Optional)
+     *                     Gid: String (Optional)
+     *                     Mode: String (Optional)
      *                 }
      *                 Attributes: String (Optional)
      *                 PermissionKey: String (Optional)
+     *                 LinkCount: Long (Optional)
      *             }
      *         ]
      *         File (Required): [
@@ -974,6 +980,52 @@ public final class DirectoriesImpl {
      *                 Properties (Required): (recursive schema, see Properties above)
      *                 Attributes: String (Optional)
      *                 PermissionKey: String (Optional)
+     *                 LinkCount: Long (Optional)
+     *             }
+     *         ]
+     *         SymLink (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 LinkText: String (Optional)
+     *             }
+     *         ]
+     *         BlockDevice (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 DeviceMajor: Long (Optional)
+     *                 DeviceMinor: Long (Optional)
+     *             }
+     *         ]
+     *         CharDevice (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 DeviceMajor: Long (Optional)
+     *                 DeviceMinor: Long (Optional)
+     *             }
+     *         ]
+     *         Fifo (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *             }
+     *         ]
+     *         Socket (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
      *             }
      *         ]
      *     }
@@ -1071,9 +1123,13 @@ public final class DirectoriesImpl {
      *                     ChangeTime: OffsetDateTime (Optional)
      *                     Last-Modified: DateTimeRfc1123 (Optional)
      *                     Etag: String (Optional)
+     *                     Uid: String (Optional)
+     *                     Gid: String (Optional)
+     *                     Mode: String (Optional)
      *                 }
      *                 Attributes: String (Optional)
      *                 PermissionKey: String (Optional)
+     *                 LinkCount: Long (Optional)
      *             }
      *         ]
      *         File (Required): [
@@ -1083,6 +1139,52 @@ public final class DirectoriesImpl {
      *                 Properties (Required): (recursive schema, see Properties above)
      *                 Attributes: String (Optional)
      *                 PermissionKey: String (Optional)
+     *                 LinkCount: Long (Optional)
+     *             }
+     *         ]
+     *         SymLink (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 LinkText: String (Optional)
+     *             }
+     *         ]
+     *         BlockDevice (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 DeviceMajor: Long (Optional)
+     *                 DeviceMinor: Long (Optional)
+     *             }
+     *         ]
+     *         CharDevice (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *                 DeviceMajor: Long (Optional)
+     *                 DeviceMinor: Long (Optional)
+     *             }
+     *         ]
+     *         Fifo (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
+     *             }
+     *         ]
+     *         Socket (Optional): [
+     *              (Optional){
+     *                 Name (Required): (recursive schema, see Name above)
+     *                 FileId: String (Optional)
+     *                 Properties (Required): (recursive schema, see Properties above)
+     *                 LinkCount: Long (Optional)
      *             }
      *         ]
      *     }

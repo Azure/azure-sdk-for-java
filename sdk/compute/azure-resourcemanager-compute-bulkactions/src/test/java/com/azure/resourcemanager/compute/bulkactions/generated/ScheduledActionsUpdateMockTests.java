@@ -45,37 +45,41 @@ public final class ScheduledActionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.scheduledActions()
-            .update("akdkifmjnnawtqab", "xuckpggqoweyir",
-                new ScheduledActionUpdate().withTags(mapOf("n", "isngwflqqmpizru"))
-                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                        .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2021-07-30T07:52:46Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-09-02T05:49:50Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("saasiixtmkzj")
-                            .withTimeZone("viirhgfgrws")
-                            .withRequestedWeekDays(
-                                Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.MONDAY, WeekDay.FRIDAY))
-                            .withRequestedMonths(Arrays.asList(Month.ALL))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(871795155, 39003903, 156163640, 1015396503))
-                            .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1666158836)
-                                    .withRetryWindowInMinutes(1709678755)
-                                    .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE)))
-                            .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
-                        .withNotificationSettings(Arrays.asList(
-                            new NotificationProperties().withDestination("gxffmshkwf")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true),
-                            new NotificationProperties().withDestination("xwopdbydpizqa")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true),
-                            new NotificationProperties().withDestination("xbiygnugjknfsmf")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true)))
-                        .withDisabled(true)),
+            .update("oc", "ctfjgtixr",
+                new ScheduledActionUpdate().withTags(mapOf("uowolbauiropi", "uyturml"))
+                    .withProperties(
+                        new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
+                            .withActionType(ScheduledActionType.HIBERNATE)
+                            .withStartTime(OffsetDateTime.parse("2020-12-28T01:53:54Z"))
+                            .withEndTime(OffsetDateTime.parse("2021-02-20T02:06:19Z"))
+                            .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("innixjawrtmjfj")
+                                .withTimeZone("ccxlzhcoxovnek")
+                                .withRequestedWeekDays(Arrays.asList(WeekDay.ALL, WeekDay.WEDNESDAY))
+                                .withRequestedMonths(Arrays.asList(Month.JUNE, Month.JANUARY, Month.MAY))
+                                .withRequestedDaysOfTheMonth(Arrays.asList(1290692047, 325685122))
+                                .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                                    .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(306742442)
+                                        .withRetryWindowInMinutes(1479706729)
+                                        .withOnFailureAction(ScheduledActionsResourceOperationType.HIBERNATE)))
+                                .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
+                            .withNotificationSettings(Arrays.asList(
+                                new NotificationProperties().withDestination("gepuslvyjtc")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(false),
+                                new NotificationProperties().withDestination("s")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(true),
+                                new NotificationProperties().withDestination("fuughtuqfec")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(true),
+                                new NotificationProperties().withDestination("tuhxuicb")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(true)))
+                            .withDisabled(false)),
                 com.azure.core.util.Context.NONE);
 
     }

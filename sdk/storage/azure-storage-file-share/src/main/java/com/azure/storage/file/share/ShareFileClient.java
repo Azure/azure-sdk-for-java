@@ -34,15 +34,18 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.ShareFileClientInternal;
 import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
+import com.azure.storage.file.share.implementation.models.HardLinkList;
 import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
@@ -67,6 +70,7 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileLinks;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
@@ -120,6 +124,10 @@ import static com.azure.storage.file.share.implementation.util.ModelHelper.toSha
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
  * Operations allowed by the client are creating, uploading, copying, listing, downloading, and deleting files.
  *
+ * <p>Use {@link ShareClient#getFileClientByFileId(String)} to retrieve properties without knowing the file path.
+ * File-ID clients support {@link #getProperties()} and {@link #getFileLinks()} (SMB only).
+ * Other service operations require a path-addressed client.</p>
+ *
  * <p><strong>Instantiating a synchronous File Client</strong></p>
  *
  * <!-- src_embed com.azure.storage.file.share.ShareFileClient.instantiation -->
@@ -145,6 +153,7 @@ public class ShareFileClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String filePath;
+    private final String fileId;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
@@ -165,32 +174,48 @@ public class ShareFileClient {
     ShareFileClient(ShareFileAsyncClient shareFileAsyncClient, AzureFileStorageImpl azureFileStorageClient,
         String shareName, String filePath, String snapshot, String accountName, ShareServiceVersion serviceVersion,
         AzureSasCredential sasToken) {
+        this(shareFileAsyncClient, azureFileStorageClient, shareName, filePath, "", snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    ShareFileClient(ShareFileAsyncClient shareFileAsyncClient, AzureFileStorageImpl azureFileStorageClient,
+        String shareName, String filePath, String fileId, String snapshot, String accountName,
+        ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         this.shareFileAsyncClient = shareFileAsyncClient;
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
         this.filePath = filePath;
+        this.fileId = fileId;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
 
-        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
-            .append(shareName)
-            .append("/")
-            .append(filePath);
-        if (snapshot != null) {
-            fileUrlstring.append("?sharesnapshot=").append(snapshot);
+        String fileUrlstring = azureFileStorageClient.getUrl() + "/" + shareName;
+        if (fileId.isEmpty()) {
+            fileUrlstring += "/" + filePath;
         }
-        this.fileUrlString = fileUrlstring.toString();
+        if (snapshot != null) {
+            fileUrlstring = Utility.appendQueryParameter(fileUrlstring, "sharesnapshot", snapshot);
+        }
+        if (!fileId.isEmpty()) {
+            fileUrlstring = Utility.appendQueryParameter(fileUrlstring, "fileid", Utility.urlEncode(fileId));
+        }
+        this.fileUrlString = fileUrlstring;
         this.fileClientInternal = new ShareFileClientInternal(azureFileStorageClient.getFiles());
     }
 
     /**
-     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this file's resource path.
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this file's resource path, or
+     * to the share plus the {@code fileid} query parameter when this client is addressed by file ID.
      */
     private RequestOptions scopedRequestOptions(Context context) {
+        if (!fileId.isEmpty()) {
+            return RequestOptionsHelper.fileIdRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
+                fileId);
+        }
         return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath);
     }
 
@@ -213,12 +238,70 @@ public class ShareFileClient {
     }
 
     /**
+     * Gets the file ID used to address the file, or an empty string when the client is path-addressed.
+     *
+     * @return The file ID.
+     */
+    public String getFileId() {
+        return fileId;
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
      */
     public ShareServiceVersion getServiceVersion() {
         return this.serviceVersion;
+    }
+
+    /**
+     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
+     *
+     * @return A response containing the file properties and hard links.
+     */
+    public Response<ShareFileLinks> getFileLinksWithResponse() {
+        return getFileLinksWithResponse(null, null, Context.NONE);
+    }
+
+    /**
+     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
+     *
+     * @param requestConditions Conditions to apply to the request.
+     * @return A response containing the file properties and hard links.
+     */
+    public Response<ShareFileLinks> getFileLinksWithResponse(ShareRequestConditions requestConditions) {
+        return getFileLinksWithResponse(requestConditions, null, Context.NONE);
+    }
+
+    /**
+     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
+     *
+     * @param requestConditions Conditions to apply to the request.
+     * @param timeout An optional timeout applied to the operation.
+     * @param context Additional context passed through the HTTP pipeline.
+     * @return A response containing the file properties and hard links.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileLinks> getFileLinksWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        ShareErrors.assertFileIdAddressed(fileId, "getFileLinks");
+        ShareRequestConditions conditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<FilesGetHardLinksHeaders, HardLinkList>> operation = () -> fileClientInternal
+            .getHardLinksWithResponse(snapshot, null, conditions.getLeaseId(), scopedRequestOptions(finalContext));
+        return ModelHelper.getFileLinksResponse(sendRequest(operation, timeout, ShareStorageException.class));
+    }
+
+    /**
+     * SMB only. Gets the file links. This operation is available only for a file-ID-addressed client.
+     *
+     * @return The file properties and hard links.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareFileLinks getFileLinks() {
+        return getFileLinksWithResponse().getValue();
     }
 
     /**
@@ -239,6 +322,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(ShareFileRange range) {
+        ShareErrors.validatePathOperation(fileId, "openInputStream");
         return new StorageFileInputStream(shareFileAsyncClient, range.getStart(),
             range.getEnd() == null ? null : (range.getEnd() - range.getStart() + 1));
     }
@@ -263,6 +347,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
+        ShareErrors.validatePathOperation(fileId, "getFileOutputStream");
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
     }
 
@@ -272,6 +357,7 @@ public class ShareFileClient {
      * @return The opened channel.
      */
     public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
+        ShareErrors.validatePathOperation(fileId, "getFileSeekableByteChannelWrite");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (options.isOverwriteMode()) {
@@ -292,6 +378,7 @@ public class ShareFileClient {
      * @return The opened channel.
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
+        ShareErrors.validatePathOperation(fileId, "getFileSeekableByteChannelRead");
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
         Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
         int chunkSize
@@ -336,6 +423,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "exists");
         try {
             Response<ShareFileProperties> response = getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, true);
@@ -541,6 +629,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createWithResponse(ShareFileCreateOptions options, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "create");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -738,6 +827,7 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
+        ShareErrors.validatePathOperation(fileId, "beginCopy");
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
@@ -944,6 +1034,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "abortCopy");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -1317,6 +1408,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(ShareRequestConditions requestConditions, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "delete");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -1403,6 +1495,11 @@ public class ShareFileClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve file properties</p>
+     *
+     * <p>This operation accepts path-addressed and file-ID-addressed clients. To address a file by ID, use
+     * {@link ShareClient#getFileClientByFileId(String)}. Service availability determines whether a file-ID request
+     * succeeds; the client does not check the share protocol. If the service does not support property retrieval by ID
+     * for the share, use a path-addressed client.</p>
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.getProperties -->
      * <pre>
@@ -1722,6 +1819,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> setPropertiesWithResponse(ShareFileSetPropertiesOptions options, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "setProperties");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
@@ -1881,6 +1979,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "setMetadata");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2288,6 +2387,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo>
         uploadRangeFromUrlWithResponse(ShareFileUploadRangeFromUrlOptions options, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "uploadRangeFromUrl");
         ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
@@ -2403,6 +2503,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> clearRangeWithResponse(long length, long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "clearRange");
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
@@ -2434,6 +2535,7 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
      *
      * @param uploadFilePath The path where store the source file to upload
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath) {
@@ -2461,6 +2563,7 @@ public class ShareFileClient {
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param requestConditions {@link ShareRequestConditions}
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
@@ -2560,6 +2663,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listRanges");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2750,6 +2854,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listRangesDiff");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
@@ -2814,6 +2919,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listHandles");
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Callable<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> operation
@@ -2891,6 +2997,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "forceCloseHandle");
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<FilesForceCloseHandlesHeaders>> operation = () -> fileClientInternal
             .forceCloseHandlesWithResponse(handleId, null, null, snapshot, scopedRequestOptions(finalContext));
@@ -2926,6 +3033,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "forceCloseAllHandles");
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Callable<Response<FilesForceCloseHandlesHeaders>> operation = () -> this.fileClientInternal
@@ -3012,6 +3120,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "rename");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
@@ -3226,6 +3335,7 @@ public class ShareFileClient {
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
+        ShareErrors.validatePathOperation(fileId, "generateSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
@@ -3270,6 +3380,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options, Duration timeout,
         Context context) {
+        ShareErrors.validatePathOperation(fileId, "createHardLink");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -3320,6 +3431,7 @@ public class ShareFileClient {
      */
     public Response<ShareFileInfo> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options,
         Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "createSymbolicLink");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -3369,6 +3481,7 @@ public class ShareFileClient {
      * describing the symbolic link.
      */
     public Response<ShareFileSymbolicLinkInfo> getSymbolicLinkWithResponse(Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "getSymbolicLink");
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<Response<FilesGetSymbolicLinkHeaders>> operation = () -> this.fileClientInternal
@@ -3405,6 +3518,7 @@ public class ShareFileClient {
      */
     public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        ShareErrors.validatePathOperation(fileId, "generateUserDelegationSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
@@ -3412,6 +3526,7 @@ public class ShareFileClient {
     ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
         ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
         Integer maxResultsPerPage, Duration timeout, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listRanges");
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();

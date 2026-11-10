@@ -12,11 +12,11 @@ public final class CassandraRoleAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraRoleAssignmentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"awn\",\"scope\":\"mlnkoywsxv\",\"principalId\":\"bjqqaxuyvymcn\",\"provisioningState\":\"ndoabhjxwxqweuip\"},\"id\":\"vk\",\"name\":\"m\",\"type\":\"tnsqxtlt\"},{\"properties\":{\"roleDefinitionId\":\"rdpqgfhy\",\"scope\":\"rakkld\",\"principalId\":\"c\",\"provisioningState\":\"cmfcnrjajq\"},\"id\":\"txjtielnzqgx\",\"name\":\"gfb\",\"type\":\"mtlpqagyno\"},{\"properties\":{\"roleDefinitionId\":\"n\",\"scope\":\"ali\",\"principalId\":\"ryqxzxa\",\"provisioningState\":\"ibmq\"},\"id\":\"iymqr\",\"name\":\"qguhfupetasvvo\",\"type\":\"sbpkf\"}],\"nextLink\":\"nfkgxsyaowuzowpu\"}")
+            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"xbteogfgfiijryk\",\"scope\":\"efksxqceaz\",\"principalId\":\"xgnmqvzvluyq\",\"provisioningState\":\"ios\"},\"id\":\"cyvaifppuacvfy\",\"name\":\"owpsfxt\",\"type\":\"dhsoymhpv\"}],\"nextLink\":\"qfttehdpboujs\"}")
             .toObject(CassandraRoleAssignmentListResult.class);
-        Assertions.assertEquals("awn", model.value().get(0).roleDefinitionId());
-        Assertions.assertEquals("mlnkoywsxv", model.value().get(0).scope());
-        Assertions.assertEquals("bjqqaxuyvymcn", model.value().get(0).principalId());
-        Assertions.assertEquals("nfkgxsyaowuzowpu", model.nextLink());
+        Assertions.assertEquals("xbteogfgfiijryk", model.value().get(0).roleDefinitionId());
+        Assertions.assertEquals("efksxqceaz", model.value().get(0).scope());
+        Assertions.assertEquals("xgnmqvzvluyq", model.value().get(0).principalId());
+        Assertions.assertEquals("qfttehdpboujs", model.nextLink());
     }
 }

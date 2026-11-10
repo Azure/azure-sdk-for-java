@@ -378,6 +378,11 @@ public final class SharesImpl {
      * provisioned bandwidth of the share, in MiBps.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>Boolean</td><td>No</td><td>Optional. Used to enable SMB directory
      * lease.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>Boolean</td><td>No</td><td>Optional. Boolean. Default if not
+     * specified is false. This property enables change feed on the share.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>Integer</td><td>No</td><td>Optional. Integer. Specifies
+     * the number of days that change feed records are retained, between 1 and 365. Default if not specified is 7
+     * days.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -459,6 +464,11 @@ public final class SharesImpl {
      * provisioned bandwidth of the share, in MiBps.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>Boolean</td><td>No</td><td>Optional. Used to enable SMB directory
      * lease.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>Boolean</td><td>No</td><td>Optional. Boolean. Default if not
+     * specified is false. This property enables change feed on the share.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>Integer</td><td>No</td><td>Optional. Integer. Specifies
+     * the number of days that change feed records are retained, between 1 and 365. Default if not specified is 7
+     * days.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -561,6 +571,12 @@ public final class SharesImpl {
      * <tr><td>x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time</td><td>OffsetDateTime</td><td>The next
      * allowed provisioned bandwidth downgrade time.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>boolean</td><td>Whether SMB directory lease is enabled.</td></tr>
+     * <tr><td>x-ms-share-creation-time</td><td>OffsetDateTime</td><td>The creation time.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>boolean</td><td>Whether change feed is enabled.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>int</td><td>The number of days that change feed records
+     * are retained.</td></tr>
+     * <tr><td>x-ms-file-blob-container-for-xfiles-change-feed</td><td>String</td><td>The blob container in which change
+     * feed records are stored, in the format "$fileschangefeed-&lt;guid&gt;".</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
      * request.</td></tr>
      * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
@@ -645,6 +661,12 @@ public final class SharesImpl {
      * <tr><td>x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time</td><td>OffsetDateTime</td><td>The next
      * allowed provisioned bandwidth downgrade time.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>boolean</td><td>Whether SMB directory lease is enabled.</td></tr>
+     * <tr><td>x-ms-share-creation-time</td><td>OffsetDateTime</td><td>The creation time.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>boolean</td><td>Whether change feed is enabled.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>int</td><td>The number of days that change feed records
+     * are retained.</td></tr>
+     * <tr><td>x-ms-file-blob-container-for-xfiles-change-feed</td><td>String</td><td>The blob container in which change
+     * feed records are stored, in the format "$fileschangefeed-&lt;guid&gt;".</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
      * request.</td></tr>
      * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
@@ -1737,6 +1759,11 @@ public final class SharesImpl {
      * provisioned bandwidth of the share, in MiBps.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>Boolean</td><td>No</td><td>Optional. Used to enable SMB directory
      * lease.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>Boolean</td><td>No</td><td>Optional. Boolean. Default if not
+     * specified is false. This property enables change feed on the share.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>Integer</td><td>No</td><td>Optional. Integer. Specifies
+     * the number of days that change feed records are retained, between 1 and 365. Default if not specified is 7
+     * days.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1822,6 +1849,11 @@ public final class SharesImpl {
      * provisioned bandwidth of the share, in MiBps.</td></tr>
      * <tr><td>x-ms-enable-smb-directory-lease</td><td>Boolean</td><td>No</td><td>Optional. Used to enable SMB directory
      * lease.</td></tr>
+     * <tr><td>x-ms-file-enable-change-feed</td><td>Boolean</td><td>No</td><td>Optional. Boolean. Default if not
+     * specified is false. This property enables change feed on the share.</td></tr>
+     * <tr><td>x-ms-file-change-feed-retention-in-days</td><td>Integer</td><td>No</td><td>Optional. Integer. Specifies
+     * the number of days that change feed records are retained, between 1 and 365. Default if not specified is 7
+     * days.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>

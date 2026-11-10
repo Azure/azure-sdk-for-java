@@ -5,7 +5,8 @@
 package com.azure.ai.agents.models;
 
 /**
- * A customer-configurable GitHub Copilot built-in tool.
+ * The legacy GitHub Copilot built-in tool names retained for compatibility. Use `MicrosoftCopilotBuiltInTool` for new
+ * integrations.
  */
 public enum GitHubCopilotBuiltInTool {
     /**

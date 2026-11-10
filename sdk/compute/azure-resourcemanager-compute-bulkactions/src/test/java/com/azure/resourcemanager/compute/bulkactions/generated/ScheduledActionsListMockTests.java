@@ -30,7 +30,7 @@ public final class ScheduledActionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-05-29T00:39:17Z\",\"endTime\":\"2021-11-26T09:48:43Z\",\"schedule\":{\"scheduledTime\":\"glqivbgkcv\",\"timeZone\":\"hpzvuqdflvoniyp\",\"requestedWeekDays\":[\"Saturday\",\"Friday\",\"Friday\"],\"requestedMonths\":[\"July\"],\"requestedDaysOfTheMonth\":[175188483,1957867929,47968251,112991490],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1660677245,\"retryWindowInMinutes\":1003924316,\"onFailureAction\":\"Deallocate\"}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"p\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"vfgpikqmhhaowjrm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Deleting\"},\"location\":\"uydzvk\",\"tags\":{\"kmvkhl\":\"cnqmxqpsw\",\"zqkzszuwi\":\"gdhbe\",\"ljfp\":\"tglxx\",\"pqcbfrmbodthsq\":\"picrmnzhrgmqgjsx\"},\"id\":\"gvriibakclac\",\"name\":\"fr\",\"type\":\"xousxauzl\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-08-17T01:17:47Z\",\"endTime\":\"2021-08-18T01:37:27Z\",\"schedule\":{\"scheduledTime\":\"o\",\"timeZone\":\"vcjkgd\",\"requestedWeekDays\":[\"Tuesday\",\"Monday\",\"Thursday\",\"Tuesday\"],\"requestedMonths\":[\"October\",\"October\"],\"requestedDaysOfTheMonth\":[492529805,1936242759,1282322640,1416773611],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":271162273,\"retryWindowInMinutes\":1046719550,\"onFailureAction\":\"Hibernate\"}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"rbuhhlky\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"rogtuwkf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"sysidfvclglxnf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"busqogsfi\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":false,\"provisioningState\":\"Canceled\"},\"location\":\"ujtjiqxfz\",\"tags\":{\"penuy\":\"ttvwkpqh\"},\"id\":\"bqeqqekewvnqvcd\",\"name\":\"guaucmfdjwnla\",\"type\":\"punj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,25 +41,26 @@ public final class ScheduledActionsListMockTests {
 
         PagedIterable<ScheduledAction> response = manager.scheduledActions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uydzvk", response.iterator().next().location());
-        Assertions.assertEquals("cnqmxqpsw", response.iterator().next().tags().get("kmvkhl"));
-        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, response.iterator().next().properties().resourceType());
-        Assertions.assertEquals(ScheduledActionType.DEALLOCATE, response.iterator().next().properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T00:39:17Z"),
+        Assertions.assertEquals("ujtjiqxfz", response.iterator().next().location());
+        Assertions.assertEquals("ttvwkpqh", response.iterator().next().tags().get("penuy"));
+        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET,
+            response.iterator().next().properties().resourceType());
+        Assertions.assertEquals(ScheduledActionType.HIBERNATE, response.iterator().next().properties().actionType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T01:17:47Z"),
             response.iterator().next().properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T09:48:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T01:37:27Z"),
             response.iterator().next().properties().endTime());
-        Assertions.assertEquals("glqivbgkcv", response.iterator().next().properties().schedule().scheduledTime());
-        Assertions.assertEquals("hpzvuqdflvoniyp", response.iterator().next().properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.SATURDAY,
+        Assertions.assertEquals("o", response.iterator().next().properties().schedule().scheduledTime());
+        Assertions.assertEquals("vcjkgd", response.iterator().next().properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.TUESDAY,
             response.iterator().next().properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.JULY,
+        Assertions.assertEquals(Month.OCTOBER,
             response.iterator().next().properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(175188483,
+        Assertions.assertEquals(492529805,
             response.iterator().next().properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(1660677245,
+        Assertions.assertEquals(271162273,
             response.iterator().next().properties().schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1003924316,
+        Assertions.assertEquals(1046719550,
             response.iterator()
                 .next()
                 .properties()
@@ -67,17 +68,17 @@ public final class ScheduledActionsListMockTests {
                 .executionParameters()
                 .retryPolicy()
                 .retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.DEALLOCATE,
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.HIBERNATE,
             response.iterator().next().properties().schedule().executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(ScheduledActionsDeadlineType.INITIATE_AT,
+        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY,
             response.iterator().next().properties().schedule().deadlineType());
-        Assertions.assertEquals("p",
+        Assertions.assertEquals("rbuhhlky",
             response.iterator().next().properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US,
             response.iterator().next().properties().notificationSettings().get(0).language());
         Assertions.assertFalse(response.iterator().next().properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(response.iterator().next().properties().disabled());
+        Assertions.assertFalse(response.iterator().next().properties().disabled());
     }
 }

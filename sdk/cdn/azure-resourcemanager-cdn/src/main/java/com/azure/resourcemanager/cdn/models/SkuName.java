@@ -52,11 +52,6 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName PREMIUM_AZURE_FRONT_DOOR = fromString("Premium_AzureFrontDoor");
 
     /**
-     * Static value Classic_AzureFrontDoor for SkuName.
-     */
-    public static final SkuName CLASSIC_AZURE_FRONT_DOOR = fromString("Classic_AzureFrontDoor");
-
-    /**
      * Static value Standard_955BandWidth_ChinaCdn for SkuName.
      */
     public static final SkuName STANDARD_955BAND_WIDTH_CHINA_CDN = fromString("Standard_955BandWidth_ChinaCdn");

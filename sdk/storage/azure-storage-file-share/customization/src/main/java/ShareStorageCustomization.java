@@ -428,11 +428,10 @@ public class ShareStorageCustomization extends Customization {
         String filesImplPath = PKG_ROOT + "implementation/FilesImpl.java";
         String filesImpl = editor.getFileContent(filesImplPath);
         String newFilesImpl = addStreamingImports(filesImpl
-            .replace("Mono<Response<BinaryData>> download(@HostParam(\"url\") String url,",
-                "Mono<Response<Flux<ByteBuffer>>> download(@HostParam(\"url\") String url,")
-            .replace(
-                "public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {",
-                "public Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {"));
+            .replaceAll("Mono<Response<BinaryData>>(\\s+)download\\(@HostParam\\(\"url\"\\) String url,",
+                "Mono<Response<Flux<ByteBuffer>>>$1download(@HostParam(\"url\") String url,")
+            .replaceAll("public Mono<Response<BinaryData>>(\\s+)downloadWithResponseInternalAsync\\(",
+                "public Mono<Response<Flux<ByteBuffer>>>$1downloadWithResponseInternalAsync("));
         if (!newFilesImpl.equals(filesImpl)) {
             editor.replaceFile(filesImplPath, newFilesImpl);
             logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in FilesImpl");
@@ -440,16 +439,14 @@ public class ShareStorageCustomization extends Customization {
 
         String asyncPath = PKG_ROOT + "implementation/ShareFileAsyncClientInternal.java";
         String async = editor.getFileContent(asyncPath);
+        // Regex anchors tolerate the emitter's line wrapping, which shifts whenever the download signature gains a
+        // parameter, and either the generated or the relocated download headers class name.
         String newAsync = addStreamingImports(async
-            .replace("Mono<Response<BinaryData>> downloadWithResponseInternal(RequestOptions requestOptions) {",
-                "Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternal(RequestOptions requestOptions) {")
-            .replace(
-                "public Mono<ResponseBase<ShareFileDownloadHeaders, BinaryData>> downloadWithResponse(Integer timeout, String range,",
-                "public Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponse(Integer timeout, String range,")
-            .replace(
-                "public Mono<BinaryData> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,",
-                "public Mono<Flux<ByteBuffer>> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,")
-            .replace("public Mono<BinaryData> download() {", "public Mono<Flux<ByteBuffer>> download() {"));
+            .replaceAll("Mono<Response<BinaryData>>(\\s+)downloadWithResponseInternal\\(",
+                "Mono<Response<Flux<ByteBuffer>>>$1downloadWithResponseInternal(")
+            .replaceAll("public Mono<ResponseBase<(\\w+), BinaryData>>(\\s+)downloadWithResponse\\(",
+                "public Mono<ResponseBase<$1, Flux<ByteBuffer>>>$2downloadWithResponse(")
+            .replaceAll("public Mono<BinaryData>(\\s+)download\\(", "public Mono<Flux<ByteBuffer>>$1download("));
         if (!newAsync.equals(async)) {
             editor.replaceFile(asyncPath, newAsync);
             logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in ShareFileAsyncClientInternal");

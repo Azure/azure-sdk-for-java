@@ -180,6 +180,20 @@ public interface StorageManagementClient {
     ContextCacheContainersClient getContextCacheContainers();
 
     /**
+     * Gets the BlobAccessPointConfigurationsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConfigurationsClient object.
+     */
+    BlobAccessPointConfigurationsClient getBlobAccessPointConfigurations();
+
+    /**
+     * Gets the BlobAccessPointConnectionTestsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConnectionTestsClient object.
+     */
+    BlobAccessPointConnectionTestsClient getBlobAccessPointConnectionTests();
+
+    /**
      * Gets the AdvancedPlatformMetricsClient object to access its operations.
      * 
      * @return the AdvancedPlatformMetricsClient object.

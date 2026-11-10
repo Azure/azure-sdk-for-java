@@ -25,10 +25,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.recommender.fluent.ComputeRecommenderManagementClient;
+import com.azure.resourcemanager.compute.recommender.implementation.ComputePlacementScoresImpl;
 import com.azure.resourcemanager.compute.recommender.implementation.ComputeRecommenderManagementClientBuilder;
 import com.azure.resourcemanager.compute.recommender.implementation.OperationsImpl;
 import com.azure.resourcemanager.compute.recommender.implementation.SkuMixPlacementScoresImpl;
 import com.azure.resourcemanager.compute.recommender.implementation.SpotPlacementScoresImpl;
+import com.azure.resourcemanager.compute.recommender.models.ComputePlacementScores;
 import com.azure.resourcemanager.compute.recommender.models.Operations;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementScores;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScores;
@@ -47,9 +49,11 @@ import java.util.stream.Collectors;
 public final class ComputeRecommenderManager {
     private Operations operations;
 
-    private SkuMixPlacementScores skuMixPlacementScores;
-
     private SpotPlacementScores spotPlacementScores;
+
+    private ComputePlacementScores computePlacementScores;
+
+    private SkuMixPlacementScores skuMixPlacementScores;
 
     private final ComputeRecommenderManagementClient clientObject;
 
@@ -279,18 +283,6 @@ public final class ComputeRecommenderManager {
     }
 
     /**
-     * Gets the resource collection API of SkuMixPlacementScores.
-     * 
-     * @return Resource collection API of SkuMixPlacementScores.
-     */
-    public SkuMixPlacementScores skuMixPlacementScores() {
-        if (this.skuMixPlacementScores == null) {
-            this.skuMixPlacementScores = new SkuMixPlacementScoresImpl(clientObject.getSkuMixPlacementScores(), this);
-        }
-        return skuMixPlacementScores;
-    }
-
-    /**
      * Gets the resource collection API of SpotPlacementScores.
      * 
      * @return Resource collection API of SpotPlacementScores.
@@ -300,6 +292,31 @@ public final class ComputeRecommenderManager {
             this.spotPlacementScores = new SpotPlacementScoresImpl(clientObject.getSpotPlacementScores(), this);
         }
         return spotPlacementScores;
+    }
+
+    /**
+     * Gets the resource collection API of ComputePlacementScores.
+     * 
+     * @return Resource collection API of ComputePlacementScores.
+     */
+    public ComputePlacementScores computePlacementScores() {
+        if (this.computePlacementScores == null) {
+            this.computePlacementScores
+                = new ComputePlacementScoresImpl(clientObject.getComputePlacementScores(), this);
+        }
+        return computePlacementScores;
+    }
+
+    /**
+     * Gets the resource collection API of SkuMixPlacementScores.
+     * 
+     * @return Resource collection API of SkuMixPlacementScores.
+     */
+    public SkuMixPlacementScores skuMixPlacementScores() {
+        if (this.skuMixPlacementScores == null) {
+            this.skuMixPlacementScores = new SkuMixPlacementScoresImpl(clientObject.getSkuMixPlacementScores(), this);
+        }
+        return skuMixPlacementScores;
     }
 
     /**

@@ -180,6 +180,30 @@ public final class SharesGetPropertiesHeaders {
     private final Boolean enableSmbDirectoryLease;
 
     /*
+     * The x-ms-share-creation-time property.
+     */
+    @Generated
+    private final DateTimeRfc1123 creationTime;
+
+    /*
+     * The x-ms-file-enable-change-feed property.
+     */
+    @Generated
+    private final Boolean enableChangeFeed;
+
+    /*
+     * The x-ms-file-change-feed-retention-in-days property.
+     */
+    @Generated
+    private final Integer changeFeedRetentionInDays;
+
+    /*
+     * The x-ms-file-blob-container-for-xfiles-change-feed property.
+     */
+    @Generated
+    private final String changeFeedBlobContainerName;
+
+    /*
      * The x-ms-version property.
      */
     @Generated
@@ -264,6 +288,18 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_ENABLE_SMB_DIRECTORY_LEASE
         = HttpHeaderName.fromString("x-ms-enable-smb-directory-lease");
+
+    private static final HttpHeaderName X_MS_SHARE_CREATION_TIME
+        = HttpHeaderName.fromString("x-ms-share-creation-time");
+
+    private static final HttpHeaderName X_MS_FILE_ENABLE_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-enable-change-feed");
+
+    private static final HttpHeaderName X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS
+        = HttpHeaderName.fromString("x-ms-file-change-feed-retention-in-days");
+
+    private static final HttpHeaderName X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-blob-container-for-xfiles-change-feed");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -408,6 +444,25 @@ public final class SharesGetPropertiesHeaders {
         } else {
             this.enableSmbDirectoryLease = null;
         }
+        String creationTime = rawHeaders.getValue(X_MS_SHARE_CREATION_TIME);
+        if (creationTime != null) {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        } else {
+            this.creationTime = null;
+        }
+        String enableChangeFeed = rawHeaders.getValue(X_MS_FILE_ENABLE_CHANGE_FEED);
+        if (enableChangeFeed != null) {
+            this.enableChangeFeed = Boolean.parseBoolean(enableChangeFeed);
+        } else {
+            this.enableChangeFeed = null;
+        }
+        String changeFeedRetentionInDays = rawHeaders.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS);
+        if (changeFeedRetentionInDays != null) {
+            this.changeFeedRetentionInDays = Integer.parseInt(changeFeedRetentionInDays);
+        } else {
+            this.changeFeedRetentionInDays = null;
+        }
+        this.changeFeedBlobContainerName = rawHeaders.getValue(X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED);
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
@@ -705,6 +760,49 @@ public final class SharesGetPropertiesHeaders {
     @Generated
     public Boolean isEnableSmbDirectoryLease() {
         return this.enableSmbDirectoryLease;
+    }
+
+    /**
+     * Get the creationTime property: The x-ms-share-creation-time property.
+     * 
+     * @return the creationTime value.
+     */
+    @Generated
+    public OffsetDateTime getCreationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.getDateTime();
+    }
+
+    /**
+     * Get the enableChangeFeed property: The x-ms-file-enable-change-feed property.
+     * 
+     * @return the enableChangeFeed value.
+     */
+    @Generated
+    public Boolean isEnableChangeFeed() {
+        return this.enableChangeFeed;
+    }
+
+    /**
+     * Get the changeFeedRetentionInDays property: The x-ms-file-change-feed-retention-in-days property.
+     * 
+     * @return the changeFeedRetentionInDays value.
+     */
+    @Generated
+    public Integer getChangeFeedRetentionInDays() {
+        return this.changeFeedRetentionInDays;
+    }
+
+    /**
+     * Get the changeFeedBlobContainerName property: The x-ms-file-blob-container-for-xfiles-change-feed property.
+     * 
+     * @return the changeFeedBlobContainerName value.
+     */
+    @Generated
+    public String getChangeFeedBlobContainerName() {
+        return this.changeFeedBlobContainerName;
     }
 
     /**

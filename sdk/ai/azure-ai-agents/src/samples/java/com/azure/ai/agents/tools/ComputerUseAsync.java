@@ -6,7 +6,6 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
@@ -135,12 +134,11 @@ public class ComputerUseAsync {
                 System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
 
                 // Send initial request
-                return SampleUtils.pinAgentVersion(agentsClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .inputOfResponse(initialInput)
-                            .truncation(ResponseCreateParams.Truncation.AUTO)
-                            .build())))
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .inputOfResponse(initialInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build()))
                     .doOnNext(response -> System.out.printf("Initial response received (ID: %s)%n", response.id()))
                     .flatMap(response -> runInteractionLoop(
                         openAIAsyncClient, response, screenshots, SearchState.INITIAL, 0));

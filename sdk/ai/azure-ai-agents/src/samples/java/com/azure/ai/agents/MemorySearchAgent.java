@@ -41,10 +41,10 @@ public class MemorySearchAgent {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
-
         String memoryStoreName = "my_memory_store";
         String agentName = "MyAgent";
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        ConversationService conversationService = openAIClient.conversations();
         String description = "Example memory store for conversations";
         String scope = "user_123";
 
@@ -72,9 +72,6 @@ public class MemorySearchAgent {
             agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent);
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Conversation conversation = conversationService.create();
             firstConversationId = conversation.id();

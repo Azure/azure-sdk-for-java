@@ -60,6 +60,14 @@ public final class ScenarioConfigurationImpl
 
     private String scenarioConfigurationName;
 
+    private String createIfNoneMatch;
+
+    private String createIfMatch;
+
+    private String updateIfNoneMatch;
+
+    private String updateIfMatch;
+
     public ScenarioConfigurationImpl withExistingScenario(String resourceGroupName, String workspaceName,
         String scenarioName) {
         this.resourceGroupName = resourceGroupName;
@@ -72,7 +80,7 @@ public final class ScenarioConfigurationImpl
         this.innerObject = serviceManager.serviceClient()
             .getScenarioConfigurations()
             .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), Context.NONE);
+                this.innerModel(), createIfNoneMatch, createIfMatch, Context.NONE);
         return this;
     }
 
@@ -80,7 +88,7 @@ public final class ScenarioConfigurationImpl
         this.innerObject = serviceManager.serviceClient()
             .getScenarioConfigurations()
             .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), context);
+                this.innerModel(), createIfNoneMatch, createIfMatch, context);
         return this;
     }
 
@@ -88,9 +96,13 @@ public final class ScenarioConfigurationImpl
         this.innerObject = new ScenarioConfigurationInner();
         this.serviceManager = serviceManager;
         this.scenarioConfigurationName = name;
+        this.createIfNoneMatch = null;
+        this.createIfMatch = null;
     }
 
     public ScenarioConfigurationImpl update() {
+        this.updateIfNoneMatch = null;
+        this.updateIfMatch = null;
         return this;
     }
 
@@ -98,7 +110,7 @@ public final class ScenarioConfigurationImpl
         this.innerObject = serviceManager.serviceClient()
             .getScenarioConfigurations()
             .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), Context.NONE);
+                this.innerModel(), updateIfNoneMatch, updateIfMatch, Context.NONE);
         return this;
     }
 
@@ -106,7 +118,7 @@ public final class ScenarioConfigurationImpl
         this.innerObject = serviceManager.serviceClient()
             .getScenarioConfigurations()
             .createOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-                this.innerModel(), context);
+                this.innerModel(), updateIfNoneMatch, updateIfMatch, context);
         return this;
     }
 
@@ -114,10 +126,18 @@ public final class ScenarioConfigurationImpl
         com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.scenarioName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scenarios");
-        this.scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
+            "workspaceName");
+        this.scenarioName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
+            "scenarioName");
+        this.scenarioConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}",
+            "scenarioConfigurationName");
     }
 
     public ScenarioConfiguration refresh() {
@@ -170,5 +190,29 @@ public final class ScenarioConfigurationImpl
     public ScenarioConfigurationImpl withProperties(ScenarioConfigurationProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ScenarioConfigurationImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
+    public ScenarioConfigurationImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

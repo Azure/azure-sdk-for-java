@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FlowLogsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkWatcherFlowLogUpdateTags.json
+     * x-ms-original-file: 2026-03-01/NetworkWatcherFlowLogUpdateTags.json
      */
     /**
      * Sample code: Update flow log tags.

@@ -19,12 +19,6 @@ public final class InfrastructureEncryption extends ExpandableStringEnum<Infrast
     public static final InfrastructureEncryption ENABLED = fromString("Enabled");
 
     /**
-     * Encryption at rest of Kubernetes resource objects using service-managed keys is disabled. More information on
-     * this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-     */
-    public static final InfrastructureEncryption DISABLED = fromString("Disabled");
-
-    /**
      * Creates a new instance of InfrastructureEncryption value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -14,22 +14,22 @@ public final class ScheduledActionsExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsExecutionParameters model = BinaryData.fromString(
-            "{\"retryPolicy\":{\"retryCount\":1689782344,\"retryWindowInMinutes\":1959517954,\"onFailureAction\":\"Create\"}}")
+            "{\"retryPolicy\":{\"retryCount\":583525950,\"retryWindowInMinutes\":1117648712,\"onFailureAction\":\"Create\"}}")
             .toObject(ScheduledActionsExecutionParameters.class);
-        Assertions.assertEquals(1689782344, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1959517954, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(583525950, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1117648712, model.retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledActionsExecutionParameters model = new ScheduledActionsExecutionParameters()
-            .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1689782344)
-                .withRetryWindowInMinutes(1959517954)
+            .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(583525950)
+                .withRetryWindowInMinutes(1117648712)
                 .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE));
         model = BinaryData.fromObject(model).toObject(ScheduledActionsExecutionParameters.class);
-        Assertions.assertEquals(1689782344, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1959517954, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(583525950, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1117648712, model.retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
     }
 }

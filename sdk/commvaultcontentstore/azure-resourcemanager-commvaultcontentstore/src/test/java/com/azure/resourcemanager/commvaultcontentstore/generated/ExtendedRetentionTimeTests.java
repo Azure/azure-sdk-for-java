@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtendedRetentionTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedRetentionTime model = BinaryData
-            .fromString(
-                "{\"retentionTime\":\"monthly\",\"retentionPeriod\":1915206631,\"backupRuleType\":\"WEEKLY_FULLS\"}")
+        ExtendedRetentionTime model = BinaryData.fromString(
+            "{\"retentionTime\":\"yearly\",\"retentionPeriod\":1220710831,\"backupRuleType\":\"HALF_YEARLY_FULLS\"}")
             .toObject(ExtendedRetentionTime.class);
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.retentionTime());
-        Assertions.assertEquals(1915206631, model.retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.WEEKLY_FULLS, model.backupRuleType());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
+        Assertions.assertEquals(1220710831, model.retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.backupRuleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedRetentionTime model = new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-            .withRetentionPeriod(1915206631)
-            .withBackupRuleType(BackupRuleType.WEEKLY_FULLS);
+        ExtendedRetentionTime model = new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+            .withRetentionPeriod(1220710831)
+            .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS);
         model = BinaryData.fromObject(model).toObject(ExtendedRetentionTime.class);
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.retentionTime());
-        Assertions.assertEquals(1915206631, model.retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.WEEKLY_FULLS, model.backupRuleType());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
+        Assertions.assertEquals(1220710831, model.retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.backupRuleType());
     }
 }

@@ -66,6 +66,15 @@ public final class ZonalDrillProperties extends DrillProperties {
      * {@inheritDoc}
      */
     @Override
+    public ZonalDrillProperties withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill goalAssignmentProperties) {
+        super.withGoalAssignmentProperties(goalAssignmentProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ZonalDrillProperties withDrillAssetProperties(AssetPropertiesOfDrill drillAssetProperties) {
         super.withDrillAssetProperties(drillAssetProperties);
         return this;
@@ -102,13 +111,35 @@ public final class ZonalDrillProperties extends DrillProperties {
      * {@inheritDoc}
      */
     @Override
+    public ZonalDrillProperties
+        withHealthModelMonitoringProperties(HealthModelMonitoringProperties healthModelMonitoringProperties) {
+        super.withHealthModelMonitoringProperties(healthModelMonitoringProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ZonalDrillProperties withSliMonitoringProperties(SliMonitoringProperties sliMonitoringProperties) {
+        super.withSliMonitoringProperties(sliMonitoringProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recoveryPlanProperties", recoveryPlanProperties());
+        jsonWriter.writeJsonField("goalAssignmentProperties", goalAssignmentProperties());
         jsonWriter.writeJsonField("drillAssetProperties", drillAssetProperties());
         jsonWriter.writeJsonField("chaosResourceProperties", chaosResourceProperties());
         jsonWriter.writeStringField("rbacSetupMode", rbacSetupMode() == null ? null : rbacSetupMode().toString());
         jsonWriter.writeJsonField("monitoringProperties", monitoringProperties());
+        jsonWriter.writeJsonField("healthModelMonitoringProperties", healthModelMonitoringProperties());
+        jsonWriter.writeJsonField("sliMonitoringProperties", sliMonitoringProperties());
         jsonWriter.writeStringField("drillType", this.drillType == null ? null : this.drillType.toString());
         return jsonWriter.writeEndObject();
     }
@@ -136,6 +167,9 @@ public final class ZonalDrillProperties extends DrillProperties {
                 } else if ("recoveryPlanProperties".equals(fieldName)) {
                     deserializedZonalDrillProperties
                         .withRecoveryPlanProperties(RecoveryPlanPropertiesOfDrill.fromJson(reader));
+                } else if ("goalAssignmentProperties".equals(fieldName)) {
+                    deserializedZonalDrillProperties
+                        .withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill.fromJson(reader));
                 } else if ("drillAssetProperties".equals(fieldName)) {
                     deserializedZonalDrillProperties.withDrillAssetProperties(AssetPropertiesOfDrill.fromJson(reader));
                 } else if ("chaosResourceProperties".equals(fieldName)) {
@@ -163,6 +197,12 @@ public final class ZonalDrillProperties extends DrillProperties {
                 } else if ("monitoringProperties".equals(fieldName)) {
                     deserializedZonalDrillProperties
                         .withMonitoringProperties(MonitoringPropertiesOfDrill.fromJson(reader));
+                } else if ("healthModelMonitoringProperties".equals(fieldName)) {
+                    deserializedZonalDrillProperties
+                        .withHealthModelMonitoringProperties(HealthModelMonitoringProperties.fromJson(reader));
+                } else if ("sliMonitoringProperties".equals(fieldName)) {
+                    deserializedZonalDrillProperties
+                        .withSliMonitoringProperties(SliMonitoringProperties.fromJson(reader));
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedZonalDrillProperties.withErrorDetails(ManagementError.fromJson(reader));
                 } else if ("drillType".equals(fieldName)) {

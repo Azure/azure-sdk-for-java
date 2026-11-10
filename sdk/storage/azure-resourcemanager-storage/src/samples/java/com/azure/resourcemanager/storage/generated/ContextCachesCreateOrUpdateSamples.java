@@ -13,6 +13,7 @@ import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentityType;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryption;
+import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,37 @@ import java.util.Map;
  */
 public final class ContextCachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemIdentity.json
+     * x-ms-original-file:
+     * 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemAssignedUserAssigned.json
+     */
+    /**
+     * Sample code: Create a Context Cache with system-assigned and user-assigned identity.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void createAContextCacheWithSystemAssignedAndUserAssignedIdentity(
+        com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient()
+            .getContextCaches()
+            .createOrUpdate("testrg", "testcontextcache",
+                new ContextCacheInner().withLocation("eastus")
+                    .withTags(mapOf("environment", "test"))
+                    .withProperties(new ContextCacheProperties().withAccountKind(ContextCacheAccountKind.REGIONAL)
+                        .withDescription("Test context cache")
+                        .withEncryption(new StorageAccountEncryption()
+                            .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                                .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                                    .withIdentityType(KeyEncryptionKeyIdentityType.SYSTEM_ASSIGNED_IDENTITY))
+                                .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami",
+                            new UserAssignedIdentity()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemIdentity.json
      */
     /**
      * Sample code: Create a Azure Context Cache Account with System Assigned Identity.
@@ -47,7 +78,36 @@ public final class ContextCachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_UserAssignedIdentity.json
+     */
+    /**
+     * Sample code: Create a Context Cache with user-assigned identity.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void
+        createAContextCacheWithUserAssignedIdentity(com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient()
+            .getContextCaches()
+            .createOrUpdate("testrg", "testcontextcache", new ContextCacheInner().withLocation("eastus")
+                .withTags(mapOf("environment", "test"))
+                .withProperties(new ContextCacheProperties().withAccountKind(ContextCacheAccountKind.REGIONAL)
+                    .withDescription("Test context cache")
+                    .withEncryption(new StorageAccountEncryption().withCustomerManagedKeyEncryption(
+                        new CustomerManagedKeyEncryption().withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami"))
+                            .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami",
+                        new UserAssignedIdentity()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a Context Cache.

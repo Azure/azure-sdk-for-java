@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionStat
  */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountPutPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-09-01/StorageAccountPutPrivateEndpointConnection.json
      */
     /**
      * Sample code: StorageAccountPutPrivateEndpointConnection.

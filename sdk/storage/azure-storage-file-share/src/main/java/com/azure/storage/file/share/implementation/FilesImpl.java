@@ -474,6 +474,24 @@ public final class FilesImpl {
             @HeaderParam("x-ms-type") String fileType, @HeaderParam("x-ms-file-target-file") String targetFile,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
             Context context);
+
+        @Get("?comp=hardlinks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<BinaryData>> getHardLinks(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("?comp=hardlinks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<BinaryData> getHardLinksSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -1038,6 +1056,7 @@ public final class FilesImpl {
      * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
      * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
      * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
@@ -1130,6 +1149,7 @@ public final class FilesImpl {
      * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
      * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
      * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
@@ -3735,6 +3755,236 @@ public final class FilesImpl {
             final String fileType = "file";
             return service.createHardLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 fileType, targetFile, this.client.getFileRequestIntent(), requestOptions, Context.NONE);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     HardLink (Required): [
+     *          (Required){
+     *             FileName (Required): {
+     *                 Encoded: Boolean (Optional)
+     *                 content: String (Optional)
+     *             }
+     *             ParentId: String (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
+     * modified.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
+     * resource.</td></tr>
+     * <tr><td>x-ms-content-type</td><td>String</td><td>The MIME content type of the file.</td></tr>
+     * <tr><td>x-ms-content-length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>x-ms-content-md5</td><td>byte[]</td><td>The MD5 hash of the full file content.</td></tr>
+     * <tr><td>x-ms-content-encoding</td><td>String</td><td>The content encodings that have been applied to the
+     * file.</td></tr>
+     * <tr><td>x-ms-content-language</td><td>String</td><td>The natural languages used by the file.</td></tr>
+     * <tr><td>x-ms-cache-control</td><td>String</td><td>The cache control of the file.</td></tr>
+     * <tr><td>x-ms-content-disposition</td><td>String</td><td>The Content-Disposition of the file.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>Conclusion time of the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>Only appears when x-ms-copy-status is failed or
+     * pending.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>String identifier for the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>Contains the number of bytes copied and the total bytes in the
+     * source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>URL up to 2 KB in length that specifies the source blob or
+     * file.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>State of the copy operation identified by x-ms-copy-id.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
+     * and application metadata are completely encrypted.</td></tr>
+     * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
+     * directory/file.</td></tr>
+     * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
+     * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
+     * <tr><td>x-ms-owner</td><td>String</td><td>NFS only. The owner.</td></tr>
+     * <tr><td>x-ms-group</td><td>String</td><td>NFS only. The owning group.</td></tr>
+     * <tr><td>x-ms-file-file-type</td><td>String</td><td>NFS only. The file type.</td></tr>
+     * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>A GMT date/time value generated by the service that indicates the
+     * time the response was initiated.</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of hard links for a file along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getHardLinksWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.getHardLinks(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     HardLink (Required): [
+     *          (Required){
+     *             FileName (Required): {
+     *                 Encoded: Boolean (Optional)
+     *                 content: String (Optional)
+     *             }
+     *             ParentId: String (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
+     * modified.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
+     * resource.</td></tr>
+     * <tr><td>x-ms-content-type</td><td>String</td><td>The MIME content type of the file.</td></tr>
+     * <tr><td>x-ms-content-length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>x-ms-content-md5</td><td>byte[]</td><td>The MD5 hash of the full file content.</td></tr>
+     * <tr><td>x-ms-content-encoding</td><td>String</td><td>The content encodings that have been applied to the
+     * file.</td></tr>
+     * <tr><td>x-ms-content-language</td><td>String</td><td>The natural languages used by the file.</td></tr>
+     * <tr><td>x-ms-cache-control</td><td>String</td><td>The cache control of the file.</td></tr>
+     * <tr><td>x-ms-content-disposition</td><td>String</td><td>The Content-Disposition of the file.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>Conclusion time of the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>Only appears when x-ms-copy-status is failed or
+     * pending.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>String identifier for the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>Contains the number of bytes copied and the total bytes in the
+     * source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>URL up to 2 KB in length that specifies the source blob or
+     * file.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>State of the copy operation identified by x-ms-copy-id.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
+     * and application metadata are completely encrypted.</td></tr>
+     * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
+     * directory/file.</td></tr>
+     * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-name</td><td>String</td><td>The name of the file or directory.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
+     * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
+     * <tr><td>x-ms-owner</td><td>String</td><td>NFS only. The owner.</td></tr>
+     * <tr><td>x-ms-group</td><td>String</td><td>NFS only. The owning group.</td></tr>
+     * <tr><td>x-ms-file-file-type</td><td>String</td><td>NFS only. The file type.</td></tr>
+     * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>A GMT date/time value generated by the service that indicates the
+     * time the response was initiated.</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of hard links for a file along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getHardLinksWithResponseInternal(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            return service.getHardLinksSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
+                Context.NONE);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

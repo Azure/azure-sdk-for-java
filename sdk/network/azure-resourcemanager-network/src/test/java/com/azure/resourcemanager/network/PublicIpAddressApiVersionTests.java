@@ -1,0 +1,102 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.network;
+
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
+import com.azure.resourcemanager.network.implementation.NetworkManagementClientBuilder;
+import com.azure.resourcemanager.network.implementation.NetworkManagementClientImpl;
+import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+public class PublicIpAddressApiVersionTests {
+    private static final String COMPUTE_API_VERSION = "2018-10-01";
+    private static final String VMSS_IP_CONFIGURATION_PATH
+        = "/providers/Microsoft.Compute/virtualMachineScaleSets/vmss/virtualMachines/0/networkInterfaces/nic/"
+            + "ipconfigurations/ipconfig/publicipaddresses";
+
+    @Test
+    public void getVirtualMachineScaleSetPublicIpAddressUsesComputeApiVersion() {
+        NetworkManagementClientImpl client = createClient(COMPUTE_API_VERSION, VMSS_IP_CONFIGURATION_PATH + "/pip");
+
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .getVirtualMachineScaleSetPublicIpAddressWithResponseAsync("rg", "vmss", "0", "nic", "ipconfig", "pip",
+                null)
+            .block());
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .getVirtualMachineScaleSetPublicIpAddressWithResponse("rg", "vmss", "0", "nic", "ipconfig", "pip", null,
+                Context.NONE));
+    }
+
+    @Test
+    public void listVirtualMachineScaleSetPublicIpAddressesUsesComputeApiVersion() {
+        NetworkManagementClientImpl client = createClient(COMPUTE_API_VERSION,
+            "/providers/Microsoft.Compute/virtualMachineScaleSets/vmss/publicipaddresses");
+
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .listVirtualMachineScaleSetPublicIpAddressesAsync("rg", "vmss")
+            .byPage()
+            .blockFirst());
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .listVirtualMachineScaleSetPublicIpAddresses("rg", "vmss", Context.NONE)
+            .iterableByPage()
+            .iterator()
+            .next());
+    }
+
+    @Test
+    public void listVirtualMachineScaleSetVMPublicIpAddressesUsesComputeApiVersion() {
+        NetworkManagementClientImpl client = createClient(COMPUTE_API_VERSION, VMSS_IP_CONFIGURATION_PATH);
+
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .listVirtualMachineScaleSetVMPublicIpAddressesAsync("rg", "vmss", "0", "nic", "ipconfig")
+            .byPage()
+            .blockFirst());
+        Assertions.assertNotNull(client.getPublicIpAddresses()
+            .listVirtualMachineScaleSetVMPublicIpAddresses("rg", "vmss", "0", "nic", "ipconfig", Context.NONE)
+            .iterableByPage()
+            .iterator()
+            .next());
+    }
+
+    @Test
+    public void getPublicIpAddressUsesNetworkApiVersion() {
+        NetworkManagementClientImpl client = createClient(apiVersion -> {
+            Assertions.assertNotNull(apiVersion);
+            Assertions.assertFalse(apiVersion.isEmpty());
+            Assertions.assertNotEquals(COMPUTE_API_VERSION, apiVersion);
+        }, "/providers/Microsoft.Network/publicIPAddresses/pip");
+
+        for (String expand : new String[] { null, "x" }) {
+            Assertions.assertNotNull(
+                client.getPublicIpAddresses().getByResourceGroupWithResponseAsync("rg", "pip", expand).block());
+            Assertions.assertNotNull(
+                client.getPublicIpAddresses().getByResourceGroupWithResponse("rg", "pip", expand, Context.NONE));
+        }
+    }
+
+    private static NetworkManagementClientImpl createClient(String apiVersion, String path) {
+        return createClient(actualApiVersion -> Assertions.assertEquals(apiVersion, actualApiVersion), path);
+    }
+
+    private static NetworkManagementClientImpl createClient(Consumer<String> assertApiVersion, String path) {
+        return new NetworkManagementClientBuilder().subscriptionId("00000000-0000-0000-0000-000000000000")
+            .pipeline(new HttpPipelineBuilder().httpClient(request -> {
+                assertApiVersion.accept(UrlBuilder.parse(request.getUrl()).getQuery().get("api-version"));
+                Assertions.assertTrue(request.getUrl().getPath().endsWith(path), request.getUrl().getPath());
+                String body = path.endsWith("/pip") ? "{}" : "{\"value\":[]}";
+                return Mono.just(new MockHttpResponse(request, 200,
+                    new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                    body.getBytes(StandardCharsets.UTF_8)));
+            }).build())
+            .buildClient();
+    }
+}

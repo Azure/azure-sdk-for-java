@@ -48,6 +48,12 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     @Generated
     private String permissionKey;
 
+    /*
+     * The link count of the directory.
+     */
+    @Generated
+    private Long linkCount;
+
     /**
      * Creates an instance of DirectoryItem class.
      * 
@@ -108,6 +114,16 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
         return this.permissionKey;
     }
 
+    /**
+     * Get the linkCount property: The link count of the directory.
+     * 
+     * @return the linkCount value.
+     */
+    @Generated
+    public Long getLinkCount() {
+        return this.linkCount;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -124,6 +140,7 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
         xmlWriter.writeXml(this.properties, "Properties");
         xmlWriter.writeStringElement("Attributes", this.attributes);
         xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
+        xmlWriter.writeNumberElement("LinkCount", this.linkCount);
         return xmlWriter.writeEndElement();
     }
 
@@ -162,6 +179,7 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
             FileProperty properties = null;
             String attributes = null;
             String permissionKey = null;
+            Long linkCount = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
@@ -175,6 +193,8 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
                     attributes = reader.getStringElement();
                 } else if ("PermissionKey".equals(elementName.getLocalPart())) {
                     permissionKey = reader.getStringElement();
+                } else if ("LinkCount".equals(elementName.getLocalPart())) {
+                    linkCount = reader.getNullableElement(Long::parseLong);
                 } else {
                     reader.skipElement();
                 }
@@ -184,6 +204,7 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
             deserializedDirectoryItem.properties = properties;
             deserializedDirectoryItem.attributes = attributes;
             deserializedDirectoryItem.permissionKey = permissionKey;
+            deserializedDirectoryItem.linkCount = linkCount;
 
             return deserializedDirectoryItem;
         });

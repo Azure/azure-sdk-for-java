@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface OccurrenceExtensions {
     /**
-     * Lists scheduled action occurrences associated with the specified VM.
+     * Lists recurring bulk action occurrences associated with the specified VM.
      * 
      * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +24,7 @@ public interface OccurrenceExtensions {
     PagedIterable<OccurrenceExtensionResource> listOccurrenceByVms(String resourceUri);
 
     /**
-     * Lists scheduled action occurrences associated with the specified VM.
+     * Lists recurring bulk action occurrences associated with the specified VM.
      * 
      * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @param context The context to associate with this operation.

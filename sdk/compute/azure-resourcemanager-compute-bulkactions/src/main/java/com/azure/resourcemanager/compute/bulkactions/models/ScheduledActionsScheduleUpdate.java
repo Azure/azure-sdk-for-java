@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Schedule changes for a scheduled action. Omitted properties keep their current values.
+ * Schedule changes for a recurring bulk action. Omitted properties keep their current values.
  */
 @Fluent
 public final class ScheduledActionsScheduleUpdate implements JsonSerializable<ScheduledActionsScheduleUpdate> {
     /*
-     * The local time of day when the scheduled action runs.
+     * The local time of day when the recurring bulk action runs.
      */
     private String scheduledTime;
 
@@ -59,7 +59,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the scheduledTime property: The local time of day when the scheduled action runs.
+     * Get the scheduledTime property: The local time of day when the recurring bulk action runs.
      * 
      * @return the scheduledTime value.
      */
@@ -68,7 +68,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the scheduledTime property: The local time of day when the scheduled action runs.
+     * Set the scheduledTime property: The local time of day when the recurring bulk action runs.
      * 
      * @param scheduledTime the scheduledTime value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
