@@ -12,7 +12,7 @@ from utils import set_or_default_version
 from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 
-from generate_utils import generate_typespec_project, clean_sdk_folder
+from generate_utils import generate_typespec_project, clean_sdk_folder, generate_api_markdown
 
 GROUP_ID = "com.azure"
 
@@ -98,6 +98,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     if sdk_folder and module and service:
         artifacts = ["{0}/pom.xml".format(sdk_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(sdk_folder))]
+        if compile_succeeded:
+            artifacts.append(generate_api_markdown(sdk_root, sdk_folder))
         result = "succeeded" if compile_succeeded else "failed"
         if generate_succeeded and not compile_succeeded and fallback_generate_from_clean_folder_enabled:
             result = "warning"

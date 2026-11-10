@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import json
+import glob
 import yaml
 import shutil
 import logging
@@ -89,6 +90,30 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         )
         return False
     return True
+
+
+def generate_api_markdown(sdk_root: str, sdk_folder: str) -> str:
+    package_directory = os.path.abspath(os.path.join(sdk_root, sdk_folder))
+    sources = glob.glob(os.path.join(package_directory, "target", "*-sources.jar"))
+    if len(sources) != 1:
+        raise RuntimeError(f"Expected one sources JAR in {package_directory}/target; found {len(sources)}.")
+    check_call(
+        [
+            "pwsh",
+            "-NoProfile",
+            "-File",
+            os.path.join(sdk_root, "eng", "scripts", "Generate-ApiMarkdown.ps1"),
+            "-PackagePath",
+            package_directory,
+            "-SourcesJar",
+            sources[0],
+        ],
+        sdk_root,
+    )
+    api_path = os.path.join(package_directory, "api.md")
+    if not os.path.isfile(api_path):
+        raise RuntimeError(f"API Markdown was not produced: {api_path}.")
+    return os.path.relpath(api_path, sdk_root).replace(os.sep, "/")
 
 
 def generate_changelog_and_breaking_change(
