@@ -1259,6 +1259,9 @@ public final class RedisEnterpriseUpdateSamples {
                     .withDuration("PT6H")
                     .withStartHourUtc(3)
                     .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)))))
+            .apply();
+        resource.update()
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withFirewallRules(
                 Arrays.asList(new FirewallRule().withName("allowOfficeNetwork").withSourceAddressPrefix("10.0.0.0/24"),
                     new FirewallRule().withName("allowPartnerNetwork").withSourceAddressPrefix("192.168.1.0/24")))
