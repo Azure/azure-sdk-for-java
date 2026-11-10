@@ -18,7 +18,13 @@ The shared `sdk/tools/ci.yml` builds and tests the tool using the SDK pipeline. 
 
 ## Generate a package's api.md
 
-From the repository root, using PowerShell 7+, Maven, and a JDK:
+From a library module directory, using PowerShell 7+, Maven, and a JDK:
+
+```powershell
+pwsh ../../../eng/scripts/Generate-ApiMarkdown.ps1
+```
+
+Or specify the package from the repository root:
 
 ```powershell
 pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-json
@@ -37,13 +43,13 @@ java -jar apiview-java-processor-<version>.jar [--renderer=json|markdown] <comma
 JSON is the default renderer:
 
 ```shell
-java -jar apiview-java-processor-<version>.jar application-sources.jar output
+java -jar apiview-java-processor-<version>.jar application-1.0.0-sources.jar output
 ```
 
 Use Markdown for a fenced Java API snapshot without Javadoc:
 
 ```shell
-java -jar apiview-java-processor-<version>.jar --renderer=markdown application-sources.jar output
+java -jar apiview-java-processor-<version>.jar --renderer=markdown application-1.0.0-sources.jar output
 ```
 
 Separate multiple input JAR paths with commas.

@@ -8,12 +8,11 @@ BeforeAll {
 Describe 'Generate-ApiMarkdown' {
     BeforeEach {
         $global:LASTEXITCODE = 0
-        $script:Repository = Join-Path $TestDrive 'repo with spaces'
+        $script:Repository = Join-Path $TestDrive "repo with spaces $([guid]::NewGuid().ToString('N'))"
         $script:Package = Join-Path $script:Repository 'sdk' 'example' 'azure-example'
         $processor = Join-Path $script:Repository 'sdk' 'tools' 'apiview-java-processor'
         foreach ($directory in @(
             (Join-Path $script:Repository 'eng' 'scripts'),
-            (Join-Path $script:Repository 'eng' 'common' 'scripts'),
             (Join-Path $script:Package 'target'),
             (Join-Path $processor 'target')
         )) {
@@ -21,8 +20,7 @@ Describe 'Generate-ApiMarkdown' {
         }
         $script:Command = Join-Path $script:Repository 'eng' 'scripts' 'Generate-ApiMarkdown.ps1'
         Copy-Item -LiteralPath $script:SourceScript -Destination $script:Command
-        Set-Content -LiteralPath (Join-Path $script:Repository 'eng' 'common' 'scripts' 'common.ps1') -Value ''
-        Set-Content -LiteralPath (Join-Path $script:Repository 'pom.xml') -Value '<project/>'
+        Set-Content -LiteralPath (Join-Path $script:Repository 'pom.xml') -Value '<project><packaging>pom</packaging></project>'
         Set-Content -LiteralPath (Join-Path $script:Package 'pom.xml') -Value '<project/>'
         Set-Content -LiteralPath (Join-Path $processor 'pom.xml') -Value @'
 <project><artifactId>apiview-java-processor</artifactId><version>1.34.0</version></project>
@@ -66,6 +64,45 @@ Describe 'Generate-ApiMarkdown' {
 
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
         Should -Invoke java -Times 0
+    }
+
+    It 'defaults to the current library directory without parameters' {
+        Push-Location $script:Package
+        try {
+            & $script:Command
+        }
+        finally {
+            Pop-Location
+        }
+
+        Should -Invoke mvn -Times 1 -Exactly -ParameterFilter {
+            $args -contains '-pl' -and $args -contains 'sdk/example/azure-example'
+        }
+        [IO.File]::ReadAllText($script:Output) | Should -Not -Be 'previous API'
+    }
+
+    It 'rejects a current directory without a POM before building' {
+        Push-Location $TestDrive
+        try {
+            { & $script:Command } | Should -Throw '*Package POM not found*'
+        }
+        finally {
+            Pop-Location
+        }
+
+        Should -Invoke mvn -Times 0
+    }
+
+    It 'rejects an aggregator directory before building' {
+        Push-Location $script:Repository
+        try {
+            { & $script:Command } | Should -Throw '*Maven aggregator*'
+        }
+        finally {
+            Pop-Location
+        }
+
+        Should -Invoke mvn -Times 0
     }
 
     It 'preserves api.md when the processor build fails' {

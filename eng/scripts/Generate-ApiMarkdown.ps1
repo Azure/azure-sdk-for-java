@@ -7,18 +7,21 @@
 Builds a Java SDK package and writes its API surface to api.md in the package directory.
 
 .PARAMETER PackagePath
-Path to the SDK package containing pom.xml.
+Path to the SDK package containing pom.xml. Defaults to the current directory.
 
 .PARAMETER SourcesJar
 Optional existing sources JAR. When supplied, the SDK package build is skipped.
+
+.EXAMPLE
+pwsh ../../../eng/scripts/Generate-ApiMarkdown.ps1
+Run from a library module directory.
 
 .EXAMPLE
 pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-json
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [Parameter(Mandatory = $true)]
-    [string]$PackagePath,
+    [string]$PackagePath = '.',
 
     [string]$SourcesJar
 )
@@ -28,7 +31,6 @@ $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..' '..')).Path
-. (Join-Path $repositoryRoot 'eng' 'common' 'scripts' 'common.ps1')
 
 function Invoke-ApiMarkdownCommand {
     param([string]$Command, [string[]]$Arguments)
@@ -40,8 +42,14 @@ function Invoke-ApiMarkdownCommand {
 }
 
 $packageDirectory = (Resolve-Path -LiteralPath $PackagePath).Path
-if (-not (Test-Path -LiteralPath (Join-Path $packageDirectory 'pom.xml') -PathType Leaf)) {
-    throw "Package POM not found in $packageDirectory."
+$packagePomPath = Join-Path $packageDirectory 'pom.xml'
+if (-not (Test-Path -LiteralPath $packagePomPath -PathType Leaf)) {
+    throw "Package POM not found in $packageDirectory. Run from a library module or supply -PackagePath."
+}
+$packagePom = [xml](Get-Content -LiteralPath $packagePomPath -Raw)
+$packaging = $packagePom.SelectSingleNode("/*[local-name()='project']/*[local-name()='packaging']")
+if ($packaging -and $packaging.InnerText -eq 'pom') {
+    throw "Package path is a Maven aggregator. Run from a library module or supply -PackagePath."
 }
 if ($SourcesJar) {
     $SourcesJar = (Resolve-Path -LiteralPath $SourcesJar).Path
