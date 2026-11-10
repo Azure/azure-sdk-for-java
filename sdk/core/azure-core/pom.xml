@@ -242,7 +242,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <configuration>
-          <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+          <classesDirectory>${packageOutputDirectory}/${project.build.finalName}.jar</classesDirectory>
         </configuration>
       </plugin>
 
