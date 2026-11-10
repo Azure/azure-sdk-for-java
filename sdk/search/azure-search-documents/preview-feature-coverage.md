@@ -64,6 +64,12 @@ These selected tests use fake HTTP responses and do not require live feature fix
 
 ### Local validation results
 
+- After restoring DP10 GA test authentication and applicable GA regressions on November 10, full package PLAYBACK
+  produced 1,193 passes, 118 existing skips and no failures/errors. The focused restored-test selection produced
+  37 passes with no skips. Strict Revapi against the exact October GA `12.2.0` artifact from commit
+  `c0866c2b2364a855cda5e78e30f4fed8af795415` passed without semantic-version masking. Checkstyle, enabled SpotBugs,
+  scoped Spotless and snippet verification passed. This follow-up changed test code and documentation only;
+  it did not change customer-facing SDK code or call Azure services.
 - After removing the supplemental live tests on November 10, a clean build and the offline selection above
   produced 62 passes with no skips, failures or errors; Checkstyle reported zero violations.
 - All 23 cases in `PreviewFeatureContractTests` and seven cases in `FileIngestionPollingTests` passed.
