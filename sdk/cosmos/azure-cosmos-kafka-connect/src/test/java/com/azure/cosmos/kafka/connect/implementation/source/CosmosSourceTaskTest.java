@@ -34,6 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -78,6 +82,78 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         queue.add(new CosmosSourceTask.ScheduledTaskUnit(activeFeedRange, 0));
         assertThat(queue.poll().getTaskUnit()).isSameAs(activeFeedRange);
         assertThat(queue.peek().getDelayInMs()).isGreaterThan(0);
+    }
+
+    @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
+    public void pollDelaysFeedRangeAfterNoChanges() throws Exception {
+        int pollDelayInMs = 3000;
+        String testContainerName = "KafkaCosmosTestPollDelay-" + UUID.randomUUID();
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", Arrays.asList(testContainerName).toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+        sourceConfigMap.put("azure.cosmos.source.changeFeed.poll.delay.ms", Integer.toString(pollDelayInMs));
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientItem =
+            CosmosClientCache.getCosmosClient(sourceConfig.getAccountConfig(), "pollWithDelayAfterNoChanges");
+        CosmosContainerProperties testContainer = null;
+        CosmosSourceTask sourceTask = null;
+        ExecutorService pollExecutor = Executors.newSingleThreadExecutor();
+
+        try {
+            testContainer = clientItem
+                .getClient()
+                .getDatabase(databaseName)
+                .createContainer(testContainerName, "/id")
+                .block()
+                .getProperties();
+
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                testContainerName,
+                testContainer.getResourceId(),
+                FeedRange.forFullRange(),
+                null,
+                testContainerName);
+            taskConfigMap.putAll(
+                CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Collections.singletonList(feedRangeTaskUnit)));
+
+            sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
+            sourceTask.start(taskConfigMap);
+
+            TestItem initialItem = TestItem.createNewItem();
+            clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).createItem(initialItem).block();
+            validateFeedRangeRecords(sourceTask.poll(), Collections.singletonList(initialItem));
+            assertThat(sourceTask.poll().size()).isEqualTo(0);
+
+            TestItem laterItem = TestItem.createNewItem();
+            long pollStartedAtNanos = System.nanoTime();
+            Future<List<SourceRecord>> delayedPoll = pollExecutor.submit(sourceTask::poll);
+            Thread.sleep(500);
+            assertThat(delayedPoll.isDone()).isFalse();
+
+            clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).createItem(laterItem).block();
+            List<SourceRecord> sourceRecords = delayedPoll.get(pollDelayInMs + TIMEOUT, TimeUnit.MILLISECONDS);
+            long pollDurationInMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - pollStartedAtNanos);
+
+            assertThat(pollDurationInMs).isGreaterThanOrEqualTo(pollDelayInMs - 250);
+            validateFeedRangeRecords(sourceRecords, Collections.singletonList(laterItem));
+        } finally {
+            pollExecutor.shutdownNow();
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
+            if (testContainer != null) {
+                clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).delete().block();
+            }
+            CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
+            clientItem.getClient().close();
+        }
     }
 
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
