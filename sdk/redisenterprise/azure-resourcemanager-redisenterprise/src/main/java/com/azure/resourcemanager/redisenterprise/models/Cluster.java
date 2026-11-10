@@ -127,6 +127,25 @@ public interface Cluster {
     MaintenanceConfiguration maintenanceConfiguration();
 
     /**
+     * Gets the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At
+     * most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     * 
+     * @return the firewallRules value.
+     */
+    List<FirewallRule> firewallRules();
+
+    /**
      * Gets the hostname property: DNS name of the cluster endpoint.
      * 
      * @return the hostname value.
@@ -274,10 +293,11 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones,
-            DefinitionStages.WithIdentity, DefinitionStages.WithPublicNetworkAccess,
-            DefinitionStages.WithHighAvailability, DefinitionStages.WithMinimumTlsVersion,
-            DefinitionStages.WithEncryption, DefinitionStages.WithMaintenanceConfiguration {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithIdentity,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithHighAvailability,
+            DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption,
+            DefinitionStages.WithMaintenanceConfiguration, DefinitionStages.WithFirewallRules {
             /**
              * Executes the create request.
              * 
@@ -407,6 +427,43 @@ public interface Cluster {
              */
             WithCreate withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration);
         }
+
+        /**
+         * The stage of the Cluster definition allowing to specify firewallRules.
+         */
+        interface WithFirewallRules {
+            /**
+             * Specifies the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR)
+             * cluster. At most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+             * 
+             * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty
+             * array clears all rules.
+             * 
+             * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules;
+             * rules absent from it are deleted. Supplying an empty array clears all rules.
+             * 
+             * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule
+             * set allows all public traffic; it does not deny all traffic.
+             * 
+             * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request..
+             * 
+             * @param firewallRules The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most
+             * 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+             * 
+             * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty
+             * array clears all rules.
+             * 
+             * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules;
+             * rules absent from it are deleted. Supplying an empty array clears all rules.
+             * 
+             * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule
+             * set allows all public traffic; it does not deny all traffic.
+             * 
+             * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+             * @return the next definition stage.
+             */
+            WithCreate withFirewallRules(List<FirewallRule> firewallRules);
+        }
     }
 
     /**
@@ -421,7 +478,7 @@ public interface Cluster {
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
         UpdateStages.WithPublicNetworkAccess, UpdateStages.WithHighAvailability, UpdateStages.WithMinimumTlsVersion,
-        UpdateStages.WithEncryption, UpdateStages.WithMaintenanceConfiguration {
+        UpdateStages.WithEncryption, UpdateStages.WithMaintenanceConfiguration, UpdateStages.WithFirewallRules {
         /**
          * Executes the update request.
          * 
@@ -554,6 +611,43 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify firewallRules.
+         */
+        interface WithFirewallRules {
+            /**
+             * Specifies the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR)
+             * cluster. At most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+             * 
+             * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty
+             * array clears all rules.
+             * 
+             * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules;
+             * rules absent from it are deleted. Supplying an empty array clears all rules.
+             * 
+             * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule
+             * set allows all public traffic; it does not deny all traffic.
+             * 
+             * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request..
+             * 
+             * @param firewallRules The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most
+             * 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+             * 
+             * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty
+             * array clears all rules.
+             * 
+             * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules;
+             * rules absent from it are deleted. Supplying an empty array clears all rules.
+             * 
+             * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule
+             * set allows all public traffic; it does not deny all traffic.
+             * 
+             * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+             * @return the next definition stage.
+             */
+            Update withFirewallRules(List<FirewallRule> firewallRules);
         }
     }
 

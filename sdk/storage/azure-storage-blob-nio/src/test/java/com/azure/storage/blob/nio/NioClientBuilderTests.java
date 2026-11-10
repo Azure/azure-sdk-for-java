@@ -30,6 +30,8 @@ public class NioClientBuilderTests {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-storage-blob-nio.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url);
@@ -39,9 +41,8 @@ public class NioClientBuilderTests {
     public void azureFileSystemServiceClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
-            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/"
+            + Pattern.quote(BLOB_VERSION) + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
             new StorageSharedKeyCredential("accountName", "accountKey"));
 
@@ -56,9 +57,8 @@ public class NioClientBuilderTests {
     public void azureFileStoreContainerClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
-            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/"
+            + Pattern.quote(BLOB_VERSION) + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
             new StorageSharedKeyCredential("accountName", "accountKey"));
         AzureFileSystem fileSystem
@@ -73,9 +73,8 @@ public class NioClientBuilderTests {
     public void azResourceBlobClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
-            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/"
+            + Pattern.quote(BLOB_VERSION) + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
             new StorageSharedKeyCredential("accountName", "accountKey"));
         AzureFileSystem fileSystem

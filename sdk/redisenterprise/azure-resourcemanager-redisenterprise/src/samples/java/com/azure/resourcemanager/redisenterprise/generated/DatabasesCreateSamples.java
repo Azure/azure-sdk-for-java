@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesNoClusterCacheCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate No Cluster Cache.
@@ -42,7 +42,7 @@ public final class DatabasesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesCreate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate.
@@ -69,7 +69,7 @@ public final class DatabasesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate With Active Geo Replication.

@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraAdd model = BinaryData.fromString(
-            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"fwynwcvtbvkay\",\"tenantId\":\"tnvyqiatkzwp\"}}")
+            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"dphqamv\",\"tenantId\":\"fwynwcvtbvkay\"}}")
             .toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
-        Assertions.assertEquals("fwynwcvtbvkay", model.principalName());
-        Assertions.assertEquals("tnvyqiatkzwp", model.tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        Assertions.assertEquals("dphqamv", model.principalName());
+        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraAdd model
-            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.UNKNOWN)
-                .withPrincipalName("fwynwcvtbvkay")
-                .withTenantId("tnvyqiatkzwp");
+            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
+                .withPrincipalName("dphqamv")
+                .withTenantId("fwynwcvtbvkay");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
-        Assertions.assertEquals("fwynwcvtbvkay", model.principalName());
-        Assertions.assertEquals("tnvyqiatkzwp", model.tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        Assertions.assertEquals("dphqamv", model.principalName());
+        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
     }
 }

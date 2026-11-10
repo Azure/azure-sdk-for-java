@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class OperationsStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OperationsStatusGet.json
+     * x-ms-original-file: 2026-10-01-preview/OperationsStatusGet.json
      */
     /**
      * Sample code: OperationsStatusGet.
