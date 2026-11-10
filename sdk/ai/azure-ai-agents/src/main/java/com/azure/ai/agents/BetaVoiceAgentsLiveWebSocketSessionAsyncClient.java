@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * Typed and raw receivers share one event subscriber. Close sessions when they are no longer needed.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements AsyncCloseable {
     private final WebSocketSessionAsyncTransport transport;
     private final Consumer<Throwable> malformedEventHandler;
 
@@ -136,13 +136,5 @@ public final class BetaVoiceAgentsLiveWebSocketSessionAsyncClient implements Asy
      */
     public Mono<Void> closeAsync(int code, String reason) {
         return transport.closeAsync(code, reason);
-    }
-
-    /**
-     * Closes the session, blocking until closure or the configured close timeout.
-     */
-    @Override
-    public void close() {
-        transport.close();
     }
 }

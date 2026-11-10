@@ -13,6 +13,7 @@ import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -67,6 +68,14 @@ public class VoiceAgentLiveWebSocketTests {
         = "{\"type\":\"error\",\"error\":{\"type\":\"server_error\",\"message\":\"native Live error\"}}";
     private static final String COMMAND = "{\"type\":\"session.update\",\"session\":{\"future_setting\":true}}";
     private DisposableServer server;
+
+    @Test
+    public void liveSessionExposesOnlyAsynchronousClose() {
+        assertTrue(AsyncCloseable.class.isAssignableFrom(BetaVoiceAgentsLiveWebSocketSessionAsyncClient.class));
+        assertFalse(AutoCloseable.class.isAssignableFrom(BetaVoiceAgentsLiveWebSocketSessionAsyncClient.class));
+        assertThrows(NoSuchMethodException.class,
+            () -> BetaVoiceAgentsLiveWebSocketSessionAsyncClient.class.getMethod("close"));
+    }
 
     @BeforeAll
     static void installTlsCertificate() {
@@ -272,18 +281,24 @@ public class VoiceAgentLiveWebSocketTests {
         VoiceAgentWebSocketConnectionOptions realtimeOptions
             = new VoiceAgentWebSocketConnectionOptions().setStructuredInputs(inputs);
         if (async) {
-            try (BetaVoiceAgentsLiveWebSocketSessionAsyncClient live = builder.beta()
+            BetaVoiceAgentsLiveWebSocketSessionAsyncClient live = builder.beta()
                 .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
                 .openWebSocketSession("agent", liveOptions)
-                .block(TIMEOUT)) {
-                assertNotNull(live);
+                .block(TIMEOUT);
+            assertNotNull(live);
+            try {
                 assertTrue(live.isOpen());
+            } finally {
+                live.closeAsync().block(TIMEOUT);
             }
-            try (VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
+            VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
                 .openWebSocketSession("agent", realtimeOptions)
-                .block(TIMEOUT)) {
-                assertNotNull(realtime);
+                .block(TIMEOUT);
+            assertNotNull(realtime);
+            try {
                 assertTrue(realtime.isOpen());
+            } finally {
+                realtime.closeAsync().block(TIMEOUT);
             }
         } else {
             try (BetaVoiceAgentsLiveWebSocketSessionClient live
