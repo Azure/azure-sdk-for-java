@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FirewallRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallRule model = BinaryData.fromString("{\"name\":\"nxkrx\",\"sourceAddressPrefix\":\"10.0.0.0/24\"}")
+        FirewallRule model = BinaryData.fromString("{\"name\":\"nxkrx\",\"sourceAddressPrefix\":\"qmi\"}")
             .toObject(FirewallRule.class);
         Assertions.assertEquals("nxkrx", model.name());
-        Assertions.assertEquals("10.0.0.0/24", model.sourceAddressPrefix());
+        Assertions.assertEquals("qmi", model.sourceAddressPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirewallRule model = new FirewallRule().withName("nxkrx").withSourceAddressPrefix("10.0.0.0/24");
+        FirewallRule model = new FirewallRule().withName("nxkrx").withSourceAddressPrefix("qmi");
         model = BinaryData.fromObject(model).toObject(FirewallRule.class);
         Assertions.assertEquals("nxkrx", model.name());
-        Assertions.assertEquals("10.0.0.0/24", model.sourceAddressPrefix());
+        Assertions.assertEquals("qmi", model.sourceAddressPrefix());
     }
 }
