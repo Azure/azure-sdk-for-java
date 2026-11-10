@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/tools/apiview-java-processor/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/tools/apiview-java-processor/
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: Build
+        displayName: Build and test Java APIView processor
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+          - job: Build
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
+              - task: Maven@4
+                displayName: Build and test
+                inputs:
+                  mavenPomFile: sdk/tools/apiview-java-processor/pom.xml
+                  goals: clean verify
+                  options: --batch-mode --no-transfer-progress
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.8'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: true
+                  testResultsFiles: sdk/tools/apiview-java-processor/target/surefire-reports/TEST-*.xml
