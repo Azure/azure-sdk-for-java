@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * Sometimes libraries carry additional metadata with them that can make the output from APIView more useful. This
- * class is used to store that metadata, as it is deserialized from the /META-INF/[artifactid]_metadata.json file.
+ * class is used to store that metadata, as it is deserialized from the /META-INF/[artifactId]_metadata.json file.
  */
 public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
     private Flavor flavor;
@@ -22,15 +22,16 @@ public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
     // This is a map of model names and methods to their TypeSpec definition IDs.
     private Map<String, String> crossLanguageDefinitions = new HashMap<>();
 
-    ApiViewProperties() { }
+    ApiViewProperties() {
+    }
 
     /**
-     * Attempts to process the {@code [artifactid]_metadata.json} file in the jar file, if it exists.
+     * Attempts to process the {@code [artifactId]_metadata.json} file in the jar file, if it exists.
      *
      * @param fs the {@link FileSystem} representing the jar file
      */
     public static Optional<ApiViewProperties> fromSourcesJarFile(FileSystem fs, Pom pom) {
-        // the filename is <artifactid>_metadata.json
+        // the filename is <artifactId>_metadata.json
         final String artifactId = pom.getArtifactId();
         final String artifactName = (artifactId != null && !artifactId.isEmpty()) ? (artifactId + "_") : "";
         final String filePath = "/META-INF/" + artifactName + "metadata.json";
@@ -48,7 +49,7 @@ public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
                 final ApiViewProperties properties = ApiViewProperties.fromJson(reader);
                 System.out.println("  Found metadata.json file in jar file");
                 System.out.println("    - Found " + properties.getCrossLanguageDefinitions().size()
-                        + " cross-language definition IDs");
+                    + " cross-language definition IDs");
                 return Optional.of(properties);
             }
         } catch (IOException e) {

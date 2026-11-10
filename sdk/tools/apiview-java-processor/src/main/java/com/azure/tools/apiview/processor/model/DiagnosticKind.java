@@ -17,12 +17,16 @@ public enum DiagnosticKind {
         switch (level) {
             case 4:
                 return FATAL;
+
             case 3:
                 return ERROR;
+
             case 2:
                 return WARNING;
+
             case 1:
                 return INFO;
+
             default:
                 return null;
         }

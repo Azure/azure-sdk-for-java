@@ -71,8 +71,8 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
     }
 
     //    public List<TreeNode> getApiForest() {
-//        return Collections.unmodifiableList(apiForest);
-//    }
+    //        return Collections.unmodifiableList(apiForest);
+    //    }
 
     public void addDiagnostic(Diagnostic diagnostic) {
         this.diagnostics.add(diagnostic);
@@ -122,7 +122,7 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
     }
 
     public void addPackageTypeMapping(String packageName, String typeName) {
-//        packageNamesToTypesMap.computeIfAbsent(packageName, name -> new ArrayList<>()).add(typeName);
+        //        packageNamesToTypesMap.computeIfAbsent(packageName, name -> new ArrayList<>()).add(typeName);
         typeToPackageNameMap.put(typeName, packageName);
     }
 
@@ -184,8 +184,7 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
             if (!gzipOutput) {
                 Files.write(outputFile.toPath(), rawJsonBytes);
             } else {
-                new GZIPOutputStream(Files.newOutputStream(outputFile.toPath()))
-                    .write(rawJsonBytes);
+                new GZIPOutputStream(Files.newOutputStream(outputFile.toPath())).write(rawJsonBytes);
             }
 
             return rawJsonBytes;

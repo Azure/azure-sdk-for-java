@@ -44,11 +44,13 @@ public class Diagnostics {
                 addAzureCoreDiagnostics();
                 break;
             }
+
             case GENERIC: {
                 System.out.println("    Applying io.clientcore specific diagnostics...");
                 addClientCoreDiagnostics();
                 break;
             }
+
             case UNKNOWN:
             default: {
                 System.out.println("    Unknown library flavor...");
@@ -65,22 +67,17 @@ public class Diagnostics {
         add(new NoPublicFieldsDiagnosticRule());
         add(new UpperCaseNamingDiagnosticRule("URL", "HTTP", "XML", "JSON", "SAS", "CPK", "API"));
         add(new ConsiderFinalClassDiagnosticRule());
-        add(new IllegalMethodNamesDiagnosticRule(
-                new Rule("Builder$", "tokenCredential"), // it should just be 'credential'
-                new Rule("Builder$", "^set"),            // we shouldn't have setters in the builder
-                new Rule("^isHas"),
-                new Rule("^setHas")
-        ));
+        add(new IllegalMethodNamesDiagnosticRule(new Rule("Builder$", "tokenCredential"), // it should just be 'credential'
+            new Rule("Builder$", "^set"),            // we shouldn't have setters in the builder
+            new Rule("^isHas"), new Rule("^setHas")));
         add(new MissingJavaDocDiagnosticRule());
         add(new MissingJavadocCodeSnippetsRule());
         add(new NoLocalesInJavadocUrlDiagnosticRule());
         add(new ModuleInfoDiagnosticRule());
-        add(new BadAnnotationDiagnosticRule(
-                new BadAnnotation("JacksonXmlRootElement",
-                        "From the Jackson JavaDoc: \"NOTE! Since 2.4 this annotation is usually not necessary and " +
-                                "you should use JsonRootName instead. About the only expected usage may be to have different " +
-                                "root name for XML content than other formats.\"")
-        ));
+        add(new BadAnnotationDiagnosticRule(new BadAnnotation("JacksonXmlRootElement",
+            "From the Jackson JavaDoc: \"NOTE! Since 2.4 this annotation is usually not necessary and "
+                + "you should use JsonRootName instead. About the only expected usage may be to have different "
+                + "root name for XML content than other formats.\"")));
     }
 
     private void addAzureCoreDiagnostics() {
@@ -98,8 +95,9 @@ public class Diagnostics {
             .addMethod("configuration", new ExactTypeNameCheckFunction("Configuration"))
             .addMethod("clientOptions", new ExactTypeNameCheckFunction("ClientOptions"))
             .addMethod("connectionString", new ExactTypeNameCheckFunction("String"))
-            .addMethod("credential", new ExactTypeNameCheckFunction(new ParameterAllowedTypes("TokenCredential",
-                    "AzureKeyCredential", "AzureSasCredential", "AzureNamedKeyCredential", "KeyCredential")))
+            .addMethod("credential",
+                new ExactTypeNameCheckFunction(new ParameterAllowedTypes("TokenCredential", "AzureKeyCredential",
+                    "AzureSasCredential", "AzureNamedKeyCredential", "KeyCredential")))
             .addMethod("endpoint", new ExactTypeNameCheckFunction("String"))
             .addMethod("serviceVersion", m -> MiscUtils.checkMethodParameterTypeSuffix(m, "ServiceVersion")));
         add(new RequiredBuilderMethodsDiagnosticRule("amqp")

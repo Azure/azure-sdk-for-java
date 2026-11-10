@@ -6,10 +6,10 @@ import java.util.Set;
 
 public enum TokenKind {
     TEXT(StructuredTokenKind.TEXT),
-//    NEW_LINE(LINE_BREAK),
-//    WHITESPACE(NONE_BREAKING_SPACE),
-//    TAB_SPACE(StructuredTokenKind.TAB_SPACE),
-//    PARAMETER_SEPARATOR(StructuredTokenKind.PARAMETER_SEPARATOR),
+    //    NEW_LINE(LINE_BREAK),
+    //    WHITESPACE(NONE_BREAKING_SPACE),
+    //    TAB_SPACE(StructuredTokenKind.TAB_SPACE),
+    //    PARAMETER_SEPARATOR(StructuredTokenKind.PARAMETER_SEPARATOR),
     PUNCTUATION(StructuredTokenKind.PUNCTUATION, RenderClass.PUNCTUATION),
     KEYWORD(StructuredTokenKind.KEYWORD, RenderClass.KEYWORD),
 
@@ -32,8 +32,10 @@ public enum TokenKind {
     ENUM_CONSTANT(StructuredTokenKind.LITERAL, RenderClass.TYPE_NAME, RenderClass.ENUM_CONSTANT),
 
     ANNOTATION_NAME(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME, RenderClass.ANNOTATION_NAME),
-    ANNOTATION_PARAMETER_NAME(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME, RenderClass.ANNOTATION_PARAMETER_NAME),
-    ANNOTATION_PARAMETER_VALUE(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME, RenderClass.ANNOTATION_PARAMETER_VALUE),
+    ANNOTATION_PARAMETER_NAME(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME,
+        RenderClass.ANNOTATION_PARAMETER_NAME),
+    ANNOTATION_PARAMETER_VALUE(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME,
+        RenderClass.ANNOTATION_PARAMETER_VALUE),
 
     RETURN_TYPE(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME, RenderClass.RETURN_TYPE),
     PARAMETER_TYPE(StructuredTokenKind.TYPE_NAME, RenderClass.TYPE_NAME, RenderClass.PARAMETER_TYPE),

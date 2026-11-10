@@ -18,14 +18,12 @@ public class JavaASTAnalyserTests {
     @Test
     public void rendersServiceVersionReturnHintAfterMethodSignature(@TempDir Path tempDir) throws IOException {
         Path sourceFile = tempDir.resolve("TestServiceVersion.java");
-        Files.write(sourceFile, String.join(System.lineSeparator(),
-            "package com.azure.test;",
-            "public enum TestServiceVersion implements ServiceVersion {",
-            "    V1;",
-            "    public static TestServiceVersion getLatest() {",
-            "        return V1;",
-            "    }",
-            "}").getBytes(StandardCharsets.UTF_8));
+        Files.write(sourceFile,
+            String
+                .join(System.lineSeparator(), "package com.azure.test;",
+                    "public enum TestServiceVersion implements ServiceVersion {", "    V1;",
+                    "    public static TestServiceVersion getLatest() {", "        return V1;", "    }", "}")
+                .getBytes(StandardCharsets.UTF_8));
 
         APIListing listing = new APIListing();
         listing.setPackageName("io.clientcore:test");

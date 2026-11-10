@@ -32,7 +32,8 @@ public class ExpandableEnumDiagnosticRule implements DiagnosticRule {
                 ClassOrInterfaceDeclaration classDeclaration = (ClassOrInterfaceDeclaration) typeDeclaration;
                 // check if the type extends ExpandableStringEnum
                 if (classDeclaration.getExtendedTypes() != null
-                        && classDeclaration.getExtendedTypes().stream()
+                    && classDeclaration.getExtendedTypes()
+                        .stream()
                         .anyMatch(extendedType -> extendedType.getNameAsString().equals(parentTypeName))) {
                     checkRequiredMethodsExist(cu, listing);
                 }
@@ -56,17 +57,13 @@ public class ExpandableEnumDiagnosticRule implements DiagnosticRule {
 
             if (!hasFromStringMethod.get()) {
                 // missing public fromString method is an error.
-                listing.addDiagnostic(new Diagnostic(
-                        ERROR,
-                        makeId(cu),
-                        "Types extending " + parentTypeName + " should include public static fromString() method."));
+                listing.addDiagnostic(new Diagnostic(ERROR, makeId(cu),
+                    "Types extending " + parentTypeName + " should include public static fromString() method."));
             }
             if (!hasValuesMethod.get()) {
                 // Missing values method can be logged at warning level.
-                listing.addDiagnostic(new Diagnostic(
-                        WARNING,
-                        makeId(cu),
-                        "Types extending " + parentTypeName + " should include public static values() method."));
+                listing.addDiagnostic(new Diagnostic(WARNING, makeId(cu),
+                    "Types extending " + parentTypeName + " should include public static values() method."));
             }
         });
     }

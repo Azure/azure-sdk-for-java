@@ -29,43 +29,34 @@ public class MissingEqualsAndHashCodeDiagnosticRule implements DiagnosticRule {
 
     @Override
     public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
-        getClasses(cu)
-            .filter(type -> packageRegex.matcher(getPackageName(type)).matches())
-            .forEach(typeDeclaration -> {
-                boolean hasEquals = hasValidEqualsMethod(typeDeclaration);
-                boolean hasHashCode = hasValidHashCodeMethod(typeDeclaration);
+        getClasses(cu).filter(type -> packageRegex.matcher(getPackageName(type)).matches()).forEach(typeDeclaration -> {
+            boolean hasEquals = hasValidEqualsMethod(typeDeclaration);
+            boolean hasHashCode = hasValidHashCodeMethod(typeDeclaration);
 
-                if (!hasEquals && !hasHashCode) {
-                    listing.addDiagnostic(new Diagnostic(
-                            INFO,
-                            makeId(typeDeclaration),
-                            "Both equals and hashCode methods are missing. Consider adding both methods."
-                    ));
-                } else if (!hasEquals) {
-                    listing.addDiagnostic(new Diagnostic(
-                            WARNING,
-                            makeId(typeDeclaration),
-                            "equals method is missing, but hashCode method is present. Consider adding the equals method."
-                    ));
-                } else if (!hasHashCode) {
-                    listing.addDiagnostic(new Diagnostic(
-                            WARNING,
-                            makeId(typeDeclaration),
-                            "hashCode method is missing, but equals method is present. Consider adding the hashCode method."
-                    ));
-                }
-            });
+            if (!hasEquals && !hasHashCode) {
+                listing.addDiagnostic(new Diagnostic(INFO, makeId(typeDeclaration),
+                    "Both equals and hashCode methods are missing. Consider adding both methods."));
+            } else if (!hasEquals) {
+                listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration),
+                    "equals method is missing, but hashCode method is present. Consider adding the equals method."));
+            } else if (!hasHashCode) {
+                listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration),
+                    "hashCode method is missing, but equals method is present. Consider adding the hashCode method."));
+            }
+        });
     }
 
     private boolean hasValidEqualsMethod(TypeDeclaration<?> typeDeclaration) {
-        return typeDeclaration.getMembers().stream()
+        return typeDeclaration.getMembers()
+            .stream()
             .filter(BodyDeclaration::isMethodDeclaration)
             .map(BodyDeclaration::asMethodDeclaration)
             .anyMatch(this::isValidEqualsMethod);
     }
 
     private boolean hasValidHashCodeMethod(TypeDeclaration<?> typeDeclaration) {
-        return typeDeclaration.getMethods().stream()
+        return typeDeclaration.getMethods()
+            .stream()
             .filter(BodyDeclaration::isMethodDeclaration)
             .map(BodyDeclaration::asMethodDeclaration)
             .anyMatch(this::isValidHashCodeMethod);

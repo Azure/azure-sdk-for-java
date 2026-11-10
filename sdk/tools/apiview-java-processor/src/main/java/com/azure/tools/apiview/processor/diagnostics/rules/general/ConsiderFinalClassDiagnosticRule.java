@@ -22,10 +22,14 @@ public class ConsiderFinalClassDiagnosticRule implements DiagnosticRule {
     @Override
     public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
         cu.getTypes().forEach(type -> {
-            if (type.isEnumDeclaration()) return;
-            if (type.hasModifier(Modifier.Keyword.ABSTRACT)) return;
-            if (type.isClassOrInterfaceDeclaration() && type.asClassOrInterfaceDeclaration().isInterface()) return;
-            if (type.isAnnotationDeclaration()) return;
+            if (type.isEnumDeclaration())
+                return;
+            if (type.hasModifier(Modifier.Keyword.ABSTRACT))
+                return;
+            if (type.isClassOrInterfaceDeclaration() && type.asClassOrInterfaceDeclaration().isInterface())
+                return;
+            if (type.isAnnotationDeclaration())
+                return;
 
             // if we are here we are looking at a type we are interested in tracking.
             // for the type we are looking at, we check to see if it is a final type...

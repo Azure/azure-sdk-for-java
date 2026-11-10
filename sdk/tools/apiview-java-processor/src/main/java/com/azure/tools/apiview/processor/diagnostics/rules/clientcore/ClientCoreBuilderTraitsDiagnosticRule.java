@@ -11,26 +11,17 @@ public class ClientCoreBuilderTraitsDiagnosticRule extends BuilderTraitsDiagnost
     private static final Map<String, TraitClass> traits;
     static {
         traits = new HashMap<>();
-        traits.put("KeyCredentialTrait", new TraitClass(
-                new TraitMethod("credential", "KeyCredential")
-        ));
-        traits.put("ConfigurationTrait", new TraitClass(
-                new TraitMethod("configuration", "Configuration")
-        ));
-        traits.put("ProxyTrait", new TraitClass(
-                new TraitMethod("proxyOptions", "ProxyOptions")
-        ));
-        traits.put("EndpointTrait", new TraitClass(
-                new TraitMethod("endpoint", "String")
-        ));
-        traits.put("HttpTrait", new TraitClass(TraitClass.BUILDER_PROTOCOL_HTTP,
-                new TraitMethod("httpClient", "HttpClient"),
+        traits.put("KeyCredentialTrait", new TraitClass(new TraitMethod("credential", "KeyCredential")));
+        traits.put("ConfigurationTrait", new TraitClass(new TraitMethod("configuration", "Configuration")));
+        traits.put("ProxyTrait", new TraitClass(new TraitMethod("proxyOptions", "ProxyOptions")));
+        traits.put("EndpointTrait", new TraitClass(new TraitMethod("endpoint", "String")));
+        traits.put("HttpTrait",
+            new TraitClass(TraitClass.BUILDER_PROTOCOL_HTTP, new TraitMethod("httpClient", "HttpClient"),
                 new TraitMethod("httpPipeline", "HttpPipeline"),
                 new TraitMethod("addHttpPipelinePolicy", "HttpPipelinePolicy"),
                 new TraitMethod("httpRetryOptions", "HttpRetryOptions"),
                 new TraitMethod("httpLogOptions", "HttpLogOptions"),
-                new TraitMethod("httpRedirectOptions", "HttpRedirectOptions")
-        ));
+                new TraitMethod("httpRedirectOptions", "HttpRedirectOptions")));
     }
 
     public ClientCoreBuilderTraitsDiagnosticRule() {

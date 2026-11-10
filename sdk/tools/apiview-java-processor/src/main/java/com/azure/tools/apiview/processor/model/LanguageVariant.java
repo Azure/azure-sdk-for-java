@@ -2,9 +2,7 @@
 package com.azure.tools.apiview.processor.model;
 
 public enum LanguageVariant {
-    DEFAULT("None"),
-    SPRING("Spring"),
-    ANDROID("Android");
+    DEFAULT("None"), SPRING("Spring"), ANDROID("Android");
 
     private final String variantName;
 

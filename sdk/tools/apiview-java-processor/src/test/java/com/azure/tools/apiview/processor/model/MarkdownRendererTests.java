@@ -14,8 +14,7 @@ public class MarkdownRendererTests {
             .addToken(TokenKind.MODULE_NAME, "com.azure.widgets")
             .addContextStartTokens();
 
-        module.addChildLine()
-            .addToken(new ReviewToken(TokenKind.JAVADOC, "/** Widget client. */").setDocumentation());
+        module.addChildLine().addToken(new ReviewToken(TokenKind.JAVADOC, "/** Widget client. */").setDocumentation());
 
         module.addChildLine()
             .addToken(TokenKind.KEYWORD, "public")
@@ -26,11 +25,8 @@ public class MarkdownRendererTests {
             .addToken(TokenKind.PARAMETER_NAME, "name", Spacing.NO_SPACE)
             .addToken(TokenKind.PUNCTUATION, ")", Spacing.NO_SPACE);
 
-        String expected = String.join(System.lineSeparator(),
-            "```java",
-            "module com.azure.widgets {",
-            "    public Widget getWidget(String name)",
-            "```");
+        String expected = String.join(System.lineSeparator(), "```java", "module com.azure.widgets {",
+            "    public Widget getWidget(String name)", "```");
 
         String markdown = MarkdownRenderer.render(listing);
 
@@ -46,17 +42,14 @@ public class MarkdownRendererTests {
             .addToken(TokenKind.KEYWORD, "public")
             .addToken(TokenKind.TYPE_NAME, "Widget", Spacing.NO_SPACE);
 
-        assertEquals(String.join(System.lineSeparator(),
-            "```java",
-            "public Widget",
-            "```"), MarkdownRenderer.render(listing));
+        assertEquals(String.join(System.lineSeparator(), "```java", "public Widget", "```"),
+            MarkdownRenderer.render(listing));
     }
 
     @Test
     public void preservesStandaloneAndInlineComments() {
         APIListing listing = new APIListing();
-        listing.addChildLine()
-            .addToken(TokenKind.COMMENT, "// Service Methods:");
+        listing.addChildLine().addToken(TokenKind.COMMENT, "// Service Methods:");
         listing.addChildLine()
             .addToken(TokenKind.KEYWORD, "public")
             .addToken(TokenKind.TYPE_NAME, "Widget", Spacing.NO_SPACE)
@@ -67,11 +60,8 @@ public class MarkdownRendererTests {
             .addToken(TokenKind.COMMENT, "/* Elided */", Spacing.NO_SPACE)
             .addToken(TokenKind.PUNCTUATION, ")", Spacing.NO_SPACE);
 
-        assertEquals(String.join(System.lineSeparator(),
-            "```java",
-            "// Service Methods:",
-            "public Widget = new Widget(/* Elided */)",
-            "```"), MarkdownRenderer.render(listing));
+        assertEquals(String.join(System.lineSeparator(), "```java", "// Service Methods:",
+            "public Widget = new Widget(/* Elided */)", "```"), MarkdownRenderer.render(listing));
     }
 
     @Test
@@ -88,9 +78,7 @@ public class MarkdownRendererTests {
             .addToken(TokenKind.PUNCTUATION, ",")
             .addToken(TokenKind.PUNCTUATION, "}", Spacing.SPACE_BEFORE);
 
-        assertEquals(String.join(System.lineSeparator(),
-            "```java",
-            "@Example(value = left + right, }",
-            "```"), MarkdownRenderer.render(listing));
+        assertEquals(String.join(System.lineSeparator(), "```java", "@Example(value = left + right, }", "```"),
+            MarkdownRenderer.render(listing));
     }
 }

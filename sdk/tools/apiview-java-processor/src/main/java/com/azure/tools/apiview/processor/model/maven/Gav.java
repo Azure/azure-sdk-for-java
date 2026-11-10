@@ -24,7 +24,11 @@ public class Gav {
     }
 
     public boolean isValid() {
-        return groupId != null && artifactId != null && version != null
-                   && !groupId.isEmpty() && !artifactId.isEmpty() && !version.isEmpty();
+        return groupId != null
+            && artifactId != null
+            && version != null
+            && !groupId.isEmpty()
+            && !artifactId.isEmpty()
+            && !version.isEmpty();
     }
 }

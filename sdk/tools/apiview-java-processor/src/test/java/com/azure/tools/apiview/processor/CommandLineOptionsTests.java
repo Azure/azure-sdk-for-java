@@ -20,11 +20,8 @@ public class CommandLineOptionsTests {
 
     @Test
     public void parsesMarkdownRendererAndMultipleJars() {
-        CommandLineOptions options = CommandLineOptions.parse(new String[] {
-            "--renderer=markdown",
-            "first-sources.jar,second-sources.jar",
-            "output"
-        });
+        CommandLineOptions options = CommandLineOptions
+            .parse(new String[] { "--renderer=markdown", "first-sources.jar,second-sources.jar", "output" });
 
         assertEquals(OutputRenderer.MARKDOWN, options.getRenderer());
         assertArrayEquals(new String[] { "first-sources.jar", "second-sources.jar" }, options.getJarFiles());
@@ -33,8 +30,8 @@ public class CommandLineOptionsTests {
 
     @Test
     public void parsesExplicitJsonRenderer() {
-        CommandLineOptions options = CommandLineOptions.parse(
-            new String[] { "--renderer=json", "library-sources.jar", "output" });
+        CommandLineOptions options
+            = CommandLineOptions.parse(new String[] { "--renderer=json", "library-sources.jar", "output" });
 
         assertEquals(OutputRenderer.JSON, options.getRenderer());
     }

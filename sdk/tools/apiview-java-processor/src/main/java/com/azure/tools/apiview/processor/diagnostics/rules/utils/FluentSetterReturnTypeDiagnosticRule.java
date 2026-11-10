@@ -22,24 +22,19 @@ public abstract class FluentSetterReturnTypeDiagnosticRule implements Diagnostic
 
     @Override
     public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
-        cu.getTypes().stream()
-            .filter(isFluentType)
-            .forEach(type -> processFluentType(type, listing));
+        cu.getTypes().stream().filter(isFluentType).forEach(type -> processFluentType(type, listing));
     }
 
     private void processFluentType(final TypeDeclaration<?> type, final APIListing listing) {
         // get all setter methods (we will find them just by looking for all methods that start with 'set')
         final String typeName = type.getNameAsString();
 
-        getPublicOrProtectedMethods(type)
-                .filter(method -> method.getNameAsString().startsWith("set"))
-                .forEach(method -> {
-                    if (!method.getType().asString().equals(typeName)) {
-                        listing.addDiagnostic(new Diagnostic(
-                            ERROR,
-                            makeId(method),
-                            "Setter methods in a fluent class must return the same type as the fluent type."));
-                    }
-                });
+        getPublicOrProtectedMethods(type).filter(method -> method.getNameAsString().startsWith("set"))
+            .forEach(method -> {
+                if (!method.getType().asString().equals(typeName)) {
+                    listing.addDiagnostic(new Diagnostic(ERROR, makeId(method),
+                        "Setter methods in a fluent class must return the same type as the fluent type."));
+                }
+            });
     }
 }

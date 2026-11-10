@@ -39,11 +39,11 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
 
     private final TokenKind tokenKind;
 
-//    // for things like deprecated, hidden, etc
-//    private final Set<String> tags;
+    //    // for things like deprecated, hidden, etc
+    //    private final Set<String> tags;
 
-//    // Capture any other interesting data here. e.g Use GroupId : documentation to group consecutive tokens.
-//    private final Map<String, String> properties;
+    //    // Capture any other interesting data here. e.g Use GroupId : documentation to group consecutive tokens.
+    //    private final Map<String, String> properties;
 
     // Add css classes for how the tokens will be rendered. To avoid collision between languages use a language prefix
     // for you classes. e.g csKeyword , jsModule, pyModule
@@ -84,22 +84,27 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
         switch (spacing) {
             case DEFAULT:
                 break;
+
             case NO_SPACE:
                 this.hasPrefixSpace = false;
                 this.hasSuffixSpace = false;
                 break;
+
             case SPACE_BEFORE:
                 this.hasPrefixSpace = true;
                 this.hasSuffixSpace = false;
                 break;
+
             case SPACE_AFTER:
                 this.hasPrefixSpace = false;
                 this.hasSuffixSpace = true;
                 break;
+
             case SPACE_BEFORE_AND_AFTER:
                 this.hasPrefixSpace = true;
                 this.hasSuffixSpace = true;
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown spacing type: " + spacing);
         }
@@ -144,14 +149,14 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
     }
 
     //    public ReviewToken addProperty(String key, String value) {
-//        properties.put(Objects.requireNonNull(key), Objects.requireNonNull(value));
-//        return this;
-//    }
-//
-//    public ReviewToken addTag(String tag) {
-//        tags.add(Objects.requireNonNull(tag));
-//        return this;
-//    }
+    //        properties.put(Objects.requireNonNull(key), Objects.requireNonNull(value));
+    //        return this;
+    //    }
+    //
+    //    public ReviewToken addTag(String tag) {
+    //        tags.add(Objects.requireNonNull(tag));
+    //        return this;
+    //    }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -197,10 +202,6 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
 
     @Override
     public String toString() {
-        return "ReviewToken{ value=" +
-            (hasPrefixSpace ? "' " : "'") +
-            value +
-            (hasSuffixSpace ? " '" : "'") +
-            " }";
+        return "ReviewToken{ value=" + (hasPrefixSpace ? "' " : "'") + value + (hasSuffixSpace ? " '" : "'") + " }";
     }
 }

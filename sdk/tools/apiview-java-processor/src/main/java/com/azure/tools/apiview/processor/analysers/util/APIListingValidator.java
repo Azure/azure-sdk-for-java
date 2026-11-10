@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public class APIListingValidator {
-    private APIListingValidator() { }
+    private APIListingValidator() {
+    }
 
     public static void validate(APIListing apiListing) {
         // FIXME reintroduce on other side of port
@@ -19,27 +20,27 @@ public class APIListingValidator {
     }
 
     private static void validateReviewLine(ReviewLine reviewLine, Set<String> ids) {
-//        validateTokenList(reviewLine.getTokens(), ids);
-//        reviewLine.getChildren().forEach(childLine -> validateReviewLine(childLine, ids));
-//
-//        // Validate TreeNode name
-//        String name = node.getName();
-//        if (name == null || name.isEmpty()) {
-//            throw new IllegalStateException("TreeNode name cannot be null or empty for node: " + node);
-//        }
-//
-//        // Validate TreeNode kind
-//        TreeNodeKind kind = node.getKind();
-//        if (kind == null || kind.getName().isEmpty()) {
-//            throw new IllegalStateException("TreeNode kind cannot be null or empty for node: " + node);
-//        }
-//
-//        // Validate TreeNode ID
-//        String id = node.getId();
-//        if (id == null) {
-//            throw new IllegalStateException("TreeNode ID cannot be null for node: " + node);
-//        }
-//        validateId(id, ids);
+        //        validateTokenList(reviewLine.getTokens(), ids);
+        //        reviewLine.getChildren().forEach(childLine -> validateReviewLine(childLine, ids));
+        //
+        //        // Validate TreeNode name
+        //        String name = node.getName();
+        //        if (name == null || name.isEmpty()) {
+        //            throw new IllegalStateException("TreeNode name cannot be null or empty for node: " + node);
+        //        }
+        //
+        //        // Validate TreeNode kind
+        //        TreeNodeKind kind = node.getKind();
+        //        if (kind == null || kind.getName().isEmpty()) {
+        //            throw new IllegalStateException("TreeNode kind cannot be null or empty for node: " + node);
+        //        }
+        //
+        //        // Validate TreeNode ID
+        //        String id = node.getId();
+        //        if (id == null) {
+        //            throw new IllegalStateException("TreeNode ID cannot be null for node: " + node);
+        //        }
+        //        validateId(id, ids);
     }
 
     private static void validateTokenList(List<ReviewToken> tokens, Set<String> ids) {
@@ -49,16 +50,16 @@ public class APIListingValidator {
     }
 
     private static void validateToken(ReviewToken token, Set<String> ids) {
-//        // FIXME reintroduce on other side of port
-//        if (token.getKind() == null) {
-//            throw new IllegalStateException("Token kind cannot be null");
-//        }
-//
-//        String id = token.getId();
-//        if (id != null) {
-//            // Check if the ID is unique
-//            validateId(id, ids);
-//        }
+        //        // FIXME reintroduce on other side of port
+        //        if (token.getKind() == null) {
+        //            throw new IllegalStateException("Token kind cannot be null");
+        //        }
+        //
+        //        String id = token.getId();
+        //        if (id != null) {
+        //            // Check if the ID is unique
+        //            validateId(id, ids);
+        //        }
     }
 
     private static void validateId(String id, Set<String> ids) {

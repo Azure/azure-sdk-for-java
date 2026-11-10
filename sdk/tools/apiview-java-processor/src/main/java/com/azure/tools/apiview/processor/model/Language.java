@@ -1,8 +1,7 @@
 package com.azure.tools.apiview.processor.model;
 
 public enum Language {
-    JAVA("Java"),
-    KOTLIN("Kotlin");
+    JAVA("Java"), KOTLIN("Kotlin");
 
     private final String language;
 
@@ -10,7 +9,8 @@ public enum Language {
         this.language = language;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return language;
     }
 }

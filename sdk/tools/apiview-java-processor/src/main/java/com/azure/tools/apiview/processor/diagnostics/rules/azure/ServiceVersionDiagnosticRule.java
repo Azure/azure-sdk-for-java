@@ -26,16 +26,17 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
         if (cu.getPrimaryTypeName().get().endsWith("ClientBuilder")) {
             serviceClientPackage = cu.getPackageDeclaration().get().getNameAsString();
             cu.getTypes().forEach(typeDeclaration -> {
-                Optional<AnnotationExpr> clientBuilderAnnotation = typeDeclaration
-                        .getAnnotationByName("ServiceClientBuilder");
+                Optional<AnnotationExpr> clientBuilderAnnotation
+                    = typeDeclaration.getAnnotationByName("ServiceClientBuilder");
                 if (clientBuilderAnnotation.isPresent()) {
                     Optional<MemberValuePair> protocol = clientBuilderAnnotation.get()
-                            .asAnnotationExpr()
-                            .toNormalAnnotationExpr().get()
-                            .getPairs()
-                            .stream()
-                            .filter(pair -> pair.getNameAsString().equals("protocol"))
-                            .findFirst();
+                        .asAnnotationExpr()
+                        .toNormalAnnotationExpr()
+                        .get()
+                        .getPairs()
+                        .stream()
+                        .filter(pair -> pair.getNameAsString().equals("protocol"))
+                        .findFirst();
                     this.isHttpService = !protocol.isPresent() || protocol.get().getNameAsString().contains("HTTP");
                 }
             });
@@ -45,16 +46,18 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
             foundServiceVersion = true;
             cu.getTypes().forEach(typeDeclaration -> {
                 if (!typeDeclaration.isEnumDeclaration()) {
-                    listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration), "Service version should be" +
-                            " an enum and must implement 'ServiceVersion' interface."));
+                    listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration),
+                        "Service version should be" + " an enum and must implement 'ServiceVersion' interface."));
                     return;
                 }
 
-                boolean implementsServiceVersion = typeDeclaration.asEnumDeclaration().getImplementedTypes().stream()
-                        .anyMatch(type -> type.getNameAsString().equals("ServiceVersion"));
+                boolean implementsServiceVersion = typeDeclaration.asEnumDeclaration()
+                    .getImplementedTypes()
+                    .stream()
+                    .anyMatch(type -> type.getNameAsString().equals("ServiceVersion"));
                 if (!implementsServiceVersion) {
-                    listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration), "This type " +
-                            "should implement 'ServiceVersion' interface."));
+                    listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration),
+                        "This type " + "should implement 'ServiceVersion' interface."));
                 }
             });
         }
@@ -66,7 +69,7 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
         // show a diagnostic warning about missing service version type.
         if (!foundServiceVersion && serviceClientPackage != null && isHttpService) {
             listing.addDiagnostic(new Diagnostic(DiagnosticKind.WARNING, makeId(serviceClientPackage),
-                    "ServiceVersion type is missing."));
+                "ServiceVersion type is missing."));
         }
     }
 }

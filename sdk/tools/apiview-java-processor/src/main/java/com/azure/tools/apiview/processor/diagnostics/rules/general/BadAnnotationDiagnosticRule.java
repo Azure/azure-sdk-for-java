@@ -29,32 +29,30 @@ public class BadAnnotationDiagnosticRule implements DiagnosticRule {
         getClasses(cu).forEach(typeDeclaration -> {
             // check annotations on the type itself
             typeDeclaration.getAnnotations()
-                    .forEach(annotation -> checkForBadAnnotations(listing, typeDeclaration, annotation));
+                .forEach(annotation -> checkForBadAnnotations(listing, typeDeclaration, annotation));
 
             // check annotations on fields
-            getPublicOrProtectedFields(typeDeclaration)
-                    .forEach(field -> field.getAnnotations()
-                            .forEach(annotation -> checkForBadAnnotations(listing, field, annotation)));
+            getPublicOrProtectedFields(typeDeclaration).forEach(field -> field.getAnnotations()
+                .forEach(annotation -> checkForBadAnnotations(listing, field, annotation)));
 
             // check annotations on constructors
-            getPublicOrProtectedConstructors(typeDeclaration)
-                    .forEach(constructor -> constructor.getAnnotations()
-                            .forEach(annotation -> checkForBadAnnotations(listing, constructor, annotation)));
+            getPublicOrProtectedConstructors(typeDeclaration).forEach(constructor -> constructor.getAnnotations()
+                .forEach(annotation -> checkForBadAnnotations(listing, constructor, annotation)));
 
             // check annotations on methods
-            getPublicOrProtectedMethods(typeDeclaration)
-                    .forEach(method -> method.getAnnotations()
-                            .forEach(annotation -> checkForBadAnnotations(listing, method, annotation)));
+            getPublicOrProtectedMethods(typeDeclaration).forEach(method -> method.getAnnotations()
+                .forEach(annotation -> checkForBadAnnotations(listing, method, annotation)));
         });
     }
 
-    private void checkForBadAnnotations(APIListing listing, NodeWithAnnotations<?> nodeWithAnnotations, AnnotationExpr annotation) {
+    private void checkForBadAnnotations(APIListing listing, NodeWithAnnotations<?> nodeWithAnnotations,
+        AnnotationExpr annotation) {
         badAnnotations.forEach(badAnnotation -> {
             // check if the badAnnotation is the same as the found annotation
             if (badAnnotation.annotation.equals(annotation.getNameAsString())) {
                 // we've got a match - file it as a diagnostic
-                listing.addDiagnostic(new Diagnostic(WARNING, makeId(annotation, nodeWithAnnotations),
-                        badAnnotation.errorMessage));
+                listing.addDiagnostic(
+                    new Diagnostic(WARNING, makeId(annotation, nodeWithAnnotations), badAnnotation.errorMessage));
             }
         });
     }

@@ -26,17 +26,16 @@ public class TestExpectedOutputs {
         // if it starts with http, it'll try downloading the file into a temp location. If it sees no http, it'll look
         // for the file in the inputs directory. To prevent clogging up the repository with source jars, it is
         // preferable to download the source jars from known-good places.
-        return Stream.of(
-                ""
-//            "https://repo1.maven.org/maven2/com/azure/azure-core/1.48.0/azure-core-1.48.0-sources.jar"
-//                "https://repo1.maven.org/maven2/com/azure/azure-communication-chat/1.5.0/azure-communication-chat-1.5.0-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-security-keyvault-keys/4.8.2/azure-security-keyvault-keys-4.8.2-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-data-appconfiguration/1.6.0/azure-data-appconfiguration-1.6.0-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-messaging-eventhubs/5.18.2/azure-messaging-eventhubs-5.18.2-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-messaging-servicebus/7.15.2/azure-messaging-servicebus-7.15.2-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-identity/1.12.0/azure-identity-1.12.0-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.25.3/azure-storage-blob-12.25.3-sources.jar",
-//                "https://repo1.maven.org/maven2/com/azure/azure-cosmos/4.57.0/azure-cosmos-4.57.0-sources.jar"
+        return Stream.of(""
+        //            "https://repo1.maven.org/maven2/com/azure/azure-core/1.48.0/azure-core-1.48.0-sources.jar"
+        //                "https://repo1.maven.org/maven2/com/azure/azure-communication-chat/1.5.0/azure-communication-chat-1.5.0-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-security-keyvault-keys/4.8.2/azure-security-keyvault-keys-4.8.2-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-data-appconfiguration/1.6.0/azure-data-appconfiguration-1.6.0-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-messaging-eventhubs/5.18.2/azure-messaging-eventhubs-5.18.2-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-messaging-servicebus/7.15.2/azure-messaging-servicebus-7.15.2-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-identity/1.12.0/azure-identity-1.12.0-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.25.3/azure-storage-blob-12.25.3-sources.jar",
+        //                "https://repo1.maven.org/maven2/com/azure/azure-cosmos/4.57.0/azure-cosmos-4.57.0-sources.jar"
         );
     }
 
@@ -87,7 +86,8 @@ public class TestExpectedOutputs {
         } else {
             // the test was never going to pass as we don't have an expected file to compare against.
             try {
-                final String outputFile = root + "expected-outputs/" + filename + (ADD_DELETE_PREFIX_FOR_MISSING_EXPECTED_OUTPUTS ? "-DELETE" : "") + ".json";
+                final String outputFile = root + "expected-outputs/" + filename
+                    + (ADD_DELETE_PREFIX_FOR_MISSING_EXPECTED_OUTPUTS ? "-DELETE" : "") + ".json";
                 final Path suggestedOutputFile = Paths.get(outputFile);
 
                 if (!suggestedOutputFile.toFile().getParentFile().exists()) {
@@ -99,12 +99,12 @@ public class TestExpectedOutputs {
                 e.printStackTrace();
             }
             if (ADD_DELETE_PREFIX_FOR_MISSING_EXPECTED_OUTPUTS) {
-                fail("Could not find expected output file for test. The output from the sources.jar was added into the " +
-                        "/expected-outputs directory, but with a '-DELETE' filename suffix. Please review and rename if it " +
-                        "should be included in the test suite.");
+                fail("Could not find expected output file for test. The output from the sources.jar was added into the "
+                    + "/expected-outputs directory, but with a '-DELETE' filename suffix. Please review and rename if it "
+                    + "should be included in the test suite.");
             } else {
-                fail("Could not find expected output file for test. The output from the sources.jar was added into the " +
-                        "/expected-outputs directory without any -DELETE suffix. It will be used next time the test is run!");
+                fail("Could not find expected output file for test. The output from the sources.jar was added into the "
+                    + "/expected-outputs directory without any -DELETE suffix. It will be used next time the test is run!");
 
             }
         }
@@ -115,9 +115,7 @@ public class TestExpectedOutputs {
         // Delete the temporary file
         if (tempDir.exists()) {
             // delete everything in tempDir and then delete the directory
-            Files.walk(tempDir.toPath())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            Files.walk(tempDir.toPath()).map(Path::toFile).forEach(File::delete);
 
             try {
                 Files.delete(tempDir.toPath());
@@ -135,8 +133,8 @@ public class TestExpectedOutputs {
         try (InputStream in = new URL(urlStr).openStream()) {
             Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            fail("Failed to download and / or copy the given URL to the given destination { url: "
-                    + urlStr + ", destination: " + destinationFile + " }");
+            fail("Failed to download and / or copy the given URL to the given destination { url: " + urlStr
+                + ", destination: " + destinationFile + " }");
         }
     }
 }

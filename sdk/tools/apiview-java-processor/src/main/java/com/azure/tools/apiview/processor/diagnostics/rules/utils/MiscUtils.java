@@ -15,7 +15,8 @@ public class MiscUtils {
     /**
      * Checks that a given method declaration accepts a type whose name ends with the given suffix.
      */
-    public static Optional<Diagnostic> checkMethodParameterTypeSuffix(MethodDeclaration methodDeclaration, String suffix) {
+    public static Optional<Diagnostic> checkMethodParameterTypeSuffix(MethodDeclaration methodDeclaration,
+        String suffix) {
         return checkMethodParameterTypeSuffix(methodDeclaration, 0, suffix);
     }
 
@@ -23,21 +24,20 @@ public class MiscUtils {
      * Checks that a given method declaration accepts a type whose name ends with the given suffix.
      */
     public static Optional<Diagnostic> checkMethodParameterTypeSuffix(MethodDeclaration methodDeclaration,
-                                                                      int paramIndex,
-                                                                      String suffix) {
+        int paramIndex, String suffix) {
         if (paramIndex >= methodDeclaration.getParameters().size()) {
             // The method does not have the expected number of parameters.
             return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
-            "Incorrect number of parameters for this builder method. Expected " + paramIndex + " but was "
-                + methodDeclaration.getParameters().size() + "."));
+                "Incorrect number of parameters for this builder method. Expected " + paramIndex + " but was "
+                    + methodDeclaration.getParameters().size() + "."));
         }
 
         Type parameterType = methodDeclaration.getParameter(paramIndex).getType();
         ClassOrInterfaceType classOrInterfaceType = parameterType.asClassOrInterfaceType();
         if (!classOrInterfaceType.getNameAsString().endsWith(suffix)) {
             return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
-            "Incorrect type being supplied to this builder method. Expected a type ending with '"
-                + suffix + "' but was " + classOrInterfaceType.getNameAsString() + "."));
+                "Incorrect type being supplied to this builder method. Expected a type ending with '" + suffix
+                    + "' but was " + classOrInterfaceType.getNameAsString() + "."));
         }
         return Optional.empty();
     }

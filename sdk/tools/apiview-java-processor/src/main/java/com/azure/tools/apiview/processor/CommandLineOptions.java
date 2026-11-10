@@ -33,9 +33,7 @@ final class CommandLineOptions {
             ? OutputRenderer.fromValue(args[0].substring(RENDERER_OPTION_PREFIX.length()))
             : OutputRenderer.JSON;
 
-        return new CommandLineOptions(
-            renderer,
-            args[positionalArgumentOffset].split(","),
+        return new CommandLineOptions(renderer, args[positionalArgumentOffset].split(","),
             new File(args[positionalArgumentOffset + 1]));
     }
 

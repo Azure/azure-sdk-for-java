@@ -57,9 +57,10 @@ public class NoLocalesInJavadocUrlDiagnosticRule implements DiagnosticRule {
             Matcher matcher = LANGUAGE_PATTERN.matcher(javadocString);
             while (matcher.find()) {
                 listing.addDiagnostic(new Diagnostic(WARNING, id,
-                    "The JavaDoc string for this API contains what appears to be a locale ('/" + matcher.group(1) + "/'). " +
-                        "Commonly, this indicates a URL in the JavaDoc is linking to a specific locale. If so, this " +
-                        "should be removed, so we do not assume about the user's locale when accessing a URL."));
+                    "The JavaDoc string for this API contains what appears to be a locale ('/" + matcher.group(1)
+                        + "/'). "
+                        + "Commonly, this indicates a URL in the JavaDoc is linking to a specific locale. If so, this "
+                        + "should be removed, so we do not assume about the user's locale when accessing a URL."));
             }
         });
     }

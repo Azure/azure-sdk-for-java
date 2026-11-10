@@ -64,7 +64,8 @@ public class Pom {
 
                 // use the pom.xml of this artifact only
                 // shaded jars can contain a pom.xml file each for every shaded dependencies
-                if (fullPath.startsWith("META-INF/maven") && fullPath.endsWith(filenameParts.get(ARTIFACT_ID) + "/pom.xml")) {
+                if (fullPath.startsWith("META-INF/maven")
+                    && fullPath.endsWith(filenameParts.get(ARTIFACT_ID) + "/pom.xml")) {
                     pom = new Pom(jarFile.getInputStream(entry));
                 }
             }
@@ -85,7 +86,7 @@ public class Pom {
         Matcher matcher = SOURCES_JAR_PATTERN.matcher(filename);
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Filename does not match the expected package naming pattern " + filename
-                    + ". Expected format <artifact-id>-<majorversion>.<minorversion>.<patchversion>(-beta.<betaversion>)-sources.jar");
+                + ". Expected format <artifact-id>-<majorversion>.<minorversion>.<patchversion>(-beta.<betaversion>)-sources.jar");
         }
         Map<String, String> filenameParts = new HashMap<>();
         String artifactId = matcher.group(1);
@@ -133,14 +134,18 @@ public class Pom {
             }
 
             // jacoco configuration
-            Node n = (Node) xPath.evaluate("/project/properties/jacoco.min.linecoverage", xmlDocument, XPathConstants.NODE);
+            Node n = (Node) xPath.evaluate("/project/properties/jacoco.min.linecoverage", xmlDocument,
+                XPathConstants.NODE);
             this.jacocoMinLineCoverage = n == null ? null : Float.parseFloat(n.getTextContent());
 
-            n = (Node) xPath.evaluate("/project/properties/jacoco.min.branchcoverage", xmlDocument, XPathConstants.NODE);
+            n = (Node) xPath.evaluate("/project/properties/jacoco.min.branchcoverage", xmlDocument,
+                XPathConstants.NODE);
             this.jacocoMinBranchCoverage = n == null ? null : Float.parseFloat(n.getTextContent());
 
             // checkstyle excludes
-            n = (Node) xPath.evaluate("/project/build/plugins/plugin/artifactId[text()='maven-checkstyle-plugin']/../configuration/excludes", xmlDocument, XPathConstants.NODE);
+            n = (Node) xPath.evaluate(
+                "/project/build/plugins/plugin/artifactId[text()='maven-checkstyle-plugin']/../configuration/excludes",
+                xmlDocument, XPathConstants.NODE);
             this.checkstyleExcludes = n == null ? null : n.getTextContent();
 
             // Maven name
@@ -153,7 +158,8 @@ public class Pom {
 
             // actual dependencies
             final String dependencyExpression = "/project/dependencies/dependency";
-            NodeList dependenciesNodeList = (NodeList) xPath.evaluate(dependencyExpression, xmlDocument, XPathConstants.NODESET);
+            NodeList dependenciesNodeList
+                = (NodeList) xPath.evaluate(dependencyExpression, xmlDocument, XPathConstants.NODESET);
             for (int i = 0; i < dependenciesNodeList.getLength(); i++) {
                 Node dep = dependenciesNodeList.item(i);
                 String depGroupId = xPath.evaluate("groupId", dep);
@@ -164,7 +170,8 @@ public class Pom {
             }
 
             // allowed dependencies
-            final String allowedDependencies = "/project/build/plugins/plugin/artifactId[text()='maven-enforcer-plugin']/../configuration/rules/bannedDependencies/includes/include";
+            final String allowedDependencies
+                = "/project/build/plugins/plugin/artifactId[text()='maven-enforcer-plugin']/../configuration/rules/bannedDependencies/includes/include";
             dependenciesNodeList = (NodeList) xPath.evaluate(allowedDependencies, xmlDocument, XPathConstants.NODESET);
             for (int i = 0; i < dependenciesNodeList.getLength(); i++) {
                 this.allowedDependencies.add(dependenciesNodeList.item(i).getTextContent().trim());
@@ -225,7 +232,8 @@ public class Pom {
         return fileExists;
     }
 
-    private Gav createGav(final XPath xPath, final Document xmlDocument, final String root) throws XPathExpressionException {
+    private Gav createGav(final XPath xPath, final Document xmlDocument, final String root)
+        throws XPathExpressionException {
         final String groupIdExpression = root + "/groupId";
         final Node groupIdNode = (Node) xPath.evaluate(groupIdExpression, xmlDocument, XPathConstants.NODE);
         String groupId = groupIdNode == null ? "" : groupIdNode.getTextContent();
@@ -242,12 +250,14 @@ public class Pom {
         // lets go up to the parent to get it from there
         if (groupId.isEmpty()) {
             final String parentGroupIdExpression = root + "/parent/groupId";
-            final Node parentGroupIdNode = (Node) xPath.evaluate(parentGroupIdExpression, xmlDocument, XPathConstants.NODE);
+            final Node parentGroupIdNode
+                = (Node) xPath.evaluate(parentGroupIdExpression, xmlDocument, XPathConstants.NODE);
             groupId = parentGroupIdNode == null ? "" : parentGroupIdNode.getTextContent();
         }
         if (version.isEmpty()) {
             final String parentVersionExpression = root + "/parent/version";
-            final Node parentVersionNode = (Node) xPath.evaluate(parentVersionExpression, xmlDocument, XPathConstants.NODE);
+            final Node parentVersionNode
+                = (Node) xPath.evaluate(parentVersionExpression, xmlDocument, XPathConstants.NODE);
             version = parentVersionNode == null ? "" : parentVersionNode.getTextContent();
         }
 

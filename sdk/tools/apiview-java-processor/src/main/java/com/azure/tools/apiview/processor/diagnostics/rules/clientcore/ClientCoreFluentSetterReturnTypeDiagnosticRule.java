@@ -6,8 +6,11 @@ public class ClientCoreFluentSetterReturnTypeDiagnosticRule extends FluentSetter
 
     public ClientCoreFluentSetterReturnTypeDiagnosticRule() {
         super(type -> type.getAnnotationByName("Metadata")
-            .map(annotationExpr -> annotationExpr.asNormalAnnotationExpr().getPairs().stream()
+            .map(annotationExpr -> annotationExpr.asNormalAnnotationExpr()
+                .getPairs()
+                .stream()
                 .filter(pair -> pair.getName().asString().equals("conditions"))
-                .anyMatch(pair -> pair.getValue().toString().contains("FLUENT"))).orElse(false));
+                .anyMatch(pair -> pair.getValue().toString().contains("FLUENT")))
+            .orElse(false));
     }
 }

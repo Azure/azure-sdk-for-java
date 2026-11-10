@@ -14,17 +14,15 @@ public class AnnotationRendererModel {
 
     private final boolean addNewline;
 
-    public AnnotationRendererModel(AnnotationExpr annotation,
-                                   NodeWithAnnotations<?> nodeWithAnnotations,
-                                   AnnotationRule rule,
-                                   boolean showAnnotationProperties,
-                                   boolean addNewline) {
+    public AnnotationRendererModel(AnnotationExpr annotation, NodeWithAnnotations<?> nodeWithAnnotations,
+        AnnotationRule rule, boolean showAnnotationProperties, boolean addNewline) {
         this.annotation = annotation;
         this.annotationParent = nodeWithAnnotations;
         this.rule = rule;
 
         // we override the showAnnotationProperties flag if the annotation rule specifies it
-        this.showProperties = rule == null ? showAnnotationProperties : rule.isShowProperties().orElse(showAnnotationProperties);
+        this.showProperties
+            = rule == null ? showAnnotationProperties : rule.isShowProperties().orElse(showAnnotationProperties);
         this.addNewline = rule == null ? addNewline : rule.isShowOnNewline().orElse(addNewline);
     }
 

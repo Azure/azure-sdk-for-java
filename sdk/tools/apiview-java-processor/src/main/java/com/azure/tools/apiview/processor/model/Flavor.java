@@ -3,9 +3,7 @@ package com.azure.tools.apiview.processor.model;
 import com.azure.tools.apiview.processor.model.maven.Dependency;
 
 public enum Flavor {
-    AZURE("com.azure", "azure"),
-    GENERIC("io.clientcore", "generic"),
-    UNKNOWN(null, "unknown");
+    AZURE("com.azure", "azure"), GENERIC("io.clientcore", "generic"), UNKNOWN(null, "unknown");
 
     private final String packagePrefix;
     private final String serializationValue;

@@ -20,26 +20,23 @@ public class IllegalMethodNamesDiagnosticRule implements DiagnosticRule {
 
     public IllegalMethodNamesDiagnosticRule(Rule... rules) {
         if (rules == null || rules.length == 0) {
-            throw new IllegalArgumentException("IllegalMethodNamesDiagnosticRule created with no illegal method name rules.");
+            throw new IllegalArgumentException(
+                "IllegalMethodNamesDiagnosticRule created with no illegal method name rules.");
         }
         this.rules = Arrays.asList(rules);
     }
 
     @Override
     public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
-        getClassName(cu).ifPresent(className ->
-            getPublicOrProtectedMethods(cu).forEach(method -> {
-                final String methodName = method.getNameAsString();
-                for (Rule rule : rules) {
-                    if (!rule.check(className, methodName)) {
-                        listing.addDiagnostic(new Diagnostic(
-                            ERROR,
-                            makeId(method),
-                            "Method '" + methodName + "' is using an illegal method name."));
-                    }
+        getClassName(cu).ifPresent(className -> getPublicOrProtectedMethods(cu).forEach(method -> {
+            final String methodName = method.getNameAsString();
+            for (Rule rule : rules) {
+                if (!rule.check(className, methodName)) {
+                    listing.addDiagnostic(new Diagnostic(ERROR, makeId(method),
+                        "Method '" + methodName + "' is using an illegal method name."));
                 }
-            })
-        );
+            }
+        }));
     }
 
     public static class Rule {

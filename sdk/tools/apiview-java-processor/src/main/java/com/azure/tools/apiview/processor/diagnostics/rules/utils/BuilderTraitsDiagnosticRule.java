@@ -34,9 +34,11 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
         //     suggesting to use the trait.
 
         cu.getTypes().forEach(type -> {
-            Optional<AnnotationExpr> serviceClientBuilderAnnotation = type.getAnnotationByName(ANNOTATION_SERVICE_CLIENT_BUILDER);
+            Optional<AnnotationExpr> serviceClientBuilderAnnotation
+                = type.getAnnotationByName(ANNOTATION_SERVICE_CLIENT_BUILDER);
 
-            if (!serviceClientBuilderAnnotation.isPresent()) return;
+            if (!serviceClientBuilderAnnotation.isPresent())
+                return;
 
             // iterate through trait-by-trait
             for (Map.Entry<String, TraitClass> trait : traits.entrySet()) {
@@ -51,12 +53,13 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                     AnnotationExpr annotationExpr = serviceClientBuilderAnnotation.get();
                     String builderProtocol = TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE;
                     if (annotationExpr.isNormalAnnotationExpr()) {
-                        builderProtocol = annotationExpr.asNormalAnnotationExpr().getPairs()
-                                .stream()
-                                .filter(mvp -> mvp.getNameAsString().equals("protocol"))
-                                .map(mvp -> mvp.getValue().toString())
-                                .findFirst()
-                                .orElse(TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE);
+                        builderProtocol = annotationExpr.asNormalAnnotationExpr()
+                            .getPairs()
+                            .stream()
+                            .filter(mvp -> mvp.getNameAsString().equals("protocol"))
+                            .map(mvp -> mvp.getValue().toString())
+                            .findFirst()
+                            .orElse(TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE);
                     }
 
                     if (!builderProtocol.equals(traitClass.builderProtocol)) {
@@ -68,18 +71,17 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                     String methodName = traitMethod.methodName;
 
                     // firstly check if the exact method (name + params) is present
-                    List<MethodDeclaration> matchingMethods = type.getMethodsBySignature(methodName, traitMethod.methodParamTypes);
+                    List<MethodDeclaration> matchingMethods
+                        = type.getMethodsBySignature(methodName, traitMethod.methodParamTypes);
                     if (!matchingMethods.isEmpty()) {
                         // ensure we implement the trait
                         if (!isTypeImplementingInterface(type, traitName)) {
                             // we have an exact match to a trait method, but we do not implement the trait!
                             for (MethodDeclaration m : matchingMethods) {
-                                listing.addDiagnostic(new Diagnostic(
-                                        ERROR,
-                                        makeId(m),
-                                        "This builder has methods that exactly match a method in the " + traitName
-                                                + " trait, but the builder does not implement this trait. Consider " +
-                                                "implementing the trait to ensure greater consistency."));
+                                listing.addDiagnostic(new Diagnostic(ERROR, makeId(m),
+                                    "This builder has methods that exactly match a method in the " + traitName
+                                        + " trait, but the builder does not implement this trait. Consider "
+                                        + "implementing the trait to ensure greater consistency."));
                             }
                         }
                     }
@@ -100,12 +102,12 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                         if (matchingParams > 0 && matchingParams < matchingNameMethod.getParameters().size()) {
                             // the method has a matching name, and some of the params match, but there are extra ones
                             // that mean this method is non-standard and not part of the trait.
-                            String message = isTypeImplementingInterface(type, traitName) ?
-                                    "This builder implements the " + traitName + " trait, but offers duplicate " +
-                                            "functionality. Consider whether this impacts consistency with other builders." :
-                                    "This builder does not implement the " + traitName + " trait, but offers " +
-                                            "similar functionality. Consider implementing the trait and aligning the parameters " +
-                                            "in this builder method.";
+                            String message = isTypeImplementingInterface(type, traitName)
+                                ? "This builder implements the " + traitName + " trait, but offers duplicate "
+                                    + "functionality. Consider whether this impacts consistency with other builders."
+                                : "This builder does not implement the " + traitName + " trait, but offers "
+                                    + "similar functionality. Consider implementing the trait and aligning the parameters "
+                                    + "in this builder method.";
                             listing.addDiagnostic(new Diagnostic(WARNING, makeId(matchingNameMethod), message));
                         }
                     }

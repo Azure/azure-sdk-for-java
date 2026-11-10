@@ -33,8 +33,8 @@ public class MavenPackageAndDescriptionDiagnosticRuleTests {
         rule.scanFinal(apiListing);
 
         assertEquals(1, apiListing.getDiagnostics().size());
-        assertTrue(apiListing.getDiagnostics().get(0).getHelpLinkUri()
-            .contains(DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK));
+        assertTrue(
+            apiListing.getDiagnostics().get(0).getHelpLinkUri().contains(DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK));
     }
 
     /**
@@ -50,8 +50,8 @@ public class MavenPackageAndDescriptionDiagnosticRuleTests {
         rule.scanFinal(apiListing);
 
         assertEquals(1, apiListing.getDiagnostics().size());
-        assertTrue(apiListing.getDiagnostics().get(0).getHelpLinkUri()
-            .contains(DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK));
+        assertTrue(
+            apiListing.getDiagnostics().get(0).getHelpLinkUri().contains(DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK));
     }
 
     /**
@@ -101,8 +101,8 @@ public class MavenPackageAndDescriptionDiagnosticRuleTests {
         rule.scanFinal(apiListing);
 
         assertEquals(1, apiListing.getDiagnostics().size());
-        assertTrue(apiListing.getDiagnostics().get(0).getHelpLinkUri()
-            .contains("custom package description guideline link"));
+        assertTrue(
+            apiListing.getDiagnostics().get(0).getHelpLinkUri().contains("custom package description guideline link"));
     }
 
     /**
@@ -159,9 +159,9 @@ public class MavenPackageAndDescriptionDiagnosticRuleTests {
      */
     @Test
     public void validCustomPackageName() {
-        MavenPackageAndDescriptionDiagnosticRule rule = new MavenPackageAndDescriptionDiagnosticRule(
-            Pattern.compile("A custom package name validation"), DEFAULT_MAVEN_DESCRIPTION,
-            DEFAULT_MAVEN_NAME_GUIDELINE_LINK, DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK);
+        MavenPackageAndDescriptionDiagnosticRule rule
+            = new MavenPackageAndDescriptionDiagnosticRule(Pattern.compile("A custom package name validation"),
+                DEFAULT_MAVEN_DESCRIPTION, DEFAULT_MAVEN_NAME_GUIDELINE_LINK, DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK);
         APIListing apiListing = new APIListing();
         Pom pom = mockRealPom("A custom package name validation",
             "This package contains the Microsoft Azure ApiView client library");

@@ -23,10 +23,8 @@ public class PackageNameDiagnosticRule implements DiagnosticRule {
             // we need to map the issue to the class id, because package text isn't printed in the APIView output
             getClassName(cu).map(listing.getKnownTypes()::get).ifPresent(typeId -> {
                 if (!regex.matcher(packageName).matches()) {
-                    listing.addDiagnostic(new Diagnostic(
-                        ERROR,
-                        typeId,
-                        "Package name match the following regex: " + regex.pattern()));
+                    listing.addDiagnostic(
+                        new Diagnostic(ERROR, typeId, "Package name match the following regex: " + regex.pattern()));
                 }
             });
         });

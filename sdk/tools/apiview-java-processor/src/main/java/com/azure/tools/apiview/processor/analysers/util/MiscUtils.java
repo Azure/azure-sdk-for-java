@@ -13,8 +13,8 @@ import static com.azure.tools.apiview.processor.model.TokenKind.PUNCTUATION;
  * Miscellaneous utility methods.
  */
 public final class MiscUtils {
-    public static final Pattern URL_MATCH = Pattern.compile(
-        "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
+    public static final Pattern URL_MATCH = Pattern
+        .compile("https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
 
     /**
      * Tokenizes a key-value pair.
@@ -35,9 +35,9 @@ public final class MiscUtils {
         }
 
         return parentLine.addChildLine("maven-lineid-" + key + "-" + value)
-                .addToken(new ReviewToken(TokenKind.MAVEN_KEY, key))
-                .addToken(new ReviewToken(PUNCTUATION, ":"))
-                .addToken(valueToken);
+            .addToken(new ReviewToken(TokenKind.MAVEN_KEY, key))
+            .addToken(new ReviewToken(PUNCTUATION, ":"))
+            .addToken(valueToken);
     }
 
     /**
@@ -51,9 +51,8 @@ public final class MiscUtils {
      * Makes all characters in the string lowercase, other than the given index.
      */
     public static String upperCase(String s, int index) {
-        return s.substring(0, index).toLowerCase()
-                + Character.toUpperCase(s.charAt(index))
-                + s.substring(index + 1).toLowerCase();
+        return s.substring(0, index).toLowerCase() + Character.toUpperCase(s.charAt(index))
+            + s.substring(index + 1).toLowerCase();
     }
 
     private MiscUtils() {

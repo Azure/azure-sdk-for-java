@@ -93,8 +93,10 @@ public class Main {
             switch (renderer) {
                 case JSON:
                     return renderJson(apiListing.get(), outputDir, outputFileNameBase);
+
                 case MARKDOWN:
                     return renderMarkdown(apiListing.get(), outputDir, outputFileNameBase);
+
                 default:
                     throw new IllegalStateException("Unsupported renderer: " + renderer);
             }

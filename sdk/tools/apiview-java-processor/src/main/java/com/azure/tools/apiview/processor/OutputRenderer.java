@@ -1,8 +1,7 @@
 package com.azure.tools.apiview.processor;
 
 enum OutputRenderer {
-    JSON("json"),
-    MARKDOWN("markdown");
+    JSON("json"), MARKDOWN("markdown");
 
     private final String value;
 
@@ -18,8 +17,10 @@ enum OutputRenderer {
         switch (value) {
             case "json":
                 return JSON;
+
             case "markdown":
                 return MARKDOWN;
+
             default:
                 throw new IllegalArgumentException("Unsupported renderer '" + value + "'. Expected json or markdown.");
         }

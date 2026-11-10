@@ -29,20 +29,20 @@ public final class MavenPackageAndDescriptionDiagnosticRule implements Diagnosti
     /*
      * Default {@link Pattern} for the Maven package description.
      */
-    static final Pattern DEFAULT_MAVEN_DESCRIPTION =
-        Pattern.compile("This package contains the Microsoft Azure .* client library");
+    static final Pattern DEFAULT_MAVEN_DESCRIPTION
+        = Pattern.compile("This package contains the Microsoft Azure .* client library");
 
     /*
      * Default guideline link for the Maven package name.
      */
-    static final String DEFAULT_MAVEN_NAME_GUIDELINE_LINK =
-        "https://azure.github.io/azure-sdk/java_introduction.html#java-maven-name";
+    static final String DEFAULT_MAVEN_NAME_GUIDELINE_LINK
+        = "https://azure.github.io/azure-sdk/java_introduction.html#java-maven-name";
 
     /*
      * Default guideline link for the Maven package description.
      */
-    static final String DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK =
-        "https://azure.github.io/azure-sdk/java_introduction.html#java-maven-description";
+    static final String DEFAULT_MAVEN_DESCRIPTION_GUIDELINE_LINK
+        = "https://azure.github.io/azure-sdk/java_introduction.html#java-maven-description";
 
     private final Pattern mavenNamePattern;
     private final Pattern mavenDescriptionPattern;
@@ -90,22 +90,23 @@ public final class MavenPackageAndDescriptionDiagnosticRule implements Diagnosti
             // Maven name
             final String mavenName = pom.getName();
             if (mavenName == null || !mavenNamePattern.matcher(pom.getName()).matches()) {
-                final Optional<ReviewLine> optionalLine = ASTUtils.findReviewLine(listing, line -> line.hasProperty(Constants.PROPERTY_MAVEN_NAME));
+                final Optional<ReviewLine> optionalLine
+                    = ASTUtils.findReviewLine(listing, line -> line.hasProperty(Constants.PROPERTY_MAVEN_NAME));
                 final String lineId = optionalLine.map(ReviewLine::getLineId).orElse(null);
                 listing.addDiagnostic(new Diagnostic(DiagnosticKind.WARNING, lineId,
                     "Maven library name should follow the pattern '" + mavenNamePattern.pattern() + "'.",
                     mavenNameGuidelineLink));
             }
 
-
             // Maven description
             final String mavenDescription = pom.getDescription();
             if (mavenDescription == null || !mavenDescriptionPattern.matcher(pom.getDescription()).matches()) {
-                final Optional<ReviewLine> optionalLine = ASTUtils.findReviewLine(listing, line -> line.hasProperty(Constants.PROPERTY_MAVEN_DESCRIPTION));
+                final Optional<ReviewLine> optionalLine
+                    = ASTUtils.findReviewLine(listing, line -> line.hasProperty(Constants.PROPERTY_MAVEN_DESCRIPTION));
                 final String lineId = optionalLine.map(ReviewLine::getLineId).orElse(null);
                 listing.addDiagnostic(new Diagnostic(DiagnosticKind.WARNING, lineId,
-                        "Maven library description should follow the pattern '" + mavenDescriptionPattern.pattern() + "'.",
-                        mavenDescriptionGuidelineLink));
+                    "Maven library description should follow the pattern '" + mavenDescriptionPattern.pattern() + "'.",
+                    mavenDescriptionGuidelineLink));
             }
         }
     }

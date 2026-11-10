@@ -12,14 +12,10 @@ public class NoPublicFieldsDiagnosticRule implements DiagnosticRule {
 
     @Override
     public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
-        getPublicOrProtectedFields(cu)
-                .filter(fieldDecl -> !fieldDecl.isStatic())
-                .forEach(fieldDecl -> {
-                    final String fieldId = makeId(fieldDecl);
-                    listing.addDiagnostic(new Diagnostic(
-                        ERROR,
-                        fieldId,
-                        "There should not be non-static public or protected fields in any class."));
-                });
+        getPublicOrProtectedFields(cu).filter(fieldDecl -> !fieldDecl.isStatic()).forEach(fieldDecl -> {
+            final String fieldId = makeId(fieldDecl);
+            listing.addDiagnostic(new Diagnostic(ERROR, fieldId,
+                "There should not be non-static public or protected fields in any class."));
+        });
     }
 }
