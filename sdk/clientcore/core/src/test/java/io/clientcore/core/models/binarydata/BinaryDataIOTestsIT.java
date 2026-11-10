@@ -21,6 +21,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,7 +47,7 @@ public class BinaryDataIOTestsIT extends BinaryDataIOTests {
 
     @Test
     public void transferReportsTheRemainingLength() throws Exception {
-        byte[] bytes = payload(35);
+        byte[] bytes = payload(32785);
         InputStream input = InputStreamUtils.createInputStream(buffers(bytes, "heap"));
         input.read();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -85,6 +86,26 @@ public class BinaryDataIOTestsIT extends BinaryDataIOTests {
         assertTrue(output.largestWrite <= 8192);
     }
 
+    @Test
+    public void heapTransfersWriteBoundedBackingArraySlicesAfterPartialReads() throws IOException {
+        byte[] bytes = payload(32785);
+        ByteBuffer parent = ByteBuffer.wrap(bytes);
+        parent.position(2);
+        parent.limit(bytes.length - 2);
+        ByteBuffer buffer = parent.slice();
+        buffer.position(1);
+        buffer.mark();
+        try (InputStream input = InputStreamUtils.createInputStream(Collections.singletonList(buffer))) {
+            assertEquals(bytes[3] & 0xff, input.read());
+            ByteArrayOutputStream output = new BackingArrayCheckingOutputStream(bytes, input);
+            BinaryData.fromStream(input).writeTo(output);
+            assertArrayEquals(Arrays.copyOfRange(bytes, 4, bytes.length - 2), output.toByteArray());
+            assertEquals(-1, input.read());
+        }
+        assertEquals(1, buffer.position());
+        buffer.reset();
+    }
+
     private static final class BulkInputStream extends ByteArrayInputStream {
         private boolean bulkRead;
         private boolean bulkTransfer;
@@ -106,6 +127,24 @@ public class BinaryDataIOTestsIT extends BinaryDataIOTests {
             output.write(buf, pos, remaining);
             pos = count;
             return remaining;
+        }
+    }
+
+    private static final class BackingArrayCheckingOutputStream extends ByteArrayOutputStream {
+        private final byte[] source;
+        private final InputStream input;
+
+        private BackingArrayCheckingOutputStream(byte[] source, InputStream input) {
+            this.source = source;
+            this.input = input;
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length) {
+            assertSame(source, bytes);
+            assertTrue(length <= 8192);
+            assertFalse(Thread.holdsLock(input));
+            super.write(bytes, offset, length);
         }
     }
 

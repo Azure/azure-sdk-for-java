@@ -1,7 +1,8 @@
 {
   "captured_on": "2026-10-30",
   "results_file": "core-multi-release-jdk25.csv",
-  "measurement_scope": "IO optimizations only. The measured updated JARs were intermediate builds that did not contain the subsequently added hexadecimal, numeric-parser, or direct Cleaner optimizations.",
+  "measurement_scope": "IO optimizations only. The measured updated JARs were intermediate builds that did not contain the subsequently added hexadecimal, numeric-parser, or direct Cleaner optimizations, stream-dispatch safeguards, or bounded direct heap-buffer writes.",
+  "maintenance": "Historical snapshot; no scheduled refresh. Record new comparisons separately.",
   "repository_references": {
     "pre_change_revision": "df2d7d416eb47e1be684c02ae1507d1b4a3f5657",
     "full_feature_revision": "1acff7a5adcf61ade21bcc69b9f2367546b3d122",

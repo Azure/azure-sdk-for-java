@@ -1,8 +1,8 @@
 # Core Multi-Release JAR Performance
 
 The multi-release JAR implementations in `azure-core` and `clientcore` use newer JDK APIs without raising the
-libraries' Java 8 baseline. The largest measured gains are in stream materialization and buffer-backed transfers.
-Absolute `ByteBuffer` copies were mostly neutral on JDK 25.
+libraries' Java 8 baseline. The largest measured gains remain in stream materialization and buffer-backed transfers.
+Absolute `ByteBuffer` copies show no material allocation benefit on JDK 25.
 
 ## Runtime Layers and Added Features
 
@@ -29,22 +29,102 @@ here.
 ### Behavior and Performance Guardrails
 
 - Bulk reads consume the remaining content; a supplied content-length hint does not truncate the stream.
-- Bulk reads use `ByteArrayInputStream.readAllBytes()` only for exact `ByteArrayInputStream` instances. Subclasses
-  retain portable reads so overridden `read` methods are honored.
+- Bulk reads use JDK byte-array and file specializations only for exact `ByteArrayInputStream` and `FileInputStream`
+  instances. Subclasses retain portable reads so overridden `read` methods are honored.
+- Specialized transfers are restricted to exact `FileInputStream` instances and the SDK's final buffer-backed stream.
+  `FileOutputStream` subclasses and all other inputs, including `BufferedInputStream`, `PushbackInputStream`, and
+  `SequenceInputStream`, use bounded portable copies. This prevents nested bulk operations from bypassing read/write
+  overrides or issuing large buffered writes.
 - Caching, replayability, stream ownership, and source-buffer positions and marks are preserved.
 - `ByteArrayInputStream.transferTo()` is deliberately avoided during output writes because it holds the input
   monitor while writing to the destination. The implementation uses bounded buffering instead.
-- Buffer-backed transfers write consecutive leading array-backed ranges directly when each remaining range is at
-  least 8 KiB. On encountering a smaller, direct, or read-only buffer, the remainder of the stream uses the JDK's
-  bounded-copy path, which also coalesces small buffers.
+- Buffer-backed transfers write consecutive leading array-backed ranges directly in chunks of at most 8 KiB when each
+  remaining range is at least 8 KiB. This bounds per-write destination allocations without a scratch copy. On
+  encountering a smaller, direct, or read-only buffer, the remainder of the stream uses the JDK's bounded-copy path,
+  which also coalesces small buffers.
 - Buffer-backed transfers release the SDK stream monitor before calling the destination's potentially blocking
   `write` method.
 
 These choices matter: blindly replacing every loop with a newer JDK API increased allocation or produced many small
-writes in initial experiments. The recorded results are from the conservative implementations that retain those
-fallbacks.
+writes in initial experiments. The dated results below distinguish the original IO-only artifacts from the corrected
+full-feature builds.
+
+## Revalidation (2026-11-10)
+
+The [new 42-case dataset][revalidation-results] compares the original pre-MR baselines with packaged libraries
+containing the stream-dispatch safeguards and bounded heap-buffer writes. It reruns all 40 original pairs and adds
+a 1 MiB single-heap-buffer transfer pair for each library. The [metadata][revalidation-metadata] records artifact
+hashes, the source commit plus uncommitted changes, and hashes of the measured stream sources. The retained JMH
+harnesses were reused only after verifying that all six benchmark classes per library were byte-identical to the
+current compilation.
+
+The main run uses the same Microsoft OpenJDK 25.0.5.0.2 runtime and JMH 1.37 settings as the original capture:
+two forks, three warmup and five measurement iterations of 500 ms, one worker, a fixed 256 MiB G1 heap with 4 MiB
+regions, a 64 MiB code cache, and CPU affinity `0x5` with `ActiveProcessorCount=2`. Baseline and corrected variants
+are adjacent, alternating which runs first. This remains a shared-workstation, memory-Blackhole experiment, not
+network or file throughput.
+
+### Representative 1 MiB Results
+
+Buffer-backed and list-copy rows below use 128 heap buffers. Allocation is bytes per operation; ratios compare
+the corrected implementation with the pre-MR baseline.
+
+| Library | Scenario | Baseline ops/s | Corrected ops/s | Ratio | Baseline B/op | Corrected B/op |
+|---|---|---:|---:|---:|---:|---:|
+| azure-core | Byte-array stream to bytes | 3,406 | 13,318 | 3.91x | 3,146,025 | 1,048,673 |
+| azure-core | Byte-array stream to output | 20,899 | 74,851 | 3.58x | 24,958 | 8,221 |
+| azure-core | Buffer-backed `readAllBytes()` | 4,677 | 9,367 | 2.00x | 2,106,363 | 1,057,865 |
+| azure-core | Buffer-backed `transferTo()` | 58,232 | 482,810 | 8.29x | 23,624 | 7,224 |
+| azure-core | List of buffers to bytes | 9,457 | 9,012 | 0.95x | 1,048,897 | 1,048,898 |
+| clientcore | Byte-array stream to bytes | 4,637 | 12,309 | 2.65x | 2,097,451 | 1,048,673 |
+| clientcore | Byte-array stream to output | 59,876 | 63,760 | 1.06x | 8,225 | 8,217 |
+| clientcore | Buffer-backed `readAllBytes()` | 4,429 | 6,128 | 1.38x | 2,106,363 | 1,057,866 |
+| clientcore | Buffer-backed `transferTo()` | 58,598 | 496,527 | 8.47x | 23,624 | 7,224 |
+| clientcore | List of buffers to bytes | 6,164 | 5,291 | 0.86x | 1,048,842 | 1,048,843 |
+
+The substantial materialization and heap-transfer gains remain, including the approximately 50-67% reduction in
+byte-array materialization allocation and 69% reduction in 128-heap-buffer transfer allocation. The CSV preserves
+all cases, including ratios below 1.0, and the 99.9% throughput confidence-interval half-widths. Several small or
+list-copy differences have wide, overlapping intervals; their point estimates do not establish a general regression
+or improvement. Allocation differences near one byte per operation are not meaningful memory changes.
+
+### Cost of Bounded Single-Buffer Writes
+
+The [single-buffer reference data][revalidation-reference] freshly measures the original IO-only MR artifacts
+against the corrected implementation. A 1 MiB heap buffer now produces 128 writes of at most 8 KiB instead of one
+unbounded write.
+
+| Library | Pre-MR ops/s | Unbounded MR reference ops/s | Corrected ops/s | Corrected / reference | Corrected / pre-MR |
+|---|---:|---:|---:|---:|---:|
+| azure-core | 58,056 | 31,644,729 | 5,247,713 | 0.17x | 90.39x |
+| clientcore | 59,028 | 28,791,415 | 5,222,965 | 0.18x | 88.48x |
+
+The bounded path is approximately 82-83% slower than the unbounded fast path in this case, while remaining much
+faster than the portable pre-MR implementation. Allocation stays near 112 B/op for both MR variants, versus
+16,512 B/op for the pre-MR baseline. The Blackhole sink makes per-write overhead particularly visible; these ratios
+are not predictions for real destinations that process or transmit the payload. The bound prevents large
+destination scratch allocations and is retained despite its measurable call overhead.
+
+### Variability Check
+
+The short run showed a 0.75x point estimate for clientcore's 4 KiB transfer over 128 heap buffers. A
+[separate confirmation][revalidation-confirmation] used four forks and one-second iterations, preserving the original
+short result rather than replacing it. The confirmation measured 389,240 +/- 40,594 ops/s for pre-MR,
+425,953 +/- 47,021 for the unbounded MR reference, and 434,521 +/- 33,828 for the corrected implementation.
+The intervals overlap: the corrected point estimate is 1.12x pre-MR and 1.02x the MR reference, so the apparent
+short-run regression was not reproduced.
+
+The main run contains 86 variant results and 860 measured iteration samples, including two extra pre-fix reference
+results for the single-buffer cases. The confirmation adds three results and 60 samples, for 89 results and
+920 measured samples overall. Comparison CSVs reuse corrected measurements where appropriate rather than
+representing every row as a new independent measurement. The October snapshot below is unchanged.
 
 ## Measured IO Performance
+
+The CSV and tables are an intentionally retained historical snapshot from October 30, 2026, not a periodically
+refreshed benchmark dashboard. They describe the recorded artifacts and predate the stream-dispatch safeguards and
+8 KiB limit for direct heap-buffer writes. New comparisons should record their own source revisions and environment
+rather than overwrite this snapshot.
 
 The following tables show **1 MiB payloads**. Buffer-backed and list-copy cases use **128 heap buffers**. Values are
 rounded from the [complete 40-case CSV][results]; throughput is operations per second, allocation is bytes per
@@ -207,6 +287,10 @@ case. Only one SDK JAR should be on the production classpath at a time. Generate
 and save it outside `target`, then start normal quality checks from a clean build without that profile so stale
 generated JMH padding classes are not mistaken for handwritten SDK code.
 
+For the November single-buffer case, change `bufferCount` to `1` while keeping the 1 MiB heap-buffer transfer.
+The targeted 4 KiB confirmation uses `bufferCount=128`, `bufferType=heap`, four forks, and one-second iterations.
+Its baseline, corrected, and MR-reference artifacts run in that order; the metadata records the distinct protocol.
+
 ## Unmeasured Features
 
 There are no throughput or allocation claims yet for the Java 17 hexadecimal/span formatting, Java 11 range-based
@@ -220,6 +304,10 @@ workloads, real HTTP transports, cold startup, or end-to-end service operations.
 [mr-spec]: https://openjdk.org/jeps/238#Description
 [results]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.csv
 [metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.metadata.json
+[revalidation-results]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25-20261110.csv
+[revalidation-metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25-20261110.metadata.json
+[revalidation-reference]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25-20261110-single-buffer-reference.csv
+[revalidation-confirmation]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25-20261110-small-heap-confirmation.csv
 [core-streams]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/InputStreamUtils.java
 [client-streams]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core/src/main/java11/io/clientcore/core/implementation/utils/InputStreamUtils.java
 [core-buffer-stream]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java11/com/azure/core/implementation/util/ByteBufferInputStream.java

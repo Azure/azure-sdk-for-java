@@ -73,9 +73,15 @@ final class ByteBufferInputStream extends IterableOfByteBuffersInputStream {
             }
 
             // Do not hold the stream monitor while writing to a potentially blocking destination.
-            int count = buffer.remaining();
-            outputStream.write(buffer.array(), buffer.arrayOffset() + buffer.position(), count);
-            transferred += count;
+            int offset = buffer.arrayOffset() + buffer.position();
+            int remaining = buffer.remaining();
+            while (remaining > 0) {
+                int count = Math.min(remaining, READ_SIZE);
+                outputStream.write(buffer.array(), offset, count);
+                offset += count;
+                remaining -= count;
+                transferred += count;
+            }
         }
     }
 }

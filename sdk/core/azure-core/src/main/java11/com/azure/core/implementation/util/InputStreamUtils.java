@@ -5,6 +5,7 @@ package com.azure.core.implementation.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,10 +30,10 @@ public final class InputStreamUtils {
      */
     public static byte[] readAllBytes(InputStream inputStream, Long length) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
-        // ByteArrayInputStream.readAllBytes bypasses read overrides in subclasses.
+        // JDK byte-array and file bulk reads can bypass read overrides in subclasses.
         // Keep generic buffering: newer JDK defaults can allocate larger temporary buffers for small streams.
         return inputStream.getClass() == ByteArrayInputStream.class
-            || inputStream instanceof FileInputStream
+            || inputStream.getClass() == FileInputStream.class
             || inputStream instanceof ByteBufferInputStream
                 ? inputStream.readAllBytes()
                 : StreamUtil.readAllBytes(inputStream, length);
@@ -50,11 +51,15 @@ public final class InputStreamUtils {
     public static void transferTo(InputStream inputStream, OutputStream outputStream, Long length) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         Objects.requireNonNull(outputStream, "'outputStream' cannot be null.");
-        if (inputStream instanceof ByteArrayInputStream) {
-            // ByteArrayInputStream.transferTo holds its monitor while writing to the destination.
-            StreamUtil.transferTo(inputStream, outputStream);
-        } else {
+        boolean fileStreamSubclass
+            = (inputStream instanceof FileInputStream && inputStream.getClass() != FileInputStream.class)
+                || (outputStream instanceof FileOutputStream && outputStream.getClass() != FileOutputStream.class);
+        if (!fileStreamSubclass
+            && (inputStream instanceof FileInputStream || inputStream instanceof ByteBufferInputStream)) {
             inputStream.transferTo(outputStream);
+        } else {
+            // Wrappers can delegate bulk transfers to streams that bypass read overrides or bounded writes.
+            StreamUtil.transferTo(inputStream, outputStream);
         }
     }
 

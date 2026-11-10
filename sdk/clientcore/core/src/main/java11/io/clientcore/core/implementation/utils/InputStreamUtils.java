@@ -5,6 +5,7 @@ package io.clientcore.core.implementation.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,10 +29,10 @@ public final class InputStreamUtils {
      */
     public static byte[] readAllBytes(InputStream inputStream) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
-        // ByteArrayInputStream.readAllBytes bypasses read overrides in subclasses.
+        // JDK byte-array and file bulk reads can bypass read overrides in subclasses.
         // Keep generic buffering: the JDK default allocates more than ClientCore's existing implementation.
         return inputStream.getClass() == ByteArrayInputStream.class
-            || inputStream instanceof FileInputStream
+            || inputStream.getClass() == FileInputStream.class
             || inputStream instanceof ByteBufferInputStream
                 ? inputStream.readAllBytes()
                 : StreamUtil.readAllBytes(inputStream);
@@ -48,10 +49,14 @@ public final class InputStreamUtils {
     public static void transferTo(InputStream inputStream, OutputStream outputStream) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         Objects.requireNonNull(outputStream, "'outputStream' cannot be null.");
-        if (inputStream instanceof FileInputStream || inputStream instanceof ByteBufferInputStream) {
+        boolean fileStreamSubclass
+            = (inputStream instanceof FileInputStream && inputStream.getClass() != FileInputStream.class)
+                || (outputStream instanceof FileOutputStream && outputStream.getClass() != FileOutputStream.class);
+        if (!fileStreamSubclass
+            && (inputStream instanceof FileInputStream || inputStream instanceof ByteBufferInputStream)) {
             inputStream.transferTo(outputStream);
         } else {
-            // Avoid ByteArrayInputStream's monitor during writes and retain bounded generic stream copies.
+            // Avoid monitor-held writes and file-channel transfers that bypass subclass overrides.
             StreamUtil.transferTo(inputStream, outputStream);
         }
     }

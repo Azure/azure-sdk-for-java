@@ -5,18 +5,30 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.util.ByteBufferUtils;
 import com.azure.core.implementation.util.InputStreamUtils;
+import com.azure.core.util.mocking.MockFile;
+import com.azure.core.util.mocking.MockFileInputStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
+import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -52,6 +64,83 @@ public class BinaryDataIOTests {
 
         try (InputStream input = new TransformingInputStream(bytes)) {
             assertArrayEquals(expected, BinaryData.fromStream(input).toBytes());
+            assertEquals(-1, input.read());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 1025, 32785 })
+    public void materializationHonorsFileInputStreamReadOverrides(int size) throws IOException {
+        byte[] expected = payload(size);
+        try (InputStream input = new MockFileInputStream(new MockFile("unused", expected, size))) {
+            assertArrayEquals(expected, BinaryData.fromStream(input).toBytes());
+            assertEquals(-1, input.read());
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "false, false", "true, false", "false, true", "true, true" })
+    public void transfersHonorFileStreamReadAndWriteOverrides(boolean transformInput, boolean transformOutput,
+        @TempDir Path directory) throws IOException {
+        byte[] bytes = payload(32785);
+        byte[] expected = bytes.clone();
+        int mask = (transformInput ? 0x55 : 0) ^ (transformOutput ? 0xaa : 0);
+        for (int i = 0; i < expected.length; i++) {
+            expected[i] ^= mask;
+        }
+
+        Path source = Files.write(directory.resolve("source.bin"), bytes);
+        Path destination = directory.resolve("destination.bin");
+        try (
+            InputStream input
+                = transformInput ? new TransformingFileInputStream(source) : new FileInputStream(source.toFile());
+            OutputStream output = transformOutput
+                ? new TransformingFileOutputStream(destination)
+                : new FileOutputStream(destination.toFile())) {
+            BinaryData.fromStream(input, 3L).writeTo(output);
+        }
+
+        assertArrayEquals(expected, Files.readAllBytes(destination));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "buffered, false",
+        "buffered, true",
+        "pushback, false",
+        "pushback, true",
+        "sequence, false",
+        "sequence, true" })
+    public void wrappedTransfersHonorReadOverrides(String kind, boolean partialRead) throws IOException {
+        byte[] bytes = payload(32785);
+        byte[] expected = bytes.clone();
+        for (int i = 0; i < expected.length; i++) {
+            expected[i] ^= 0xff;
+        }
+
+        InputStream transformed = new TransformingInputStream(bytes);
+        try (InputStream input = wrapInputStream(transformed, kind)) {
+            if (partialRead) {
+                assertEquals(expected[0] & 0xff, input.read());
+                expected = Arrays.copyOfRange(expected, 1, expected.length);
+            }
+            ByteArrayOutputStream output = new MonitorCheckingOutputStream(transformed);
+            BinaryData.fromStream(input, 3L).writeTo(output);
+            assertArrayEquals(expected, output.toByteArray());
+            assertEquals(-1, input.read());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 8191, 8192, 8193, 32785 })
+    public void pushbackTransfersKeepDestinationWritesBounded(int size) throws IOException {
+        byte[] expected = payload(size);
+        try (PushbackInputStream input = new PushbackInputStream(new ByteArrayInputStream(new byte[0]), size)) {
+            input.unread(expected);
+            CountingOutputStream output = new CountingOutputStream();
+            BinaryData.fromStream(input).writeTo(output);
+            assertArrayEquals(expected, output.toByteArray());
+            assertTrue(output.largestWrite <= 8192);
             assertEquals(-1, input.read());
         }
     }
@@ -157,8 +246,9 @@ public class BinaryDataIOTests {
         buffer.reset();
     }
 
-    @Test
-    public void readAndWriteFailuresArePropagated() {
+    @ParameterizedTest
+    @ValueSource(ints = { 35, 32785 })
+    public void readAndWriteFailuresArePropagated(int size) {
         IOException failure = new IOException("expected failure");
         InputStream input = new InputStream() {
             @Override
@@ -174,7 +264,7 @@ public class BinaryDataIOTests {
                 throw failure;
             }
         };
-        InputStream buffered = InputStreamUtils.createInputStream(buffers(payload(35), "heap"));
+        InputStream buffered = InputStreamUtils.createInputStream(buffers(payload(size), "heap"));
         assertSame(failure, assertThrows(IOException.class, () -> InputStreamUtils.transferTo(buffered, output, null)));
     }
 
@@ -213,6 +303,23 @@ public class BinaryDataIOTests {
         assertEquals(1, output.writes);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 8191, 8192, 8193, 32785 })
+    public void heapBufferTransfersKeepDestinationWritesBounded(int size) throws IOException {
+        byte[] expected = payload(size);
+        ByteBuffer buffer = ByteBuffer.wrap(expected);
+        buffer.mark();
+        try (InputStream input = InputStreamUtils.createInputStream(Collections.singletonList(buffer))) {
+            CountingOutputStream output = new CountingOutputStream();
+            BinaryData.fromStream(input).writeTo(output);
+            assertArrayEquals(expected, output.toByteArray());
+            assertTrue(output.largestWrite <= 8192);
+            assertEquals(-1, input.read());
+        }
+        assertEquals(0, buffer.position());
+        buffer.reset();
+    }
+
     static byte[] payload(int length) {
         byte[] bytes = new byte[length];
         for (int i = 0; i < length; i++) {
@@ -245,6 +352,22 @@ public class BinaryDataIOTests {
         return buffer;
     }
 
+    private static InputStream wrapInputStream(InputStream input, String kind) {
+        switch (kind) {
+            case "buffered":
+                return new BufferedInputStream(input);
+
+            case "pushback":
+                return new PushbackInputStream(input);
+
+            case "sequence":
+                return new SequenceInputStream(input, new ByteArrayInputStream(new byte[0]));
+
+            default:
+                throw new IllegalArgumentException("Unknown stream wrapper: " + kind);
+        }
+    }
+
     private static void assertBufferState(List<ByteBuffer> buffers) {
         for (ByteBuffer buffer : buffers) {
             int position = buffer.capacity() == 0 ? 0 : 1;
@@ -273,6 +396,57 @@ public class BinaryDataIOTests {
                 bytes[offset + i] ^= 0xff;
             }
             return read;
+        }
+    }
+
+    private static final class TransformingFileInputStream extends FileInputStream {
+        private TransformingFileInputStream(Path path) throws IOException {
+            super(path.toFile());
+        }
+
+        @Override
+        public int read() throws IOException {
+            int value = super.read();
+            return value == -1 ? -1 : value ^ 0x55;
+        }
+
+        @Override
+        public int read(byte[] bytes) throws IOException {
+            return read(bytes, 0, bytes.length);
+        }
+
+        @Override
+        public int read(byte[] bytes, int offset, int length) throws IOException {
+            int read = super.read(bytes, offset, length);
+            for (int i = 0; i < read; i++) {
+                bytes[offset + i] ^= 0x55;
+            }
+            return read;
+        }
+    }
+
+    private static final class TransformingFileOutputStream extends FileOutputStream {
+        private TransformingFileOutputStream(Path path) throws IOException {
+            super(path.toFile());
+        }
+
+        @Override
+        public void write(int value) throws IOException {
+            super.write(value ^ 0xaa);
+        }
+
+        @Override
+        public void write(byte[] bytes) throws IOException {
+            write(bytes, 0, bytes.length);
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length) throws IOException {
+            byte[] transformed = Arrays.copyOfRange(bytes, offset, offset + length);
+            for (int i = 0; i < transformed.length; i++) {
+                transformed[i] ^= 0xaa;
+            }
+            super.write(transformed, 0, transformed.length);
         }
     }
 
@@ -314,10 +488,12 @@ public class BinaryDataIOTests {
 
     private static final class CountingOutputStream extends ByteArrayOutputStream {
         private int writes;
+        private int largestWrite;
 
         @Override
         public void write(byte[] bytes, int offset, int length) {
             writes++;
+            largestWrite = Math.max(largestWrite, length);
             super.write(bytes, offset, length);
         }
     }

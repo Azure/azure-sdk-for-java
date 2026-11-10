@@ -20,8 +20,9 @@
 - Added package-private multi-release implementations for hexadecimal formatting on Java 17 and later, and
   range-based numeric parsing and direct Cleaner registration on Java 11 and later, retaining Java 8 fallbacks.
 - Added multi-release implementations for bulk `BinaryData` stream operations on Java 11 and later and
-  position-preserving `ByteBuffer` copies on Java 13 and later, retaining Java 8 fallbacks and honoring read-method
-  overrides in `ByteArrayInputStream` subclasses.
+  position-preserving `ByteBuffer` copies on Java 13 and later, retaining Java 8 fallbacks. Stream operations preserve
+  `ByteArrayInputStream`, `FileInputStream`, and `FileOutputStream` subclass overrides, including through wrapped inputs,
+  and limit direct heap-buffer writes to 8 KiB.
 
 ## 1.61.0 (2026-10-27)
 
