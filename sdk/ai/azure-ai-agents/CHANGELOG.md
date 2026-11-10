@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Renamed realtime transcription getters to `getLogProbs()`, removed unit suffixes from duration-typed voice and
+  telephony properties, and renamed voice audio and recording blob accessors to `getBlobUrl()`. Audio item offsets
+  are exposed as `getOffset()`. The JSON field names and duration encodings are unchanged.
+- Exposed transcription segment start/end times and server VAD prefix padding as `Duration`, preserving fractional
+  seconds for segment timing and milliseconds for prefix padding.
+
 - Promoted the handwritten realtime WebSocket clients, session clients, connection options, overflow strategy,
   raw server-event model, and typed response-input and tool-choice wrappers to GA.
   `VoiceAgentMaxOutputTokens`, GPT Live clients, and generated realtime models remain preview.

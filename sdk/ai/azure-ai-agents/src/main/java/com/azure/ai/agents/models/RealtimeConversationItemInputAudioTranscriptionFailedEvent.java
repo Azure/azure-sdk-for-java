@@ -45,7 +45,10 @@ public final class RealtimeConversationItemInputAudioTranscriptionFailedEvent ex
     @Generated
     private final long contentIndex;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * Details of the transcription error.
+     */
+    @Generated
     private final Error error;
 
     /**
@@ -94,8 +97,8 @@ public final class RealtimeConversationItemInputAudioTranscriptionFailedEvent ex
      *
      * @return the error value.
      */
+    @Generated
     public Error getError() {
-        // AI Tooling: openai-java de-dup
         return this.error;
     }
 

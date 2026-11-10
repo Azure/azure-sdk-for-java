@@ -67,7 +67,7 @@ public class VoiceAgentWithToolsSample {
             .setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection()
                 .setThreshold(0.5)
-                .setPrefixPaddingMs(300L)
+                .setPrefixPadding(Duration.ofMillis(300))
                 .setSilenceDuration(Duration.ofMillis(500)))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
         VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration()

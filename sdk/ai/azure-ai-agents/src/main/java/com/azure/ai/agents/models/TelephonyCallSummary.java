@@ -94,12 +94,6 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
     private Long endedAt;
 
     /*
-     * The call duration.
-     */
-    @Generated
-    private Long durationMs;
-
-    /*
      * The service-generated reason that this single call ended, rather than the outcome of an overall outbound call
      * job. Additional string codes may be returned.
      */
@@ -281,19 +275,6 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
     }
 
     /**
-     * Get the durationMs property: The call duration.
-     *
-     * @return the durationMs value.
-     */
-    @Generated
-    public Duration getDurationMs() {
-        if (this.durationMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.durationMs);
-    }
-
-    /**
      * Get the endReason property: The service-generated reason that this single call ended, rather than the outcome of
      * an overall outbound call job. Additional string codes may be returned.
      *
@@ -353,7 +334,7 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
         jsonWriter.writeNumberField("media_connected_at", this.mediaConnectedAt);
         jsonWriter.writeNumberField("agent_session_ready_at", this.agentSessionReadyAt);
         jsonWriter.writeNumberField("ended_at", this.endedAt);
-        jsonWriter.writeNumberField("duration_ms", this.durationMs);
+        jsonWriter.writeNumberField("duration_ms", this.duration);
         jsonWriter.writeStringField("end_reason", this.endReason == null ? null : this.endReason.toString());
         jsonWriter.writeNumberField("provider_status_code", this.providerStatusCode);
         jsonWriter.writeNumberField("provider_sub_code", this.providerSubCode);
@@ -385,7 +366,7 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
             Long mediaConnectedAt = null;
             Long agentSessionReadyAt = null;
             Long endedAt = null;
-            Long durationMs = null;
+            Long duration = null;
             TelephonyCallEndReason endReason = null;
             Integer providerStatusCode = null;
             Integer providerSubCode = null;
@@ -418,7 +399,7 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
                 } else if ("ended_at".equals(fieldName)) {
                     endedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("duration_ms".equals(fieldName)) {
-                    durationMs = reader.getNullable(JsonReader::getLong);
+                    duration = reader.getNullable(JsonReader::getLong);
                 } else if ("end_reason".equals(fieldName)) {
                     endReason = TelephonyCallEndReason.fromString(reader.getString());
                 } else if ("provider_status_code".equals(fieldName)) {
@@ -440,12 +421,31 @@ public final class TelephonyCallSummary implements JsonSerializable<TelephonyCal
             deserializedTelephonyCallSummary.mediaConnectedAt = mediaConnectedAt;
             deserializedTelephonyCallSummary.agentSessionReadyAt = agentSessionReadyAt;
             deserializedTelephonyCallSummary.endedAt = endedAt;
-            deserializedTelephonyCallSummary.durationMs = durationMs;
+            deserializedTelephonyCallSummary.duration = duration;
             deserializedTelephonyCallSummary.endReason = endReason;
             deserializedTelephonyCallSummary.providerStatusCode = providerStatusCode;
             deserializedTelephonyCallSummary.providerSubCode = providerSubCode;
             deserializedTelephonyCallSummary.providerMessage = providerMessage;
             return deserializedTelephonyCallSummary;
         });
+    }
+
+    /*
+     * The call duration.
+     */
+    @Generated
+    private Long duration;
+
+    /**
+     * Get the duration property: The call duration.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        if (this.duration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.duration);
     }
 }

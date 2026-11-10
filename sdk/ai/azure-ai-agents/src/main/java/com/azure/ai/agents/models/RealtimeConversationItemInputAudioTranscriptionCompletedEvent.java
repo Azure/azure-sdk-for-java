@@ -69,12 +69,6 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
     private List<TranscriptionLanguage> languages;
 
     /*
-     * The logprobs property.
-     */
-    @Generated
-    private List<LogProbProperties> logprobs;
-
-    /*
      * Usage statistics for the transcription, this is billed according to the ASR model's pricing rather than the
      * realtime model's pricing.
      */
@@ -169,16 +163,6 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
     }
 
     /**
-     * Get the logprobs property: The logprobs property.
-     *
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<LogProbProperties> getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
      * Get the usage property: Usage statistics for the transcription, this is billed according to the ASR model's
      * pricing rather than the realtime model's pricing.
      *
@@ -226,7 +210,7 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
             }
         });
         // AI Tooling: openai-java de-dup
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> {
+        jsonWriter.writeArrayField("logprobs", this.logProbs, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -303,9 +287,25 @@ public final class RealtimeConversationItemInputAudioTranscriptionCompletedEvent
                     transcript, usage);
             deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.type = type;
             deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.languages = languages;
-            deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.logprobs = logprobs;
+            deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.logProbs = logprobs;
             deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent.phrases = phrases;
             return deserializedRealtimeConversationItemInputAudioTranscriptionCompletedEvent;
         });
+    }
+
+    /*
+     * The logprobs property.
+     */
+    @Generated
+    private List<LogProbProperties> logProbs;
+
+    /**
+     * Get the logProbs property: The logprobs property.
+     *
+     * @return the logProbs value.
+     */
+    @Generated
+    public List<LogProbProperties> getLogProbs() {
+        return this.logProbs;
     }
 }

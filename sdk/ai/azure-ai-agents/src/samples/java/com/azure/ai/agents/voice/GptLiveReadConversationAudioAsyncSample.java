@@ -68,7 +68,7 @@ public class GptLiveReadConversationAudioAsyncSample {
         }
         Mono<Void> merged = client.getAgentConversationAudio(agentName, conversationId).flatMap(recording -> {
             GptLiveReadConversationAudioSample.printRecording(recording);
-            return GptLiveReadConversationAudioSample.isFoundryManaged(recording.getBlobUri())
+            return GptLiveReadConversationAudioSample.isFoundryManaged(recording.getBlobUrl())
                 ? client.downloadAgentConversationAudio(agentName, conversationId)
                     .flatMap(audio -> saveAudio(audio, directory, "gpt-live-call-"))
                 : Mono.empty();
@@ -76,7 +76,7 @@ public class GptLiveReadConversationAudioAsyncSample {
         return merged.then(Mono.defer(() -> itemId == null ? Mono.empty()
             : client.getAgentConversationAudioItem(agentName, conversationId, itemId).flatMap(item -> {
                 System.out.printf("Item %s: format=%s, rate=%d%n", itemId, item.getFormat(), item.getSampleRate());
-                return GptLiveReadConversationAudioSample.isFoundryManaged(item.getBlobUri())
+                return GptLiveReadConversationAudioSample.isFoundryManaged(item.getBlobUrl())
                     ? client.downloadAgentConversationAudioItem(agentName, conversationId, itemId)
                         .flatMap(audio -> saveAudio(audio, directory, "gpt-live-item-"))
                     : Mono.empty();

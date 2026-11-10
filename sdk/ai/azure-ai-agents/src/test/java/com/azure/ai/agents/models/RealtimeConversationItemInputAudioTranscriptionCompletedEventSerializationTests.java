@@ -3,9 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.core.util.BinaryData;
-import com.openai.models.realtime.ConversationItemInputAudioTranscriptionCompletedEvent.Usage;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,11 +15,12 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
 
     @Test
     public void tokenUsageRoundTrips() throws IOException {
-        Usage usage = OpenAIJsonHelper.fromBinaryData(
-            BinaryData.fromString("{\"type\":\"tokens\",\"input_tokens\":2,\"output_tokens\":3,\"total_tokens\":5}"),
-            Usage.class);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
-            = new RealtimeConversationItemInputAudioTranscriptionCompletedEvent("event", "item", 0, "hello", usage);
+            = UnionTypeSerializationTestUtils.deserialize(
+                "{\"type\":\"conversation.item.input_audio_transcription.completed\",\"event_id\":\"event\","
+                    + "\"item_id\":\"item\",\"content_index\":0,\"transcript\":\"hello\","
+                    + "\"usage\":{\"type\":\"tokens\",\"input_tokens\":2,\"output_tokens\":3,\"total_tokens\":5}}",
+                RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
 
         String json = UnionTypeSerializationTestUtils.serialize(event);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent result = UnionTypeSerializationTestUtils
@@ -31,16 +29,18 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
         assertTrue(json.contains("\"input_tokens\":2"));
         assertTrue(result.getUsage().isTranscriptTextUsageTokens());
         assertEquals(5L, result.getUsage().asTranscriptTextUsageTokens().totalTokens());
-        assertEquals(usage, result.getUsage());
+        assertEquals(event.getUsage(), result.getUsage());
         assertEquals(json, UnionTypeSerializationTestUtils.serialize(result));
     }
 
     @Test
     public void durationUsageRoundTrips() throws IOException {
-        Usage usage = OpenAIJsonHelper.fromBinaryData(BinaryData.fromString("{\"type\":\"duration\",\"seconds\":7.5}"),
-            Usage.class);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
-            = new RealtimeConversationItemInputAudioTranscriptionCompletedEvent("event", "item", 0, "hello", usage);
+            = UnionTypeSerializationTestUtils.deserialize(
+                "{\"type\":\"conversation.item.input_audio_transcription.completed\",\"event_id\":\"event\","
+                    + "\"item_id\":\"item\",\"content_index\":0,\"transcript\":\"hello\","
+                    + "\"usage\":{\"type\":\"duration\",\"seconds\":7.5}}",
+                RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
 
         String json = UnionTypeSerializationTestUtils.serialize(event);
         RealtimeConversationItemInputAudioTranscriptionCompletedEvent result = UnionTypeSerializationTestUtils
@@ -49,7 +49,7 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
         assertTrue(json.contains("\"seconds\":7.5"));
         assertTrue(result.getUsage().isTranscriptTextUsageDuration());
         assertEquals(7.5, result.getUsage().asTranscriptTextUsageDuration().seconds());
-        assertEquals(usage, result.getUsage());
+        assertEquals(event.getUsage(), result.getUsage());
         assertEquals(json, UnionTypeSerializationTestUtils.serialize(result));
     }
 

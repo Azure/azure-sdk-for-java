@@ -71,13 +71,13 @@ public class GptLiveReadConversationAudioSample {
         }
         VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId);
         printRecording(recording);
-        if (isFoundryManaged(recording.getBlobUri())) {
+        if (isFoundryManaged(recording.getBlobUrl())) {
             saveAudio(client.downloadAgentConversationAudio(agentName, conversationId), directory, "gpt-live-call-");
         }
         if (itemId != null) {
             VoiceAudioItem item = client.getAgentConversationAudioItem(agentName, conversationId, itemId);
             System.out.printf("Item %s: format=%s, rate=%d%n", itemId, item.getFormat(), item.getSampleRate());
-            if (isFoundryManaged(item.getBlobUri())) {
+            if (isFoundryManaged(item.getBlobUrl())) {
                 saveAudio(client.downloadAgentConversationAudioItem(agentName, conversationId, itemId),
                     directory, "gpt-live-item-");
             }
@@ -86,14 +86,14 @@ public class GptLiveReadConversationAudioSample {
 
     static void printRecording(VoiceRecording recording) {
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, durationMs=%s%n",
-            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDurationMs());
+            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDuration());
     }
 
     static boolean isFoundryManaged(String blobUri) {
         if (blobUri == null || blobUri.isEmpty()) {
             return true;
         }
-        System.out.println("BYOS audio: use metadata.getBlobUri() with your own Azure Storage credentials.");
+        System.out.println("BYOS audio: use metadata.getBlobUrl() with your own Azure Storage credentials.");
         return false;
     }
 

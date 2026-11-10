@@ -33,12 +33,6 @@ public class VoiceAgentInterimResponseConfiguration
     @Generated
     private List<VoiceAgentInterimResponseTrigger> triggers;
 
-    /*
-     * The latency threshold in milliseconds.
-     */
-    @Generated
-    private Long latencyThresholdMs;
-
     /**
      * Creates an instance of VoiceAgentInterimResponseConfiguration class.
      */
@@ -79,35 +73,6 @@ public class VoiceAgentInterimResponseConfiguration
     }
 
     /**
-     * Get the latencyThresholdMs property: The latency threshold in milliseconds.
-     *
-     * @return the latencyThresholdMs value.
-     */
-    @Generated
-    public Duration getLatencyThresholdMs() {
-        if (this.latencyThresholdMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.latencyThresholdMs);
-    }
-
-    /**
-     * Set the latencyThresholdMs property: The latency threshold in milliseconds.
-     *
-     * @param latencyThresholdMs the latencyThresholdMs value to set.
-     * @return the VoiceAgentInterimResponseConfiguration object itself.
-     */
-    @Generated
-    public VoiceAgentInterimResponseConfiguration setLatencyThresholdMs(Duration latencyThresholdMs) {
-        if (latencyThresholdMs == null) {
-            this.latencyThresholdMs = null;
-        } else {
-            this.latencyThresholdMs = latencyThresholdMs.toMillis();
-        }
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -117,7 +82,7 @@ public class VoiceAgentInterimResponseConfiguration
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("triggers", this.triggers,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeNumberField("latency_threshold_ms", this.latencyThresholdMs);
+        jsonWriter.writeNumberField("latency_threshold_ms", this.latencyThreshold);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,7 +139,7 @@ public class VoiceAgentInterimResponseConfiguration
                         = reader.readArray(reader1 -> VoiceAgentInterimResponseTrigger.fromString(reader1.getString()));
                     deserializedVoiceAgentInterimResponseConfiguration.triggers = triggers;
                 } else if ("latency_threshold_ms".equals(fieldName)) {
-                    deserializedVoiceAgentInterimResponseConfiguration.latencyThresholdMs
+                    deserializedVoiceAgentInterimResponseConfiguration.latencyThreshold
                         = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
@@ -182,5 +147,40 @@ public class VoiceAgentInterimResponseConfiguration
             }
             return deserializedVoiceAgentInterimResponseConfiguration;
         });
+    }
+
+    /*
+     * The latency threshold in milliseconds.
+     */
+    @Generated
+    private Long latencyThreshold;
+
+    /**
+     * Get the latencyThreshold property: The latency threshold in milliseconds.
+     *
+     * @return the latencyThreshold value.
+     */
+    @Generated
+    public Duration getLatencyThreshold() {
+        if (this.latencyThreshold == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.latencyThreshold);
+    }
+
+    /**
+     * Set the latencyThreshold property: The latency threshold in milliseconds.
+     *
+     * @param latencyThreshold the latencyThreshold value to set.
+     * @return the VoiceAgentInterimResponseConfiguration object itself.
+     */
+    @Generated
+    public VoiceAgentInterimResponseConfiguration setLatencyThreshold(Duration latencyThreshold) {
+        if (latencyThreshold == null) {
+            this.latencyThreshold = null;
+        } else {
+            this.latencyThreshold = latencyThreshold.toMillis();
+        }
+        return this;
     }
 }
