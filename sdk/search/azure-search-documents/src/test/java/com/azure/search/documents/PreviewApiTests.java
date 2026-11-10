@@ -17,6 +17,9 @@ import com.azure.search.documents.indexes.models.RandomScoringFunction;
 import com.azure.search.documents.indexes.models.KnowledgeBaseMicrosoftRetriever1Model;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFileIngestionOperation;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
+import com.azure.search.documents.indexes.models.FileUploadMetadata;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
 import com.azure.search.documents.indexes.models.RandomScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
@@ -27,8 +30,10 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseGraphSearchActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceCache;
 import com.azure.search.documents.models.BalancedVectorQueryTopicGraph;
+import com.azure.search.documents.models.ContentFileDetails;
 import com.azure.search.documents.models.DiverseVectorQueryTopicGraph;
 import com.azure.search.documents.models.GraphOptions;
 import com.azure.search.documents.models.GraphQueryExecutionMode;
@@ -93,15 +98,48 @@ public class PreviewApiTests {
     }
 
     @Test
-    public void fileDeletePreservesExistingParameterOrder() {
+    public void fileOperationsPreserveGaParameterOrder() {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint("https://example.search.windows.net")
             .credential(new AzureKeyCredential("key"))
             .httpClient(request -> {
                 assertTrue(request.getUrl().getPath().contains("/knowledgesources('source')/files('file')"));
+                if (request.getHttpMethod() == HttpMethod.PUT) {
+                    assertTrue(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE).startsWith("multipart/"));
+                    return Mono.just(new MockHttpResponse(request, 200,
+                        "{\"fileId\":\"file\",\"fileName\":\"notes.txt\"}".getBytes(StandardCharsets.UTF_8)));
+                }
+                assertEquals(HttpMethod.DELETE, request.getHttpMethod());
                 return Mono.just(new MockHttpResponse(request, 204));
             });
-        builder.buildClient().deleteKnowledgeSourceFile("file", "source");
-        builder.buildAsyncClient().deleteKnowledgeSourceFile("file", "source").block();
+        builder.buildClient().deleteKnowledgeSourceFile("source", "file");
+        builder.buildAsyncClient().deleteKnowledgeSourceFile("source", "file").block();
+        assertEquals(204,
+            builder.buildClient().deleteKnowledgeSourceFileWithResponse("source", "file", null).getStatusCode());
+        Response<Void> deleted
+            = builder.buildAsyncClient().deleteKnowledgeSourceFileWithResponse("source", "file", null).block();
+        assertNotNull(deleted);
+        assertEquals(204, deleted.getStatusCode());
+        UpdateKnowledgeSourceFileRequest update
+            = new UpdateKnowledgeSourceFileRequest(new FileUploadMetadata().setFileName("notes.txt"),
+                new ContentFileDetails(BinaryData.fromString("content")).setFilename("notes.txt"));
+        assertEquals("file", builder.buildClient().updateKnowledgeSourceFile("source", "file", update).getFileId());
+        KnowledgeSourceFile updated
+            = builder.buildAsyncClient().updateKnowledgeSourceFile("source", "file", update).block();
+        assertNotNull(updated);
+        assertEquals("file", updated.getFileId());
+    }
+
+    @Test
+    public void gaSqlDocumentUrlGetterPreservesWireMapping() {
+        KnowledgeBaseIndexedSqlReference reference = BinaryData
+            .fromString("{\"type\":\"indexedSql\",\"id\":\"sql\",\"activitySource\":1,"
+                + "\"docUrl\":\"https://example.com/document\",\"citationUrl\":\"https://example.com/citation\"}")
+            .toObject(KnowledgeBaseIndexedSqlReference.class);
+        assertEquals("https://example.com/document", reference.getDocumentUrl());
+        Map<?, ?> json = BinaryData.fromObject(reference).toObject(Map.class);
+        assertEquals(reference.getDocumentUrl(), json.get("docUrl"));
+        assertFalse(json.containsKey("documentUrl"));
+        assertEquals("https://example.com/citation", json.get("citationUrl"));
     }
 
     @Test

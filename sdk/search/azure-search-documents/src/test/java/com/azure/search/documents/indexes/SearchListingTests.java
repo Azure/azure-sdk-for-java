@@ -54,7 +54,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchListingTests {
     private static final String ENDPOINT = "https://example.search.windows.net";
     private static final AzureKeyCredential CREDENTIAL = new AzureKeyCredential("key");
-    private static final String NEXT_LINK = ENDPOINT + "/next-page?api-version=2026-10-01&$skiptoken=opaque%2B%2F%3D";
+    private static final String NEXT_LINK
+        = ENDPOINT + "/next-page?api-version=2026-11-01-preview&$skiptoken=opaque%2B%2F%3D";
 
     @ParameterizedTest
     @MethodSource("listings")

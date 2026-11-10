@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0-beta.3 (Unreleased)
+## 12.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,18 +9,25 @@
 - Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
 - Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
 - Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
+- Carried forward the October GA knowledge base retrieval APIs: closeable synchronous and direct typed asynchronous event streams, query-source authorization options and overloads, and nullable numeric completion status codes. Work IQ authorization remains available in the November preview.
+- Added typed `RequestOptions` listing overloads and aligned `KnowledgeBaseIndexedSqlReference` with the GA `getDocumentUrl()` getter.
+- Carried forward the final October GA `GetDocumentOptions` and synchronous/asynchronous document lookup overloads, including authorization headers, elevated read, selected fields, and caller `RequestOptions` precedence.
 
 ### Breaking Changes
 
 - Removed `SearchServiceVersion.V2026_08_01_PREVIEW`; `V2026_11_01_PREVIEW` is now the only supported preview service version.
 - Removed preview `queryHints` from `AzureBlobKnowledgeSourceParameters` and `IndexedSharePointKnowledgeSourceParameters`, and `queryHintOverrides` from their runtime parameter models, to match the November contract in [spec PR #47300](https://github.com/Azure/azure-rest-api-specs/pull/47300). These properties remain supported on `SearchIndexKnowledgeSourceParameters` and `SearchIndexKnowledgeSourceParams`, respectively; `topicGraph` is not a replacement for query hints.
 - Removed preview query hints and query hint overrides from other non-SearchIndex knowledge sources, and their query hint processing activity properties, to match the service contract.
+- Aligned preview streaming APIs with the October GA signatures: synchronous `retrieveStream` returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` instead of accepting a callback, and asynchronous `retrieveStream` emits typed events directly instead of `ServerSentEvent` envelopes.
+- Removed preview-only `ServerSentEvent`, `ServerSentEventListener`, `UnknownKnowledgeBaseRetrievalStreamEvent`, and `KnowledgeBaseRetrievalStatusCode` types. As in GA, stream event wrappers have SDK-only constructors and are not JSON models; unknown events expose only their names. SQL references expose `getDocumentUrl()` instead of `getDocUrl()`.
 
 ### Bugs Fixed
 
 - Forwarded topic graph profile and organization access expiration settings from field-builder annotations.
 - Added field-builder annotations for sensitivity label IDs and names, source document IDs, and SharePoint site URLs, and forwarded permission filter settings to generated search fields.
 - Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
+- Carried forward SSE decoding, cancellation, backpressure, buffer ownership, and response-cleanup fixes.
+- Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
 
 ### Other Changes
 

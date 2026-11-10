@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0</version>
+    <version>12.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -453,6 +453,20 @@ Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperti
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
 ```
 
+Use `GetDocumentOptions` to select fields or supply a query-source authorization token for document-level permissions.
+The three-argument `getDocumentWithResponse` overload is available on both synchronous and asynchronous clients.
+Explicit headers in `RequestOptions` override the operation options; query parameters in `RequestOptions` are appended.
+
+```java readme-sample-retrieveDocumentWithOptions
+GetDocumentOptions options = new GetDocumentOptions()
+    .setQuerySourceAuthorization(querySourceToken)
+    .setEnableElevatedRead(false)
+    .setSelectedFields(Arrays.asList("Id", "Name"));
+Map<String, Object> hotel = SEARCH_CLIENT.getDocumentWithResponse("1", options, null)
+    .getValue().getAdditionalProperties();
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+```
+
 ### Adding documents to your index
 
 You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from an index in a single batched request.
@@ -565,6 +579,21 @@ For response headers and status, use `graphWithResponse`. A plan-only request mu
 See the [preview samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/PreviewSearchSamples.java).
 These APIs require a service that supports the preview; the samples do not provision resources.
 
+The preview preserves the October GA knowledge base streaming APIs. `KnowledgeBaseRetrievalClient.retrieveStream`
+returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>`; use try-with-resources, especially when stopping
+early. `KnowledgeBaseRetrievalAsyncClient.retrieveStream` returns a `Flux<KnowledgeBaseRetrievalStreamEvent>` directly,
+without `ServerSentEvent` envelopes. Known events expose typed payloads through `getValue()`; unknown events expose
+only their names, not their payloads. Event wrappers are SDK-created envelopes; serialize their typed payloads instead.
+Completion status codes remain nullable integers.
+See the [streaming sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java),
+which provisions uniquely named sample resources and removes them afterward.
+
+Set `KnowledgeBaseRetrievalOptions.setQuerySourceAuthorization` to send query-source authorization as a header,
+never as JSON. An explicit non-null authorization argument overrides the option; null falls back to it.
+The three-argument retrieval and streaming overloads also support November's Work IQ authorization.
+Typed listing overloads accept `RequestOptions` and preserve service continuation links. File delete and update APIs
+take the knowledge source `name` before `fileId`. SQL references use the GA `getDocumentUrl()` getter.
+
 * Samples are explained in detail [here][samples_readme].
 * Read more about the [Azure AI Search service](https://learn.microsoft.com/azure/search/search-what-is-azure-search)
 
@@ -605,4 +634,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-

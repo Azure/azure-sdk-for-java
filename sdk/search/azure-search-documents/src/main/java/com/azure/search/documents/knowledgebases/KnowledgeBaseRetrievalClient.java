@@ -17,13 +17,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CloseableIterableStream;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
-import com.azure.search.documents.models.ServerSentEventListener;
 import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 
 /**
@@ -95,7 +95,8 @@ public final class KnowledgeBaseRetrievalClient {
     public Response<KnowledgeBaseRetrievalResult> retrieveWithResponse(KnowledgeBaseRetrievalOptions retrievalRequest,
         RequestOptions requestOptions) {
         return convertResponse(
-            this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest),
+                retrievalRequest == null ? null : retrievalRequest.getQuerySourceAuthorization(), requestOptions),
             KnowledgeBaseRetrievalResult.class);
     }
 
@@ -243,7 +244,9 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -255,8 +258,7 @@ public final class KnowledgeBaseRetrievalClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, null);
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
@@ -356,9 +358,13 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
      * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
      * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,12 +379,7 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
         String querySourceAuthorization, String queryWorkIQSourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
         if (queryWorkIQSourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
                 queryWorkIQSourceAuthorization);
@@ -459,52 +460,146 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
-     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
-     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
-     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically.
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload, for example
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
+     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
+     * their payloads are not available.
      *
-     * @param retrievalRequest The retrieval request to process.
-     * @param listener The listener that receives events and lifecycle notifications.
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
+     * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
-    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
-        ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        RequestOptions requestOptions = new RequestOptions();
-        ServerSentEventStreams.listen(
+    public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, null);
+        return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
+            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
     }
 
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
-     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
-     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
-     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically.
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload, for example
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
+     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
+     * their payloads are not available.
      *
-     * @param retrievalRequest The retrieval request to process.
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
-     * @param listener The listener that receives events and lifecycle notifications.
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
+     * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
-    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
-        String queryWorkIQSourceAuthorization, ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
+    public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
+        return ServerSentEventStreams.toIterableStream(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores.
+     *
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
+     * @return The retrieval result.
+     * @throws com.azure.core.exception.HttpResponseException if the service rejects the request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
+        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
+            .toObject(KnowledgeBaseRetrievalResult.class);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload, for example
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
+     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
+     * their payloads are not available.
+     *
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process. If its
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents. A non-null value overrides
+     * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
+     * is treated as an explicit value.
+     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
+     * on a Work IQ knowledge source.
+     * @return A closeable stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> retrieveStream(
+        KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
+        String queryWorkIQSourceAuthorization) {
+        RequestOptions requestOptions = createRetrieveRequestOptions(retrievalRequest, querySourceAuthorization);
         if (queryWorkIQSourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
                 queryWorkIQSourceAuthorization);
         }
-        ServerSentEventStreams.listen(
+        return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
+            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+    }
+
+    @Generated
+    private static RequestOptions createRetrieveRequestOptions(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        RequestOptions requestOptions = new RequestOptions();
+        String authorization = querySourceAuthorization != null
+            ? querySourceAuthorization
+            : (retrievalRequest == null ? null : retrievalRequest.getQuerySourceAuthorization());
+        if (authorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"), authorization);
+        }
+        return requestOptions;
     }
 }

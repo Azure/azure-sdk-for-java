@@ -37,6 +37,44 @@ import java.util.List;
 @ServiceClient(builder = SearchIndexerClientBuilder.class)
 public final class SearchIndexerClient {
 
+    /**
+     * Lists matching data source connections, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching data source connections as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions) {
+        return serviceClient.listDataSourceConnections(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Lists matching indexers, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexers as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexer> listIndexers(RequestOptions requestOptions) {
+        return serviceClient.listIndexers(requestOptions).mapPage(value -> value.toObject(SearchIndexer.class));
+    }
+
+    /**
+     * Lists matching skillsets, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching skillsets as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
+        return serviceClient.listSkillsets(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerSkillset.class));
+    }
+
     @Generated
     private final SearchIndexerClientImpl serviceClient;
 

@@ -39,6 +39,44 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public final class SearchIndexerAsyncClient {
 
+    /**
+     * Lists matching data source connections, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching data source connections as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions) {
+        return serviceClient.listDataSourceConnectionsAsync(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Lists matching indexers, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexers as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions) {
+        return serviceClient.listIndexersAsync(requestOptions).mapPage(value -> value.toObject(SearchIndexer.class));
+    }
+
+    /**
+     * Lists matching skillsets, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching skillsets as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
+        return serviceClient.listSkillsetsAsync(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerSkillset.class));
+    }
+
     @Generated
     private final SearchIndexerClientImpl serviceClient;
 

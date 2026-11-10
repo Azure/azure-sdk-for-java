@@ -65,6 +65,40 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
 
+    /**
+     * Lists matching synonym maps, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching synonym maps as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
+        return serviceClient.listSynonymMapsAsync(requestOptions).mapPage(value -> value.toObject(SynonymMap.class));
+    }
+
+    /**
+     * Lists matching indexes with selected properties, following service-provided continuation links.
+     *
+     * @param select The top-level properties to retrieve, or {@code null} to use the service default.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexes as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select,
+        RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listIndexesWithSelectedPropertiesAsync(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexResponse.class));
+    }
+
     @Generated
     private final SearchIndexClientImpl serviceClient;
 
@@ -5273,7 +5307,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String name, String fileId,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteKnowledgeSourceFileWithResponseAsync(name, fileId, requestOptions);
     }
@@ -5332,10 +5366,10 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeSourceFile(String fileId, String name) {
+    public Mono<Void> deleteKnowledgeSourceFile(String name, String fileId) {
         // Generated convenience method for deleteKnowledgeSourceFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteKnowledgeSourceFileWithResponse(fileId, name, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteKnowledgeSourceFileWithResponse(name, fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5484,7 +5518,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String fileId, String name,
+    public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String name, String fileId,
         UpdateKnowledgeSourceFileRequest body) {
         // Generated convenience method for updateKnowledgeSourceFileWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
@@ -6176,5 +6210,34 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFilesAsync(name, requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
     }
 }
