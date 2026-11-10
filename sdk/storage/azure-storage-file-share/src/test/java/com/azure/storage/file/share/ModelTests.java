@@ -16,6 +16,8 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.xml.XmlReader;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
@@ -109,5 +111,33 @@ public class ModelTests {
         Response<SharesGetPropertiesHeaders> response
             = new SimpleResponse<>(null, 200, rawHeaders, new SharesGetPropertiesHeaders(rawHeaders));
         assertEquals(creationTime, ModelHelper.mapGetPropertiesResponse(response).getValue().getCreationTime());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void shareSmbDirectoryLeaseEnabledIsMappedFromResponses(boolean enabled) throws XMLStreamException {
+        String lastModified = new DateTimeRfc1123(OffsetDateTime.parse("2026-10-01T12:00:00Z")).toString();
+        String propertiesXml = "<Properties><Last-Modified>" + lastModified + "</Last-Modified><Etag>etag</Etag>"
+            + "<Quota>1</Quota><EnableSmbDirectoryLease>" + enabled + "</EnableSmbDirectoryLease></Properties>";
+        try (XmlReader xmlReader = XmlReader.fromString(propertiesXml)) {
+            assertEquals(enabled,
+                ModelHelper.populateShareProperties(SharePropertiesInternal.fromXml(xmlReader, "Properties"))
+                    .isSmbDirectoryLeaseEnabled());
+        }
+
+        HttpHeaders rawHeaders = new HttpHeaders()
+            .set(HttpHeaderName.fromString("x-ms-enable-smb-directory-lease"), String.valueOf(enabled))
+            .set(HttpHeaderName.fromString("x-ms-share-quota"), "1");
+        Response<SharesGetPropertiesHeaders> response
+            = new SimpleResponse<>(null, 200, rawHeaders, new SharesGetPropertiesHeaders(rawHeaders));
+        assertEquals(enabled, ModelHelper.mapGetPropertiesResponse(response).getValue().isSmbDirectoryLeaseEnabled());
+    }
+
+    @Test
+    void shareSmbDirectoryLeaseEnabledIsNullWhenNotReturned() {
+        HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-share-quota"), "1");
+        Response<SharesGetPropertiesHeaders> response
+            = new SimpleResponse<>(null, 200, rawHeaders, new SharesGetPropertiesHeaders(rawHeaders));
+        assertNull(ModelHelper.mapGetPropertiesResponse(response).getValue().isSmbDirectoryLeaseEnabled());
     }
 }

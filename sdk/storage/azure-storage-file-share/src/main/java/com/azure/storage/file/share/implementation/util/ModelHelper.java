@@ -534,6 +534,7 @@ public class ModelHelper {
             .setMaxBurstCreditsForIops(headers.getMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(headers.getNextAllowedProvisionedBandwidthDowngradeTime())
+            .setSmbDirectoryLeaseEnabled(headers.isEnableSmbDirectoryLease())
             .setChangeFeedEnabled(headers.isEnableChangeFeed())
             .setChangeFeedBlobContainerName(headers.getChangeFeedBlobContainerName())
             .setChangeFeedRetentionInDays(headers.getChangeFeedRetentionInDays());
