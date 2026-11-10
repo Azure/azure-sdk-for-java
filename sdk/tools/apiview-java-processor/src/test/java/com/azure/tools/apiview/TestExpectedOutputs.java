@@ -2,10 +2,12 @@ package com.azure.tools.apiview;
 
 import com.azure.tools.apiview.processor.Main;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.io.*;
 import java.util.stream.Stream;
@@ -42,6 +44,22 @@ public class TestExpectedOutputs {
     @BeforeAll
     public static void setup() {
         tempDir.mkdirs();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "json", "markdown" })
+    public void testCorruptSourcesJarPreservesOutput(String renderer, @TempDir Path directory) throws IOException {
+        Path sourcesJar = directory.resolve("library-1.0.0-sources.jar");
+        Files.write(sourcesJar, "not a JAR".getBytes(StandardCharsets.UTF_8));
+        Path outputDirectory = Files.createDirectory(directory.resolve("output"));
+        Path output = outputDirectory.resolve("library-1.0.0-sources." + ("markdown".equals(renderer) ? "md" : "json"));
+        byte[] previousOutput = "previous API snapshot".getBytes(StandardCharsets.UTF_8);
+        Files.write(output, previousOutput);
+
+        assertThrows(IllegalStateException.class, () -> Main
+            .main(new String[] { "--renderer=" + renderer, sourcesJar.toString(), outputDirectory.toString() }));
+
+        assertArrayEquals(previousOutput, Files.readAllBytes(output));
     }
 
     @ParameterizedTest

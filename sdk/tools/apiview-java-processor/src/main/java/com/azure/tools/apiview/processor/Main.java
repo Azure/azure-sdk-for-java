@@ -217,7 +217,7 @@ public class Main {
             final Analyser analyser = new JavaASTAnalyser(apiListing);
             analyser.analyse(allFiles);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to process sources JAR: " + inputFile, e);
         }
     }
 }
