@@ -4,6 +4,24 @@ Azure Resource Manager Sovereign client library for Java.
 
 This package contains Microsoft Azure SDK for Sovereign Management SDK.  Package api-version 2026-10-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
+## Snapshot precision and remediation results
+
+Pass the typed `evaluatedAt()` value from compliance details to
+`SovereignViewComplianceResourceDetailsContent.withEvaluatedAt(...)`. Java's
+`OffsetDateTime` retains nanosecond precision, including the service's seventh
+fractional digit; do not convert the snapshot through milliseconds.
+
+Successful remediation results support both the flat response and the ARM
+`{"status":"Succeeded","properties":{"remediationId":"..."}}` envelope.
+Always inspect the poller's terminal status before interpreting its result;
+ARM operation success does not imply that the remediation job succeeded.
+Query `remediationResult` using the returned identifier to inspect the actual job.
+
+After regenerating this package, run `python customization\patch_generated.py`
+from this directory. This idempotent package-only customization does not change
+shared polling code or polling options. Regression coverage is in
+`src\test\java\com\azure\resourcemanager\sovereign\customization\SdkRegressionTests.java`.
+
 ## We'd love to hear your feedback
 
 We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better.
