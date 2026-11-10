@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.io.*;
 import java.util.stream.Stream;
+import java.util.zip.ZipError;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,8 +57,10 @@ public class TestExpectedOutputs {
         byte[] previousOutput = "previous API snapshot".getBytes(StandardCharsets.UTF_8);
         Files.write(output, previousOutput);
 
-        assertThrows(IllegalStateException.class, () -> Main
+        Throwable failure = assertThrows(Throwable.class, () -> Main
             .main(new String[] { "--renderer=" + renderer, sourcesJar.toString(), outputDirectory.toString() }));
+        // Java 8's ZIP filesystem throws ZipError for malformed archives.
+        assertTrue(failure instanceof IllegalStateException || failure instanceof ZipError, failure::toString);
 
         assertArrayEquals(previousOutput, Files.readAllBytes(output));
     }
