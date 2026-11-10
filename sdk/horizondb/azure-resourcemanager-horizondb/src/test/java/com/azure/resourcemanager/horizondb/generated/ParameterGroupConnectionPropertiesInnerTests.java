@@ -10,7 +10,7 @@ import com.azure.resourcemanager.horizondb.fluent.models.ParameterGroupConnectio
 public final class ParameterGroupConnectionPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParameterGroupConnectionPropertiesInner model = BinaryData.fromString("{\"poolResourceId\":\"touwaboekqv\"}")
+        ParameterGroupConnectionPropertiesInner model = BinaryData.fromString("{\"poolResourceId\":\"reqnovvqfov\"}")
             .toObject(ParameterGroupConnectionPropertiesInner.class);
     }
 }

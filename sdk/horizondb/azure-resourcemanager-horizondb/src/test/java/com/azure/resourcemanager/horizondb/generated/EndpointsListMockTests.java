@@ -21,7 +21,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"twfans\",\"fullyQualifiedDomainName\":\"v\",\"role\":\"ReadWrite\"},\"id\":\"bmikost\",\"name\":\"z\",\"type\":\"kiwbuqnyoph\"}]}";
+            = "{\"value\":[{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"munjdxvglnkvx\",\"fullyQualifiedDomainName\":\"xpaglqivbgkc\",\"role\":\"ReadWrite\"},\"id\":\"pzvuqdflvo\",\"name\":\"iypfp\",\"type\":\"bcpzgpxtivh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class EndpointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Endpoint> response
-            = manager.endpoints().list("bzjedmstk", "nlvxbcuii", com.azure.core.util.Context.NONE);
+            = manager.endpoints().list("fkyjpmspbpssdfpp", "ogtieyujtvczkcny", com.azure.core.util.Context.NONE);
 
     }
 }

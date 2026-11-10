@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioConfigurationsValidateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Validate.json
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_Validate.json
      */
     /**
      * Sample code: Validate the given scenario configuration.
