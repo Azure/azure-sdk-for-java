@@ -180,14 +180,14 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
     }
 
     /*
-     * The wall-clock timeout, in seconds, for each invocation of this subagent. When omitted, the service timeout is
+     * The wall-clock timeout in seconds for each invocation of this subagent. When omitted, the service timeout is
      * used.
      */
     @Generated
     private Long invokeTimeout;
 
     /**
-     * Get the invokeTimeout property: The wall-clock timeout, in seconds, for each invocation of this subagent. When
+     * Get the invokeTimeout property: The wall-clock timeout in seconds for each invocation of this subagent. When
      * omitted, the service timeout is used.
      *
      * @return the invokeTimeout value.
@@ -201,7 +201,7 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
     }
 
     /**
-     * Set the invokeTimeout property: The wall-clock timeout, in seconds, for each invocation of this subagent. When
+     * Set the invokeTimeout property: The wall-clock timeout in seconds for each invocation of this subagent. When
      * omitted, the service timeout is used.
      *
      * @param invokeTimeout the invokeTimeout value to set.

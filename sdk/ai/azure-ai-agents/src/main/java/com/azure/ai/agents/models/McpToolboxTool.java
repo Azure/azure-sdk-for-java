@@ -428,6 +428,8 @@ public final class McpToolboxTool extends ToolboxTool {
         }
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
+        jsonWriter.writeArrayField("request_header_bindings", this.requestHeaderBindings,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -459,6 +461,7 @@ public final class McpToolboxTool extends ToolboxTool {
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
+            List<MCPToolboxRequestHeaderBinding> requestHeaderBindings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -497,6 +500,9 @@ public final class McpToolboxTool extends ToolboxTool {
                     deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else if ("project_connection_id".equals(fieldName)) {
                     projectConnectionId = reader.getString();
+                } else if ("request_header_bindings".equals(fieldName)) {
+                    requestHeaderBindings
+                        = reader.readArray(reader1 -> MCPToolboxRequestHeaderBinding.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -517,6 +523,7 @@ public final class McpToolboxTool extends ToolboxTool {
             deserializedMcpToolboxTool.requireApproval = requireApproval;
             deserializedMcpToolboxTool.deferLoading = deferLoading;
             deserializedMcpToolboxTool.projectConnectionId = projectConnectionId;
+            deserializedMcpToolboxTool.requestHeaderBindings = requestHeaderBindings;
             return deserializedMcpToolboxTool;
         });
     }
@@ -577,6 +584,34 @@ public final class McpToolboxTool extends ToolboxTool {
     @Generated
     public McpToolboxTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
         this.allowedCallers = allowedCallers;
+        return this;
+    }
+
+    /*
+     * Bindings that supply request headers to this MCP server.
+     */
+    @Generated
+    private List<MCPToolboxRequestHeaderBinding> requestHeaderBindings;
+
+    /**
+     * Get the requestHeaderBindings property: Bindings that supply request headers to this MCP server.
+     *
+     * @return the requestHeaderBindings value.
+     */
+    @Generated
+    public List<MCPToolboxRequestHeaderBinding> getRequestHeaderBindings() {
+        return this.requestHeaderBindings;
+    }
+
+    /**
+     * Set the requestHeaderBindings property: Bindings that supply request headers to this MCP server.
+     *
+     * @param requestHeaderBindings the requestHeaderBindings value to set.
+     * @return the McpToolboxTool object itself.
+     */
+    @Generated
+    public McpToolboxTool setRequestHeaderBindings(List<MCPToolboxRequestHeaderBinding> requestHeaderBindings) {
+        this.requestHeaderBindings = requestHeaderBindings;
         return this;
     }
 }
