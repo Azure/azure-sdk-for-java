@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.MigrationUndoRequest;
  */
 public final class MigrationsUndoSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationUndo.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationUndo.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationUndo.
