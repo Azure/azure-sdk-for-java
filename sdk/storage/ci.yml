@@ -71,11 +71,11 @@ pr:
 
 parameters:
 - name: release_azurestoragecommon
-  displayName: 'azure-storage-common'
+  displayName: 'azure-storage-common-private'
   type: boolean
   default: true
 - name: release_azurestorageblob
-  displayName: 'azure-storage-blob'
+  displayName: 'azure-storage-blob-private'
   type: boolean
   default: true
 - name: release_azurestorageblobbatch
@@ -122,11 +122,11 @@ extends:
       PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
     ServiceDirectory: storage
     Artifacts:
-      - name: azure-storage-common
+      - name: azure-storage-common-private
         groupId: com.azure
         safeName: azurestoragecommon
         releaseInBatch: ${{ parameters.release_azurestoragecommon }}
-      - name: azure-storage-blob
+      - name: azure-storage-blob-private
         groupId: com.azure
         safeName: azurestorageblob
         releaseInBatch: ${{ parameters.release_azurestorageblob }}
