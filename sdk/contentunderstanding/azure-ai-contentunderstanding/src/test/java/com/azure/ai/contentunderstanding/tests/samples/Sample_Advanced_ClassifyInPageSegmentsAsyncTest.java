@@ -30,9 +30,9 @@ public class Sample_Advanced_ClassifyInPageSegmentsAsyncTest extends ContentUnde
         String analyzerId = testResourceNamer.randomName("in_page_classifier_", 50);
         BinaryData documentData = PreviewSampleTestSupport.readSample("mixed_financial_docs_in_page.pdf");
         Mono<AsyncPollResponse<ContentAnalyzerOperationStatus, ContentAnalyzer>> createdAnalyzer
-            = contentUnderstandingAsyncClient
+            = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createInPageClassifier(getModelProfile().getCompletionModel()), true)
+                    PreviewSampleTestSupport.createInPageClassifier(getModelProfile().getCompletionModel()), true))
                 .last()
                 .flatMap(response -> {
                     assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
@@ -42,7 +42,8 @@ public class Sample_Advanced_ClassifyInPageSegmentsAsyncTest extends ContentUnde
         Mono<Boolean> workflow = Mono.usingWhen(createdAnalyzer,
             createResponse -> createResponse.getFinalResult()
                 .switchIfEmpty(Mono.error(new AssertionError("Analyzer creation returned no final result.")))
-                .then(contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, documentData)
+                .then(setPlaybackPollerFluxPollInterval(
+                    contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, documentData))
                     .last()
                     .flatMap(response -> {
                         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());

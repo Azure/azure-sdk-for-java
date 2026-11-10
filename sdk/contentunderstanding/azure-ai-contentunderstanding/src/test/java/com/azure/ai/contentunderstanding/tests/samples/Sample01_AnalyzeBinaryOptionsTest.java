@@ -17,9 +17,9 @@ public class Sample01_AnalyzeBinaryOptionsTest extends ContentUnderstandingPrevi
         AnalyzeBinaryOptions options
             = new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3)).setContentType("application/pdf");
         AnalysisResult result
-            = contentUnderstandingClient
+            = setPlaybackSyncPollerPollInterval(contentUnderstandingClient
                 .beginAnalyzeBinary("prebuilt-documentSearch",
-                    PreviewSampleTestSupport.readSample("mixed_financial_invoices.pdf"), options)
+                    PreviewSampleTestSupport.readSample("mixed_financial_invoices.pdf"), options))
                 .getFinalResult();
         DocumentContent document = (DocumentContent) result.getContents().get(0);
         assertTrue(document.getStartPageNumber() >= 3);

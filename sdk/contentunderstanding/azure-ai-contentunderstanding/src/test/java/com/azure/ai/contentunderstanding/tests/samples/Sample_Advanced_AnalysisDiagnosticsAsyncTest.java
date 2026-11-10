@@ -21,7 +21,8 @@ public class Sample_Advanced_AnalysisDiagnosticsAsyncTest extends ContentUnderst
         AnalysisInput input = new AnalysisInput().setUrl(
             "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf");
         AnalysisResult result
-            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Collections.singletonList(input))
+            = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Collections.singletonList(input)))
                 .last()
                 .flatMap(response -> {
                     assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());

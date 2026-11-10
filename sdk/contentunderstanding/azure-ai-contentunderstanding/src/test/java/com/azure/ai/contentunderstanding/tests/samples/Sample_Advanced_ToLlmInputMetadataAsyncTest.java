@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Sample_Advanced_ToLlmInputMetadataAsyncTest extends ContentUnderstandingPreviewClientTestBase {
     @Test
     public void testToLlmInputMetadataFromAnalysisResultAsync() throws Exception {
-        AnalysisResult result = contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_metadata.pdf"))
+        AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
+            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_metadata.pdf")))
             .last()
             .flatMap(response -> {
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());

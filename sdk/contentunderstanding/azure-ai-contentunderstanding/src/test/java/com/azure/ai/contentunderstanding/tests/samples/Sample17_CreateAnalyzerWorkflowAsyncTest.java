@@ -27,16 +27,16 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
         String agenticId = testResourceNamer.randomName("workflow_roundtrip_agentic_", 50);
         String completionModel = getModelProfile().getCompletionModel();
         try {
-            ContentAnalyzer defaultAnalyzer = contentUnderstandingAsyncClient
+            ContentAnalyzer defaultAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(defaultId, PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel),
-                    true)
+                    true))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Default workflow analyzer creation"))
                 .block();
-            ContentAnalyzer agenticAnalyzer = contentUnderstandingAsyncClient
+            ContentAnalyzer agenticAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(agenticId, PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel),
-                    true)
+                    true))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Agentic workflow analyzer creation"))
@@ -62,16 +62,16 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
         String agenticId = testResourceNamer.randomName("workflow_agentic_", 50);
         String completionModel = getModelProfile().getCompletionModel();
         try {
-            ContentAnalyzer defaultAnalyzer = contentUnderstandingAsyncClient
+            ContentAnalyzer defaultAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(defaultId, PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel),
-                    true)
+                    true))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Default workflow analyzer creation"))
                 .block();
-            ContentAnalyzer agenticAnalyzer = contentUnderstandingAsyncClient
+            ContentAnalyzer agenticAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(agenticId, PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel),
-                    true)
+                    true))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Agentic workflow analyzer creation"))
@@ -86,12 +86,14 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
                 agenticAnalyzer.getConfig().getWorkflow().toString().toLowerCase(Locale.ROOT).startsWith("agentic"));
 
             BinaryData invoice = PreviewSampleTestSupport.readSample("workflow_invoice_20_items.pdf");
-            AnalysisResult defaultResult = contentUnderstandingAsyncClient.beginAnalyzeBinary(defaultId, invoice)
+            AnalysisResult defaultResult = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginAnalyzeBinary(defaultId, invoice))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Default workflow analysis"))
                 .block();
-            AnalysisResult agenticResult = contentUnderstandingAsyncClient.beginAnalyzeBinary(agenticId, invoice)
+            AnalysisResult agenticResult = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginAnalyzeBinary(agenticId, invoice))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Agentic workflow analysis"))

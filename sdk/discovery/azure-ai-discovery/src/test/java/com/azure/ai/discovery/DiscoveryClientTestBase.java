@@ -3,6 +3,8 @@
 
 package com.azure.ai.discovery;
 
+import com.azure.ai.discovery.models.KnowledgeBaseOperationResponse;
+import com.azure.ai.discovery.models.OperationState;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -13,6 +15,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +23,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Base class for {@code azure-ai-discovery} recorded tests. Provides configured sync and async clients for both the
@@ -203,6 +210,21 @@ class DiscoveryClientTestBase extends TestProxyTestBase {
     }
 
     // --- helpers ---
+
+    protected void assertIndexingCompleted(LongRunningOperationStatus status, KnowledgeBaseOperationResponse response) {
+        assertNotNull(response);
+        if (getTestMode() == TestMode.PLAYBACK) {
+            // These recordings capture a service-side indexing failure, not successful indexing.
+            assertEquals(LongRunningOperationStatus.FAILED, status);
+            assertEquals(OperationState.FAILED, response.getStatus());
+            assertNotNull(response.getError());
+            assertEquals("GenericIndexingError", response.getError().getCode());
+        } else {
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status);
+            assertEquals(OperationState.SUCCEEDED, response.getStatus());
+            assertNull(response.getError());
+        }
+    }
 
     private WorkspaceClientBuilder applyTestMode(WorkspaceClientBuilder builder) {
         if (getTestMode() == TestMode.PLAYBACK) {

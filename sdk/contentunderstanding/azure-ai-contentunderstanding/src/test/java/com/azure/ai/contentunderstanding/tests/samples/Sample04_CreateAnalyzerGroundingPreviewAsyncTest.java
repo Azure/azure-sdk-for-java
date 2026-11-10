@@ -21,14 +21,14 @@ public class Sample04_CreateAnalyzerGroundingPreviewAsyncTest extends ContentUnd
     public void testExtractGenerateAndClassifyGroundingAsync() throws Exception {
         String analyzerId = testResourceNamer.randomName("grounding_", 50);
         try {
-            contentUnderstandingAsyncClient
+            setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true)
+                    PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true))
                 .last()
                 .flatMap(response -> response.getFinalResult())
                 .block();
-            AnalysisResult result = contentUnderstandingAsyncClient
-                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf"))
+            AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
+                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf")))
                 .last()
                 .flatMap(response -> response.getFinalResult())
                 .block();

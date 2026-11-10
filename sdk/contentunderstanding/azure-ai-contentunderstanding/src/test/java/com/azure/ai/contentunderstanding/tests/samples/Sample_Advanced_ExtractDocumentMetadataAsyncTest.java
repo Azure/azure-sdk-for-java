@@ -24,8 +24,8 @@ public class Sample_Advanced_ExtractDocumentMetadataAsyncTest extends ContentUnd
     }
 
     private Mono<Boolean> assertMetadata(String fileName, String contentType) throws Exception {
-        return contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample(fileName))
+        return setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
+            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample(fileName)))
             .last()
             .flatMap(response -> {
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());

@@ -27,9 +27,9 @@ public class Sample18_AnalyzeChunkingAsyncTest extends ContentUnderstandingPrevi
     public void testAnalyzeChunkingAsync() throws Exception {
         String analyzerId = testResourceNamer.randomName("semantic_chunking_", 50);
         try {
-            ContentAnalyzer createdAnalyzer = contentUnderstandingAsyncClient
+            ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createChunkingAnalyzer(getModelProfile().getCompletionModel()), true)
+                    PreviewSampleTestSupport.createChunkingAnalyzer(getModelProfile().getCompletionModel()), true))
                 .last()
                 .flatMap(response -> {
                     assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
@@ -45,8 +45,8 @@ public class Sample18_AnalyzeChunkingAsyncTest extends ContentUnderstandingPrevi
                 = assertInstanceOf(SemanticChunkingStrategy.class, persistedAnalyzer.getConfig().getChunkingStrategy());
             assertEquals(300, strategy.getMaxTokens());
 
-            AnalysisResult result = contentUnderstandingAsyncClient
-                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf"))
+            AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
+                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf")))
                 .last()
                 .flatMap(response -> {
                     assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());

@@ -22,6 +22,7 @@ public class Sample_Advanced_DetectSignaturesTest extends ContentUnderstandingPr
     public void testDetectSignatures() throws Exception {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_signature.png"));
+        setPlaybackSyncPollerPollInterval(poller);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
 
         AnalysisResult result = poller.getFinalResult();
