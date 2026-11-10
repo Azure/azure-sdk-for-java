@@ -210,8 +210,8 @@ public class OTelSpan implements Span {
     }
 
     private void endSpan(Throwable throwable) {
-        if (isInitialized()) {
-            if (errorType != null || throwable != null) {
+        try {
+            if (isInitialized() && (errorType != null || throwable != null)) {
 
                 String errorTypeStr = errorType != null ? errorType : throwable.getClass().getCanonicalName();
                 FallbackInvoker.run(LOGGER, () -> ((io.opentelemetry.api.trace.Span) otelSpan)
@@ -227,8 +227,14 @@ public class OTelSpan implements Span {
                     }
                 });
             }
-
-            FallbackInvoker.run(LOGGER, () -> ((io.opentelemetry.api.trace.Span) otelSpan).end());
+        } finally {
+            if (otelSpan != null) {
+                try {
+                    ((io.opentelemetry.api.trace.Span) otelSpan).end();
+                } catch (Throwable t) {
+                    OTelInitializer.runtimeError(LOGGER, t);
+                }
+            }
         }
     }
 

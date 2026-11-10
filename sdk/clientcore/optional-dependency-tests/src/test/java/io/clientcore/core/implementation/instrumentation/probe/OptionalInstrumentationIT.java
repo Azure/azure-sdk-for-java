@@ -21,6 +21,7 @@ import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.LoggerFactory;
+import org.slf4j.simple.SimpleServiceProvider;
 
 import java.io.File;
 import java.lang.reflect.Proxy;
@@ -29,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,13 +42,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OptionalInstrumentationIT {
     @Test
     public void classpathProvidersWorkWithNamedClientCore(@TempDir Path tempDir) throws Exception {
+        String output = runProbe(tempDir, "parent");
+        assertTrue(output.contains("ERROR " + Probe.class.getName() + " - "), output);
+        assertTrue(output.contains("provider dispatch probe"), output);
+        assertTrue(output.contains(System.lineSeparator() + "java.lang.IllegalStateException: dispatch throwable"),
+            output);
+        assertTrue(output.contains("failing span builder reached"), output);
+    }
+
+    @Test
+    public void endsSpanWhenProviderRejectsStatus(@TempDir Path tempDir) throws Exception {
+        String output = runProbe(tempDir, "status");
+        assertTrue(output.contains("failing setStatus reached"), output);
+        assertTrue(output.contains("provider span ended"), output);
+    }
+
+    private static String runProbe(Path tempDir, String failure) throws Exception {
         String classpath = String.join(File.pathSeparator, location(Probe.class), location(LoggerFactory.class),
-            location(LoggerFactory.getILoggerFactory().getClass()), location(OpenTelemetry.class),
-            location(Context.class), location(Class.forName("io.opentelemetry.common.ComponentLoader")));
+            location(SimpleServiceProvider.class), location(OpenTelemetry.class), location(Context.class),
+            location(Class.forName("io.opentelemetry.common.ComponentLoader")));
         Path outputFile = tempDir.resolve("probe.log");
         Process process = new ProcessBuilder(Paths.get(System.getProperty("java.home"), "bin", "java").toString(),
             "--module-path", location(ClientLogger.class), "--add-modules", "io.clientcore.core",
-            "-Dorg.slf4j.simpleLogger.defaultLogLevel=debug", "-cp", classpath, Probe.class.getName())
+            "-Dorg.slf4j.simpleLogger.defaultLogLevel=debug", "-cp", classpath, Probe.class.getName(), failure)
                 .redirectErrorStream(true)
                 .redirectOutput(outputFile.toFile())
                 .start();
@@ -57,11 +75,7 @@ public class OptionalInstrumentationIT {
         }
         String output = new String(Files.readAllBytes(outputFile), StandardCharsets.UTF_8);
         assertEquals(0, process.exitValue(), output);
-        assertTrue(output.contains("ERROR " + Probe.class.getName() + " - "), output);
-        assertTrue(output.contains("provider dispatch probe"), output);
-        assertTrue(output.contains(System.lineSeparator() + "java.lang.IllegalStateException: dispatch throwable"),
-            output);
-        assertTrue(output.contains("failing span builder reached"), output);
+        return output;
     }
 
     private static String location(Class<?> type) throws Exception {
@@ -74,13 +88,40 @@ public class OptionalInstrumentationIT {
                 .setThrowable(new IllegalStateException("dispatch throwable"))
                 .log("provider dispatch probe");
 
+            boolean failOnParent = "parent".equals(args[0]);
+            AtomicBoolean statusFailed = new AtomicBoolean();
+            AtomicBoolean ended = new AtomicBoolean();
+            Class<io.opentelemetry.api.trace.Span> spanType = io.opentelemetry.api.trace.Span.class;
+            Object providerSpan = Proxy.newProxyInstance(spanType.getClassLoader(), new Class<?>[] { spanType },
+                (proxy, method, arguments) -> {
+                    switch (method.getName()) {
+                        case "isRecording":
+                            return true;
+
+                        case "storeInContext":
+                            return arguments[0];
+
+                        case "setStatus":
+                            statusFailed.set(true);
+                            System.out.println("failing setStatus reached");
+                            throw new IllegalStateException("Provider rejected span status.");
+
+                        case "end":
+                            ended.set(true);
+                            System.out.println("provider span ended");
+                            return null;
+
+                        default:
+                            return proxy;
+                    }
+                });
             SpanBuilder builder = (SpanBuilder) Proxy.newProxyInstance(SpanBuilder.class.getClassLoader(),
                 new Class<?>[] { SpanBuilder.class }, (proxy, method, arguments) -> {
-                    if ("setParent".equals(method.getName())) {
+                    if (failOnParent && "setParent".equals(method.getName())) {
                         System.out.println("failing span builder reached");
                         throw new IllegalStateException("Provider could not set span parent.");
                     }
-                    return proxy;
+                    return "startSpan".equals(method.getName()) ? providerSpan : proxy;
                 });
             TracerProvider tracerProvider = new TracerProvider() {
                 @Override
@@ -126,8 +167,16 @@ public class OptionalInstrumentationIT {
             };
             Instrumentation instrumentation = Instrumentation.create(
                 new InstrumentationOptions().setTelemetryProvider(provider), new SdkInstrumentationOptions("probe"));
-            if (instrumentation.getTracer().spanBuilder("probe", SpanKind.CLIENT, null).startSpan() != Span.noop()) {
-                throw new AssertionError("Expected the no-op span after the provider failed.");
+            Span span = instrumentation.getTracer().spanBuilder("probe", SpanKind.CLIENT, null).startSpan();
+            if (failOnParent) {
+                if (span != Span.noop()) {
+                    throw new AssertionError("Expected the no-op span after the provider failed.");
+                }
+            } else {
+                span.end(new IllegalStateException("Operation failed."));
+                if (!statusFailed.get() || !ended.get()) {
+                    throw new AssertionError("Expected the provider span to end after setStatus failed.");
+                }
             }
         }
     }
