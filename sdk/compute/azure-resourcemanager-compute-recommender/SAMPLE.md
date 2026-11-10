@@ -1,6 +1,11 @@
 # Code snippets and samples
 
 
+## ComputePlacementScores
+
+- [Get](#computeplacementscores_get)
+- [Post](#computeplacementscores_post)
+
 ## Operations
 
 - [List](#operations_list)
@@ -14,6 +19,81 @@
 
 - [Get](#spotplacementscores_get)
 - [Post](#spotplacementscores_post)
+### ComputePlacementScores_Get
+
+```java
+/**
+ * Samples for ComputePlacementScores Get.
+ */
+public final class ComputePlacementScoresGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-05-preview/GetComputePlacementScores.json
+     */
+    /**
+     * Sample code: Gets the metadata of Compute Placement Scores.
+     * 
+     * @param manager Entry point to ComputeRecommenderManager.
+     */
+    public static void getsTheMetadataOfComputePlacementScores(
+        com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
+        manager.computePlacementScores().getWithResponse("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ComputePlacementScores_Post
+
+```java
+import com.azure.resourcemanager.compute.recommender.models.ComputePlacementScoresInput;
+import com.azure.resourcemanager.compute.recommender.models.ResourceSize;
+import java.util.Arrays;
+
+/**
+ * Samples for ComputePlacementScores Post.
+ */
+public final class ComputePlacementScoresPostSamples {
+    /*
+     * x-ms-original-file: 2026-10-05-preview/GenerateComputePlacementScoresWithoutDesiredLocation.json
+     */
+    /**
+     * Sample code: Returns compute VM placement scores using the request URI location as the desired location when
+     * desiredLocations is not specified.
+     * 
+     * @param manager Entry point to ComputeRecommenderManager.
+     */
+    public static void
+        returnsComputeVMPlacementScoresUsingTheRequestURILocationAsTheDesiredLocationWhenDesiredLocationsIsNotSpecified(
+            com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
+        manager.computePlacementScores()
+            .postWithResponse("eastus",
+                new ComputePlacementScoresInput()
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("Standard_D2_v2")))
+                    .withDesiredCount(1)
+                    .withAvailabilityZones(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-05-preview/GenerateComputePlacementScores.json
+     */
+    /**
+     * Sample code: Returns compute VM placement scores for given configurations.
+     * 
+     * @param manager Entry point to ComputeRecommenderManager.
+     */
+    public static void returnsComputeVMPlacementScoresForGivenConfigurations(
+        com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
+        manager.computePlacementScores()
+            .postWithResponse("eastus",
+                new ComputePlacementScoresInput().withDesiredLocations(Arrays.asList("eastus", "eastus2"))
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("Standard_D2_v2")))
+                    .withDesiredCount(1)
+                    .withAvailabilityZones(true),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -22,7 +102,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-05-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -35,7 +115,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-05-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-05-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -57,7 +137,7 @@ public final class OperationsListSamples {
  */
 public final class SkuMixPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/GetSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-10-05-preview/GetSkuMixPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of SkuMixPlacement Scores.
@@ -91,7 +171,7 @@ import java.util.Arrays;
  */
 public final class SkuMixPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/GenerateSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-10-05-preview/GenerateSkuMixPlacementScores.json
      */
     /**
      * Sample code: Generates SkuMixPlacement scores for VM SKU mix placement with explicit VM sizes.
@@ -127,7 +207,7 @@ public final class SkuMixPlacementScoresPostSamples {
  */
 public final class SpotPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/GetSpotPlacementScores.json
+     * x-ms-original-file: 2026-10-05-preview/GetSpotPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of Spot Placement Scores.
@@ -153,7 +233,28 @@ import java.util.Arrays;
  */
 public final class SpotPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/GenerateSpotPlacementScores.json
+     * x-ms-original-file: 2026-10-05-preview/GenerateSpotPlacementScoresWithoutDesiredLocation.json
+     */
+    /**
+     * Sample code: Returns spot VM placement scores using the request URI location as the desired location when
+     * desiredLocations is not specified.
+     * 
+     * @param manager Entry point to ComputeRecommenderManager.
+     */
+    public static void
+        returnsSpotVMPlacementScoresUsingTheRequestURILocationAsTheDesiredLocationWhenDesiredLocationsIsNotSpecified(
+            com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
+        manager.spotPlacementScores()
+            .postWithResponse("eastus",
+                new SpotPlacementScoresInput()
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("Standard_D2_v2")))
+                    .withDesiredCount(1)
+                    .withAvailabilityZones(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-05-preview/GenerateSpotPlacementScores.json
      */
     /**
      * Sample code: Returns spot VM placement scores for given configurations.

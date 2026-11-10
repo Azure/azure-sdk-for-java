@@ -149,6 +149,12 @@ public final class SharesGetPropertiesHeaders {
     private Boolean xMsEnableSnapshotVirtualDirectoryAccess;
 
     /*
+     * The x-ms-share-creation-time property.
+     */
+    @Generated
+    private DateTimeRfc1123 xMsShareCreationTime;
+
+    /*
      * The x-ms-share-paid-bursting-enabled property.
      */
     @Generated
@@ -196,6 +202,24 @@ public final class SharesGetPropertiesHeaders {
     @Generated
     private Boolean xMsEnableSmbDirectoryLease;
 
+    /*
+     * The x-ms-file-blob-container-for-xfiles-change-feed property.
+     */
+    @Generated
+    private String xMsFileBlobContainerForXfilesChangeFeed;
+
+    /*
+     * The x-ms-file-change-feed-retention-in-days property.
+     */
+    @Generated
+    private Integer xMsFileChangeFeedRetentionInDays;
+
+    /*
+     * The x-ms-file-enable-change-feed property.
+     */
+    @Generated
+    private Boolean xMsFileEnableChangeFeed;
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
@@ -236,6 +260,9 @@ public final class SharesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS
         = HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access");
 
+    private static final HttpHeaderName X_MS_SHARE_CREATION_TIME
+        = HttpHeaderName.fromString("x-ms-share-creation-time");
+
     private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_ENABLED
         = HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled");
 
@@ -259,6 +286,15 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_ENABLE_SMB_DIRECTORY_LEASE
         = HttpHeaderName.fromString("x-ms-enable-smb-directory-lease");
+
+    private static final HttpHeaderName X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-blob-container-for-xfiles-change-feed");
+
+    private static final HttpHeaderName X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS
+        = HttpHeaderName.fromString("x-ms-file-change-feed-retention-in-days");
+
+    private static final HttpHeaderName X_MS_FILE_ENABLE_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-enable-change-feed");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -360,6 +396,12 @@ public final class SharesGetPropertiesHeaders {
         } else {
             this.xMsEnableSnapshotVirtualDirectoryAccess = null;
         }
+        String xMsShareCreationTime = rawHeaders.getValue(X_MS_SHARE_CREATION_TIME);
+        if (xMsShareCreationTime != null) {
+            this.xMsShareCreationTime = new DateTimeRfc1123(xMsShareCreationTime);
+        } else {
+            this.xMsShareCreationTime = null;
+        }
         String xMsSharePaidBurstingEnabled = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_ENABLED);
         if (xMsSharePaidBurstingEnabled != null) {
             this.xMsSharePaidBurstingEnabled = Boolean.parseBoolean(xMsSharePaidBurstingEnabled);
@@ -412,6 +454,20 @@ public final class SharesGetPropertiesHeaders {
             this.xMsEnableSmbDirectoryLease = Boolean.parseBoolean(xMsEnableSmbDirectoryLease);
         } else {
             this.xMsEnableSmbDirectoryLease = null;
+        }
+        this.xMsFileBlobContainerForXfilesChangeFeed
+            = rawHeaders.getValue(X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED);
+        String xMsFileChangeFeedRetentionInDays = rawHeaders.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS);
+        if (xMsFileChangeFeedRetentionInDays != null) {
+            this.xMsFileChangeFeedRetentionInDays = Integer.parseInt(xMsFileChangeFeedRetentionInDays);
+        } else {
+            this.xMsFileChangeFeedRetentionInDays = null;
+        }
+        String xMsFileEnableChangeFeed = rawHeaders.getValue(X_MS_FILE_ENABLE_CHANGE_FEED);
+        if (xMsFileEnableChangeFeed != null) {
+            this.xMsFileEnableChangeFeed = Boolean.parseBoolean(xMsFileEnableChangeFeed);
+        } else {
+            this.xMsFileEnableChangeFeed = null;
         }
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
@@ -921,6 +977,35 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsShareCreationTime property: The x-ms-share-creation-time property.
+     * 
+     * @return the xMsShareCreationTime value.
+     */
+    @Generated
+    public OffsetDateTime getXMsShareCreationTime() {
+        if (this.xMsShareCreationTime == null) {
+            return null;
+        }
+        return this.xMsShareCreationTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareCreationTime property: The x-ms-share-creation-time property.
+     * 
+     * @param xMsShareCreationTime the xMsShareCreationTime value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders setXMsShareCreationTime(OffsetDateTime xMsShareCreationTime) {
+        if (xMsShareCreationTime == null) {
+            this.xMsShareCreationTime = null;
+        } else {
+            this.xMsShareCreationTime = new DateTimeRfc1123(xMsShareCreationTime);
+        }
+        return this;
+    }
+
+    /**
      * Get the xMsSharePaidBurstingEnabled property: The x-ms-share-paid-bursting-enabled property.
      * 
      * @return the xMsSharePaidBurstingEnabled value.
@@ -1120,6 +1205,75 @@ public final class SharesGetPropertiesHeaders {
     @Generated
     public SharesGetPropertiesHeaders setXMsEnableSmbDirectoryLease(Boolean xMsEnableSmbDirectoryLease) {
         this.xMsEnableSmbDirectoryLease = xMsEnableSmbDirectoryLease;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileBlobContainerForXfilesChangeFeed property: The x-ms-file-blob-container-for-xfiles-change-feed
+     * property.
+     * 
+     * @return the xMsFileBlobContainerForXfilesChangeFeed value.
+     */
+    @Generated
+    public String getXMsFileBlobContainerForXfilesChangeFeed() {
+        return this.xMsFileBlobContainerForXfilesChangeFeed;
+    }
+
+    /**
+     * Set the xMsFileBlobContainerForXfilesChangeFeed property: The x-ms-file-blob-container-for-xfiles-change-feed
+     * property.
+     * 
+     * @param xMsFileBlobContainerForXfilesChangeFeed the xMsFileBlobContainerForXfilesChangeFeed value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders
+        setXMsFileBlobContainerForXfilesChangeFeed(String xMsFileBlobContainerForXfilesChangeFeed) {
+        this.xMsFileBlobContainerForXfilesChangeFeed = xMsFileBlobContainerForXfilesChangeFeed;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileChangeFeedRetentionInDays property: The x-ms-file-change-feed-retention-in-days property.
+     * 
+     * @return the xMsFileChangeFeedRetentionInDays value.
+     */
+    @Generated
+    public Integer getXMsFileChangeFeedRetentionInDays() {
+        return this.xMsFileChangeFeedRetentionInDays;
+    }
+
+    /**
+     * Set the xMsFileChangeFeedRetentionInDays property: The x-ms-file-change-feed-retention-in-days property.
+     * 
+     * @param xMsFileChangeFeedRetentionInDays the xMsFileChangeFeedRetentionInDays value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders setXMsFileChangeFeedRetentionInDays(Integer xMsFileChangeFeedRetentionInDays) {
+        this.xMsFileChangeFeedRetentionInDays = xMsFileChangeFeedRetentionInDays;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileEnableChangeFeed property: The x-ms-file-enable-change-feed property.
+     * 
+     * @return the xMsFileEnableChangeFeed value.
+     */
+    @Generated
+    public Boolean isXMsFileEnableChangeFeed() {
+        return this.xMsFileEnableChangeFeed;
+    }
+
+    /**
+     * Set the xMsFileEnableChangeFeed property: The x-ms-file-enable-change-feed property.
+     * 
+     * @param xMsFileEnableChangeFeed the xMsFileEnableChangeFeed value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders setXMsFileEnableChangeFeed(Boolean xMsFileEnableChangeFeed) {
+        this.xMsFileEnableChangeFeed = xMsFileEnableChangeFeed;
         return this;
     }
 }

@@ -89,6 +89,10 @@ public class ConfidentialClient extends ClientBase {
             builder.clientCredential(ClientCredentialFactory.createFromClientAssertion(
                 confidentialClientOptions.getClientAssertionFunction().apply(getPipeline())));
         }
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest).skipCache(true);
+        }
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
@@ -116,6 +120,9 @@ public class ConfidentialClient extends ClientBase {
      */
     @SuppressWarnings("deprecation")
     public AccessToken authenticateWithCache(TokenRequestContext request, IAccount account) {
+        if (account == null && request.isCaeEnabled() && request.getClaims() != null) {
+            return null;
+        }
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()))

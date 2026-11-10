@@ -106,6 +106,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
             @PathParam("scenarioConfigurationName") String scenarioConfigurationName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScenarioConfigurationInner resource, Context context);
 
@@ -117,6 +118,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
             @PathParam("scenarioConfigurationName") String scenarioConfigurationName,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScenarioConfigurationInner resource, Context context);
 
@@ -327,6 +329,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,13 +347,13 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName,
-        ScenarioConfigurationInner resource) {
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName,
-                scenarioConfigurationName, contentType, accept, resource, context))
+                scenarioConfigurationName, ifNoneMatch, ifMatch, contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -353,6 +365,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -360,12 +382,13 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            contentType, accept, resource, Context.NONE);
+            ifNoneMatch, ifMatch, contentType, accept, resource, Context.NONE);
     }
 
     /**
@@ -376,6 +399,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,12 +417,47 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, Context context) {
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            contentType, accept, resource, context);
+            ifNoneMatch, ifMatch, contentType, accept, resource, context);
+    }
+
+    /**
+     * Create or update a scenario definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of model that represents the scenario.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            scenarioName, scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
+        return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ScenarioConfigurationInner.class, ScenarioConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -409,11 +477,46 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     private PollerFlux<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
         ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
-            scenarioName, scenarioConfigurationName, resource);
+            scenarioName, scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
         return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(mono,
             this.client.getHttpPipeline(), ScenarioConfigurationInner.class, ScenarioConfigurationInner.class,
             this.client.getContext());
+    }
+
+    /**
+     * Create or update a scenario definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of model that represents the scenario.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
+            scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
+        return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(response,
+            ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, Context.NONE);
     }
 
     /**
@@ -433,8 +536,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
         ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
-            scenarioConfigurationName, resource);
+            scenarioConfigurationName, resource, ifNoneMatch, ifMatch);
         return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(response,
             ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, Context.NONE);
     }
@@ -447,6 +552,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,11 +571,42 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
-        ScenarioConfigurationInner resource, Context context) {
+        ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch, Context context) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
-            scenarioConfigurationName, resource, context);
+            scenarioConfigurationName, resource, ifNoneMatch, ifMatch, context);
         return this.client.<ScenarioConfigurationInner, ScenarioConfigurationInner>getLroResult(response,
             ScenarioConfigurationInner.class, ScenarioConfigurationInner.class, context);
+    }
+
+    /**
+     * Create or update a scenario definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return model that represents the scenario on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ScenarioConfigurationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            resource, ifNoneMatch, ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -479,8 +625,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScenarioConfigurationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
-            resource).last().flatMap(this.client::getLroFinalResultOrError);
+            resource, ifNoneMatch, ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -499,8 +647,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioConfigurationInner createOrUpdate(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource)
-            .getFinalResult();
+        final String ifNoneMatch = null;
+        final String ifMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
+            ifNoneMatch, ifMatch).getFinalResult();
     }
 
     /**
@@ -511,6 +661,16 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
      * @param resource Resource create parameters.
+     * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
+     * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the request
+     * fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed condition starts
+     * no resource change or asynchronous operation. Omit both condition headers for an unconditional create or update.
+     * Other effective conditions must be honored if supported or rejected with 412 if they cannot be verified; they
+     * must not be silently ignored. This contract does not introduce entity-tag matching.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -519,9 +679,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioConfigurationInner createOrUpdate(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, Context context) {
+        String scenarioName, String scenarioConfigurationName, ScenarioConfigurationInner resource, String ifNoneMatch,
+        String ifMatch, Context context) {
         return beginCreateOrUpdate(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, resource,
-            context).getFinalResult();
+            ifNoneMatch, ifMatch, context).getFinalResult();
     }
 
     /**
