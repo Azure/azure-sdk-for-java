@@ -1,5 +1,7 @@
 # Azure SDK Maven Build Tool
 
+<!-- CI validation only. -->
+
 The Azure SDK for Java project ships a Maven build tool that developers can choose to include in their projects. This tool runs locally and does not transmit any data to Microsoft. It can be configured to generate a report or fail the build when certain conditions are met, which is useful to ensure compliance with numerous best practices. These include:
 
 - Validating the correct use of the azure-sdk-for-java BOM, including using the latest version and relying on it to 
