@@ -23,7 +23,7 @@ public final class ParameterGroupsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"oz\",\"description\":\"hcxgkmoyx\",\"value\":\"yuibhm\",\"defaultValue\":\"nbzydvfvfcj\",\"valueSource\":\"UserOverride\",\"dataType\":\"isrvhm\",\"allowedValues\":\"r\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"cvwmzhwplefa\",\"unit\":\"xilcbtgnhnzey\"}],\"description\":\"tjj\",\"postgreSqlVersion\":\"17\",\"provisioningState\":\"Provisioning\"},\"location\":\"hycav\",\"tags\":{\"nlrariaawiuagy\":\"gxdbeesmie\",\"ojocqwogf\":\"wqfbylyrfgiagt\"},\"id\":\"zjvusfzldmo\",\"name\":\"uxylfsbtkadpy\",\"type\":\"own\"}]}";
+            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"pjhlf\",\"description\":\"wpchwahf\",\"value\":\"usnfepgfewet\",\"defaultValue\":\"yxgncxykxhdjhli\",\"valueSource\":\"SystemDefault\",\"dataType\":\"x\",\"allowedValues\":\"bcporxvxcjzhqizx\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"scjavftju\",\"unit\":\"qaz\"},{\"name\":\"tgguwpijrajcivmm\",\"description\":\"f\",\"value\":\"iwrxgkn\",\"defaultValue\":\"vyi\",\"valueSource\":\"SystemDefault\",\"dataType\":\"dfvpg\",\"allowedValues\":\"oxgsgbpfgzdjtx\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"v\",\"unit\":\"qvlgafcqusrdvetn\"},{\"name\":\"dtutnwldu\",\"description\":\"vuzhyr\",\"value\":\"wipmvekdxuk\",\"defaultValue\":\"gsjj\",\"valueSource\":\"SystemDefault\",\"dataType\":\"xgketwz\",\"allowedValues\":\"zjhfjmhvv\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"uneqsxvmhf\",\"unit\":\"zjyi\"},{\"name\":\"as\",\"description\":\"udypohyuems\",\"value\":\"nsqyrpfoobrltt\",\"defaultValue\":\"sjnygqdnfwqzdzgt\",\"valueSource\":\"SystemDefault\",\"dataType\":\"hnfhqlyvijouwi\",\"allowedValues\":\"xoyzunbix\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"cpwpg\",\"unit\":\"rc\"}],\"description\":\"tso\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"InProgress\"},\"location\":\"nxpmyyefrpmpdnq\",\"tags\":{\"lkzmegnitgvkxl\":\"awaoqvmmbnpqfrt\"},\"id\":\"yqdrf\",\"name\":\"gcealzxwh\",\"type\":\"ansym\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ParameterGroupsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ParameterGroup> response
-            = manager.parameterGroups().listByResourceGroup("hrv", com.azure.core.util.Context.NONE);
+            = manager.parameterGroups().listByResourceGroup("cse", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hycav", response.iterator().next().location());
-        Assertions.assertEquals("gxdbeesmie", response.iterator().next().tags().get("nlrariaawiuagy"));
-        Assertions.assertEquals("oz", response.iterator().next().properties().parameters().get(0).name());
-        Assertions.assertEquals("yuibhm", response.iterator().next().properties().parameters().get(0).value());
-        Assertions.assertEquals("tjj", response.iterator().next().properties().description());
-        Assertions.assertEquals(PostgreSqlVersion.V17, response.iterator().next().properties().postgreSqlVersion());
+        Assertions.assertEquals("nxpmyyefrpmpdnq", response.iterator().next().location());
+        Assertions.assertEquals("awaoqvmmbnpqfrt", response.iterator().next().tags().get("lkzmegnitgvkxl"));
+        Assertions.assertEquals("pjhlf", response.iterator().next().properties().parameters().get(0).name());
+        Assertions.assertEquals("usnfepgfewet", response.iterator().next().properties().parameters().get(0).value());
+        Assertions.assertEquals("tso", response.iterator().next().properties().description());
+        Assertions.assertEquals(PostgreSqlVersion.V18, response.iterator().next().properties().postgreSqlVersion());
     }
 }

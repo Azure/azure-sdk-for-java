@@ -20,7 +20,7 @@ public final class NodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"role\":\"Unassigned\",\"availabilityZone\":\"pbswvefloccsrm\"},\"id\":\"ihmipgawtxxpk\",\"name\":\"jcxcjxgrytfmpcyc\",\"type\":\"lrmcaykg\"}";
+            = "{\"properties\":{\"role\":\"Unassigned\",\"availabilityZone\":\"i\"},\"id\":\"xwrsnew\",\"name\":\"ozqvbubqmam\",\"type\":\"sycxhxzgaz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class NodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Node response = manager.nodes()
-            .getWithResponse("lzok", "coxpelnjeta", "ltsxoatf", "g", com.azure.core.util.Context.NONE)
+            .getWithResponse("efchn", "n", "hmnxhkxjqi", "wrweoo", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

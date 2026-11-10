@@ -70,6 +70,11 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
     private List<OperationError> errors;
 
     /*
+     * Customer-actionable warnings encountered during the scenario run.
+     */
+    private List<ScenarioRunWarning> warnings;
+
+    /*
      * Business errors from fault injection — permission and resource state issues.
      */
     private ScenarioErrors executionErrors;
@@ -194,6 +199,15 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
     }
 
     /**
+     * Get the warnings property: Customer-actionable warnings encountered during the scenario run.
+     * 
+     * @return the warnings value.
+     */
+    public List<ScenarioRunWarning> warnings() {
+        return this.warnings;
+    }
+
+    /**
      * Get the executionErrors property: Business errors from fault injection — permission and resource state issues.
      * 
      * @return the executionErrors value.
@@ -300,6 +314,10 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
                 } else if ("errors".equals(fieldName)) {
                     List<OperationError> errors = reader.readArray(reader1 -> OperationError.fromJson(reader1));
                     deserializedScenarioRunProperties.errors = errors;
+                } else if ("warnings".equals(fieldName)) {
+                    List<ScenarioRunWarning> warnings
+                        = reader.readArray(reader1 -> ScenarioRunWarning.fromJson(reader1));
+                    deserializedScenarioRunProperties.warnings = warnings;
                 } else if ("executionErrors".equals(fieldName)) {
                     deserializedScenarioRunProperties.executionErrors = ScenarioErrors.fromJson(reader);
                 } else if ("scenarioRunJson".equals(fieldName)) {

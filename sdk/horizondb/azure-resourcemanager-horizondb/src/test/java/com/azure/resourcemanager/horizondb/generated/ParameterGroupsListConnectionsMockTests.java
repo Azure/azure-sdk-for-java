@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ParameterGroupsListConnectionsMockTests {
     @Test
     public void testListConnections() throws Exception {
-        String responseStr = "{\"value\":[{\"poolResourceId\":\"kkzjcjbtrga\"}]}";
+        String responseStr = "{\"value\":[{\"poolResourceId\":\"kvbwnhhtqlgeh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,8 @@ public final class ParameterGroupsListConnectionsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ParameterGroupConnectionProperties> response
-            = manager.parameterGroups().listConnections("lhvnhlab", "q", com.azure.core.util.Context.NONE);
+        PagedIterable<ParameterGroupConnectionProperties> response = manager.parameterGroups()
+            .listConnections("gtgkylkdghr", "euutlwxezwzh", com.azure.core.util.Context.NONE);
 
     }
 }

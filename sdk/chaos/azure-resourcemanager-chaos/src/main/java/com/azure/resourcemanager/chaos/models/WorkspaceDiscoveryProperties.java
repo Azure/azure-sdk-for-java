@@ -49,6 +49,37 @@ public final class WorkspaceDiscoveryProperties implements JsonSerializable<Work
      */
     private String resourceSnapshotId;
 
+    /*
+     * The coverage established by the accepted discovery result for Azure Resource Manager scopes. Present with
+     * coverageSummary on newly produced snapshot results; absence is not Established or a known zero.
+     */
+    private WorkspaceDiscoveryCompleteness completeness;
+
+    /*
+     * Coverage facts for the accepted result. Scope counts, resource-occurrence counts, warning counts, and returned
+     * inventory-row counts are different units and must not be combined.
+     */
+    private WorkspaceDiscoveryCoverageSummary coverageSummary;
+
+    /*
+     * Confirmed access, missing-resource, or access-indeterminate guidance. System verification failures are reported
+     * in errors, not as permission warnings. The returned array may be a subset; use warningsTotalCount and
+     * warningsTruncated.
+     */
+    private List<WorkspaceDiscoveryWarning> warnings;
+
+    /*
+     * The deduplicated number of warning identities before sampling. Identity consists of the expanded scope, affected
+     * resource, and reason. Absent means no accepted warning population was recorded, not zero warnings.
+     */
+    private Long warningsTotalCount;
+
+    /*
+     * Whether warnings contains fewer entries than warningsTotalCount. False requires equality; true requires a smaller
+     * returned array. An accepted empty warning population is an empty array, zero total, and false.
+     */
+    private Boolean warningsTruncated;
+
     /**
      * Creates an instance of WorkspaceDiscoveryProperties class.
      */
@@ -110,6 +141,60 @@ public final class WorkspaceDiscoveryProperties implements JsonSerializable<Work
     }
 
     /**
+     * Get the completeness property: The coverage established by the accepted discovery result for Azure Resource
+     * Manager scopes. Present with coverageSummary on newly produced snapshot results; absence is not Established or a
+     * known zero.
+     * 
+     * @return the completeness value.
+     */
+    public WorkspaceDiscoveryCompleteness completeness() {
+        return this.completeness;
+    }
+
+    /**
+     * Get the coverageSummary property: Coverage facts for the accepted result. Scope counts, resource-occurrence
+     * counts, warning counts, and returned inventory-row counts are different units and must not be combined.
+     * 
+     * @return the coverageSummary value.
+     */
+    public WorkspaceDiscoveryCoverageSummary coverageSummary() {
+        return this.coverageSummary;
+    }
+
+    /**
+     * Get the warnings property: Confirmed access, missing-resource, or access-indeterminate guidance. System
+     * verification failures are reported in errors, not as permission warnings. The returned array may be a subset; use
+     * warningsTotalCount and warningsTruncated.
+     * 
+     * @return the warnings value.
+     */
+    public List<WorkspaceDiscoveryWarning> warnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Get the warningsTotalCount property: The deduplicated number of warning identities before sampling. Identity
+     * consists of the expanded scope, affected resource, and reason. Absent means no accepted warning population was
+     * recorded, not zero warnings.
+     * 
+     * @return the warningsTotalCount value.
+     */
+    public Long warningsTotalCount() {
+        return this.warningsTotalCount;
+    }
+
+    /**
+     * Get the warningsTruncated property: Whether warnings contains fewer entries than warningsTotalCount. False
+     * requires equality; true requires a smaller returned array. An accepted empty warning population is an empty
+     * array, zero total, and false.
+     * 
+     * @return the warningsTruncated value.
+     */
+    public Boolean warningsTruncated() {
+        return this.warningsTruncated;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -150,6 +235,22 @@ public final class WorkspaceDiscoveryProperties implements JsonSerializable<Work
                     deserializedWorkspaceDiscoveryProperties.errors = errors;
                 } else if ("resourceSnapshotId".equals(fieldName)) {
                     deserializedWorkspaceDiscoveryProperties.resourceSnapshotId = reader.getString();
+                } else if ("completeness".equals(fieldName)) {
+                    deserializedWorkspaceDiscoveryProperties.completeness
+                        = WorkspaceDiscoveryCompleteness.fromString(reader.getString());
+                } else if ("coverageSummary".equals(fieldName)) {
+                    deserializedWorkspaceDiscoveryProperties.coverageSummary
+                        = WorkspaceDiscoveryCoverageSummary.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    List<WorkspaceDiscoveryWarning> warnings
+                        = reader.readArray(reader1 -> WorkspaceDiscoveryWarning.fromJson(reader1));
+                    deserializedWorkspaceDiscoveryProperties.warnings = warnings;
+                } else if ("warningsTotalCount".equals(fieldName)) {
+                    deserializedWorkspaceDiscoveryProperties.warningsTotalCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("warningsTruncated".equals(fieldName)) {
+                    deserializedWorkspaceDiscoveryProperties.warningsTruncated
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
