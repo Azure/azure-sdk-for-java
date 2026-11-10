@@ -22,7 +22,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-storage-common` from `12.37.0-beta.1` to version `12.37.0-private`.
-- Changed `azure-storage-internal-avro` from `12.23.0-beta.1` to version `12.22.2`.
 
 ## 12.38.0-beta.1 (2026-11-05)
 
