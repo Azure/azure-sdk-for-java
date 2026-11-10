@@ -15,7 +15,7 @@ $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 
 . (Join-Path $PSScriptRoot 'patch-mergeback-helpers.ps1')
 . (Join-Path $repoRoot 'eng/common/scripts/Helpers/PSModule-Helpers.ps1')
-Install-ModuleIfNotInstalled 'powershell-yaml' '0.4.12' | Import-Module
+Install-ModuleIfNotInstalled 'powershell-yaml' '0.4.7' | Import-Module
 
 $packagesPath = Join-Path $repoRoot 'eng/pipelines/patch-release.yml'
 $outputFile = Join-Path $repoRoot 'patch-changelog.md'

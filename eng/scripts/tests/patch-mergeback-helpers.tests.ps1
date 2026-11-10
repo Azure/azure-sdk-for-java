@@ -188,15 +188,27 @@ Describe 'Resolve-PatchDependencyVersions' -Tag 'UnitTest' {
         $result | Should -BeExactly $entry.Content.Replace('from `2.0.0`', 'from `2.1.0`')
     }
 
-    It 'resolves dependencies independently and preserves uncatalogued external dependencies' {
+    It 'resolves dependencies independently and preserves uncatalogued external dependencies with <LineEndingName> line endings' -TestCases @(
+        @{ LineEndingName = 'LF'; LineEnding = "`n" }
+        @{ LineEndingName = 'CRLF'; LineEnding = "`r`n" }
+    ) {
+        param($LineEndingName, $LineEnding)
+
         $entry = New-TestPatchEntry -Message @'
 - Upgraded `azure-core` from `1.0.0` to version `1.3.0`.
 - Upgraded `azure-core-http-netty` from `1.0.0` to version `1.3.0`.
 - Upgraded `third-party` from `2.0.0` to version `3.0.0`.
 '@
-        $expected = $entry.Content.Replace(
-            '`azure-core` from `1.0.0`', '`azure-core` from `1.1.0`').Replace(
-            '`azure-core-http-netty` from `1.0.0`', '`azure-core-http-netty` from `1.2.0`')
+        $entry.Content = $entry.Content -replace '\r?\n', $LineEnding
+        $expected = @(
+            '## 1.0.1 (2026-09-10)'
+            ''
+            '### Other Changes'
+            ''
+            '- Upgraded `azure-core` from `1.1.0` to version `1.3.0`.'
+            '- Upgraded `azure-core-http-netty` from `1.2.0` to version `1.3.0`.'
+            '- Upgraded `third-party` from `2.0.0` to version `3.0.0`.'
+        ) -join "`n"
 
         $result = Resolve-PatchDependencyVersions `
             -BaselineVersions $script:baselineVersions -Pom $script:dependencyPom -Entry $entry
