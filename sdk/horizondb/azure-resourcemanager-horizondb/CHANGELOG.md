@@ -1,14 +1,33 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2026-11-06)
 
-### Features Added
+- Azure Resource Manager HorizonDb client library for Java. This package contains Microsoft Azure SDK for HorizonDb Management SDK. Azure Resource Provider API for managing HorizonDB clusters, pools, endpoints, nodes, and firewall rules. Package api-version 2026-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PoolForPatchUpdate` was modified
 
-### Other Changes
+* `tags()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.Pool$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.Pool` was modified
+
+* `tags()` was removed
+
+#### `models.Pool$Update` was modified
+
+* `withTags(java.util.Map)` was removed
+
+### Features Added
+
+#### `models.ProvisioningState` was modified
+
+* `UPDATING` was added
 
 ## 1.0.0-beta.3 (2026-10-15)
 

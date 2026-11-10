@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class PoolParameterGroupReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PoolParameterGroupReference model = BinaryData.fromString(
-            "{\"parameterGroupResourceId\":\"hhbcsglummajtjao\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"PendingReboot\"}")
+        PoolParameterGroupReference model = BinaryData
+            .fromString(
+                "{\"parameterGroupResourceId\":\"e\",\"applyMethod\":\"Immediate\",\"syncStatus\":\"PendingReboot\"}")
             .toObject(PoolParameterGroupReference.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.applyMethod());
+        Assertions.assertEquals("e", model.parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.applyMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolParameterGroupReference model
-            = new PoolParameterGroupReference().withParameterGroupResourceId("hhbcsglummajtjao")
-                .withApplyMethod(ParameterApplyMethod.PENDING_REBOOT);
+        PoolParameterGroupReference model = new PoolParameterGroupReference().withParameterGroupResourceId("e")
+            .withApplyMethod(ParameterApplyMethod.IMMEDIATE);
         model = BinaryData.fromObject(model).toObject(PoolParameterGroupReference.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.applyMethod());
+        Assertions.assertEquals("e", model.parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.applyMethod());
     }
 }

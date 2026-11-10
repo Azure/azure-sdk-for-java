@@ -23,7 +23,7 @@ public final class MaintenanceEventsRescheduleMockTests {
     @Test
     public void testReschedule() throws Exception {
         String responseStr
-            = "{\"maintenanceEventId\":\"xqmul\",\"poolResourceId\":\"lxqzvn\",\"status\":\"Rescheduled\",\"plannedStartTimeUtc\":\"2021-10-17T21:55:15Z\",\"plannedEndTimeUtc\":\"2021-03-04T09:07:46Z\",\"appliedNow\":true,\"lastUpdatedTimeUtc\":\"2021-06-01T23:12:44Z\"}";
+            = "{\"maintenanceEventId\":\"ozipqwjedmurrxx\",\"poolResourceId\":\"wpktvqylkmqpzoyh\",\"status\":\"Canceled\",\"plannedStartTimeUtc\":\"2021-02-23T15:55:14Z\",\"plannedEndTimeUtc\":\"2021-07-17T11:08:42Z\",\"appliedNow\":true,\"lastUpdatedTimeUtc\":\"2021-03-21T10:03:04Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class MaintenanceEventsRescheduleMockTests {
 
         MaintenanceEventActionResponse response = manager.maintenanceEvents()
             .reschedule(
-                "uwc", "b", "egstmninwjizci", "nghgshej", new MaintenanceEventRescheduleRequest()
-                    .withPostponeToDateTimeUtc(OffsetDateTime.parse("2021-08-21T12:03:17Z")),
+                "cvclxynpdk", "gfabuiyjibuzphdu", "neiknpg", "xgjiuqh", new MaintenanceEventRescheduleRequest()
+                    .withPostponeToDateTimeUtc(OffsetDateTime.parse("2021-05-02T05:38:08Z")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xqmul", response.maintenanceEventId());
-        Assertions.assertEquals("lxqzvn", response.poolResourceId());
-        Assertions.assertEquals(MaintenanceEventStatus.RESCHEDULED, response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T21:55:15Z"), response.plannedStartTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T09:07:46Z"), response.plannedEndTimeUtc());
+        Assertions.assertEquals("ozipqwjedmurrxx", response.maintenanceEventId());
+        Assertions.assertEquals("wpktvqylkmqpzoyh", response.poolResourceId());
+        Assertions.assertEquals(MaintenanceEventStatus.CANCELED, response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T15:55:14Z"), response.plannedStartTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T11:08:42Z"), response.plannedEndTimeUtc());
         Assertions.assertTrue(response.appliedNow());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-01T23:12:44Z"), response.lastUpdatedTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T10:03:04Z"), response.lastUpdatedTimeUtc());
     }
 }

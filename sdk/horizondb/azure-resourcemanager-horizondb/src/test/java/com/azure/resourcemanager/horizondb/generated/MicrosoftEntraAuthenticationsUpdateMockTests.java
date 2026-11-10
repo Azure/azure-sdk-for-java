@@ -24,7 +24,7 @@ public final class MicrosoftEntraAuthenticationsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"egy\",\"name\":\"cw\",\"type\":\"oxjumvqqo\"}";
+            = "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"sflvgsgzwywakoih\",\"name\":\"nsmjbl\",\"type\":\"ljhlnymzotq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,10 +35,10 @@ public final class MicrosoftEntraAuthenticationsUpdateMockTests {
 
         MicrosoftEntraAuthentication response
             = manager.microsoftEntraAuthentications()
-                .update("dunqnd", "fpch", new MicrosoftEntraAuthenticationForPatchUpdate().withProperties(
+                .update("puamwabzxr", "xcushs", new MicrosoftEntraAuthenticationForPatchUpdate().withProperties(
                     new MicrosoftEntraAuthenticationPropertiesForPatchUpdate().withState(AuthenticationState.DISABLED)),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AuthenticationState.ENABLED, response.properties().state());
+        Assertions.assertEquals(AuthenticationState.DISABLED, response.properties().state());
     }
 }
