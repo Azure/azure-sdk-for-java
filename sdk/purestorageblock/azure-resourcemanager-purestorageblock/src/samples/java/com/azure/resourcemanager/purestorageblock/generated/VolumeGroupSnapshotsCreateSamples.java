@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeGroupSnapshotProp
  */
 public final class VolumeGroupSnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_Create.

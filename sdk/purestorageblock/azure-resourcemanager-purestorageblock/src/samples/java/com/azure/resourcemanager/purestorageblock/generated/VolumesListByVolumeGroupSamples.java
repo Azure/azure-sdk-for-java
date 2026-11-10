@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class VolumesListByVolumeGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_ListByVolumeGroup.

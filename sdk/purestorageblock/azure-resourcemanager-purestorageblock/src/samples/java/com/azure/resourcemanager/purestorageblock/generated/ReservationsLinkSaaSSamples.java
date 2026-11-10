@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
  */
 public final class ReservationsLinkSaaSSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_LinkSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_LinkSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_LinkSaaS.

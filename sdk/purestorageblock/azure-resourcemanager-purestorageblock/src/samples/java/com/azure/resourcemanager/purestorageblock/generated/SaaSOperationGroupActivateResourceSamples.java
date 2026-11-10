@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.ActivateSaaSRequest;
  */
 public final class SaaSOperationGroupActivateResourceSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
+     * x-ms-original-file: 2026-10-01/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
      */
     /**
      * Sample code: SaaSOperationGroup_ActivateResource.

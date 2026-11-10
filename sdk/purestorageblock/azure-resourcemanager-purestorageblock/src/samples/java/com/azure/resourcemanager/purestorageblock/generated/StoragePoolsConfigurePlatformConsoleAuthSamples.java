@@ -12,7 +12,7 @@ import com.azure.resourcemanager.purestorageblock.models.SshPlatformConsoleAuthC
  */
 public final class StoragePoolsConfigurePlatformConsoleAuthSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ConfigurePlatformConsoleAuth.
