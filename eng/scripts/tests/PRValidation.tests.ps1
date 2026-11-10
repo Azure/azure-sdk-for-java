@@ -404,6 +404,31 @@ Describe 'Shared Java package selection and changelog validation' -Tag 'UnitTest
         $fallback.DiscoveryPerformed | Should -BeTrue
     }
 
+    It 'selects service CI changes under strict mode with <PipelineCount> CI files' -TestCases @(
+        @{ PipelineCount = 1 }
+        @{ PipelineCount = 2 }
+    ) {
+        param($PipelineCount)
+
+        if ($PipelineCount -eq 2) {
+            Copy-Item -LiteralPath (Join-Path $fixture.Root 'sdk/fixture/ci.yml') `
+                -Destination (Join-Path $fixture.Root 'sdk/fixture/ci-extra.yml')
+        }
+
+        $result = & {
+            Set-StrictMode -Version 3
+            Invoke-FixtureChangelogs $fixture @('sdk/fixture/ci.yml')
+        }
+
+        $result.Status | Should -Be 'Passed' -Because ($result.Messages -join "`n")
+        $result.DiscoveryPerformed | Should -BeTrue
+        $ExpectedNames = @('azure-fixture-alpha', 'azure-fixture-beta', 'azure-fixture-skip')
+        $result.Packages.Count | Should -Be $ExpectedNames.Count
+        foreach ($name in $ExpectedNames) {
+            $result.Packages.Name | Should -Contain $name
+        }
+    }
+
     It 'preserves Build fallback for fully excluded changes with validator exit <ExpectedExit>' -TestCases @(
         @{ ExpectedExit = 0 }, @{ ExpectedExit = 1 }
     ) {
