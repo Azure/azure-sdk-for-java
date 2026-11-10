@@ -30,34 +30,10 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
     private Double threshold;
 
     /*
-     * Audio to include before detected speech, in milliseconds.
-     */
-    @Generated
-    private Long prefixPaddingMs;
-
-    /*
-     * Silence required to end speech detection, in milliseconds.
-     */
-    @Generated
-    private Long silenceDurationMs;
-
-    /*
-     * Maximum idle time before the detector ends the turn, in milliseconds.
-     */
-    @Generated
-    private Long idleTimeoutMs;
-
-    /*
      * Semantic end-of-utterance detection configuration. Set to null to disable it.
      */
     @Generated
     private VoiceAgentEndOfUtteranceDetection endOfUtteranceDetection;
-
-    /*
-     * Minimum speech duration required to trigger detection, in milliseconds.
-     */
-    @Generated
-    private Long speechDurationMs;
 
     /*
      * Whether filler words are removed from transcription.
@@ -118,93 +94,6 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
     }
 
     /**
-     * Get the prefixPaddingMs property: Audio to include before detected speech, in milliseconds.
-     *
-     * @return the prefixPaddingMs value.
-     */
-    @Generated
-    public Duration getPrefixPaddingMs() {
-        if (this.prefixPaddingMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.prefixPaddingMs);
-    }
-
-    /**
-     * Set the prefixPaddingMs property: Audio to include before detected speech, in milliseconds.
-     *
-     * @param prefixPaddingMs the prefixPaddingMs value to set.
-     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
-     */
-    @Generated
-    public VoiceAgentAzureSemanticVadEnglishTurnDetection setPrefixPaddingMs(Duration prefixPaddingMs) {
-        if (prefixPaddingMs == null) {
-            this.prefixPaddingMs = null;
-        } else {
-            this.prefixPaddingMs = prefixPaddingMs.toMillis();
-        }
-        return this;
-    }
-
-    /**
-     * Get the silenceDurationMs property: Silence required to end speech detection, in milliseconds.
-     *
-     * @return the silenceDurationMs value.
-     */
-    @Generated
-    public Duration getSilenceDurationMs() {
-        if (this.silenceDurationMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.silenceDurationMs);
-    }
-
-    /**
-     * Set the silenceDurationMs property: Silence required to end speech detection, in milliseconds.
-     *
-     * @param silenceDurationMs the silenceDurationMs value to set.
-     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
-     */
-    @Generated
-    public VoiceAgentAzureSemanticVadEnglishTurnDetection setSilenceDurationMs(Duration silenceDurationMs) {
-        if (silenceDurationMs == null) {
-            this.silenceDurationMs = null;
-        } else {
-            this.silenceDurationMs = silenceDurationMs.toMillis();
-        }
-        return this;
-    }
-
-    /**
-     * Get the idleTimeoutMs property: Maximum idle time before the detector ends the turn, in milliseconds.
-     *
-     * @return the idleTimeoutMs value.
-     */
-    @Generated
-    public Duration getIdleTimeoutMs() {
-        if (this.idleTimeoutMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.idleTimeoutMs);
-    }
-
-    /**
-     * Set the idleTimeoutMs property: Maximum idle time before the detector ends the turn, in milliseconds.
-     *
-     * @param idleTimeoutMs the idleTimeoutMs value to set.
-     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
-     */
-    @Generated
-    public VoiceAgentAzureSemanticVadEnglishTurnDetection setIdleTimeoutMs(Duration idleTimeoutMs) {
-        if (idleTimeoutMs == null) {
-            this.idleTimeoutMs = null;
-        } else {
-            this.idleTimeoutMs = idleTimeoutMs.toMillis();
-        }
-        return this;
-    }
-
-    /**
      * Get the endOfUtteranceDetection property: Semantic end-of-utterance detection configuration. Set to null to
      * disable it.
      *
@@ -226,35 +115,6 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
     public VoiceAgentAzureSemanticVadEnglishTurnDetection
         setEndOfUtteranceDetection(VoiceAgentEndOfUtteranceDetection endOfUtteranceDetection) {
         this.endOfUtteranceDetection = endOfUtteranceDetection;
-        return this;
-    }
-
-    /**
-     * Get the speechDurationMs property: Minimum speech duration required to trigger detection, in milliseconds.
-     *
-     * @return the speechDurationMs value.
-     */
-    @Generated
-    public Duration getSpeechDurationMs() {
-        if (this.speechDurationMs == null) {
-            return null;
-        }
-        return Duration.ofMillis(this.speechDurationMs);
-    }
-
-    /**
-     * Set the speechDurationMs property: Minimum speech duration required to trigger detection, in milliseconds.
-     *
-     * @param speechDurationMs the speechDurationMs value to set.
-     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
-     */
-    @Generated
-    public VoiceAgentAzureSemanticVadEnglishTurnDetection setSpeechDurationMs(Duration speechDurationMs) {
-        if (speechDurationMs == null) {
-            this.speechDurationMs = null;
-        } else {
-            this.speechDurationMs = speechDurationMs.toMillis();
-        }
         return this;
     }
 
@@ -344,11 +204,11 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
         jsonWriter.writeBooleanField("auto_truncate", isAutoTruncate());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("threshold", this.threshold);
-        jsonWriter.writeNumberField("prefix_padding_ms", this.prefixPaddingMs);
-        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDurationMs);
-        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeoutMs);
+        jsonWriter.writeNumberField("prefix_padding_ms", this.prefixPadding);
+        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDuration);
+        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeout);
         jsonWriter.writeJsonField("end_of_utterance_detection", this.endOfUtteranceDetection);
-        jsonWriter.writeNumberField("speech_duration_ms", this.speechDurationMs);
+        jsonWriter.writeNumberField("speech_duration_ms", this.speechDuration);
         jsonWriter.writeBooleanField("remove_filler_words", this.removeFillerWords);
         jsonWriter.writeBooleanField("create_response", this.createResponse);
         jsonWriter.writeBooleanField("interrupt_response", this.interruptResponse);
@@ -381,19 +241,19 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
                     deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.threshold
                         = reader.getNullable(JsonReader::getDouble);
                 } else if ("prefix_padding_ms".equals(fieldName)) {
-                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.prefixPaddingMs
+                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.prefixPadding
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("silence_duration_ms".equals(fieldName)) {
-                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.silenceDurationMs
+                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.silenceDuration
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("idle_timeout_ms".equals(fieldName)) {
-                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.idleTimeoutMs
+                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.idleTimeout
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("end_of_utterance_detection".equals(fieldName)) {
                     deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.endOfUtteranceDetection
                         = VoiceAgentEndOfUtteranceDetection.fromJson(reader);
                 } else if ("speech_duration_ms".equals(fieldName)) {
-                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.speechDurationMs
+                    deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.speechDuration
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("remove_filler_words".equals(fieldName)) {
                     deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection.removeFillerWords
@@ -410,5 +270,145 @@ public final class VoiceAgentAzureSemanticVadEnglishTurnDetection extends VoiceA
             }
             return deserializedVoiceAgentAzureSemanticVadEnglishTurnDetection;
         });
+    }
+
+    /*
+     * Audio to include before detected speech, in milliseconds.
+     */
+    @Generated
+    private Long prefixPadding;
+
+    /*
+     * Silence required to end speech detection, in milliseconds.
+     */
+    @Generated
+    private Long silenceDuration;
+
+    /*
+     * Maximum idle time before the detector ends the turn, in milliseconds.
+     */
+    @Generated
+    private Long idleTimeout;
+
+    /*
+     * Minimum speech duration required to trigger detection, in milliseconds.
+     */
+    @Generated
+    private Long speechDuration;
+
+    /**
+     * Get the prefixPadding property: Audio to include before detected speech, in milliseconds.
+     *
+     * @return the prefixPadding value.
+     */
+    @Generated
+    public Duration getPrefixPadding() {
+        if (this.prefixPadding == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.prefixPadding);
+    }
+
+    /**
+     * Set the prefixPadding property: Audio to include before detected speech, in milliseconds.
+     *
+     * @param prefixPadding the prefixPadding value to set.
+     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
+     */
+    @Generated
+    public VoiceAgentAzureSemanticVadEnglishTurnDetection setPrefixPadding(Duration prefixPadding) {
+        if (prefixPadding == null) {
+            this.prefixPadding = null;
+        } else {
+            this.prefixPadding = prefixPadding.toMillis();
+        }
+        return this;
+    }
+
+    /**
+     * Get the silenceDuration property: Silence required to end speech detection, in milliseconds.
+     *
+     * @return the silenceDuration value.
+     */
+    @Generated
+    public Duration getSilenceDuration() {
+        if (this.silenceDuration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.silenceDuration);
+    }
+
+    /**
+     * Set the silenceDuration property: Silence required to end speech detection, in milliseconds.
+     *
+     * @param silenceDuration the silenceDuration value to set.
+     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
+     */
+    @Generated
+    public VoiceAgentAzureSemanticVadEnglishTurnDetection setSilenceDuration(Duration silenceDuration) {
+        if (silenceDuration == null) {
+            this.silenceDuration = null;
+        } else {
+            this.silenceDuration = silenceDuration.toMillis();
+        }
+        return this;
+    }
+
+    /**
+     * Get the idleTimeout property: Maximum idle time before the detector ends the turn, in milliseconds.
+     *
+     * @return the idleTimeout value.
+     */
+    @Generated
+    public Duration getIdleTimeout() {
+        if (this.idleTimeout == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.idleTimeout);
+    }
+
+    /**
+     * Set the idleTimeout property: Maximum idle time before the detector ends the turn, in milliseconds.
+     *
+     * @param idleTimeout the idleTimeout value to set.
+     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
+     */
+    @Generated
+    public VoiceAgentAzureSemanticVadEnglishTurnDetection setIdleTimeout(Duration idleTimeout) {
+        if (idleTimeout == null) {
+            this.idleTimeout = null;
+        } else {
+            this.idleTimeout = idleTimeout.toMillis();
+        }
+        return this;
+    }
+
+    /**
+     * Get the speechDuration property: Minimum speech duration required to trigger detection, in milliseconds.
+     *
+     * @return the speechDuration value.
+     */
+    @Generated
+    public Duration getSpeechDuration() {
+        if (this.speechDuration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.speechDuration);
+    }
+
+    /**
+     * Set the speechDuration property: Minimum speech duration required to trigger detection, in milliseconds.
+     *
+     * @param speechDuration the speechDuration value to set.
+     * @return the VoiceAgentAzureSemanticVadEnglishTurnDetection object itself.
+     */
+    @Generated
+    public VoiceAgentAzureSemanticVadEnglishTurnDetection setSpeechDuration(Duration speechDuration) {
+        if (speechDuration == null) {
+            this.speechDuration = null;
+        } else {
+            this.speechDuration = speechDuration.toMillis();
+        }
+        return this;
     }
 }

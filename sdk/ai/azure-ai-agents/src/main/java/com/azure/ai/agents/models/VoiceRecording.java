@@ -54,20 +54,6 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
     @Generated
     private final VoiceRecordingChannelLayout channelLayout;
 
-    /*
-     * The total duration of the recording.
-     */
-    @Generated
-    private final long durationMs;
-
-    /*
-     * For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the customer's own storage,
-     * without a SAS token. The customer downloads it using their own storage credentials. Absent for Foundry-managed
-     * storage, where the bytes are streamed via the `/audio/content` route instead.
-     */
-    @Generated
-    private String blobUri;
-
     /**
      * Creates an instance of VoiceRecording class.
      *
@@ -76,20 +62,20 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
      * @param sampleRate the sampleRate value to set.
      * @param channels the channels value to set.
      * @param channelLayout the channelLayout value to set.
-     * @param durationMs the durationMs value to set.
+     * @param duration the duration value to set.
      */
     @Generated
     private VoiceRecording(String conversationId, VoiceAudioContainerFormat format, int sampleRate, int channels,
-        VoiceRecordingChannelLayout channelLayout, Duration durationMs) {
+        VoiceRecordingChannelLayout channelLayout, Duration duration) {
         this.conversationId = conversationId;
         this.format = format;
         this.sampleRate = sampleRate;
         this.channels = channels;
         this.channelLayout = channelLayout;
-        if (durationMs == null) {
-            this.durationMs = 0L;
+        if (duration == null) {
+            this.duration = 0L;
         } else {
-            this.durationMs = durationMs.toMillis();
+            this.duration = duration.toMillis();
         }
     }
 
@@ -144,28 +130,6 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
     }
 
     /**
-     * Get the durationMs property: The total duration of the recording.
-     *
-     * @return the durationMs value.
-     */
-    @Generated
-    public Duration getDurationMs() {
-        return Duration.ofMillis(this.durationMs);
-    }
-
-    /**
-     * Get the blobUri property: For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the
-     * customer's own storage, without a SAS token. The customer downloads it using their own storage credentials.
-     * Absent for Foundry-managed storage, where the bytes are streamed via the `/audio/content` route instead.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -177,8 +141,8 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
         jsonWriter.writeIntField("sample_rate", this.sampleRate);
         jsonWriter.writeIntField("channels", this.channels);
         jsonWriter.writeJsonField("channel_layout", this.channelLayout);
-        jsonWriter.writeLongField("duration_ms", this.durationMs);
-        jsonWriter.writeStringField("blob_uri", this.blobUri);
+        jsonWriter.writeLongField("duration_ms", this.duration);
+        jsonWriter.writeStringField("blob_uri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -199,8 +163,8 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
             int sampleRate = 0;
             int channels = 0;
             VoiceRecordingChannelLayout channelLayout = null;
-            Duration durationMs = null;
-            String blobUri = null;
+            Duration duration = null;
+            String blobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -215,17 +179,53 @@ public final class VoiceRecording implements JsonSerializable<VoiceRecording> {
                 } else if ("channel_layout".equals(fieldName)) {
                     channelLayout = VoiceRecordingChannelLayout.fromJson(reader);
                 } else if ("duration_ms".equals(fieldName)) {
-                    durationMs = Duration.ofMillis(reader.getLong());
+                    duration = Duration.ofMillis(reader.getLong());
                 } else if ("blob_uri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             VoiceRecording deserializedVoiceRecording
-                = new VoiceRecording(conversationId, format, sampleRate, channels, channelLayout, durationMs);
-            deserializedVoiceRecording.blobUri = blobUri;
+                = new VoiceRecording(conversationId, format, sampleRate, channels, channelLayout, duration);
+            deserializedVoiceRecording.blobUrl = blobUrl;
             return deserializedVoiceRecording;
         });
+    }
+
+    /*
+     * The total duration of the recording.
+     */
+    @Generated
+    private final long duration;
+
+    /*
+     * For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the customer's own storage,
+     * without a SAS token. The customer downloads it using their own storage credentials. Absent for Foundry-managed
+     * storage, where the bytes are streamed via the `/audio/content` route instead.
+     */
+    @Generated
+    private String blobUrl;
+
+    /**
+     * Get the duration property: The total duration of the recording.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
+    }
+
+    /**
+     * Get the blobUrl property: For bring-your-own-storage (BYOS) recordings only: the URI of the recording in the
+     * customer's own storage, without a SAS token. The customer downloads it using their own storage credentials.
+     * Absent for Foundry-managed storage, where the bytes are streamed via the `/audio/content` route instead.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }

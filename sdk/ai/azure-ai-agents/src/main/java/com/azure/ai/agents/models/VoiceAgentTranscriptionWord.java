@@ -24,37 +24,25 @@ public final class VoiceAgentTranscriptionWord implements JsonSerializable<Voice
     @Generated
     private final String text;
 
-    /*
-     * The word offset from the beginning of the audio, in milliseconds.
-     */
-    @Generated
-    private final long offsetMilliseconds;
-
-    /*
-     * The word duration in milliseconds.
-     */
-    @Generated
-    private final long durationMilliseconds;
-
     /**
      * Creates an instance of VoiceAgentTranscriptionWord class.
      *
      * @param text the text value to set.
-     * @param offsetMilliseconds the offsetMilliseconds value to set.
-     * @param durationMilliseconds the durationMilliseconds value to set.
+     * @param offset the offset value to set.
+     * @param duration the duration value to set.
      */
     @Generated
-    private VoiceAgentTranscriptionWord(String text, Duration offsetMilliseconds, Duration durationMilliseconds) {
+    private VoiceAgentTranscriptionWord(String text, Duration offset, Duration duration) {
         this.text = text;
-        if (offsetMilliseconds == null) {
-            this.offsetMilliseconds = 0L;
+        if (offset == null) {
+            this.offset = 0L;
         } else {
-            this.offsetMilliseconds = offsetMilliseconds.toMillis();
+            this.offset = offset.toMillis();
         }
-        if (durationMilliseconds == null) {
-            this.durationMilliseconds = 0L;
+        if (duration == null) {
+            this.duration = 0L;
         } else {
-            this.durationMilliseconds = durationMilliseconds.toMillis();
+            this.duration = duration.toMillis();
         }
     }
 
@@ -69,26 +57,6 @@ public final class VoiceAgentTranscriptionWord implements JsonSerializable<Voice
     }
 
     /**
-     * Get the offsetMilliseconds property: The word offset from the beginning of the audio, in milliseconds.
-     *
-     * @return the offsetMilliseconds value.
-     */
-    @Generated
-    public Duration getOffsetMilliseconds() {
-        return Duration.ofMillis(this.offsetMilliseconds);
-    }
-
-    /**
-     * Get the durationMilliseconds property: The word duration in milliseconds.
-     *
-     * @return the durationMilliseconds value.
-     */
-    @Generated
-    public Duration getDurationMilliseconds() {
-        return Duration.ofMillis(this.durationMilliseconds);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -96,8 +64,8 @@ public final class VoiceAgentTranscriptionWord implements JsonSerializable<Voice
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeLongField("offset_milliseconds", this.offsetMilliseconds);
-        jsonWriter.writeLongField("duration_milliseconds", this.durationMilliseconds);
+        jsonWriter.writeLongField("offset_milliseconds", this.offset);
+        jsonWriter.writeLongField("duration_milliseconds", this.duration);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,22 +82,54 @@ public final class VoiceAgentTranscriptionWord implements JsonSerializable<Voice
     public static VoiceAgentTranscriptionWord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            Duration offsetMilliseconds = null;
-            Duration durationMilliseconds = null;
+            Duration offset = null;
+            Duration duration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("offset_milliseconds".equals(fieldName)) {
-                    offsetMilliseconds = Duration.ofMillis(reader.getLong());
+                    offset = Duration.ofMillis(reader.getLong());
                 } else if ("duration_milliseconds".equals(fieldName)) {
-                    durationMilliseconds = Duration.ofMillis(reader.getLong());
+                    duration = Duration.ofMillis(reader.getLong());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new VoiceAgentTranscriptionWord(text, offsetMilliseconds, durationMilliseconds);
+            return new VoiceAgentTranscriptionWord(text, offset, duration);
         });
+    }
+
+    /*
+     * The word offset from the beginning of the audio, in milliseconds.
+     */
+    @Generated
+    private final long offset;
+
+    /*
+     * The word duration in milliseconds.
+     */
+    @Generated
+    private final long duration;
+
+    /**
+     * Get the offset property: The word offset from the beginning of the audio, in milliseconds.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public Duration getOffset() {
+        return Duration.ofMillis(this.offset);
+    }
+
+    /**
+     * Get the duration property: The word duration in milliseconds.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
     }
 }

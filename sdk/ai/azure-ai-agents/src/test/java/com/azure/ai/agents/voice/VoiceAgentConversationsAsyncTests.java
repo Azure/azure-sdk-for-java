@@ -255,7 +255,7 @@ public class VoiceAgentConversationsAsyncTests {
             VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId).block(TIMEOUT);
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
-            if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
+            if (recording.getBlobUrl() == null || recording.getBlobUrl().isEmpty()) {
                 assertAudio(client.downloadAgentConversationAudio(agentName, conversationId));
             }
             for (BinaryData item : items) {
@@ -274,7 +274,7 @@ public class VoiceAgentConversationsAsyncTests {
                 }
                 assertNotNull(audio);
                 assertNotNull(audio.getRole());
-                if (audio.getBlobUri() == null || audio.getBlobUri().isEmpty()) {
+                if (audio.getBlobUrl() == null || audio.getBlobUrl().isEmpty()) {
                     assertAudio(client.downloadAgentConversationAudioItem(agentName, conversationId, id));
                 }
                 break;

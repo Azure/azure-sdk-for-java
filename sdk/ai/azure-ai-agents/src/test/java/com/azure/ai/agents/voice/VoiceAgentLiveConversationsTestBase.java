@@ -70,8 +70,8 @@ abstract class VoiceAgentLiveConversationsTestBase extends ClientTestBase {
         assertEquals(VoiceAudioCodec.PCM16, audio.getCodec());
         assertEquals(Integer.valueOf(24000), audio.getSampleRate());
         assertEquals(Integer.valueOf(1), audio.getChannels());
-        assertNotNull(audio.getDurationMs());
-        assertTrue(audio.getDurationMs().toMillis() > 0);
+        assertNotNull(audio.getDuration());
+        assertTrue(audio.getDuration().toMillis() > 0);
     }
 
     static void assertWav(BinaryData audio, int channels) {
@@ -95,7 +95,7 @@ abstract class VoiceAgentLiveConversationsTestBase extends ClientTestBase {
         assertEquals(VoiceAudioContainerFormat.WAV, recording.getFormat());
         assertEquals(24000, recording.getSampleRate());
         assertEquals(2, recording.getChannels());
-        assertTrue(recording.getDurationMs().toMillis() > 0);
+        assertTrue(recording.getDuration().toMillis() > 0);
         assertNotNull(recording.getChannelLayout());
         assertEquals(VoiceAudioRole.USER, recording.getChannelLayout().getLeft());
         assertEquals(VoiceAudioRole.AGENT, recording.getChannelLayout().getRight());

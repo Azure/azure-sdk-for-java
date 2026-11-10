@@ -54,12 +54,6 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
     private final int contentIndex;
 
     /*
-     * The audio_offset_ms property.
-     */
-    @Generated
-    private final long audioOffsetMs;
-
-    /*
      * The viseme_id property.
      */
     @Generated
@@ -73,21 +67,21 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param contentIndex the contentIndex value to set.
-     * @param audioOffsetMs the audioOffsetMs value to set.
+     * @param audioOffset the audioOffset value to set.
      * @param visemeId the visemeId value to set.
      */
     @Generated
     private VoiceAgentResponseAnimationVisemeDeltaEvent(String eventId, String responseId, String itemId,
-        int outputIndex, int contentIndex, Duration audioOffsetMs, int visemeId) {
+        int outputIndex, int contentIndex, Duration audioOffset, int visemeId) {
         this.eventId = eventId;
         this.responseId = responseId;
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
-        if (audioOffsetMs == null) {
-            this.audioOffsetMs = 0L;
+        if (audioOffset == null) {
+            this.audioOffset = 0L;
         } else {
-            this.audioOffsetMs = audioOffsetMs.toMillis();
+            this.audioOffset = audioOffset.toMillis();
         }
         this.visemeId = visemeId;
     }
@@ -154,16 +148,6 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
     }
 
     /**
-     * Get the audioOffsetMs property: The audio_offset_ms property.
-     *
-     * @return the audioOffsetMs value.
-     */
-    @Generated
-    public Duration getAudioOffsetMs() {
-        return Duration.ofMillis(this.audioOffsetMs);
-    }
-
-    /**
      * Get the visemeId property: The viseme_id property.
      *
      * @return the visemeId value.
@@ -185,7 +169,7 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeLongField("audio_offset_ms", this.audioOffsetMs);
+        jsonWriter.writeLongField("audio_offset_ms", this.audioOffset);
         jsonWriter.writeIntField("viseme_id", this.visemeId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -208,7 +192,7 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            Duration audioOffsetMs = null;
+            Duration audioOffset = null;
             int visemeId = 0;
             RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_ANIMATION_VISEME_DELTA;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -225,7 +209,7 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
                 } else if ("audio_offset_ms".equals(fieldName)) {
-                    audioOffsetMs = Duration.ofMillis(reader.getLong());
+                    audioOffset = Duration.ofMillis(reader.getLong());
                 } else if ("viseme_id".equals(fieldName)) {
                     visemeId = reader.getInt();
                 } else if ("type".equals(fieldName)) {
@@ -236,9 +220,25 @@ public final class VoiceAgentResponseAnimationVisemeDeltaEvent extends RealtimeS
             }
             VoiceAgentResponseAnimationVisemeDeltaEvent deserializedVoiceAgentResponseAnimationVisemeDeltaEvent
                 = new VoiceAgentResponseAnimationVisemeDeltaEvent(eventId, responseId, itemId, outputIndex,
-                    contentIndex, audioOffsetMs, visemeId);
+                    contentIndex, audioOffset, visemeId);
             deserializedVoiceAgentResponseAnimationVisemeDeltaEvent.type = type;
             return deserializedVoiceAgentResponseAnimationVisemeDeltaEvent;
         });
+    }
+
+    /*
+     * The audio_offset_ms property.
+     */
+    @Generated
+    private final long audioOffset;
+
+    /**
+     * Get the audioOffset property: The audio_offset_ms property.
+     *
+     * @return the audioOffset value.
+     */
+    @Generated
+    public Duration getAudioOffset() {
+        return Duration.ofMillis(this.audioOffset);
     }
 }

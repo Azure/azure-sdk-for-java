@@ -92,7 +92,7 @@ public class RealtimeOpenAIDedupSerializationTests {
 
         RealtimeConversationItemInputAudioTranscriptionDeltaEvent delta
             = assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionDeltaEvent.class, event);
-        LogProbProperties logProb = delta.getLogprobs().get(0);
+        LogProbProperties logProb = delta.getLogProbs().get(0);
         assertEquals("hello", logProb.token());
         assertEquals(-0.25, logProb.logprob());
         assertEquals(2, logProb.bytes().size());

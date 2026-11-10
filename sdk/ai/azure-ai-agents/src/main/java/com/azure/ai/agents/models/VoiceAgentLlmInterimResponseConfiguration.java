@@ -141,22 +141,12 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
      */
     @Generated
     @Override
-    public VoiceAgentLlmInterimResponseConfiguration setLatencyThresholdMs(Duration latencyThresholdMs) {
-        super.setLatencyThresholdMs(latencyThresholdMs);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("triggers", getTriggers(),
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        if (getLatencyThresholdMs() != null) {
-            jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThresholdMs().toMillis());
+        if (getLatencyThreshold() != null) {
+            jsonWriter.writeNumberField("latency_threshold_ms", getLatencyThreshold().toMillis());
         }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("model", this.model);
@@ -186,10 +176,10 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
                         = reader.readArray(reader1 -> VoiceAgentInterimResponseTrigger.fromString(reader1.getString()));
                     deserializedVoiceAgentLlmInterimResponseConfiguration.setTriggers(triggers);
                 } else if ("latency_threshold_ms".equals(fieldName)) {
-                    Long latencyThresholdMsHolder = reader.getNullable(JsonReader::getLong);
-                    if (latencyThresholdMsHolder != null) {
+                    Long latencyThresholdHolder = reader.getNullable(JsonReader::getLong);
+                    if (latencyThresholdHolder != null) {
                         deserializedVoiceAgentLlmInterimResponseConfiguration
-                            .setLatencyThresholdMs(Duration.ofMillis(latencyThresholdMsHolder));
+                            .setLatencyThreshold(Duration.ofMillis(latencyThresholdHolder));
                     }
                 } else if ("type".equals(fieldName)) {
                     deserializedVoiceAgentLlmInterimResponseConfiguration.type
@@ -207,5 +197,15 @@ public final class VoiceAgentLlmInterimResponseConfiguration extends VoiceAgentI
             }
             return deserializedVoiceAgentLlmInterimResponseConfiguration;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentLlmInterimResponseConfiguration setLatencyThreshold(Duration latencyThreshold) {
+        super.setLatencyThreshold(latencyThreshold);
+        return this;
     }
 }

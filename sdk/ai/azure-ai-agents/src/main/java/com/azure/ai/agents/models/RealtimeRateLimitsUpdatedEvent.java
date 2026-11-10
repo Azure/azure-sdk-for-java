@@ -35,7 +35,10 @@ public final class RealtimeRateLimitsUpdatedEvent extends RealtimeServerEvent {
     @Generated
     private final String eventId;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * List of rate limit information.
+     */
+    @Generated
     private final List<RateLimit> rateLimits;
 
     /**
@@ -76,8 +79,8 @@ public final class RealtimeRateLimitsUpdatedEvent extends RealtimeServerEvent {
      *
      * @return the rateLimits value.
      */
+    @Generated
     public List<RateLimit> getRateLimits() {
-        // AI Tooling: openai-java de-dup
         return this.rateLimits;
     }
 

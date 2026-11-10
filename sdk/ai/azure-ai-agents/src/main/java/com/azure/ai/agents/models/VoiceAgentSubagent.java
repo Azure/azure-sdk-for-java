@@ -42,13 +42,6 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
     @Generated
     private VoiceAgentSubagentResponsePolicy responsePolicy;
 
-    /*
-     * The wall-clock timeout, in seconds, for each invocation of this subagent. When omitted, the service timeout is
-     * used.
-     */
-    @Generated
-    private Long invokeTimeoutSeconds;
-
     /**
      * Creates an instance of VoiceAgentSubagent class.
      *
@@ -130,37 +123,6 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
     }
 
     /**
-     * Get the invokeTimeoutSeconds property: The wall-clock timeout, in seconds, for each invocation of this subagent.
-     * When omitted, the service timeout is used.
-     *
-     * @return the invokeTimeoutSeconds value.
-     */
-    @Generated
-    public Duration getInvokeTimeoutSeconds() {
-        if (this.invokeTimeoutSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.invokeTimeoutSeconds);
-    }
-
-    /**
-     * Set the invokeTimeoutSeconds property: The wall-clock timeout, in seconds, for each invocation of this subagent.
-     * When omitted, the service timeout is used.
-     *
-     * @param invokeTimeoutSeconds the invokeTimeoutSeconds value to set.
-     * @return the VoiceAgentSubagent object itself.
-     */
-    @Generated
-    public VoiceAgentSubagent setInvokeTimeoutSeconds(Duration invokeTimeoutSeconds) {
-        if (invokeTimeoutSeconds == null) {
-            this.invokeTimeoutSeconds = null;
-        } else {
-            this.invokeTimeoutSeconds = invokeTimeoutSeconds.getSeconds();
-        }
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -171,7 +133,7 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
         jsonWriter.writeStringField("agent_capabilities", this.agentCapabilities);
         jsonWriter.writeStringField("agent_version", this.agentVersion);
         jsonWriter.writeJsonField("response_policy", this.responsePolicy);
-        jsonWriter.writeNumberField("invoke_timeout_seconds", this.invokeTimeoutSeconds);
+        jsonWriter.writeNumberField("invoke_timeout_seconds", this.invokeTimeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -191,7 +153,7 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
             String agentCapabilities = null;
             String agentVersion = null;
             VoiceAgentSubagentResponsePolicy responsePolicy = null;
-            Long invokeTimeoutSeconds = null;
+            Long invokeTimeout = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -204,7 +166,7 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
                 } else if ("response_policy".equals(fieldName)) {
                     responsePolicy = VoiceAgentSubagentResponsePolicy.fromJson(reader);
                 } else if ("invoke_timeout_seconds".equals(fieldName)) {
-                    invokeTimeoutSeconds = reader.getNullable(JsonReader::getLong);
+                    invokeTimeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -212,8 +174,46 @@ public final class VoiceAgentSubagent implements JsonSerializable<VoiceAgentSuba
             VoiceAgentSubagent deserializedVoiceAgentSubagent = new VoiceAgentSubagent(agentName, agentCapabilities);
             deserializedVoiceAgentSubagent.agentVersion = agentVersion;
             deserializedVoiceAgentSubagent.responsePolicy = responsePolicy;
-            deserializedVoiceAgentSubagent.invokeTimeoutSeconds = invokeTimeoutSeconds;
+            deserializedVoiceAgentSubagent.invokeTimeout = invokeTimeout;
             return deserializedVoiceAgentSubagent;
         });
+    }
+
+    /*
+     * The wall-clock timeout, in seconds, for each invocation of this subagent. When omitted, the service timeout is
+     * used.
+     */
+    @Generated
+    private Long invokeTimeout;
+
+    /**
+     * Get the invokeTimeout property: The wall-clock timeout, in seconds, for each invocation of this subagent. When
+     * omitted, the service timeout is used.
+     *
+     * @return the invokeTimeout value.
+     */
+    @Generated
+    public Duration getInvokeTimeout() {
+        if (this.invokeTimeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.invokeTimeout);
+    }
+
+    /**
+     * Set the invokeTimeout property: The wall-clock timeout, in seconds, for each invocation of this subagent. When
+     * omitted, the service timeout is used.
+     *
+     * @param invokeTimeout the invokeTimeout value to set.
+     * @return the VoiceAgentSubagent object itself.
+     */
+    @Generated
+    public VoiceAgentSubagent setInvokeTimeout(Duration invokeTimeout) {
+        if (invokeTimeout == null) {
+            this.invokeTimeout = null;
+        } else {
+            this.invokeTimeout = invokeTimeout.getSeconds();
+        }
+        return this;
     }
 }
