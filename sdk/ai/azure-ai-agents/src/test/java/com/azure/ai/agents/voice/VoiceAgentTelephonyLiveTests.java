@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,8 +65,8 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String DEFAULT_CONNECTION_1 = "twilio-sdk-testing-1";
     private static final String DEFAULT_CONNECTION_2 = "twilio-sdk-testing-2";
-    private static final String DEFAULT_NUMBER_1 = "+13853864628";
-    private static final String DEFAULT_NUMBER_2 = "+18509702029";
+    private static final String DEFAULT_NUMBER_1 = "+18203362954";
+    private static final String DEFAULT_NUMBER_2 = "+12792056813";
     private static final String SANITIZED_CONNECTION_1 = "sanitized-connection-1";
     private static final String SANITIZED_CONNECTION_2 = "sanitized-connection-2";
     private static final String SANITIZED_NUMBER_1 = "+15555550101";
@@ -105,7 +104,6 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @Disabled("TODO: Re-record with MicrosoftCopilot=V1Preview in the Foundry-Features header.")
     public void bindingLifecycleLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String model = getRecordedModel(configuration);
@@ -155,7 +153,6 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @Disabled("TODO: Re-record with MicrosoftCopilot=V1Preview in the Foundry-Features header.")
     public void twilioBindingAndOutboundCallLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String model = getRecordedModel(configuration);
