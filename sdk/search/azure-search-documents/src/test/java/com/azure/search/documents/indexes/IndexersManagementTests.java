@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -31,7 +32,6 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -312,43 +312,42 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesSync() {
-        addUserAssignedIdentitySanitizer();
+        normalizeLegacyPaginationIdentity();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
         List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
 
-        assertPagedNames(expectedIndexerNames,
-            searchIndexerClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+        assertPagedNames(expectedIndexerNames, searchIndexerClient.listIndexers(options).iterableByPage(),
             SearchIndexer::getName);
         assertPagedNames(expectedDataSourceNames,
-            searchIndexerClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+            searchIndexerClient.listDataSourceConnections(options).iterableByPage(),
             SearchIndexerDataSourceConnection::getName);
-        assertPagedNames(expectedSkillsetNames,
-            searchIndexerClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+        assertPagedNames(expectedSkillsetNames, searchIndexerClient.listSkillsets(options).iterableByPage(),
             SearchIndexerSkillset::getName);
     }
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesAsync() {
-        addUserAssignedIdentitySanitizer();
+        normalizeLegacyPaginationIdentity();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
         List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
 
-        StepVerifier.create(Mono.zip(
-            searchIndexerAsyncClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList(),
-            searchIndexerAsyncClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX)
-                .byPage()
-                .collectList(),
-            searchIndexerAsyncClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList()))
-            .assertNext(pages -> {
+        StepVerifier.create(Mono.zip(searchIndexerAsyncClient.listIndexers(options).byPage().collectList(),
+            searchIndexerAsyncClient.listDataSourceConnections(options).byPage().collectList(),
+            searchIndexerAsyncClient.listSkillsets(options).byPage().collectList())).assertNext(pages -> {
                 assertPagedNames(expectedIndexerNames, pages.getT1(), SearchIndexer::getName);
                 assertPagedNames(expectedDataSourceNames, pages.getT2(), SearchIndexerDataSourceConnection::getName);
                 assertPagedNames(expectedSkillsetNames, pages.getT3(), SearchIndexerSkillset::getName);
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @Test
@@ -1226,13 +1225,16 @@ public class IndexersManagementTests extends SearchTestBase {
     }
 
     private static SearchIndexerDataSourceConnection createDataSource(String name) {
+        return createDataSource(name, BLOB_CONTAINER_NAME);
+    }
+
+    private static SearchIndexerDataSourceConnection createDataSource(String name, String containerName) {
         // create the new data source object for this storage account and container
         return new SearchIndexerDataSourceConnection(name, SearchIndexerDataSourceType.AZURE_BLOB,
             new DataSourceCredentials().setConnectionString(String.format(
                 "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
                 SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME)),
-            new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/")).setDescription("real live blob")
-                .setIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY));
+            new SearchIndexerDataContainer(containerName).setQuery("/")).setDescription("real live blob");
     }
 
     private List<String> createIndexersForPagination(String prefix) {
@@ -1245,17 +1247,21 @@ public class IndexersManagementTests extends SearchTestBase {
         return names;
     }
 
-    private void addUserAssignedIdentitySanitizer() {
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+    private void normalizeLegacyPaginationIdentity() {
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            // Pagination recordings predate the switch to system-assigned identity. Only normalize the legacy selector.
+            interceptorManager.addSanitizers(new TestProxySanitizer(
+                ",\\\\s*\\\"identity\\\"\\\\s*:\\\\s*\\\\{[^{}]*\\\"#Microsoft.Azure.Search.DataUserAssignedIdentity\\\"[^{}]*\\\\}",
+                "", TestProxySanitizerType.BODY_REGEX));
         }
     }
 
     private List<String> createDataSourcesForPagination(String prefix) {
         List<String> names = Arrays.asList(prefix + "data-one", prefix + "data-two");
+        // These recordings use "test", independently of the local storage configuration.
+        String containerName = TEST_MODE == TestMode.PLAYBACK ? "test" : BLOB_CONTAINER_NAME;
         names.forEach(name -> {
-            searchIndexerClient.createDataSourceConnection(createDataSource(name));
+            searchIndexerClient.createDataSourceConnection(createDataSource(name, containerName));
             dataSourcesToDelete.add(name);
         });
         return names;

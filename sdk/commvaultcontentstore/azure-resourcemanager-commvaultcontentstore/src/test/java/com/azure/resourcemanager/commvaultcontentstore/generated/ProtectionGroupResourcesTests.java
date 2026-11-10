@@ -18,27 +18,33 @@ public final class ProtectionGroupResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupResources model = BinaryData.fromString(
-            "{\"manual\":[\"yqiklbbovplwzb\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"endsWith\",\"value\":\"gu\"}],\"matchType\":\"any\"}}")
+            "{\"manual\":[\"uzgwyzmhtx\"],\"matchRules\":{\"rules\":[{\"property\":\"region\",\"operator\":\"contains\",\"value\":\"savjcbpwxqps\"},{\"property\":\"tagValue\",\"operator\":\"doesNotEqual\",\"value\":\"ftguv\"},{\"property\":\"name\",\"operator\":\"contains\",\"value\":\"hprwmdyv\"},{\"property\":\"name\",\"operator\":\"contains\",\"value\":\"ayriwwroyqbexrm\"}],\"matchType\":\"any\"}}")
             .toObject(ProtectionGroupResources.class);
-        Assertions.assertEquals("yqiklbbovplwzb", model.manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME, model.matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.ENDS_WITH, model.matchRules().rules().get(0).operator());
-        Assertions.assertEquals("gu", model.matchRules().rules().get(0).value());
+        Assertions.assertEquals("uzgwyzmhtx", model.manual().get(0));
+        Assertions.assertEquals(RuleProperty.REGION, model.matchRules().rules().get(0).property());
+        Assertions.assertEquals(Operator.CONTAINS, model.matchRules().rules().get(0).operator());
+        Assertions.assertEquals("savjcbpwxqps", model.matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, model.matchRules().matchType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionGroupResources model
-            = new ProtectionGroupResources().withManual(Arrays.asList("yqiklbbovplwzb"))
-                .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
-                    new Rule().withProperty(RuleProperty.TAG_NAME).withOperator(Operator.ENDS_WITH).withValue("gu")))
-                    .withMatchType(MatchType.ANY));
+        ProtectionGroupResources model = new ProtectionGroupResources().withManual(Arrays.asList("uzgwyzmhtx"))
+            .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
+                new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.CONTAINS).withValue("savjcbpwxqps"),
+                new Rule().withProperty(RuleProperty.TAG_VALUE)
+                    .withOperator(Operator.DOES_NOT_EQUAL)
+                    .withValue("ftguv"),
+                new Rule().withProperty(RuleProperty.NAME).withOperator(Operator.CONTAINS).withValue("hprwmdyv"),
+                new Rule().withProperty(RuleProperty.NAME)
+                    .withOperator(Operator.CONTAINS)
+                    .withValue("ayriwwroyqbexrm")))
+                .withMatchType(MatchType.ANY));
         model = BinaryData.fromObject(model).toObject(ProtectionGroupResources.class);
-        Assertions.assertEquals("yqiklbbovplwzb", model.manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME, model.matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.ENDS_WITH, model.matchRules().rules().get(0).operator());
-        Assertions.assertEquals("gu", model.matchRules().rules().get(0).value());
+        Assertions.assertEquals("uzgwyzmhtx", model.manual().get(0));
+        Assertions.assertEquals(RuleProperty.REGION, model.matchRules().rules().get(0).property());
+        Assertions.assertEquals(Operator.CONTAINS, model.matchRules().rules().get(0).operator());
+        Assertions.assertEquals("savjcbpwxqps", model.matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, model.matchRules().matchType());
     }
 }

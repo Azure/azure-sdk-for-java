@@ -26,8 +26,10 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -936,6 +938,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
         Mono<List<BlobItem>> response = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null))
+            .then(cc1.delete())
             .then(primaryBlobServiceAsyncClient
                 .listBlobContainers(new ListBlobContainersOptions().setPrefix(cc1.getBlobContainerName())
                     .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)))
@@ -943,7 +946,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
                 .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                     new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
-                .flatMap(r -> r.getValue().listBlobs().collectList()));
+                .flatMap(r -> r.getValue()
+                    .listBlobs(new ListBlobsOptions()
+                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML))
+                    .collectList()));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(1, r.size());

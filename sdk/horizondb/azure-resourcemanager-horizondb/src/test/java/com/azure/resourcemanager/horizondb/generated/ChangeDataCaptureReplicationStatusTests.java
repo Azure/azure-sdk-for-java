@@ -11,7 +11,7 @@ public final class ChangeDataCaptureReplicationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureReplicationStatus model = BinaryData.fromString(
-            "{\"state\":\"Connecting\",\"externalArtifactId\":\"udutnco\",\"lastConnectedAtUtc\":\"2021-10-18T10:35:02Z\"}")
+            "{\"state\":\"Connecting\",\"externalArtifactId\":\"njv\",\"lastConnectedAtUtc\":\"2020-12-20T11:43:27Z\"}")
             .toObject(ChangeDataCaptureReplicationStatus.class);
     }
 }

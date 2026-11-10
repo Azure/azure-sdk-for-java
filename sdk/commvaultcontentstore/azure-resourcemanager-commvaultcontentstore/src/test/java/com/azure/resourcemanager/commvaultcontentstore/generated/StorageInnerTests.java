@@ -16,24 +16,24 @@ public final class StorageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageInner model = BinaryData.fromString(
-            "{\"properties\":{\"location\":\"thz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"yb\",\"name\":\"gehoqfbowskany\",\"type\":\"tzlcuiywgqywgn\"}")
+            "{\"properties\":{\"location\":\"ypvhezrkg\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Enabled\"},\"id\":\"gm\",\"name\":\"qsl\",\"type\":\"yyvxyqjpkcattpn\"}")
             .toObject(StorageInner.class);
-        Assertions.assertEquals("thz", model.properties().location());
+        Assertions.assertEquals("ypvhezrkg", model.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, model.properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, model.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COLD, model.properties().classProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageInner model = new StorageInner().withProperties(new StorageProperties().withLocation("thz")
+        StorageInner model = new StorageInner().withProperties(new StorageProperties().withLocation("ypvhezrkg")
             .withStorageType(StorageType.AIR_GAP_PROTECT)
             .withVendor(Vendor.AZURE_BLOB_STORAGE)
-            .withClassProperty(StorageClassType.HOT));
+            .withClassProperty(StorageClassType.COLD));
         model = BinaryData.fromObject(model).toObject(StorageInner.class);
-        Assertions.assertEquals("thz", model.properties().location());
+        Assertions.assertEquals("ypvhezrkg", model.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, model.properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, model.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COLD, model.properties().classProperty());
     }
 }

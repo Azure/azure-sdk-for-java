@@ -13,11 +13,11 @@ public final class DefaultParameterGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultParameterGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"parameters\":[{\"name\":\"vpbttd\",\"description\":\"orppxebmnzbtb\",\"value\":\"pglkf\",\"defaultValue\":\"hdneuelfph\",\"valueSource\":\"UserOverride\",\"dataType\":\"t\",\"allowedValues\":\"fikdowwqu\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"lvithhqzonosgg\",\"unit\":\"c\"}],\"description\":\"fwdsj\",\"postgreSqlVersion\":\"17\"},\"id\":\"ljuti\",\"name\":\"swacffgdkzz\",\"type\":\"wkfvhqcrailvp\"}")
+            "{\"properties\":{\"provisioningState\":\"Provisioning\",\"parameters\":[{\"name\":\"jpxac\",\"description\":\"udfnbyxba\",\"value\":\"bjyvay\",\"defaultValue\":\"imrzrtuzqog\",\"valueSource\":\"UserOverride\",\"dataType\":\"evfdnwnwm\",\"allowedValues\":\"zsyyceuzso\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"frxtrthzvaytdwk\",\"unit\":\"rqubpaxhexiil\"},{\"name\":\"pdtii\",\"description\":\"tdqoaxoruzfgsq\",\"value\":\"fxrxxle\",\"defaultValue\":\"ramxjezwlwnw\",\"valueSource\":\"SystemDefault\",\"dataType\":\"cvydypatdoo\",\"allowedValues\":\"jkniodko\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"jhemms\",\"unit\":\"dkcrodt\"}],\"description\":\"nfwjlfltkacjvefk\",\"postgreSqlVersion\":\"17\"},\"id\":\"oakggkfpag\",\"name\":\"owpulpq\",\"type\":\"lyls\"}")
             .toObject(DefaultParameterGroupInner.class);
-        Assertions.assertEquals("vpbttd", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("pglkf", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("fwdsj", model.properties().description());
+        Assertions.assertEquals("jpxac", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("bjyvay", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("nfwjlfltkacjvefk", model.properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V17, model.properties().postgreSqlVersion());
     }
 }

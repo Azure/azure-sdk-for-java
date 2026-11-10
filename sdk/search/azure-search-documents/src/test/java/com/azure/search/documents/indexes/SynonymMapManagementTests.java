@@ -4,6 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.search.documents.SearchTestBase;
@@ -513,7 +514,10 @@ public class SynonymMapManagementTests extends SearchTestBase {
         List<String> expectedNames = createSynonymMapsForPagination(prefix);
         List<PagedResponse<SynonymMap>> pages = new ArrayList<>();
 
-        client.getSynonymMaps(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage().forEach(pages::add);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
+        client.listSynonymMaps(options).iterableByPage().forEach(pages::add);
 
         assertSynonymMapPages(expectedNames, pages);
     }
@@ -522,9 +526,11 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void canListSynonymMapsByPrefixAcrossPagesAsync() {
         String prefix = testResourceNamer.randomName("paged-synonym-", 24);
         List<String> expectedNames = createSynonymMapsForPagination(prefix);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
 
-        StepVerifier
-            .create(asyncClient.getSynonymMaps(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList())
+        StepVerifier.create(asyncClient.listSynonymMaps(options).byPage().collectList())
             .assertNext(pages -> assertSynonymMapPages(expectedNames, pages))
             .verifyComplete();
     }
