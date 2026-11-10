@@ -59,8 +59,14 @@ No custom group override is needed; the endpoint-probe suite includes this test
 automatically. It is not part of the force-enabled `thinclient` group. Provisioned
 throughput incurs charges; let the unconditional cleanup finish when debugging.
 
-Explicit compound tokens use the existing target/parent token selection. An unresolved
-target, no matching progress, or an unknown token range triggers one routing-map refresh.
+Explicit compound tokens are scoped in the normal request pipeline, using the collection,
+routing map, and resolved range already available to the operation. There is no separate
+preparation pipeline before hedging. A prepared request or its clones can reuse their
+scoped token while the scope remains valid; independently constructed hedge and retry
+requests scope the original caller token independently.
+
+Scoping uses the existing target/parent token selection. An unresolved target, no matching
+progress, or an unknown token range triggers one routing-map refresh for that preparation.
 The unknown-range check also applies when a parent token matches: V2 can route by EPK to
 a split child without rejecting the client's stale parent map.
 
