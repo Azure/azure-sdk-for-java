@@ -48,12 +48,12 @@ If you want to take dependency on a particular version of the library that is no
 add the direct dependency to your project as follows.
 
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-common;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-common-private;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-common</artifactId>
-    <version>12.37.0-private</version>
+    <artifactId>azure-storage-common-private</artifactId>
+    <version>12.37.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -51,12 +51,12 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob-private;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.38.0-private</version>
+    <artifactId>azure-storage-blob-private</artifactId>
+    <version>12.38.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

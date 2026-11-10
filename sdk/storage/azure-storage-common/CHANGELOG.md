@@ -1,6 +1,6 @@
 # Release History
 
-## 12.37.0-private (2026-11-09)
+## 12.37.0 (2026-11-10)
 
 ### Features Added
 - Provides a private general availability (GA) release of the STG105 features.

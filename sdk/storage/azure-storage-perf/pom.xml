@@ -24,8 +24,8 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.38.0-private</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <artifactId>azure-storage-blob-private</artifactId>
+      <version>12.38.0</version> <!-- {x-version-update;com.azure:azure-storage-blob-private;current} -->
     </dependency>
 
     <dependency>
