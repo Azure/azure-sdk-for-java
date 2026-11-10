@@ -76,8 +76,6 @@ public final class SovereignViewRemediateResultInner implements JsonSerializable
         return jsonReader.readObject(reader -> {
             SovereignViewRemediateResultInner deserializedSovereignViewRemediateResultInner
                 = new SovereignViewRemediateResultInner();
-            SovereignViewRemediateResultInner properties = null;
-            String status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -86,23 +84,11 @@ public final class SovereignViewRemediateResultInner implements JsonSerializable
                     deserializedSovereignViewRemediateResultInner.remediationId = reader.getString();
                 } else if ("error".equals(fieldName)) {
                     deserializedSovereignViewRemediateResultInner.error = ManagementError.fromJson(reader);
-                } else if ("status".equals(fieldName)) {
-                    status = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    properties = SovereignViewRemediateResultInner.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            if ("Succeeded".equalsIgnoreCase(status) && properties != null) {
-                if (deserializedSovereignViewRemediateResultInner.remediationId == null) {
-                    deserializedSovereignViewRemediateResultInner.remediationId = properties.remediationId;
-                }
-                if (deserializedSovereignViewRemediateResultInner.error == null) {
-                    deserializedSovereignViewRemediateResultInner.error = properties.error;
-                }
-            }
             return deserializedSovereignViewRemediateResultInner;
         });
     }

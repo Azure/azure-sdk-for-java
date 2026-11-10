@@ -10,9 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.sovereign.SovereignManager;
 import com.azure.resourcemanager.sovereign.fluent.models.SovereignViewRemediateResultInner;
 import com.azure.resourcemanager.sovereign.implementation.SovereignManagementClientBuilder;
 import com.azure.resourcemanager.sovereign.implementation.SovereignManagementClientImpl;
@@ -41,8 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SdkRegressionTests {
     private static final String JOB = "3192dc72-05d7-4ef2-9111-ea715172390d";
-    private static final String ENVELOPE
-        = "{\"status\":\"Succeeded\",\"properties\":{\"remediationId\":\"" + JOB + "\"}}";
 
     @Test
     public void typedSnapshotRetainsSeventhDigitOnActualRequest() {
@@ -72,44 +67,10 @@ public class SdkRegressionTests {
     }
 
     @Test
-    public void flatAndEnvelopeResultsNormalizeIdentically() {
+    public void flatResultPreservesRemediationId() {
         assertEquals(JOB,
             BinaryData.fromString("{\"remediationId\":\"" + JOB + "\"}")
                 .toObject(SovereignViewRemediateResultInner.class)
-                .remediationId());
-        assertEquals(JOB,
-            BinaryData.fromString(ENVELOPE).toObject(SovereignViewRemediateResultInner.class).remediationId());
-    }
-
-    @Test
-    public void awaitedPublicResultIncludesTerminalEnvelopeId() {
-        AtomicInteger polls = new AtomicInteger();
-        SovereignManagementClientImpl client = client(request -> {
-            if (request.getHttpMethod() == HttpMethod.POST) {
-                return new Reply(request, 202, "{\"remediationId\":\"" + JOB + "\"}", true);
-            }
-            polls.incrementAndGet();
-            return new Reply(request, 200, ENVELOPE, false);
-        });
-        com.azure.core.util.polling.SyncPoller<?, SovereignViewRemediateResultInner> poller = client
-            .getSovereignViewOperations()
-            .beginRemediate("rg", "view", new SovereignViewRemediateContent(), new Context("regression", "context"));
-        poller.waitForCompletion();
-        assertTrue(polls.get() > 0, "ARM status endpoint must be polled");
-        assertEquals(JOB, poller.getFinalResult().remediationId());
-        assertTrue(polls.get() > 0);
-    }
-
-    @Test
-    public void highLevelPublicRemediateReturnsActualAwaitedId() {
-        HttpClient http = request -> Mono.just(request.getHttpMethod() == HttpMethod.POST
-            ? new Reply(request, 202, "{\"remediationId\":\"" + JOB + "\"}", true)
-            : new Reply(request, 200, ENVELOPE, false));
-        SovereignManager manager = SovereignManager.authenticate(new HttpPipelineBuilder().httpClient(http).build(),
-            new AzureProfile("tenant", "00000000-0000-0000-0000-000000000001", AzureEnvironment.AZURE));
-        assertEquals(JOB,
-            manager.sovereignViewOperations()
-                .remediate("rg", "view", new SovereignViewRemediateContent())
                 .remediationId());
     }
 
@@ -158,14 +119,13 @@ public class SdkRegressionTests {
     }
 
     @Test
-    public void immediateFlatAndEnvelopeResponsesWork() {
-        for (String response : new String[] { "{\"remediationId\":\"" + JOB + "\"}", ENVELOPE }) {
-            SovereignManagementClientImpl client = client(request -> new Reply(request, 200, response, false));
-            assertEquals(JOB,
-                client.getSovereignViewOperations()
-                    .remediate("rg", "view", new SovereignViewRemediateContent())
-                    .remediationId());
-        }
+    public void immediateFlatResponsePreservesRemediationId() {
+        SovereignManagementClientImpl client
+            = client(request -> new Reply(request, 200, "{\"remediationId\":\"" + JOB + "\"}", false));
+        assertEquals(JOB,
+            client.getSovereignViewOperations()
+                .remediate("rg", "view", new SovereignViewRemediateContent())
+                .remediationId());
     }
 
     @Test
