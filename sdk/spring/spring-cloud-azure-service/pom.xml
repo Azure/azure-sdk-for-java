@@ -95,8 +95,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.37.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <artifactId>azure-storage-blob-private</artifactId>
+      <version>12.37.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-private;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
