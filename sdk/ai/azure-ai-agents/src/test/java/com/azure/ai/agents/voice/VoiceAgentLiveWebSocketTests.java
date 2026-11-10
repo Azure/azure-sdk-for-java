@@ -279,11 +279,14 @@ public class VoiceAgentLiveWebSocketTests {
                 assertNotNull(live);
                 assertTrue(live.isOpen());
             }
-            try (VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
+            VoiceAgentsWebSocketSessionAsyncClient realtime = builder.buildVoiceAgentsWebSocketAsyncClient()
                 .openWebSocketSession("agent", realtimeOptions)
-                .block(TIMEOUT)) {
-                assertNotNull(realtime);
+                .block(TIMEOUT);
+            assertNotNull(realtime);
+            try {
                 assertTrue(realtime.isOpen());
+            } finally {
+                realtime.closeAsync().block(TIMEOUT);
             }
         } else {
             try (BetaVoiceAgentsLiveWebSocketSessionClient live
