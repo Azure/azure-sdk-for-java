@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class DeploymentsPauseSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/PauseDeployment.json
+     * x-ms-original-file: 2026-11-01/PauseDeployment.json
      */
     /**
      * Sample code: PauseDeployment.

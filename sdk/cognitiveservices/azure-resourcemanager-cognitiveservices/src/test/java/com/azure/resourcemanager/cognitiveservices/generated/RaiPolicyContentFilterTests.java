@@ -15,30 +15,30 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"djhlimm\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PostRun\",\"action\":\"BLOCKING\"}")
+            "{\"name\":\"krribdeibqi\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"BLOCKING\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("djhlimm", model.name());
+        Assertions.assertEquals("krribdeibqi", model.name());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_RUN, model.source());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
         Assertions.assertEquals(RaiActionType.BLOCKING, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("djhlimm")
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("krribdeibqi")
             .withEnabled(false)
-            .withSeverityThreshold(ContentLevel.LOW)
-            .withBlocking(true)
-            .withSource(RaiPolicyContentSource.POST_RUN)
+            .withSeverityThreshold(ContentLevel.HIGH)
+            .withBlocking(false)
+            .withSource(RaiPolicyContentSource.COMPLETION)
             .withAction(RaiActionType.BLOCKING);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("djhlimm", model.name());
+        Assertions.assertEquals("krribdeibqi", model.name());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_RUN, model.source());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
         Assertions.assertEquals(RaiActionType.BLOCKING, model.action());
     }
 }

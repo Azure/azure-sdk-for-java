@@ -13,19 +13,19 @@ public final class ProvisioningIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssue model = BinaryData.fromString(
-            "{\"name\":\"wdcxsmlzzhz\",\"properties\":{\"issueType\":\"etlgydlhqvlnnpx\",\"severity\":\"afiqgeaarbgjekg\",\"description\":\"lbyulidwcwvmze\",\"suggestedResourceIds\":[\"nfhjirwgdnqzbr\"],\"suggestedAccessRules\":[{\"name\":\"zhzmtksjci\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"cdgljplkeuac\",\"tomflrytswfpf\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{},{},{}],\"fullyQualifiedDomainNames\":[\"mskwhqjjysl\",\"rlpshhkv\"]}},{\"name\":\"dwqslsrhmpqvw\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"cbrwi\",\"uvqejosovyrrle\",\"esi\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{},{},{}],\"fullyQualifiedDomainNames\":[\"obbpihehc\",\"cy\",\"mrqbrjbbmpxdlv\"]}},{\"name\":\"frexcrseqw\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"dgzhxogj\",\"gsv\",\"u\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{}],\"fullyQualifiedDomainNames\":[\"fhrkmdyom\",\"xfbvfb\",\"dy\"]}}]}}")
+            "{\"name\":\"mqfoudorh\",\"properties\":{\"issueType\":\"yprotwyp\",\"severity\":\"d\",\"description\":\"xhugcm\",\"suggestedResourceIds\":[\"vlgo\"],\"suggestedAccessRules\":[{\"name\":\"tp\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"ltfvnz\",\"yj\",\"otp\",\"opv\"],\"subscriptions\":[{},{},{}],\"networkSecurityPerimeters\":[{}],\"fullyQualifiedDomainNames\":[\"qqihedsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\"]}},{\"name\":\"hdxbzlm\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"vhdbevwqqxey\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{},{}],\"fullyQualifiedDomainNames\":[\"nkfkbgbzb\",\"wxeqocljmygvkzqk\",\"jeokbzefezrxccz\"]}}]}}")
             .toObject(ProvisioningIssue.class);
-        Assertions.assertEquals("wdcxsmlzzhz", model.name());
-        Assertions.assertEquals("etlgydlhqvlnnpx", model.properties().issueType());
-        Assertions.assertEquals("afiqgeaarbgjekg", model.properties().severity());
-        Assertions.assertEquals("lbyulidwcwvmze", model.properties().description());
-        Assertions.assertEquals("nfhjirwgdnqzbr", model.properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("zhzmtksjci", model.properties().suggestedAccessRules().get(0).name());
+        Assertions.assertEquals("mqfoudorh", model.name());
+        Assertions.assertEquals("yprotwyp", model.properties().issueType());
+        Assertions.assertEquals("d", model.properties().severity());
+        Assertions.assertEquals("xhugcm", model.properties().description());
+        Assertions.assertEquals("vlgo", model.properties().suggestedResourceIds().get(0));
+        Assertions.assertEquals("tp", model.properties().suggestedAccessRules().get(0).name());
         Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.properties().suggestedAccessRules().get(0).properties().direction());
-        Assertions.assertEquals("cdgljplkeuac",
+        Assertions.assertEquals("ltfvnz",
             model.properties().suggestedAccessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("mskwhqjjysl",
+        Assertions.assertEquals("qqihedsvqwthmk",
             model.properties().suggestedAccessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
     }
 }
