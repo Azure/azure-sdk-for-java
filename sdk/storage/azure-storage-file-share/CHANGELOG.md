@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+- When no root element name is passed, `toXml`/`fromXml` on `ShareAccessPolicy`, `ShareRetentionPolicy` and
+  `ShareMetrics` now default to the service's element names (`AccessPolicy`, `RetentionPolicy` and `Metrics`) instead
+  of the class names. Requests and responses sent through the clients are unaffected.
+
 ### Bugs Fixed
 - Fixed a bug where `ShareProperties.isSmbDirectoryLeaseEnabled()` always returned `null` because the value returned by
   the service was not mapped onto the public model.

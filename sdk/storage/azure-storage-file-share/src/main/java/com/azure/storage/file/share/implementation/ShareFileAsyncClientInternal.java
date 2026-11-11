@@ -6,10 +6,6 @@ package com.azure.storage.file.share.implementation;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -26,6 +22,7 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHea
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
@@ -45,6 +42,7 @@ import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.models.ShareStorageErrorException;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePropertySemantics;
@@ -52,7 +50,6 @@ import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import java.nio.ByteBuffer;
 import java.util.Base64;
@@ -200,10 +197,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -305,10 +299,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -395,10 +386,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -440,10 +428,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -542,10 +527,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -594,10 +576,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -648,10 +627,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -689,10 +665,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -741,10 +714,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -792,10 +762,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -870,10 +837,7 @@ public final class ShareFileAsyncClientInternal {
      * that range. Allowed values: "update", "clear".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -941,10 +905,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileRangeWriteFromUrl Only update is supported. Allowed values: "update".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1021,10 +982,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1103,10 +1061,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the paginated list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1183,10 +1138,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1228,10 +1180,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1298,10 +1247,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1345,10 +1291,7 @@ public final class ShareFileAsyncClientInternal {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1425,10 +1368,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1491,10 +1431,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1535,10 +1472,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1595,10 +1529,7 @@ public final class ShareFileAsyncClientInternal {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1705,10 +1636,7 @@ public final class ShareFileAsyncClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of hard links for a file along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1760,10 +1688,7 @@ public final class ShareFileAsyncClientInternal {
      * @param optionalBody Initial data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1914,10 +1839,7 @@ public final class ShareFileAsyncClientInternal {
      * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalBody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2027,10 +1949,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2055,16 +1974,13 @@ public final class ShareFileAsyncClientInternal {
      * the message schema version and properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponse(Integer timeout,
+    public Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponse(Integer timeout,
         String range, Boolean rangeGetContentMD5, String leaseId, String structuredBodyType,
         RequestOptions requestOptions) {
         // Generated convenience method for downloadWithResponseInternal
@@ -2088,7 +2004,7 @@ public final class ShareFileAsyncClientInternal {
         return downloadWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
                 protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue(), new ShareFileDownloadHeaders(protocolMethodResponse.getHeaders())));
+                protocolMethodResponse.getValue(), new FilesDownloadHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -2102,10 +2018,7 @@ public final class ShareFileAsyncClientInternal {
      * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
      * the message schema version and properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2137,10 +2050,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Reads or downloads a file from the system, including its metadata and properties.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2160,10 +2070,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2194,10 +2101,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2222,10 +2126,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Returns all user-defined metadata, standard HTTP properties, and system properties for the file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2245,10 +2146,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2276,10 +2174,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2300,10 +2195,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Removes the file from the storage account.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2346,10 +2238,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2458,10 +2347,7 @@ public final class ShareFileAsyncClientInternal {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2541,10 +2427,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Sets HTTP headers on a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2565,10 +2448,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2604,10 +2484,7 @@ public final class ShareFileAsyncClientInternal {
      * @param metadata Optional. User-defined metadata for the resource.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2636,10 +2513,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Sets one or more user-defined name-value pairs for the specified file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2664,10 +2538,7 @@ public final class ShareFileAsyncClientInternal {
      * string formats.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2703,10 +2574,7 @@ public final class ShareFileAsyncClientInternal {
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
      * string formats.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2730,10 +2598,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2752,10 +2617,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2780,10 +2642,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2803,10 +2662,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2828,10 +2684,7 @@ public final class ShareFileAsyncClientInternal {
      * string formats.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2862,10 +2715,7 @@ public final class ShareFileAsyncClientInternal {
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
      * string formats.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2888,10 +2738,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2910,10 +2757,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2941,10 +2785,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2965,10 +2806,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3000,10 +2838,7 @@ public final class ShareFileAsyncClientInternal {
      * @param optionalBody Initial data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3062,10 +2897,7 @@ public final class ShareFileAsyncClientInternal {
      * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalBody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3112,10 +2944,7 @@ public final class ShareFileAsyncClientInternal {
      * that range.
      * @param contentLength The number of bytes being transmitted in the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3147,10 +2976,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3215,10 +3041,7 @@ public final class ShareFileAsyncClientInternal {
      * copy source.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3272,10 +3095,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileRangeWriteFromUrl Only update is supported.
      * @param contentLength The number of bytes being transmitted in the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3303,10 +3123,7 @@ public final class ShareFileAsyncClientInternal {
      * whether the changed ranges for a file that has been renamed or moved should be listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3355,10 +3172,7 @@ public final class ShareFileAsyncClientInternal {
      * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
      * whether the changed ranges for a file that has been renamed or moved should be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges on successful completion of {@link Mono}.
      */
@@ -3394,10 +3208,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Returns the list of valid page ranges for a file or snapshot of a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges on successful completion of {@link Mono}.
      */
@@ -3426,10 +3237,7 @@ public final class ShareFileAsyncClientInternal {
      * @param maxresults Specifies the maximum number of items to return.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -3488,10 +3296,7 @@ public final class ShareFileAsyncClientInternal {
      * operation.
      * @param maxresults Specifies the maximum number of items to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges on successful completion of {@link Mono}.
      */
@@ -3533,10 +3338,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Returns a paginated list of valid page ranges for a file or snapshot of a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges on successful completion of {@link Mono}.
      */
@@ -3575,10 +3377,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileOwnerCopyMode Specifies owner copy option for the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3687,10 +3486,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileModeCopyMode Specifies mode copy option for the file.
      * @param fileOwnerCopyMode Specifies owner copy option for the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3777,10 +3573,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3801,10 +3594,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3833,10 +3623,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3859,10 +3646,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3884,10 +3668,7 @@ public final class ShareFileAsyncClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3925,10 +3706,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles on successful completion of {@link Mono}.
      */
@@ -3957,10 +3735,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Lists handles for file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles on successful completion of {@link Mono}.
      */
@@ -3984,10 +3759,7 @@ public final class ShareFileAsyncClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4021,10 +3793,7 @@ public final class ShareFileAsyncClientInternal {
      * operation.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4053,10 +3822,7 @@ public final class ShareFileAsyncClientInternal {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4092,10 +3858,7 @@ public final class ShareFileAsyncClientInternal {
      * @param fileContentType Sets the MIME content type of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4186,10 +3949,7 @@ public final class ShareFileAsyncClientInternal {
      * @param metadata Optional. User-defined metadata for the resource.
      * @param fileContentType Sets the MIME content type of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4260,10 +4020,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4288,10 +4045,7 @@ public final class ShareFileAsyncClientInternal {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4345,10 +4099,7 @@ public final class ShareFileAsyncClientInternal {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4393,10 +4144,7 @@ public final class ShareFileAsyncClientInternal {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4416,10 +4164,7 @@ public final class ShareFileAsyncClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4446,10 +4191,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4471,10 +4213,7 @@ public final class ShareFileAsyncClientInternal {
     /**
      * Returns the target of a symbolic link. NFS only.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4496,10 +4235,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4528,10 +4264,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4556,10 +4289,7 @@ public final class ShareFileAsyncClientInternal {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -4581,10 +4311,7 @@ public final class ShareFileAsyncClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -4619,10 +4346,7 @@ public final class ShareFileAsyncClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file on successful completion of {@link Mono}.
      */
@@ -4648,10 +4372,7 @@ public final class ShareFileAsyncClientInternal {
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
      * for the file. NFS only.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file on successful completion of {@link Mono}.
      */

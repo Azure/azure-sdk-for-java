@@ -33,6 +33,7 @@ import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
@@ -49,7 +50,8 @@ import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegm
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.ShareStats;
-import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
+import com.azure.storage.file.share.implementation.models.ShareStorageError;
+import com.azure.storage.file.share.implementation.models.ShareStorageErrorException;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
@@ -83,6 +85,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
@@ -290,14 +293,56 @@ public class ModelHelper {
         return new ServicesListSharesSegmentHeaders(headers);
     }
 
-    public static ShareFileDownloadHeaders transformFileDownloadHeaders(ShareFileDownloadHeaders headers,
+    /**
+     * Maps the generated download response headers to the public {@link ShareFileDownloadHeaders}. {@code Content-Type}
+     * and the error code are read from the raw headers: the spec models the download {@code Content-Type} as a constant
+     * body media type, so the generated headers model omits it, and the error code is not part of the download
+     * response headers.
+     *
+     * @param headers The generated download response headers.
+     * @param rawHeaders The raw response headers.
+     * @return The public download headers, or {@code null} if {@code headers} is {@code null}.
+     */
+    public static ShareFileDownloadHeaders transformFileDownloadHeaders(FilesDownloadHeaders headers,
         HttpHeaders rawHeaders) {
         if (headers == null) {
             return null;
         }
 
-        headers.setContentType(rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
-        return headers.setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
+        return new ShareFileDownloadHeaders().setLastModified(headers.getLastModified())
+            .setMetadata(headers.getMetadata())
+            .setContentLength(headers.getContentLength())
+            .setContentType(rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE))
+            .setContentRange(headers.getContentRange())
+            .setETag(headers.getEtag())
+            .setContentMd5(headers.getContentMD5())
+            .setContentEncoding(headers.getContentEncoding())
+            .setCacheControl(headers.getCacheControl())
+            .setContentDisposition(headers.getContentDisposition())
+            .setContentLanguage(headers.getContentLanguage())
+            .setRequestId(headers.getRequestId())
+            .setVersion(headers.getVersion())
+            .setAcceptRanges(headers.getAcceptRanges())
+            .setDateProperty(headers.getDate())
+            .setCopyCompletionTime(headers.getCopyCompletionTime())
+            .setCopyStatusDescription(headers.getCopyStatusDescription())
+            .setCopyId(headers.getCopyId())
+            .setCopyProgress(headers.getCopyProgress())
+            .setCopySource(headers.getCopySource())
+            .setCopyStatus(headers.getCopyStatus())
+            .setFileContentMd5(headers.getFileContentMD5())
+            .setIsServerEncrypted(headers.isServerEncrypted())
+            .setFileAttributes(headers.getFileAttributes())
+            .setFileCreationTime(headers.getFileCreationTime())
+            .setFileLastWriteTime(headers.getFileLastWriteTime())
+            .setFileChangeTime(headers.getFileChangeTime())
+            .setFilePermissionKey(headers.getFilePermissionKey())
+            .setFileId(headers.getFileId())
+            .setFileParentId(headers.getFileParentId())
+            .setLeaseDuration(headers.getLeaseDuration())
+            .setLeaseState(headers.getLeaseState())
+            .setLeaseStatus(headers.getLeaseStatus())
+            .setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
     }
 
     public static String getETag(HttpHeaders headers) {
@@ -529,7 +574,7 @@ public class ModelHelper {
             .setPaidBurstingEnabled(headers.isPaidBurstingEnabled())
             .setPaidBurstingMaxIops(headers.getPaidBurstingMaxIops())
             .setPaidBurstingMaxBandwidthMibps(headers.getPaidBurstingMaxBandwidthMibps())
-            .setRootSquash(headers.getRootSquash())
+            .setRootSquash(headers.getRootSquash() == null ? null : ShareRootSquash.fromString(headers.getRootSquash()))
             .setIncludedBurstIops(headers.getIncludedBurstIops())
             .setMaxBurstCreditsForIops(headers.getMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getNextAllowedProvisionedIopsDowngradeTime())
@@ -741,7 +786,7 @@ public class ModelHelper {
 
     /**
      * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
-     * {@link ShareStorageExceptionInternal} and it will be mapped to {@link ShareStorageException}.
+     * {@link ShareStorageErrorException} and it will be mapped to {@link ShareStorageException}.
      * <p>
      * The internal exception is required as the public exception was created using Object as the exception value. This
      * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
@@ -750,9 +795,10 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
-        String code = internal.getValue() == null ? null : internal.getValue().getCode();
-        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+    public static ShareStorageException mapToShareStorageException(ShareStorageErrorException internal) {
+        ShareStorageError error = internal.getValue();
+        String code = error == null || error.getCode() == null ? null : error.getCode().toString();
+        String headerName = error == null ? null : error.getHeaderName();
         return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
@@ -795,10 +841,13 @@ public class ModelHelper {
                 headers.getCopyId(), headers.getCopyProgress(), headers.getCopySource(), headers.getCopyStatus(),
                 headers.isServerEncrypted(), smbProperties, posixProperties, headers.getFileName());
         List<ShareFileLink> links = new ArrayList<>();
-        for (HardLink hardLink : response.getValue().getHardLinks()) {
-            StringEncoded encodedFileName = hardLink.getFileName();
-            links.add(new ShareFileLink(hardLink.getParentId(),
-                encodedFileName == null ? null : decodeName(encodedFileName)));
+        HardLinkList hardLinkList = response.getValue();
+        if (hardLinkList != null && hardLinkList.getHardLinks() != null) {
+            for (HardLink hardLink : hardLinkList.getHardLinks()) {
+                StringEncoded encodedFileName = hardLink.getFileName();
+                links.add(new ShareFileLink(hardLink.getParentId(),
+                    encodedFileName == null ? null : decodeName(encodedFileName)));
+            }
         }
         return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
     }

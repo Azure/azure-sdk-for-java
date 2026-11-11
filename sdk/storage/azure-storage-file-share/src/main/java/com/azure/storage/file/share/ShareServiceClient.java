@@ -34,7 +34,6 @@ import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;

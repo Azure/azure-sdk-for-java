@@ -6,10 +6,6 @@ package com.azure.storage.file.share.implementation;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -25,6 +21,7 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHea
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
@@ -44,6 +41,7 @@ import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.models.ShareStorageErrorException;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePropertySemantics;
@@ -51,7 +49,6 @@ import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import java.util.Base64;
 import java.util.Map;
@@ -196,10 +193,7 @@ public final class ShareFileClientInternal {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -301,10 +295,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @Generated
@@ -391,10 +382,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -436,10 +424,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -538,10 +523,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -590,10 +572,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -644,10 +623,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -685,10 +661,7 @@ public final class ShareFileClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -737,10 +710,7 @@ public final class ShareFileClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -788,10 +758,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -866,10 +833,7 @@ public final class ShareFileClientInternal {
      * that range. Allowed values: "update", "clear".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -936,10 +900,7 @@ public final class ShareFileClientInternal {
      * @param fileRangeWriteFromUrl Only update is supported. Allowed values: "update".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1016,10 +977,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of file ranges along with {@link Response}.
      */
     @Generated
@@ -1098,10 +1056,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the paginated list of file ranges along with {@link Response}.
      */
     @Generated
@@ -1178,10 +1133,7 @@ public final class ShareFileClientInternal {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1223,10 +1175,7 @@ public final class ShareFileClientInternal {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1293,10 +1242,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return an enumeration of handles along with {@link Response}.
      */
     @Generated
@@ -1340,10 +1286,7 @@ public final class ShareFileClientInternal {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1420,10 +1363,7 @@ public final class ShareFileClientInternal {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1486,10 +1426,7 @@ public final class ShareFileClientInternal {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1530,10 +1467,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1590,10 +1524,7 @@ public final class ShareFileClientInternal {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1700,10 +1631,7 @@ public final class ShareFileClientInternal {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of hard links for a file along with {@link Response}.
      */
     @Generated
@@ -1755,10 +1683,7 @@ public final class ShareFileClientInternal {
      * @param optionalBody Initial data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1909,10 +1834,7 @@ public final class ShareFileClientInternal {
      * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalBody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2022,10 +1944,7 @@ public final class ShareFileClientInternal {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2050,16 +1969,13 @@ public final class ShareFileClientInternal {
      * the message schema version and properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ShareFileDownloadHeaders, BinaryData> downloadWithResponse(Integer timeout, String range,
+    public ResponseBase<FilesDownloadHeaders, BinaryData> downloadWithResponse(Integer timeout, String range,
         Boolean rangeGetContentMD5, String leaseId, String structuredBodyType, RequestOptions requestOptions) {
         // Generated convenience method for downloadWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2082,7 +1998,7 @@ public final class ShareFileClientInternal {
         Response<BinaryData> protocolMethodResponse = downloadWithResponseInternal(requestOptions);
         return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
             protocolMethodResponse.getHeaders(), protocolMethodResponse.getValue(),
-            new ShareFileDownloadHeaders(protocolMethodResponse.getHeaders()));
+            new FilesDownloadHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -2096,10 +2012,7 @@ public final class ShareFileClientInternal {
      * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
      * the message schema version and properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2131,10 +2044,7 @@ public final class ShareFileClientInternal {
     /**
      * Reads or downloads a file from the system, including its metadata and properties.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2154,10 +2064,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2188,10 +2095,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2216,10 +2120,7 @@ public final class ShareFileClientInternal {
     /**
      * Returns all user-defined metadata, standard HTTP properties, and system properties for the file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2239,10 +2140,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2269,10 +2167,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2292,10 +2187,7 @@ public final class ShareFileClientInternal {
     /**
      * Removes the file from the storage account.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2337,10 +2229,7 @@ public final class ShareFileClientInternal {
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2449,10 +2338,7 @@ public final class ShareFileClientInternal {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2532,10 +2418,7 @@ public final class ShareFileClientInternal {
     /**
      * Sets HTTP headers on a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2556,10 +2439,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2595,10 +2475,7 @@ public final class ShareFileClientInternal {
      * @param metadata Optional. User-defined metadata for the resource.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2627,10 +2504,7 @@ public final class ShareFileClientInternal {
     /**
      * Sets one or more user-defined name-value pairs for the specified file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2655,10 +2529,7 @@ public final class ShareFileClientInternal {
      * string formats.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2694,10 +2565,7 @@ public final class ShareFileClientInternal {
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
      * string formats.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2720,10 +2588,7 @@ public final class ShareFileClientInternal {
     /**
      * The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2741,10 +2606,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2769,10 +2631,7 @@ public final class ShareFileClientInternal {
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2791,10 +2650,7 @@ public final class ShareFileClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2815,10 +2671,7 @@ public final class ShareFileClientInternal {
      * string formats.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2849,10 +2702,7 @@ public final class ShareFileClientInternal {
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
      * string formats.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2874,10 +2724,7 @@ public final class ShareFileClientInternal {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2895,10 +2742,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2925,10 +2769,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2948,10 +2789,7 @@ public final class ShareFileClientInternal {
     /**
      * The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -2982,10 +2820,7 @@ public final class ShareFileClientInternal {
      * @param optionalBody Initial data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -3045,10 +2880,7 @@ public final class ShareFileClientInternal {
      * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalBody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3096,10 +2928,7 @@ public final class ShareFileClientInternal {
      * that range.
      * @param contentLength The number of bytes being transmitted in the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3132,10 +2961,7 @@ public final class ShareFileClientInternal {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -3199,10 +3025,7 @@ public final class ShareFileClientInternal {
      * copy source.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3256,10 +3079,7 @@ public final class ShareFileClientInternal {
      * @param fileRangeWriteFromUrl Only update is supported.
      * @param contentLength The number of bytes being transmitted in the request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3287,10 +3107,7 @@ public final class ShareFileClientInternal {
      * whether the changed ranges for a file that has been renamed or moved should be listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link ResponseBase}.
      */
@@ -3339,10 +3156,7 @@ public final class ShareFileClientInternal {
      * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
      * whether the changed ranges for a file that has been renamed or moved should be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges.
      */
@@ -3378,10 +3192,7 @@ public final class ShareFileClientInternal {
     /**
      * Returns the list of valid page ranges for a file or snapshot of a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges.
      */
@@ -3410,10 +3221,7 @@ public final class ShareFileClientInternal {
      * @param maxresults Specifies the maximum number of items to return.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges along with {@link ResponseBase}.
      */
@@ -3471,10 +3279,7 @@ public final class ShareFileClientInternal {
      * operation.
      * @param maxresults Specifies the maximum number of items to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges.
      */
@@ -3516,10 +3321,7 @@ public final class ShareFileClientInternal {
     /**
      * Returns a paginated list of valid page ranges for a file or snapshot of a file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of file ranges.
      */
@@ -3558,10 +3360,7 @@ public final class ShareFileClientInternal {
      * @param fileOwnerCopyMode Specifies owner copy option for the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -3670,10 +3469,7 @@ public final class ShareFileClientInternal {
      * @param fileModeCopyMode Specifies mode copy option for the file.
      * @param fileOwnerCopyMode Specifies owner copy option for the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3760,10 +3556,7 @@ public final class ShareFileClientInternal {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3784,10 +3577,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3815,10 +3605,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -3840,10 +3627,7 @@ public final class ShareFileClientInternal {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -3864,10 +3648,7 @@ public final class ShareFileClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link ResponseBase}.
      */
@@ -3905,10 +3686,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles.
      */
@@ -3936,10 +3714,7 @@ public final class ShareFileClientInternal {
     /**
      * Lists handles for file.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles.
      */
@@ -3963,10 +3738,7 @@ public final class ShareFileClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -4000,10 +3772,7 @@ public final class ShareFileClientInternal {
      * operation.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4032,10 +3801,7 @@ public final class ShareFileClientInternal {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4071,10 +3837,7 @@ public final class ShareFileClientInternal {
      * @param fileContentType Sets the MIME content type of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4164,10 +3927,7 @@ public final class ShareFileClientInternal {
      * @param metadata Optional. User-defined metadata for the resource.
      * @param fileContentType Sets the MIME content type of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -4237,10 +3997,7 @@ public final class ShareFileClientInternal {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -4264,10 +4021,7 @@ public final class ShareFileClientInternal {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -4321,10 +4075,7 @@ public final class ShareFileClientInternal {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4369,10 +4120,7 @@ public final class ShareFileClientInternal {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4392,10 +4140,7 @@ public final class ShareFileClientInternal {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -4422,10 +4167,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4447,10 +4189,7 @@ public final class ShareFileClientInternal {
     /**
      * Returns the target of a symbolic link. NFS only.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4472,10 +4211,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -4504,10 +4240,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4532,10 +4265,7 @@ public final class ShareFileClientInternal {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4557,10 +4287,7 @@ public final class ShareFileClientInternal {
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file along with {@link ResponseBase}.
      */
@@ -4594,10 +4321,7 @@ public final class ShareFileClientInternal {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param leaseId If specified, the lease ID must match the lease ID of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file.
      */
@@ -4622,10 +4346,7 @@ public final class ShareFileClientInternal {
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
      * for the file. NFS only.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of hard links for a file.
      */

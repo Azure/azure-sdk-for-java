@@ -43,7 +43,7 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * @param id the id value to set.
      */
     @Generated
-    public ShareSignedIdentifier(String id) {
+    private ShareSignedIdentifier(String id) {
         this.id = id;
     }
 

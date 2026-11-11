@@ -16,10 +16,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -28,7 +24,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.share.ShareServiceVersion;
-import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
+import com.azure.storage.file.share.implementation.models.ShareStorageErrorException;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.nio.ByteBuffer;
@@ -68,7 +64,7 @@ public final class FilesImpl {
     public ShareServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -83,7 +79,7 @@ public final class FilesImpl {
 
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileType,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -92,7 +88,7 @@ public final class FilesImpl {
 
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileType,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -101,7 +97,7 @@ public final class FilesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> download(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -110,7 +106,7 @@ public final class FilesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<BinaryData> downloadSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -118,7 +114,7 @@ public final class FilesImpl {
 
         @Head("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> getProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -126,7 +122,7 @@ public final class FilesImpl {
 
         @Head("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> getPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -134,7 +130,7 @@ public final class FilesImpl {
 
         @Delete("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> delete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -142,7 +138,7 @@ public final class FilesImpl {
 
         @Delete("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> deleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -150,7 +146,7 @@ public final class FilesImpl {
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> setHttpHeaders(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -159,7 +155,7 @@ public final class FilesImpl {
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> setHttpHeadersSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -167,7 +163,7 @@ public final class FilesImpl {
 
         @Put("?comp=metadata")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> setMetadata(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -175,7 +171,7 @@ public final class FilesImpl {
 
         @Put("?comp=metadata")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> setMetadataSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -183,7 +179,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> acquireLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -192,7 +188,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> acquireLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -201,7 +197,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> releaseLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -210,7 +206,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> releaseLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -219,7 +215,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> changeLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -228,7 +224,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> changeLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -237,7 +233,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> breakLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -246,7 +242,7 @@ public final class FilesImpl {
 
         @Put("?comp=lease")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> breakLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-lease-action") String action,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -255,7 +251,7 @@ public final class FilesImpl {
 
         @Put("?comp=range")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> uploadRange(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
             @HeaderParam("Content-Length") long contentLength,
@@ -265,7 +261,7 @@ public final class FilesImpl {
 
         @Put("?comp=range")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> uploadRangeSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
             @HeaderParam("Content-Length") long contentLength,
@@ -275,7 +271,7 @@ public final class FilesImpl {
 
         @Put("?comp=range")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> uploadRangeFromUrl(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Range") String range,
             @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
@@ -287,7 +283,7 @@ public final class FilesImpl {
 
         @Put("?comp=range")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> uploadRangeFromUrlSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Range") String range,
             @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
@@ -299,7 +295,7 @@ public final class FilesImpl {
 
         @Get("?comp=rangelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<BinaryData>> getRangeList(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -308,7 +304,7 @@ public final class FilesImpl {
 
         @Get("?comp=rangelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<BinaryData> getRangeListSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -317,7 +313,7 @@ public final class FilesImpl {
 
         @Get("?comp=rangelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<BinaryData>> listAllRanges(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -326,7 +322,7 @@ public final class FilesImpl {
 
         @Get("?comp=rangelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<BinaryData> listAllRangesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -335,7 +331,7 @@ public final class FilesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> startCopy(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -345,7 +341,7 @@ public final class FilesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> startCopySync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -355,7 +351,7 @@ public final class FilesImpl {
 
         @Put("?comp=copy")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> abortCopy(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @QueryParam("copyid") String copyid,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -364,7 +360,7 @@ public final class FilesImpl {
 
         @Put("?comp=copy")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> abortCopySync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @QueryParam("copyid") String copyid,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -373,7 +369,7 @@ public final class FilesImpl {
 
         @Get("?comp=listhandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<BinaryData>> listHandles(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -382,7 +378,7 @@ public final class FilesImpl {
 
         @Get("?comp=listhandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<BinaryData> listHandlesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -391,7 +387,7 @@ public final class FilesImpl {
 
         @Put("?comp=forceclosehandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> forceCloseHandles(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-handle-id") String handleId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -400,7 +396,7 @@ public final class FilesImpl {
 
         @Put("?comp=forceclosehandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> forceCloseHandlesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-handle-id") String handleId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -409,7 +405,7 @@ public final class FilesImpl {
 
         @Put("?comp=rename")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> rename(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-rename-source") String renameSource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -419,7 +415,7 @@ public final class FilesImpl {
 
         @Put("?comp=rename")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> renameSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-rename-source") String renameSource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -429,7 +425,7 @@ public final class FilesImpl {
 
         @Put("?restype=symboliclink")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> createSymbolicLink(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-link-text") String linkText,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -437,7 +433,7 @@ public final class FilesImpl {
 
         @Put("?restype=symboliclink")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> createSymbolicLinkSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-link-text") String linkText,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -445,7 +441,7 @@ public final class FilesImpl {
 
         @Get("?restype=symboliclink")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> getSymbolicLink(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -453,14 +449,14 @@ public final class FilesImpl {
 
         @Get("?restype=symboliclink")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> getSymbolicLinkSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
             Context context);
 
         @Put("?restype=hardlink")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<Void>> createHardLink(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-type") String fileType,
             @HeaderParam("x-ms-file-target-file") String targetFile,
@@ -469,7 +465,7 @@ public final class FilesImpl {
 
         @Put("?restype=hardlink")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<Void> createHardLinkSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-type") String fileType, @HeaderParam("x-ms-file-target-file") String targetFile,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -477,7 +473,7 @@ public final class FilesImpl {
 
         @Get("?comp=hardlinks")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Mono<Response<BinaryData>> getHardLinks(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -486,7 +482,7 @@ public final class FilesImpl {
 
         @Get("?comp=hardlinks")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
         Response<BinaryData> getHardLinksSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -613,10 +609,7 @@ public final class FilesImpl {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -632,7 +625,7 @@ public final class FilesImpl {
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 fileContentLength, fileType, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 requestOptionsLocal, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -754,10 +747,7 @@ public final class FilesImpl {
      *
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -774,7 +764,7 @@ public final class FilesImpl {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 fileContentLength, fileType, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 requestOptionsLocal, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -872,10 +862,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -884,7 +871,7 @@ public final class FilesImpl {
         return FluxUtil
             .withContext(context -> service.download(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -980,10 +967,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -993,7 +977,7 @@ public final class FilesImpl {
             return service.downloadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1076,10 +1060,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1088,7 +1069,7 @@ public final class FilesImpl {
             .withContext(
                 context -> service.getProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1169,10 +1150,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1180,7 +1158,7 @@ public final class FilesImpl {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1218,10 +1196,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1229,7 +1204,7 @@ public final class FilesImpl {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1265,10 +1240,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1276,7 +1248,7 @@ public final class FilesImpl {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1371,10 +1343,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1383,7 +1352,7 @@ public final class FilesImpl {
             .withContext(
                 context -> service.setHttpHeaders(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1476,10 +1445,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1487,7 +1453,7 @@ public final class FilesImpl {
         try {
             return service.setHttpHeadersSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1532,10 +1498,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1544,7 +1507,7 @@ public final class FilesImpl {
             .withContext(
                 context -> service.setMetadata(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1587,10 +1550,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1598,7 +1558,7 @@ public final class FilesImpl {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1645,10 +1605,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1658,7 +1615,7 @@ public final class FilesImpl {
             .withContext(context -> service.acquireLease(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), action, this.client.getFileRequestIntent(),
                 this.client.isAllowTrailingDot(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1703,10 +1660,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1715,7 +1669,7 @@ public final class FilesImpl {
             final String action = "acquire";
             return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1749,10 +1703,7 @@ public final class FilesImpl {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1762,7 +1713,7 @@ public final class FilesImpl {
             .withContext(context -> service.releaseLease(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), leaseId, action, this.client.getFileRequestIntent(),
                 this.client.isAllowTrailingDot(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1794,10 +1745,7 @@ public final class FilesImpl {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1807,7 +1755,7 @@ public final class FilesImpl {
             return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
                 action, this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1852,10 +1800,7 @@ public final class FilesImpl {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1865,7 +1810,7 @@ public final class FilesImpl {
             .withContext(context -> service.changeLease(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), leaseId, action, this.client.getFileRequestIntent(),
                 this.client.isAllowTrailingDot(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1908,10 +1853,7 @@ public final class FilesImpl {
      *
      * @param leaseId Specifies the current lease ID on the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1921,7 +1863,7 @@ public final class FilesImpl {
             return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
                 action, this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -1965,10 +1907,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1978,7 +1917,7 @@ public final class FilesImpl {
             .withContext(context -> service.breakLease(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), action, this.client.getFileRequestIntent(),
                 this.client.isAllowTrailingDot(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2020,10 +1959,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2032,7 +1968,7 @@ public final class FilesImpl {
             final String action = "break";
             return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2103,10 +2039,7 @@ public final class FilesImpl {
      * that range. Allowed values: "update", "clear".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2122,7 +2055,7 @@ public final class FilesImpl {
             .withContext(context -> service.uploadRange(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), range, fileRangeWrite, contentLength,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptionsLocal, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2191,10 +2124,7 @@ public final class FilesImpl {
      * that range. Allowed values: "update", "clear".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2211,7 +2141,7 @@ public final class FilesImpl {
             return service.uploadRangeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), range,
                 fileRangeWrite, contentLength, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 requestOptionsLocal, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2273,10 +2203,7 @@ public final class FilesImpl {
      * @param fileRangeWriteFromUrl Only update is supported. Allowed values: "update".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2287,7 +2214,7 @@ public final class FilesImpl {
                 this.client.getServiceVersion().getVersion(), range, copySource, fileRangeWriteFromUrl, contentLength,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2347,10 +2274,7 @@ public final class FilesImpl {
      * @param fileRangeWriteFromUrl Only update is supported. Allowed values: "update".
      * @param contentLength The number of bytes being transmitted in the request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2361,7 +2285,7 @@ public final class FilesImpl {
                 range, copySource, fileRangeWriteFromUrl, contentLength, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2432,10 +2356,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2445,7 +2366,7 @@ public final class FilesImpl {
             .withContext(context -> service.getRangeList(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2514,10 +2435,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of file ranges along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2527,7 +2445,7 @@ public final class FilesImpl {
             return service.getRangeListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2602,10 +2520,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the paginated list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2615,7 +2530,7 @@ public final class FilesImpl {
             .withContext(context -> service.listAllRanges(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2688,10 +2603,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the paginated list of file ranges along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2701,7 +2613,7 @@ public final class FilesImpl {
             return service.listAllRangesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2774,10 +2686,7 @@ public final class FilesImpl {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2786,7 +2695,7 @@ public final class FilesImpl {
             .withContext(context -> service.startCopy(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), copySource, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2857,10 +2766,7 @@ public final class FilesImpl {
      *
      * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2869,7 +2775,7 @@ public final class FilesImpl {
             return service.startCopySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copySource,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -2907,10 +2813,7 @@ public final class FilesImpl {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2920,7 +2823,7 @@ public final class FilesImpl {
             .withContext(context -> service.abortCopy(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), copyActionAbortConstant, copyid,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2956,10 +2859,7 @@ public final class FilesImpl {
      *
      * @param copyid The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2969,7 +2869,7 @@ public final class FilesImpl {
             return service.abortCopySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 copyActionAbortConstant, copyid, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3032,10 +2932,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3045,7 +2942,7 @@ public final class FilesImpl {
             .withContext(context -> service.listHandles(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3106,10 +3003,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return an enumeration of handles along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3119,7 +3013,7 @@ public final class FilesImpl {
             return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3159,10 +3053,7 @@ public final class FilesImpl {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3172,7 +3063,7 @@ public final class FilesImpl {
             .withContext(context -> service.forceCloseHandles(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), handleId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3210,10 +3101,7 @@ public final class FilesImpl {
      * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk ('*') is a wildcard
      * that specifies all handles.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3222,7 +3110,7 @@ public final class FilesImpl {
             return service.forceCloseHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 handleId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3295,10 +3183,7 @@ public final class FilesImpl {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3307,7 +3192,7 @@ public final class FilesImpl {
             .withContext(context -> service.rename(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 renameSource, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3378,10 +3263,7 @@ public final class FilesImpl {
      *
      * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3390,7 +3272,7 @@ public final class FilesImpl {
             return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), renameSource,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3449,10 +3331,7 @@ public final class FilesImpl {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3462,7 +3341,7 @@ public final class FilesImpl {
             .withContext(context -> service.createSymbolicLink(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), linkText, this.client.getFileRequestIntent(),
                 requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3519,10 +3398,7 @@ public final class FilesImpl {
      *
      * @param linkText NFS only. The path to the original file, the symbolic link is pointing to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3530,7 +3406,7 @@ public final class FilesImpl {
         try {
             return service.createSymbolicLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 linkText, this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3567,10 +3443,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3579,7 +3452,7 @@ public final class FilesImpl {
             .withContext(
                 context -> service.getSymbolicLink(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3614,10 +3487,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3625,7 +3495,7 @@ public final class FilesImpl {
         try {
             return service.getSymbolicLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3678,10 +3548,7 @@ public final class FilesImpl {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3692,7 +3559,7 @@ public final class FilesImpl {
             .withContext(
                 context -> service.createHardLink(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     fileType, targetFile, this.client.getFileRequestIntent(), requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3743,10 +3610,7 @@ public final class FilesImpl {
      * @param targetFile NFS only. Required. Specifies the path of the target file to which the link will be created, up
      * to 2 KiB in length.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3755,7 +3619,7 @@ public final class FilesImpl {
             final String fileType = "file";
             return service.createHardLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 fileType, targetFile, this.client.getFileRequestIntent(), requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
@@ -3858,10 +3722,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of hard links for a file along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3871,7 +3732,7 @@ public final class FilesImpl {
             .withContext(context -> service.getHardLinks(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3972,10 +3833,7 @@ public final class FilesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ShareStorageErrorException thrown if the request is rejected by server.
      * @return the list of hard links for a file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3985,7 +3843,7 @@ public final class FilesImpl {
             return service.getHardLinksSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
                 Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
+        } catch (ShareStorageErrorException internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }

@@ -39,6 +39,7 @@ import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.ShareFileAsyncClientInternal;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.FilesListAllRangesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
@@ -1337,7 +1338,7 @@ public class ShareFileAsyncClient {
         });
     }
 
-    private Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadRange(ShareFileRange range,
+    private Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadRange(ShareFileRange range,
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return fileClientInternal.downloadWithResponse(null, rangeString, rangeGetContentMD5,

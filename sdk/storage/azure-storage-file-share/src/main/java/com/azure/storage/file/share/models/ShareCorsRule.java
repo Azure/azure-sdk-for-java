@@ -76,7 +76,7 @@ public final class ShareCorsRule implements XmlSerializable<ShareCorsRule> {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      */
     @Generated
-    public ShareCorsRule(String allowedOrigins, String allowedMethods, String allowedHeaders, String exposedHeaders,
+    private ShareCorsRule(String allowedOrigins, String allowedMethods, String allowedHeaders, String exposedHeaders,
         int maxAgeInSeconds) {
         this.allowedOrigins = allowedOrigins;
         this.allowedMethods = allowedMethods;

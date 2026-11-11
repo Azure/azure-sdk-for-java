@@ -12,7 +12,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
-import com.azure.storage.file.share.models.ShareRootSquash;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -51,19 +50,19 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-share-provisioned-iops property.
      */
     @Generated
-    private final Integer provisionedIops;
+    private final Long provisionedIops;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
      */
     @Generated
-    private final Integer provisionedIngressMBps;
+    private final Long provisionedIngressMBps;
 
     /*
      * The x-ms-share-provisioned-egress-mbps property.
      */
     @Generated
-    private final Integer provisionedEgressMBps;
+    private final Long provisionedEgressMBps;
 
     /*
      * The x-ms-share-next-allowed-quota-downgrade-time property.
@@ -75,7 +74,7 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-share-provisioned-bandwidth-mibps property.
      */
     @Generated
-    private final Integer provisionedBandwidthMibps;
+    private final Long provisionedBandwidthMibps;
 
     /*
      * The x-ms-lease-duration property.
@@ -123,7 +122,7 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-root-squash property.
      */
     @Generated
-    private final ShareRootSquash rootSquash;
+    private final String rootSquash;
 
     /*
      * The x-ms-enable-snapshot-virtual-directory-access property.
@@ -325,19 +324,19 @@ public final class SharesGetPropertiesHeaders {
         }
         String provisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
         if (provisionedIops != null) {
-            this.provisionedIops = Integer.parseInt(provisionedIops);
+            this.provisionedIops = Long.parseLong(provisionedIops);
         } else {
             this.provisionedIops = null;
         }
         String provisionedIngressMBps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_INGRESS_MBPS);
         if (provisionedIngressMBps != null) {
-            this.provisionedIngressMBps = Integer.parseInt(provisionedIngressMBps);
+            this.provisionedIngressMBps = Long.parseLong(provisionedIngressMBps);
         } else {
             this.provisionedIngressMBps = null;
         }
         String provisionedEgressMBps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
         if (provisionedEgressMBps != null) {
-            this.provisionedEgressMBps = Integer.parseInt(provisionedEgressMBps);
+            this.provisionedEgressMBps = Long.parseLong(provisionedEgressMBps);
         } else {
             this.provisionedEgressMBps = null;
         }
@@ -349,7 +348,7 @@ public final class SharesGetPropertiesHeaders {
         }
         String provisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
         if (provisionedBandwidthMibps != null) {
-            this.provisionedBandwidthMibps = Integer.parseInt(provisionedBandwidthMibps);
+            this.provisionedBandwidthMibps = Long.parseLong(provisionedBandwidthMibps);
         } else {
             this.provisionedBandwidthMibps = null;
         }
@@ -380,12 +379,7 @@ public final class SharesGetPropertiesHeaders {
         }
         this.accessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
         this.enabledProtocols = rawHeaders.getValue(X_MS_ENABLED_PROTOCOLS);
-        String rootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
-        if (rootSquash != null) {
-            this.rootSquash = ShareRootSquash.fromString(rootSquash);
-        } else {
-            this.rootSquash = null;
-        }
+        this.rootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
         String enableSnapshotVirtualDirectoryAccess
             = rawHeaders.getValue(X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS);
         if (enableSnapshotVirtualDirectoryAccess != null) {
@@ -533,7 +527,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedIops value.
      */
     @Generated
-    public Integer getProvisionedIops() {
+    public Long getProvisionedIops() {
         return this.provisionedIops;
     }
 
@@ -543,7 +537,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedIngressMBps value.
      */
     @Generated
-    public Integer getProvisionedIngressMBps() {
+    public Long getProvisionedIngressMBps() {
         return this.provisionedIngressMBps;
     }
 
@@ -553,7 +547,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedEgressMBps value.
      */
     @Generated
-    public Integer getProvisionedEgressMBps() {
+    public Long getProvisionedEgressMBps() {
         return this.provisionedEgressMBps;
     }
 
@@ -576,7 +570,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedBandwidthMibps value.
      */
     @Generated
-    public Integer getProvisionedBandwidthMibps() {
+    public Long getProvisionedBandwidthMibps() {
         return this.provisionedBandwidthMibps;
     }
 
@@ -659,7 +653,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the rootSquash value.
      */
     @Generated
-    public ShareRootSquash getRootSquash() {
+    public String getRootSquash() {
         return this.rootSquash;
     }
 

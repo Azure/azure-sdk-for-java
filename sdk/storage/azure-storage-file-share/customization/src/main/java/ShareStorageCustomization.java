@@ -44,7 +44,7 @@ public class ShareStorageCustomization extends Customization {
     // restores the shipped fluent shape per-model. Expand this list from the RevApi "method removed" report.
     private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
-        "ShareSignedIdentifier", "ShareFileDownloadHeaders", "UserDelegationKey");
+        "ShareSignedIdentifier", "UserDelegationKey");
 
     // Generated builders / main service-client surface emitted by typespec-java on top of the
     // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
@@ -89,22 +89,13 @@ public class ShareStorageCustomization extends Customization {
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
-        retypeUnexpectedResponseExceptions(customization, logger);
-
         base64EncodeByteArrayHeaders(customization, logger);
 
-
         retypeDownloadResponseToStreaming(customization, logger);
-
-        relocateDownloadHeadersToModels(customization, logger);
 
         restoreFluentModels(customization, logger);
 
         restoreShareFileRangeListNextMarker(customization, logger);
-
-        restoreDefaultXmlRootNames(customization, logger);
-
-        renameDownloadHeaderMethods(customization, logger);
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
@@ -186,88 +177,6 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Relocates the generated {@code implementation.models.FilesDownloadHeaders} response-header model into the public
-     * {@code models} package as {@code ShareFileDownloadHeaders}, the shipped public type for the File download
-     * operation. The synthesized response-header model cannot be named or placed via spec decorators, so the move and
-     * rename are done here. Two members that shipped on the hand-written wrapper but are not modeled on the response
-     * headers -- {@code errorCode} and {@code contentType} -- are added back. References in the relocated convenience
-     * clients ({@code ShareFileClientInternal}/{@code ShareFileAsyncClientInternal}) are repointed to the new type.
-     * Runs before {@code restoreFluentModels}/{@code renameDownloadHeaderMethods}.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void relocateDownloadHeadersToModels(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        String oldPath = PKG_ROOT + "implementation/models/FilesDownloadHeaders.java";
-        String content = editor.getFileContent(oldPath);
-        content = content.replace("package com.azure.storage.file.share.implementation.models;",
-            "package com.azure.storage.file.share.models;");
-        content = content.replaceAll("\\bFilesDownloadHeaders\\b", "ShareFileDownloadHeaders");
-        // Add the errorCode and contentType members that shipped on the public headers type but are not part of the
-        // generated response-header model. restoreFluentModels (run next) skips fields that already have a setter.
-        String extraMembers = "\n"
-            + "    private String errorCode;\n\n"
-            + "    /**\n     * Get the errorCode property.\n     *\n     * @return the errorCode value.\n     */\n"
-            + "    public String getErrorCode() {\n        return this.errorCode;\n    }\n\n"
-            + "    /**\n     * Set the errorCode property.\n     *\n     * @param errorCode the errorCode value to set.\n"
-            + "     * @return the ShareFileDownloadHeaders object itself.\n     */\n"
-            + "    public ShareFileDownloadHeaders setErrorCode(String errorCode) {\n"
-            + "        this.errorCode = errorCode;\n        return this;\n    }\n\n"
-            + "    private String contentType;\n\n"
-            + "    /**\n     * Get the contentType property.\n     *\n     * @return the contentType value.\n     */\n"
-            + "    public String getContentType() {\n        return this.contentType;\n    }\n\n"
-            + "    /**\n     * Set the contentType property.\n     *\n     * @param contentType the contentType value to set.\n"
-            + "     * @return the ShareFileDownloadHeaders object itself.\n     */\n"
-            + "    public ShareFileDownloadHeaders setContentType(String contentType) {\n"
-            + "        this.contentType = contentType;\n        return this;\n    }\n";
-        int lastBrace = content.lastIndexOf('}');
-        content = content.substring(0, lastBrace) + extraMembers + "}\n";
-        editor.removeFile(oldPath);
-        // Remove the hand-written wrapper (now replaced by this relocated model) and its now-dead constructor proxy.
-        editor.removeFile(PKG_ROOT + "models/ShareFileDownloadHeaders.java");
-        editor.removeFile(PKG_ROOT + "implementation/accesshelpers/ShareFileDownloadHeadersConstructorProxy.java");
-        editor.addFile(PKG_ROOT + "models/ShareFileDownloadHeaders.java", content);
-        logger.info("Relocated FilesDownloadHeaders -> models.ShareFileDownloadHeaders");
-
-        for (String clientName : Arrays.asList("ShareFileClientInternal", "ShareFileAsyncClientInternal")) {
-            String clientPath = PKG_ROOT + "implementation/" + clientName + ".java";
-            String c = editor.getFileContent(clientPath);
-            c = c.replace("com.azure.storage.file.share.implementation.models.FilesDownloadHeaders",
-                "com.azure.storage.file.share.models.ShareFileDownloadHeaders");
-            c = c.replaceAll("\\bFilesDownloadHeaders\\b", "ShareFileDownloadHeaders");
-            editor.removeFile(clientPath);
-            editor.addFile(clientPath, c);
-            logger.info("Repointed {} to models.ShareFileDownloadHeaders", clientName);
-        }
-    }
-
-    /**
-     * Renames the generated getters/setters on {@code ShareFileDownloadHeaders} to the shipped public names. The
-     * emitter derives them from the response-header property names, which differ in casing/spelling from the historical
-     * public API: {@code getEtag}->{@code getETag}, {@code getContentMD5}->{@code getContentMd5},
-     * {@code getFileContentMD5}->{@code getFileContentMd5}, {@code getDate}->{@code getDateProperty} (and matching
-     * setters). Runs after {@code restoreFluentModels} so the setters exist to be renamed.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void renameDownloadHeaderMethods(LibraryCustomization customization, Logger logger) {
-        customization.getClass(MODELS_PACKAGE, "ShareFileDownloadHeaders")
-            .customizeAst(ast -> ast.getClassByName("ShareFileDownloadHeaders").ifPresent(clazz -> {
-                clazz.getMethodsByName("getEtag").forEach(m -> m.setName("getETag"));
-                clazz.getMethodsByName("setEtag").forEach(m -> m.setName("setETag"));
-                clazz.getMethodsByName("getContentMD5").forEach(m -> m.setName("getContentMd5"));
-                clazz.getMethodsByName("setContentMD5").forEach(m -> m.setName("setContentMd5"));
-                clazz.getMethodsByName("getFileContentMD5").forEach(m -> m.setName("getFileContentMd5"));
-                clazz.getMethodsByName("setFileContentMD5").forEach(m -> m.setName("setFileContentMd5"));
-                clazz.getMethodsByName("getDate").forEach(m -> m.setName("getDateProperty"));
-                clazz.getMethodsByName("setDate").forEach(m -> m.setName("setDateProperty"));
-                logger.info("Renamed ShareFileDownloadHeaders getters/setters to shipped public names");
-            }));
-    }
-
-    /**
      * Retypes the generated {@code implementation/*Impl} classes from the generated {@code FileServiceVersion} enum
      * (deleted by {@link #removeGeneratedConvenienceClients}) to the hand-written public
      * {@code com.azure.storage.file.share.ShareServiceVersion}. Both enums live in {@code com.azure.storage.file.share}
@@ -287,41 +196,6 @@ public class ShareStorageCustomization extends Customization {
                 editor.replaceFile(path, content.replace("FileServiceVersion", "ShareServiceVersion"));
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
-        }
-    }
-
-    /**
-     * Restores the historical {@code default-http-exception-type: ShareStorageExceptionInternal} behavior that the
-     * TypeSpec emitter dropped. The emitter annotates every operation with generic azure-core exceptions
-     * (ClientAuthentication/ResourceNotFound/ResourceModified/HttpResponseException); their error bodies deserialize
-     * through Jackson's {@code XmlMapper}, which is absent (the package ships {@code azure-xml}, not
-     * {@code jackson-dataformat-xml}), so any service error throws a {@link LinkageError} instead of a
-     * {@code ShareStorageException}. Re-typing every {@code @UnexpectedResponseExceptionType} to the
-     * {@code XmlSerializable} {@code ShareStorageExceptionInternal} makes the error deserialize via azure-xml and lets
-     * {@link #updateImplToMapInternalException} map it to the public {@code ShareStorageException}. Imports are left in
-     * place; the generic exception names remain referenced by the methods' {@code @throws} javadoc.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void retypeUnexpectedResponseExceptions(LibraryCustomization customization, Logger logger) {
-        for (String implName : Arrays.asList("DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl")) {
-            customization.getClass("com.azure.storage.file.share.implementation", implName).customizeAst(ast -> {
-                int[] retyped = { 0 };
-                ast.findAll(MethodDeclaration.class).forEach(method -> {
-                    boolean had = method.getAnnotations().stream()
-                        .anyMatch(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"));
-                    if (had) {
-                        method.getAnnotations()
-                            .removeIf(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"));
-                        method.addSingleMemberAnnotation("UnexpectedResponseExceptionType",
-                            "ShareStorageExceptionInternal.class");
-                        retyped[0]++;
-                    }
-                });
-                logger.info("Retyped {} @UnexpectedResponseExceptionType -> ShareStorageExceptionInternal in {}",
-                    retyped[0], implName);
-            });
         }
     }
 
@@ -487,41 +361,14 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Restores the GA default XML root element names for models that shipped with the {@code Share}-prefixed class name
-     * as the fallback root. The migrated emitter defaults the no-argument {@code toXml}/{@code fromXml} root to the wire
-     * element name ({@code AccessPolicy} / {@code RetentionPolicy}), which changes the serialization contract for callers
-     * that serialize/deserialize these public GA models directly. Nested service payloads already pass the wire name
-     * explicitly, so restoring the class-name fallback is safe and matches the shipped behavior.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void restoreDefaultXmlRootNames(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        restoreDefaultXmlRootName(editor, "ShareAccessPolicy", "AccessPolicy", logger);
-        restoreDefaultXmlRootName(editor, "ShareRetentionPolicy", "RetentionPolicy", logger);
-        restoreDefaultXmlRootName(editor, "ShareMetrics", "Metrics", logger);
-    }
-
-    private static void restoreDefaultXmlRootName(Editor editor, String className, String wireName, Logger logger) {
-        String path = PKG_ROOT + "models/" + className + ".java";
-        String content = editor.getFileContent(path);
-        String updated
-            = content.replace("? \"" + wireName + "\" : rootElementName", "? \"" + className + "\" : rootElementName");
-        if (!updated.equals(content)) {
-            editor.replaceFile(path, updated);
-            logger.info("Restored default XML root name {} on {}", className, className);
-        }
-    }
-
-    /**
      * Restores the "fluent" shape of models that shipped as {@code @Fluent} (public no-arg constructor + setters)
      * before the TypeSpec migration. With {@code required-fields-as-ctor-args: true} (which must stay true so new
      * models keep required parameters on their constructor) these regenerate as {@code @Immutable} with a
      * required-args constructor and no setters -- a breaking change. Each named model is converted back purely via the
      * JavaParser AST (no string replacement): {@code @Immutable} becomes {@code @Fluent}, {@code final} is removed from
-     * instance fields, a public no-arg constructor is added, and a public fluent setter is added for each field. The
-     * generated required-args constructor and {@code fromXml}/{@code fromJson} deserialization are left untouched.
+     * instance fields, a public no-arg constructor is added, a public fluent setter is added for each field, and the
+     * generated required-args constructor is made private (it is not part of the shipped API; {@code fromXml}/
+     * {@code fromJson}, which are left untouched, still use it).
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -551,6 +398,11 @@ public class ShareStorageCustomization extends Customization {
                 // insert a new one ahead of the generated required-args constructor.
                 boolean hasNoArgConstructor = clazz.getConstructors().stream()
                     .anyMatch(ctor -> ctor.getParameters().isEmpty());
+                // The emitter makes the required-args constructor public on input models; the shipped fluent models
+                // only expose the no-arg constructor, so keep it private (fromXml/fromJson still use it).
+                clazz.getConstructors().stream()
+                    .filter(ctor -> !ctor.getParameters().isEmpty())
+                    .forEach(ctor -> ctor.setModifiers(Modifier.Keyword.PRIVATE));
                 if (hasNoArgConstructor) {
                     clazz.getConstructors().stream()
                         .filter(ctor -> ctor.getParameters().isEmpty())
@@ -589,20 +441,9 @@ public class ShareStorageCustomization extends Customization {
                         setter.setName(setterName);
                         setter.setModifiers(Modifier.Keyword.PUBLIC);
                         setter.setType(modelName);
-                        // Header models back RFC1123 date headers with a DateTimeRfc1123 field but expose an
-                        // OffsetDateTime getter; the public setter must take OffsetDateTime and wrap, otherwise the
-                        // shipped setter signature changes (breaking) and leaks the internal DateTimeRfc1123 type.
-                        if ("DateTimeRfc1123".equals(variable.getTypeAsString())) {
-                            ast.addImport("java.time.OffsetDateTime");
-                            ast.addImport("com.azure.core.util.DateTimeRfc1123");
-                            setter.addParameter("OffsetDateTime", fieldName);
-                            setter.setBody(StaticJavaParser.parseBlock("{ this." + fieldName + " = " + fieldName
-                                + " == null ? null : new DateTimeRfc1123(" + fieldName + "); return this; }"));
-                        } else {
-                            setter.addParameter(variable.getTypeAsString(), fieldName);
-                            setter.setBody(StaticJavaParser.parseBlock(
-                                "{ this." + fieldName + " = " + fieldName + "; return this; }"));
-                        }
+                        setter.addParameter(variable.getTypeAsString(), fieldName);
+                        setter.setBody(StaticJavaParser.parseBlock(
+                            "{ this." + fieldName + " = " + fieldName + "; return this; }"));
                         setter.addMarkerAnnotation("Generated");
                         setter.setJavadocComment(new Javadoc(
                             JavadocDescription.parseText("Set the " + fieldName + " property."))
@@ -652,10 +493,10 @@ public class ShareStorageCustomization extends Customization {
      * - Check for the return of the method not equaling to PagedFlux, PagedIterable, PollerFlux, or SyncPoller. Those
      * types wrap other APIs and those APIs being update is the correct change.
      * - For asynchronous methods, add a call to
-     * {@code .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)} to handle
-     * mapping ShareStorageExceptionInternal to ShareStorageException.
+     * {@code .onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException)} to handle
+     * mapping ShareStorageErrorException to ShareStorageException.
      * - For synchronous methods, wrap the return statement in a try-catch block that catches
-     * ShareStorageExceptionInternal and rethrows {@code ModelHelper.mapToShareStorageException(e)}. Or, for void
+     * ShareStorageErrorException and rethrows {@code ModelHelper.mapToShareStorageException(e)}. Or, for void
      * methods wrap the last statement.
      *
      * @param implPackage The implementation package.
@@ -666,7 +507,7 @@ public class ShareStorageCustomization extends Customization {
             implPackage.getClass(implToUpdate).customizeAst(ast -> {
                 ast.addImport("com.azure.storage.file.share.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.file.share.models.ShareStorageException");
-                ast.addImport("com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal");
+                ast.addImport("com.azure.storage.file.share.implementation.models.ShareStorageErrorException");
                 ast.getClassByName(implToUpdate).ifPresent(clazz -> {
                     clazz.getMethods().forEach(methodDeclaration -> {
                         // getService() is a plain accessor for the RestProxy service instance; it never does I/O.
@@ -711,7 +552,7 @@ public class ShareStorageCustomization extends Customization {
             .getExpression().get().toString();
         int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
         String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
-            + ".onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)"
+            + ".onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException)"
             + originalReturnStatement.substring(insertionPoint) + ";";
         try {
             Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
@@ -743,7 +584,7 @@ public class ShareStorageCustomization extends Customization {
         BlockStmt tryBlock = method.getBody().get();
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
             "throw ModelHelper.mapToShareStorageException(internalException);")));
-        Parameter catchParameter = new Parameter().setType("ShareStorageExceptionInternal")
+        Parameter catchParameter = new Parameter().setType("ShareStorageErrorException")
             .setName("internalException");
         CatchClause catchClause = new CatchClause(catchParameter, catchBlock);
         TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
