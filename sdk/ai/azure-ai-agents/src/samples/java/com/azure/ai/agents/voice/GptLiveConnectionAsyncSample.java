@@ -10,17 +10,21 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.VoiceAgentLiveClientDelegation;
 import com.azure.ai.agents.models.VoiceAgentLiveDefinition;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.models.live.ClientDelegation;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.InstructionsAppendEvent;
 import com.openai.models.live.SessionConfig;
+import com.openai.models.live.SessionUpdateConfig;
+import com.openai.models.live.SessionUpdateEvent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -129,21 +133,17 @@ public class GptLiveConnectionAsyncSample {
         return Mono.firstWithSignal(receive, workflow);
     }
 
-    private static BinaryData sessionUpdateEvent() {
-        Map<String, Object> delegation = new LinkedHashMap<>();
-        delegation.put("type", "client");
-        Map<String, Object> session = new LinkedHashMap<>();
-        session.put("type", "realtime");
-        session.put("delegation", delegation);
-        return GptLiveSampleUtils.event("session.update", "session", session);
+    private static ClientEvent sessionUpdateEvent() {
+        return ClientEvent.ofSessionUpdate(SessionUpdateEvent.builder()
+            .session(SessionUpdateConfig.builder().delegation(ClientDelegation.builder().build()).build())
+            .build());
     }
 
-    private static BinaryData instructionsAppendEvent() {
-        Map<String, Object> event = new LinkedHashMap<>();
-        event.put("type", "session.instructions.append");
-        event.put("content", APPENDED_INSTRUCTIONS);
-        event.put("delegation_id", null);
-        return BinaryData.fromObject(event);
+    private static ClientEvent instructionsAppendEvent() {
+        return ClientEvent.ofSessionInstructionsAppend(InstructionsAppendEvent.builder()
+            .content(APPENDED_INSTRUCTIONS)
+            .delegationId(Optional.empty())
+            .build());
     }
 
     private static Mono<Void> waitForInstructionAppend(BetaVoiceAgentsLiveWebSocketSessionAsyncClient session,

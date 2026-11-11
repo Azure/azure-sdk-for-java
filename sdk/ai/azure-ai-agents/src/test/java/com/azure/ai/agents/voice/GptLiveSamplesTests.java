@@ -526,9 +526,9 @@ public class GptLiveSamplesTests {
         assertEquals(Arrays.asList("session.update", "session.instructions.append", "session.input_audio.append",
             "session.close"), commandTypes());
         Map<?, ?> update = GptLiveFunctionToolSample.object(commands.get(0).get("session"));
-        assertEquals("realtime", update.get("type"));
-        assertEquals("client", GptLiveFunctionToolSample.object(update.get("delegation")).get("type"));
+        assertEquals(Collections.singletonMap("delegation", Collections.singletonMap("type", "client")), update);
         assertEquals("Keep responses brief. Do not invent external facts.", commands.get(1).get("content"));
+        assertTrue(commands.get(1).containsKey("delegation_id"));
         assertEquals(null, commands.get(1).get("delegation_id"));
         assertEquals(2400, Base64.getDecoder().decode((String) commands.get(2).get("audio")).length);
     }
