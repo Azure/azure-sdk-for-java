@@ -13,10 +13,8 @@ public final class TemplateEvaluationResultItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TemplateEvaluationResultItem model = BinaryData.fromString(
-            "{\"templateId\":\"avmqfoudor\",\"templateName\":\"gyyprotwy\",\"evaluationResult\":\"EvaluationCancelled\"}")
+            "{\"templateId\":\"qtmldgxo\",\"templateName\":\"firclnpkciayz\",\"evaluationResult\":\"EvaluationCancelled\"}")
             .toObject(TemplateEvaluationResultItem.class);
-        Assertions.assertEquals("avmqfoudor", model.templateId());
-        Assertions.assertEquals("gyyprotwy", model.templateName());
         Assertions.assertEquals(RecommendationStatus.EVALUATION_CANCELLED, model.evaluationResult());
     }
 }

@@ -3,6 +3,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -22,6 +23,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
+import com.azure.search.documents.indexes.models.ServiceIndexersRuntime;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
@@ -55,6 +57,11 @@ public class IndexAndServiceStatisticsExample {
     private static void getServiceStatistics(SearchIndexClient client) {
         SearchServiceStatistics searchServiceStatistics = client.getServiceStatistics();
 
+        ServiceIndexersRuntime runtime = searchServiceStatistics.getIndexersRuntime();
+        if (runtime != null) {
+            System.out.printf("Service indexer runtime: %d used, %s remaining seconds, period %s to %s%n",
+                runtime.getUsedSeconds(), runtime.getRemainingSeconds(), runtime.getBeginningTime(), runtime.getEndingTime());
+        }
         System.out.println(":" + searchServiceStatistics);
         try {
             System.out.println(searchServiceStatistics.toJsonString());
@@ -109,6 +116,12 @@ public class IndexAndServiceStatisticsExample {
 
         System.out.println("document Count:" + documentCount);
         System.out.println("storage Size:" + storageSize);
+
+        client.listIndexStatsSummary(new RequestOptions().addQueryParam("search", index.getName())
+            .addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1"))
+            .forEach(statistics -> System.out.printf("Index %s: %d documents, %d storage bytes, %d vector bytes%n",
+                statistics.getName(), statistics.getDocumentCount(), statistics.getStorageSize(),
+                statistics.getVectorIndexSize()));
 
         // Output:
         // document Count:0

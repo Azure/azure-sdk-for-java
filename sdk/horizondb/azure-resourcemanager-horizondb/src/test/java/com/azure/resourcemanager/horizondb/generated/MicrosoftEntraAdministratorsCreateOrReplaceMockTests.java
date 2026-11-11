@@ -23,7 +23,7 @@ public final class MicrosoftEntraAdministratorsCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalName\":\"jqfrddgamquh\",\"principalType\":\"Unknown\",\"objectId\":\"rsjuivfcdisyir\",\"tenantId\":\"zhczexrxzbujrtrh\",\"provisioningState\":\"Succeeded\"},\"id\":\"evkh\",\"name\":\"nlnzonzlrpi\",\"type\":\"yw\"}";
+            = "{\"properties\":{\"principalName\":\"pn\",\"principalType\":\"User\",\"objectId\":\"cwwyyur\",\"tenantId\":\"chpp\",\"provisioningState\":\"Succeeded\"},\"id\":\"nmokayzejnhlbk\",\"name\":\"bzpcpiljhahzvec\",\"type\":\"ndbnwieh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class MicrosoftEntraAdministratorsCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MicrosoftEntraAdministrator response = manager.microsoftEntraAdministrators()
-            .define("znrtffyaqit")
-            .withExistingCluster("bu", "qwyxebeybpm")
-            .withProperties(new MicrosoftEntraAdministratorPropertiesForAdd().withPrincipalName("hheioqaqhvseuf")
-                .withPrincipalType(PrincipalTypes.USER)
-                .withTenantId("rxpdlcgqlsi"))
+            .define("opqhewjptmc")
+            .withExistingCluster("zdix", "mqpnoda")
+            .withProperties(new MicrosoftEntraAdministratorPropertiesForAdd().withPrincipalName("sbostzel")
+                .withPrincipalType(PrincipalTypes.UNKNOWN)
+                .withTenantId("atutmzlbiojlvfhr"))
             .create();
 
-        Assertions.assertEquals("jqfrddgamquh", response.properties().principalName());
-        Assertions.assertEquals(PrincipalTypes.UNKNOWN, response.properties().principalType());
-        Assertions.assertEquals("zhczexrxzbujrtrh", response.properties().tenantId());
+        Assertions.assertEquals("pn", response.properties().principalName());
+        Assertions.assertEquals(PrincipalTypes.USER, response.properties().principalType());
+        Assertions.assertEquals("chpp", response.properties().tenantId());
     }
 }

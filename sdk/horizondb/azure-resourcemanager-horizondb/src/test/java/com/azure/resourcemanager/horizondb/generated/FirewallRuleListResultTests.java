@@ -12,11 +12,11 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"kcglhslaz\",\"endIpAddress\":\"dyggdtjixhbku\",\"description\":\"qweykhmenev\",\"provisioningState\":\"Provisioning\"},\"id\":\"fwhybcibvy\",\"name\":\"dcsi\",\"type\":\"ynnaam\"},{\"properties\":{\"startIpAddress\":\"ctehfiqscjey\",\"endIpAddress\":\"vhezrkgqhcj\",\"description\":\"fovgmkqsleyyvxy\",\"provisioningState\":\"Failed\"},\"id\":\"cattpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"},{\"properties\":{\"startIpAddress\":\"sounqecanoaeu\",\"endIpAddress\":\"fhyhltrpmopjmcma\",\"description\":\"okth\",\"provisioningState\":\"InProgress\"},\"id\":\"aodsfcpkv\",\"name\":\"odpuozmyzydag\",\"type\":\"uaxbezyiuokkt\"}],\"nextLink\":\"rdxwzywqsm\"}")
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"w\",\"endIpAddress\":\"zuvccfwnfnbacfio\",\"description\":\"ebxetqgtzxdp\",\"provisioningState\":\"Succeeded\"},\"id\":\"qwxrjfeallnw\",\"name\":\"ubisnjampmng\",\"type\":\"zscxaqwo\"},{\"properties\":{\"startIpAddress\":\"hcbonqvpkvlr\",\"endIpAddress\":\"njeaseipheofloke\",\"description\":\"ienjbdlwtgr\",\"provisioningState\":\"Failed\"},\"id\":\"pj\",\"name\":\"masxazjpqyegu\",\"type\":\"lhbxxhejjzzvdud\"},{\"properties\":{\"startIpAddress\":\"dslfhotwmcy\",\"endIpAddress\":\"pwlbjnpg\",\"description\":\"ftadehxnltyfs\",\"provisioningState\":\"InProgress\"},\"id\":\"suesnzw\",\"name\":\"ej\",\"type\":\"avo\"},{\"properties\":{\"startIpAddress\":\"zdmohctbqvu\",\"endIpAddress\":\"wxdndnvowgujjug\",\"description\":\"kcglhslaz\",\"provisioningState\":\"InProgress\"},\"id\":\"gdtjixhbkuofqwey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"}],\"nextLink\":\"aamdect\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("kcglhslaz", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("dyggdtjixhbku", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("qweykhmenev", model.value().get(0).properties().description());
-        Assertions.assertEquals("rdxwzywqsm", model.nextLink());
+        Assertions.assertEquals("w", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("ebxetqgtzxdp", model.value().get(0).properties().description());
+        Assertions.assertEquals("aamdect", model.nextLink());
     }
 }

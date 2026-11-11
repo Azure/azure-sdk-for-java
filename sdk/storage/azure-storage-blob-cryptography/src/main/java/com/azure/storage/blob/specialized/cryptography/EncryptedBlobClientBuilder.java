@@ -115,8 +115,10 @@ public final class EncryptedBlobClientBuilder implements TokenCredentialTrait<En
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
     private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-    private static final String USER_AGENT_MODIFICATION_REGEX
-        = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
+    // Locates the azure-storage-blob token without constraining its version format, so GA, beta, dev-feed (alpha),
+    // and other pre-release versions are all handled.
+    private static final Pattern USER_AGENT_MODIFICATION_PATTERN
+        = Pattern.compile("(.*? )?(azsdk-java-azure-storage-blob/\\S+)( .*?)?");
 
     private String endpoint;
     private String accountName;
@@ -287,12 +289,23 @@ public final class EncryptedBlobClientBuilder implements TokenCredentialTrait<En
     }
 
     private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
-        Pattern pattern = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
             userAgentConfiguration);
-        Matcher matcher = pattern.matcher(userAgent);
-        String version = getVersionString(encryptionVersion);
-        String stringToAppend = "azstorage-clientsideencryption/" + version;
+        return addEncryptionToUserAgent(userAgent, getVersionString(encryptionVersion));
+    }
+
+    /**
+     * Inserts the client-side encryption identifier immediately before the azure-storage-blob token in a User-Agent
+     * string. The User-Agent is returned unchanged if it has no azure-storage-blob token or already contains the
+     * identifier.
+     *
+     * @param userAgent The User-Agent string to modify.
+     * @param encryptionVersion The client-side encryption version, e.g. "2.0".
+     * @return The modified User-Agent string.
+     */
+    static String addEncryptionToUserAgent(String userAgent, String encryptionVersion) {
+        Matcher matcher = USER_AGENT_MODIFICATION_PATTERN.matcher(userAgent);
+        String stringToAppend = "azstorage-clientsideencryption/" + encryptionVersion;
         if (matcher.matches() && !userAgent.contains(stringToAppend)) {
             String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
             String segment2 = matcher.group(2) == null ? "" : matcher.group(2);

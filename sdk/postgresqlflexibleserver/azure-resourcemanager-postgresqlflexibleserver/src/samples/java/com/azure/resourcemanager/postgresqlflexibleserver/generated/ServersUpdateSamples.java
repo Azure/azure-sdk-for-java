@@ -12,10 +12,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ImmutableBackup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
@@ -24,6 +24,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserIdentity;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
+     * x-ms-original-file: 2026-10-01/ServersPromoteReplicaAsForcedSwitchover.json
      */
     /**
      * Sample code: Switch over a read replica to primary server with forced data synchronization. Meaning that it
@@ -58,7 +59,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
+     * x-ms-original-file: 2026-10-01/ServersPromoteReplicaAsPlannedSwitchover.json
      */
     /**
      * Sample code: Switch over a read replica to primary server with planned data synchronization. Meaning that it
@@ -82,7 +83,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateFIPS.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateFIPS.json
      */
     /**
      * Sample code: Enable or disable FIPS mode on an existing server.
@@ -98,7 +99,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Update an existing server with data encryption based on customer managed key with automatic key
@@ -132,7 +133,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithMicrosoftEntraEnabled.json
      */
     /**
      * Sample code: Update an existing server with Microsoft Entra authentication enabled.
@@ -159,7 +160,25 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithPremiumSsdV2.json
+     */
+    /**
+     * Sample code: Update the storage performance of a server using Premium SSD v2.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void updateTheStoragePerformanceOfAServerUsingPremiumSSDV2(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withStorage(new Storage().withIops(6000).withThroughput(250).withType(StorageType.PREMIUM_V2_LRS))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithCustomMaintenanceWindow.json
      */
     /**
      * Sample code: Update an existing server with custom maintenance window.
@@ -181,7 +200,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Update an existing server with data encryption based on customer managed key.
@@ -214,7 +233,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithMajorVersionUpgrade.json
+     * x-ms-original-file: 2026-10-01/ServersUpdateWithMajorVersionUpgrade.json
      */
     /**
      * Sample code: Update an existing server to upgrade the major version of PostgreSQL database engine.
@@ -226,11 +245,11 @@ public final class ServersUpdateSamples {
         Server resource = manager.servers()
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withVersion(PostgresMajorVersion.ONE_SEVEN).withCreateMode(CreateModeForPatch.UPDATE).apply();
+        resource.update().withVersion("17").withCreateMode(CreateModeForPatch.UPDATE).apply();
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersUpdate.json
+     * x-ms-original-file: 2026-10-01/ServersUpdate.json
      */
     /**
      * Sample code: Update an existing server.
@@ -247,14 +266,16 @@ public final class ServersUpdateSamples {
             .withAdministratorLoginPassword("examplenewpassword")
             .withStorage(new Storage().withStorageSizeGB(1024)
                 .withAutoGrow(StorageAutoGrow.ENABLED)
+                .withAutoGrowMaxThresholdMb(2097152)
+                .withAutoGrowIncrementPercent(20)
                 .withTier(AzureManagedDiskPerformanceTier.P30))
-            .withBackup(new BackupForPatch().withBackupRetentionDays(20))
+            .withBackup(new BackupForPatch().withBackupRetentionDays(20).withImmutableBackup(ImmutableBackup.ENABLED))
             .withCreateMode(CreateModeForPatch.UPDATE)
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
+     * x-ms-original-file: 2026-10-01/ServersPromoteReplicaAsForcedStandaloneServer.json
      */
     /**
      * Sample code: Promote a read replica to a standalone server with forced data synchronization. Meaning that it
@@ -276,7 +297,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
+     * x-ms-original-file: 2026-10-01/ServersPromoteReplicaAsPlannedStandaloneServer.json
      */
     /**
      * Sample code: Promote a read replica to a standalone server with planned data synchronization. Meaning that it

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class RecordSetsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetTXTPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetTXTPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone TXT Record Set.
@@ -31,7 +31,24 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSOAPatch.json
+     * x-ms-original-file: 2026-06-01-preview/PTMLinkRecordSetAPatch.json
+     */
+    /**
+     * Sample code: PATCH Private DNS Zone PTMLink A Record Set.
+     * 
+     * @param manager Entry point to PrivateDnsZoneManager.
+     */
+    public static void
+        pATCHPrivateDNSZonePTMLinkARecordSet(com.azure.resourcemanager.privatedns.PrivateDnsZoneManager manager) {
+        manager.serviceClient()
+            .getRecordSets()
+            .updateWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "ptmlinkrecord",
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSOAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone SOA Record Set.
@@ -48,7 +65,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone A Record Set.
@@ -65,7 +82,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetCNAMEPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetCNAMEPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone CNAME Record Set.
@@ -82,7 +99,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetPTRPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetPTRPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone PTR Record Set.
@@ -99,7 +116,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSRVPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSRVPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone SRV Record Set.
@@ -116,7 +133,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAAAAPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAAAAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone AAAA Record Set.
@@ -133,7 +150,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetMXPatch.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetMXPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone MX Record Set.

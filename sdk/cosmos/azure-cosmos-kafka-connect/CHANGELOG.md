@@ -9,6 +9,8 @@
 
 #### Bugs Fixed
 
+* Fixed `ItemPatch` writes to skip items excluded by `azure.cosmos.sink.write.patch.filter` instead of failing with `412 Precondition Failed`.
+
 #### Other Changes
 
 ### 2.12.0 (2026-09-22)

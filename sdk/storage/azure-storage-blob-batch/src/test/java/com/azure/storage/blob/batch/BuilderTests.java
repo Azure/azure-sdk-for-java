@@ -35,6 +35,8 @@ public class BuilderTests {
         = CoreUtils.getProperties("azure-storage-blob-batch.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url);
@@ -45,9 +47,8 @@ public class BuilderTests {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             // This is supposed to be matching the following azsdk-java-azure-storage-blob/<version> azsdk-java-azure-storage-blob-batch/<version> <this part is the OS/runtime information>
-            .httpClient(
-                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+                + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(serviceClient).buildClient();
@@ -61,9 +62,8 @@ public class BuilderTests {
         BlobContainerClient containerClient = new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .containerName("containerName")
             .credential(CREDENTIALS)
-            .httpClient(
-                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+                + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(containerClient).buildClient();

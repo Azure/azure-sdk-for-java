@@ -32,8 +32,10 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * records Create. PointInTimeRestore creates a new cluster from an available backup; pointInTimeUtc and
      * creationSourceClusterResourceId are then required, postgreSqlVersion must be omitted because it is obtained from
      * the backup metadata, and creationSourceClusterLocation is required when the source and target cluster locations
-     * differ. This property is immutable and is returned as creation provenance. On replacement, omission preserves the
-     * recorded value, resubmitting the same value is accepted, and changing it is rejected.
+     * differ. During PointInTimeRestore creation, the service ignores the requested backup.geoRedundancy value and
+     * configures the new cluster with the same geo-redundancy setting as the source cluster. This property is immutable
+     * and is returned as creation provenance. On replacement, omission preserves the recorded value, resubmitting the
+     * same value is accepted, and changing it is rejected.
      */
     private ClusterCreateMode creationMode;
 
@@ -142,8 +144,10 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * a new cluster, the service records Create. PointInTimeRestore creates a new cluster from an available backup;
      * pointInTimeUtc and creationSourceClusterResourceId are then required, postgreSqlVersion must be omitted because
      * it is obtained from the backup metadata, and creationSourceClusterLocation is required when the source and target
-     * cluster locations differ. This property is immutable and is returned as creation provenance. On replacement,
-     * omission preserves the recorded value, resubmitting the same value is accepted, and changing it is rejected.
+     * cluster locations differ. During PointInTimeRestore creation, the service ignores the requested
+     * backup.geoRedundancy value and configures the new cluster with the same geo-redundancy setting as the source
+     * cluster. This property is immutable and is returned as creation provenance. On replacement, omission preserves
+     * the recorded value, resubmitting the same value is accepted, and changing it is rejected.
      * 
      * @return the creationMode value.
      */
@@ -156,8 +160,10 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * a new cluster, the service records Create. PointInTimeRestore creates a new cluster from an available backup;
      * pointInTimeUtc and creationSourceClusterResourceId are then required, postgreSqlVersion must be omitted because
      * it is obtained from the backup metadata, and creationSourceClusterLocation is required when the source and target
-     * cluster locations differ. This property is immutable and is returned as creation provenance. On replacement,
-     * omission preserves the recorded value, resubmitting the same value is accepted, and changing it is rejected.
+     * cluster locations differ. During PointInTimeRestore creation, the service ignores the requested
+     * backup.geoRedundancy value and configures the new cluster with the same geo-redundancy setting as the source
+     * cluster. This property is immutable and is returned as creation provenance. On replacement, omission preserves
+     * the recorded value, resubmitting the same value is accepted, and changing it is rejected.
      * 
      * @param creationMode the creationMode value to set.
      * @return the ClusterProperties object itself.
