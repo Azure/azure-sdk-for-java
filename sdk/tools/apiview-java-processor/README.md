@@ -20,6 +20,7 @@ The shared `sdk/tools/ci.yml` builds and tests the tool using the SDK pipeline. 
 
 SDK modules using `azure-client-sdk-parent` generate `api.md` and `api.metadata.yml` during Maven's `package` phase.
 This requires PowerShell 7+, Maven, and a JDK. Parallel reactor builds share one processor build per Maven invocation.
+Use `-DapiMarkdown.skip=true` to skip API Markdown and metadata generation for a Maven build.
 
 From a library module directory, using PowerShell 7+, Maven, and a JDK:
 

@@ -1158,6 +1158,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
+                  <skip>${apiMarkdown.skip}</skip>
                   <executable>pwsh</executable>
                   <arguments>
                     <argument>-NoProfile</argument>
