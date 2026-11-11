@@ -36,6 +36,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -118,14 +119,19 @@ public class ReactorSenderTerminalEnqueueTest {
         Mono<?> send = readableBuffer
             ? reactorSender.send(new CompositeReadableBuffer().append(new byte[] { 1, 2 }), 0, null)
             : reactorSender.send(new byte[] { 1, 2 }, 0, 0, null);
+        VirtualTimeScheduler timeoutScheduler = VirtualTimeScheduler.create();
 
-        StepVerifier.withVirtualTime(() -> send.timeout(Duration.ofSeconds(1))).then(() -> {
-            assertEquals(1, pendingMapSize());
-            assertEquals(1, pendingQueueSize());
-        })
-            .thenAwait(Duration.ofSeconds(1))
-            .expectError(java.util.concurrent.TimeoutException.class)
-            .verify(VERIFY_TIMEOUT);
+        try {
+            StepVerifier.create(send.timeout(Duration.ofSeconds(1), timeoutScheduler)).then(() -> {
+                assertEquals(1, pendingMapSize());
+                assertEquals(1, pendingQueueSize());
+            })
+                .then(() -> timeoutScheduler.advanceTimeBy(Duration.ofSeconds(1)))
+                .expectError(java.util.concurrent.TimeoutException.class)
+                .verify(VERIFY_TIMEOUT);
+        } finally {
+            timeoutScheduler.dispose();
+        }
 
         assertEquals(0, pendingMapSize());
         assertEquals(0, pendingQueueSize());

@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed encoded sends reaching a terminal sender so they fail promptly as transient errors and queued cancellation
+  removes pending work.
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)

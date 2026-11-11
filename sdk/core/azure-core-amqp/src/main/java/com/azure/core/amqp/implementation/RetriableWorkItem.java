@@ -25,6 +25,9 @@ class RetriableWorkItem {
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
     private boolean waitingForAck;
+    // Access is guarded by ReactorSender.pendingSendLock.
+    private boolean cancelled;
+    private String currentDeliveryTag;
     private Exception lastKnownException;
 
     private final AmqpMetricsProvider metricsProvider;
@@ -112,6 +115,22 @@ class RetriableWorkItem {
 
     boolean isWaitingForAck() {
         return this.waitingForAck;
+    }
+
+    void setCancelled() {
+        this.cancelled = true;
+    }
+
+    boolean isCancelled() {
+        return this.cancelled;
+    }
+
+    String getCurrentDeliveryTag() {
+        return this.currentDeliveryTag;
+    }
+
+    void setCurrentDeliveryTag(String deliveryTag) {
+        this.currentDeliveryTag = deliveryTag;
     }
 
     void send(Sender sender) {
