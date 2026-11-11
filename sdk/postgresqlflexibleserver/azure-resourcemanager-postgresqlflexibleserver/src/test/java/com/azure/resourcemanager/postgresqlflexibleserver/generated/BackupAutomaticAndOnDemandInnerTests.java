@@ -14,10 +14,10 @@ public final class BackupAutomaticAndOnDemandInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupAutomaticAndOnDemandInner model = BinaryData.fromString(
-            "{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-10-07T05:40:56Z\",\"source\":\"yzunbixxrtikv\"},\"id\":\"wpgclrcivt\",\"name\":\"oxfrkenxpmyyefr\",\"type\":\"mpdnqqskawa\"}")
+            "{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-04-16T23:10:03Z\",\"source\":\"ititvtzeexavoxt\"},\"id\":\"lecdmdqbw\",\"name\":\"ypq\",\"type\":\"gsfjac\"}")
             .toObject(BackupAutomaticAndOnDemandInner.class);
         Assertions.assertEquals(BackupType.FULL, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T05:40:56Z"), model.completedTime());
-        Assertions.assertEquals("yzunbixxrtikv", model.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T23:10:03Z"), model.completedTime());
+        Assertions.assertEquals("ititvtzeexavoxt", model.source());
     }
 }

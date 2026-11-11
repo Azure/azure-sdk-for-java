@@ -277,7 +277,7 @@ public final class CommvaultContentStoreManagementClientImpl implements Commvaul
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-09-30";
+        this.apiVersion = "2026-11-03";
         this.operations = new OperationsClientImpl(this);
         this.cloudAccounts = new CloudAccountsClientImpl(this);
         this.saaSOperationGroups = new SaaSOperationGroupsClientImpl(this);

@@ -12,8 +12,8 @@ public final class NodeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"role\":\"ReadWrite\",\"availabilityZone\":\"fxzsjabibsyst\"},\"id\":\"fsdjpvkvp\",\"name\":\"jxbkzbzkdvn\",\"type\":\"jabudurgkakmo\"},{\"properties\":{\"role\":\"ReadWrite\",\"availabilityZone\":\"jjklff\"},\"id\":\"ouw\",\"name\":\"lgzrfzeeyeb\",\"type\":\"zi\"},{\"properties\":{\"role\":\"Unassigned\",\"availabilityZone\":\"uhqlbjbsybbqwrvt\"},\"id\":\"gmfpgvmp\",\"name\":\"paslthaqfxssmwu\",\"type\":\"wbdsr\"}],\"nextLink\":\"pdrhne\"}")
+            "{\"value\":[{\"properties\":{\"role\":\"ReadOnly\",\"availabilityZone\":\"dlwggytsbwtovv\"},\"id\":\"seinqfiuf\",\"name\":\"qknp\",\"type\":\"rgnepttwqmsniffc\"},{\"properties\":{\"role\":\"Unassigned\",\"availabilityZone\":\"nrojlpijnkr\"},\"id\":\"rddh\",\"name\":\"ratiz\",\"type\":\"ronasxift\"}],\"nextLink\":\"qyzhf\"}")
             .toObject(NodeListResult.class);
-        Assertions.assertEquals("pdrhne", model.nextLink());
+        Assertions.assertEquals("qyzhf", model.nextLink());
     }
 }

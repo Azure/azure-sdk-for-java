@@ -156,7 +156,7 @@ public final class ServerForPatch implements JsonSerializable<ServerForPatch> {
      * 
      * @return the version value.
      */
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
@@ -166,7 +166,7 @@ public final class ServerForPatch implements JsonSerializable<ServerForPatch> {
      * @param version the version value to set.
      * @return the ServerForPatch object itself.
      */
-    public ServerForPatch withVersion(PostgresMajorVersion version) {
+    public ServerForPatch withVersion(String version) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerPropertiesForPatch();
         }

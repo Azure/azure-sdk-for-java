@@ -15,24 +15,24 @@ public final class ParameterGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterGroupProperties model = BinaryData.fromString(
-            "{\"parameters\":[{\"name\":\"hxw\",\"description\":\"tyq\",\"value\":\"lbbovplw\",\"defaultValue\":\"hvgyuguosvmk\",\"valueSource\":\"SystemDefault\",\"dataType\":\"qukkfp\",\"allowedValues\":\"mg\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"kde\",\"unit\":\"pvlopwiyighxpkd\"}],\"description\":\"baiuebbaumny\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"Provisioning\"}")
+            "{\"parameters\":[{\"name\":\"mgyudxytlmoyrxv\",\"description\":\"u\",\"value\":\"pz\",\"defaultValue\":\"xhdzhlrqjbhckf\",\"valueSource\":\"SystemDefault\",\"dataType\":\"xsbkyvpyca\",\"allowedValues\":\"z\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"kuwbcrnwb\",\"unit\":\"hhseyv\"}],\"description\":\"srtslhspkdeem\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"Updating\"}")
             .toObject(ParameterGroupProperties.class);
-        Assertions.assertEquals("hxw", model.parameters().get(0).name());
-        Assertions.assertEquals("lbbovplw", model.parameters().get(0).value());
-        Assertions.assertEquals("baiuebbaumny", model.description());
+        Assertions.assertEquals("mgyudxytlmoyrxv", model.parameters().get(0).name());
+        Assertions.assertEquals("pz", model.parameters().get(0).value());
+        Assertions.assertEquals("srtslhspkdeem", model.description());
         Assertions.assertEquals(PostgreSqlVersion.V18, model.postgreSqlVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParameterGroupProperties model = new ParameterGroupProperties()
-            .withParameters(Arrays.asList(new ParameterProperties().withName("hxw").withValue("lbbovplw")))
-            .withDescription("baiuebbaumny")
+            .withParameters(Arrays.asList(new ParameterProperties().withName("mgyudxytlmoyrxv").withValue("pz")))
+            .withDescription("srtslhspkdeem")
             .withPostgreSqlVersion(PostgreSqlVersion.V18);
         model = BinaryData.fromObject(model).toObject(ParameterGroupProperties.class);
-        Assertions.assertEquals("hxw", model.parameters().get(0).name());
-        Assertions.assertEquals("lbbovplw", model.parameters().get(0).value());
-        Assertions.assertEquals("baiuebbaumny", model.description());
+        Assertions.assertEquals("mgyudxytlmoyrxv", model.parameters().get(0).name());
+        Assertions.assertEquals("pz", model.parameters().get(0).value());
+        Assertions.assertEquals("srtslhspkdeem", model.description());
         Assertions.assertEquals(PostgreSqlVersion.V18, model.postgreSqlVersion());
     }
 }

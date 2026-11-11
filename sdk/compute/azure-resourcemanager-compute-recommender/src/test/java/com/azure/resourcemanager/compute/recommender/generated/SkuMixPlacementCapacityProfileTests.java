@@ -21,45 +21,45 @@ public final class SkuMixPlacementCapacityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementCapacityProfile model = BinaryData.fromString(
-            "{\"capacity\":2017964411,\"capacityType\":\"VM\",\"priority\":\"Regular\",\"spotPriorityProfile\":{\"maxPricePerVm\":3.2883493607087533},\"allocationStrategy\":\"Prioritized\",\"osType\":\"Windows\",\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"ej\",\"rank\":220700122,\"targetMaxCapacity\":672653689}]}}")
+            "{\"capacity\":398280406,\"capacityType\":\"VM\",\"priority\":\"Regular\",\"spotPriorityProfile\":{\"maxPricePerVm\":56.94086077283642},\"allocationStrategy\":\"Prioritized\",\"osType\":\"Linux\",\"zoneAllocationPolicy\":{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"q\",\"rank\":367130174,\"targetMaxCapacity\":1825167031}]}}")
             .toObject(SkuMixPlacementCapacityProfile.class);
-        Assertions.assertEquals(2017964411, model.capacity());
+        Assertions.assertEquals(398280406, model.capacity());
         Assertions.assertEquals(SkuMixPlacementCapacityType.VM, model.capacityType());
         Assertions.assertEquals(SkuMixPlacementPriority.REGULAR, model.priority());
-        Assertions.assertEquals(3.2883493607087533D, model.spotPriorityProfile().maxPricePerVm());
+        Assertions.assertEquals(56.94086077283642D, model.spotPriorityProfile().maxPricePerVm());
         Assertions.assertEquals(SkuMixPlacementAllocationStrategy.PRIORITIZED, model.allocationStrategy());
-        Assertions.assertEquals(SkuMixPlacementOSType.WINDOWS, model.osType());
-        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
+        Assertions.assertEquals(SkuMixPlacementOSType.LINUX, model.osType());
+        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED,
             model.zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("ej", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(220700122, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(672653689, model.zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
+        Assertions.assertEquals("q", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(367130174, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
+        Assertions.assertEquals(1825167031, model.zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuMixPlacementCapacityProfile model = new SkuMixPlacementCapacityProfile().withCapacity(2017964411)
+        SkuMixPlacementCapacityProfile model = new SkuMixPlacementCapacityProfile().withCapacity(398280406)
             .withCapacityType(SkuMixPlacementCapacityType.VM)
             .withPriority(SkuMixPlacementPriority.REGULAR)
-            .withSpotPriorityProfile(new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(3.2883493607087533D))
+            .withSpotPriorityProfile(new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(56.94086077283642D))
             .withAllocationStrategy(SkuMixPlacementAllocationStrategy.PRIORITIZED)
-            .withOsType(SkuMixPlacementOSType.WINDOWS)
+            .withOsType(SkuMixPlacementOSType.LINUX)
             .withZoneAllocationPolicy(new SkuMixPlacementZoneAllocationPolicy()
-                .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-                .withZonePreferences(Arrays.asList(new SkuMixPlacementZonePreference().withZone("ej")
-                    .withRank(220700122)
-                    .withTargetMaxCapacity(672653689))));
+                .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED)
+                .withZonePreferences(Arrays.asList(new SkuMixPlacementZonePreference().withZone("q")
+                    .withRank(367130174)
+                    .withTargetMaxCapacity(1825167031))));
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementCapacityProfile.class);
-        Assertions.assertEquals(2017964411, model.capacity());
+        Assertions.assertEquals(398280406, model.capacity());
         Assertions.assertEquals(SkuMixPlacementCapacityType.VM, model.capacityType());
         Assertions.assertEquals(SkuMixPlacementPriority.REGULAR, model.priority());
-        Assertions.assertEquals(3.2883493607087533D, model.spotPriorityProfile().maxPricePerVm());
+        Assertions.assertEquals(56.94086077283642D, model.spotPriorityProfile().maxPricePerVm());
         Assertions.assertEquals(SkuMixPlacementAllocationStrategy.PRIORITIZED, model.allocationStrategy());
-        Assertions.assertEquals(SkuMixPlacementOSType.WINDOWS, model.osType());
-        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
+        Assertions.assertEquals(SkuMixPlacementOSType.LINUX, model.osType());
+        Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED,
             model.zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("ej", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(220700122, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(672653689, model.zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
+        Assertions.assertEquals("q", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(367130174, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
+        Assertions.assertEquals(1825167031, model.zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
     }
 }

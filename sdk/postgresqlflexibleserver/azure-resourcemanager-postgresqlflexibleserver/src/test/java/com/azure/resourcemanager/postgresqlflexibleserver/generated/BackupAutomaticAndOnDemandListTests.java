@@ -14,11 +14,11 @@ public final class BackupAutomaticAndOnDemandListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupAutomaticAndOnDemandList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-05-13T12:27Z\",\"source\":\"zyqdrfegcealzx\"},\"id\":\"cansymoyqhlwigd\",\"name\":\"vbkbxgomf\",\"type\":\"juwasqvdaeyyguxa\"},{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-04-15T19:41:45Z\",\"source\":\"bezkgimsidxasic\"},\"id\":\"yvvjskgfmo\",\"name\":\"wa\",\"type\":\"pqg\"}],\"nextLink\":\"jeaahhvjhh\"}")
+            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-06-11T14:39:10Z\",\"source\":\"ud\"},\"id\":\"m\",\"name\":\"es\",\"type\":\"kdlpa\"}],\"nextLink\":\"rcxfailcfxwmdb\"}")
             .toObject(BackupAutomaticAndOnDemandList.class);
         Assertions.assertEquals(BackupType.FULL, model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T12:27Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("zyqdrfegcealzx", model.value().get(0).source());
-        Assertions.assertEquals("jeaahhvjhh", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T14:39:10Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("ud", model.value().get(0).source());
+        Assertions.assertEquals("rcxfailcfxwmdb", model.nextLink());
     }
 }

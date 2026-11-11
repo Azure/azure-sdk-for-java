@@ -7,6 +7,7 @@ package com.azure.resourcemanager.chaos.generated;
 import com.azure.resourcemanager.chaos.models.KeyValuePair;
 import com.azure.resourcemanager.chaos.models.ResourceTargeting;
 import com.azure.resourcemanager.chaos.models.ResourceTargetingCriteria;
+import com.azure.resourcemanager.chaos.models.ScenarioConfiguration;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurationProperties;
 import java.util.Arrays;
 
@@ -15,7 +16,26 @@ import java.util.Arrays;
  */
 public final class ScenarioConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_CreateOrUpdate_CreateOnly.json
+     */
+    /**
+     * Sample code: Create a scenario configuration only when absent, or return 412 when it already exists.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createAScenarioConfigurationOnlyWhenAbsentOrReturn412WhenItAlreadyExists(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.scenarioConfigurations()
+            .define("exampleConfiguration")
+            .withExistingScenario("exampleRG", "exampleWorkspace", "exampleScenario")
+            .withProperties(new ScenarioConfigurationProperties().withScenarioId(
+                "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/exampleScenario"))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
      */
     /**
      * Sample code: Create or update a scenario configuration with physical zone targeting.
@@ -38,7 +58,7 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario configuration.
@@ -65,5 +85,26 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
                         .withResources(Arrays.asList(
                             "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))))
             .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_CreateOrUpdate_UpdateOnly.json
+     */
+    /**
+     * Sample code: Update a scenario configuration only when present, or return 412 when it does not exist.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateAScenarioConfigurationOnlyWhenPresentOrReturn412WhenItDoesNotExist(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        ScenarioConfiguration resource = manager.scenarioConfigurations()
+            .getWithResponse("exampleRG", "exampleWorkspace", "exampleScenario", "exampleConfiguration",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ScenarioConfigurationProperties().withScenarioId(
+                "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/exampleScenario"))
+            .withIfMatch("*")
+            .apply();
     }
 }

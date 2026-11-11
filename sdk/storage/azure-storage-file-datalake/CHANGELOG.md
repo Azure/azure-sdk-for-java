@@ -1,14 +1,29 @@
 # Release History
 
-## 12.31.0-beta.1 (Unreleased)
+## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `DataLakeFileSystemAsyncClient.createIfNotExists` and `createIfNotExistsWithResponse` to return `false` when the file system already exists.
+  `deleteIfExists` and `deleteIfExistsWithResponse` now return `false` when the file system does not exist.
 
 ### Other Changes
+
+## 12.31.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
 
 ## 12.30.2 (2026-11-03)
 
@@ -64,6 +79,11 @@
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
   `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
   Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+- Updated the documentation of `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` `delete`,
+  `deleteWithResponse`, `deleteIfExists`, and `deleteIfExistsWithResponse`, and
+  `DataLakeServiceClient`/`DataLakeServiceAsyncClient` `deleteFileSystem` and `deleteFileSystemWithResponse` to note
+  that operations on paths within a deleted file system, including reads and writes, may continue to succeed for up to
+  30 seconds after the delete request is accepted.
 
 #### Dependency Updates
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
@@ -956,4 +976,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-
