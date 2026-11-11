@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -111,6 +112,8 @@ public class ReactorSenderTerminalEnqueueTest {
         assertEquals(0, pendingMapSize());
         assertEquals(0, pendingQueueSize());
         Mockito.verify(sender, Mockito.never()).delivery(any());
+        assertTrue(
+            fixture.meter.getHistograms().get("messaging.az.amqp.producer.send.duration").getMeasurements().isEmpty());
     }
 
     @ParameterizedTest(name = "readableBuffer={0}")
@@ -160,6 +163,8 @@ public class ReactorSenderTerminalEnqueueTest {
         assertTrue(((AmqpException) error.get()).isTransient());
         assertEquals(0, pendingMapSize());
         assertEquals(0, pendingQueueSize());
+        assertTrue(
+            fixture.meter.getHistograms().get("messaging.az.amqp.producer.send.duration").getMeasurements().isEmpty());
     }
 
     @Test
@@ -221,6 +226,8 @@ public class ReactorSenderTerminalEnqueueTest {
         handler.onDelivery(acceptedEvent);
         assertTrue(laterComplete.await(VERIFY_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
         Assertions.assertNull(laterError.get());
+        assertEquals(1,
+            fixture.meter.getHistograms().get("messaging.az.amqp.producer.send.duration").getMeasurements().size());
         laterSend.dispose();
     }
 
@@ -262,8 +269,10 @@ public class ReactorSenderTerminalEnqueueTest {
         private final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         private final MessageSerializer serializer = mock(MessageSerializer.class);
         private final Scheduler scheduler = mock(Scheduler.class);
+        private final TestMeter meter = new TestMeter();
+        private final AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH);
         private final SendLinkHandler handler
-            = new SendLinkHandler("connection-id", HOSTNAME, "link-name", ENTITY_PATH, AmqpMetricsProvider.noop());
+            = new SendLinkHandler("connection-id", HOSTNAME, "link-name", ENTITY_PATH, metricsProvider);
         private final List<Runnable> dispatcherWork = new CopyOnWriteArrayList<>();
         private final List<Runnable> delayedWork = new CopyOnWriteArrayList<>();
         private final List<Delivery> deliveries = new CopyOnWriteArrayList<>();
@@ -290,7 +299,7 @@ public class ReactorSenderTerminalEnqueueTest {
                 .setMode(AmqpRetryMode.FIXED)
                 .setDelay(Duration.ofMillis(10));
             reactorSender = new ReactorSender(connection, ENTITY_PATH, sender, handler, provider, null, serializer,
-                retryOptions, scheduler, AmqpMetricsProvider.noop());
+                retryOptions, scheduler, metricsProvider);
 
             Event openEvent = mock(Event.class);
             when(openEvent.getLink()).thenReturn(sender);

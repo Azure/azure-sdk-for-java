@@ -145,7 +145,7 @@ class RetriableWorkItem {
     }
 
     private void reportMetrics(DeliveryState deliveryState) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        if (tryStartTime != 0 && metricsProvider.isSendDeliveryEnabled()) {
             metricsProvider.recordSend(tryStartTime, deliveryState == null ? null : deliveryState.getType());
         }
     }
