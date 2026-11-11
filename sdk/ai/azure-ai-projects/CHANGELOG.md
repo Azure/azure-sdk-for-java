@@ -4,10 +4,16 @@
 
 ### Features Added
 
+- Expanded `Eval` to `Evaluation` throughout the Java evaluation run data-source hierarchy and CSV file-ID source, with
+  `TraceSourceEvaluationRunDataSource`, `TraceSourcePreviewEvaluationRunDataSource`, and `CsvEvaluationRunDataSource`
+  variant names. The shared TypeSpec names retain `Eval`, and wire discriminators are unchanged.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Added missing preview annotations to conversation data generation, trace rubric generation, endpoint evaluator schema
+  versions, rubric-scoring properties, and preview evaluation run data-source variants.
 - Fixed long-running job polling to recognize the service's `cancelled` status as terminal.
 
 ### Other Changes

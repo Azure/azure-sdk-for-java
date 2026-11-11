@@ -253,6 +253,7 @@ public final class EvaluatorGenerationInputs implements JsonSerializable<Evaluat
      * combined.
      */
     @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private RubricScoring scoring;
 
     /*
@@ -337,6 +338,7 @@ public final class EvaluatorGenerationInputs implements JsonSerializable<Evaluat
      * @return the scoring value.
      */
     @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public RubricScoring getScoring() {
         return this.scoring;
     }
@@ -352,6 +354,7 @@ public final class EvaluatorGenerationInputs implements JsonSerializable<Evaluat
      * @return the EvaluatorGenerationInputs object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public EvaluatorGenerationInputs setScoring(RubricScoring scoring) {
         this.scoring = scoring;
         return this;

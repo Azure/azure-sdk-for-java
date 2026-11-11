@@ -397,6 +397,7 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
      * generation.
      */
     @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private RubricScoring scoring;
 
     /*
@@ -432,6 +433,7 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
      * @return the scoring value.
      */
     @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public RubricScoring getScoring() {
         return this.scoring;
     }

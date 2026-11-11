@@ -108,8 +108,8 @@ class EvaluationSourceSerializationTests {
             .readValue("{\"type\":\"item_reference\",\"item_reference\":\"item.messages\",\"future_setting\":true}",
                 ItemReference.class);
         BinaryData source = OpenAIJsonHelper.toBinaryData(FileId.builder().id("file-1").build());
-        TargetCompletionEvalRunDataSource original
-            = new TargetCompletionEvalRunDataSource(source, new AzureAIModelTarget().setModel("deployment"))
+        TargetCompletionEvaluationRunDataSource original
+            = new TargetCompletionEvaluationRunDataSource(source, new AzureAIModelTarget().setModel("deployment"))
                 .setInputMessages(inputMessages);
 
         BinaryData serialized = BinaryData.fromObject(original);
@@ -120,8 +120,8 @@ class EvaluationSourceSerializationTests {
         assertTrue(json.get("input_messages").get("future_setting").asBoolean());
 
         EvaluationRunDataSource restored = serialized.toObject(EvaluationRunDataSource.class);
-        assertEquals(TargetCompletionEvalRunDataSource.class, restored.getClass());
-        assertEquals(inputMessages, ((TargetCompletionEvalRunDataSource) restored).getInputMessages());
+        assertEquals(TargetCompletionEvaluationRunDataSource.class, restored.getClass());
+        assertEquals(inputMessages, ((TargetCompletionEvaluationRunDataSource) restored).getInputMessages());
         assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
     }
 
@@ -130,12 +130,12 @@ class EvaluationSourceSerializationTests {
     void itemReferencePreservesNullAndAbsentValues(String inputMessagesField) {
         String json = "{\"type\":\"azure_ai_target_completions\",\"source\":{\"type\":\"file_id\",\"id\":\"file-1\"},"
             + "\"target\":{\"type\":\"azure_ai_model\",\"model\":\"deployment\"}" + inputMessagesField + "}";
-        TargetCompletionEvalRunDataSource restored
-            = BinaryData.fromString(json).toObject(TargetCompletionEvalRunDataSource.class);
+        TargetCompletionEvaluationRunDataSource restored
+            = BinaryData.fromString(json).toObject(TargetCompletionEvaluationRunDataSource.class);
 
         assertNull(restored.getInputMessages());
         assertNull(BinaryData.fromObject(restored)
-            .toObject(TargetCompletionEvalRunDataSource.class)
+            .toObject(TargetCompletionEvaluationRunDataSource.class)
             .getInputMessages());
     }
 }

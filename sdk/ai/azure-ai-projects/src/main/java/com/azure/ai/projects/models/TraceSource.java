@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Base class for polymorphic trace sources nested within an AzureAITraceDataSourceEvalRunDataSource.
+ * Base class for polymorphic trace sources nested within a TraceSourceEvalRunDataSource.
  */
 @Immutable
 public class TraceSource implements JsonSerializable<TraceSource> {

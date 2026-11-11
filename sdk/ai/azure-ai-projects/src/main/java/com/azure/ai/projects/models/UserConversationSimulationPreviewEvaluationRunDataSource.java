@@ -4,6 +4,7 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.agents.models.EvaluationModelConfiguration;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -18,7 +19,8 @@ import java.util.Map;
  * schedules; rejected on create and update.
  */
 @Fluent
-public final class UserConversationSimulationPreviewEvalRunDataSource extends EvaluationRunDataSource {
+@Beta(warningText = "Preview API. Evaluations=V1Preview")
+public final class UserConversationSimulationPreviewEvaluationRunDataSource extends EvaluationRunDataSource {
 
     /*
      * The data source type discriminator.
@@ -61,14 +63,14 @@ public final class UserConversationSimulationPreviewEvalRunDataSource extends Ev
     private Map<String, String> dataMapping;
 
     /**
-     * Creates an instance of UserConversationSimulationPreviewEvalRunDataSource class.
+     * Creates an instance of UserConversationSimulationPreviewEvaluationRunDataSource class.
      *
      * @param source the source value to set.
      * @param target the target value to set.
      * @param modelConfiguration the modelConfiguration value to set.
      */
     @Generated
-    public UserConversationSimulationPreviewEvalRunDataSource(BinaryData source, Target target,
+    public UserConversationSimulationPreviewEvaluationRunDataSource(BinaryData source, Target target,
         EvaluationModelConfiguration modelConfiguration) {
         this.source = source;
         this.target = target;
@@ -135,10 +137,10 @@ public final class UserConversationSimulationPreviewEvalRunDataSource extends Ev
      * override the corresponding defaults.
      *
      * @param defaultSimulationConfiguration the defaultSimulationConfiguration value to set.
-     * @return the UserConversationSimulationPreviewEvalRunDataSource object itself.
+     * @return the UserConversationSimulationPreviewEvaluationRunDataSource object itself.
      */
     @Generated
-    public UserConversationSimulationPreviewEvalRunDataSource setDefaultSimulationConfiguration(
+    public UserConversationSimulationPreviewEvaluationRunDataSource setDefaultSimulationConfiguration(
         UserConversationSimulationDefaultConfiguration defaultSimulationConfiguration) {
         this.defaultSimulationConfiguration = defaultSimulationConfiguration;
         return this;
@@ -164,10 +166,10 @@ public final class UserConversationSimulationPreviewEvalRunDataSource extends Ev
      * the dataset uses these names or when using `inline_user_conversation_simulation`.
      *
      * @param dataMapping the dataMapping value to set.
-     * @return the UserConversationSimulationPreviewEvalRunDataSource object itself.
+     * @return the UserConversationSimulationPreviewEvaluationRunDataSource object itself.
      */
     @Generated
-    public UserConversationSimulationPreviewEvalRunDataSource setDataMapping(Map<String, String> dataMapping) {
+    public UserConversationSimulationPreviewEvaluationRunDataSource setDataMapping(Map<String, String> dataMapping) {
         this.dataMapping = dataMapping;
         return this;
     }
@@ -190,16 +192,17 @@ public final class UserConversationSimulationPreviewEvalRunDataSource extends Ev
     }
 
     /**
-     * Reads an instance of UserConversationSimulationPreviewEvalRunDataSource from the JsonReader.
+     * Reads an instance of UserConversationSimulationPreviewEvaluationRunDataSource from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UserConversationSimulationPreviewEvalRunDataSource if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of UserConversationSimulationPreviewEvaluationRunDataSource if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the UserConversationSimulationPreviewEvalRunDataSource.
+     * @throws IOException If an error occurs while reading the
+     * UserConversationSimulationPreviewEvaluationRunDataSource.
      */
     @Generated
-    public static UserConversationSimulationPreviewEvalRunDataSource fromJson(JsonReader jsonReader)
+    public static UserConversationSimulationPreviewEvaluationRunDataSource fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData source = null;
@@ -227,13 +230,13 @@ public final class UserConversationSimulationPreviewEvalRunDataSource extends Ev
                     reader.skipChildren();
                 }
             }
-            UserConversationSimulationPreviewEvalRunDataSource deserializedUserConversationSimulationPreviewEvalRunDataSource
-                = new UserConversationSimulationPreviewEvalRunDataSource(source, target, modelConfiguration);
-            deserializedUserConversationSimulationPreviewEvalRunDataSource.type = type;
-            deserializedUserConversationSimulationPreviewEvalRunDataSource.defaultSimulationConfiguration
+            UserConversationSimulationPreviewEvaluationRunDataSource deserializedUserConversationSimulationPreviewEvaluationRunDataSource
+                = new UserConversationSimulationPreviewEvaluationRunDataSource(source, target, modelConfiguration);
+            deserializedUserConversationSimulationPreviewEvaluationRunDataSource.type = type;
+            deserializedUserConversationSimulationPreviewEvaluationRunDataSource.defaultSimulationConfiguration
                 = defaultSimulationConfiguration;
-            deserializedUserConversationSimulationPreviewEvalRunDataSource.dataMapping = dataMapping;
-            return deserializedUserConversationSimulationPreviewEvalRunDataSource;
+            deserializedUserConversationSimulationPreviewEvaluationRunDataSource.dataMapping = dataMapping;
+            return deserializedUserConversationSimulationPreviewEvaluationRunDataSource;
         });
     }
 }

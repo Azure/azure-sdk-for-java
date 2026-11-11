@@ -20,7 +20,7 @@ import java.io.IOException;
  * conversations](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-conversations?tabs=python).
  */
 @Fluent
-public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSource {
+public final class TargetCompletionEvaluationRunDataSource extends EvaluationRunDataSource {
 
     /*
      * The data source type discriminator.
@@ -53,13 +53,13 @@ public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSo
     private ItemGenerationParams itemGenerationParams;
 
     /**
-     * Creates an instance of TargetCompletionEvalRunDataSource class.
+     * Creates an instance of TargetCompletionEvaluationRunDataSource class.
      *
      * @param source the source value to set.
      * @param target the target value to set.
      */
     @Generated
-    public TargetCompletionEvalRunDataSource(BinaryData source, Target target) {
+    public TargetCompletionEvaluationRunDataSource(BinaryData source, Target target) {
         this.source = source;
         this.target = target;
     }
@@ -119,10 +119,10 @@ public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSo
      * Set the itemGenerationParams property: The parameters for item generation.
      *
      * @param itemGenerationParams the itemGenerationParams value to set.
-     * @return the TargetCompletionEvalRunDataSource object itself.
+     * @return the TargetCompletionEvaluationRunDataSource object itself.
      */
     @Generated
-    public TargetCompletionEvalRunDataSource setItemGenerationParams(ItemGenerationParams itemGenerationParams) {
+    public TargetCompletionEvaluationRunDataSource setItemGenerationParams(ItemGenerationParams itemGenerationParams) {
         this.itemGenerationParams = itemGenerationParams;
         return this;
     }
@@ -149,15 +149,16 @@ public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSo
     }
 
     /**
-     * Reads an instance of TargetCompletionEvalRunDataSource from the JsonReader.
+     * Reads an instance of TargetCompletionEvaluationRunDataSource from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TargetCompletionEvalRunDataSource if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of TargetCompletionEvaluationRunDataSource if the JsonReader was pointing to an instance of
+     * it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TargetCompletionEvalRunDataSource.
+     * @throws IOException If an error occurs while reading the TargetCompletionEvaluationRunDataSource.
      */
-    public static TargetCompletionEvalRunDataSource fromJson(JsonReader jsonReader) throws IOException {
+    public static TargetCompletionEvaluationRunDataSource fromJson(JsonReader jsonReader) throws IOException {
         // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             BinaryData source = null;
@@ -183,12 +184,12 @@ public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSo
                     reader.skipChildren();
                 }
             }
-            TargetCompletionEvalRunDataSource deserializedTargetCompletionEvalRunDataSource
-                = new TargetCompletionEvalRunDataSource(source, target);
-            deserializedTargetCompletionEvalRunDataSource.type = type;
-            deserializedTargetCompletionEvalRunDataSource.inputMessages = inputMessages;
-            deserializedTargetCompletionEvalRunDataSource.itemGenerationParams = itemGenerationParams;
-            return deserializedTargetCompletionEvalRunDataSource;
+            TargetCompletionEvaluationRunDataSource deserializedTargetCompletionEvaluationRunDataSource
+                = new TargetCompletionEvaluationRunDataSource(source, target);
+            deserializedTargetCompletionEvaluationRunDataSource.type = type;
+            deserializedTargetCompletionEvaluationRunDataSource.inputMessages = inputMessages;
+            deserializedTargetCompletionEvaluationRunDataSource.itemGenerationParams = itemGenerationParams;
+            return deserializedTargetCompletionEvaluationRunDataSource;
         });
     }
 
@@ -196,10 +197,10 @@ public final class TargetCompletionEvalRunDataSource extends EvaluationRunDataSo
      * Set the inputMessages property: Input messages configuration.
      *
      * @param inputMessages the inputMessages value to set.
-     * @return the TargetCompletionEvalRunDataSource object itself.
+     * @return the TargetCompletionEvaluationRunDataSource object itself.
      */
     @Generated
-    public TargetCompletionEvalRunDataSource setInputMessages(ItemReference inputMessages) {
+    public TargetCompletionEvaluationRunDataSource setInputMessages(ItemReference inputMessages) {
         this.inputMessages = inputMessages;
         return this;
     }
