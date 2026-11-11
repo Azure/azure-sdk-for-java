@@ -14,6 +14,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.search.documents.indexes.models.IndexListingPagedFlux;
+import com.azure.search.documents.indexes.models.IndexListingPagedIterable;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
@@ -213,9 +215,13 @@ public class SearchListingTests {
                 if (!Modifier.isPublic(method.getModifiers()) || !method.getName().startsWith("list")) {
                     continue;
                 }
-                assertEquals(PagedIterable.class, method.getReturnType());
+                boolean metadataListing = method.getName().equals("listIndexesWithMetadata")
+                    || method.getName().equals("listIndexStatsSummaryWithMetadata");
+                assertEquals(metadataListing ? IndexListingPagedIterable.class : PagedIterable.class,
+                    method.getReturnType(), method.toGenericString());
                 Method counterpart = asyncClient.getMethod(method.getName(), method.getParameterTypes());
-                assertEquals(PagedFlux.class, counterpart.getReturnType());
+                assertEquals(metadataListing ? IndexListingPagedFlux.class : PagedFlux.class,
+                    counterpart.getReturnType(), counterpart.toGenericString());
                 ParameterizedType type = assertInstanceOf(ParameterizedType.class, method.getGenericReturnType());
                 assertFalse(Arrays.asList(type.getActualTypeArguments()).contains(BinaryData.class));
                 ParameterizedType asyncType
