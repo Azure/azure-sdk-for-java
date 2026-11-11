@@ -38,6 +38,8 @@ import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilte
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseGraphSearchActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
@@ -324,6 +326,35 @@ public class PreviewApiTests {
             "DELETE " + sourcePath + "/files('" + (failUpdate ? "file-123" : "file-456") + "')",
             "DELETE " + sourcePath + "/files('" + (failUpdate ? "file-456" : "file-123") + "')",
             "DELETE " + sourcePath), mutations);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void previewResponseSampleDoesNotModifyResourcesEvenWhenRetrievalFails(boolean failRetrieval) {
+        AtomicInteger requests = new AtomicInteger();
+        KnowledgeBaseRetrievalClient client
+            = new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
+                .credential(new AzureKeyCredential("key"))
+                .knowledgeBaseName("existing-kb")
+                .httpClient(request -> {
+                    requests.incrementAndGet();
+                    assertEquals(HttpMethod.POST, request.getHttpMethod());
+                    assertEquals("/knowledgebases('existing-kb')/retrieve", request.getUrl().getPath());
+                    String body = failRetrieval
+                        ? "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Simulated retrieval failure\"}}"
+                        : "{\"response\":[],\"activity\":[],\"references\":[]}";
+                    return Mono.just(new MockHttpResponse(request, failRetrieval ? 400 : 200,
+                        body.getBytes(StandardCharsets.UTF_8)));
+                })
+                .buildClient();
+        if (failRetrieval) {
+            HttpResponseException error = assertThrows(HttpResponseException.class,
+                () -> KnowledgeRetrievalPreviewResponseExample.retrieveAndInspect(client));
+            assertEquals(400, error.getResponse().getStatusCode());
+        } else {
+            KnowledgeRetrievalPreviewResponseExample.retrieveAndInspect(client);
+        }
+        assertEquals(1, requests.get(), "The sample must only retrieve, without resource creation or cleanup.");
     }
 
     private static String sampleFile(String fileId, String fileName, String metadata) {

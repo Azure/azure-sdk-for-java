@@ -31,6 +31,7 @@
 - Carried forward SSE decoding, cancellation, backpressure, buffer ownership, and response-cleanup fixes.
 - Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
 - Corrected file update and delete argument order in the File knowledge source preview sample, including cleanup.
+- Updated the preview retrieval response parsing sample to use an existing knowledge base without modifying or deleting resources.
 
 ### Other Changes
 
