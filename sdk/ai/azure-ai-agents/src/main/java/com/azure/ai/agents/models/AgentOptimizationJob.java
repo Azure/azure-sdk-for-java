@@ -39,7 +39,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      * Current lifecycle status.
      */
     @Generated
-    private AgentOptimizationJobStatus status;
+    private JobStatus status;
 
     /*
      * Failure or skip reason; status distinguishes the outcomes. Omitted otherwise.
@@ -91,7 +91,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      * @return the status value.
      */
     @Generated
-    public AgentOptimizationJobStatus getStatus() {
+    public JobStatus getStatus() {
         return this.status;
     }
 
@@ -163,7 +163,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     public static AgentOptimizationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            AgentOptimizationJobStatus status = null;
+            JobStatus status = null;
             AgentOptimizationModelConfiguration optimizationModelConfiguration = null;
             AgentOptimizationConfigurationBase optimizationConfiguration = null;
             long runDuration = 0L;
@@ -180,7 +180,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = AgentOptimizationJobStatus.fromString(reader.getString());
+                    status = JobStatus.fromString(reader.getString());
                 } else if ("optimization_model_configuration".equals(fieldName)) {
                     optimizationModelConfiguration = AgentOptimizationModelConfiguration.fromJson(reader);
                 } else if ("optimization_configuration".equals(fieldName)) {

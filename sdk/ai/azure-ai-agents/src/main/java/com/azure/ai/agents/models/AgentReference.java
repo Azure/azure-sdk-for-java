@@ -12,13 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Identifies an agent by name and, optionally, a specific version.
+ * The AgentReference model.
  */
 @Fluent
 public final class AgentReference implements JsonSerializable<AgentReference> {
 
     /*
-     * Identifies this object as an agent reference.
+     * The type property.
      */
     @Generated
     private final String type = "agent_reference";
@@ -46,7 +46,7 @@ public final class AgentReference implements JsonSerializable<AgentReference> {
     }
 
     /**
-     * Get the type property: Identifies this object as an agent reference.
+     * Get the type property: The type property.
      *
      * @return the type value.
      */

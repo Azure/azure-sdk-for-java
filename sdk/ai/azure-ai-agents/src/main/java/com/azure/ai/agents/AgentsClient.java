@@ -30,7 +30,6 @@ import com.azure.ai.agents.models.AgentOptimizationEstimateInputs;
 import com.azure.ai.agents.models.AgentOptimizationEstimateResult;
 import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
-import com.azure.ai.agents.models.AgentOptimizationJobStatus;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeFileDetails;
@@ -39,6 +38,7 @@ import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
+import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.Microsoft365PublishDefaults;
 import com.azure.ai.agents.models.Microsoft365PublishResult;
 import com.azure.ai.agents.models.PageOrder;
@@ -4699,7 +4699,7 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4786,7 +4786,7 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4893,7 +4893,7 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4983,7 +4983,7 @@ public final class AgentsClient {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5030,7 +5030,7 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5134,7 +5134,7 @@ public final class AgentsClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -6359,56 +6359,6 @@ public final class AgentsClient {
     }
 
     /**
-     * List agent optimization jobs
-     *
-     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
-     *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param status Filter to jobs in this lifecycle state.
-     * @param agentName Filter to jobs targeting this agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
-        String before, AgentOptimizationJobStatus status, String agentName) {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        return serviceClient.listOptimizationJobs(after, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
-    }
-
-    /**
      * Download an agent optimization job file
      *
      * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
@@ -6422,7 +6372,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -6494,5 +6444,55 @@ public final class AgentsClient {
         // Generated convenience method for downloadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return downloadFileWithResponse(jobId, path, requestOptions).getValue();
+    }
+
+    /**
+     * List agent optimization jobs
+     *
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param status Filter to jobs in this lifecycle state.
+     * @param agentName Filter to jobs targeting this agent name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
+        String before, JobStatus status, String agentName) {
+        // Generated convenience method for listOptimizationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        return serviceClient.listOptimizationJobs(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 }

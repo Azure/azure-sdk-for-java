@@ -26,7 +26,7 @@ public final class TraceEvaluationRuleAction extends EvaluationRuleAction {
     /*
      * Trace inputs for each scheduled occurrence. The selected variant's query-window and sampling behavior is
      * preserved.
-     *
+     * 
      * For `azure_ai_traces`, set exactly one of `agent_id` or `agent_name`; `trace_ids` is not supported.
      * For `azure_ai_trace_data_source`, set `trace_source`.
      * Preview source types may appear in responses for existing schedules but are rejected on create and update.

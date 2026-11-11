@@ -28,7 +28,7 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
      * optimization. Omitted when no context is supplied.
      */
     @Generated
-    private List<SteeringPromptOptimizationContext> context;
+    private List<OptimizationContext> context;
 
     /**
      * Creates an instance of PromptOptimizationConfiguration class.
@@ -55,7 +55,7 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
      * @return the context value.
      */
     @Generated
-    public List<SteeringPromptOptimizationContext> getContext() {
+    public List<OptimizationContext> getContext() {
         return this.context;
     }
 
@@ -67,7 +67,7 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
      * @return the PromptOptimizationConfiguration object itself.
      */
     @Generated
-    public PromptOptimizationConfiguration setContext(List<SteeringPromptOptimizationContext> context) {
+    public PromptOptimizationConfiguration setContext(List<OptimizationContext> context) {
         this.context = context;
         return this;
     }
@@ -104,8 +104,8 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
                     deserializedPromptOptimizationConfiguration.type
                         = AgentOptimizationConfigurationType.fromString(reader.getString());
                 } else if ("context".equals(fieldName)) {
-                    List<SteeringPromptOptimizationContext> context
-                        = reader.readArray(reader1 -> SteeringPromptOptimizationContext.fromJson(reader1));
+                    List<OptimizationContext> context
+                        = reader.readArray(reader1 -> OptimizationContext.fromJson(reader1));
                     deserializedPromptOptimizationConfiguration.context = context;
                 } else {
                     reader.skipChildren();
