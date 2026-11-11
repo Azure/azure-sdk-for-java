@@ -136,11 +136,11 @@ public class ActiveClientTokenManager implements TokenManager {
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
             .takeUntil(duration -> hasDisposed.get())
-            // Scheduling the next refresh cancels the running interval, and cancelling it interrupts the interval's
-            // thread if a tick is in progress. The CBS response that schedules the next refresh can arrive (on the
-            // connection's reactor thread) while that tick is still running, e.g. signalling the connection's IO
-            // pipe; an interrupt then closes the pipe and kills the connection. Refreshing on another thread keeps
-            // the interrupt away from that work.
+            // Scheduling the next refresh replaces the refresh interval, which can interrupt an active tick when the
+            // cancellation occurs on another thread. The CBS response that schedules the next refresh can arrive (on
+            // the connection's reactor thread) while the tick is still running, e.g. signalling the connection's IO
+            // pipe; an interrupt then closes the pipe and kills the connection. Refreshing on another thread keeps the
+            // interrupt away from that work.
             .publishOn(Schedulers.boundedElastic())
             .flatMap(delay -> {
 
