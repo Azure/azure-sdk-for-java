@@ -12,6 +12,7 @@ import os
 from os.path import join
 import time
 import argparse
+from xml.parsers import expat
 
 from log import log
 from _constants import (
@@ -104,14 +105,34 @@ def find_all_poms_do_version_control_for_integration(directory, spring_version_t
                 delete_dependency_version(file_path, ignored_artifacts, external_dependencies_set)
 
 
-# Delete explicit versions, and use versions from Spring Boot or Spring Cloud BOMs
+def get_plugin_line_numbers(content):
+    parser = expat.ParserCreate(namespace_separator='}')
+    plugin_starts = []
+    plugin_lines = set()
+
+    def start_element(name, attributes):
+        if name.split('}')[-1] == 'plugin':
+            plugin_starts.append(parser.CurrentLineNumber)
+
+    def end_element(name):
+        if name.split('}')[-1] == 'plugin':
+            plugin_lines.update(range(plugin_starts.pop(), parser.CurrentLineNumber + 1))
+
+    parser.StartElementHandler = start_element
+    parser.EndElementHandler = end_element
+    parser.Parse(content, True)
+    return plugin_lines
+
+
+# BOM dependencyManagement imports do not manage build plugin versions or their dependencies.
 def delete_dependency_version(file_path, ignored_artifacts, external_dependencies):
     log.info("delete dependency version in " + file_path)
     with open(file_path, 'r', encoding='utf-8') as pom_file:
         lines = pom_file.readlines()
+    plugin_lines = get_plugin_line_numbers(''.join(lines))
     with open(file_path, 'w', encoding='utf-8') as new_pom_file:
-        for line in lines:
-            if ';external_dependency} -->' not in line:
+        for line_number, line in enumerate(lines, start=1):
+            if line_number in plugin_lines or ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
             elif line.split(";")[1] in ignored_artifacts:
                 new_pom_file.write(line)
