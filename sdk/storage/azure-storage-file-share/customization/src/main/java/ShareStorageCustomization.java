@@ -97,6 +97,8 @@ public class ShareStorageCustomization extends Customization {
 
         restoreShareFileRangeListNextMarker(customization, logger);
 
+        restoreShareStorageErrorJson(customization, logger);
+
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
 
@@ -485,6 +487,116 @@ public class ShareStorageCustomization extends Customization {
             }
         }
         return -1;
+    }
+
+    /**
+     * Restores JSON deserialization on the internal {@code ShareStorageError}. The emitter generates a model as either
+     * {@code XmlSerializable} or {@code JsonSerializable}, never both, so the XML-only error model would fall back to
+     * azure-core's reflective Jackson deserializer for a JSON error body. On the module path Jackson cannot access
+     * {@code implementation.models} (it is opened only to {@code com.azure.core}), so the error would surface as a
+     * plain {@code HttpResponseException}/{@code RuntimeException} instead of {@code ShareStorageException}. The
+     * pre-migration model implemented both interfaces; this restores that, accepting both the bare and the
+     * {@code {"error": {...}}}-wrapped forms.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void restoreShareStorageErrorJson(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.storage.file.share.implementation.models", "ShareStorageError")
+            .customizeAst(ast -> ast.getClassByName("ShareStorageError").ifPresent(clazz -> {
+                if (!clazz.getMethodsByName("fromJson").isEmpty()) {
+                    return;
+                }
+                ast.addImport("com.azure.json.JsonReader");
+                ast.addImport("com.azure.json.JsonSerializable");
+                ast.addImport("com.azure.json.JsonToken");
+                ast.addImport("com.azure.json.JsonWriter");
+                ast.addImport("java.io.IOException");
+                clazz.addImplementedType("JsonSerializable<ShareStorageError>");
+
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
+                    "@Override",
+                    "public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {",
+                    "    jsonWriter.writeStartObject();",
+                    "    jsonWriter.writeStringField(\"code\", this.code == null ? null : this.code.toString());",
+                    "    jsonWriter.writeStringField(\"message\", this.message);",
+                    "    jsonWriter.writeNumberField(\"copySourceStatusCode\", this.copySourceStatusCode);",
+                    "    jsonWriter.writeStringField(\"copySourceErrorCode\", this.copySourceErrorCode);",
+                    "    jsonWriter.writeStringField(\"copySourceErrorMessage\", this.copySourceErrorMessage);",
+                    "    jsonWriter.writeStringField(\"headerName\", this.headerName);",
+                    "    jsonWriter.writeStringField(\"headerValue\", this.headerValue);",
+                    "    jsonWriter.writeStringField(\"queryParameterName\", this.queryParameterName);",
+                    "    jsonWriter.writeStringField(\"queryParameterValue\", this.queryParameterValue);",
+                    "    jsonWriter.writeStringField(\"reason\", this.reason);",
+                    "    jsonWriter.writeStringField(\"extendedErrorDetail\", this.extendedErrorDetail);",
+                    "    return jsonWriter.writeEndObject();",
+                    "}")));
+
+                MethodDeclaration fromJson = StaticJavaParser.parseMethodDeclaration(String.join("\n",
+                    "public static ShareStorageError fromJson(JsonReader jsonReader) throws IOException {",
+                    "    return jsonReader.readObject(reader -> {",
+                    "        // The error may be the object itself or wrapped in an \"error\" node.",
+                    "        JsonReader bufferedReader = reader.bufferObject();",
+                    "        bufferedReader.nextToken();",
+                    "        while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {",
+                    "            String fieldName = bufferedReader.getFieldName();",
+                    "            bufferedReader.nextToken();",
+                    "            if (\"error\".equals(fieldName)) {",
+                    "                return readShareStorageError(bufferedReader);",
+                    "            } else {",
+                    "                bufferedReader.skipChildren();",
+                    "            }",
+                    "        }",
+                    "        return readShareStorageError(bufferedReader.reset());",
+                    "    });",
+                    "}"));
+                fromJson.setJavadocComment(String.join("\n",
+                    "Reads an instance of ShareStorageError from the JsonReader.",
+                    "",
+                    "@param jsonReader The JsonReader being read.",
+                    "@return An instance of ShareStorageError if the JsonReader was pointing to an instance of it, or "
+                        + "null if it was pointing to JSON null.",
+                    "@throws IOException If an error occurs while reading the ShareStorageError."));
+                clazz.addMember(fromJson);
+
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
+                    "private static ShareStorageError readShareStorageError(JsonReader jsonReader) throws IOException {",
+                    "    return jsonReader.readObject(reader -> {",
+                    "        ShareStorageError deserialized = new ShareStorageError();",
+                    "        while (reader.nextToken() != JsonToken.END_OBJECT) {",
+                    "            String fieldName = reader.getFieldName();",
+                    "            reader.nextToken();",
+                    "            if (\"code\".equals(fieldName)) {",
+                    "                deserialized.code = ShareErrorCode.fromString(reader.getString());",
+                    "            } else if (\"message\".equals(fieldName)) {",
+                    "                deserialized.message = reader.getString();",
+                    "            } else if (\"copySourceStatusCode\".equals(fieldName)) {",
+                    "                deserialized.copySourceStatusCode = reader.getNullable(JsonReader::getInt);",
+                    "            } else if (\"copySourceErrorCode\".equals(fieldName)) {",
+                    "                deserialized.copySourceErrorCode = reader.getString();",
+                    "            } else if (\"copySourceErrorMessage\".equals(fieldName)) {",
+                    "                deserialized.copySourceErrorMessage = reader.getString();",
+                    "            } else if (\"headerName\".equals(fieldName)) {",
+                    "                deserialized.headerName = reader.getString();",
+                    "            } else if (\"headerValue\".equals(fieldName)) {",
+                    "                deserialized.headerValue = reader.getString();",
+                    "            } else if (\"queryParameterName\".equals(fieldName)) {",
+                    "                deserialized.queryParameterName = reader.getString();",
+                    "            } else if (\"queryParameterValue\".equals(fieldName)) {",
+                    "                deserialized.queryParameterValue = reader.getString();",
+                    "            } else if (\"reason\".equals(fieldName)) {",
+                    "                deserialized.reason = reader.getString();",
+                    "            } else if (\"extendedErrorDetail\".equals(fieldName)) {",
+                    "                deserialized.extendedErrorDetail = reader.getString();",
+                    "            } else {",
+                    "                reader.skipChildren();",
+                    "            }",
+                    "        }",
+                    "        return deserialized;",
+                    "    });",
+                    "}")));
+                logger.info("Restored JSON deserialization on ShareStorageError");
+            }));
     }
 
     /**
