@@ -58,11 +58,23 @@ public final class Dimension implements JsonSerializable<Dimension> {
      * for equal contribution or supply a weight for every dimension; partially weighted definitions are rejected.
      * Boolean scoring rejects every configured weight, including explicit unit weights. No schema default is emitted.
      *
-     * @return the weight value.
+     * @return the weight value, or zero when no weight is configured. This fallback does not configure a weight on the
+     * wire.
      */
-    @Generated
-    public Integer getWeight() {
-        return this.weight;
+    public int getWeight() {
+        return this.weight == null ? 0 : this.weight;
+    }
+
+    /**
+     * Creates an instance of Dimension class with a configured weight.
+     *
+     * @param id the id value to set.
+     * @param description the description value to set.
+     * @param weight the weight value to set.
+     */
+    public Dimension(String id, String description, int weight) {
+        this(id, description);
+        this.weight = weight;
     }
 
     /**

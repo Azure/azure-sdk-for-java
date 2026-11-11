@@ -3,11 +3,11 @@
 
 package com.azure.ai.projects.models;
 
-import com.azure.ai.projects.implementation.OpenAIJsonHelper;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.core.ObjectMappers;
 import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource.InputMessages.ItemReference;
+import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileContent;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileId;
 import java.io.IOException;
@@ -26,6 +26,7 @@ class EvaluationSourceSerializationTests {
     private static final String FILE_CONTENT = "{\"type\":\"file_content\",\"content\":["
         + "{\"item\":{\"query\":\"hello\"},\"sample\":{\"output\":\"world\"},\"future_content\":true}],"
         + "\"future_source\":\"preserved\"}";
+    private static final String FILE_ID = "{\"type\":\"file_id\",\"id\":\"file-1\",\"future_source\":\"preserved\"}";
 
     @Test
     void polymorphicBaseConstructorsAreProtected() throws NoSuchMethodException {
@@ -119,12 +120,13 @@ class EvaluationSourceSerializationTests {
         assertEquals(restored.getSources(), roundTripped.getSources());
     }
 
-    @Test
-    void itemReferenceRoundTripsThroughPolymorphicParent() throws IOException {
+    @ParameterizedTest
+    @ValueSource(strings = { FILE_CONTENT, FILE_ID })
+    void targetCompletionSourceAndItemReferenceRoundTripThroughPolymorphicParent(String sourceJson) throws IOException {
         ItemReference inputMessages = ObjectMappers.jsonMapper()
             .readValue("{\"type\":\"item_reference\",\"item_reference\":\"item.messages\",\"future_setting\":true}",
                 ItemReference.class);
-        BinaryData source = OpenAIJsonHelper.toBinaryData(FileId.builder().id("file-1").build());
+        Source source = ObjectMappers.jsonMapper().readValue(sourceJson, Source.class);
         TargetCompletionEvaluationRunDataSource original
             = new TargetCompletionEvaluationRunDataSource(source, new AzureAIModelTarget().setModel("deployment"))
                 .setInputMessages(inputMessages)
@@ -132,7 +134,7 @@ class EvaluationSourceSerializationTests {
 
         BinaryData serialized = BinaryData.fromObject(original);
         JsonNode json = ObjectMappers.jsonMapper().readTree(serialized.toString());
-        assertEquals(ObjectMappers.jsonMapper().readTree(source.toString()), json.get("source"));
+        assertEquals(ObjectMappers.jsonMapper().readTree(sourceJson), json.get("source"));
         assertEquals("item_reference", json.get("input_messages").get("type").asText());
         assertEquals("item.messages", json.get("input_messages").get("item_reference").asText());
         assertTrue(json.get("input_messages").get("future_setting").asBoolean());
@@ -141,10 +143,48 @@ class EvaluationSourceSerializationTests {
 
         EvaluationRunDataSource restored = serialized.toObject(EvaluationRunDataSource.class);
         assertEquals(TargetCompletionEvaluationRunDataSource.class, restored.getClass());
+        assertEquals(source, ((TargetCompletionEvaluationRunDataSource) restored).getSource());
         assertEquals(inputMessages, ((TargetCompletionEvaluationRunDataSource) restored).getInputMessages());
         assertEquals(TargetCompletionItemGenerationParameters.class,
             ((TargetCompletionEvaluationRunDataSource) restored).getItemGenerationParameters().getClass());
         assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { FILE_CONTENT, FILE_ID })
+    void responseRetrievalSourceRoundTripsThroughPolymorphicParent(String sourceJson) throws IOException {
+        Source source = ObjectMappers.jsonMapper().readValue(sourceJson, Source.class);
+        ResponseRetrievalItemGenerationParameters original = new ResponseRetrievalItemGenerationParameters(7,
+            Collections.singletonMap("response_id", "{{item.resp_id}}"), source);
+
+        BinaryData serialized = BinaryData.fromObject(original);
+        JsonNode json = ObjectMappers.jsonMapper().readTree(serialized.toString());
+        assertEquals(ObjectMappers.jsonMapper().readTree(sourceJson), json.get("source"));
+        assertEquals(7, json.get("max_num_turns").asInt());
+        assertEquals("{{item.resp_id}}", json.get("data_mapping").get("response_id").asText());
+
+        ItemGenerationParameters restored = serialized.toObject(ItemGenerationParameters.class);
+        assertEquals(ResponseRetrievalItemGenerationParameters.class, restored.getClass());
+        assertEquals(source, ((ResponseRetrievalItemGenerationParameters) restored).getSource());
+        assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", ",\"source\":null" })
+    void unionSourcesPreserveNullAndAbsentValues(String sourceField) {
+        ResponseRetrievalItemGenerationParameters parameters = BinaryData
+            .fromString("{\"type\":\"response_retrieval\",\"max_num_turns\":7,\"data_mapping\":{}" + sourceField + "}")
+            .toObject(ResponseRetrievalItemGenerationParameters.class);
+        TargetCompletionEvaluationRunDataSource dataSource = BinaryData.fromString(
+            "{\"type\":\"azure_ai_target_completions\",\"target\":{\"type\":\"azure_ai_model\"}" + sourceField + "}")
+            .toObject(TargetCompletionEvaluationRunDataSource.class);
+
+        assertNull(parameters.getSource());
+        assertNull(dataSource.getSource());
+        assertNull(
+            BinaryData.fromObject(parameters).toObject(ResponseRetrievalItemGenerationParameters.class).getSource());
+        assertNull(
+            BinaryData.fromObject(dataSource).toObject(TargetCompletionEvaluationRunDataSource.class).getSource());
     }
 
     @ParameterizedTest

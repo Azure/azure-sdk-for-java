@@ -25,6 +25,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -47,6 +48,56 @@ public final class BetaSkillsClient {
     @Generated
     BetaSkillsClient(BetaSkillsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSkill(String name) {
+        deleteSkillWithResponse(name, new RequestOptions());
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillWithResponse(name, requestOptions), null);
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSkillVersion(String name, String version) {
+        deleteSkillVersionWithResponse(name, version, new RequestOptions());
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSkillVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillVersionWithResponse(name, version, requestOptions), null);
     }
 
     /**

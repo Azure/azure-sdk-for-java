@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -17,6 +18,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -39,6 +42,64 @@ public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void betaSkillDeletesDiscardBodyAndPreserveResponse(boolean version) {
+        RecordingHttpClient httpClient = new RecordingHttpClient(
+            request -> jsonResponse(request, "{\"id\":\"skill-1\",\"name\":\"skill\",\"deleted\":true}"));
+        BetaSkillsClient client = createBuilder(httpClient).beta().buildBetaSkillsClient();
+        RequestOptions options
+            = new RequestOptions().addHeader(HttpHeaderName.fromString("X-Delete-Test"), "preserved");
+
+        Response<Void> response = version
+            ? client.deleteSkillVersionWithResponse("skill", "1", options)
+            : client.deleteSkillWithResponse("skill", options);
+
+        assertNull(response.getValue());
+        assertEquals(200, response.getStatusCode());
+        assertEquals("application/json", response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("preserved", response.getRequest().getHeaders().getValue("X-Delete-Test"));
+        assertEquals(HttpMethod.DELETE, response.getRequest().getHttpMethod());
+        assertEquals("/api/projects/project/skills/skill" + (version ? "/versions/1" : ""),
+            response.getRequest().getUrl().getPath());
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
+
+        if (version) {
+            client.deleteSkillVersion("skill", "1");
+        } else {
+            client.deleteSkill("skill");
+        }
+        assertEquals(2, httpClient.requests.size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void betaSkillAsyncDeletesDiscardBodyAndComplete(boolean version) {
+        RecordingHttpClient httpClient = new RecordingHttpClient(
+            request -> jsonResponse(request, "{\"id\":\"skill-1\",\"name\":\"skill\",\"deleted\":true}"));
+        BetaSkillsAsyncClient client = createBuilder(httpClient).beta().buildBetaSkillsAsyncClient();
+        RequestOptions options
+            = new RequestOptions().addHeader(HttpHeaderName.fromString("X-Delete-Test"), "preserved");
+
+        Mono<Response<Void>> response = version
+            ? client.deleteSkillVersionWithResponse("skill", "1", options)
+            : client.deleteSkillWithResponse("skill", options);
+        StepVerifier.create(response).assertNext(value -> {
+            assertNull(value.getValue());
+            assertEquals(200, value.getStatusCode());
+            assertEquals("application/json", value.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertEquals("preserved", value.getRequest().getHeaders().getValue("X-Delete-Test"));
+            assertEquals(HttpMethod.DELETE, value.getRequest().getHttpMethod());
+            assertEquals("/api/projects/project/skills/skill" + (version ? "/versions/1" : ""),
+                value.getRequest().getUrl().getPath());
+        }).verifyComplete();
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
+
+        StepVerifier.create(version ? client.deleteSkillVersion("skill", "1") : client.deleteSkill("skill"))
+            .verifyComplete();
+        assertEquals(2, httpClient.requests.size());
+    }
 
     @Test
     public void allowPreviewAddsAreaSpecificHeaders() {

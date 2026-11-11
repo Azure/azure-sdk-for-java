@@ -15,6 +15,10 @@
 
 ### Bugs Fixed
 
+- Restored the model-taking `EvaluatorGenerationInputs` constructor for compatibility.
+- Restored skill and skill-version deletion methods on the synchronous and asynchronous beta Skills clients.
+- Restored the weight-taking `Dimension` constructor and primitive `getWeight()` for compatibility. An unset weight
+  returns zero without configuring a wire weight.
 - Removed obsolete beta agent-insight builder methods and preview-header wiring.
 - Protected evaluation run data-source, item-generation parameter, and trace-source base constructors.
 - Marked `DataGenerationJobType.CONVERSATIONS` as preview.
@@ -24,6 +28,7 @@
 
 ### Other Changes
 
+- Reused the OpenAI JSONL source union for target-completion evaluation sources and response-retrieval parameters.
 - Reused OpenAI JSONL file-source and evaluation input-message reference models instead of generating duplicates.
 - Reused the Agents user-conversation simulation test-case, audio-effects, and user-behavior models for inline evaluation
   scenarios and simulation defaults instead of generating duplicates.

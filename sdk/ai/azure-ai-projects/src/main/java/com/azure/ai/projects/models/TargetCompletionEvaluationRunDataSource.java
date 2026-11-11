@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource.InputMessages.ItemReference;
+import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source;
 import java.io.IOException;
 
 /**
@@ -38,25 +39,13 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
      * The source configuration for inline or file data.
      */
     @Generated
-    private final BinaryData source;
+    private final Source source;
 
     /*
      * The target configuration for the evaluation.
      */
     @Generated
     private final Target target;
-
-    /**
-     * Creates an instance of TargetCompletionEvaluationRunDataSource class.
-     *
-     * @param source the source value to set.
-     * @param target the target value to set.
-     */
-    @Generated
-    public TargetCompletionEvaluationRunDataSource(BinaryData source, Target target) {
-        this.source = source;
-        this.target = target;
-    }
 
     /**
      * Get the type property: The data source type discriminator.
@@ -85,7 +74,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
      * @return the source value.
      */
     @Generated
-    public BinaryData getSource() {
+    public Source getSource() {
         return this.source;
     }
 
@@ -106,8 +95,12 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
-        jsonWriter.writeFieldName("source");
-        this.source.writeTo(jsonWriter);
+        if (this.source == null) {
+            jsonWriter.writeNullField("source");
+        } else {
+            jsonWriter.writeFieldName("source");
+            OpenAIJsonHelper.toBinaryData(this.source).writeTo(jsonWriter);
+        }
         jsonWriter.writeJsonField("target", this.target);
         jsonWriter.writeStringField("type", this.type);
         if (this.inputMessages == null) {
@@ -133,7 +126,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
     public static TargetCompletionEvaluationRunDataSource fromJson(JsonReader jsonReader) throws IOException {
         // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
-            BinaryData source = null;
+            Source source = null;
             Target target = null;
             String type = "azure_ai_target_completions";
             ItemReference inputMessages = null;
@@ -142,7 +135,8 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("source".equals(fieldName)) {
-                    source = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    source = reader.getNullable(nonNullReader -> OpenAIJsonHelper
+                        .fromBinaryData(BinaryData.fromObject(nonNullReader.readUntyped()), Source.class));
                 } else if ("target".equals(fieldName)) {
                     target = Target.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
@@ -204,5 +198,17 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
         setItemGenerationParameters(ItemGenerationParameters itemGenerationParameters) {
         this.itemGenerationParameters = itemGenerationParameters;
         return this;
+    }
+
+    /**
+     * Creates an instance of TargetCompletionEvaluationRunDataSource class.
+     *
+     * @param source the source value to set.
+     * @param target the target value to set.
+     */
+    @Generated
+    public TargetCompletionEvaluationRunDataSource(Source source, Target target) {
+        this.source = source;
+        this.target = target;
     }
 }

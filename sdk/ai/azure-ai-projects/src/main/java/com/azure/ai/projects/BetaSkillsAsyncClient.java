@@ -27,6 +27,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.Objects;
@@ -52,6 +53,61 @@ public final class BetaSkillsAsyncClient {
     @Generated
     BetaSkillsAsyncClient(BetaSkillsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return a {@link Mono} that completes when the skill is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkill(String name) {
+        return deleteSkillWithResponse(name, new RequestOptions()).then();
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteSkillWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return a {@link Mono} that completes when the skill version is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkillVersion(String name, String version) {
+        return deleteSkillVersionWithResponse(name, version, new RequestOptions()).then();
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return internalDeleteSkillVersionWithResponse(name, version, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

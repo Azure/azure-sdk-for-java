@@ -286,6 +286,18 @@ public final class EvaluatorGenerationInputs implements JsonSerializable<Evaluat
     }
 
     /**
+     * Creates an instance of EvaluatorGenerationInputs class with a model for quality rubric generation.
+     *
+     * @param sources the sources value to set.
+     * @param model the model value to set.
+     * @param evaluatorName the evaluatorName value to set.
+     */
+    public EvaluatorGenerationInputs(List<EvaluatorGenerationJobSource> sources, String model, String evaluatorName) {
+        this(sources, evaluatorName);
+        this.model = model;
+    }
+
+    /**
      * Get the category property: Generation intent. Omission preserves the existing quality path. Explicitly select
      * safety for safety generation and regeneration. Safety output uses Boolean scoring, allowed classifications, and
      * two named violation metrics.
