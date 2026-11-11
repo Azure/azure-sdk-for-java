@@ -39,10 +39,10 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
 
     /*
      * Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. The
-     * capacity reservation group resource can generally be shared across subscriptions belonging to a single Azure AAD
-     * tenant or across AAD tenants if there is a trust relationship established between the tenants. Block capacity
-     * reservation does not support sharing across subscriptions. **Note:** Minimum api-version: 2023-09-01. Please
-     * refer to https://aka.ms/computereservationsharing for more details.
+     * capacity reservation group resource can be shared only across subscriptions belonging to the same Microsoft Entra
+     * ID tenant. Sharing across tenants is not supported. Block capacity reservation does not support sharing across
+     * subscriptions. **Note:** Minimum api-version: 2023-09-01. Please refer to
+     * https://aka.ms/computereservationsharing for more details.
      */
     private ResourceSharingProfile sharingProfile;
 
@@ -96,10 +96,10 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
 
     /**
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
-     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
-     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
-     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can be shared only across subscriptions
+     * belonging to the same Microsoft Entra ID tenant. Sharing across tenants is not supported. Block capacity
+     * reservation does not support sharing across subscriptions. **Note:** Minimum api-version: 2023-09-01. Please
+     * refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @return the sharingProfile value.
      */
@@ -109,10 +109,10 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
 
     /**
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
-     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
-     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
-     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can be shared only across subscriptions
+     * belonging to the same Microsoft Entra ID tenant. Sharing across tenants is not supported. Block capacity
+     * reservation does not support sharing across subscriptions. **Note:** Minimum api-version: 2023-09-01. Please
+     * refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupProperties object itself.

@@ -8,9 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the policy for resource's placement in availability zone. Possible values are: **Any** (used for Virtual
- * Machines), **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically picked by
- * system as part of resource creation.
+ * Specifies the policy for the resource's placement in an availability zone. Use **Auto** for Virtual Machines and
+ * Virtual Machine Scale Sets to let the system automatically select an availability zone during resource creation.
+ * **Any** remains supported for Virtual Machines for backward compatibility.
  */
 public final class ZonePlacementPolicyType extends ExpandableStringEnum<ZonePlacementPolicyType> {
     /**
@@ -19,7 +19,7 @@ public final class ZonePlacementPolicyType extends ExpandableStringEnum<ZonePlac
     public static final ZonePlacementPolicyType ANY = fromString("Any");
 
     /**
-     * Automatic zone placement in a Virtual Machine Scale Set.
+     * Automatic zone placement for Virtual Machines and Virtual Machine Scale Sets.
      */
     public static final ZonePlacementPolicyType AUTO = fromString("Auto");
 

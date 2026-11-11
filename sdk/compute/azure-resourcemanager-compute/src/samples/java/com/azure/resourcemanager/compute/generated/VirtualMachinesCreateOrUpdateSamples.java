@@ -1927,6 +1927,47 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithAutoZonePlacement.json
+     */
+    /**
+     * Sample code: Create a VM with Auto zone placement.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void createAVMWithAutoZonePlacement(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate("myResourceGroup", "myVM",
+                new VirtualMachineInner().withLocation("westus2")
+                    .withPlan(new Plan().withName("windows2016")
+                        .withPublisher("microsoft-ads")
+                        .withProduct("windows-data-science-vm"))
+                    .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                        .withIncludeZones(Arrays.asList("1", "3")))
+                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_DS1_V2))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("microsoft-ads")
+                                .withOffer("windows-data-science-vm")
+                                .withSku("windows2016")
+                                .withVersion("latest"))
+                            .withOsDisk(new OSDisk().withName("myVMosdisk")
+                                .withCaching(CachingTypes.READ_ONLY)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new ManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                    .withOsProfile(new OSProfile()
+                        .withComputerName("myVM")
+                        .withAdminUsername("{your-username}")
+                        .withAdminPassword("fakeTokenPlaceholder"))
+                    .withNetworkProfile(
+                        new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                            .withPrimary(true)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
      */
     /**

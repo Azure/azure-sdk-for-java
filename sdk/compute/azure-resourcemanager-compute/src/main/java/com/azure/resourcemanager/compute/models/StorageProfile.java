@@ -48,8 +48,9 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     private DiskControllerTypes diskControllerType;
 
     /*
-     * Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable only for VMs with
-     * placement property set. Please note that this change is irreversible. Minimum api-version: 2024-11-01.
+     * Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable **only** for VMs
+     * with placement.zonePlacementPolicy set to **Any**. Please note that this change is irreversible. Minimum
+     * api-version: 2024-11-01.
      */
     private Boolean alignRegionalDisksToVMZone;
 
@@ -169,8 +170,8 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
 
     /**
      * Get the alignRegionalDisksToVMZone property: Specifies whether the regional disks should be aligned/moved to the
-     * VM zone. This is applicable only for VMs with placement property set. Please note that this change is
-     * irreversible. Minimum api-version: 2024-11-01.
+     * VM zone. This is applicable **only** for VMs with placement.zonePlacementPolicy set to **Any**. Please note that
+     * this change is irreversible. Minimum api-version: 2024-11-01.
      * 
      * @return the alignRegionalDisksToVMZone value.
      */
@@ -180,8 +181,8 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
 
     /**
      * Set the alignRegionalDisksToVMZone property: Specifies whether the regional disks should be aligned/moved to the
-     * VM zone. This is applicable only for VMs with placement property set. Please note that this change is
-     * irreversible. Minimum api-version: 2024-11-01.
+     * VM zone. This is applicable **only** for VMs with placement.zonePlacementPolicy set to **Any**. Please note that
+     * this change is irreversible. Minimum api-version: 2024-11-01.
      * 
      * @param alignRegionalDisksToVMZone the alignRegionalDisksToVMZone value to set.
      * @return the StorageProfile object itself.

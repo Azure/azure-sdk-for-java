@@ -18,9 +18,9 @@ import java.util.List;
 @Fluent
 public final class Placement implements JsonSerializable<Placement> {
     /*
-     * Specifies the policy for resource's placement in availability zone. Possible values are: **Any** (used for
-     * Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically
-     * picked by system as part of resource creation.
+     * Specifies the policy for the resource's placement in an availability zone. Use **Auto** for Virtual Machines and
+     * Virtual Machine Scale Sets to let the system automatically select an availability zone during resource creation.
+     * **Any** remains supported for Virtual Machines for backward compatibility.
      */
     private ZonePlacementPolicyType zonePlacementPolicy;
 
@@ -47,9 +47,10 @@ public final class Placement implements JsonSerializable<Placement> {
     }
 
     /**
-     * Get the zonePlacementPolicy property: Specifies the policy for resource's placement in availability zone.
-     * Possible values are: **Any** (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An
-     * availability zone will be automatically picked by system as part of resource creation.
+     * Get the zonePlacementPolicy property: Specifies the policy for the resource's placement in an availability zone.
+     * Use **Auto** for Virtual Machines and Virtual Machine Scale Sets to let the system automatically select an
+     * availability zone during resource creation. **Any** remains supported for Virtual Machines for backward
+     * compatibility.
      * 
      * @return the zonePlacementPolicy value.
      */
@@ -58,9 +59,10 @@ public final class Placement implements JsonSerializable<Placement> {
     }
 
     /**
-     * Set the zonePlacementPolicy property: Specifies the policy for resource's placement in availability zone.
-     * Possible values are: **Any** (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An
-     * availability zone will be automatically picked by system as part of resource creation.
+     * Set the zonePlacementPolicy property: Specifies the policy for the resource's placement in an availability zone.
+     * Use **Auto** for Virtual Machines and Virtual Machine Scale Sets to let the system automatically select an
+     * availability zone during resource creation. **Any** remains supported for Virtual Machines for backward
+     * compatibility.
      * 
      * @param zonePlacementPolicy the zonePlacementPolicy value to set.
      * @return the Placement object itself.
