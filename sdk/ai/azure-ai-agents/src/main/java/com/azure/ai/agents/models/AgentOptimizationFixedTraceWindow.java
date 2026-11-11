@@ -26,20 +26,6 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
     private AgentOptimizationTraceWindowType type = AgentOptimizationTraceWindowType.FIXED;
 
     /*
-     * Inclusive UTC Unix timestamp in seconds, at or after the Unix epoch. Must precede the effective end_time after
-     * truncation to job submission time. The service rejects empty or inverted effective intervals.
-     */
-    @Generated
-    private final long startTime;
-
-    /*
-     * Exclusive UTC Unix timestamp in seconds. A future value is truncated to job submission time, and the effective
-     * end is returned in the job configuration. The service does not wait for future traces.
-     */
-    @Generated
-    private final long endTime;
-
-    /*
      * Maximum number of trace conversations to select, from 1 to 100 inclusive. If omitted, the service defaults to
      * 100. Selects the latest matching readable traces before collecting their annotations or evaluation results;
      * feedback availability does not affect selection priority.
@@ -50,20 +36,20 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
     /**
      * Creates an instance of AgentOptimizationFixedTraceWindow class.
      *
-     * @param startTime the startTime value to set.
-     * @param endTime the endTime value to set.
+     * @param startAt the startAt value to set.
+     * @param endAt the endAt value to set.
      */
     @Generated
-    public AgentOptimizationFixedTraceWindow(OffsetDateTime startTime, OffsetDateTime endTime) {
-        if (startTime == null) {
-            this.startTime = 0L;
+    public AgentOptimizationFixedTraceWindow(OffsetDateTime startAt, OffsetDateTime endAt) {
+        if (startAt == null) {
+            this.startAt = 0L;
         } else {
-            this.startTime = startTime.toEpochSecond();
+            this.startAt = startAt.toEpochSecond();
         }
-        if (endTime == null) {
-            this.endTime = 0L;
+        if (endAt == null) {
+            this.endAt = 0L;
         } else {
-            this.endTime = endTime.toEpochSecond();
+            this.endAt = endAt.toEpochSecond();
         }
     }
 
@@ -76,29 +62,6 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
     @Override
     public AgentOptimizationTraceWindowType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the startTime property: Inclusive UTC Unix timestamp in seconds, at or after the Unix epoch. Must precede the
-     * effective end_time after truncation to job submission time. The service rejects empty or inverted effective
-     * intervals.
-     *
-     * @return the startTime value.
-     */
-    @Generated
-    public OffsetDateTime getStartTime() {
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startTime), ZoneOffset.UTC);
-    }
-
-    /**
-     * Get the endTime property: Exclusive UTC Unix timestamp in seconds. A future value is truncated to job submission
-     * time, and the effective end is returned in the job configuration. The service does not wait for future traces.
-     *
-     * @return the endTime value.
-     */
-    @Generated
-    public OffsetDateTime getEndTime() {
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
     }
 
     /**
@@ -134,8 +97,8 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("start_time", this.startTime);
-        jsonWriter.writeLongField("end_time", this.endTime);
+        jsonWriter.writeLongField("start_time", this.startAt);
+        jsonWriter.writeLongField("end_time", this.endAt);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("max_traces", this.maxTraces);
         return jsonWriter.writeEndObject();
@@ -153,17 +116,17 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
     @Generated
     public static AgentOptimizationFixedTraceWindow fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime startTime = null;
-            OffsetDateTime endTime = null;
+            OffsetDateTime startAt = null;
+            OffsetDateTime endAt = null;
             AgentOptimizationTraceWindowType type = AgentOptimizationTraceWindowType.FIXED;
             Integer maxTraces = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("start_time".equals(fieldName)) {
-                    startTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                    startAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("end_time".equals(fieldName)) {
-                    endTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                    endAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("type".equals(fieldName)) {
                     type = AgentOptimizationTraceWindowType.fromString(reader.getString());
                 } else if ("max_traces".equals(fieldName)) {
@@ -173,10 +136,47 @@ public final class AgentOptimizationFixedTraceWindow extends AgentOptimizationTr
                 }
             }
             AgentOptimizationFixedTraceWindow deserializedAgentOptimizationFixedTraceWindow
-                = new AgentOptimizationFixedTraceWindow(startTime, endTime);
+                = new AgentOptimizationFixedTraceWindow(startAt, endAt);
             deserializedAgentOptimizationFixedTraceWindow.type = type;
             deserializedAgentOptimizationFixedTraceWindow.maxTraces = maxTraces;
             return deserializedAgentOptimizationFixedTraceWindow;
         });
+    }
+
+    /*
+     * Inclusive UTC Unix timestamp in seconds, at or after the Unix epoch. Must precede the effective end_time after
+     * truncation to job submission time. The service rejects empty or inverted effective intervals.
+     */
+    @Generated
+    private final long startAt;
+
+    /*
+     * Exclusive UTC Unix timestamp in seconds. A future value is truncated to job submission time, and the effective
+     * end is returned in the job configuration. The service does not wait for future traces.
+     */
+    @Generated
+    private final long endAt;
+
+    /**
+     * Get the startAt property: Inclusive UTC Unix timestamp in seconds, at or after the Unix epoch. Must precede the
+     * effective end_time after truncation to job submission time. The service rejects empty or inverted effective
+     * intervals.
+     *
+     * @return the startAt value.
+     */
+    @Generated
+    public OffsetDateTime getStartAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the endAt property: Exclusive UTC Unix timestamp in seconds. A future value is truncated to job submission
+     * time, and the effective end is returned in the job configuration. The service does not wait for future traces.
+     *
+     * @return the endAt value.
+     */
+    @Generated
+    public OffsetDateTime getEndAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endAt), ZoneOffset.UTC);
     }
 }

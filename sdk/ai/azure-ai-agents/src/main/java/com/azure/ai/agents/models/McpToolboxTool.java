@@ -461,7 +461,7 @@ public final class McpToolboxTool extends ToolboxTool {
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
-            List<MCPToolboxRequestHeaderBinding> requestHeaderBindings = null;
+            List<McpToolboxRequestHeaderBinding> requestHeaderBindings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -502,7 +502,7 @@ public final class McpToolboxTool extends ToolboxTool {
                     projectConnectionId = reader.getString();
                 } else if ("request_header_bindings".equals(fieldName)) {
                     requestHeaderBindings
-                        = reader.readArray(reader1 -> MCPToolboxRequestHeaderBinding.fromJson(reader1));
+                        = reader.readArray(reader1 -> McpToolboxRequestHeaderBinding.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -591,7 +591,7 @@ public final class McpToolboxTool extends ToolboxTool {
      * Bindings that supply request headers to this MCP server.
      */
     @Generated
-    private List<MCPToolboxRequestHeaderBinding> requestHeaderBindings;
+    private List<McpToolboxRequestHeaderBinding> requestHeaderBindings;
 
     /**
      * Get the requestHeaderBindings property: Bindings that supply request headers to this MCP server.
@@ -599,7 +599,7 @@ public final class McpToolboxTool extends ToolboxTool {
      * @return the requestHeaderBindings value.
      */
     @Generated
-    public List<MCPToolboxRequestHeaderBinding> getRequestHeaderBindings() {
+    public List<McpToolboxRequestHeaderBinding> getRequestHeaderBindings() {
         return this.requestHeaderBindings;
     }
 
@@ -610,7 +610,7 @@ public final class McpToolboxTool extends ToolboxTool {
      * @return the McpToolboxTool object itself.
      */
     @Generated
-    public McpToolboxTool setRequestHeaderBindings(List<MCPToolboxRequestHeaderBinding> requestHeaderBindings) {
+    public McpToolboxTool setRequestHeaderBindings(List<McpToolboxRequestHeaderBinding> requestHeaderBindings) {
         this.requestHeaderBindings = requestHeaderBindings;
         return this;
     }

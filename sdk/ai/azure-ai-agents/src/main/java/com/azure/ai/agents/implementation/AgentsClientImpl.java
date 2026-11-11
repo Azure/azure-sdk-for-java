@@ -179,20 +179,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The AgentOptimizationJobsImpl object to access its operations.
-     */
-    private final AgentOptimizationJobsImpl agentOptimizationJobs;
-
-    /**
-     * Gets the AgentOptimizationJobsImpl object to access its operations.
-     *
-     * @return the AgentOptimizationJobsImpl object.
-     */
-    public AgentOptimizationJobsImpl getAgentOptimizationJobs() {
-        return this.agentOptimizationJobs;
-    }
-
-    /**
      * Initializes an instance of AgentsClient client.
      *
      * @param endpoint Foundry Project endpoint in the form
@@ -247,6 +233,5 @@ public final class AgentsClientImpl {
         this.voiceAgentsTelephonies = new VoiceAgentsTelephoniesImpl(this);
         this.agents = new AgentsImpl(this);
         this.toolboxes = new ToolboxesImpl(this);
-        this.agentOptimizationJobs = new AgentOptimizationJobsImpl(this);
     }
 }

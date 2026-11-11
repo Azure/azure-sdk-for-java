@@ -28,7 +28,7 @@ public class AgentOptimizationSkillReference implements JsonSerializable<AgentOp
      * Creates an instance of AgentOptimizationSkillReference class.
      */
     @Generated
-    public AgentOptimizationSkillReference() {
+    protected AgentOptimizationSkillReference() {
     }
 
     /**

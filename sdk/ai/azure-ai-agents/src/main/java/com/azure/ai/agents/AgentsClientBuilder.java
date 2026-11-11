@@ -73,7 +73,6 @@ import java.util.stream.Collectors;
         VoiceAgentsTelephonyClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
-        AgentOptimizationJobsClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
         BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
@@ -81,7 +80,6 @@ import java.util.stream.Collectors;
         VoiceAgentsTelephonyAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class,
-        AgentOptimizationJobsAsyncClient.class,
         VoiceAgentsWebSocketClient.class,
         VoiceAgentsWebSocketAsyncClient.class })
 public final class AgentsClientBuilder
@@ -972,25 +970,5 @@ public final class AgentsClientBuilder
     public VoiceAgentsTelephonyClient buildVoiceAgentsTelephonyClient() {
         return new VoiceAgentsTelephonyClient(
             buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsTelephonies());
-    }
-
-    /**
-     * Builds an instance of AgentOptimizationJobsAsyncClient class.
-     *
-     * @return an instance of AgentOptimizationJobsAsyncClient.
-     */
-    @Generated
-    public AgentOptimizationJobsAsyncClient buildAgentOptimizationJobsAsyncClient() {
-        return new AgentOptimizationJobsAsyncClient(buildInnerClient().getAgentOptimizationJobs());
-    }
-
-    /**
-     * Builds an instance of AgentOptimizationJobsClient class.
-     *
-     * @return an instance of AgentOptimizationJobsClient.
-     */
-    @Generated
-    public AgentOptimizationJobsClient buildAgentOptimizationJobsClient() {
-        return new AgentOptimizationJobsClient(buildInnerClient().getAgentOptimizationJobs());
     }
 }

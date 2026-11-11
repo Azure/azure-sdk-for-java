@@ -28,7 +28,7 @@ public class AgentOptimizationTraceWindow implements JsonSerializable<AgentOptim
      * Creates an instance of AgentOptimizationTraceWindow class.
      */
     @Generated
-    public AgentOptimizationTraceWindow() {
+    protected AgentOptimizationTraceWindow() {
     }
 
     /**

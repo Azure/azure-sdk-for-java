@@ -29,7 +29,7 @@ public class AgentOptimizationTraceConnectionConfiguration
      * Creates an instance of AgentOptimizationTraceConnectionConfiguration class.
      */
     @Generated
-    public AgentOptimizationTraceConnectionConfiguration() {
+    protected AgentOptimizationTraceConnectionConfiguration() {
     }
 
     /**

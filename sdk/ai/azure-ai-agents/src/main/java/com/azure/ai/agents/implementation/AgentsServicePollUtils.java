@@ -119,7 +119,8 @@ final class AgentsServicePollUtils {
 
     /**
      * Remaps a {@link PollResponse} whose status may contain a custom service terminal state
-     * ({@code "completed"}, {@code "superseded"}) that the base {@code OperationResourcePollingStrategy}
+     * ({@code "completed"}, {@code "superseded"}, {@code "cancelled"}, {@code "skipped"})
+     * that the base {@code OperationResourcePollingStrategy}
      * cannot recognize.  If no remapping is needed the original response is returned as-is.
      *
      * <p>The Memory Stores service defines:</p>
@@ -127,6 +128,8 @@ final class AgentsServicePollUtils {
      *   <li>{@code "completed"}  {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
      *   <li>{@code "superseded"} {@link LongRunningOperationStatus#USER_CANCELLED}</li>
      * </ul>
+     * <p>Optimization jobs that are {@code "skipped"} map to {@link LongRunningOperationStatus#FAILED},
+     * because they terminate without completing the requested optimization.</p>
      */
     static <T> PollResponse<T> remapStatus(PollResponse<T> response) {
         LongRunningOperationStatus status = response.getStatus();
@@ -147,6 +150,8 @@ final class AgentsServicePollUtils {
             // Optimization jobs and telephony use "cancelled"; MemoryStoreUpdateStatus intentionally has no CANCELLED.
             || "cancelled".equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.USER_CANCELLED;
+        } else if ("skipped".equalsIgnoreCase(name)) {
+            return LongRunningOperationStatus.FAILED;
         }
         return status;
     }

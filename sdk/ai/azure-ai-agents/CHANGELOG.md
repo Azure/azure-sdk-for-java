@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Consolidated optimization job operations, including file downloads, on `AgentsClient` and `AgentsAsyncClient`.
+- Protected the constructors of optimization trace-connection, evaluator-generation, trace-window, and skill-reference
+  discriminator bases. Use their concrete variants instead.
+- Renamed optimization fixed-window timestamp accessors to `getStartAt()` and `getEndAt()`, preserving the Unix-second
+  wire encoding, and normalized MCP toolbox header-binding model names to `Mcp`.
+
 - Renamed realtime transcription getters to `getLogProbs()`, removed unit suffixes from duration-typed voice and
   telephony properties, and renamed voice audio and recording blob accessors to `getBlobUrl()`. Audio item offsets
   are exposed as `getOffset()`. The JSON field names and duration encodings are unchanged.
@@ -96,6 +102,7 @@
 
 ### Bugs Fixed
 
+- Optimization polling now treats `skipped` as an unsuccessful terminal state instead of polling indefinitely.
 - Preserved handoff state when serializing and deserializing voice-agent session response configurations.
 - Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
   structured inputs, and response structured inputs through `BinaryData`.

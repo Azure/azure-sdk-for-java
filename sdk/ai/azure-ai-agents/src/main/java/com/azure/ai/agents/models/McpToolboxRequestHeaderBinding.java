@@ -15,7 +15,7 @@ import java.io.IOException;
  * A binding that supplies a request header to an MCP server.
  */
 @Immutable
-public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MCPToolboxRequestHeaderBinding> {
+public final class McpToolboxRequestHeaderBinding implements JsonSerializable<McpToolboxRequestHeaderBinding> {
 
     /*
      * The name of the HTTP header to forward to the MCP server. Must be a non-empty HTTP field-name token.
@@ -27,7 +27,7 @@ public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MC
      * The source of the header value, for example `client_headers`.
      */
     @Generated
-    private final MCPToolboxRequestHeaderBindingSource source;
+    private final McpToolboxRequestHeaderBindingSource source;
 
     /*
      * Whether the client must supply this header.
@@ -36,14 +36,14 @@ public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MC
     private final boolean required;
 
     /**
-     * Creates an instance of MCPToolboxRequestHeaderBinding class.
+     * Creates an instance of McpToolboxRequestHeaderBinding class.
      *
      * @param headerName the headerName value to set.
      * @param source the source value to set.
      * @param required the required value to set.
      */
     @Generated
-    public MCPToolboxRequestHeaderBinding(String headerName, MCPToolboxRequestHeaderBindingSource source,
+    public McpToolboxRequestHeaderBinding(String headerName, McpToolboxRequestHeaderBindingSource source,
         boolean required) {
         this.headerName = headerName;
         this.source = source;
@@ -67,7 +67,7 @@ public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MC
      * @return the source value.
      */
     @Generated
-    public MCPToolboxRequestHeaderBindingSource getSource() {
+    public McpToolboxRequestHeaderBindingSource getSource() {
         return this.source;
     }
 
@@ -95,19 +95,19 @@ public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MC
     }
 
     /**
-     * Reads an instance of MCPToolboxRequestHeaderBinding from the JsonReader.
+     * Reads an instance of McpToolboxRequestHeaderBinding from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MCPToolboxRequestHeaderBinding if the JsonReader was pointing to an instance of it, or
+     * @return An instance of McpToolboxRequestHeaderBinding if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MCPToolboxRequestHeaderBinding.
+     * @throws IOException If an error occurs while reading the McpToolboxRequestHeaderBinding.
      */
     @Generated
-    public static MCPToolboxRequestHeaderBinding fromJson(JsonReader jsonReader) throws IOException {
+    public static McpToolboxRequestHeaderBinding fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String headerName = null;
-            MCPToolboxRequestHeaderBindingSource source = null;
+            McpToolboxRequestHeaderBindingSource source = null;
             boolean required = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -115,14 +115,14 @@ public final class MCPToolboxRequestHeaderBinding implements JsonSerializable<MC
                 if ("header_name".equals(fieldName)) {
                     headerName = reader.getString();
                 } else if ("source".equals(fieldName)) {
-                    source = MCPToolboxRequestHeaderBindingSource.fromString(reader.getString());
+                    source = McpToolboxRequestHeaderBindingSource.fromString(reader.getString());
                 } else if ("required".equals(fieldName)) {
                     required = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MCPToolboxRequestHeaderBinding(headerName, source, required);
+            return new McpToolboxRequestHeaderBinding(headerName, source, required);
         });
     }
 }

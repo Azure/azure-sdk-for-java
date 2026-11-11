@@ -194,7 +194,9 @@ public class AgentsCustomizations extends Customization {
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
-            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationEvaluationSet", "AgentOptimizationEvaluatorGenerationConfiguration",
+            "AgentOptimizationSkillReference", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationTraceConnectionConfiguration", "AgentOptimizationTraceWindow",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
             "EvaluationVoiceModelConfiguration", "OptimizationContext",
             "MemoryItem", "MemoryStoreDefinition",

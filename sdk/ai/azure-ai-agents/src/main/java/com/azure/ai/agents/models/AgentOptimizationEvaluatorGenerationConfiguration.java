@@ -36,7 +36,7 @@ public class AgentOptimizationEvaluatorGenerationConfiguration
      * Creates an instance of AgentOptimizationEvaluatorGenerationConfiguration class.
      */
     @Generated
-    public AgentOptimizationEvaluatorGenerationConfiguration() {
+    protected AgentOptimizationEvaluatorGenerationConfiguration() {
     }
 
     /**
