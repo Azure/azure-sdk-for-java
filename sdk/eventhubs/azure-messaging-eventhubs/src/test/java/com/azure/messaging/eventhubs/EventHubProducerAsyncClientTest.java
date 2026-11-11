@@ -60,6 +60,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -1445,9 +1446,77 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies that a late terminal error from a real sender causes the same event to use a replacement link.
+     * Verifies that we can resend a message when a transient error occurs.
      */
     @Test
+    void resendMessageOnTransientLinkFailure() {
+        // Arrange
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[] { connection, connection2 };
+        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
+            DEFAULT_INSTRUMENTATION);
+
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+            final EventData data = new EventData(contents);
+            return Flux.just(data);
+        });
+
+        final String failureKey = "fail";
+        final EventData testData2 = new EventData("test");
+        testData2.getProperties().put(failureKey, "true");
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
+        // This simulates when a link is closed.
+        when(sendLink
+            .send(argThat((Message message) -> message.getApplicationProperties().getValue().containsKey(failureKey))))
+                .thenAnswer(mock -> {
+                    final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+                        "Test-message", new AmqpErrorContext("test-namespace"));
+
+                    endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
+                    return Mono.error(error);
+                });
+
+        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
+        when(
+            connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+                .thenReturn(Mono.just(sendLink2));
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(producer.send(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(producer.send(testData2)).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.size());
+
+        verify(sendLink2, times(1)).send(any(Message.class));
+        verifyNoInteractions(sendLink3);
+
+        verifyNoInteractions(onClientClosed);
+    }
+
+    /**
+     * Verifies that a late terminal error from a real sender causes the same event to use a replacement link.
+     */
+    // Requires the freshly built AMQP dependency; the released dependency predates this fix.
+    @Test
+    @EnabledIfSystemProperty(named = "azure.core.amqp.source.tests", matches = "true")
     void sendRetriesSameEventThroughReplacementLink() throws Exception {
         // Recovery must precede the enclosing timeout, which can otherwise hide a hung sender.
         retryOptions.setTryTimeout(Duration.ofMinutes(1)).setDelay(Duration.ofMillis(10));
@@ -1527,7 +1596,8 @@ class EventHubProducerAsyncClientTest {
             eq(CLIENT_IDENTIFIER));
         verify(connection2, times(1)).createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions),
             eq(CLIENT_IDENTIFIER));
-        verify(sendLink2, times(1)).send(any(Message.class));
+        verify(sendLink2, times(1)).send(gatedMessage);
+        verify(gatedMessage, times(1)).encode(any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
         verifyNoInteractions(sendLink3);
         verifyNoInteractions(onClientClosed);
     }
