@@ -214,11 +214,8 @@ public class ShareFileClient {
      * to the share plus the {@code fileid} query parameter when this client is addressed by file ID.
      */
     private RequestOptions scopedRequestOptions(Context context) {
-        if (!fileId.isEmpty()) {
-            return RequestOptionsHelper.fileIdRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
-                fileId);
-        }
-        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath);
+        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath,
+            fileId);
     }
 
     /**
@@ -3133,25 +3130,8 @@ public class ShareFileClient {
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
 
-        String filePermissionKey;
-        String fileAttributes;
-        String fileCreationTime;
-        String fileLastWriteTime;
-        String fileChangeTime;
-        if (options.getSmbProperties() != null) {
-            FileSmbProperties tempSmbProperties = options.getSmbProperties();
-            filePermissionKey = tempSmbProperties.getFilePermissionKey();
-            fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-            fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-            fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-            fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-        } else {
-            filePermissionKey = null;
-            fileAttributes = null;
-            fileCreationTime = null;
-            fileLastWriteTime = null;
-            fileChangeTime = null;
-        }
+        FileSmbProperties smbProperties
+            = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
         ShareFileClient destinationFileClient = getFileClient(options.getDestinationPath());
 
@@ -3163,9 +3143,10 @@ public class ShareFileClient {
         Callable<Response<Void>> operation
             = () -> destinationFileClient.fileClientInternal.renameWithResponse(finalRenameSource, null,
                 options.getReplaceIfExists(), options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
-                destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), options.getContentType(),
+                destinationRequestConditions.getLeaseId(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), options.getFilePermission(), options.getFilePermissionFormat(),
+                smbProperties.getFilePermissionKey(), options.getMetadata(), options.getContentType(),
                 destinationFileClient.scopedRequestOptions(finalContext));
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),

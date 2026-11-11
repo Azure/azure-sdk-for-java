@@ -15,6 +15,11 @@
   the service was not mapped onto the public model.
 
 ### Other Changes
+- Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
+  in this release.
+- Range operations (download, upload range, clear range, upload range from URL, and listing ranges) now send the
+  standard `Range` request header instead of `x-ms-range`. The service treats both the same, so this does not change
+  results. `Range` has been added to the headers logged by default.
 - Deprecated `Range`; use `ShareFileRange` instead.
 - Deprecated `SourceModifiedAccessConditions`, which is unused and not referenced by any client method.
 - Deprecated `ShareFileRangeList.getNextMarker()` and `ShareFileRangeList.setNextMarker(String)`. Use

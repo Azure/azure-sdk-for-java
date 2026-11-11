@@ -45,7 +45,6 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUr
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
@@ -140,7 +139,6 @@ public class ModelHelper {
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
         other = other == null ? new ParallelTransferOptions() : other;
 
-        // For now these two checks are useful for when we transition to
         if (other.getBlockSizeLong() != null) {
             StorageImplUtils.assertInBounds("ParallelTransferOptions.blockSize", other.getBlockSizeLong(), 1,
                 MAX_FILE_PUT_RANGE_BYTES);
@@ -285,14 +283,6 @@ public class ModelHelper {
         return protocols;
     }
 
-    public static ServicesListSharesSegmentHeaders transformListSharesHeaders(HttpHeaders headers) {
-        if (headers == null) {
-            return null;
-        }
-
-        return new ServicesListSharesSegmentHeaders(headers);
-    }
-
     /**
      * Maps the generated download response headers to the public {@link ShareFileDownloadHeaders}. {@code Content-Type}
      * and the error code are read from the raw headers: the spec models the download {@code Content-Type} as a constant
@@ -418,12 +408,14 @@ public class ModelHelper {
         if (t instanceof ShareStorageException) {
             ShareStorageException s = (ShareStorageException) t;
             return s.getStatusCode() == 404 && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.contains(s.getErrorCode());
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
+            /* HttpResponseException - azure-core returns a plain HttpResponseException instead of the declared
+             ShareStorageErrorException when the error body cannot be deserialized, so it is not mapped to
+             ShareStorageException by the implementation layer. Fall back to the x-ms-error-code header. */
         } else if (t instanceof HttpResponseException) {
             HttpResponseException h = (HttpResponseException) t;
             String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
             return h.getResponse().getStatusCode() == 404
+                && errorCode != null
                 && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.stream()
                     .map(ShareErrorCode::toString)
                     .anyMatch(errorCode::equals);
@@ -453,11 +445,6 @@ public class ModelHelper {
         Long contentLength = headers.getContentLength();
         String contentType = headers.getContentType();
         byte[] contentMD5 = headers.getContentMD5();
-        //        try {
-        //            contentMD5 = headers.getContentMD5();
-        //        } catch (NullPointerException e) {
-        //            contentMD5 = null;
-        //        }
         String contentEncoding = headers.getContentEncoding();
         String cacheControl = headers.getCacheControl();
         String contentDisposition = headers.getContentDisposition();
@@ -526,17 +513,8 @@ public class ModelHelper {
 
     public static Response<ShareFileUploadInfo> transformUploadResponse(Response<FilesUploadRangeHeaders> response) {
         FilesUploadRangeHeaders headers = response.getValue();
-        String eTag = headers.getEtag();
-        OffsetDateTime lastModified = headers.getLastModified();
-        byte[] contentMD5 = headers.getContentMD5();
-        //        try {
-        //            contentMD5 = headers.getContentMD5();
-        //        } catch (NullPointerException e) {
-        //            contentMD5 = null;
-        //        }
-        Boolean isServerEncrypted = headers.isRequestServerEncrypted();
-        ShareFileUploadInfo shareFileUploadInfo
-            = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
+        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(headers.getEtag(), headers.getLastModified(),
+            headers.getContentMD5(), headers.isRequestServerEncrypted());
         return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 
@@ -589,23 +567,6 @@ public class ModelHelper {
 
     public static Response<ShareStatistics> mapGetStatisticsResponse(Response<ShareStats> response) {
         return new SimpleResponse<>(response, new ShareStatistics(response.getValue().getShareUsageBytes()));
-    }
-
-    public static Response<ShareFileUploadInfo>
-        uploadRangeHeadersToShareFileInfo(Response<FilesUploadRangeHeaders> response) {
-        FilesUploadRangeHeaders headers = response.getValue();
-        String eTag = headers.getEtag();
-        OffsetDateTime lastModified = headers.getLastModified();
-        byte[] contentMD5 = headers.getContentMD5();
-        //        try {
-        //            contentMD5 = headers.getContentMD5();
-        //        } catch (NullPointerException e) {
-        //            contentMD5 = null;
-        //        }
-        Boolean isServerEncrypted = headers.isRequestServerEncrypted();
-        ShareFileUploadInfo shareFileUploadInfo
-            = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
-        return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 
     public static Response<ShareFileUploadRangeFromUrlInfo>
@@ -785,14 +746,11 @@ public class ModelHelper {
     }
 
     /**
-     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
-     * {@link ShareStorageErrorException} and it will be mapped to {@link ShareStorageException}.
-     * <p>
-     * The internal exception is required as the public exception was created using Object as the exception value. This
-     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
+     * Maps the generated {@link ShareStorageErrorException} to the public {@link ShareStorageException}, which is the
+     * exception type the clients have always thrown. The message is enriched from the deserialized error body (for
+     * example, the x-ms-version mismatch hint, which relies on the error's {@code HeaderName}).
      *
-     * @param internal The internal exception.
+     * @param internal The exception thrown by the generated implementation layer.
      * @return The public exception.
      */
     public static ShareStorageException mapToShareStorageException(ShareStorageErrorException internal) {

@@ -199,11 +199,8 @@ public class ShareFileAsyncClient {
      * to the share plus the {@code fileid} query parameter when this client is addressed by file ID.
      */
     private RequestOptions scopedRequestOptions(Context context) {
-        if (!fileId.isEmpty()) {
-            return RequestOptionsHelper.fileIdRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
-                fileId);
-        }
-        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath);
+        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath,
+            fileId);
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
@@ -564,24 +561,25 @@ public class ShareFileAsyncClient {
 
         return contentMD5Mono.flatMap(fluxMD5wrapper -> {
             RequestOptions requestOptions = scopedRequestOptions(contextLocal);
-            Mono<BinaryData> bodyMono = contentLength == null
-                ? Mono.just(BinaryData.fromBytes(new byte[0]))
-                : BinaryData.fromFlux(fluxMD5wrapper.getData(), contentLength, false);
-            return bodyMono.flatMap(body -> fileClientInternal
-                .createWithResponse(maxSize, null, httpHeaders == null ? null : httpHeaders.getContentType(),
-                    httpHeaders == null ? null : httpHeaders.getContentEncoding(),
-                    httpHeaders == null ? null : httpHeaders.getContentLanguage(),
-                    httpHeaders == null ? null : httpHeaders.getCacheControl(),
-                    httpHeaders == null ? null : httpHeaders.getContentMd5(),
-                    httpHeaders == null ? null : httpHeaders.getContentDisposition(), metadata, filePermission,
-                    smbPropertiesLocal.getFilePermissionKey(), smbPropertiesLocal.getNtfsFileAttributesString(),
-                    smbPropertiesLocal.getFileCreationTimeString(), smbPropertiesLocal.getFileLastWriteTimeString(),
-                    smbPropertiesLocal.getFileChangeTimeString(), filePermissionFormat,
-                    requestConditionsLocal.getLeaseId(), filePosixPropertiesLocal.getOwner(),
-                    filePosixPropertiesLocal.getGroup(), filePosixPropertiesLocal.getFileMode(),
-                    filePosixPropertiesLocal.getFileType(), fluxMD5wrapper.getMd5(), filePropertySemantics,
-                    contentLength, null, null, contentLength == null ? null : body, requestOptions)
-                .map(ModelHelper::createFileInfoResponse));
+            Function<BinaryData, Mono<Response<ShareFileInfo>>> create
+                = body -> fileClientInternal
+                    .createWithResponse(maxSize, null, httpHeaders == null ? null : httpHeaders.getContentType(),
+                        httpHeaders == null ? null : httpHeaders.getContentEncoding(),
+                        httpHeaders == null ? null : httpHeaders.getContentLanguage(),
+                        httpHeaders == null ? null : httpHeaders.getCacheControl(),
+                        httpHeaders == null ? null : httpHeaders.getContentMd5(),
+                        httpHeaders == null ? null : httpHeaders.getContentDisposition(), metadata, filePermission,
+                        smbPropertiesLocal.getFilePermissionKey(), smbPropertiesLocal.getNtfsFileAttributesString(),
+                        smbPropertiesLocal.getFileCreationTimeString(), smbPropertiesLocal.getFileLastWriteTimeString(),
+                        smbPropertiesLocal.getFileChangeTimeString(), filePermissionFormat,
+                        requestConditionsLocal.getLeaseId(), filePosixPropertiesLocal.getOwner(),
+                        filePosixPropertiesLocal.getGroup(), filePosixPropertiesLocal.getFileMode(),
+                        filePosixPropertiesLocal.getFileType(), fluxMD5wrapper.getMd5(), filePropertySemantics,
+                        contentLength, null, null, body, requestOptions)
+                    .map(ModelHelper::createFileInfoResponse);
+            return contentLength == null
+                ? create.apply(null)
+                : BinaryData.fromFlux(fluxMD5wrapper.getData(), contentLength, false).flatMap(create);
         });
     }
 
@@ -2417,7 +2415,7 @@ public class ShareFileAsyncClient {
             .flatMap(body -> fileClientInternal.uploadRangeWithResponse(range.toString(),
                 ShareFileRangeWriteType.UPDATE, options.getLength(), null, null, requestConditions.getLeaseId(),
                 options.getLastWrittenMode(), null, null, body, requestOptions))
-            .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
+            .map(ModelHelper::transformUploadResponse);
     }
 
     /**
@@ -3021,7 +3019,7 @@ public class ShareFileAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
+                options.getPreviousSnapshot(), options.isRenameIncluded(), "listRangesDiff", Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -3031,8 +3029,8 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions, Duration timeout) {
 
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
-            .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, null, null, Context.NONE),
-                timeout)
+            .applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, null, "listRanges", Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue().getRanges() == null
@@ -3065,8 +3063,9 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, Context context) {
-        ShareErrors.validatePathOperation(fileId, "listRanges");
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String operationName,
+        Context context) {
+        ShareErrors.validatePathOperation(fileId, operationName);
 
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -3355,19 +3354,8 @@ public class ShareFileAsyncClient {
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
 
-        String filePermissionKey = null;
-        String fileAttributes = null;
-        String fileCreationTime = null;
-        String fileLastWriteTime = null;
-        String fileChangeTime = null;
-        if (options.getSmbProperties() != null) {
-            FileSmbProperties tempSmbProperties = options.getSmbProperties();
-            filePermissionKey = tempSmbProperties.getFilePermissionKey();
-            fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-            fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-            fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-            fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-        }
+        FileSmbProperties smbProperties
+            = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
@@ -3378,9 +3366,11 @@ public class ShareFileAsyncClient {
         return destinationFileClient.fileClientInternal
             .renameWithResponse(renameSource, null /* timeout */, options.getReplaceIfExists(),
                 options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
-                destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), options.getContentType(), destinationFileClient.scopedRequestOptions(context))
+                destinationRequestConditions.getLeaseId(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), options.getFilePermission(), options.getFilePermissionFormat(),
+                smbProperties.getFilePermissionKey(), options.getMetadata(), options.getContentType(),
+                destinationFileClient.scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }
 

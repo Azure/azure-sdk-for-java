@@ -35,7 +35,6 @@ import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -141,12 +140,8 @@ public class ShareDirectoryAsyncClient {
      * or to the share plus the {@code fileid} query parameter when this client is addressed by file ID.
      */
     private RequestOptions scopedRequestOptions(Context context) {
-        if (!fileId.isEmpty()) {
-            return RequestOptionsHelper.fileIdRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
-                fileId);
-        }
         return RequestOptionsHelper.directoryRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
-            directoryPath);
+            directoryPath, fileId);
     }
 
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
@@ -1305,19 +1300,8 @@ public class ShareDirectoryAsyncClient {
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
 
-        String filePermissionKey = null;
-        String fileAttributes = null;
-        String fileCreationTime = null;
-        String fileLastWriteTime = null;
-        String fileChangeTime = null;
-        if (options.getSmbProperties() != null) {
-            FileSmbProperties tempSmbProperties = options.getSmbProperties();
-            filePermissionKey = tempSmbProperties.getFilePermissionKey();
-            fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-            fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-            fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-            fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-        }
+        FileSmbProperties smbProperties
+            = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
         ShareDirectoryAsyncClient destinationDirectoryClient = getDirectoryAsyncClient(options.getDestinationPath());
 
@@ -1328,9 +1312,11 @@ public class ShareDirectoryAsyncClient {
         return destinationDirectoryClient.directoryClientInternal
             .renameWithResponse(renameSource, null /* timeout */, options.getReplaceIfExists(),
                 options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
-                destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), destinationDirectoryClient.scopedRequestOptions(context))
+                destinationRequestConditions.getLeaseId(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), options.getFilePermission(), options.getFilePermissionFormat(),
+                smbProperties.getFilePermissionKey(), options.getMetadata(),
+                destinationDirectoryClient.scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 

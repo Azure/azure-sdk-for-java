@@ -5,6 +5,7 @@ package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -99,6 +100,42 @@ public final class RequestOptionsHelper {
     public static RequestOptions fileIdRequestOptions(Context context, String accountUrl, String shareName,
         String fileId) {
         return shareRequestOptions(context, accountUrl, shareName).addQueryParam("fileid", fileId);
+    }
+
+    /**
+     * Builds a {@link RequestOptions} for a file client: addressed by file ID when {@code fileId} is set, otherwise
+     * scoped to the file path ({@code {share}/{filePath}}).
+     *
+     * @param context The {@link Context} to thread through the pipeline.
+     * @param accountUrl The client's account-scoped base URL.
+     * @param shareName The share name.
+     * @param filePath The file path within the share.
+     * @param fileId The file ID, or {@code null}/empty when the client is path-addressed.
+     * @return The scoped {@link RequestOptions}.
+     */
+    public static RequestOptions fileRequestOptions(Context context, String accountUrl, String shareName,
+        String filePath, String fileId) {
+        return CoreUtils.isNullOrEmpty(fileId)
+            ? fileRequestOptions(context, accountUrl, shareName, filePath)
+            : fileIdRequestOptions(context, accountUrl, shareName, fileId);
+    }
+
+    /**
+     * Builds a {@link RequestOptions} for a directory client: addressed by file ID when {@code fileId} is set,
+     * otherwise scoped to the directory path ({@code {share}/{directoryPath}}).
+     *
+     * @param context The {@link Context} to thread through the pipeline.
+     * @param accountUrl The client's account-scoped base URL.
+     * @param shareName The share name.
+     * @param directoryPath The directory path within the share; may be empty for the share root directory.
+     * @param fileId The file ID of the directory, or {@code null}/empty when the client is path-addressed.
+     * @return The scoped {@link RequestOptions}.
+     */
+    public static RequestOptions directoryRequestOptions(Context context, String accountUrl, String shareName,
+        String directoryPath, String fileId) {
+        return CoreUtils.isNullOrEmpty(fileId)
+            ? directoryRequestOptions(context, accountUrl, shareName, directoryPath)
+            : fileIdRequestOptions(context, accountUrl, shareName, fileId);
     }
 
     /**
