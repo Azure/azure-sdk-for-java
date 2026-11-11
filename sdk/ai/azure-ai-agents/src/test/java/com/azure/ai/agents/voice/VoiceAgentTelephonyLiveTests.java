@@ -56,17 +56,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Record/playback Twilio validation for voice-agent telephony. Recording this test places a real PSTN call and may
- * incur provider charges. Record and live modes require FOUNDRY_VOICE_MODEL_NAME. FOUNDRY_TELEPHONY_CONNECTION_1,
- * FOUNDRY_TELEPHONY_CONNECTION_2, FOUNDRY_TELEPHONY_NUMBER_1, and FOUNDRY_TELEPHONY_NUMBER_2 can override the test
- * project defaults. Playback does not contact Twilio.
+ * incur provider charges. Record and live modes require FOUNDRY_VOICE_MODEL_NAME, FOUNDRY_TELEPHONY_NUMBER_1, and
+ * FOUNDRY_TELEPHONY_NUMBER_2. FOUNDRY_TELEPHONY_CONNECTION_1 and FOUNDRY_TELEPHONY_CONNECTION_2 can override the
+ * test project defaults. Playback uses sanitized phone numbers and does not contact Twilio.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String DEFAULT_CONNECTION_1 = "twilio-sdk-testing-1";
     private static final String DEFAULT_CONNECTION_2 = "twilio-sdk-testing-2";
-    private static final String DEFAULT_NUMBER_1 = "+18203362954";
-    private static final String DEFAULT_NUMBER_2 = "+12792056813";
     private static final String SANITIZED_CONNECTION_1 = "sanitized-connection-1";
     private static final String SANITIZED_CONNECTION_2 = "sanitized-connection-2";
     private static final String SANITIZED_NUMBER_1 = "+15555550101";
@@ -110,7 +108,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live telephony testing.");
         String connection = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1,
             SANITIZED_CONNECTION_1);
-        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
+        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
         AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
         VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String agentName = testResourceNamer.randomName("tel-bind-", 21);
@@ -161,8 +159,8 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             SANITIZED_CONNECTION_1);
         String connection2 = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_2", DEFAULT_CONNECTION_2,
             SANITIZED_CONNECTION_2);
-        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
-        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", DEFAULT_NUMBER_2, SANITIZED_NUMBER_2);
+        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
+        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", null, SANITIZED_NUMBER_2);
 
         AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
         VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
@@ -316,8 +314,9 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
 
     private String e164(Configuration configuration, String name, String defaultValue, String sanitizedValue) {
         String value = getTelephonyConfig(configuration, name, defaultValue, sanitizedValue);
-        assertNotNull(value, name + " is required for live telephony testing.");
+        assertNotNull(value, name + " is required for live and record telephony testing.");
         value = value.trim();
+        assertTrue(!value.isEmpty(), name + " is required for live and record telephony testing.");
         assertTrue(value.matches("^\\+[1-9]\\d{7,14}$"), name + " must be an E.164 number such as +14255550123.");
         if (getTestMode() == TestMode.RECORD) {
             addPhoneSanitizers(value, sanitizedValue);
