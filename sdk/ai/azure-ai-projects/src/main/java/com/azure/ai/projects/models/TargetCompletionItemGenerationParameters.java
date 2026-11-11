@@ -17,13 +17,13 @@ import java.io.IOException;
  * conversations](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-simulate-conversations?tabs=python).
  */
 @Fluent
-public final class TargetCompletionItemGenerationParams extends ItemGenerationParams {
+public final class TargetCompletionItemGenerationParameters extends ItemGenerationParameters {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.TARGET_COMPLETION;
+    private ItemGenerationParametersType type = ItemGenerationParametersType.TARGET_COMPLETION;
 
     /*
      * The maximum number of target completions to execute concurrently. The services defaults to 1 if a value is not
@@ -33,10 +33,10 @@ public final class TargetCompletionItemGenerationParams extends ItemGenerationPa
     private Integer maxConcurrency;
 
     /**
-     * Creates an instance of TargetCompletionItemGenerationParams class.
+     * Creates an instance of TargetCompletionItemGenerationParameters class.
      */
     @Generated
-    public TargetCompletionItemGenerationParams() {
+    public TargetCompletionItemGenerationParameters() {
     }
 
     /**
@@ -47,7 +47,7 @@ public final class TargetCompletionItemGenerationParams extends ItemGenerationPa
      */
     @Generated
     @Override
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
@@ -67,10 +67,10 @@ public final class TargetCompletionItemGenerationParams extends ItemGenerationPa
      * defaults to 1 if a value is not specified by the caller, which invokes the target sequentially.
      *
      * @param maxConcurrency the maxConcurrency value to set.
-     * @return the TargetCompletionItemGenerationParams object itself.
+     * @return the TargetCompletionItemGenerationParameters object itself.
      */
     @Generated
-    public TargetCompletionItemGenerationParams setMaxConcurrency(Integer maxConcurrency) {
+    public TargetCompletionItemGenerationParameters setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
     }
@@ -88,32 +88,32 @@ public final class TargetCompletionItemGenerationParams extends ItemGenerationPa
     }
 
     /**
-     * Reads an instance of TargetCompletionItemGenerationParams from the JsonReader.
+     * Reads an instance of TargetCompletionItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TargetCompletionItemGenerationParams if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TargetCompletionItemGenerationParams.
+     * @return An instance of TargetCompletionItemGenerationParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetCompletionItemGenerationParameters.
      */
     @Generated
-    public static TargetCompletionItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static TargetCompletionItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TargetCompletionItemGenerationParams deserializedTargetCompletionItemGenerationParams
-                = new TargetCompletionItemGenerationParams();
+            TargetCompletionItemGenerationParameters deserializedTargetCompletionItemGenerationParameters
+                = new TargetCompletionItemGenerationParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedTargetCompletionItemGenerationParams.type
-                        = ItemGenerationParamsType.fromString(reader.getString());
+                    deserializedTargetCompletionItemGenerationParameters.type
+                        = ItemGenerationParametersType.fromString(reader.getString());
                 } else if ("max_concurrency".equals(fieldName)) {
-                    deserializedTargetCompletionItemGenerationParams.maxConcurrency
+                    deserializedTargetCompletionItemGenerationParameters.maxConcurrency
                         = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedTargetCompletionItemGenerationParams;
+            return deserializedTargetCompletionItemGenerationParameters;
         });
     }
 }

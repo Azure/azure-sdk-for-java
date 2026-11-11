@@ -19,19 +19,19 @@ import java.io.IOException;
  * preparation workflow. These parameters do not define the evaluated target or the testing criteria.
  */
 @Immutable
-public class ItemGenerationParams implements JsonSerializable<ItemGenerationParams> {
+public class ItemGenerationParameters implements JsonSerializable<ItemGenerationParameters> {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.fromString("ItemGenerationParams");
+    private ItemGenerationParametersType type = ItemGenerationParametersType.fromString("ItemGenerationParameters");
 
     /**
-     * Creates an instance of ItemGenerationParams class.
+     * Creates an instance of ItemGenerationParameters class.
      */
     @Generated
-    public ItemGenerationParams() {
+    protected ItemGenerationParameters() {
     }
 
     /**
@@ -41,7 +41,7 @@ public class ItemGenerationParams implements JsonSerializable<ItemGenerationPara
      * @return the type value.
      */
     @Generated
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
@@ -57,15 +57,15 @@ public class ItemGenerationParams implements JsonSerializable<ItemGenerationPara
     }
 
     /**
-     * Reads an instance of ItemGenerationParams from the JsonReader.
+     * Reads an instance of ItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemGenerationParams if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ItemGenerationParams.
+     * @return An instance of ItemGenerationParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ItemGenerationParameters.
      */
     @Generated
-    public static ItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static ItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -83,17 +83,17 @@ public class ItemGenerationParams implements JsonSerializable<ItemGenerationPara
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("red_team".equals(discriminatorValue)) {
-                    return RedTeamItemGenerationParams.fromJson(readerToUse.reset());
+                    return RedTeamItemGenerationParameters.fromJson(readerToUse.reset());
                 } else if ("red_team_seed_prompts".equals(discriminatorValue)) {
-                    return RedTeamSeedPromptsItemGenerationParams.fromJson(readerToUse.reset());
+                    return RedTeamSeedPromptsItemGenerationParameters.fromJson(readerToUse.reset());
                 } else if ("red_team_taxonomy".equals(discriminatorValue)) {
-                    return RedTeamTaxonomyItemGenerationParams.fromJson(readerToUse.reset());
+                    return RedTeamTaxonomyItemGenerationParameters.fromJson(readerToUse.reset());
                 } else if ("response_retrieval".equals(discriminatorValue)) {
-                    return ResponseRetrievalItemGenerationParams.fromJson(readerToUse.reset());
+                    return ResponseRetrievalItemGenerationParameters.fromJson(readerToUse.reset());
                 } else if ("synthetic_data_gen".equals(discriminatorValue)) {
-                    return SyntheticDataGenerationItemGenerationParams.fromJson(readerToUse.reset());
+                    return SyntheticDataGenerationItemGenerationParameters.fromJson(readerToUse.reset());
                 } else if ("target_completion".equals(discriminatorValue)) {
-                    return TargetCompletionItemGenerationParams.fromJson(readerToUse.reset());
+                    return TargetCompletionItemGenerationParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -102,19 +102,20 @@ public class ItemGenerationParams implements JsonSerializable<ItemGenerationPara
     }
 
     @Generated
-    static ItemGenerationParams fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static ItemGenerationParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ItemGenerationParams deserializedItemGenerationParams = new ItemGenerationParams();
+            ItemGenerationParameters deserializedItemGenerationParameters = new ItemGenerationParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedItemGenerationParams.type = ItemGenerationParamsType.fromString(reader.getString());
+                    deserializedItemGenerationParameters.type
+                        = ItemGenerationParametersType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedItemGenerationParams;
+            return deserializedItemGenerationParameters;
         });
     }
 }

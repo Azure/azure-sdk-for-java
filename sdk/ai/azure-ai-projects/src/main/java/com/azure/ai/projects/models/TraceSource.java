@@ -27,7 +27,7 @@ public class TraceSource implements JsonSerializable<TraceSource> {
      * Creates an instance of TraceSource class.
      */
     @Generated
-    public TraceSource() {
+    protected TraceSource() {
     }
 
     /**

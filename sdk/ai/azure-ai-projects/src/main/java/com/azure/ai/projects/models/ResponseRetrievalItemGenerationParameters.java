@@ -19,19 +19,19 @@ import java.util.Map;
  * conversations](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-deployed-conversations?tabs=python).
  */
 @Immutable
-public final class ResponseRetrievalItemGenerationParams extends ItemGenerationParams {
+public final class ResponseRetrievalItemGenerationParameters extends ItemGenerationParameters {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.RESPONSE_RETRIEVAL;
+    private ItemGenerationParametersType type = ItemGenerationParametersType.RESPONSE_RETRIEVAL;
 
     /*
      * The maximum number of turns of chat history to evaluate.
      */
     @Generated
-    private final int maxNumTurns;
+    private final int maximumNumberOfTurns;
 
     /*
      * Maps `response_id` to the source field that contains a stored Responses API
@@ -42,7 +42,7 @@ public final class ResponseRetrievalItemGenerationParams extends ItemGenerationP
     private final Map<String, String> dataMapping;
 
     /*
-     * 
+     *
      * The inline JSONL content containing the response identifiers to retrieve.
      * The `azure_ai_responses` data source supports `file_content` only;
      * providing a `file_id` results in a `400 Bad Request` response.
@@ -51,15 +51,16 @@ public final class ResponseRetrievalItemGenerationParams extends ItemGenerationP
     private final BinaryData source;
 
     /**
-     * Creates an instance of ResponseRetrievalItemGenerationParams class.
+     * Creates an instance of ResponseRetrievalItemGenerationParameters class.
      *
-     * @param maxNumTurns the maxNumTurns value to set.
+     * @param maximumNumberOfTurns the maximumNumberOfTurns value to set.
      * @param dataMapping the dataMapping value to set.
      * @param source the source value to set.
      */
     @Generated
-    public ResponseRetrievalItemGenerationParams(int maxNumTurns, Map<String, String> dataMapping, BinaryData source) {
-        this.maxNumTurns = maxNumTurns;
+    public ResponseRetrievalItemGenerationParameters(int maximumNumberOfTurns, Map<String, String> dataMapping,
+        BinaryData source) {
+        this.maximumNumberOfTurns = maximumNumberOfTurns;
         this.dataMapping = dataMapping;
         this.source = source;
     }
@@ -72,18 +73,18 @@ public final class ResponseRetrievalItemGenerationParams extends ItemGenerationP
      */
     @Generated
     @Override
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
     /**
-     * Get the maxNumTurns property: The maximum number of turns of chat history to evaluate.
+     * Get the maximumNumberOfTurns property: The maximum number of turns of chat history to evaluate.
      *
-     * @return the maxNumTurns value.
+     * @return the maximumNumberOfTurns value.
      */
     @Generated
-    public int getMaxNumTurns() {
-        return this.maxNumTurns;
+    public int getMaximumNumberOfTurns() {
+        return this.maximumNumberOfTurns;
     }
 
     /**
@@ -118,7 +119,7 @@ public final class ResponseRetrievalItemGenerationParams extends ItemGenerationP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("max_num_turns", this.maxNumTurns);
+        jsonWriter.writeIntField("max_num_turns", this.maximumNumberOfTurns);
         jsonWriter.writeMapField("data_mapping", this.dataMapping, (writer, element) -> writer.writeString(element));
         jsonWriter.writeFieldName("source");
         this.source.writeTo(jsonWriter);
@@ -127,40 +128,40 @@ public final class ResponseRetrievalItemGenerationParams extends ItemGenerationP
     }
 
     /**
-     * Reads an instance of ResponseRetrievalItemGenerationParams from the JsonReader.
+     * Reads an instance of ResponseRetrievalItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponseRetrievalItemGenerationParams if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of ResponseRetrievalItemGenerationParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponseRetrievalItemGenerationParams.
+     * @throws IOException If an error occurs while reading the ResponseRetrievalItemGenerationParameters.
      */
     @Generated
-    public static ResponseRetrievalItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponseRetrievalItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int maxNumTurns = 0;
+            int maximumNumberOfTurns = 0;
             Map<String, String> dataMapping = null;
             BinaryData source = null;
-            ItemGenerationParamsType type = ItemGenerationParamsType.RESPONSE_RETRIEVAL;
+            ItemGenerationParametersType type = ItemGenerationParametersType.RESPONSE_RETRIEVAL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("max_num_turns".equals(fieldName)) {
-                    maxNumTurns = reader.getInt();
+                    maximumNumberOfTurns = reader.getInt();
                 } else if ("data_mapping".equals(fieldName)) {
                     dataMapping = reader.readMap(reader1 -> reader1.getString());
                 } else if ("source".equals(fieldName)) {
                     source = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemGenerationParamsType.fromString(reader.getString());
+                    type = ItemGenerationParametersType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResponseRetrievalItemGenerationParams deserializedResponseRetrievalItemGenerationParams
-                = new ResponseRetrievalItemGenerationParams(maxNumTurns, dataMapping, source);
-            deserializedResponseRetrievalItemGenerationParams.type = type;
-            return deserializedResponseRetrievalItemGenerationParams;
+            ResponseRetrievalItemGenerationParameters deserializedResponseRetrievalItemGenerationParameters
+                = new ResponseRetrievalItemGenerationParameters(maximumNumberOfTurns, dataMapping, source);
+            deserializedResponseRetrievalItemGenerationParameters.type = type;
+            return deserializedResponseRetrievalItemGenerationParameters;
         });
     }
 }

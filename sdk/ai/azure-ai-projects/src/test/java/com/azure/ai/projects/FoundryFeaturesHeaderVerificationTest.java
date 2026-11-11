@@ -114,10 +114,21 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta()
-            .buildBetaAgentInsightMonitorsClient()
-            .getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
-        assertEquals("AgentInsights=V1Preview", foundryFeatures(httpClient));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightClientsDoNotAddPreviewHeaders(boolean allowPreview) {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(allowPreview);
+
+        builder.buildAgentInsightMonitorsClient().getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildAgentInsightMonitorsAsyncClient()
+            .getAgentInsightMonitorWithResponse("monitor", new RequestOptions())
+            .block();
+        assertNull(foundryFeatures(httpClient));
     }
 
     @Test

@@ -15,13 +15,13 @@ import java.util.List;
  * Represents the parameters for red team item generation.
  */
 @Immutable
-public final class RedTeamItemGenerationParams extends ItemGenerationParams {
+public final class RedTeamItemGenerationParameters extends ItemGenerationParameters {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.RED_TEAM;
+    private ItemGenerationParametersType type = ItemGenerationParametersType.RED_TEAM;
 
     /*
      * The collection of attack strategies to be used.
@@ -33,18 +33,18 @@ public final class RedTeamItemGenerationParams extends ItemGenerationParams {
      * The number of turns allowed in the game.
      */
     @Generated
-    private final int numTurns;
+    private final int numberOfTurns;
 
     /**
-     * Creates an instance of RedTeamItemGenerationParams class.
+     * Creates an instance of RedTeamItemGenerationParameters class.
      *
      * @param attackStrategies the attackStrategies value to set.
-     * @param numTurns the numTurns value to set.
+     * @param numberOfTurns the numberOfTurns value to set.
      */
     @Generated
-    public RedTeamItemGenerationParams(List<AttackStrategy> attackStrategies, int numTurns) {
+    public RedTeamItemGenerationParameters(List<AttackStrategy> attackStrategies, int numberOfTurns) {
         this.attackStrategies = attackStrategies;
-        this.numTurns = numTurns;
+        this.numberOfTurns = numberOfTurns;
     }
 
     /**
@@ -55,7 +55,7 @@ public final class RedTeamItemGenerationParams extends ItemGenerationParams {
      */
     @Generated
     @Override
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
@@ -70,13 +70,13 @@ public final class RedTeamItemGenerationParams extends ItemGenerationParams {
     }
 
     /**
-     * Get the numTurns property: The number of turns allowed in the game.
+     * Get the numberOfTurns property: The number of turns allowed in the game.
      *
-     * @return the numTurns value.
+     * @return the numberOfTurns value.
      */
     @Generated
-    public int getNumTurns() {
-        return this.numTurns;
+    public int getNumberOfTurns() {
+        return this.numberOfTurns;
     }
 
     /**
@@ -88,43 +88,43 @@ public final class RedTeamItemGenerationParams extends ItemGenerationParams {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("attack_strategies", this.attackStrategies,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeIntField("num_turns", this.numTurns);
+        jsonWriter.writeIntField("num_turns", this.numberOfTurns);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RedTeamItemGenerationParams from the JsonReader.
+     * Reads an instance of RedTeamItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RedTeamItemGenerationParams if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of RedTeamItemGenerationParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RedTeamItemGenerationParams.
+     * @throws IOException If an error occurs while reading the RedTeamItemGenerationParameters.
      */
     @Generated
-    public static RedTeamItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static RedTeamItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<AttackStrategy> attackStrategies = null;
-            int numTurns = 0;
-            ItemGenerationParamsType type = ItemGenerationParamsType.RED_TEAM;
+            int numberOfTurns = 0;
+            ItemGenerationParametersType type = ItemGenerationParametersType.RED_TEAM;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("attack_strategies".equals(fieldName)) {
                     attackStrategies = reader.readArray(reader1 -> AttackStrategy.fromString(reader1.getString()));
                 } else if ("num_turns".equals(fieldName)) {
-                    numTurns = reader.getInt();
+                    numberOfTurns = reader.getInt();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemGenerationParamsType.fromString(reader.getString());
+                    type = ItemGenerationParametersType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            RedTeamItemGenerationParams deserializedRedTeamItemGenerationParams
-                = new RedTeamItemGenerationParams(attackStrategies, numTurns);
-            deserializedRedTeamItemGenerationParams.type = type;
-            return deserializedRedTeamItemGenerationParams;
+            RedTeamItemGenerationParameters deserializedRedTeamItemGenerationParameters
+                = new RedTeamItemGenerationParameters(attackStrategies, numberOfTurns);
+            deserializedRedTeamItemGenerationParameters.type = type;
+            return deserializedRedTeamItemGenerationParameters;
         });
     }
 }

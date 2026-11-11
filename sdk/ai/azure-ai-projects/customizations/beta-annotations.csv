@@ -13,6 +13,7 @@ class;com.azure.ai.projects.models.CompletedEvaluatorDiagnosticsPage;Preview API
 class;com.azure.ai.projects.models.ConversationsDataGenerationJobConfiguration;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;Preview API. Skills=V1Preview;
 class;com.azure.ai.projects.models.CustomRoutineTrigger;Preview API. Routines=V2Preview;
+field;com.azure.ai.projects.models.DataGenerationJobType;Preview API.;CONVERSATIONS
 class;com.azure.ai.projects.models.DefinitionUpdatedDiagnosticChange;Preview API. Evaluations=V1Preview;
 field;com.azure.ai.projects.models.Dimension;Preview API. Evaluations=V1Preview;allowed
 class;com.azure.ai.projects.models.DimensionAddedDiagnosticChange;Preview API. Evaluations=V1Preview;

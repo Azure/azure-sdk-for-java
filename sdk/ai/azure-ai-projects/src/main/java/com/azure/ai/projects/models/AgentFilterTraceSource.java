@@ -44,18 +44,6 @@ public final class AgentFilterTraceSource extends TraceSource {
     private String agentVersion;
 
     /*
-     * Start time for the trace query window, expressed as a Unix timestamp (seconds).
-     */
-    @Generated
-    private Long startTime;
-
-    /*
-     * End time for the trace query window, expressed as a Unix timestamp (seconds).
-     */
-    @Generated
-    private Long endTime;
-
-    /*
      * Maximum number of traces to sample. Must be greater than 0.
      */
     @Generated
@@ -152,64 +140,6 @@ public final class AgentFilterTraceSource extends TraceSource {
     }
 
     /**
-     * Get the startTime property: Start time for the trace query window, expressed as a Unix timestamp (seconds).
-     *
-     * @return the startTime value.
-     */
-    @Generated
-    public OffsetDateTime getStartTime() {
-        if (this.startTime == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startTime), ZoneOffset.UTC);
-    }
-
-    /**
-     * Set the startTime property: Start time for the trace query window, expressed as a Unix timestamp (seconds).
-     *
-     * @param startTime the startTime value to set.
-     * @return the AgentFilterTraceSource object itself.
-     */
-    @Generated
-    public AgentFilterTraceSource setStartTime(OffsetDateTime startTime) {
-        if (startTime == null) {
-            this.startTime = null;
-        } else {
-            this.startTime = startTime.toEpochSecond();
-        }
-        return this;
-    }
-
-    /**
-     * Get the endTime property: End time for the trace query window, expressed as a Unix timestamp (seconds).
-     *
-     * @return the endTime value.
-     */
-    @Generated
-    public OffsetDateTime getEndTime() {
-        if (this.endTime == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
-    }
-
-    /**
-     * Set the endTime property: End time for the trace query window, expressed as a Unix timestamp (seconds).
-     *
-     * @param endTime the endTime value to set.
-     * @return the AgentFilterTraceSource object itself.
-     */
-    @Generated
-    public AgentFilterTraceSource setEndTime(OffsetDateTime endTime) {
-        if (endTime == null) {
-            this.endTime = null;
-        } else {
-            this.endTime = endTime.toEpochSecond();
-        }
-        return this;
-    }
-
-    /**
      * Get the maxTraces property: Maximum number of traces to sample. Must be greater than 0.
      *
      * @return the maxTraces value.
@@ -264,8 +194,8 @@ public final class AgentFilterTraceSource extends TraceSource {
         jsonWriter.writeStringField("agent_id", this.agentId);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("agent_version", this.agentVersion);
-        jsonWriter.writeNumberField("start_time", this.startTime);
-        jsonWriter.writeNumberField("end_time", this.endTime);
+        jsonWriter.writeNumberField("start_time", this.startAt);
+        jsonWriter.writeNumberField("end_time", this.endAt);
         jsonWriter.writeNumberField("max_traces", this.maxTraces);
         jsonWriter.writeStringField("filter_strategy",
             this.filterStrategy == null ? null : this.filterStrategy.toString());
@@ -296,9 +226,9 @@ public final class AgentFilterTraceSource extends TraceSource {
                 } else if ("agent_version".equals(fieldName)) {
                     deserializedAgentFilterTraceSource.agentVersion = reader.getString();
                 } else if ("start_time".equals(fieldName)) {
-                    deserializedAgentFilterTraceSource.startTime = reader.getNullable(JsonReader::getLong);
+                    deserializedAgentFilterTraceSource.startAt = reader.getNullable(JsonReader::getLong);
                 } else if ("end_time".equals(fieldName)) {
-                    deserializedAgentFilterTraceSource.endTime = reader.getNullable(JsonReader::getLong);
+                    deserializedAgentFilterTraceSource.endAt = reader.getNullable(JsonReader::getLong);
                 } else if ("max_traces".equals(fieldName)) {
                     deserializedAgentFilterTraceSource.maxTraces = reader.getNullable(JsonReader::getInt);
                 } else if ("filter_strategy".equals(fieldName)) {
@@ -310,5 +240,75 @@ public final class AgentFilterTraceSource extends TraceSource {
             }
             return deserializedAgentFilterTraceSource;
         });
+    }
+
+    /*
+     * Start time for the trace query window, expressed as a Unix timestamp (seconds).
+     */
+    @Generated
+    private Long startAt;
+
+    /*
+     * End time for the trace query window, expressed as a Unix timestamp (seconds).
+     */
+    @Generated
+    private Long endAt;
+
+    /**
+     * Get the startAt property: Start time for the trace query window, expressed as a Unix timestamp (seconds).
+     *
+     * @return the startAt value.
+     */
+    @Generated
+    public OffsetDateTime getStartAt() {
+        if (this.startAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Set the startAt property: Start time for the trace query window, expressed as a Unix timestamp (seconds).
+     *
+     * @param startAt the startAt value to set.
+     * @return the AgentFilterTraceSource object itself.
+     */
+    @Generated
+    public AgentFilterTraceSource setStartAt(OffsetDateTime startAt) {
+        if (startAt == null) {
+            this.startAt = null;
+        } else {
+            this.startAt = startAt.toEpochSecond();
+        }
+        return this;
+    }
+
+    /**
+     * Get the endAt property: End time for the trace query window, expressed as a Unix timestamp (seconds).
+     *
+     * @return the endAt value.
+     */
+    @Generated
+    public OffsetDateTime getEndAt() {
+        if (this.endAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Set the endAt property: End time for the trace query window, expressed as a Unix timestamp (seconds).
+     *
+     * @param endAt the endAt value to set.
+     * @return the AgentFilterTraceSource object itself.
+     */
+    @Generated
+    public AgentFilterTraceSource setEndAt(OffsetDateTime endAt) {
+        if (endAt == null) {
+            this.endAt = null;
+        } else {
+            this.endAt = endAt.toEpochSecond();
+        }
+        return this;
     }
 }

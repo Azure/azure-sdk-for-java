@@ -15,16 +15,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents the parameters for red team seed prompts item generation.
+ * Represents the parameters for red team taxonomy item generation.
  */
 @Immutable
-public final class RedTeamSeedPromptsItemGenerationParams extends ItemGenerationParams {
+public final class RedTeamTaxonomyItemGenerationParameters extends ItemGenerationParameters {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.RED_TEAM_SEED_PROMPTS;
+    private ItemGenerationParametersType type = ItemGenerationParametersType.RED_TEAM_TAXONOMY;
 
     /*
      * The collection of attack strategies to be used.
@@ -33,13 +33,7 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
     private final List<AttackStrategy> attackStrategies;
 
     /*
-     * The number of turns allowed in the game.
-     */
-    @Generated
-    private final int numTurns;
-
-    /*
-     * The source of JSONL content to be processed.
+     * The source from which JSONL content is read.
      */
     @Generated
     private final FileContent source;
@@ -52,7 +46,7 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
      */
     @Generated
     @Override
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
@@ -67,17 +61,7 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
     }
 
     /**
-     * Get the numTurns property: The number of turns allowed in the game.
-     *
-     * @return the numTurns value.
-     */
-    @Generated
-    public int getNumTurns() {
-        return this.numTurns;
-    }
-
-    /**
-     * Get the source property: The source of JSONL content to be processed.
+     * Get the source property: The source from which JSONL content is read.
      *
      * @return the source value.
      */
@@ -95,7 +79,7 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("attack_strategies", this.attackStrategies,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeIntField("num_turns", this.numTurns);
+        jsonWriter.writeIntField("num_turns", this.numberOfTurns);
         if (this.source == null) {
             jsonWriter.writeNullField("source");
         } else {
@@ -107,21 +91,22 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
     }
 
     /**
-     * Reads an instance of RedTeamSeedPromptsItemGenerationParams from the JsonReader.
+     * Reads an instance of RedTeamTaxonomyItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RedTeamSeedPromptsItemGenerationParams if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of RedTeamTaxonomyItemGenerationParameters if the JsonReader was pointing to an instance of
+     * it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RedTeamSeedPromptsItemGenerationParams.
+     * @throws IOException If an error occurs while reading the RedTeamTaxonomyItemGenerationParameters.
      */
-    public static RedTeamSeedPromptsItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static RedTeamTaxonomyItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             List<AttackStrategy> attackStrategies = null;
             int numTurns = 0;
             FileContent source = null;
-            ItemGenerationParamsType type = ItemGenerationParamsType.RED_TEAM_SEED_PROMPTS;
+            ItemGenerationParametersType type = ItemGenerationParametersType.RED_TEAM_TAXONOMY;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -133,30 +118,46 @@ public final class RedTeamSeedPromptsItemGenerationParams extends ItemGeneration
                     source = reader.getNullable(nonNullReader -> OpenAIJsonHelper
                         .fromBinaryData(BinaryData.fromObject(nonNullReader.readUntyped()), FileContent.class));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemGenerationParamsType.fromString(reader.getString());
+                    type = ItemGenerationParametersType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            RedTeamSeedPromptsItemGenerationParams deserializedRedTeamSeedPromptsItemGenerationParams
-                = new RedTeamSeedPromptsItemGenerationParams(attackStrategies, numTurns, source);
-            deserializedRedTeamSeedPromptsItemGenerationParams.type = type;
-            return deserializedRedTeamSeedPromptsItemGenerationParams;
+            RedTeamTaxonomyItemGenerationParameters deserializedRedTeamTaxonomyItemGenerationParams
+                = new RedTeamTaxonomyItemGenerationParameters(attackStrategies, numTurns, source);
+            deserializedRedTeamTaxonomyItemGenerationParams.type = type;
+            return deserializedRedTeamTaxonomyItemGenerationParams;
         });
     }
 
     /**
-     * Creates an instance of RedTeamSeedPromptsItemGenerationParams class.
+     * Creates an instance of RedTeamTaxonomyItemGenerationParameters class.
      *
      * @param attackStrategies the attackStrategies value to set.
-     * @param numTurns the numTurns value to set.
+     * @param numberOfTurns the numberOfTurns value to set.
      * @param source the source value to set.
      */
     @Generated
-    public RedTeamSeedPromptsItemGenerationParams(List<AttackStrategy> attackStrategies, int numTurns,
+    public RedTeamTaxonomyItemGenerationParameters(List<AttackStrategy> attackStrategies, int numberOfTurns,
         FileContent source) {
         this.attackStrategies = attackStrategies;
-        this.numTurns = numTurns;
+        this.numberOfTurns = numberOfTurns;
         this.source = source;
+    }
+
+    /*
+     * The number of turns allowed in the game.
+     */
+    @Generated
+    private final int numberOfTurns;
+
+    /**
+     * Get the numberOfTurns property: The number of turns allowed in the game.
+     *
+     * @return the numberOfTurns value.
+     */
+    @Generated
+    public int getNumberOfTurns() {
+        return this.numberOfTurns;
     }
 }

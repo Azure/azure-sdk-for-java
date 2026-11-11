@@ -8,8 +8,8 @@ import com.azure.ai.projects.models.AgentInsightPriorities;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.EmbeddingConfiguration;
 import com.azure.ai.projects.models.FieldMapping;
-import com.azure.ai.projects.models.UpdateAgentInsightMonitorPatchRequest;
-import com.azure.ai.projects.models.UpdateAgentInsightPatchRequest;
+import com.azure.ai.projects.models.UpdateAgentInsightMonitorOptions;
+import com.azure.ai.projects.models.UpdateAgentInsightOptions;
 import com.azure.ai.projects.models.UpdateModelVersionInput;
 import java.util.Map;
 
@@ -54,41 +54,40 @@ public class JsonMergePatchHelper {
         return agentInsightPrioritiesAccessor;
     }
 
-    private static UpdateAgentInsightMonitorPatchRequestAccessor updateAgentInsightMonitorPatchRequestAccessor;
+    private static UpdateAgentInsightMonitorOptionsAccessor updateAgentInsightMonitorOptionsAccessor;
 
-    public interface UpdateAgentInsightMonitorPatchRequestAccessor {
+    public interface UpdateAgentInsightMonitorOptionsAccessor {
 
-        UpdateAgentInsightMonitorPatchRequest prepareModelForJsonMergePatch(
-            UpdateAgentInsightMonitorPatchRequest updateAgentInsightMonitorPatchRequest, boolean jsonMergePatchEnabled);
+        UpdateAgentInsightMonitorOptions prepareModelForJsonMergePatch(
+            UpdateAgentInsightMonitorOptions updateAgentInsightMonitorOptions, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(UpdateAgentInsightMonitorPatchRequest updateAgentInsightMonitorPatchRequest);
+        boolean isJsonMergePatch(UpdateAgentInsightMonitorOptions updateAgentInsightMonitorOptions);
     }
 
-    public static void
-        setUpdateAgentInsightMonitorPatchRequestAccessor(UpdateAgentInsightMonitorPatchRequestAccessor accessor) {
-        updateAgentInsightMonitorPatchRequestAccessor = accessor;
+    public static void setUpdateAgentInsightMonitorOptionsAccessor(UpdateAgentInsightMonitorOptionsAccessor accessor) {
+        updateAgentInsightMonitorOptionsAccessor = accessor;
     }
 
-    public static UpdateAgentInsightMonitorPatchRequestAccessor getUpdateAgentInsightMonitorPatchRequestAccessor() {
-        return updateAgentInsightMonitorPatchRequestAccessor;
+    public static UpdateAgentInsightMonitorOptionsAccessor getUpdateAgentInsightMonitorOptionsAccessor() {
+        return updateAgentInsightMonitorOptionsAccessor;
     }
 
-    private static UpdateAgentInsightPatchRequestAccessor updateAgentInsightPatchRequestAccessor;
+    private static UpdateAgentInsightOptionsAccessor updateAgentInsightOptionsAccessor;
 
-    public interface UpdateAgentInsightPatchRequestAccessor {
+    public interface UpdateAgentInsightOptionsAccessor {
 
-        UpdateAgentInsightPatchRequest prepareModelForJsonMergePatch(
-            UpdateAgentInsightPatchRequest updateAgentInsightPatchRequest, boolean jsonMergePatchEnabled);
+        UpdateAgentInsightOptions prepareModelForJsonMergePatch(UpdateAgentInsightOptions updateAgentInsightOptions,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(UpdateAgentInsightPatchRequest updateAgentInsightPatchRequest);
+        boolean isJsonMergePatch(UpdateAgentInsightOptions updateAgentInsightOptions);
     }
 
-    public static void setUpdateAgentInsightPatchRequestAccessor(UpdateAgentInsightPatchRequestAccessor accessor) {
-        updateAgentInsightPatchRequestAccessor = accessor;
+    public static void setUpdateAgentInsightOptionsAccessor(UpdateAgentInsightOptionsAccessor accessor) {
+        updateAgentInsightOptionsAccessor = accessor;
     }
 
-    public static UpdateAgentInsightPatchRequestAccessor getUpdateAgentInsightPatchRequestAccessor() {
-        return updateAgentInsightPatchRequestAccessor;
+    public static UpdateAgentInsightOptionsAccessor getUpdateAgentInsightOptionsAccessor() {
+        return updateAgentInsightOptionsAccessor;
     }
 
     private static DatasetVersionAccessor datasetVersionAccessor;

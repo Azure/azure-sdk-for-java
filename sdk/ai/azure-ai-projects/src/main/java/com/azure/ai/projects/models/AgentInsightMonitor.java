@@ -225,7 +225,7 @@ public final class AgentInsightMonitor implements JsonSerializable<AgentInsightM
                 } else if ("agent_summary".equals(fieldName)) {
                     deserializedAgentInsightMonitor.agentSummary = AgentInsightSummary.fromJson(reader);
                 } else if ("priorities".equals(fieldName)) {
-                    deserializedAgentInsightMonitor.priorities = AgentInsightPrioritiesRead.fromJson(reader);
+                    deserializedAgentInsightMonitor.priorities = AgentInsightPrioritiesDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -244,7 +244,7 @@ public final class AgentInsightMonitor implements JsonSerializable<AgentInsightM
      * Analysis priorities. Omitted when not configured.
      */
     @Generated
-    private AgentInsightPrioritiesRead priorities;
+    private AgentInsightPrioritiesDetails priorities;
 
     /**
      * Get the agentSummary property: Generated summary. Omitted when unavailable.
@@ -262,7 +262,7 @@ public final class AgentInsightMonitor implements JsonSerializable<AgentInsightM
      * @return the priorities value.
      */
     @Generated
-    public AgentInsightPrioritiesRead getPriorities() {
+    public AgentInsightPrioritiesDetails getPriorities() {
         return this.priorities;
     }
 }

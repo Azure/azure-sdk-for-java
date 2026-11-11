@@ -15,10 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The UpdateAgentInsightPatchRequest model.
+ * The UpdateAgentInsightOptions model.
  */
 @Fluent
-public final class UpdateAgentInsightPatchRequest implements JsonSerializable<UpdateAgentInsightPatchRequest> {
+public final class UpdateAgentInsightOptions implements JsonSerializable<UpdateAgentInsightOptions> {
 
     /*
      * The lifecycle status to apply to the insight.
@@ -41,28 +41,28 @@ public final class UpdateAgentInsightPatchRequest implements JsonSerializable<Up
     }
 
     static {
-        JsonMergePatchHelper.setUpdateAgentInsightPatchRequestAccessor(
-            new JsonMergePatchHelper.UpdateAgentInsightPatchRequestAccessor() {
+        JsonMergePatchHelper
+            .setUpdateAgentInsightOptionsAccessor(new JsonMergePatchHelper.UpdateAgentInsightOptionsAccessor() {
 
                 @Override
-                public UpdateAgentInsightPatchRequest
-                    prepareModelForJsonMergePatch(UpdateAgentInsightPatchRequest model, boolean jsonMergePatchEnabled) {
+                public UpdateAgentInsightOptions prepareModelForJsonMergePatch(UpdateAgentInsightOptions model,
+                    boolean jsonMergePatchEnabled) {
                     model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                     return model;
                 }
 
                 @Override
-                public boolean isJsonMergePatch(UpdateAgentInsightPatchRequest model) {
+                public boolean isJsonMergePatch(UpdateAgentInsightOptions model) {
                     return model.jsonMergePatch;
                 }
             });
     }
 
     /**
-     * Creates an instance of UpdateAgentInsightPatchRequest class.
+     * Creates an instance of UpdateAgentInsightOptions class.
      */
     @Generated
-    public UpdateAgentInsightPatchRequest() {
+    public UpdateAgentInsightOptions() {
     }
 
     /**
@@ -79,10 +79,10 @@ public final class UpdateAgentInsightPatchRequest implements JsonSerializable<Up
      * Set the status property: The lifecycle status to apply to the insight.
      *
      * @param status the status value to set.
-     * @return the UpdateAgentInsightPatchRequest object itself.
+     * @return the UpdateAgentInsightOptions object itself.
      */
     @Generated
-    public UpdateAgentInsightPatchRequest setStatus(AgentInsightStatus status) {
+    public UpdateAgentInsightOptions setStatus(AgentInsightStatus status) {
         this.status = status;
         this.updatedProperties.add("status");
         return this;
@@ -117,29 +117,27 @@ public final class UpdateAgentInsightPatchRequest implements JsonSerializable<Up
     }
 
     /**
-     * Reads an instance of UpdateAgentInsightPatchRequest from the JsonReader.
+     * Reads an instance of UpdateAgentInsightOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateAgentInsightPatchRequest if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UpdateAgentInsightPatchRequest.
+     * @return An instance of UpdateAgentInsightOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAgentInsightOptions.
      */
     @Generated
-    public static UpdateAgentInsightPatchRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateAgentInsightOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UpdateAgentInsightPatchRequest deserializedUpdateAgentInsightPatchRequest
-                = new UpdateAgentInsightPatchRequest();
+            UpdateAgentInsightOptions deserializedUpdateAgentInsightOptions = new UpdateAgentInsightOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("status".equals(fieldName)) {
-                    deserializedUpdateAgentInsightPatchRequest.status
-                        = AgentInsightStatus.fromString(reader.getString());
+                    deserializedUpdateAgentInsightOptions.status = AgentInsightStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedUpdateAgentInsightPatchRequest;
+            return deserializedUpdateAgentInsightOptions;
         });
     }
 }

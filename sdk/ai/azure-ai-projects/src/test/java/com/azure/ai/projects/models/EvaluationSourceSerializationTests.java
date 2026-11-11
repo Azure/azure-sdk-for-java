@@ -11,6 +11,7 @@ import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource.InputMess
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileContent;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileId;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -26,25 +27,40 @@ class EvaluationSourceSerializationTests {
         + "{\"item\":{\"query\":\"hello\"},\"sample\":{\"output\":\"world\"},\"future_content\":true}],"
         + "\"future_source\":\"preserved\"}";
 
+    @Test
+    void polymorphicBaseConstructorsAreProtected() throws NoSuchMethodException {
+        for (Class<?> type : new Class<?>[] {
+            EvaluationRunDataSource.class,
+            ItemGenerationParameters.class,
+            TraceSource.class }) {
+            assertTrue(Modifier.isProtected(type.getDeclaredConstructor().getModifiers()), type.getSimpleName());
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(strings = { "red_team_seed_prompts", "red_team_taxonomy" })
     void fileContentRoundTripsThroughPolymorphicParent(String type) throws IOException {
         FileContent source = ObjectMappers.jsonMapper().readValue(FILE_CONTENT, FileContent.class);
-        ItemGenerationParams original = "red_team_seed_prompts".equals(type)
-            ? new RedTeamSeedPromptsItemGenerationParams(Collections.emptyList(), 20, source)
-            : new RedTeamTaxonomyItemGenerationParams(Collections.emptyList(), 20, source);
+        ItemGenerationParameters original = "red_team_seed_prompts".equals(type)
+            ? new RedTeamSeedPromptsItemGenerationParameters(Collections.emptyList(), 7, source)
+            : new RedTeamTaxonomyItemGenerationParameters(Collections.emptyList(), 7, source);
 
         BinaryData serialized = BinaryData.fromObject(original);
 
         assertEquals(ObjectMappers.jsonMapper().readTree(FILE_CONTENT),
             ObjectMappers.jsonMapper().readTree(serialized.toString()).get("source"));
+        assertEquals(7, ObjectMappers.jsonMapper().readTree(serialized.toString()).get("num_turns").asInt());
 
-        ItemGenerationParams restored = serialized.toObject(ItemGenerationParams.class);
+        ItemGenerationParameters restored = serialized.toObject(ItemGenerationParameters.class);
         assertEquals(original.getClass(), restored.getClass());
-        FileContent restoredSource = restored instanceof RedTeamSeedPromptsItemGenerationParams
-            ? ((RedTeamSeedPromptsItemGenerationParams) restored).getSource()
-            : ((RedTeamTaxonomyItemGenerationParams) restored).getSource();
+        FileContent restoredSource = restored instanceof RedTeamSeedPromptsItemGenerationParameters
+            ? ((RedTeamSeedPromptsItemGenerationParameters) restored).getSource()
+            : ((RedTeamTaxonomyItemGenerationParameters) restored).getSource();
         assertEquals(source, restoredSource);
+        int numberOfTurns = restored instanceof RedTeamSeedPromptsItemGenerationParameters
+            ? ((RedTeamSeedPromptsItemGenerationParameters) restored).getNumberOfTurns()
+            : ((RedTeamTaxonomyItemGenerationParameters) restored).getNumberOfTurns();
+        assertEquals(7, numberOfTurns);
         assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
     }
 
@@ -53,22 +69,23 @@ class EvaluationSourceSerializationTests {
     void fileContentPreservesNullAndAbsentSources(String type) {
         for (String sourceField : Arrays.asList("", ",\"source\":null")) {
             String json = "{\"type\":\"" + type + "\",\"attack_strategies\":[],\"num_turns\":20" + sourceField + "}";
-            ItemGenerationParams restored = BinaryData.fromString(json).toObject(ItemGenerationParams.class);
-            FileContent source = restored instanceof RedTeamSeedPromptsItemGenerationParams
-                ? ((RedTeamSeedPromptsItemGenerationParams) restored).getSource()
-                : ((RedTeamTaxonomyItemGenerationParams) restored).getSource();
+            ItemGenerationParameters restored = BinaryData.fromString(json).toObject(ItemGenerationParameters.class);
+            FileContent source = restored instanceof RedTeamSeedPromptsItemGenerationParameters
+                ? ((RedTeamSeedPromptsItemGenerationParameters) restored).getSource()
+                : ((RedTeamTaxonomyItemGenerationParameters) restored).getSource();
 
             assertNull(source);
             assertEquals(BinaryData.fromObject(restored).toString(),
-                BinaryData.fromObject(BinaryData.fromObject(restored).toObject(ItemGenerationParams.class)).toString());
+                BinaryData.fromObject(BinaryData.fromObject(restored).toObject(ItemGenerationParameters.class))
+                    .toString());
         }
     }
 
     @Test
     void fileIdsRoundTripWithNullListElements() throws IOException {
         FileId file = FileId.builder().id("file-1").build();
-        SyntheticDataGenerationItemGenerationParams original
-            = new SyntheticDataGenerationItemGenerationParams(3, "deployment", Arrays.asList(file, null))
+        SyntheticDataGenerationItemGenerationParameters original
+            = new SyntheticDataGenerationItemGenerationParameters(3, "deployment", Arrays.asList(file, null))
                 .setPrompt("Generate examples")
                 .setOutputDatasetName("examples");
 
@@ -78,9 +95,9 @@ class EvaluationSourceSerializationTests {
         assertEquals("file-1", sources.get(0).get("id").asText());
         assertTrue(sources.get(1).isNull());
 
-        ItemGenerationParams restored = serialized.toObject(ItemGenerationParams.class);
-        assertEquals(SyntheticDataGenerationItemGenerationParams.class, restored.getClass());
-        assertEquals(original.getSources(), ((SyntheticDataGenerationItemGenerationParams) restored).getSources());
+        ItemGenerationParameters restored = serialized.toObject(ItemGenerationParameters.class);
+        assertEquals(SyntheticDataGenerationItemGenerationParameters.class, restored.getClass());
+        assertEquals(original.getSources(), ((SyntheticDataGenerationItemGenerationParameters) restored).getSources());
         assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
     }
 
@@ -89,16 +106,16 @@ class EvaluationSourceSerializationTests {
     void fileIdsPreserveAbsentNullAndEmptyLists(String sourcesField) {
         String json = "{\"type\":\"synthetic_data_gen\",\"samples_count\":3,"
             + "\"model_deployment_name\":\"deployment\"" + sourcesField + "}";
-        SyntheticDataGenerationItemGenerationParams restored
-            = BinaryData.fromString(json).toObject(SyntheticDataGenerationItemGenerationParams.class);
+        SyntheticDataGenerationItemGenerationParameters restored
+            = BinaryData.fromString(json).toObject(SyntheticDataGenerationItemGenerationParameters.class);
 
         if (sourcesField.endsWith("[]")) {
             assertTrue(restored.getSources().isEmpty());
         } else {
             assertNull(restored.getSources());
         }
-        SyntheticDataGenerationItemGenerationParams roundTripped
-            = BinaryData.fromObject(restored).toObject(SyntheticDataGenerationItemGenerationParams.class);
+        SyntheticDataGenerationItemGenerationParameters roundTripped
+            = BinaryData.fromObject(restored).toObject(SyntheticDataGenerationItemGenerationParameters.class);
         assertEquals(restored.getSources(), roundTripped.getSources());
     }
 
@@ -110,7 +127,8 @@ class EvaluationSourceSerializationTests {
         BinaryData source = OpenAIJsonHelper.toBinaryData(FileId.builder().id("file-1").build());
         TargetCompletionEvaluationRunDataSource original
             = new TargetCompletionEvaluationRunDataSource(source, new AzureAIModelTarget().setModel("deployment"))
-                .setInputMessages(inputMessages);
+                .setInputMessages(inputMessages)
+                .setItemGenerationParameters(new TargetCompletionItemGenerationParameters().setMaxConcurrency(3));
 
         BinaryData serialized = BinaryData.fromObject(original);
         JsonNode json = ObjectMappers.jsonMapper().readTree(serialized.toString());
@@ -118,10 +136,14 @@ class EvaluationSourceSerializationTests {
         assertEquals("item_reference", json.get("input_messages").get("type").asText());
         assertEquals("item.messages", json.get("input_messages").get("item_reference").asText());
         assertTrue(json.get("input_messages").get("future_setting").asBoolean());
+        assertEquals("target_completion", json.get("item_generation_params").get("type").asText());
+        assertEquals(3, json.get("item_generation_params").get("max_concurrency").asInt());
 
         EvaluationRunDataSource restored = serialized.toObject(EvaluationRunDataSource.class);
         assertEquals(TargetCompletionEvaluationRunDataSource.class, restored.getClass());
         assertEquals(inputMessages, ((TargetCompletionEvaluationRunDataSource) restored).getInputMessages());
+        assertEquals(TargetCompletionItemGenerationParameters.class,
+            ((TargetCompletionEvaluationRunDataSource) restored).getItemGenerationParameters().getClass());
         assertEquals(serialized.toString(), BinaryData.fromObject(restored).toString());
     }
 
@@ -134,8 +156,7 @@ class EvaluationSourceSerializationTests {
             = BinaryData.fromString(json).toObject(TargetCompletionEvaluationRunDataSource.class);
 
         assertNull(restored.getInputMessages());
-        assertNull(BinaryData.fromObject(restored)
-            .toObject(TargetCompletionEvaluationRunDataSource.class)
-            .getInputMessages());
+        assertNull(
+            BinaryData.fromObject(restored).toObject(TargetCompletionEvaluationRunDataSource.class).getInputMessages());
     }
 }

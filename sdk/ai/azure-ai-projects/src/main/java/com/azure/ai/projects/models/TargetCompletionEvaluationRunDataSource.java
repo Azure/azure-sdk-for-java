@@ -46,12 +46,6 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
     @Generated
     private final Target target;
 
-    /*
-     * The parameters for item generation.
-     */
-    @Generated
-    private ItemGenerationParams itemGenerationParams;
-
     /**
      * Creates an instance of TargetCompletionEvaluationRunDataSource class.
      *
@@ -106,28 +100,6 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
     }
 
     /**
-     * Get the itemGenerationParams property: The parameters for item generation.
-     *
-     * @return the itemGenerationParams value.
-     */
-    @Generated
-    public ItemGenerationParams getItemGenerationParams() {
-        return this.itemGenerationParams;
-    }
-
-    /**
-     * Set the itemGenerationParams property: The parameters for item generation.
-     *
-     * @param itemGenerationParams the itemGenerationParams value to set.
-     * @return the TargetCompletionEvaluationRunDataSource object itself.
-     */
-    @Generated
-    public TargetCompletionEvaluationRunDataSource setItemGenerationParams(ItemGenerationParams itemGenerationParams) {
-        this.itemGenerationParams = itemGenerationParams;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -144,7 +116,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
             jsonWriter.writeFieldName("input_messages");
             OpenAIJsonHelper.toBinaryData(this.inputMessages).writeTo(jsonWriter);
         }
-        jsonWriter.writeJsonField("item_generation_params", this.itemGenerationParams);
+        jsonWriter.writeJsonField("item_generation_params", this.itemGenerationParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -165,7 +137,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
             Target target = null;
             String type = "azure_ai_target_completions";
             ItemReference inputMessages = null;
-            ItemGenerationParams itemGenerationParams = null;
+            ItemGenerationParameters itemGenerationParams = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -179,7 +151,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
                     inputMessages = reader.getNullable(nonNullReader -> OpenAIJsonHelper
                         .fromBinaryData(BinaryData.fromObject(nonNullReader.readUntyped()), ItemReference.class));
                 } else if ("item_generation_params".equals(fieldName)) {
-                    itemGenerationParams = ItemGenerationParams.fromJson(reader);
+                    itemGenerationParams = ItemGenerationParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -188,7 +160,7 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
                 = new TargetCompletionEvaluationRunDataSource(source, target);
             deserializedTargetCompletionEvaluationRunDataSource.type = type;
             deserializedTargetCompletionEvaluationRunDataSource.inputMessages = inputMessages;
-            deserializedTargetCompletionEvaluationRunDataSource.itemGenerationParams = itemGenerationParams;
+            deserializedTargetCompletionEvaluationRunDataSource.itemGenerationParameters = itemGenerationParams;
             return deserializedTargetCompletionEvaluationRunDataSource;
         });
     }
@@ -202,6 +174,35 @@ public final class TargetCompletionEvaluationRunDataSource extends EvaluationRun
     @Generated
     public TargetCompletionEvaluationRunDataSource setInputMessages(ItemReference inputMessages) {
         this.inputMessages = inputMessages;
+        return this;
+    }
+
+    /*
+     * The parameters for item generation.
+     */
+    @Generated
+    private ItemGenerationParameters itemGenerationParameters;
+
+    /**
+     * Get the itemGenerationParameters property: The parameters for item generation.
+     *
+     * @return the itemGenerationParameters value.
+     */
+    @Generated
+    public ItemGenerationParameters getItemGenerationParameters() {
+        return this.itemGenerationParameters;
+    }
+
+    /**
+     * Set the itemGenerationParameters property: The parameters for item generation.
+     *
+     * @param itemGenerationParameters the itemGenerationParameters value to set.
+     * @return the TargetCompletionEvaluationRunDataSource object itself.
+     */
+    @Generated
+    public TargetCompletionEvaluationRunDataSource
+        setItemGenerationParameters(ItemGenerationParameters itemGenerationParameters) {
+        this.itemGenerationParameters = itemGenerationParameters;
         return this;
     }
 }

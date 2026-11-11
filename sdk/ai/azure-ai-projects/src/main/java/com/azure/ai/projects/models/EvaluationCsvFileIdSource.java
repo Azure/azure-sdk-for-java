@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents a reference to an uploaded CSV file used as a source for evaluation data.
  */
 @Immutable
-public final class EvalCsvFileIdSource implements JsonSerializable<EvalCsvFileIdSource> {
+public final class EvaluationCsvFileIdSource implements JsonSerializable<EvaluationCsvFileIdSource> {
 
     /*
      * The type of source, always `file_id`.
@@ -30,12 +30,12 @@ public final class EvalCsvFileIdSource implements JsonSerializable<EvalCsvFileId
     private final String id;
 
     /**
-     * Creates an instance of EvalCsvFileIdSource class.
+     * Creates an instance of EvaluationCsvFileIdSource class.
      *
      * @param id the id value to set.
      */
     @Generated
-    public EvalCsvFileIdSource(String id) {
+    public EvaluationCsvFileIdSource(String id) {
         this.id = id;
     }
 
@@ -72,16 +72,16 @@ public final class EvalCsvFileIdSource implements JsonSerializable<EvalCsvFileId
     }
 
     /**
-     * Reads an instance of EvalCsvFileIdSource from the JsonReader.
+     * Reads an instance of EvaluationCsvFileIdSource from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalCsvFileIdSource if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of EvaluationCsvFileIdSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalCsvFileIdSource.
+     * @throws IOException If an error occurs while reading the EvaluationCsvFileIdSource.
      */
     @Generated
-    public static EvalCsvFileIdSource fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationCsvFileIdSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -93,7 +93,7 @@ public final class EvalCsvFileIdSource implements JsonSerializable<EvalCsvFileId
                     reader.skipChildren();
                 }
             }
-            return new EvalCsvFileIdSource(id);
+            return new EvaluationCsvFileIdSource(id);
         });
     }
 }

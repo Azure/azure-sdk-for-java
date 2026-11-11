@@ -18,8 +18,8 @@ import com.azure.ai.projects.models.AgentInsightRunTrigger;
 import com.azure.ai.projects.models.AgentInsightSeverity;
 import com.azure.ai.projects.models.AgentInsightStatus;
 import com.azure.ai.projects.models.JobStatus;
-import com.azure.ai.projects.models.UpdateAgentInsightMonitorPatchRequest;
-import com.azure.ai.projects.models.UpdateAgentInsightPatchRequest;
+import com.azure.ai.projects.models.UpdateAgentInsightMonitorOptions;
+import com.azure.ai.projects.models.UpdateAgentInsightOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -74,7 +74,7 @@ public final class AgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -123,7 +123,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Create an Agent Insights monitor for an agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -140,9 +140,9 @@ public final class AgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -177,7 +177,7 @@ public final class AgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -204,7 +204,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Get an Agent Insights monitor.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -274,7 +274,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Update an Agent Insights monitor.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -290,9 +290,9 @@ public final class AgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -373,7 +373,7 @@ public final class AgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -381,9 +381,9 @@ public final class AgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -479,7 +479,7 @@ public final class AgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -555,7 +555,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Get an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -633,7 +633,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Cancel an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -734,7 +734,7 @@ public final class AgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -813,7 +813,7 @@ public final class AgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -886,7 +886,7 @@ public final class AgentInsightMonitorsClient {
     /**
      * Update the lifecycle status of an insight.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -894,9 +894,9 @@ public final class AgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1119,36 +1119,6 @@ public final class AgentInsightMonitorsClient {
         // Generated convenience method for deleteAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteAgentInsightMonitorWithResponse(monitorId, requestOptions).getValue();
-    }
-
-    /**
-     * Update an Agent Insights monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param updateRequest The updateRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a per-agent Agent Insights monitor that owns configuration, runs, and discovered insights.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor updateAgentInsightMonitor(String monitorId,
-        UpdateAgentInsightMonitorPatchRequest updateRequest) {
-        // Generated convenience method for updateAgentInsightMonitorWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateAgentInsightMonitorPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(updateRequest, true);
-        BinaryData updateRequestInBinaryData = BinaryData.fromObject(updateRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        updateRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentInsightMonitorPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(updateRequest, false);
-        return updateAgentInsightMonitorWithResponse(monitorId, updateRequestInBinaryData, requestOptions).getValue()
-            .toObject(AgentInsightMonitor.class);
     }
 
     /**
@@ -1469,6 +1439,36 @@ public final class AgentInsightMonitorsClient {
     }
 
     /**
+     * Update an Agent Insights monitor.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param updateRequest The updateRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a per-agent Agent Insights monitor that owns configuration, runs, and discovered insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentInsightMonitor updateAgentInsightMonitor(String monitorId,
+        UpdateAgentInsightMonitorOptions updateRequest) {
+        // Generated convenience method for updateAgentInsightMonitorWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateAgentInsightMonitorOptionsAccessor()
+            .prepareModelForJsonMergePatch(updateRequest, true);
+        BinaryData updateRequestInBinaryData = BinaryData.fromObject(updateRequest);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        updateRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentInsightMonitorOptionsAccessor()
+            .prepareModelForJsonMergePatch(updateRequest, false);
+        return updateAgentInsightMonitorWithResponse(monitorId, updateRequestInBinaryData, requestOptions).getValue()
+            .toObject(AgentInsightMonitor.class);
+    }
+
+    /**
      * Update the lifecycle status of an insight.
      *
      * @param monitorId The identifier of the monitor.
@@ -1485,15 +1485,15 @@ public final class AgentInsightMonitorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentInsight updateAgentInsight(String monitorId, String insightId,
-        UpdateAgentInsightPatchRequest updateInsightRequest) {
+        UpdateAgentInsightOptions updateInsightRequest) {
         // Generated convenience method for updateAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateAgentInsightPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentInsightOptionsAccessor()
             .prepareModelForJsonMergePatch(updateInsightRequest, true);
         BinaryData updateInsightRequestInBinaryData = BinaryData.fromObject(updateInsightRequest);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         updateInsightRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentInsightPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentInsightOptionsAccessor()
             .prepareModelForJsonMergePatch(updateInsightRequest, false);
         return updateAgentInsightWithResponse(monitorId, insightId, updateInsightRequestInBinaryData, requestOptions)
             .getValue()

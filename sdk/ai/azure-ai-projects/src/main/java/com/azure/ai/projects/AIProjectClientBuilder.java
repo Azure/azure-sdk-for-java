@@ -117,9 +117,6 @@ public final class AIProjectClientBuilder
     private static final String DATA_GENERATION_JOBS_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW.toString();
 
-    private static final String AGENT_INSIGHTS_PREVIEW_FEATURES
-        = FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW.toString();
-
     private static final String PIPELINE_AUTHENTICATION_PLACEHOLDER = "pipeline-authentication";
 
     private boolean allowPreview;
@@ -753,26 +750,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of BetaAgentInsightMonitorsAsyncClient class.
-     *
-     * @return an instance of BetaAgentInsightMonitorsAsyncClient.
-     */
-    private BetaAgentInsightMonitorsAsyncClient buildBetaAgentInsightMonitorsAsyncClient() {
-        return new BetaAgentInsightMonitorsAsyncClient(
-            buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
-    }
-
-    /**
-     * Builds an instance of BetaAgentInsightMonitorsClient class.
-     *
-     * @return an instance of BetaAgentInsightMonitorsClient.
-     */
-    private BetaAgentInsightMonitorsClient buildBetaAgentInsightMonitorsClient() {
-        return new BetaAgentInsightMonitorsClient(
-            buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
-    }
-
-    /**
      * Returns the sub-builder used to create beta clients for preview-only service areas.
      * <p>
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
@@ -808,7 +785,6 @@ public final class AIProjectClientBuilder
             BetaSchedulesAsyncClient.class,
             BetaRoutinesAsyncClient.class,
             BetaSkillsAsyncClient.class,
-            BetaAgentInsightMonitorsAsyncClient.class,
             BetaModelsClient.class,
             BetaRedTeamsClient.class,
             BetaEvaluationTaxonomiesClient.class,
@@ -816,8 +792,7 @@ public final class AIProjectClientBuilder
             BetaInsightsClient.class,
             BetaSchedulesClient.class,
             BetaRoutinesClient.class,
-            BetaSkillsClient.class,
-            BetaAgentInsightMonitorsClient.class })
+            BetaSkillsClient.class })
     public final class BetaAIProjectClientBuilder {
 
         /**
@@ -1067,38 +1042,6 @@ public final class AIProjectClientBuilder
         @Beta
         public BetaSkillsClient buildBetaSkillsClient() {
             return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
-        }
-
-        /**
-         * Builds an asynchronous beta Agent Insight Monitors client for preview agent insights operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for agent insights preview operations, so
-         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaAgentInsightMonitorsAsyncClient.
-         */
-        @Beta
-        public BetaAgentInsightMonitorsAsyncClient buildBetaAgentInsightMonitorsAsyncClient() {
-            return new BetaAgentInsightMonitorsAsyncClient(
-                buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
-        }
-
-        /**
-         * Builds a synchronous beta Agent Insight Monitors client for preview agent insights operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for agent insights preview operations, so
-         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaAgentInsightMonitorsClient.
-         */
-        @Beta
-        public BetaAgentInsightMonitorsClient buildBetaAgentInsightMonitorsClient() {
-            return new BetaAgentInsightMonitorsClient(
-                buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
         }
     }
 

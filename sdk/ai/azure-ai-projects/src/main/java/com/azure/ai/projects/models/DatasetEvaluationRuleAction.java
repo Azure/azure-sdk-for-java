@@ -24,12 +24,6 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     private EvaluationRuleActionType type = EvaluationRuleActionType.DATASET_EVALUATION;
 
     /*
-     * Identifier of the evaluation used to score the dataset.
-     */
-    @Generated
-    private final String evalId;
-
-    /*
      * Dataset inputs for each scheduled occurrence. Preview source types may appear in responses for existing schedules
      * but are rejected on create and update.
      */
@@ -45,12 +39,12 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     /**
      * Creates an instance of DatasetEvaluationRuleAction class.
      *
-     * @param evalId the evalId value to set.
+     * @param evaluationId the evaluationId value to set.
      * @param source the source value to set.
      */
     @Generated
-    public DatasetEvaluationRuleAction(String evalId, BinaryData source) {
-        this.evalId = evalId;
+    public DatasetEvaluationRuleAction(String evaluationId, BinaryData source) {
+        this.evaluationId = evaluationId;
         this.source = source;
     }
 
@@ -63,16 +57,6 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public EvaluationRuleActionType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the evalId property: Identifier of the evaluation used to score the dataset.
-     *
-     * @return the evalId value.
-     */
-    @Generated
-    public String getEvalId() {
-        return this.evalId;
     }
 
     /**
@@ -117,7 +101,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("evalId", this.evalId);
+        jsonWriter.writeStringField("evalId", this.evaluationId);
         jsonWriter.writeFieldName("source");
         this.source.writeTo(jsonWriter);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -138,7 +122,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     @Generated
     public static DatasetEvaluationRuleAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String evalId = null;
+            String evaluationId = null;
             BinaryData source = null;
             EvaluationRuleActionType type = EvaluationRuleActionType.DATASET_EVALUATION;
             EvaluationLevel evaluationLevel = null;
@@ -146,7 +130,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("evalId".equals(fieldName)) {
-                    evalId = reader.getString();
+                    evaluationId = reader.getString();
                 } else if ("source".equals(fieldName)) {
                     source = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
@@ -158,10 +142,26 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
                 }
             }
             DatasetEvaluationRuleAction deserializedDatasetEvaluationRuleAction
-                = new DatasetEvaluationRuleAction(evalId, source);
+                = new DatasetEvaluationRuleAction(evaluationId, source);
             deserializedDatasetEvaluationRuleAction.type = type;
             deserializedDatasetEvaluationRuleAction.evaluationLevel = evaluationLevel;
             return deserializedDatasetEvaluationRuleAction;
         });
+    }
+
+    /*
+     * Identifier of the evaluation used to score the dataset.
+     */
+    @Generated
+    private final String evaluationId;
+
+    /**
+     * Get the evaluationId property: Identifier of the evaluation used to score the dataset.
+     *
+     * @return the evaluationId value.
+     */
+    @Generated
+    public String getEvaluationId() {
+        return this.evaluationId;
     }
 }

@@ -30,25 +30,19 @@ public final class AgentInsightDetails implements JsonSerializable<AgentInsightD
     @Generated
     private final List<AgentInsightLinkedTrace> linkedTraces;
 
-    /*
-     * The recommended remediation for this insight.
-     */
-    @Generated
-    private final AgentInsightRecommendedAction recommendedActions;
-
     /**
      * Creates an instance of AgentInsightDetails class.
      *
      * @param highlightedTraces the highlightedTraces value to set.
      * @param linkedTraces the linkedTraces value to set.
-     * @param recommendedActions the recommendedActions value to set.
+     * @param recommendedAction the recommendedAction value to set.
      */
     @Generated
     private AgentInsightDetails(List<AgentInsightHighlightedTrace> highlightedTraces,
-        List<AgentInsightLinkedTrace> linkedTraces, AgentInsightRecommendedAction recommendedActions) {
+        List<AgentInsightLinkedTrace> linkedTraces, AgentInsightRecommendedAction recommendedAction) {
         this.highlightedTraces = highlightedTraces;
         this.linkedTraces = linkedTraces;
-        this.recommendedActions = recommendedActions;
+        this.recommendedAction = recommendedAction;
     }
 
     /**
@@ -72,16 +66,6 @@ public final class AgentInsightDetails implements JsonSerializable<AgentInsightD
     }
 
     /**
-     * Get the recommendedActions property: The recommended remediation for this insight.
-     *
-     * @return the recommendedActions value.
-     */
-    @Generated
-    public AgentInsightRecommendedAction getRecommendedActions() {
-        return this.recommendedActions;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -91,7 +75,7 @@ public final class AgentInsightDetails implements JsonSerializable<AgentInsightD
         jsonWriter.writeArrayField("highlighted_traces", this.highlightedTraces,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("linked_traces", this.linkedTraces, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("recommended_actions", this.recommendedActions);
+        jsonWriter.writeJsonField("recommended_actions", this.recommendedAction);
         return jsonWriter.writeEndObject();
     }
 
@@ -109,7 +93,7 @@ public final class AgentInsightDetails implements JsonSerializable<AgentInsightD
         return jsonReader.readObject(reader -> {
             List<AgentInsightHighlightedTrace> highlightedTraces = null;
             List<AgentInsightLinkedTrace> linkedTraces = null;
-            AgentInsightRecommendedAction recommendedActions = null;
+            AgentInsightRecommendedAction recommendedAction = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,12 +102,28 @@ public final class AgentInsightDetails implements JsonSerializable<AgentInsightD
                 } else if ("linked_traces".equals(fieldName)) {
                     linkedTraces = reader.readArray(reader1 -> AgentInsightLinkedTrace.fromJson(reader1));
                 } else if ("recommended_actions".equals(fieldName)) {
-                    recommendedActions = AgentInsightRecommendedAction.fromJson(reader);
+                    recommendedAction = AgentInsightRecommendedAction.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AgentInsightDetails(highlightedTraces, linkedTraces, recommendedActions);
+            return new AgentInsightDetails(highlightedTraces, linkedTraces, recommendedAction);
         });
+    }
+
+    /*
+     * The recommended remediation for this insight.
+     */
+    @Generated
+    private final AgentInsightRecommendedAction recommendedAction;
+
+    /**
+     * Get the recommendedAction property: The recommended remediation for this insight.
+     *
+     * @return the recommendedAction value.
+     */
+    @Generated
+    public AgentInsightRecommendedAction getRecommendedAction() {
+        return this.recommendedAction;
     }
 }

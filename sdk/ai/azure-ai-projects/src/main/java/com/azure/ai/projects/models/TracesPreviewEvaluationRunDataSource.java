@@ -62,22 +62,10 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
     private Integer lookbackHours;
 
     /*
-     * Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the current time.
-     */
-    @Generated
-    private Long endTime;
-
-    /*
      * Sampling limit applied to traces retrieved for evaluation.
      */
     @Generated
     private Integer maxTraces;
-
-    /*
-     * The delay to apply for ingestion when querying traces.
-     */
-    @Generated
-    private Long ingestionDelaySeconds;
 
     /**
      * Creates an instance of TracesPreviewEvaluationRunDataSource class.
@@ -212,37 +200,6 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
     }
 
     /**
-     * Get the endTime property: Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the
-     * current time.
-     *
-     * @return the endTime value.
-     */
-    @Generated
-    public OffsetDateTime getEndTime() {
-        if (this.endTime == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
-    }
-
-    /**
-     * Set the endTime property: Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the
-     * current time.
-     *
-     * @param endTime the endTime value to set.
-     * @return the TracesPreviewEvaluationRunDataSource object itself.
-     */
-    @Generated
-    public TracesPreviewEvaluationRunDataSource setEndTime(OffsetDateTime endTime) {
-        if (endTime == null) {
-            this.endTime = null;
-        } else {
-            this.endTime = endTime.toEpochSecond();
-        }
-        return this;
-    }
-
-    /**
      * Get the maxTraces property: Sampling limit applied to traces retrieved for evaluation.
      *
      * @return the maxTraces value.
@@ -265,35 +222,6 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
     }
 
     /**
-     * Get the ingestionDelaySeconds property: The delay to apply for ingestion when querying traces.
-     *
-     * @return the ingestionDelaySeconds value.
-     */
-    @Generated
-    public Duration getIngestionDelaySeconds() {
-        if (this.ingestionDelaySeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.ingestionDelaySeconds);
-    }
-
-    /**
-     * Set the ingestionDelaySeconds property: The delay to apply for ingestion when querying traces.
-     *
-     * @param ingestionDelaySeconds the ingestionDelaySeconds value to set.
-     * @return the TracesPreviewEvaluationRunDataSource object itself.
-     */
-    @Generated
-    public TracesPreviewEvaluationRunDataSource setIngestionDelaySeconds(Duration ingestionDelaySeconds) {
-        if (ingestionDelaySeconds == null) {
-            this.ingestionDelaySeconds = null;
-        } else {
-            this.ingestionDelaySeconds = ingestionDelaySeconds.getSeconds();
-        }
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -307,9 +235,9 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
         jsonWriter.writeStringField("agent_id", this.agentId);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeNumberField("lookback_hours", this.lookbackHours);
-        jsonWriter.writeNumberField("end_time", this.endTime);
+        jsonWriter.writeNumberField("end_time", this.endAt);
         jsonWriter.writeNumberField("max_traces", this.maxTraces);
-        jsonWriter.writeNumberField("ingestion_delay_seconds", this.ingestionDelaySeconds);
+        jsonWriter.writeNumberField("ingestion_delay_seconds", this.ingestionDelay);
         return jsonWriter.writeEndObject();
     }
 
@@ -345,11 +273,11 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
                     deserializedTracesPreviewEvaluationRunDataSource.lookbackHours
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("end_time".equals(fieldName)) {
-                    deserializedTracesPreviewEvaluationRunDataSource.endTime = reader.getNullable(JsonReader::getLong);
+                    deserializedTracesPreviewEvaluationRunDataSource.endAt = reader.getNullable(JsonReader::getLong);
                 } else if ("max_traces".equals(fieldName)) {
                     deserializedTracesPreviewEvaluationRunDataSource.maxTraces = reader.getNullable(JsonReader::getInt);
                 } else if ("ingestion_delay_seconds".equals(fieldName)) {
-                    deserializedTracesPreviewEvaluationRunDataSource.ingestionDelaySeconds
+                    deserializedTracesPreviewEvaluationRunDataSource.ingestionDelay
                         = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
@@ -357,5 +285,77 @@ public final class TracesPreviewEvaluationRunDataSource extends EvaluationRunDat
             }
             return deserializedTracesPreviewEvaluationRunDataSource;
         });
+    }
+
+    /*
+     * Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the current time.
+     */
+    @Generated
+    private Long endAt;
+
+    /*
+     * The delay to apply for ingestion when querying traces.
+     */
+    @Generated
+    private Long ingestionDelay;
+
+    /**
+     * Get the endAt property: Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the
+     * current time.
+     *
+     * @return the endAt value.
+     */
+    @Generated
+    public OffsetDateTime getEndAt() {
+        if (this.endAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Set the endAt property: Unix timestamp (in seconds) marking the end of the trace query window. Defaults to the
+     * current time.
+     *
+     * @param endAt the endAt value to set.
+     * @return the TracesPreviewEvaluationRunDataSource object itself.
+     */
+    @Generated
+    public TracesPreviewEvaluationRunDataSource setEndAt(OffsetDateTime endAt) {
+        if (endAt == null) {
+            this.endAt = null;
+        } else {
+            this.endAt = endAt.toEpochSecond();
+        }
+        return this;
+    }
+
+    /**
+     * Get the ingestionDelay property: The delay to apply for ingestion when querying traces.
+     *
+     * @return the ingestionDelay value.
+     */
+    @Generated
+    public Duration getIngestionDelay() {
+        if (this.ingestionDelay == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.ingestionDelay);
+    }
+
+    /**
+     * Set the ingestionDelay property: The delay to apply for ingestion when querying traces.
+     *
+     * @param ingestionDelay the ingestionDelay value to set.
+     * @return the TracesPreviewEvaluationRunDataSource object itself.
+     */
+    @Generated
+    public TracesPreviewEvaluationRunDataSource setIngestionDelay(Duration ingestionDelay) {
+        if (ingestionDelay == null) {
+            this.ingestionDelay = null;
+        } else {
+            this.ingestionDelay = ingestionDelay.getSeconds();
+        }
+        return this;
     }
 }

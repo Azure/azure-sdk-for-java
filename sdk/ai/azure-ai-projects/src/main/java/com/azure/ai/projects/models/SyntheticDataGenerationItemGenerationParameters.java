@@ -18,13 +18,13 @@ import java.util.List;
  * Represents the parameters for synthetic data generation item generation.
  */
 @Fluent
-public final class SyntheticDataGenerationItemGenerationParams extends ItemGenerationParams {
+public final class SyntheticDataGenerationItemGenerationParameters extends ItemGenerationParameters {
 
     /*
      * Preparation workflow to use. This discriminator determines which additional parameters are available.
      */
     @Generated
-    private ItemGenerationParamsType type = ItemGenerationParamsType.SYNTHETIC_DATA_GENERATION;
+    private ItemGenerationParametersType type = ItemGenerationParametersType.SYNTHETIC_DATA_GENERATION;
 
     /*
      * The maximum number of data samples to generate.
@@ -66,14 +66,14 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
     private final List<FileId> sources;
 
     /**
-     * Creates an instance of SyntheticDataGenerationItemGenerationParams class.
+     * Creates an instance of SyntheticDataGenerationItemGenerationParameters class.
      *
      * @param samplesCount the samplesCount value to set.
      * @param modelDeploymentName the modelDeploymentName value to set.
      * @param sources the sources value to set.
      */
     @Generated
-    public SyntheticDataGenerationItemGenerationParams(int samplesCount, String modelDeploymentName,
+    public SyntheticDataGenerationItemGenerationParameters(int samplesCount, String modelDeploymentName,
         List<FileId> sources) {
         this.samplesCount = samplesCount;
         this.modelDeploymentName = modelDeploymentName;
@@ -88,7 +88,7 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
      */
     @Generated
     @Override
-    public ItemGenerationParamsType getType() {
+    public ItemGenerationParametersType getType() {
         return this.type;
     }
 
@@ -118,10 +118,10 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
      * an agent that already has instructions.
      *
      * @param prompt the prompt value to set.
-     * @return the SyntheticDataGenerationItemGenerationParams object itself.
+     * @return the SyntheticDataGenerationItemGenerationParameters object itself.
      */
     @Generated
-    public SyntheticDataGenerationItemGenerationParams setPrompt(String prompt) {
+    public SyntheticDataGenerationItemGenerationParameters setPrompt(String prompt) {
         this.prompt = prompt;
         return this;
     }
@@ -152,10 +152,10 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
      * If not provided, service generates dataset name automatically.
      *
      * @param outputDatasetName the outputDatasetName value to set.
-     * @return the SyntheticDataGenerationItemGenerationParams object itself.
+     * @return the SyntheticDataGenerationItemGenerationParameters object itself.
      */
     @Generated
-    public SyntheticDataGenerationItemGenerationParams setOutputDatasetName(String outputDatasetName) {
+    public SyntheticDataGenerationItemGenerationParameters setOutputDatasetName(String outputDatasetName) {
         this.outputDatasetName = outputDatasetName;
         return this;
     }
@@ -204,21 +204,22 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
     }
 
     /**
-     * Reads an instance of SyntheticDataGenerationItemGenerationParams from the JsonReader.
+     * Reads an instance of SyntheticDataGenerationItemGenerationParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SyntheticDataGenerationItemGenerationParams if the JsonReader was pointing to an instance
+     * @return An instance of SyntheticDataGenerationItemGenerationParameters if the JsonReader was pointing to an
+     * instance
      * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SyntheticDataGenerationItemGenerationParams.
+     * @throws IOException If an error occurs while reading the SyntheticDataGenerationItemGenerationParameters.
      */
-    public static SyntheticDataGenerationItemGenerationParams fromJson(JsonReader jsonReader) throws IOException {
+    public static SyntheticDataGenerationItemGenerationParameters fromJson(JsonReader jsonReader) throws IOException {
         // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             int samplesCount = 0;
             String modelDeploymentName = null;
             List<FileId> sources = null;
-            ItemGenerationParamsType type = ItemGenerationParamsType.SYNTHETIC_DATA_GENERATION;
+            ItemGenerationParametersType type = ItemGenerationParametersType.SYNTHETIC_DATA_GENERATION;
             String prompt = null;
             String outputDatasetName = null;
             String outputDatasetId = null;
@@ -233,7 +234,7 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
                     sources = reader.readArray(reader1 -> reader1.getNullable(nonNullReader -> OpenAIJsonHelper
                         .fromBinaryData(BinaryData.fromObject(nonNullReader.readUntyped()), FileId.class)));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemGenerationParamsType.fromString(reader.getString());
+                    type = ItemGenerationParametersType.fromString(reader.getString());
                 } else if ("prompt".equals(fieldName)) {
                     prompt = reader.getString();
                 } else if ("output_dataset_name".equals(fieldName)) {
@@ -244,8 +245,8 @@ public final class SyntheticDataGenerationItemGenerationParams extends ItemGener
                     reader.skipChildren();
                 }
             }
-            SyntheticDataGenerationItemGenerationParams deserializedSyntheticDataGenerationItemGenerationParams
-                = new SyntheticDataGenerationItemGenerationParams(samplesCount, modelDeploymentName, sources);
+            SyntheticDataGenerationItemGenerationParameters deserializedSyntheticDataGenerationItemGenerationParams
+                = new SyntheticDataGenerationItemGenerationParameters(samplesCount, modelDeploymentName, sources);
             deserializedSyntheticDataGenerationItemGenerationParams.type = type;
             deserializedSyntheticDataGenerationItemGenerationParams.prompt = prompt;
             deserializedSyntheticDataGenerationItemGenerationParams.outputDatasetName = outputDatasetName;

@@ -15,11 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The UpdateAgentInsightMonitorPatchRequest model.
+ * The UpdateAgentInsightMonitorOptions model.
  */
 @Fluent
-public final class UpdateAgentInsightMonitorPatchRequest
-    implements JsonSerializable<UpdateAgentInsightMonitorPatchRequest> {
+public final class UpdateAgentInsightMonitorOptions implements JsonSerializable<UpdateAgentInsightMonitorOptions> {
 
     /*
      * Whether scheduled insight generation is armed for the monitor.
@@ -61,28 +60,28 @@ public final class UpdateAgentInsightMonitorPatchRequest
     }
 
     static {
-        JsonMergePatchHelper.setUpdateAgentInsightMonitorPatchRequestAccessor(
-            new JsonMergePatchHelper.UpdateAgentInsightMonitorPatchRequestAccessor() {
+        JsonMergePatchHelper.setUpdateAgentInsightMonitorOptionsAccessor(
+            new JsonMergePatchHelper.UpdateAgentInsightMonitorOptionsAccessor() {
 
                 @Override
-                public UpdateAgentInsightMonitorPatchRequest prepareModelForJsonMergePatch(
-                    UpdateAgentInsightMonitorPatchRequest model, boolean jsonMergePatchEnabled) {
+                public UpdateAgentInsightMonitorOptions prepareModelForJsonMergePatch(
+                    UpdateAgentInsightMonitorOptions model, boolean jsonMergePatchEnabled) {
                     model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                     return model;
                 }
 
                 @Override
-                public boolean isJsonMergePatch(UpdateAgentInsightMonitorPatchRequest model) {
+                public boolean isJsonMergePatch(UpdateAgentInsightMonitorOptions model) {
                     return model.jsonMergePatch;
                 }
             });
     }
 
     /**
-     * Creates an instance of UpdateAgentInsightMonitorPatchRequest class.
+     * Creates an instance of UpdateAgentInsightMonitorOptions class.
      */
     @Generated
-    public UpdateAgentInsightMonitorPatchRequest() {
+    public UpdateAgentInsightMonitorOptions() {
     }
 
     /**
@@ -99,10 +98,10 @@ public final class UpdateAgentInsightMonitorPatchRequest
      * Set the enabled property: Whether scheduled insight generation is armed for the monitor.
      *
      * @param enabled the enabled value to set.
-     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
+     * @return the UpdateAgentInsightMonitorOptions object itself.
      */
     @Generated
-    public UpdateAgentInsightMonitorPatchRequest setEnabled(Boolean enabled) {
+    public UpdateAgentInsightMonitorOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         this.updatedProperties.add("enabled");
         return this;
@@ -122,10 +121,10 @@ public final class UpdateAgentInsightMonitorPatchRequest
      * Set the runIntervalHours property: Interval between scheduled insight runs, in hours.
      *
      * @param runIntervalHours the runIntervalHours value to set.
-     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
+     * @return the UpdateAgentInsightMonitorOptions object itself.
      */
     @Generated
-    public UpdateAgentInsightMonitorPatchRequest setRunIntervalHours(Double runIntervalHours) {
+    public UpdateAgentInsightMonitorOptions setRunIntervalHours(Double runIntervalHours) {
         this.runIntervalHours = runIntervalHours;
         this.updatedProperties.add("runIntervalHours");
         return this;
@@ -147,10 +146,10 @@ public final class UpdateAgentInsightMonitorPatchRequest
      * deployment name alone or with the connection name as '{connectionName}/modelDeploymentName'.
      *
      * @param modelDeploymentName the modelDeploymentName value to set.
-     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
+     * @return the UpdateAgentInsightMonitorOptions object itself.
      */
     @Generated
-    public UpdateAgentInsightMonitorPatchRequest setModelDeploymentName(String modelDeploymentName) {
+    public UpdateAgentInsightMonitorOptions setModelDeploymentName(String modelDeploymentName) {
         this.modelDeploymentName = modelDeploymentName;
         this.updatedProperties.add("modelDeploymentName");
         return this;
@@ -170,10 +169,10 @@ public final class UpdateAgentInsightMonitorPatchRequest
      * Set the priorities property: Replaces all priorities. Omit to preserve them; null clears them.
      *
      * @param priorities the priorities value to set.
-     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
+     * @return the UpdateAgentInsightMonitorOptions object itself.
      */
     @Generated
-    public UpdateAgentInsightMonitorPatchRequest setPriorities(AgentInsightPriorities priorities) {
+    public UpdateAgentInsightMonitorOptions setPriorities(AgentInsightPriorities priorities) {
         this.priorities = priorities;
         this.updatedProperties.add("priorities");
         return this;
@@ -236,37 +235,35 @@ public final class UpdateAgentInsightMonitorPatchRequest
     }
 
     /**
-     * Reads an instance of UpdateAgentInsightMonitorPatchRequest from the JsonReader.
+     * Reads an instance of UpdateAgentInsightMonitorOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateAgentInsightMonitorPatchRequest if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UpdateAgentInsightMonitorPatchRequest.
+     * @return An instance of UpdateAgentInsightMonitorOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAgentInsightMonitorOptions.
      */
     @Generated
-    public static UpdateAgentInsightMonitorPatchRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateAgentInsightMonitorOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UpdateAgentInsightMonitorPatchRequest deserializedUpdateAgentInsightMonitorPatchRequest
-                = new UpdateAgentInsightMonitorPatchRequest();
+            UpdateAgentInsightMonitorOptions deserializedUpdateAgentInsightMonitorOptions
+                = new UpdateAgentInsightMonitorOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("enabled".equals(fieldName)) {
-                    deserializedUpdateAgentInsightMonitorPatchRequest.enabled
-                        = reader.getNullable(JsonReader::getBoolean);
+                    deserializedUpdateAgentInsightMonitorOptions.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("run_interval_hours".equals(fieldName)) {
-                    deserializedUpdateAgentInsightMonitorPatchRequest.runIntervalHours
+                    deserializedUpdateAgentInsightMonitorOptions.runIntervalHours
                         = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_deployment_name".equals(fieldName)) {
-                    deserializedUpdateAgentInsightMonitorPatchRequest.modelDeploymentName = reader.getString();
+                    deserializedUpdateAgentInsightMonitorOptions.modelDeploymentName = reader.getString();
                 } else if ("priorities".equals(fieldName)) {
-                    deserializedUpdateAgentInsightMonitorPatchRequest.priorities
-                        = AgentInsightPriorities.fromJson(reader);
+                    deserializedUpdateAgentInsightMonitorOptions.priorities = AgentInsightPriorities.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedUpdateAgentInsightMonitorPatchRequest;
+            return deserializedUpdateAgentInsightMonitorOptions;
         });
     }
 }

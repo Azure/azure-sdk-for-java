@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Refined item-generation parameter names, turn-count properties, trace and trigger timestamps, ingestion delay,
+  evaluation IDs, and agent-insight details and update options.
+- Added `TimeZone` properties to cron and one-time triggers, preserving string time-zone IDs on the wire.
 - Expanded `Eval` to `Evaluation` throughout the Java evaluation run data-source hierarchy and CSV file-ID source, with
   `TraceSourceEvaluationRunDataSource`, `TraceSourcePreviewEvaluationRunDataSource`, and `CsvEvaluationRunDataSource`
   variant names. The shared TypeSpec names retain `Eval`, and wire discriminators are unchanged.
@@ -12,6 +15,9 @@
 
 ### Bugs Fixed
 
+- Removed obsolete beta agent-insight builder methods and preview-header wiring.
+- Protected evaluation run data-source, item-generation parameter, and trace-source base constructors.
+- Marked `DataGenerationJobType.CONVERSATIONS` as preview.
 - Added missing preview annotations to conversation data generation, trace rubric generation, endpoint evaluator schema
   versions, rubric-scoring properties, and preview evaluation run data-source variants.
 - Fixed long-running job polling to recognize the service's `cancelled` status as terminal.

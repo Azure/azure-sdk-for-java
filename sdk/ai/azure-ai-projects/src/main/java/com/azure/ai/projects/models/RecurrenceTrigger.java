@@ -27,18 +27,6 @@ public final class RecurrenceTrigger extends Trigger {
     private TriggerType type = TriggerType.RECURRENCE;
 
     /*
-     * Start time for the recurrence schedule in ISO 8601 format.
-     */
-    @Generated
-    private OffsetDateTime startTime;
-
-    /*
-     * End time for the recurrence schedule in ISO 8601 format.
-     */
-    @Generated
-    private OffsetDateTime endTime;
-
-    /*
      * Time zone for the recurrence schedule. Defaults to `UTC`.
      */
     @Generated
@@ -65,26 +53,6 @@ public final class RecurrenceTrigger extends Trigger {
     @Override
     public TriggerType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the startTime property: Start time for the recurrence schedule in ISO 8601 format.
-     *
-     * @return the startTime value.
-     */
-    @Generated
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Get the endTime property: End time for the recurrence schedule in ISO 8601 format.
-     *
-     * @return the endTime value.
-     */
-    @Generated
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
     }
 
     /**
@@ -127,9 +95,9 @@ public final class RecurrenceTrigger extends Trigger {
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("startTime",
-            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+            this.startAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startAt));
         jsonWriter.writeStringField("endTime",
-            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+            this.endAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endAt));
         jsonWriter.writeStringField("timeZone", this.timeZone != null ? this.timeZone.getID() : null);
         return jsonWriter.writeEndObject();
     }
@@ -175,8 +143,8 @@ public final class RecurrenceTrigger extends Trigger {
             }
             RecurrenceTrigger deserializedRecurrenceTrigger = new RecurrenceTrigger(interval, schedule);
             deserializedRecurrenceTrigger.type = type;
-            deserializedRecurrenceTrigger.startTime = startTime;
-            deserializedRecurrenceTrigger.endTime = endTime;
+            deserializedRecurrenceTrigger.startAt = startTime;
+            deserializedRecurrenceTrigger.endAt = endTime;
             deserializedRecurrenceTrigger.timeZone = timeZone;
             return deserializedRecurrenceTrigger;
         });
@@ -192,30 +160,6 @@ public final class RecurrenceTrigger extends Trigger {
     public RecurrenceTrigger(int interval, RecurrenceSchedule schedule) {
         this.interval = interval;
         this.schedule = schedule;
-    }
-
-    /**
-     * Set the startTime property: Start time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param startTime the startTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Set the endTime property: End time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param endTime the endTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -248,5 +192,61 @@ public final class RecurrenceTrigger extends Trigger {
             return null;
         }
         return tz;
+    }
+
+    /*
+     * Start time for the recurrence schedule in ISO 8601 format.
+     */
+    @Generated
+    private OffsetDateTime startAt;
+
+    /*
+     * End time for the recurrence schedule in ISO 8601 format.
+     */
+    @Generated
+    private OffsetDateTime endAt;
+
+    /**
+     * Get the startAt property: Start time for the recurrence schedule in ISO 8601 format.
+     *
+     * @return the startAt value.
+     */
+    @Generated
+    public OffsetDateTime getStartAt() {
+        return this.startAt;
+    }
+
+    /**
+     * Set the startAt property: Start time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param startAt the startAt value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setStartAt(OffsetDateTime startAt) {
+        this.startAt = startAt;
+        return this;
+    }
+
+    /**
+     * Get the endAt property: End time for the recurrence schedule in ISO 8601 format.
+     *
+     * @return the endAt value.
+     */
+    @Generated
+    public OffsetDateTime getEndAt() {
+        return this.endAt;
+    }
+
+    /**
+     * Set the endAt property: End time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param endAt the endAt value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setEndAt(OffsetDateTime endAt) {
+        this.endAt = endAt;
+        return this;
     }
 }

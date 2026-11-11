@@ -10,7 +10,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Manage evaluator versions and generate rubrics** using `EvaluatorsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
-* **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
+* **Monitor deployed agents for issues** and review the resulting insights using `AgentInsightMonitorsClient`.
 * **Create and manage skills** using the preview `BetaSkillsClient`.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
@@ -63,12 +63,11 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
     .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
-// Beta* clients automatically opt in to their preview service area.
-BetaAgentInsightMonitorsClient agentInsightMonitorsClient
-    = builder.beta().buildBetaAgentInsightMonitorsClient();
+AgentInsightMonitorsClient agentInsightMonitorsClient = builder.buildAgentInsightMonitorsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+// Beta* clients automatically opt in to their preview service area.
 BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
     = builder.beta().buildBetaEvaluationTaxonomiesClient();
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
@@ -156,7 +155,6 @@ Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
 | `BetaInsightsClient` | `Insights=V1Preview` |

@@ -16,7 +16,7 @@ import java.util.List;
  * Monitor analysis priorities returned by the service.
  */
 @Immutable
-public final class AgentInsightPrioritiesRead implements JsonSerializable<AgentInsightPrioritiesRead> {
+public final class AgentInsightPrioritiesDetails implements JsonSerializable<AgentInsightPrioritiesDetails> {
 
     /*
      * Up to 20 distinct normalized category identifiers. Can include legacy names containing commas. Empty uses
@@ -32,12 +32,12 @@ public final class AgentInsightPrioritiesRead implements JsonSerializable<AgentI
     private String instructions;
 
     /**
-     * Creates an instance of AgentInsightPrioritiesRead class.
+     * Creates an instance of AgentInsightPrioritiesDetails class.
      *
      * @param categories the categories value to set.
      */
     @Generated
-    private AgentInsightPrioritiesRead(List<String> categories) {
+    private AgentInsightPrioritiesDetails(List<String> categories) {
         this.categories = categories;
     }
 
@@ -75,16 +75,16 @@ public final class AgentInsightPrioritiesRead implements JsonSerializable<AgentI
     }
 
     /**
-     * Reads an instance of AgentInsightPrioritiesRead from the JsonReader.
+     * Reads an instance of AgentInsightPrioritiesDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentInsightPrioritiesRead if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of AgentInsightPrioritiesDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentInsightPrioritiesRead.
+     * @throws IOException If an error occurs while reading the AgentInsightPrioritiesDetails.
      */
     @Generated
-    public static AgentInsightPrioritiesRead fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentInsightPrioritiesDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> categories = null;
             String instructions = null;
@@ -99,10 +99,10 @@ public final class AgentInsightPrioritiesRead implements JsonSerializable<AgentI
                     reader.skipChildren();
                 }
             }
-            AgentInsightPrioritiesRead deserializedAgentInsightPrioritiesRead
-                = new AgentInsightPrioritiesRead(categories);
-            deserializedAgentInsightPrioritiesRead.instructions = instructions;
-            return deserializedAgentInsightPrioritiesRead;
+            AgentInsightPrioritiesDetails deserializedAgentInsightPrioritiesDetails
+                = new AgentInsightPrioritiesDetails(categories);
+            deserializedAgentInsightPrioritiesDetails.instructions = instructions;
+            return deserializedAgentInsightPrioritiesDetails;
         });
     }
 }
