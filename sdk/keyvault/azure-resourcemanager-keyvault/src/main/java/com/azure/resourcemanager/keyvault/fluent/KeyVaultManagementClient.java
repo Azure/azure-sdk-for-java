@@ -68,6 +68,13 @@ public interface KeyVaultManagementClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
      * Gets the ManagedHsmsClient object to access its operations.
      * 
      * @return the ManagedHsmsClient object.

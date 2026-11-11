@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class ManagedHsmsPurgeDeletedSamples {
     /*
-     * x-ms-original-file: 2026-05-15/DeletedManagedHsm_Purge.json
+     * x-ms-original-file: 2026-10-01-preview/DeletedManagedHsm_Purge.json
      */
     /**
      * Sample code: Purge a managed HSM Pool.

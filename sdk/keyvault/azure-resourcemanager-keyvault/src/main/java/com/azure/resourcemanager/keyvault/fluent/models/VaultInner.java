@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -34,6 +35,11 @@ public final class VaultInner extends Resource {
      * Tags assigned to the key vault resource.
      */
     private Map<String, String> tags;
+
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -122,6 +128,26 @@ public final class VaultInner extends Resource {
     }
 
     /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     *
+     * @param identity the identity value to set.
+     * @return the VaultInner object itself.
+     */
+    public VaultInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -172,6 +198,9 @@ public final class VaultInner extends Resource {
         } else {
             properties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VaultInner.class);
@@ -185,6 +214,7 @@ public final class VaultInner extends Resource {
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -216,6 +246,8 @@ public final class VaultInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVaultInner.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVaultInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVaultInner.systemData = SystemData.fromJson(reader);
                 } else {
