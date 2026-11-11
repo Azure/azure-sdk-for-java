@@ -99,7 +99,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         artifacts = ["{0}/pom.xml".format(sdk_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(sdk_folder))]
         if compile_succeeded:
-            artifacts.append(generate_api_markdown(sdk_root, sdk_folder))
+            artifacts.extend(generate_api_markdown(sdk_root, sdk_folder))
         result = "succeeded" if compile_succeeded else "failed"
         if generate_succeeded and not compile_succeeded and fallback_generate_from_clean_folder_enabled:
             result = "warning"

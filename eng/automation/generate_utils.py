@@ -92,7 +92,7 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
     return True
 
 
-def generate_api_markdown(sdk_root: str, sdk_folder: str) -> str:
+def generate_api_markdown(sdk_root: str, sdk_folder: str) -> List[str]:
     package_directory = os.path.abspath(os.path.join(sdk_root, sdk_folder))
     sources = glob.glob(os.path.join(package_directory, "target", "*-sources.jar"))
     if len(sources) != 1:
@@ -110,10 +110,13 @@ def generate_api_markdown(sdk_root: str, sdk_folder: str) -> str:
         ],
         sdk_root,
     )
-    api_path = os.path.join(package_directory, "api.md")
-    if not os.path.isfile(api_path):
-        raise RuntimeError(f"API Markdown was not produced: {api_path}.")
-    return os.path.relpath(api_path, sdk_root).replace(os.sep, "/")
+    artifacts = []
+    for filename in ("api.md", "api.metadata.yml"):
+        artifact_path = os.path.join(package_directory, filename)
+        if not os.path.isfile(artifact_path):
+            raise RuntimeError(f"API review file was not produced: {artifact_path}.")
+        artifacts.append(os.path.relpath(artifact_path, sdk_root).replace(os.sep, "/"))
+    return artifacts
 
 
 def generate_changelog_and_breaking_change(

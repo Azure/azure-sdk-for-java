@@ -4,7 +4,7 @@
 
 <#
 .SYNOPSIS
-Builds a Java SDK package and writes its API surface to api.md in the package directory.
+Builds a Java SDK package and writes api.md and api.metadata.yml in the package directory.
 
 .PARAMETER PackagePath
 Path to the SDK package containing pom.xml. Defaults to the current directory.
@@ -51,6 +51,13 @@ $packaging = $packagePom.SelectSingleNode("/*[local-name()='project']/*[local-na
 if ($packaging -and $packaging.InnerText -eq 'pom') {
     throw "Package path is a Maven aggregator. Run from a library module or supply -PackagePath."
 }
+$versionNode = $packagePom.SelectSingleNode("/*[local-name()='project']/*[local-name()='version']")
+if (-not $versionNode -or [string]::IsNullOrWhiteSpace($versionNode.InnerText) -or
+    $versionNode.InnerText.Contains('${')) {
+    throw "Package POM must declare a literal project version: $packagePomPath."
+}
+$packageVersion = $versionNode.InnerText.Trim()
+$relativePackage = [IO.Path]::GetRelativePath($repositoryRoot, $packageDirectory).Replace('\', '/')
 if ($SourcesJar) {
     $SourcesJar = (Resolve-Path -LiteralPath $SourcesJar).Path
     if (-not (Test-Path -LiteralPath $SourcesJar -PathType Leaf) -or
@@ -59,7 +66,7 @@ if ($SourcesJar) {
     }
 }
 
-if (-not $PSCmdlet.ShouldProcess($packageDirectory, 'Generate api.md')) {
+if (-not $PSCmdlet.ShouldProcess($packageDirectory, 'Generate api.md and api.metadata.yml')) {
     return
 }
 
@@ -68,7 +75,6 @@ $buildOptions = @(
     '-Dmaven.javadoc.skip=true', '-Dgpg.skip', '-Dmaven.test.skip=true', '-Djacoco.skip', '-Drevapi.skip'
 )
 if (-not $SourcesJar) {
-    $relativePackage = [IO.Path]::GetRelativePath($repositoryRoot, $packageDirectory).Replace('\', '/')
     Invoke-ApiMarkdownCommand 'mvn' (@(
         'clean', 'package', '-f', (Join-Path $repositoryRoot 'pom.xml'), '-pl', $relativePackage, '-am'
     ) + $buildOptions)
@@ -102,9 +108,20 @@ try {
     }
     $markdown = $markdown.TrimEnd("`n") + "`n"
     [IO.File]::WriteAllText($renderedPath, $markdown, [Text.UTF8Encoding]::new($false))
+    $apiHash = (Get-FileHash -LiteralPath $renderedPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $metadata = @(
+        "apiHash: $apiHash"
+        "packageVersion: '$($packageVersion.Replace("'", "''"))'"
+        "packageRelativePath: '$($relativePackage.Replace("'", "''"))'"
+    ) -join "`n"
+    $metadataPath = Join-Path $temporaryDirectory 'api.metadata.yml'
+    [IO.File]::WriteAllText($metadataPath, $metadata + "`n", [Text.UTF8Encoding]::new($false))
     $outputPath = Join-Path $packageDirectory 'api.md'
+    $metadataOutputPath = Join-Path $packageDirectory 'api.metadata.yml'
     [IO.File]::Move($renderedPath, $outputPath, $true)
+    [IO.File]::Move($metadataPath, $metadataOutputPath, $true)
     Write-Output "Generated API Markdown: $outputPath"
+    Write-Output "Generated API metadata: $metadataOutputPath"
 }
 finally {
     Remove-Item -LiteralPath $temporaryDirectory -Recurse -Force

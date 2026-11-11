@@ -21,7 +21,12 @@ Describe 'Generate-ApiMarkdown' {
         $script:Command = Join-Path $script:Repository 'eng' 'scripts' 'Generate-ApiMarkdown.ps1'
         Copy-Item -LiteralPath $script:SourceScript -Destination $script:Command
         Set-Content -LiteralPath (Join-Path $script:Repository 'pom.xml') -Value '<project><packaging>pom</packaging></project>'
-        Set-Content -LiteralPath (Join-Path $script:Package 'pom.xml') -Value '<project/>'
+        Set-Content -LiteralPath (Join-Path $script:Package 'pom.xml') -Value @'
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <parent><version>1.7.0</version></parent>
+    <version>1.0.0-beta.1</version>
+</project>
+'@
         Set-Content -LiteralPath (Join-Path $processor 'pom.xml') -Value @'
 <project><artifactId>apiview-java-processor</artifactId><version>1.34.0</version></project>
 '@
@@ -30,6 +35,8 @@ Describe 'Generate-ApiMarkdown' {
         Set-Content -LiteralPath $script:Sources -Value ''
         $script:Output = Join-Path $script:Package 'api.md'
         Set-Content -LiteralPath $script:Output -Value 'previous API' -NoNewline
+        $script:Metadata = Join-Path $script:Package 'api.metadata.yml'
+        Set-Content -LiteralPath $script:Metadata -Value 'previous metadata' -NoNewline
         Mock mvn { $global:LASTEXITCODE = 0 }
         Mock java {
             $rendered = Join-Path $args[-1] "$([IO.Path]::GetFileNameWithoutExtension($args[-2])).md"
@@ -38,13 +45,47 @@ Describe 'Generate-ApiMarkdown' {
         }
     }
 
-    It 'reuses a sources JAR and writes LF Markdown without a BOM' {
+    It 'reuses a sources JAR and writes normalized Markdown with matching metadata' {
         & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
 
         [IO.File]::ReadAllText($script:Output) | Should -Be ('```java' + "`npublic class Example {}`n" + '```' + "`n")
         [IO.File]::ReadAllBytes($script:Output)[0] | Should -Be 96
+        $hash = (Get-FileHash -LiteralPath $script:Output -Algorithm SHA256).Hash.ToLowerInvariant()
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be (
+            "apiHash: $hash`npackageVersion: '1.0.0-beta.1'`npackageRelativePath: 'sdk/example/azure-example'`n"
+        )
+        [IO.File]::ReadAllBytes($script:Metadata)[0] | Should -Be 97
         Should -Invoke mvn -Times 1 -Exactly
         Should -Invoke java -Times 1 -Exactly -ParameterFilter { $args -contains '--renderer=markdown' }
+    }
+
+    It 'keeps the API hash unchanged when only the package version changes' {
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
+        $originalHash = (Get-Content -LiteralPath $script:Metadata)[0]
+        $pomPath = Join-Path $script:Package 'pom.xml'
+        (Get-Content -LiteralPath $pomPath -Raw).Replace('1.0.0-beta.1', '1.0.0') |
+            Set-Content -LiteralPath $pomPath
+
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
+
+        (Get-Content -LiteralPath $script:Metadata)[0] | Should -Be $originalHash
+        Get-Content -LiteralPath $script:Metadata | Should -Contain "packageVersion: '1.0.0'"
+    }
+
+    It 'rejects a missing or unresolved package version before building' -ForEach @(
+        @{ Version = '' }
+        @{ Version = '${revision}' }
+    ) {
+        Set-Content -LiteralPath (Join-Path $script:Package 'pom.xml') -Value (
+            '<project><parent><version>1.7.0</version></parent><version>' + $Version + '</version></project>'
+        )
+
+        { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources } |
+            Should -Throw '*must declare a literal project version*'
+
+        Should -Invoke mvn -Times 0
+        [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
     }
 
     It 'builds the selected SDK package when no sources JAR is supplied' {
@@ -105,23 +146,25 @@ Describe 'Generate-ApiMarkdown' {
         Should -Invoke mvn -Times 0
     }
 
-    It 'preserves api.md when the processor build fails' {
+    It 'preserves the review bundle when the processor build fails' {
         Mock mvn { $global:LASTEXITCODE = 1 }
 
         { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources } |
             Should -Throw '*mvn failed with exit code 1*'
 
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
         Should -Invoke java -Times 0
     }
 
-    It 'preserves api.md when the renderer fails' {
+    It 'preserves the review bundle when the renderer fails' {
         Mock java { $global:LASTEXITCODE = 1 }
 
         { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources } |
             Should -Throw '*java failed with exit code 1*'
 
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
     }
 
     It 'rejects a successful renderer exit without output' {
@@ -131,13 +174,15 @@ Describe 'Generate-ApiMarkdown' {
             Should -Throw '*API Markdown was not produced*'
 
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
     }
 
-    It 'does not build or overwrite api.md with WhatIf' {
+    It 'does not build or overwrite the review bundle with WhatIf' {
         & $script:Command -PackagePath $script:Package -WhatIf
 
         Should -Invoke mvn -Times 0
         Should -Invoke java -Times 0
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
     }
 }

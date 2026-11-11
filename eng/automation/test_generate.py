@@ -390,7 +390,7 @@ class TestUpdateServiceFilesForNewLib(unittest.TestCase):
 
 class TestGenerateApiMarkdown(unittest.TestCase):
 
-    def test_runs_shared_script_with_sources_jar_and_returns_artifact_path(self):
+    def test_runs_shared_script_with_sources_jar_and_returns_bundle_paths(self):
         with tempfile.TemporaryDirectory(prefix="api markdown ") as root:
             folder = os.path.join("sdk", "example", "azure-example")
             package = os.path.join(root, folder)
@@ -401,12 +401,16 @@ class TestGenerateApiMarkdown(unittest.TestCase):
                 pass
 
             def render(*args, **kwargs):
-                with open(os.path.join(package, "api.md"), "w") as output:
-                    output.write("```java\npublic class Example {}\n```")
+                for filename in ("api.md", "api.metadata.yml"):
+                    with open(os.path.join(package, filename), "w") as output:
+                        output.write("generated")
 
             with patch("generate_utils.subprocess.check_call", side_effect=render) as command:
-                artifact = generate_utils.generate_api_markdown(root, folder)
-            self.assertEqual("sdk/example/azure-example/api.md", artifact)
+                artifacts = generate_utils.generate_api_markdown(root, folder)
+            self.assertEqual(
+                ["sdk/example/azure-example/api.md", "sdk/example/azure-example/api.metadata.yml"],
+                artifacts,
+            )
             command.assert_called_once_with(
                 [
                     "pwsh", "-NoProfile", "-File",
@@ -416,6 +420,20 @@ class TestGenerateApiMarkdown(unittest.TestCase):
                 cwd=root,
                 shell=False,
             )
+
+    def test_rejects_an_incomplete_review_bundle(self):
+        for missing in ("api.md", "api.metadata.yml"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root:
+                target = os.path.join(root, "target")
+                os.makedirs(target)
+                with open(os.path.join(target, "example-sources.jar"), "w"):
+                    pass
+                present = "api.md" if missing == "api.metadata.yml" else "api.metadata.yml"
+                with open(os.path.join(root, present), "w"):
+                    pass
+                with patch("generate_utils.subprocess.check_call"):
+                    with self.assertRaisesRegex(RuntimeError, "API review file was not produced"):
+                        generate_utils.generate_api_markdown(root, ".")
 
     def test_rejects_missing_or_ambiguous_sources(self):
         for count in (0, 2):
@@ -434,6 +452,7 @@ class TestGenerateApiMarkdown(unittest.TestCase):
         module = generate if management else generate_data
         folder = "sdk/example/azure-example"
         api_path = folder + "/api.md"
+        metadata_path = folder + "/api.metadata.yml"
         sources = folder + "/target/azure-example-1.0.0-sources.jar"
         config = {
             "specFolder": tempfile.gettempdir(),
@@ -459,7 +478,9 @@ class TestGenerateApiMarkdown(unittest.TestCase):
             stack.enter_context(patch.object(module, "compare_with_maven_package", return_value=(False, "", [])))
             stack.enter_context(patch.object(module, "get_latest_ga_version", return_value="1.0.0"))
             stack.enter_context(patch.object(module.glob, "glob", return_value=[sources]))
-            renderer = stack.enter_context(patch.object(module, "generate_api_markdown", return_value=api_path))
+            renderer = stack.enter_context(patch.object(
+                module, "generate_api_markdown", return_value=[api_path, metadata_path],
+            ))
             if management:
                 for name in ("update_version", "update_revapi_skip", "update_changelog_version"):
                     stack.enter_context(patch.object(module, name))
@@ -470,6 +491,7 @@ class TestGenerateApiMarkdown(unittest.TestCase):
             if compiled or fallback:
                 renderer.assert_called_once()
                 self.assertIn(api_path, result["artifacts"])
+                self.assertIn(metadata_path, result["artifacts"])
                 self.assertEqual(sources, result["apiViewArtifact"])
                 self.assertEqual("succeeded", result["result"])
             else:

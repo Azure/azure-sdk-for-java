@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added direct Markdown output with `--renderer=markdown`; JSON remains the default.
-- Added `Generate-ApiMarkdown.ps1` and SDK generation integration to write package-root `api.md` files.
+- Added `Generate-ApiMarkdown.ps1` and SDK generation integration to write package-root `api.md` and `api.metadata.yml` files.
 
 ### Bugs Fixed
 

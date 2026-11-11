@@ -30,9 +30,10 @@ Or specify the package from the repository root:
 pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-json
 ```
 
-This builds the package and the in-repo processor, then writes `api.md` in the package directory.
+This builds the package and the in-repo processor, then writes `api.md` and `api.metadata.yml` in the package directory.
+Metadata contains the SHA-256 hash of the normalized UTF-8/LF `api.md`, the package POM version, and the repository-relative package path.
 To reuse a built sources JAR, add `-SourcesJar <path-to-sources.jar>`.
-SDK generation automation uses the same script after compilation and includes `api.md` in its artifacts.
+SDK generation automation uses the same script after compilation and includes both files in its artifacts.
 
 ## Usage
 
