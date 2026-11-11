@@ -8,8 +8,9 @@
 
 ### Bugs Fixed
 
-- Fixed encoded sends reaching a terminal sender so they fail promptly as transient errors and queued cancellation
-  removes pending work.
+- Fixed sends hanging when their link closes during message encoding. ([#51120](https://github.com/Azure/azure-sdk-for-java/issues/51120))
+- Fixed cancelled sends that were still queued being transmitted later.
+- Fixed invalid duration metrics for sends rejected before transmission starts.
 
 ### Other Changes
 
