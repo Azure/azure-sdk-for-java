@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for listing monitor insights and runs.
 - Refined item-generation parameter names, turn-count properties, trace and trigger timestamps, ingestion delay,
   evaluation IDs, and agent-insight details and update options.
 - Added `TimeZone` properties to cron and one-time triggers, preserving string time-zone IDs on the wire.
@@ -12,6 +13,8 @@
   variant names. The shared TypeSpec names retain `Eval`, and wire discriminators are unchanged.
 
 ### Breaking Changes
+
+- Replaced the positional convenience overloads of `listAgentInsights` and `listAgentInsightRuns` with options bags.
 
 ### Bugs Fixed
 

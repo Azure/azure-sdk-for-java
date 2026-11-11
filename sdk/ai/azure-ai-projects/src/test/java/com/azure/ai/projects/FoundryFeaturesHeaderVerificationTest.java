@@ -3,6 +3,15 @@
 
 package com.azure.ai.projects;
 
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.projects.models.AgentInsight;
+import com.azure.ai.projects.models.AgentInsightRun;
+import com.azure.ai.projects.models.AgentInsightRunTrigger;
+import com.azure.ai.projects.models.AgentInsightSeverity;
+import com.azure.ai.projects.models.AgentInsightStatus;
+import com.azure.ai.projects.models.JobStatus;
+import com.azure.ai.projects.models.ListAgentInsightRunsOptions;
+import com.azure.ai.projects.models.ListAgentInsightsOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -23,25 +32,123 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightListOptionsPreserveFiltersAcrossPages(boolean async) throws UnsupportedEncodingException {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::agentInsightListResponse);
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+        ListAgentInsightsOptions options = new ListAgentInsightsOptions("monitor").setAfter("start")
+            .setBefore("end")
+            .setLimit(2)
+            .setOrder(PageOrder.ASC)
+            .setCategories(Arrays.asList("latency", "quality"))
+            .setSeverities(Arrays.asList(AgentInsightSeverity.HIGH, AgentInsightSeverity.MEDIUM))
+            .setStatuses(Arrays.asList(AgentInsightStatus.RESOLVED))
+            .setIncludeDetails(true);
+
+        List<String> ids = async
+            ? builder.buildAgentInsightMonitorsAsyncClient()
+                .listAgentInsights(options)
+                .map(AgentInsight::getId)
+                .collectList()
+                .block()
+            : builder.buildAgentInsightMonitorsClient()
+                .listAgentInsights(options)
+                .stream()
+                .map(AgentInsight::getId)
+                .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("first", "second"), ids);
+        assertAgentInsightListRequests(httpClient, "insights");
+        for (HttpRequest request : httpClient.requests) {
+            String query = URLDecoder.decode(request.getUrl().getQuery(), StandardCharsets.UTF_8.name());
+            assertTrue(query.contains("categories=latency,quality"));
+            assertTrue(query.contains("severities=high,medium"));
+            assertTrue(query.contains("statuses=resolved"));
+            assertTrue(query.contains("include_details=true"));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightRunListOptionsPreserveFiltersAcrossPages(boolean async) {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::agentInsightListResponse);
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+        ListAgentInsightRunsOptions options = new ListAgentInsightRunsOptions("monitor").setAfter("start")
+            .setBefore("end")
+            .setLimit(2)
+            .setOrder(PageOrder.ASC)
+            .setStatus(JobStatus.SUCCEEDED)
+            .setTrigger(AgentInsightRunTrigger.SCHEDULED);
+
+        List<String> ids = async
+            ? builder.buildAgentInsightMonitorsAsyncClient()
+                .listAgentInsightRuns(options)
+                .map(AgentInsightRun::getId)
+                .collectList()
+                .block()
+            : builder.buildAgentInsightMonitorsClient()
+                .listAgentInsightRuns(options)
+                .stream()
+                .map(AgentInsightRun::getId)
+                .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("first", "second"), ids);
+        assertAgentInsightListRequests(httpClient, "runs");
+        for (HttpRequest request : httpClient.requests) {
+            assertEquals("succeeded", UrlBuilder.parse(request.getUrl()).getQuery().get("status"));
+            assertEquals("scheduled", UrlBuilder.parse(request.getUrl()).getQuery().get("trigger"));
+        }
+    }
+
+    private static HttpResponse agentInsightListResponse(HttpRequest request) {
+        boolean first = "start".equals(UrlBuilder.parse(request.getUrl()).getQuery().get("after"));
+        return jsonResponse(request, "{\"data\":[{\"id\":\"" + (first ? "first" : "second")
+            + "\"}],\"last_id\":\"next\",\"has_more\":" + first + "}");
+    }
+
+    private static void assertAgentInsightListRequests(RecordingHttpClient httpClient, String collection) {
+        assertEquals(2, httpClient.requests.size());
+        assertEquals("start", UrlBuilder.parse(httpClient.requests.get(0).getUrl()).getQuery().get("after"));
+        assertEquals("next", UrlBuilder.parse(httpClient.requests.get(1).getUrl()).getQuery().get("after"));
+        for (HttpRequest request : httpClient.requests) {
+            assertEquals(HttpMethod.GET, request.getHttpMethod());
+            assertEquals("/api/projects/project/agent_insight_monitors/monitor/" + collection,
+                request.getUrl().getPath());
+            assertEquals("end", UrlBuilder.parse(request.getUrl()).getQuery().get("before"));
+            assertEquals("2", UrlBuilder.parse(request.getUrl()).getQuery().get("limit"));
+            assertEquals("asc", UrlBuilder.parse(request.getUrl()).getQuery().get("order"));
+            assertNull(request.getHeaders().getValue(FOUNDRY_FEATURES));
+        }
+    }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })

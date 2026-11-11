@@ -18,6 +18,8 @@ import com.azure.ai.projects.models.AgentInsightRunTrigger;
 import com.azure.ai.projects.models.AgentInsightSeverity;
 import com.azure.ai.projects.models.AgentInsightStatus;
 import com.azure.ai.projects.models.JobStatus;
+import com.azure.ai.projects.models.ListAgentInsightRunsOptions;
+import com.azure.ai.projects.models.ListAgentInsightsOptions;
 import com.azure.ai.projects.models.UpdateAgentInsightMonitorOptions;
 import com.azure.ai.projects.models.UpdateAgentInsightOptions;
 import com.azure.core.annotation.Generated;
@@ -1195,70 +1197,6 @@ public final class AgentInsightMonitorsClient {
     }
 
     /**
-     * List Agent Insights runs for a monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param after A cursor that identifies the last item in the previous page.
-     * @param before A cursor that identifies the first item in the next page.
-     * @param limit The maximum number of items to return. Defaults to 20.
-     * @param order Sort order by creation time. Defaults to descending.
-     * @param status Filter runs by status.
-     * @param trigger Filter runs by trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
-        Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listAgentInsightRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (trigger != null) {
-            requestOptions.addQueryParam("trigger", trigger.toString(), false);
-        }
-        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
-    }
-
-    /**
-     * List Agent Insights runs for a monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId) {
-        // Generated convenience method for listAgentInsightRuns
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentInsightRuns(null, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
-    }
-
-    /**
      * Get an Agent Insights run.
      *
      * @param monitorId The identifier of the monitor.
@@ -1300,93 +1238,6 @@ public final class AgentInsightMonitorsClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelAgentInsightRunWithResponse(monitorId, runId, requestOptions).getValue()
             .toObject(AgentInsightRun.class);
-    }
-
-    /**
-     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param after A cursor that identifies the last item in the previous page.
-     * @param before A cursor that identifies the first item in the next page.
-     * @param limit The maximum number of items to return. Defaults to 20.
-     * @param order Sort order by creation time. Defaults to descending.
-     * @param categories Match any listed category. Commas separate identifiers; identifiers containing commas cannot be
-     * filtered individually.
-     * @param severities Match any listed severity.
-     * @param statuses Match any listed status.
-     * @param includeDetails Whether to include expanded insight details such as evidence and run links in the response.
-     * Defaults to false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
-        PageOrder order, List<String> categories, List<AgentInsightSeverity> severities,
-        List<AgentInsightStatus> statuses, Boolean includeDetails) {
-        // Generated convenience method for listAgentInsights
-        RequestOptions requestOptions = new RequestOptions();
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (categories != null) {
-            requestOptions.addQueryParam("categories",
-                categories.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (severities != null) {
-            requestOptions.addQueryParam("severities",
-                severities.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses",
-                statuses.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (includeDetails != null) {
-            requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
-        }
-        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
-    }
-
-    /**
-     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listAgentInsights(String monitorId) {
-        // Generated convenience method for listAgentInsights
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentInsights(null, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 
     /**
@@ -1498,5 +1349,107 @@ public final class AgentInsightMonitorsClient {
         return updateAgentInsightWithResponse(monitorId, insightId, updateInsightRequestInBinaryData, requestOptions)
             .getValue()
             .toObject(AgentInsight.class);
+    }
+
+    /**
+     * List Agent Insights runs for a monitor.
+     *
+     * @param options The monitor identifier and optional filters for listing runs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentInsightRun> listAgentInsightRuns(ListAgentInsightRunsOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        String monitorId = options.getMonitorId();
+        String after = options.getAfter();
+        String before = options.getBefore();
+        Integer limit = options.getLimit();
+        PageOrder order = options.getOrder();
+        JobStatus status = options.getStatus();
+        AgentInsightRunTrigger trigger = options.getTrigger();
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (trigger != null) {
+            requestOptions.addQueryParam("trigger", trigger.toString(), false);
+        }
+        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
+    }
+
+    /**
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
+     *
+     * @param options The monitor identifier and optional filters for listing insights.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentInsight> listAgentInsights(ListAgentInsightsOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        String monitorId = options.getMonitorId();
+        String after = options.getAfter();
+        String before = options.getBefore();
+        Integer limit = options.getLimit();
+        PageOrder order = options.getOrder();
+        List<String> categories = options.getCategories();
+        List<AgentInsightSeverity> severities = options.getSeverities();
+        List<AgentInsightStatus> statuses = options.getStatuses();
+        Boolean includeDetails = options.isIncludeDetails();
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (categories != null) {
+            requestOptions.addQueryParam("categories",
+                categories.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (severities != null) {
+            requestOptions.addQueryParam("severities",
+                severities.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (statuses != null) {
+            requestOptions.addQueryParam("statuses",
+                statuses.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (includeDetails != null) {
+            requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
+        }
+        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 }
