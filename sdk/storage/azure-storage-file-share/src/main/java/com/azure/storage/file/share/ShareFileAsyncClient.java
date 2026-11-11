@@ -40,7 +40,9 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.ShareFileAsyncClientInternal;
 import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
+import com.azure.storage.file.share.implementation.models.FilesListAllRangesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
+import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -3018,7 +3020,7 @@ public class ShareFileAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
+                options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -3028,8 +3030,8 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions, Duration timeout) {
 
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
-            .applyOptionalTimeout(
-                this.listRangesWithResponse(range, requestConditions, null, null, null, null, Context.NONE), timeout)
+            .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, null, null, Context.NONE),
+                timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue().getRanges() == null
@@ -3049,7 +3051,7 @@ public class ShareFileAsyncClient {
         String previousSnapshot, Boolean supportRename, boolean includeClearRanges, Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever
             = (marker, pageSize) -> StorageImplUtils
-                .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, previousSnapshot,
+                .applyOptionalTimeout(this.listAllRangesSegmentWithResponse(range, requestConditions, previousSnapshot,
                     supportRename, marker, pageSize, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), toShareFileRangeItems(response.getValue(), includeClearRanges),
@@ -3062,8 +3064,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
-        Integer maxResultsPerPage, Context context) {
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, Context context) {
         ShareErrors.validatePathOperation(fileId, "listRanges");
 
         ShareRequestConditions finalRequestConditions
@@ -3071,17 +3072,25 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
         context = context == null ? Context.NONE : context;
 
-        RequestOptions requestOptions = scopedRequestOptions(context);
-        if (marker != null) {
-            requestOptions.addQueryParam("marker", marker, false);
-        }
-        if (maxResultsPerPage != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxResultsPerPage), false);
-        }
         return this.fileClientInternal
             .getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, requestOptions)
+                finalRequestConditions.getLeaseId(), supportRename, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
+    }
+
+    Mono<ResponseBase<FilesListAllRangesHeaders, ShareFileRangeListSegment>> listAllRangesSegmentWithResponse(
+        ShareFileRange range, ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename,
+        String marker, Integer maxResultsPerPage, Context context) {
+        ShareErrors.validatePathOperation(fileId, "listRanges");
+
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+        context = context == null ? Context.NONE : context;
+
+        return this.fileClientInternal.listAllRangesWithResponse(snapshot, previousSnapshot, null, rangeString,
+            finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage,
+            scopedRequestOptions(context));
     }
 
     /**

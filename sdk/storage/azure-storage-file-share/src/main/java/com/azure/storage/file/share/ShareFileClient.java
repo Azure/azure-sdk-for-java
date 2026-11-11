@@ -44,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.FilesForceCloseHandles
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
+import com.azure.storage.file.share.implementation.models.FilesListAllRangesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.HardLinkList;
 import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
@@ -53,6 +54,7 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUrlHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -2773,8 +2775,9 @@ public class ShareFileClient {
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
 
         BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(range,
-                finalRequestConditions, previousSnapshot, supportRename, marker, pageSize, timeout, finalContext);
+            ResponseBase<FilesListAllRangesHeaders, ShareFileRangeListSegment> response
+                = listAllRangesSegmentWithResponse(range, finalRequestConditions, previousSnapshot, supportRename,
+                    marker, pageSize, timeout, finalContext);
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 toShareFileRangeItems(response.getValue(), includeClearRanges), response.getValue().getNextMarker(),
@@ -3523,25 +3526,18 @@ public class ShareFileClient {
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 
-    ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
-        Integer maxResultsPerPage, Duration timeout, Context context) {
+    ResponseBase<FilesListAllRangesHeaders, ShareFileRangeListSegment> listAllRangesSegmentWithResponse(
+        ShareFileRange range, ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename,
+        String marker, Integer maxResultsPerPage, Duration timeout, Context context) {
         ShareErrors.validatePathOperation(fileId, "listRanges");
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
 
-        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation = () -> {
-            RequestOptions requestOptions = scopedRequestOptions(context);
-            if (marker != null) {
-                requestOptions.addQueryParam("marker", marker, false);
-            }
-            if (maxResultsPerPage != null) {
-                requestOptions.addQueryParam("maxresults", String.valueOf(maxResultsPerPage), false);
-            }
-            return this.fileClientInternal.getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, requestOptions);
-        };
+        Callable<ResponseBase<FilesListAllRangesHeaders, ShareFileRangeListSegment>> operation
+            = () -> this.fileClientInternal.listAllRangesWithResponse(snapshot, previousSnapshot, null, rangeString,
+                finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage,
+                scopedRequestOptions(context));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }

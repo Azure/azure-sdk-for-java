@@ -93,7 +93,6 @@ public class ShareStorageCustomization extends Customization {
 
         base64EncodeByteArrayHeaders(customization, logger);
 
-        retypeRangeHeaderToXmsRange(customization, logger);
 
         retypeDownloadResponseToStreaming(customization, logger);
 
@@ -376,38 +375,6 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Uses the File Service {@code x-ms-range} header for range operations instead of the standard {@code Range}
-     * header. The spec's {@code RangeHeader}/{@code RangeRequiredHeader} aliases model the range as
-     * {@code @header("Range")} (a swagger-to-TypeSpec conversion regression; the original swagger used
-     * {@code x-ms-range}), so the generated code sends {@code Range} while the service and the recorded requests use
-     * {@code x-ms-range}. {@code uploadRange}/{@code uploadRangeFromUrl} carry it on the protocol interface's
-     * {@code @HeaderParam}; download/list carry it via the relocated file clients' {@code setHeader}. Remove this once
-     * the spec restores {@code @header("x-ms-range")}.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void retypeRangeHeaderToXmsRange(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        String filesImplPath = PKG_ROOT + "implementation/FilesImpl.java";
-        String filesImpl = editor.getFileContent(filesImplPath);
-        if (filesImpl.contains("@HeaderParam(\"Range\")")) {
-            editor.replaceFile(filesImplPath,
-                filesImpl.replace("@HeaderParam(\"Range\")", "@HeaderParam(\"x-ms-range\")"));
-            logger.info("Retyped @HeaderParam(\"Range\") -> x-ms-range in FilesImpl");
-        }
-        for (String internalName : Arrays.asList("ShareFileClientInternal", "ShareFileAsyncClientInternal")) {
-            String path = PKG_ROOT + "implementation/" + internalName + ".java";
-            String content = editor.getFileContent(path);
-            if (content.contains("HttpHeaderName.RANGE,")) {
-                editor.replaceFile(path,
-                    content.replace("HttpHeaderName.RANGE,", "HttpHeaderName.fromString(\"x-ms-range\"),"));
-                logger.info("Retyped HttpHeaderName.RANGE -> x-ms-range in {}", internalName);
-            }
-        }
-    }
-
-    /**
      * Restores the streaming ({@code Flux<ByteBuffer>}) response body for the asynchronous file download so the
      * reliable download retry works and large files are not buffered into memory.
      * <p>
@@ -467,12 +434,13 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Restores the {@code nextMarker} property on {@code ShareFileRangeList} that shipped before the TypeSpec migration
-     * but is absent from the migrated spec model. Without it the {@code listAllRanges} / {@code listAllRangesDiff} paged
-     * iterables cannot read the continuation token (server-side range pagination, service version 2026-10-06) and always
-     * return a single page -- also a public API breaking change (the getter was removed). Field, getter, fluent setter,
-     * and XML round-trip (matching the shipped shape) are added here; {@code restoreFluentModels} skips the field because
-     * it already has a setter. Root fix belongs in the spec ({@code models.tsp} range-list model {@code NextMarker}).
+     * Keeps the {@code nextMarker} property on {@code ShareFileRangeList}, which shipped in GA before the TypeSpec
+     * migration but is absent from the spec model. The spec splits range listing into {@code getRangeList}
+     * ({@code ShareFileRangeList}, no marker) and the paged {@code listAllRanges} ({@code ShareFileRangeListSegment},
+     * which carries {@code NextMarker}); the {@code listAllRanges} / {@code listAllRangesDiff} paged iterables use the
+     * latter, as the other languages do. The getter/setter are retained only for backward compatibility and are
+     * deprecated. Field, getter, fluent setter, and XML round-trip (matching the shipped shape) are added here;
+     * {@code restoreFluentModels} skips the field because it already has a setter.
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -489,11 +457,17 @@ public class ShareStorageCustomization extends Customization {
                 + "        return toXml(xmlWriter, null);\n    }\n",
             "    private String nextMarker;\n\n"
                 + "    /**\n     * Get the nextMarker property: The NextMarker property.\n     *\n"
-                + "     * @return the nextMarker value.\n     */\n"
+                + "     * @return the nextMarker value.\n"
+                + "     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async\n"
+                + "     * equivalents), which page through ranges and handle the continuation marker.\n     */\n"
+                + "    @Deprecated\n"
                 + "    public String getNextMarker() {\n        return this.nextMarker;\n    }\n\n"
                 + "    /**\n     * Set the nextMarker property: The NextMarker property.\n     *\n"
                 + "     * @param nextMarker the nextMarker value to set.\n"
-                + "     * @return the ShareFileRangeList object itself.\n     */\n"
+                + "     * @return the ShareFileRangeList object itself.\n"
+                + "     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async\n"
+                + "     * equivalents), which page through ranges and handle the continuation marker.\n     */\n"
+                + "    @Deprecated\n"
                 + "    public ShareFileRangeList setNextMarker(String nextMarker) {\n"
                 + "        this.nextMarker = nextMarker;\n        return this;\n    }\n\n"
                 + "    @Generated\n    @Override\n    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {\n"

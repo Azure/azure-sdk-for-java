@@ -39,6 +39,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -201,6 +202,17 @@ public class BuilderHelperTests {
                 .send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    /**
+     * Tests that the range headers file operations send are allowed to be logged by default.
+     */
+    @Test
+    public void defaultHttpLogOptionsAllowRangeHeaders() {
+        Set<String> allowedHeaderNames = BuilderHelper.getDefaultHttpLogOptions().getAllowedHeaderNames();
+
+        assertTrue(allowedHeaderNames.contains(HttpHeaderName.RANGE.getCaseSensitiveName()));
+        assertTrue(allowedHeaderNames.contains("x-ms-range"));
     }
 
     /**

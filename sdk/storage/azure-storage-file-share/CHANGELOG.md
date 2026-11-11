@@ -13,6 +13,9 @@
 ### Other Changes
 - Deprecated `Range`; use `ShareFileRange` instead.
 - Deprecated `SourceModifiedAccessConditions`, which is unused and not referenced by any client method.
+- Deprecated `ShareFileRangeList.getNextMarker()` and `ShareFileRangeList.setNextMarker(String)`. Use
+  `ShareFileClient.listAllRanges` or `ShareFileClient.listAllRangesDiff` (or their async equivalents), which page
+  through ranges.
 - Deprecated the `toXml`/`fromXml` methods on `ShareItem` and `ShareProperties`. These are read-only public projections
   of the wire model and are never serialized to or from the service directly; the methods are retained only for backward
   compatibility.

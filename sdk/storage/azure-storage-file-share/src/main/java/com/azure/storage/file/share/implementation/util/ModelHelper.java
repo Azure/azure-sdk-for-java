@@ -45,6 +45,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeader
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
+import com.azure.storage.file.share.implementation.models.ShareFileRangeListSegment;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -76,7 +77,6 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeItem;
-import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -758,14 +758,14 @@ public class ModelHelper {
     }
 
     /**
-     * Converts a {@link ShareFileRangeList} into a list of {@link ShareFileRangeItem}s, optionally including cleared
-     * ranges (only present on diff responses).
+     * Converts a page of the paginated range list into a list of {@link ShareFileRangeItem}s, optionally including
+     * cleared ranges (only present on diff responses).
      *
-     * @param rangeList The range list returned by the service.
+     * @param rangeList The range list page returned by the service.
      * @param includeClearRanges Whether to include cleared ranges. Should be {@code true} only for diff responses.
      * @return The combined list of {@link ShareFileRangeItem}s.
      */
-    public static List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
+    public static List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeListSegment rangeList,
         boolean includeClearRanges) {
         List<ShareFileRangeItem> ranges = new ArrayList<>();
         if (rangeList.getRanges() != null) {
