@@ -82,7 +82,7 @@ These selected tests use fake HTTP responses and do not require live feature fix
   Final PLAYBACK used the default test configuration with all `SEARCH_*` environment variables
   removed. Endpoint assertions account for recorded URL sanitization; the two strict pagination fixtures normalize
   environment-specific blob-container names. Configured-secret scans, Checkstyle and SpotBugs passed.
-- The 14 removed supplemental live methods were unrun and accounted for 14 of those historical skips.
+- The 14 removed supplemental live methods were not run and accounted for 14 of those historical skips.
   The other 118 skips exactly match the earlier DP11 recording run: 92 disabled cases and 26 existing live-only cases.
   Skips are test-execution decisions, not failed HTTP recordings.
 - Validated recordings were published as `java/search/azure-search-documents_6950366571`, and `assets.json` was
