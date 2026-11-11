@@ -7,6 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `ShareFileAsyncClient.rename`/`renameWithResponse` and `ShareDirectoryAsyncClient.rename`/`renameWithResponse`
+  returning a client whose path was URL-encoded a second time, so paths containing `/` or characters that need
+  encoding addressed the wrong resource.
 
 ### Other Changes
 

@@ -190,9 +190,9 @@ public class ShareFileAsyncClient {
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
-        this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName,
-            Utility.urlEncode(fileAsyncClient.filePath), fileAsyncClient.fileId, fileAsyncClient.snapshot,
-            fileAsyncClient.accountName, fileAsyncClient.serviceVersion, fileAsyncClient.sasToken);
+        this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName, fileAsyncClient.filePath,
+            fileAsyncClient.fileId, fileAsyncClient.snapshot, fileAsyncClient.accountName,
+            fileAsyncClient.serviceVersion, fileAsyncClient.sasToken);
     }
 
     /**
