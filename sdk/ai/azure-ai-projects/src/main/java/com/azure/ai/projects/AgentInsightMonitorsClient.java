@@ -404,7 +404,7 @@ public final class AgentInsightMonitorsClient {
      *             total_tokens: int (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -473,7 +473,7 @@ public final class AgentInsightMonitorsClient {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter runs by status. Allowed values: "queued", "in_progress",
-     * "succeeded", "failed", "cancelled".</td></tr>
+     * "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>trigger</td><td>String</td><td>No</td><td>Filter runs by trigger. Allowed values: "on_demand",
      * "scheduled".</td></tr>
      * </table>
@@ -500,7 +500,7 @@ public final class AgentInsightMonitorsClient {
      *             total_tokens: int (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -576,7 +576,7 @@ public final class AgentInsightMonitorsClient {
      *             total_tokens: int (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -654,7 +654,7 @@ public final class AgentInsightMonitorsClient {
      *             total_tokens: int (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)

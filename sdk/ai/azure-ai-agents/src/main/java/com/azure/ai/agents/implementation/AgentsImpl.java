@@ -895,7 +895,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> downloadFile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> downloadOptimizationJobFile(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @QueryParam("path") String path,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -906,9 +906,10 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadFileSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> downloadOptimizationJobFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("path") String path,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs")
         @ExpectedResponses({ 200 })
@@ -7968,7 +7969,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8055,7 +8056,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8173,7 +8174,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8260,7 +8261,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8377,7 +8378,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8464,7 +8465,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8590,7 +8591,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8677,7 +8678,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8803,7 +8804,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -8890,7 +8891,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9015,7 +9016,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9102,7 +9103,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9482,7 +9483,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9598,7 +9599,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9697,11 +9698,11 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadFileWithResponseAsync(String jobId, String path,
+    public Mono<Response<BinaryData>> downloadOptimizationJobFileWithResponseAsync(String jobId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.downloadFile(this.client.getEndpoint(), jobId, path,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.downloadOptimizationJobFile(this.client.getEndpoint(), jobId,
+            path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -9735,9 +9736,10 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadFileWithResponse(String jobId, String path, RequestOptions requestOptions) {
+    public Response<BinaryData> downloadOptimizationJobFileWithResponse(String jobId, String path,
+        RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.downloadFileSync(this.client.getEndpoint(), jobId, path,
+        return service.downloadOptimizationJobFileSync(this.client.getEndpoint(), jobId, path,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -9764,7 +9766,7 @@ public final class AgentsImpl {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9811,7 +9813,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -9896,7 +9898,7 @@ public final class AgentsImpl {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9943,7 +9945,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -10050,7 +10052,7 @@ public final class AgentsImpl {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -10097,7 +10099,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -10180,7 +10182,7 @@ public final class AgentsImpl {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -10227,7 +10229,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -10358,7 +10360,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -10466,7 +10468,7 @@ public final class AgentsImpl {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)

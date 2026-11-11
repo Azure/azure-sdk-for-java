@@ -4858,7 +4858,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -4945,7 +4945,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5052,7 +5052,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5143,7 +5143,7 @@ public final class AgentsAsyncClient {
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * "queued", "in_progress", "succeeded", "failed", "cancelled", "skipped".</td></tr>
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5190,7 +5190,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -5294,7 +5294,7 @@ public final class AgentsAsyncClient {
      *         ]
      *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -6662,95 +6662,6 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Download an agent optimization job file
-     *
-     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
-     * candidate_id is omitted, the request is scoped to the job.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>candidate_id</td><td>String</td><td>No</td><td>The candidate that owns the file. Omit to request a
-     * job-level file.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param path The file path returned in the file descriptor.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadFileWithResponse(String jobId, String path,
-        RequestOptions requestOptions) {
-        return this.serviceClient.downloadFileWithResponseAsync(jobId, path, requestOptions);
-    }
-
-    /**
-     * Download an agent optimization job file
-     *
-     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
-     * candidate_id is omitted, the request is scoped to the job.
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param path The file path returned in the file descriptor.
-     * @param candidateId The candidate that owns the file. Omit to request a job-level file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadFile(String jobId, String path, String candidateId) {
-        // Generated convenience method for downloadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (candidateId != null) {
-            requestOptions.addQueryParam("candidate_id", candidateId, false);
-        }
-        return downloadFileWithResponse(jobId, path, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Download an agent optimization job file
-     *
-     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
-     * candidate_id is omitted, the request is scoped to the job.
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param path The file path returned in the file descriptor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadFile(String jobId, String path) {
-        // Generated convenience method for downloadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return downloadFileWithResponse(jobId, path, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * List agent optimization jobs
      *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
@@ -6817,5 +6728,94 @@ public final class AgentsAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Download an agent optimization job file
+     *
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>candidate_id</td><td>String</td><td>No</td><td>The candidate that owns the file. Omit to request a
+     * job-level file.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param path The file path returned in the file descriptor.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> downloadOptimizationJobFileWithResponse(String jobId, String path,
+        RequestOptions requestOptions) {
+        return this.serviceClient.downloadOptimizationJobFileWithResponseAsync(jobId, path, requestOptions);
+    }
+
+    /**
+     * Download an agent optimization job file
+     *
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param path The file path returned in the file descriptor.
+     * @param candidateId The candidate that owns the file. Omit to request a job-level file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadOptimizationJobFile(String jobId, String path, String candidateId) {
+        // Generated convenience method for downloadOptimizationJobFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (candidateId != null) {
+            requestOptions.addQueryParam("candidate_id", candidateId, false);
+        }
+        return downloadOptimizationJobFileWithResponse(jobId, path, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Download an agent optimization job file
+     *
+     * Downloads a declared file as a binary stream. The path must match a file descriptor returned by the service. When
+     * candidate_id is omitted, the request is scoped to the job.
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param path The file path returned in the file descriptor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadOptimizationJobFile(String jobId, String path) {
+        // Generated convenience method for downloadOptimizationJobFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return downloadOptimizationJobFileWithResponse(jobId, path, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

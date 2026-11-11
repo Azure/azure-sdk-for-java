@@ -731,7 +731,7 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -880,7 +880,7 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1061,7 +1061,7 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1207,7 +1207,7 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
