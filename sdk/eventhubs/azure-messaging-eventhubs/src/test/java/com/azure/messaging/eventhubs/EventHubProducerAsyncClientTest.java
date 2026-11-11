@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -15,8 +16,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
@@ -45,6 +50,10 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -1436,68 +1445,90 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies that we can resend a message when a transient error occurs.
+     * Verifies that a late terminal error from a real sender causes the same event to use a replacement link.
      */
     @Test
-    void resendMessageOnTransientLinkFailure() {
-        // Arrange
-        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
-        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+    void sendRetriesSameEventThroughReplacementLink() throws Exception {
+        // Recovery must precede the enclosing timeout, which can otherwise hide a hung sender.
+        retryOptions.setTryTimeout(Duration.ofMinutes(1)).setDelay(Duration.ofMillis(10));
+        Sinks.Many<AmqpEndpointState> firstConnectionStates
+            = Sinks.many().replay().latestOrDefault(AmqpEndpointState.ACTIVE);
+        Sinks.Many<AmqpEndpointState> secondConnectionStates
+            = Sinks.many().replay().latestOrDefault(AmqpEndpointState.ACTIVE);
+        Sinks.Many<AmqpShutdownSignal> firstShutdownSignals = Sinks.many().unicast().onBackpressureBuffer();
 
-        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[] { connection, connection2 };
-        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
-            DEFAULT_INSTRUMENTATION);
+        when(connection.getEndpointStates()).thenReturn(firstConnectionStates.asFlux());
+        when(connection.getShutdownSignals()).thenReturn(firstShutdownSignals.asFlux());
+        when(connection.closeAsync()).thenReturn(Mono.empty());
+        when(connection2.getEndpointStates()).thenReturn(secondConnectionStates.asFlux());
+        when(connection2.getShutdownSignals()).thenReturn(Flux.never());
+        when(connection2.closeAsync()).thenReturn(Mono.empty());
 
-        final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
+        ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        doAnswer(invocation -> null).when(dispatcher).invoke(any(Runnable.class));
 
-        final String failureKey = "fail";
-        final EventData testData2 = new EventData("test");
-        testData2.getProperties().put(failureKey, "true");
+        Sender protonSender = mock(Sender.class);
+        when(protonSender.getName()).thenReturn("sender-link");
+        when(protonSender.getRemoteTarget()).thenReturn(mock(Target.class));
+        when(protonSender.getRemoteMaxMessageSize()).thenReturn(org.apache.qpid.proton.amqp.UnsignedLong.valueOf(1024));
+        when(protonSender.getCredit()).thenReturn(100);
+        SendLinkHandler firstHandler = new SendLinkHandler("first-connection", HOSTNAME, "sender-link", EVENT_HUB_NAME,
+            com.azure.core.amqp.implementation.AmqpMetricsProvider.noop());
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        Message gatedMessage = Mockito.spy(Proton.message());
+        doAnswer(invocation -> {
+            when(protonSender.getLocalState()).thenReturn(EndpointState.CLOSED);
+            when(protonSender.getRemoteState()).thenReturn(EndpointState.CLOSED);
+            Event closeEvent = mock(Event.class);
+            when(closeEvent.getLink()).thenReturn(protonSender);
+            firstHandler.onLinkRemoteClose(closeEvent);
+            firstConnectionStates.emitError(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+                "connection closed", new AmqpErrorContext(HOSTNAME)), Sinks.EmitFailureHandler.FAIL_FAST);
+            return invocation.callRealMethod();
+        }).when(gatedMessage).encode(any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
+
+        MessageSerializer serializer = mock(MessageSerializer.class);
+        when(serializer.serialize(any(EventData.class))).thenReturn(gatedMessage);
+        when(serializer.getSize(gatedMessage)).thenReturn(10);
+
+        com.azure.core.amqp.AmqpRetryOptions senderRetryOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofMillis(1))
+            .setTryTimeout(Duration.ofSeconds(10));
+        AmqpSendLink realFirstLink = new AmqpLinkProvider().createSendLink(connection, EVENT_HUB_NAME, protonSender,
+            firstHandler, reactorProvider, null, serializer, senderRetryOptions, Schedulers.parallel(),
+            com.azure.core.amqp.implementation.AmqpMetricsProvider.noop());
+        Event openEvent = mock(Event.class);
+        when(openEvent.getLink()).thenReturn(protonSender);
+        firstHandler.onLinkRemoteOpen(openEvent);
+
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
-        // This simulates when a link is closed.
-        when(sendLink
-            .send(argThat((Message message) -> message.getApplicationProperties().getValue().containsKey(failureKey))))
-                .thenAnswer(mock -> {
-                    final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
-                        "Test-message", new AmqpErrorContext("test-namespace"));
-
-                    endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
-                    return Mono.error(error);
-                });
-
-        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
+            .thenReturn(Mono.just(realFirstLink));
         when(
             connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
                 .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
-        // Act
-        StepVerifier.create(producer.send(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
+        connectionProcessor = createConnectionProcessor(new EventHubReactorAmqpConnection[] { connection, connection2 },
+            connectionOptions.getRetry(), false);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            serializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
-        StepVerifier.create(producer.send(testData2)).expectComplete().verify(DEFAULT_TIMEOUT);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, DEFAULT_INSTRUMENTATION);
+        Assertions.assertTrue(batch.tryAdd(new EventData("test")));
+        try {
+            StepVerifier.create(producer.send(batch)).expectComplete().verify(Duration.ofSeconds(5));
+        } finally {
+            firstHandler.close();
+        }
 
-        // Assert
-        verify(sendLink).send(messagesCaptor.capture());
-        final List<Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
-
+        verify(connection, times(1)).createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions),
+            eq(CLIENT_IDENTIFIER));
+        verify(connection2, times(1)).createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions),
+            eq(CLIENT_IDENTIFIER));
         verify(sendLink2, times(1)).send(any(Message.class));
         verifyNoInteractions(sendLink3);
-
         verifyNoInteractions(onClientClosed);
     }
 
