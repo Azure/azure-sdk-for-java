@@ -32,6 +32,7 @@
 - Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
 - Corrected file update and delete argument order in the File knowledge source preview sample, including cleanup.
 - Updated the preview retrieval response parsing sample to use an existing knowledge base without modifying or deleting resources.
+- Preserved HTTP status, headers, and error bodies when polling preview file ingestion operations fails, instead of throwing an unrelated exception.
 
 ### Other Changes
 

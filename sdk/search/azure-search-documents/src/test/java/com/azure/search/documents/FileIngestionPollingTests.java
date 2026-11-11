@@ -11,6 +11,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -27,6 +30,7 @@ import com.azure.search.documents.models.ContentFileDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -138,6 +142,107 @@ public class FileIngestionPollingTests {
         assertEquals(400, error.getResponse().getStatusCode());
         assertTrue(error.getResponse().getBodyAsString().block().contains("Unsupported file format"));
         assertEquals(1, requests.get());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "false, false, 403, false",
+        "true, true, 403, false",
+        "false, true, 404, false",
+        "true, false, 404, false",
+        "false, false, 500, false",
+        "true, true, 500, false",
+        "false, true, 404, true",
+        "true, false, 404, true" })
+    public void pollingHttpErrorsPreserveResponseAndCloseTransport(boolean async, boolean replacement, int status,
+        boolean emptyBody) {
+        AtomicInteger polls = new AtomicInteger();
+        AtomicInteger closed = new AtomicInteger();
+        String errorBody
+            = emptyBody ? "" : "{\"error\":{\"code\":\"PollingFailed\",\"message\":\"Cannot read operation\"}}";
+        HttpClient activation = ingestionTransport(replacement, false, new AtomicInteger());
+        SearchIndexClientBuilder clientBuilder = builder(request -> {
+            assertEquals("offline-test-key", request.getHeaders().getValue(HttpHeaderName.fromString("api-key")));
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                return activation.send(request);
+            }
+            assertEquals(HttpMethod.GET, request.getHttpMethod());
+            assertEquals(OPERATION_URL, request.getUrl().toString());
+            return Mono.deferContextual(context -> {
+                if (async) {
+                    assertEquals("preserved", context.get("poll-test"));
+                }
+                polls.incrementAndGet();
+                return Mono.just(new MockHttpResponse(request, status,
+                    new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "0")
+                        .set(HttpHeaderName.fromString("x-ms-request-id"), "poll-error-id"),
+                    errorBody.getBytes(StandardCharsets.UTF_8)) {
+                    @Override
+                    public void close() {
+                        closed.incrementAndGet();
+                    }
+                });
+            });
+        }).retryPolicy(new RetryPolicy(new RetryOptions(new FixedDelayOptions(1, Duration.ZERO))));
+        HttpResponseException error = assertThrows(HttpResponseException.class, () -> {
+            if (async) {
+                (replacement
+                    ? clientBuilder.buildAsyncClient()
+                        .beginIngestKnowledgeSourceFileReplacement("files", "file-1", replacement())
+                    : clientBuilder.buildAsyncClient().beginIngestKnowledgeSourceFileMultipart("files", upload()))
+                        .setPollInterval(POLL_INTERVAL)
+                        .last()
+                        .contextWrite(context -> context.put("poll-test", "preserved"))
+                        .block(TIMEOUT);
+            } else {
+                (replacement
+                    ? clientBuilder.buildClient()
+                        .beginIngestKnowledgeSourceFileReplacement("files", "file-1", replacement())
+                    : clientBuilder.buildClient().beginIngestKnowledgeSourceFileMultipart("files", upload()))
+                        .setPollInterval(POLL_INTERVAL)
+                        .waitForCompletion(TIMEOUT);
+            }
+        });
+        assertEquals(status, error.getResponse().getStatusCode());
+        assertEquals("poll-error-id",
+            error.getResponse().getHeaders().getValue(HttpHeaderName.fromString("x-ms-request-id")));
+        assertEquals(errorBody, error.getResponse().getBodyAsString().block(TIMEOUT));
+        assertEquals(errorBody, error.getResponse().getBodyAsString().block(TIMEOUT));
+        assertEquals(status == 500 ? 2 : 1, polls.get(), "The original retry policy must run before error mapping.");
+        assertEquals(polls.get(), closed.get(), "Every failed polling response must be closed.");
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void transientPollingHttpErrorCanRecoverThroughExistingRetryPolicy(boolean async) {
+        AtomicInteger polls = new AtomicInteger();
+        HttpClient activation = ingestionTransport(false, false, new AtomicInteger());
+        SearchIndexClientBuilder clientBuilder = builder(request -> {
+            assertEquals("offline-test-key", request.getHeaders().getValue(HttpHeaderName.fromString("api-key")));
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                return activation.send(request);
+            }
+            assertEquals(OPERATION_URL, request.getUrl().toString());
+            int poll = polls.incrementAndGet();
+            return Mono.just(response(request, poll == 1 ? 503 : 200,
+                poll == 1
+                    ? "{\"error\":{\"code\":\"Unavailable\",\"message\":\"Retry\"}}"
+                    : operation("op-1", "succeeded", false)));
+        }).retryPolicy(new RetryPolicy(new RetryOptions(new FixedDelayOptions(1, Duration.ZERO))));
+        KnowledgeSourceFile file = async
+            ? clientBuilder.buildAsyncClient()
+                .beginIngestKnowledgeSourceFileMultipart("files", upload())
+                .setPollInterval(POLL_INTERVAL)
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .block(TIMEOUT)
+            : clientBuilder.buildClient()
+                .beginIngestKnowledgeSourceFileMultipart("files", upload())
+                .setPollInterval(POLL_INTERVAL)
+                .getFinalResult();
+        assertNotNull(file);
+        assertEquals("file-1", file.getFileId());
+        assertEquals(2, polls.get(), "The service error should be retried before the poller sees the response.");
     }
 
     @Test

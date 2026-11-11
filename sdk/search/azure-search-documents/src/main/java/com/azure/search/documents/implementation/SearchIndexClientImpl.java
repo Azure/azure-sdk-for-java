@@ -9686,7 +9686,7 @@ public final class SearchIndexClientImpl {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileMultipartWithResponseAsync(name, body, requestOptions),
             new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -9746,7 +9746,7 @@ public final class SearchIndexClientImpl {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileMultipartWithResponse(name, body, requestOptions),
             new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -9806,7 +9806,7 @@ public final class SearchIndexClientImpl {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileMultipartWithResponseAsync(name, body, requestOptions),
             new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -9865,7 +9865,7 @@ public final class SearchIndexClientImpl {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileMultipartWithResponse(name, body, requestOptions),
             new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -10378,7 +10378,7 @@ public final class SearchIndexClientImpl {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileReplacementWithResponseAsync(name, fileId, body, requestOptions),
             new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -10440,7 +10440,7 @@ public final class SearchIndexClientImpl {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileReplacementWithResponse(name, fileId, body, requestOptions),
             new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -10501,7 +10501,7 @@ public final class SearchIndexClientImpl {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileReplacementWithResponseAsync(name, fileId, body, requestOptions),
             new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
@@ -10561,7 +10561,7 @@ public final class SearchIndexClientImpl {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.ingestKnowledgeSourceFileReplacementWithResponse(name, fileId, body, requestOptions),
             new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
+                new PollingStrategyOptions(FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline()))
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()

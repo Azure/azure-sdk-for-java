@@ -134,6 +134,8 @@ public class SearchCustomizations extends Customization {
         }
         addListingMetadataRetrieval(libraryCustomization.getPackage("com.azure.search.documents.implementation")
             .getClass("SearchIndexClientImpl"));
+        addFileIngestionPollingErrorHandling(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("SearchIndexClientImpl"));
         libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE)
             .getClass("KnowledgeBaseIndexedSqlReference")
             .customizeAst(ast -> ast.getClassByName("KnowledgeBaseIndexedSqlReference").ifPresent(clazz -> {
@@ -152,6 +154,15 @@ public class SearchCustomizations extends Customization {
         // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
         addNoArgConstructorToEncryptionKey(libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
             .getClass("SearchResourceEncryptionKey"));
+    }
+
+    private static void addFileIngestionPollingErrorHandling(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.findAll(MethodDeclaration.class).stream()
+            .filter(method -> method.getNameAsString().startsWith("beginIngestKnowledgeSourceFile"))
+            .forEach(method -> method.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+                .filter(expression -> expression.getType().getNameAsString().equals("PollingStrategyOptions"))
+                .forEach(expression -> expression.setArgument(0, StaticJavaParser.parseExpression(
+                    "FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline())")))));
     }
 
     private static void addListingMetadataRetrieval(ClassCustomization customization) {
