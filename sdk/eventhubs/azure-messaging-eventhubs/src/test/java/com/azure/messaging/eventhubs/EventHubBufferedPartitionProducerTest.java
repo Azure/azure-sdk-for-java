@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -33,17 +34,21 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.eventhubs.EventDataAggregatorTest.setupBatchMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -525,6 +530,228 @@ public class EventHubBufferedPartitionProducerTest {
         assertTrue(success.await(10, TimeUnit.SECONDS),
             "The second batch should be published even though the handler threw for the first one.");
         assertEquals(Collections.singletonList(event2), batchEvents2);
+    }
+
+    /**
+     * Checks that the send-failed handler is never invoked concurrently for a partition, nor on the enqueuing thread,
+     * when a batch fails to send while another event fails to be added to a batch.
+     */
+    @Test
+    public void sendFailedHandlerIsNotInvokedConcurrently() throws InterruptedException {
+        // Arrange
+        final AtomicInteger inFlight = new AtomicInteger();
+        final AtomicInteger maxInFlight = new AtomicInteger();
+        final List<Thread> handlerThreads = Collections.synchronizedList(new ArrayList<>());
+        final CountDownLatch failures = new CountDownLatch(2);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(30));
+        options.setSendSucceededContext(context -> {
+        });
+        options.setSendFailedContext(context -> {
+            maxInFlight.accumulateAndGet(inFlight.incrementAndGet(), Math::max);
+            handlerThreads.add(Thread.currentThread());
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                inFlight.decrementAndGet();
+                failures.countDown();
+            }
+        });
+
+        // event3 is too large for any batch, so it fills batch, sends it (which fails), then fails batch2 as well.
+        setupOversizedEventBatchMock(batch, new ArrayList<>(), event3, event1);
+        setupOversizedEventBatchMock(batch2, new ArrayList<>(), event3);
+
+        when(client.send(any(EventDataBatch.class)))
+            .thenReturn(Mono.error(new AmqpException(false, "send failed", null)));
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        // Act
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+        StepVerifier.create(producer.enqueueEvent(event3))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        assertTrue(failures.await(10, TimeUnit.SECONDS), "Both failures should be reported.");
+        assertEquals(1, maxInFlight.get(), "onSendBatchFailed should not be invoked concurrently.");
+        assertFalse(handlerThreads.contains(Thread.currentThread()),
+            "onSendBatchFailed should not be invoked on the enqueuing thread.");
+    }
+
+    /**
+     * Checks that an exception thrown by the user's send-failed handler after a failed send does not terminate
+     * publishing to the partition.
+     */
+    @Test
+    public void continuesPublishingWhenFailedHandlerThrowsAfterSendFailure() throws InterruptedException {
+        // Arrange
+        final CountDownLatch failed = new CountDownLatch(1);
+        final CountDownLatch succeeded = new CountDownLatch(1);
+        final List<SendBatchSucceededContext> succeededContexts = Collections.synchronizedList(new ArrayList<>());
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(2));
+        options.setSendSucceededContext(context -> {
+            succeededContexts.add(context);
+            succeeded.countDown();
+        });
+        options.setSendFailedContext(context -> {
+            failed.countDown();
+            throw new IllegalStateException("handler failure");
+        });
+
+        setupBatchMock(batch, new ArrayList<>(), event1);
+        final List<EventData> batchEvents2 = new ArrayList<>();
+        setupBatchMock(batch2, batchEvents2, event2);
+
+        when(client.send(batch)).thenReturn(Mono.error(new AmqpException(false, "send failed", null)));
+        when(client.send(batch2)).thenReturn(Mono.empty());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        // Act
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // event2 does not fit into the first batch, so the first batch is sent; the send and then its handler fail.
+        StepVerifier.create(producer.enqueueEvent(event2))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        assertTrue(failed.await(10, TimeUnit.SECONDS), "The failed send should be reported.");
+        assertTrue(succeeded.await(10, TimeUnit.SECONDS),
+            "A later event should be published even though onSendBatchFailed threw.");
+        assertEquals(Collections.singletonList(event2), succeededContexts.get(0).getEvents());
+    }
+
+    /**
+     * Checks that an exception thrown by the user's send-failed handler for an event that is too large for an empty
+     * batch does not terminate publishing to the partition.
+     */
+    @Test
+    public void continuesPublishingWhenFailedHandlerThrowsForOversizedEvent() throws InterruptedException {
+        // Arrange
+        final List<SendBatchFailedContext> failedContexts = Collections.synchronizedList(new ArrayList<>());
+        final CountDownLatch failed = new CountDownLatch(1);
+        final CountDownLatch succeeded = new CountDownLatch(1);
+        final List<SendBatchSucceededContext> succeededContexts = Collections.synchronizedList(new ArrayList<>());
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(2));
+        options.setSendSucceededContext(context -> {
+            succeededContexts.add(context);
+            succeeded.countDown();
+        });
+        options.setSendFailedContext(context -> {
+            failedContexts.add(context);
+            failed.countDown();
+            throw new IllegalStateException("handler failure");
+        });
+
+        setupOversizedEventBatchMock(batch, new ArrayList<>(), event3, event1);
+        setupOversizedEventBatchMock(batch2, new ArrayList<>(), event3, event1);
+
+        when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        // Act
+        StepVerifier.create(producer.enqueueEvent(event3))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+        assertTrue(failed.await(10, TimeUnit.SECONDS), "The oversized event should be reported.");
+
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        assertTrue(succeeded.await(10, TimeUnit.SECONDS),
+            "A later event should be published even though onSendBatchFailed threw.");
+        assertEquals(Collections.singletonList(event1), succeededContexts.get(0).getEvents());
+        assertEquals(Collections.singletonList(event3), failedContexts.get(0).getEvents());
+    }
+
+    /**
+     * Checks that reporting an event that could not be added to a batch does not complete a pending flush before the
+     * flushed batch is sent.
+     */
+    @Test
+    public void unbatchedEventFailureDoesNotCompleteFlush() throws Exception {
+        // Arrange
+        final CountDownLatch handlerEntered = new CountDownLatch(1);
+        final CountDownLatch releaseHandler = new CountDownLatch(1);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(30));
+        options.setSendSucceededContext(context -> {
+        });
+        options.setSendFailedContext(context -> {
+            handlerEntered.countDown();
+            try {
+                releaseHandler.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        setupOversizedEventBatchMock(batch, new ArrayList<>(), event3, event1);
+        setupOversizedEventBatchMock(batch2, new ArrayList<>(), event3, event1);
+
+        final Sinks.Empty<Void> sendResult = Sinks.empty();
+        when(client.send(any(EventDataBatch.class))).thenReturn(sendResult.asMono());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        StepVerifier.create(producer.enqueueEvent(event3))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+        assertTrue(handlerEntered.await(10, TimeUnit.SECONDS), "The oversized event should be reported.");
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Act
+        final CompletableFuture<Void> flush = producer.flush().toFuture();
+        verify(client, timeout(10000)).send(any(EventDataBatch.class));
+        releaseHandler.countDown();
+
+        // Assert
+        TimeUnit.MILLISECONDS.sleep(500);
+        assertFalse(flush.isDone(), "The flush should wait until the flushed batch is sent.");
+
+        sendResult.tryEmitEmpty();
+        flush.get(10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Sets up a batch that throws for {@code oversizedEvent}, like a real batch does for an event that exceeds the
+     * maximum message size, and otherwise accepts {@code acceptedEvents}.
+     */
+    private static void setupOversizedEventBatchMock(EventDataBatch batch, List<EventData> resultSet,
+        EventData oversizedEvent, EventData... acceptedEvents) {
+        when(batch.tryAdd(any(EventData.class))).thenAnswer(invocation -> {
+            final EventData arg = invocation.getArgument(0);
+            if (arg == oversizedEvent) {
+                throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, "too large", null);
+            }
+            final boolean matches = Arrays.asList(acceptedEvents).contains(arg);
+            if (matches) {
+                resultSet.add(arg);
+            }
+            return matches;
+        });
+        when(batch.getEvents()).thenAnswer(invocation -> resultSet);
+        when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
     }
 
     private class InvocationHolder {

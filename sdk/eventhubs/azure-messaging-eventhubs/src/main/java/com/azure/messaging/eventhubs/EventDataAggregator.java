@@ -13,6 +13,7 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -49,20 +51,37 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private final String namespace;
     private final BufferedProducerClientOptions options;
     private final String partitionId;
+    private final BiConsumer<EventData, Throwable> eventFailureReporter;
 
     /**
-     * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
+     * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}. Events that cannot be added to
+     * a batch are reported directly to {@link BufferedProducerClientOptions#getSendFailedContext()}.
      *
      * @param source the {@link Publisher} to decorate
      */
     EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier, String namespace,
         BufferedProducerClientOptions options, String partitionId) {
+        this(source, batchSupplier, namespace, options, partitionId, null);
+    }
+
+    /**
+     * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
+     *
+     * @param source the {@link Publisher} to decorate
+     * @param eventFailureReporter Receives events that cannot be added to a batch (too large, or a new batch could
+     *     not be created), with the reason. If {@code null}, they are reported directly to
+     *     {@link BufferedProducerClientOptions#getSendFailedContext()}.
+     */
+    EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier, String namespace,
+        BufferedProducerClientOptions options, String partitionId,
+        BiConsumer<EventData, Throwable> eventFailureReporter) {
         super(source);
 
         this.partitionId = partitionId;
         this.batchSupplier = batchSupplier;
         this.namespace = namespace;
         this.options = options;
+        this.eventFailureReporter = eventFailureReporter;
     }
 
     /**
@@ -73,8 +92,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      */
     @Override
     public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
-        final EventDataAggregatorMain subscription
-            = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
+        final EventDataAggregatorMain subscription = new EventDataAggregatorMain(actual, namespace, options,
+            batchSupplier, partitionId, eventFailureReporter, LOGGER);
 
         if (DOWNSTREAM_SUBSCRIPTION.compareAndSet(this, null, subscription)) {
             source.subscribe(subscription);
@@ -114,7 +133,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private final ClientLogger logger;
         private final Supplier<EventDataBatch> batchSupplier;
         private final String namespace;
-        private final Consumer<SendBatchFailedContext> onSendFailed;
+        private final BiConsumer<EventData, Throwable> eventFailureReporter;
         private final Object lock = new Object();
 
         private Subscription subscription;
@@ -124,13 +143,14 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
             BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
-            ClientLogger logger) {
+            BiConsumer<EventData, Throwable> eventFailureReporter, ClientLogger logger) {
             this.namespace = namespace;
             this.downstream = downstream;
             this.partitionId = partitionId;
             this.logger = logger;
             this.batchSupplier = batchSupplier;
-            this.onSendFailed = options.getSendFailedContext();
+            this.eventFailureReporter
+                = eventFailureReporter != null ? eventFailureReporter : sendFailedHandlerReporter(options);
             // If this fails, the batch is created lazily when the first event arrives.
             synchronized (lock) {
                 getOrCreateBatch();
@@ -368,17 +388,22 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log("Unable to add event to a batch. Reporting it as failed.", error);
 
-            if (onSendFailed == null) {
-                return;
-            }
             try {
-                onSendFailed
-                    .accept(new SendBatchFailedContext(Collections.singletonList(eventData), partitionId, error));
+                eventFailureReporter.accept(eventData, error);
             } catch (Throwable e) {
-                logger.atWarning()
-                    .addKeyValue(PARTITION_ID_KEY, partitionId)
-                    .log("onSendBatchFailed handler threw.", e);
+                Exceptions.throwIfFatal(e);
+                logger.atWarning().addKeyValue(PARTITION_ID_KEY, partitionId).log("Unable to report failed event.", e);
             }
+        }
+
+        private BiConsumer<EventData, Throwable> sendFailedHandlerReporter(BufferedProducerClientOptions options) {
+            final Consumer<SendBatchFailedContext> onSendFailed = options.getSendFailedContext();
+            return (eventData, error) -> {
+                if (onSendFailed != null) {
+                    onSendFailed
+                        .accept(new SendBatchFailedContext(Collections.singletonList(eventData), partitionId, error));
+                }
+            };
         }
 
         /**
