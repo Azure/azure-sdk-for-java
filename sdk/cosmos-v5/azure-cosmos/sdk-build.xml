@@ -14,7 +14,7 @@
   <artifactId>azure-cosmos</artifactId>
   <!-- Opt-in version configuration: ../versions.txt, not the shared v4 registration. -->
   <version>5.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
-  <name>Azure Cosmos DB SDK for Java - v5 foundation (not for distribution)</name>
+  <name>Azure Cosmos DB SDK for Java - v5 (not for distribution)</name>
   <description>Nonfunctional, nonpublishing Java 17 foundation for the Azure Cosmos DB v5 SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -74,7 +74,7 @@
               <rules>
                 <requireJavaVersion>
                   <version>[17,)</version>
-                  <message>The Cosmos v5 foundation requires JDK 17 or newer.</message>
+                  <message>The Cosmos v5 SDK requires JDK 17 or newer.</message>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -126,7 +126,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <foundation.version>${project.version}</foundation.version>
+            <cosmos.expectedVersion>${project.version}</cosmos.expectedVersion>
           </systemPropertyVariables>
         </configuration>
       </plugin>

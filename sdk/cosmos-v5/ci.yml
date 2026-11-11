@@ -12,7 +12,7 @@ trigger:
       - sdk/parents/
       - eng/versioning/
       - eng/lintingconfigs/
-      - eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+      - eng/pipelines/templates/stages/cosmos-v5-validation.yml
       - eng/pipelines/templates/stages/1es-redirect.yml
       - pom.xml
 
@@ -28,12 +28,12 @@ pr:
       - sdk/parents/
       - eng/versioning/
       - eng/lintingconfigs/
-      - eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+      - eng/pipelines/templates/stages/cosmos-v5-validation.yml
       - eng/pipelines/templates/stages/1es-redirect.yml
       - pom.xml
 
 extends:
-  template: /eng/pipelines/templates/stages/cosmos-vnext-foundation.yml
+  template: /eng/pipelines/templates/stages/cosmos-v5-validation.yml
   parameters:
     ServiceDirectory: cosmos-v5
     SDKType: client

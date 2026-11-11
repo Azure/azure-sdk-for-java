@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FoundationTests {
+class BuildMetadataTests {
     @Test
     void coreDependencyIsUsableWithoutNativeLibraries() {
-        assertEquals("foundation", BinaryData.fromString("foundation").toString());
+        assertEquals("build-metadata", BinaryData.fromString("build-metadata").toString());
     }
 
     @Test
@@ -34,7 +34,7 @@ class FoundationTests {
             properties.load(stream);
         }
         assertEquals("azure-cosmos", properties.getProperty("name"));
-        String expectedVersion = System.getProperty("foundation.version");
+        String expectedVersion = System.getProperty("cosmos.expectedVersion");
         assertNotNull(expectedVersion);
         assertEquals(expectedVersion, properties.getProperty("version"));
     }
@@ -60,7 +60,7 @@ class FoundationTests {
             stream.readUnsignedShort();
             assertEquals(61, stream.readUnsignedShort());
         }
-        try (InputStream resource = getClass().getResourceAsStream("FoundationTests.class")) {
+        try (InputStream resource = getClass().getResourceAsStream("BuildMetadataTests.class")) {
             assertNotNull(resource);
             try (DataInputStream stream = new DataInputStream(resource)) {
                 assertEquals(0xCAFEBABE, stream.readInt());

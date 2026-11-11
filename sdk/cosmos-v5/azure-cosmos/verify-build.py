@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-"""Cold, nonpublishing validation of the feature-branch Cosmos v5 foundation."""
+"""Cold, nonpublishing build validation for the Cosmos v5 SDK."""
 
 import argparse
 from pathlib import Path
@@ -16,7 +16,7 @@ import zipfile
 
 MODULE = Path(__file__).resolve().parent
 ROOT = MODULE.parents[2]
-BUILD = MODULE / "foundation.xml"
+BUILD = MODULE / "sdk-build.xml"
 REACTOR = MODULE.parent / "reactor.xml"
 NS = {"m": "http://maven.apache.org/POM/4.0.0"}
 
@@ -46,7 +46,7 @@ def verify_version_configuration():
         update_versions(versions, external, str(candidate), True, False, [])
         require(not exception_list, f"Version validation failed: {exception_list}")
         require(candidate.read_bytes() == BUILD.read_bytes(),
-                "foundation.xml differs from versions.txt or the shared dependency/plugin versions")
+                "sdk-build.xml differs from versions.txt or the shared dependency/plugin versions")
 
 
 def verify_effective_pom(path):
@@ -101,9 +101,9 @@ def verify_artifacts():
     for report in reports:
         suite = ET.parse(report).getroot()
         require(all(int(suite.get(key, "0")) == 0 for key in ("errors", "failures", "skipped")),
-                f"Failed or skipped foundation tests: {report}")
+                f"Failed or skipped build metadata tests: {report}")
         executed += int(suite.get("tests", "0"))
-    require(executed >= 4, "Expected all four foundation tests to execute")
+    require(executed >= 4, "Expected all four build metadata tests to execute")
 
 
 def main():
@@ -113,7 +113,7 @@ def main():
     args = parser.parse_args()
     verify_version_configuration()
     subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", str(MODULE),
-                    "-p", "test_foundation_configuration.py"], cwd=ROOT, check=True)
+                    "-p", "test_build_configuration.py"], cwd=ROOT, check=True)
     repository = args.maven_repository.resolve()
     require(not repository.exists() or not any(repository.iterdir()),
             f"Cold validation requires an empty Maven repository: {repository}")
@@ -129,15 +129,15 @@ def main():
         "-Dmaven.test.skip=true", "-Dcheckstyle.skip", "-Dmaven.javadoc.skip", "-Drevapi.skip",
         "-Dspotbugs.skip", "-Djacoco.skip", "-Dspotless.skip")
     run("-f", str(REACTOR), "-pl", "com.azure:azure-cosmos", "clean", "verify", "-Dspotless.apply.skip=true")
-    effective = MODULE / "target" / "foundation-effective-pom.xml"
+    effective = MODULE / "target" / "cosmos-v5-effective-pom.xml"
     run("-f", str(BUILD), "help:effective-pom", f"-Doutput={effective}")
     verify_effective_pom(effective)
     verify_artifacts()
     deployment_guard = MODULE / "target" / "deployment-guard"
     run("-f", str(BUILD), "deploy:deploy", "-Dmaven.deploy.skip=false",
-        f"-DaltDeploymentRepository=foundation-guard::{deployment_guard.as_uri()}")
+        f"-DaltDeploymentRepository=cosmos-v5-deploy-guard::{deployment_guard.as_uri()}")
     require(not deployment_guard.exists(), "Foundation deployment must remain disabled")
-    print("Cosmos v5 foundation verified; no package was deployed.")
+    print("Cosmos v5 build verified; no package was deployed.")
 
 
 if __name__ == "__main__":

@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>cosmos-v5-foundation-build</artifactId>
+  <artifactId>cosmos-v5-build</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
-  <name>Isolated Cosmos v5 foundation reactor (not for distribution)</name>
+  <name>Isolated Cosmos v5 build reactor (not for distribution)</name>
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
@@ -18,6 +18,6 @@
     <module>../clientcore/core</module>
     <module>../parents/azure-client-sdk-parent-v2</module>
     <module>../core-v2/azure-core</module>
-    <module>azure-cosmos/foundation.xml</module>
+    <module>azure-cosmos/sdk-build.xml</module>
   </modules>
 </project>

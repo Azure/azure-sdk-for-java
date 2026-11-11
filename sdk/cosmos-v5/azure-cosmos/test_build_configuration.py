@@ -14,24 +14,24 @@ import xml.etree.ElementTree as ET
 
 MODULE = Path(__file__).resolve().parent
 ROOT = MODULE.parents[2]
-SPEC = importlib.util.spec_from_file_location("foundation", MODULE / "verify-foundation.py")
-foundation = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(foundation)
+SPEC = importlib.util.spec_from_file_location("verify_build", MODULE / "verify-build.py")
+verify_build = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(verify_build)
 
 
-class FoundationConfigurationTests(unittest.TestCase):
+class BuildConfigurationTests(unittest.TestCase):
     def test_isolated_version_configuration(self):
-        foundation.verify_version_configuration()
+        verify_build.verify_version_configuration()
 
     def test_version_drift_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
-            candidate = Path(directory) / "foundation.xml"
-            version = ET.parse(foundation.BUILD).getroot().findtext("m:version", namespaces=foundation.NS)
-            candidate.write_text(foundation.BUILD.read_text().replace(
+            candidate = Path(directory) / "sdk-build.xml"
+            version = ET.parse(verify_build.BUILD).getroot().findtext("m:version", namespaces=verify_build.NS)
+            candidate.write_text(verify_build.BUILD.read_text().replace(
                 f"<version>{version}</version>", "<version>4.0.0</version>", 1))
-            with patch.object(foundation, "BUILD", candidate):
+            with patch.object(verify_build, "BUILD", candidate):
                 with self.assertRaisesRegex(RuntimeError, "differs from versions.txt"):
-                    foundation.verify_version_configuration()
+                    verify_build.verify_version_configuration()
 
     def test_shared_aggregate_discovery_selects_only_v4(self):
         sys.path.insert(0, str(ROOT / "eng/scripts"))
@@ -49,16 +49,16 @@ class FoundationConfigurationTests(unittest.TestCase):
         def projects_in(path):
             project = ET.parse(path).getroot()
             yield path.resolve(), project
-            for module in project.findall("m:modules/m:module", foundation.NS):
+            for module in project.findall("m:modules/m:module", verify_build.NS):
                 child = path.parent / module.text
                 yield from projects_in(child / "pom.xml" if child.is_dir() else child)
 
         for reactor, expected in ((ROOT / "pom.xml", ROOT / "sdk/cosmos/azure-cosmos/pom.xml"),
-                                  (foundation.REACTOR, foundation.BUILD)):
+                                  (verify_build.REACTOR, verify_build.BUILD)):
             selected = [
                 path for path, project in projects_in(reactor)
-                if project.findtext("m:groupId", namespaces=foundation.NS) == "com.azure"
-                and project.findtext("m:artifactId", namespaces=foundation.NS) == "azure-cosmos"
+                if project.findtext("m:groupId", namespaces=verify_build.NS) == "com.azure"
+                and project.findtext("m:artifactId", namespaces=verify_build.NS) == "azure-cosmos"
             ]
             self.assertEqual(selected, [expected.resolve()])
 

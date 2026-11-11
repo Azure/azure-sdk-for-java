@@ -1,4 +1,4 @@
-# Azure Cosmos DB SDK for Java - v5 foundation
+# Azure Cosmos DB SDK for Java - v5
 
 > **Not a functional SDK. Do not publish or use this build in an application.**
 > This is the first migration slice on `feature/cosmos/vnext`, not a release.
@@ -27,7 +27,7 @@ Set `JAVA_HOME` explicitly: the JDK used by Maven may differ from `java` on `PAT
 From the repository root:
 
 ```bash
-python3 sdk/cosmos-v5/azure-cosmos/verify-foundation.py --maven-repository /absolute/path/to/empty/maven-repository
+python3 sdk/cosmos-v5/azure-cosmos/verify-build.py --maven-repository /absolute/path/to/empty/maven-repository
 ```
 
 The repository path must be empty or absent. The validation builds Core and
@@ -45,8 +45,8 @@ consumer can resolve the future SDK today.
 
 `sdk/cosmos-v5/reactor.xml` is a dedicated reactor for this foundation and its
 same-checkout Core dependencies. It is not included in the repository's root
-reactor. The SDK's Maven build descriptor is `foundation.xml`, not `pom.xml`;
-invoke it explicitly with `mvn -f sdk/cosmos-v5/azure-cosmos/foundation.xml`
+reactor. The SDK's Maven build descriptor is `sdk-build.xml`, not `pom.xml`;
+invoke it explicitly with `mvn -f sdk/cosmos-v5/azure-cosmos/sdk-build.xml`
 after bootstrapping the dependencies. The validation script performs both steps.
 
 These alternate filenames intentionally exclude v5 from the shared `pom*.xml`
@@ -61,10 +61,10 @@ and check that the default and opt-in reactors each select only their own Cosmos
 version. Run them independently with:
 
 ```bash
-python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_foundation_configuration.py
+python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_configuration.py
 ```
 
-When changing the v5 version, update both the local manifest and `foundation.xml`.
+When changing the v5 version, update both the local manifest and `sdk-build.xml`.
 Do not run the shared version updater's `--target-file` option on this descriptor:
 without the local override it would apply the v4 version.
 
@@ -76,11 +76,17 @@ to the root build while the same-GA v4 source remains selected there.
 
 ## Validation and release boundaries
 
-The separate `sdk/cosmos-v5/ci.yml` pipeline runs only foundation validation on JDK 17,
+The separate `sdk/cosmos-v5/ci.yml` pipeline runs build validation on JDK 17,
 21, and 25. It does not import release stages, deploy Maven packages, sign
 packages, or publish to a dev feed. The module also disables Maven deployment.
 Pipeline registration and required-check configuration must be arranged with
 the repository maintainers; adding YAML does not create branch protection.
+
+The durable entrypoints are `verify-build.py` and the `cosmos-v5-validation.yml`
+pipeline template. Their current-slice assertions still forbid implementation
+classes, native payloads, and module exports/opens. Future native/API changes
+must deliberately evolve those assertions; this naming cleanup does not relax
+them or the Java baseline, artifact, isolation, or deployment checks.
 
 Checkstyle uses the existing `track2` ruleset because the v2 parent's `vnext`
 ruleset hardcodes `com.azure.v2` and has no configurable namespace property.
@@ -91,7 +97,7 @@ formatted exception messages, raw throws, and created-but-unthrown exceptions.
 No rules are modified or suppressed. With no public API or implementation in
 this slice, track2 validates the retained namespace and ordinary code style.
 Before functional APIs or logging are introduced, maintainers must establish
-namespace-compatible Core v2 linting. SpotBugs includes the foundation tests
+namespace-compatible Core v2 linting. SpotBugs includes the build metadata tests
 because the production artifact contains only module/package metadata.
 
 The default Cosmos reactor and both shared version-manifest columns remain on
@@ -106,7 +112,7 @@ testing belong to the next migration slice, followed by service functionality.
 
 ## Examples
 
-The pure-Java foundation tests exercise dependency loading and build metadata,
+The pure-Java build metadata tests exercise dependency loading and build metadata,
 not Cosmos operations. No v4 samples or documentation are copied into v5.
 
 ## Troubleshooting
