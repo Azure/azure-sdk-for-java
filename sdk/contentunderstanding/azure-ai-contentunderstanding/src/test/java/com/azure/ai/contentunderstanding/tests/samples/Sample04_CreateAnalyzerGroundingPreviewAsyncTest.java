@@ -21,17 +21,14 @@ public class Sample04_CreateAnalyzerGroundingPreviewAsyncTest extends ContentUnd
     public void testExtractGenerateAndClassifyGroundingAsync() throws Exception {
         String analyzerId = testResourceNamer.randomName("grounding_", 50);
         try {
-            setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true))
-                .last()
-                .flatMap(response -> response.getFinalResult())
-                .block();
+            setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId,
+                PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true)).last()
+                    .flatMap(response -> response.getFinalResult())
+                    .block();
             AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf")))
-                .last()
-                .flatMap(response -> response.getFinalResult())
-                .block();
+                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf"))).last()
+                    .flatMap(response -> response.getFinalResult())
+                    .block();
             DocumentContent content = (DocumentContent) result.getContents().get(0);
 
             assertGrounded(content.getFields().get("company_name"));

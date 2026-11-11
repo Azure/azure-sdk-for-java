@@ -10,8 +10,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -27,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BookshelfIndexingTests {
     @ParameterizedTest
@@ -59,9 +62,8 @@ class BookshelfIndexingTests {
         LongRunningOperationStatus terminalStatus;
         KnowledgeBaseOperationResponse result;
         if (sync) {
-            SyncPoller<KnowledgeBaseOperationResponse, Void> poller = builder.buildClient()
-                .beginStartIndexing("test-kb")
-                .setPollInterval(Duration.ofMillis(1));
+            SyncPoller<KnowledgeBaseOperationResponse, Void> poller
+                = builder.buildClient().beginStartIndexing("test-kb").setPollInterval(Duration.ofMillis(1));
             PollResponse<KnowledgeBaseOperationResponse> running = poller.poll();
             assertEquals(LongRunningOperationStatus.IN_PROGRESS, running.getStatus());
             assertEquals(OperationState.RUNNING, running.getValue().getStatus());
@@ -98,5 +100,29 @@ class BookshelfIndexingTests {
             assertEquals("Indexing failed", operation.getError().getMessage());
         }
         assertEquals(3, requests.get(), "Activation, Running, and the terminal response must all be consumed");
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "PLAYBACK,true", "PLAYBACK,false", "RECORD,true", "RECORD,false", "LIVE,true", "LIVE,false" })
+    void indexingCompletionAssertionsRespectTestMode(TestMode testMode, boolean succeeds) {
+        String status = succeeds ? "Succeeded" : "Failed";
+        String error = succeeds ? "" : ",\"error\":{\"code\":\"GenericIndexingError\",\"message\":\"Indexing failed\"}";
+        KnowledgeBaseOperationResponse response
+            = BinaryData.fromString("{\"id\":\"test-run\",\"status\":\"" + status + "\"" + error + "}")
+                .toObject(KnowledgeBaseOperationResponse.class);
+        LongRunningOperationStatus pollingStatus
+            = succeeds ? LongRunningOperationStatus.SUCCESSFULLY_COMPLETED : LongRunningOperationStatus.FAILED;
+        DiscoveryClientTestBase assertions = new DiscoveryClientTestBase() {
+            @Override
+            public TestMode getTestMode() {
+                return testMode;
+            }
+        };
+
+        if (succeeds || testMode == TestMode.PLAYBACK) {
+            assertions.assertIndexingCompleted(pollingStatus, response);
+        } else {
+            assertThrows(AssertionError.class, () -> assertions.assertIndexingCompleted(pollingStatus, response));
+        }
     }
 }

@@ -19,15 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Sample_Advanced_DetectSignaturesAsyncTest extends ContentUnderstandingPreviewClientTestBase {
     @Test
     public void testDetectSignaturesAsync() throws Exception {
-        AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_signature.png")))
-            .last()
-            .flatMap(response -> {
-                assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                return response.getFinalResult()
-                    .switchIfEmpty(Mono.error(new AssertionError("Signature analysis returned no final result.")));
-            })
-            .block();
+        AnalysisResult result
+            = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-layout",
+                PreviewSampleTestSupport.readSample("sample_signature.png"))).last().flatMap(response -> {
+                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                    return response.getFinalResult()
+                        .switchIfEmpty(Mono.error(new AssertionError("Signature analysis returned no final result.")));
+                }).block();
         assertNotNull(result);
         assertNotNull(result.getContents());
         assertFalse(result.getContents().isEmpty());

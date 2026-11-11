@@ -27,20 +27,20 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
         String agenticId = testResourceNamer.randomName("workflow_roundtrip_agentic_", 50);
         String completionModel = getModelProfile().getCompletionModel();
         try {
-            ContentAnalyzer defaultAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(defaultId, PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel),
-                    true))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Default workflow analyzer creation"))
-                .block();
-            ContentAnalyzer agenticAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(agenticId, PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel),
-                    true))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Agentic workflow analyzer creation"))
-                .block();
+            ContentAnalyzer defaultAnalyzer
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(defaultId,
+                    PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel), true))
+                        .last()
+                        .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                            "Default workflow analyzer creation"))
+                        .block();
+            ContentAnalyzer agenticAnalyzer
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(agenticId,
+                    PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel), true))
+                        .last()
+                        .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                            "Agentic workflow analyzer creation"))
+                        .block();
 
             assertNotNull(defaultAnalyzer);
             assertNotNull(agenticAnalyzer);
@@ -62,20 +62,20 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
         String agenticId = testResourceNamer.randomName("workflow_agentic_", 50);
         String completionModel = getModelProfile().getCompletionModel();
         try {
-            ContentAnalyzer defaultAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(defaultId, PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel),
-                    true))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Default workflow analyzer creation"))
-                .block();
-            ContentAnalyzer agenticAnalyzer = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(agenticId, PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel),
-                    true))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Agentic workflow analyzer creation"))
-                .block();
+            ContentAnalyzer defaultAnalyzer
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(defaultId,
+                    PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel), true))
+                        .last()
+                        .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                            "Default workflow analyzer creation"))
+                        .block();
+            ContentAnalyzer agenticAnalyzer
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(agenticId,
+                    PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel), true))
+                        .last()
+                        .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                            "Agentic workflow analyzer creation"))
+                        .block();
             assertNotNull(defaultAnalyzer);
             assertNotNull(agenticAnalyzer);
             assertNotNull(defaultAnalyzer.getConfig().getWorkflow());
@@ -88,16 +88,16 @@ public class Sample17_CreateAnalyzerWorkflowAsyncTest extends ContentUnderstandi
             BinaryData invoice = PreviewSampleTestSupport.readSample("workflow_invoice_20_items.pdf");
             AnalysisResult defaultResult = setPlaybackPollerFluxPollInterval(
                 contentUnderstandingAsyncClient.beginAnalyzeBinary(defaultId, invoice))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Default workflow analysis"))
-                .block();
+                    .last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Default workflow analysis"))
+                    .block();
             AnalysisResult agenticResult = setPlaybackPollerFluxPollInterval(
                 contentUnderstandingAsyncClient.beginAnalyzeBinary(agenticId, invoice))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Agentic workflow analysis"))
-                .block();
+                    .last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Agentic workflow analysis"))
+                    .block();
             assertNotNull(defaultResult);
             assertNotNull(agenticResult);
             assertFalse(defaultResult.getContents().isEmpty());

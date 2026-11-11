@@ -298,9 +298,8 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
                 .setContentCategories(categories))
             .setModels(models);
 
-        ContentAnalyzer created
-            = setPlaybackSyncPollerPollInterval(
-                contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifier, true)).getFinalResult();
+        ContentAnalyzer created = setPlaybackSyncPollerPollInterval(
+            contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifier, true)).getFinalResult();
         createdAnalyzerId = analyzerId;
 
         assertNotNull(created.getConfig());
@@ -308,9 +307,8 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
 
         // BEGIN:ContentUnderstandingAnalyzeCategory
         byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
-        AnalysisResult result
-            = setPlaybackSyncPollerPollInterval(
-                contentUnderstandingClient.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes)))
+        AnalysisResult result = setPlaybackSyncPollerPollInterval(
+            contentUnderstandingClient.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes)))
                 .getFinalResult();
         DocumentContent content = (DocumentContent) result.getContents().get(0);
         // END:ContentUnderstandingAnalyzeCategory

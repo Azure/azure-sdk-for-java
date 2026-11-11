@@ -49,9 +49,8 @@ public class Sample09_DeleteAnalyzerAsyncTest extends ContentUnderstandingClient
 
         boolean deleteIssued = false;
         try {
-            ContentAnalyzer createdAnalyzer
-                = setPlaybackPollerFluxPollInterval(
-                    contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true))
+            ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true))
                     .last()
                     .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                         "Analyzer creation"))

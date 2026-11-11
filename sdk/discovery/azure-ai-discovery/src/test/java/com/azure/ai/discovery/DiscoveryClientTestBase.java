@@ -213,8 +213,8 @@ class DiscoveryClientTestBase extends TestProxyTestBase {
 
     protected void assertIndexingCompleted(LongRunningOperationStatus status, KnowledgeBaseOperationResponse response) {
         assertNotNull(response);
-        if (getTestMode() == TestMode.PLAYBACK) {
-            // These recordings capture a service-side indexing failure, not successful indexing.
+        if (getTestMode() == TestMode.PLAYBACK && OperationState.FAILED.equals(response.getStatus())) {
+            // Older recordings capture a service-side indexing failure.
             assertEquals(LongRunningOperationStatus.FAILED, status);
             assertEquals(OperationState.FAILED, response.getStatus());
             assertNotNull(response.getError());

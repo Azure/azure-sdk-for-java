@@ -189,8 +189,8 @@ public class TokenCacheTests {
         TokenCredential dummyCred = request -> {
             refreshes.incrementAndGet();
             OffsetDateTime issuedAt = OffsetDateTime.now(clock);
-            return Mono.just(new AccessToken("testToken", issuedAt.plusSeconds(200),
-                issuedAt.plusSeconds(refreshAfterSeconds)));
+            return Mono.just(
+                new AccessToken("testToken", issuedAt.plusSeconds(200), issuedAt.plusSeconds(refreshAfterSeconds)));
         };
 
         AccessTokenCache cache = new AccessTokenCache(dummyCred, clock);

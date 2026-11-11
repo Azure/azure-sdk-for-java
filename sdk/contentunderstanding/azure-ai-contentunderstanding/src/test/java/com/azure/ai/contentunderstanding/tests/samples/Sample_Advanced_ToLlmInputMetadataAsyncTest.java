@@ -17,15 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Sample_Advanced_ToLlmInputMetadataAsyncTest extends ContentUnderstandingPreviewClientTestBase {
     @Test
     public void testToLlmInputMetadataFromAnalysisResultAsync() throws Exception {
-        AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_metadata.pdf")))
-            .last()
-            .flatMap(response -> {
-                assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                return response.getFinalResult()
-                    .switchIfEmpty(Mono.error(new AssertionError("Metadata analysis returned no final result.")));
-            })
-            .block();
+        AnalysisResult result
+            = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-layout",
+                PreviewSampleTestSupport.readSample("sample_metadata.pdf"))).last().flatMap(response -> {
+                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                    return response.getFinalResult()
+                        .switchIfEmpty(Mono.error(new AssertionError("Metadata analysis returned no final result.")));
+                }).block();
         assertNotNull(result);
         assertNotNull(result.getContents());
         assertFalse(result.getContents().isEmpty());

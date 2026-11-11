@@ -294,16 +294,15 @@ public class Sample05_CreateClassifierAsyncTest extends ContentUnderstandingClie
             .setModels(models);
 
         ContentAnalyzer created = setPlaybackPollerFluxPollInterval(
-            contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, classifier, true))
-            .last()
-            .flatMap(response -> {
-                if (response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                    return response.getFinalResult();
-                }
-                return Mono.error(new IllegalStateException(
-                    "Classifier creation completed unsuccessfully with status: " + response.getStatus()));
-            })
-            .block();
+            contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, classifier, true)).last()
+                .flatMap(response -> {
+                    if (response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                        return response.getFinalResult();
+                    }
+                    return Mono.error(new IllegalStateException(
+                        "Classifier creation completed unsuccessfully with status: " + response.getStatus()));
+                })
+                .block();
         createdAnalyzerId = analyzerId;
 
         assertNotNull(created);
@@ -312,10 +311,8 @@ public class Sample05_CreateClassifierAsyncTest extends ContentUnderstandingClie
 
         // BEGIN:ContentUnderstandingAnalyzeCategoryAsync
         byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
-        AnalysisResult result
-            = setPlaybackPollerFluxPollInterval(
-                contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes)))
-                .last()
+        AnalysisResult result = setPlaybackPollerFluxPollInterval(
+            contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes))).last()
                 .flatMap(response -> {
                     if (response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                         return response.getFinalResult();

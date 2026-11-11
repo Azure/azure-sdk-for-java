@@ -122,10 +122,10 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
         try {
             ContentAnalyzer created = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
                 .beginCreateAnalyzer(sourceAnalyzerId, createAnalyzer("Async common API compatibility analyzer"), true))
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Async common API analyzer creation"))
-                .block();
+                    .last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Async common API analyzer creation"))
+                    .block();
             assertNotNull(created);
             assertEquals(sourceAnalyzerId, created.getAnalyzerId());
 
@@ -143,9 +143,8 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
             assertEquals("Updated async common API compatibility analyzer", updated.getDescription());
             assertEquals(getServiceVersion().getVersion(), updated.getTags().get("compatibility"));
 
-            ContentAnalyzer copied
-                = setPlaybackPollerFluxPollInterval(
-                    contentUnderstandingAsyncClient.beginCopyAnalyzer(copiedAnalyzerId, sourceAnalyzerId))
+            ContentAnalyzer copied = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginCopyAnalyzer(copiedAnalyzerId, sourceAnalyzerId))
                     .last()
                     .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                         "Async common API analyzer copy"))

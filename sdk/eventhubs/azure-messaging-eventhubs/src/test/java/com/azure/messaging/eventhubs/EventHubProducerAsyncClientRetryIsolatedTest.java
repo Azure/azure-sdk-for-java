@@ -51,12 +51,10 @@ class EventHubProducerAsyncClientRetryIsolatedTest {
             .setTryTimeout(Duration.ofMillis(100));
         EventHubReactorAmqpConnection connection = mock(EventHubReactorAmqpConnection.class);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
-        when(connection.getEndpointStates())
-            .thenReturn(Flux.concat(Flux.just(AmqpEndpointState.ACTIVE), Flux.never()));
+        when(connection.getEndpointStates()).thenReturn(Flux.concat(Flux.just(AmqpEndpointState.ACTIVE), Flux.never()));
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        EventHubProperties expectedHub
-            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
+        EventHubProperties expectedHub = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
         PartitionProperties expectedPartition = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
             OffsetDateTime.now().toString(), Instant.now(), false);
         when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(expectedPartition));
@@ -83,10 +81,10 @@ class EventHubProducerAsyncClientRetryIsolatedTest {
             EventHubConnectionProcessor processor = Mono.fromCallable(() -> connection)
                 .repeat(10)
                 .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
-            EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-                new ConnectionCacheWrapper(processor), retryOptions, new EventHubMessageSerializer(), scheduler, false,
-                mock(Runnable.class), "test-client",
-                new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME));
+            EventHubProducerAsyncClient producer
+                = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, new ConnectionCacheWrapper(processor),
+                    retryOptions, new EventHubMessageSerializer(), scheduler, false, mock(Runnable.class),
+                    "test-client", new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME));
             client.set(producer);
             return partition ? producer.getPartitionProperties("0") : producer.getEventHubProperties();
         };

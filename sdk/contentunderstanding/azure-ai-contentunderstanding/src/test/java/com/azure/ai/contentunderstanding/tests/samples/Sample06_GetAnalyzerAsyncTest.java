@@ -103,9 +103,8 @@ public class Sample06_GetAnalyzerAsyncTest extends ContentUnderstandingClientTes
             .setFieldSchema(fieldSchema)
             .setModels(models);
 
-        ContentAnalyzer createdAnalyzer
-            = setPlaybackPollerFluxPollInterval(
-                contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true))
+        ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(
+            contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true))
                 .last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Custom analyzer creation"))

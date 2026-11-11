@@ -11,7 +11,6 @@ import com.azure.ai.discovery.models.SearchRequest;
 import com.azure.ai.discovery.models.StorageAssetReference;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.MethodOrderer;
@@ -110,15 +109,10 @@ public final class BookshelfClientTest extends DiscoveryClientTestBase {
 
         KnowledgeBaseOperationResponse status = client.getOperationStatus(knowledgeBaseName, operationId);
         assertNotNull(status);
-        if (getTestMode() == TestMode.PLAYBACK) {
-            assertEquals(OperationState.RUNNING, status.getStatus());
-        } else {
-            assertTrue(OperationState.RUNNING.equals(status.getStatus())
-                || OperationState.SUCCEEDED.equals(status.getStatus()));
-            assertNull(status.getError());
-        }
-        assertEquals(operationId,
-            ((KnowledgeBaseIndexingOperationResponse) status).getIndexingResult().getRunId());
+        assertTrue(
+            OperationState.RUNNING.equals(status.getStatus()) || OperationState.SUCCEEDED.equals(status.getStatus()));
+        assertNull(status.getError());
+        assertEquals(operationId, ((KnowledgeBaseIndexingOperationResponse) status).getIndexingResult().getRunId());
     }
 
     @Test

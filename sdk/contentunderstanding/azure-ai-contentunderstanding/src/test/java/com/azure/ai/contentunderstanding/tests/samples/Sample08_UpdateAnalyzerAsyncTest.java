@@ -67,10 +67,10 @@ public class Sample08_UpdateAnalyzerAsyncTest extends ContentUnderstandingClient
 
         ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(
             contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer))
-            .last()
-            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                "Analyzer creation"))
-            .block();
+                .last()
+                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                    "Analyzer creation"))
+                .block();
         assertNotNull(createdAnalyzer);
         System.out.println("Test analyzer created: " + analyzerId);
     }

@@ -30,26 +30,23 @@ public class Sample_Advanced_ClassifyInPageSegmentsAsyncTest extends ContentUnde
         String analyzerId = testResourceNamer.randomName("in_page_classifier_", 50);
         BinaryData documentData = PreviewSampleTestSupport.readSample("mixed_financial_docs_in_page.pdf");
         Mono<AsyncPollResponse<ContentAnalyzerOperationStatus, ContentAnalyzer>> createdAnalyzer
-            = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createInPageClassifier(getModelProfile().getCompletionModel()), true))
-                .last()
-                .flatMap(response -> {
-                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                    return Mono.just(response);
-                });
+            = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId,
+                PreviewSampleTestSupport.createInPageClassifier(getModelProfile().getCompletionModel()), true)).last()
+                    .flatMap(response -> {
+                        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                        return Mono.just(response);
+                    });
 
         Mono<Boolean> workflow = Mono.usingWhen(createdAnalyzer,
             createResponse -> createResponse.getFinalResult()
                 .switchIfEmpty(Mono.error(new AssertionError("Analyzer creation returned no final result.")))
                 .then(setPlaybackPollerFluxPollInterval(
-                    contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, documentData))
-                    .last()
-                    .flatMap(response -> {
-                        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                        return response.getFinalResult()
-                            .switchIfEmpty(Mono.error(new AssertionError("Analysis returned no final result.")));
-                    }))
+                    contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId, documentData)).last()
+                        .flatMap(response -> {
+                            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                            return response.getFinalResult()
+                                .switchIfEmpty(Mono.error(new AssertionError("Analysis returned no final result.")));
+                        }))
                 .map(result -> {
                     assertNotNull(result);
                     assertNotNull(result.getContents());

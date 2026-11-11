@@ -41,11 +41,11 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
     @Order(1)
     public void testBeginCreateOrUpdate() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
-        KnowledgeBase result = setPlaybackPollerFluxPollInterval(
-            client.beginCreateOrUpdate(knowledgeBaseName, newKnowledgeBase()))
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .block();
+        KnowledgeBase result
+            = setPlaybackPollerFluxPollInterval(client.beginCreateOrUpdate(knowledgeBaseName, newKnowledgeBase()))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .block();
 
         assertNotNull(result);
     }
@@ -84,9 +84,8 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
     @Order(5)
     public void testBeginSearch() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
-        KnowledgeBaseOperationResponse response
-            = setPlaybackPollerFluxPollInterval(
-                client.beginSearch(knowledgeBaseName, new SearchRequest("immersion cooling"))).blockLast().getValue();
+        KnowledgeBaseOperationResponse response = setPlaybackPollerFluxPollInterval(
+            client.beginSearch(knowledgeBaseName, new SearchRequest("immersion cooling"))).blockLast().getValue();
 
         assertNotNull(response);
     }
@@ -108,8 +107,7 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
         KnowledgeBaseOperationResponse status = client.getOperationStatus(knowledgeBaseName, operationId).block();
         assertNotNull(status);
         assertEquals(operation.getStatus(), status.getStatus());
-        assertEquals(operationId,
-            ((KnowledgeBaseIndexingOperationResponse) status).getIndexingResult().getRunId());
+        assertEquals(operationId, ((KnowledgeBaseIndexingOperationResponse) status).getIndexingResult().getRunId());
     }
 
     @Test

@@ -18,12 +18,11 @@ public class Sample01_AnalyzeBinaryOptionsAsyncTest extends ContentUnderstanding
     public void testAnalyzeBinaryOptionsAsync() throws Exception {
         AnalyzeBinaryOptions options
             = new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3)).setContentType("application/pdf");
-        AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-documentSearch",
-                PreviewSampleTestSupport.readSample("mixed_financial_invoices.pdf"), options))
-            .last()
-            .flatMap(response -> response.getFinalResult())
-            .block();
+        AnalysisResult result = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginAnalyzeBinary(
+            "prebuilt-documentSearch", PreviewSampleTestSupport.readSample("mixed_financial_invoices.pdf"), options))
+                .last()
+                .flatMap(response -> response.getFinalResult())
+                .block();
         assertNotNull(result);
         assertNotNull(result.getContents());
         DocumentContent document = (DocumentContent) result.getContents().get(0);
