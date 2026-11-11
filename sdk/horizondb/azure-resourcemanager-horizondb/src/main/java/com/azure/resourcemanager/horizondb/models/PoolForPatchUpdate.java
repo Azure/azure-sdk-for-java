@@ -10,18 +10,12 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * HorizonDB pool for update operations.
  */
 @Fluent
 public final class PoolForPatchUpdate implements JsonSerializable<PoolForPatchUpdate> {
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
     /*
      * The properties that can be updated for a HorizonDB pool.
      */
@@ -31,26 +25,6 @@ public final class PoolForPatchUpdate implements JsonSerializable<PoolForPatchUp
      * Creates an instance of PoolForPatchUpdate class.
      */
     public PoolForPatchUpdate() {
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the PoolForPatchUpdate object itself.
-     */
-    public PoolForPatchUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -79,7 +53,6 @@ public final class PoolForPatchUpdate implements JsonSerializable<PoolForPatchUp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -99,10 +72,7 @@ public final class PoolForPatchUpdate implements JsonSerializable<PoolForPatchUp
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPoolForPatchUpdate.tags = tags;
-                } else if ("properties".equals(fieldName)) {
+                if ("properties".equals(fieldName)) {
                     deserializedPoolForPatchUpdate.properties = PoolPropertiesForPatchUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();

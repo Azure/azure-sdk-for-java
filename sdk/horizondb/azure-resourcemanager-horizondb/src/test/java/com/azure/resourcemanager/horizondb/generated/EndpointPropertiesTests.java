@@ -11,7 +11,7 @@ public final class EndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointProperties model = BinaryData.fromString(
-            "{\"scope\":\"Pool\",\"associatedResourceId\":\"xkhnzbonlwnto\",\"fullyQualifiedDomainName\":\"gokdwbwhks\",\"role\":\"ReadWrite\"}")
+            "{\"scope\":\"Cluster\",\"associatedResourceId\":\"pwijnhy\",\"fullyQualifiedDomainName\":\"svfycxzbfv\",\"role\":\"ReadWrite\"}")
             .toObject(EndpointProperties.class);
     }
 }
