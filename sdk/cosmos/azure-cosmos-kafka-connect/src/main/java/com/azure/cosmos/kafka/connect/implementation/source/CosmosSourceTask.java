@@ -51,6 +51,9 @@ public class CosmosSourceTask extends SourceTask {
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
 
     private final PriorityQueue<ScheduledTaskUnit> taskUnitsQueue = new PriorityQueue<>();
+    private final Object stopSignal = new Object();
+    private volatile boolean stopped;
+    private volatile long lifecycleGeneration;
 
     private long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
@@ -64,6 +67,10 @@ public class CosmosSourceTask extends SourceTask {
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
         try {
+            synchronized (this.stopSignal) {
+                this.stopped = false;
+                this.lifecycleGeneration++;
+            }
             LOGGER.info("Resetting task queue");
             this.taskUnitsQueue.clear();
 
@@ -168,6 +175,11 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public List<SourceRecord> poll() {
+        long pollGeneration = this.lifecycleGeneration;
+        if (isStopped(pollGeneration)) {
+            return new ArrayList<>();
+        }
+
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
         ScheduledTaskUnit scheduledTaskUnit = this.taskUnitsQueue.poll();
@@ -179,8 +191,11 @@ public class CosmosSourceTask extends SourceTask {
             }
 
             long delayInMs = scheduledTaskUnit.getDelayInMs();
-            if (delayInMs > 0) {
-                Thread.sleep(delayInMs);
+            if (delayInMs > 0 && !waitForPollDelay(delayInMs, pollGeneration)) {
+                return new ArrayList<>();
+            }
+            if (isStopped(pollGeneration)) {
+                return new ArrayList<>();
             }
             taskUnit = scheduledTaskUnit.getTaskUnit();
 
@@ -238,6 +253,22 @@ public class CosmosSourceTask extends SourceTask {
 
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
+    }
+
+    private boolean waitForPollDelay(long delayInMs, long pollGeneration) throws InterruptedException {
+        synchronized (this.stopSignal) {
+            long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(delayInMs);
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            while (!isStopped(pollGeneration) && remainingNanos > 0) {
+                TimeUnit.NANOSECONDS.timedWait(this.stopSignal, remainingNanos);
+                remainingNanos = deadlineNanos - System.nanoTime();
+            }
+            return !isStopped(pollGeneration);
+        }
+    }
+
+    private boolean isStopped(long pollGeneration) {
+        return this.stopped || this.lifecycleGeneration != pollGeneration;
     }
 
     private void logFeedRangeCounts(boolean flushLogs) {
@@ -605,6 +636,11 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
+        synchronized (this.stopSignal) {
+            this.stopped = true;
+            this.lifecycleGeneration++;
+            this.stopSignal.notifyAll();
+        }
         this.logFeedRangeCounts(true);
         this.cleanup();
     }
