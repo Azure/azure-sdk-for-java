@@ -31,7 +31,7 @@ public final class PreviewSearchSamples {
     public GraphQueryResult planGraph(SearchClient client) {
         return client.graph(new GraphOptions("MATCH (n) RETURN n")
             .setExecutionMode(GraphQueryExecutionMode.PLAN_ONLY)
-            .setExplain(Collections.singletonList(GraphQueryExplainStage.fromString("logical")))
+            .setExplain(Collections.singletonList(GraphQueryExplainStage.LOGICAL_PLAN))
             .setIncludeDiagnostics(true));
     }
 
