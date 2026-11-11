@@ -127,7 +127,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         try (Scope scope = parentSpan.makeCurrent()) {
             createHttpPipeline(DEFAULT_CLIENT_OPTIONS, azTracer).send(request, tracingContext)
-                .map(HttpResponse::getBodyAsBinaryData)
+                .map(response -> response.getBodyAsBinaryData().toBytes())
                 .block();
         }
         // Assert
@@ -168,7 +168,7 @@ public class OpenTelemetryHttpPolicyTests {
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
         try (Scope scope = parentSpan.makeCurrent()) {
             createHttpPipeline(options, azTracer).send(request, Context.NONE)
-                .map(HttpResponse::getBodyAsBinaryData)
+                .map(response -> response.getBodyAsBinaryData().toBytes())
                 .block();
         }
 

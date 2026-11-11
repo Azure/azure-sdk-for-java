@@ -12,6 +12,9 @@
 
 ### Bugs Fixed
 
+- Fixed the HTTP tracing span ending before a streamed (non-replayable) `BinaryData` response body was consumed,
+  which reported success for failures or cancellation while reading the body and excluded the read from the span's
+  duration.
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused

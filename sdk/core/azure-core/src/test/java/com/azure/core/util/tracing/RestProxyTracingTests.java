@@ -12,6 +12,8 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -21,12 +23,20 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.implementation.http.policy.InstrumentationPolicy;
+import com.azure.core.implementation.util.HttpUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +44,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -133,6 +145,140 @@ public class RestProxyTracingTests {
         assertEquals("myService.testMethodThrowsSync", restProxy.getName());
         assertNotNull(restProxy.getThrowable());
         assertNull(restProxy.getErrorMessage());
+    }
+
+    private static final byte[] CHUNK = "hello".getBytes(StandardCharsets.UTF_8);
+    private static final Context STREAM_RESPONSE_BODY
+        = Context.NONE.addData(HttpUtils.AZURE_STREAM_RESPONSE_BODY, true);
+
+    @Test
+    public void streamedBodyHttpSpanEndsWhenBodyIsConsumed() {
+        Response<BinaryData> response
+            = streamingInterface(Flux.just(ByteBuffer.wrap(CHUNK))).streamBody(STREAM_RESPONSE_BODY).block();
+        Span http = getHttpSpan();
+        assertNull(http.getEndContext(), "The HTTP span must stay open until the body is consumed.");
+
+        assertArrayEquals(CHUNK, response.getValue().toBytes());
+
+        assertNotNull(http.getEndContext());
+        assertNull(http.getErrorMessage());
+        assertNull(http.getThrowable());
+    }
+
+    @Test
+    public void streamedBodyErrorEndsHttpSpanWithError() {
+        Flux<ByteBuffer> body
+            = Flux.concat(Flux.just(ByteBuffer.wrap(CHUNK)), Flux.error(new IOException("Connection reset")));
+        Response<BinaryData> response = streamingInterface(body).streamBody(STREAM_RESPONSE_BODY).block();
+        Span http = getHttpSpan();
+        assertNull(http.getEndContext());
+
+        StepVerifier.create(response.getValue().toFluxByteBuffer()).expectNextCount(1).verifyError(IOException.class);
+
+        assertNotNull(http.getEndContext());
+        assertInstanceOf(IOException.class, http.getThrowable());
+    }
+
+    @Test
+    public void streamedBodyCancellationEndsHttpSpanAsCancelled() {
+        Flux<ByteBuffer> body = Flux.concat(Flux.just(ByteBuffer.wrap(CHUNK)), Flux.never());
+        Response<BinaryData> response = streamingInterface(body).streamBody(STREAM_RESPONSE_BODY).block();
+        Span http = getHttpSpan();
+        assertNull(http.getEndContext());
+
+        StepVerifier.create(response.getValue().toFluxByteBuffer()).expectNextCount(1).thenCancel().verify();
+
+        assertNotNull(http.getEndContext());
+        assertEquals("cancelled", http.getErrorMessage());
+        assertNull(http.getThrowable());
+    }
+
+    @Test
+    public void streamedBodyErrorEndsHttpSpanWithErrorSync() {
+        Flux<ByteBuffer> body
+            = Flux.concat(Flux.just(ByteBuffer.wrap(CHUNK)), Flux.error(new IOException("Connection reset")));
+        Response<BinaryData> response = streamingInterface(body).streamBodySync(Context.NONE);
+        Span http = getHttpSpan();
+        assertNull(http.getEndContext());
+
+        assertThrows(RuntimeException.class, () -> response.getValue().toBytes());
+
+        assertNotNull(http.getEndContext());
+        assertInstanceOf(IOException.class, http.getThrowable());
+    }
+
+    private TestInterface streamingInterface(Flux<ByteBuffer> body) {
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(new StreamingHttpResponse(request, body));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return new StreamingHttpResponse(request, body);
+            }
+        };
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy()).httpClient(client).tracer(tracer).build();
+        return RestProxy.create(TestInterface.class, pipeline);
+    }
+
+    private Span getHttpSpan() {
+        assertEquals(2, tracer.getSpans().size());
+        Span http = tracer.getSpans().get(1);
+        assertTrue(http.getName().startsWith("GET"));
+        return http;
+    }
+
+    /**
+     * A response with a live, single-use body that uses the default {@link HttpResponse#getBodyAsBinaryData()}.
+     */
+    private static final class StreamingHttpResponse extends HttpResponse {
+        private final HttpHeaders headers
+            = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        private final Flux<ByteBuffer> body;
+
+        StreamingHttpResponse(HttpRequest request, Flux<ByteBuffer> body) {
+            super(request);
+            this.body = body;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return 200;
+        }
+
+        @Override
+        @Deprecated
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return body;
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return FluxUtil.collectBytesInByteBufferStream(body);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return getBodyAsString(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
     }
 
     private static Span getSpan(Context context) {
@@ -271,5 +417,13 @@ public class RestProxyTracingTests {
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
         Mono<Void> testMethodDelays();
+
+        @Get("my/stream")
+        @ExpectedResponses({ 200 })
+        Mono<Response<BinaryData>> streamBody(Context context);
+
+        @Get("my/stream")
+        @ExpectedResponses({ 200 })
+        Response<BinaryData> streamBodySync(Context context);
     }
 }

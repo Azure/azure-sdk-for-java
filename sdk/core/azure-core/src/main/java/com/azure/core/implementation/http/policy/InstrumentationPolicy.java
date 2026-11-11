@@ -12,6 +12,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlSanitizer;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -237,14 +239,26 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public BinaryData getBodyAsBinaryData() {
+            BinaryData body;
             try {
-                return response.getBodyAsBinaryData();
-            } catch (Exception e) {
+                body = response.getBodyAsBinaryData();
+            } catch (RuntimeException e) {
                 onError(null, e);
                 throw e;
-            } finally {
-                endNoError();
             }
+
+            if (body == null || body.isReplayable()) {
+                endNoError();
+                return body;
+            }
+
+            // A non-replayable body is read after this returns, so end the span when it's consumed, as getBody does.
+            Flux<ByteBuffer> tracedBody = Flux.using(() -> span,
+                s -> body.toFluxByteBuffer()
+                    .doOnError(e -> onError(null, e))
+                    .doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
+                s -> endNoError());
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(tracedBody, body.getLength(), false));
         }
 
         @Override
