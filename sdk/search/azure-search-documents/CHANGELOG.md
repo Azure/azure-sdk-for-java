@@ -30,6 +30,7 @@
 - Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
 - Carried forward SSE decoding, cancellation, backpressure, buffer ownership, and response-cleanup fixes.
 - Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
+- Corrected file update and delete argument order in the File knowledge source preview sample, including cleanup.
 
 ### Other Changes
 

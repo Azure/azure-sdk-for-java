@@ -25,6 +25,8 @@ import com.azure.search.documents.indexes.models.KnowledgeBaseMicrosoftRetriever
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFileIngestionOperation;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
+import com.azure.search.documents.indexes.models.FileKnowledgeSource;
+import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FileUploadMetadata;
 import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
 import com.azure.search.documents.indexes.models.RandomScoringParameters;
@@ -34,6 +36,7 @@ import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilterHint;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilterHintAutoConfiguration;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseGraphSearchActivityRecord;
@@ -51,8 +54,11 @@ import com.azure.search.documents.models.NoneVectorQueryTopicGraph;
 import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.VectorQueryTopicGraph;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Map;
@@ -256,6 +262,74 @@ public class PreviewApiTests {
             = builder.buildAsyncClient().updateKnowledgeSourceFile("source", "file", update).block();
         assertNotNull(updated);
         assertEquals("file", updated.getFileId());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void fileLifecycleSamplePreservesRequestPathsIncludingCleanup(boolean failUpdate) {
+        String endpoint = "https://example.search.windows.net";
+        String sourcePath = "/knowledgesources('my-source')";
+        String metadata = "{\"team\":\"search\",\"release\":\"2026-08-01-preview\"}";
+        String firstFile = sampleFile("file-123", "features.md", metadata);
+        String secondFile = sampleFile("file-456", "migration.md", "{\"type\":\"guide\"}");
+        String updatedFile = sampleFile("file-123", "features.md",
+            "{\"team\":\"search\",\"release\":\"2026-08-01-preview\",\"status\":\"reviewed\"}");
+        List<String> pages = Arrays.asList(
+            "{\"value\":[" + firstFile + "],\"@odata.nextLink\":\"" + endpoint + sourcePath
+                + "/files?api-version=2026-11-01-preview&cursor=next\"}",
+            "{\"value\":[" + secondFile + "]}", "{\"value\":[" + firstFile + "]}", "{\"value\":[]}");
+        FileKnowledgeSource source = new FileKnowledgeSource("my-source", new FileKnowledgeSourceParameters());
+        List<String> mutations = new ArrayList<>();
+        AtomicInteger uploads = new AtomicInteger();
+        AtomicInteger listings = new AtomicInteger();
+        SearchIndexClient client = new SearchIndexClientBuilder().endpoint(endpoint)
+            .credential(new AzureKeyCredential("key"))
+            .httpClient(request -> {
+                HttpMethod method = request.getHttpMethod();
+                String path = request.getUrl().getPath();
+                int status;
+                String body;
+                if (method == HttpMethod.POST) {
+                    status = 201;
+                    body = "/knowledgesources".equals(path)
+                        ? BinaryData.fromObject(source).toString()
+                        : uploads.getAndIncrement() == 0 ? firstFile : secondFile;
+                } else if (method == HttpMethod.GET) {
+                    status = 200;
+                    body = pages.get(listings.getAndIncrement());
+                } else if (method == HttpMethod.PUT) {
+                    mutations.add(method + " " + path);
+                    status = failUpdate ? 400 : 200;
+                    body = failUpdate
+                        ? "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Simulated update failure\"}}"
+                        : updatedFile;
+                } else {
+                    assertEquals(HttpMethod.DELETE, method);
+                    mutations.add(method + " " + path);
+                    status = 204;
+                    body = "";
+                }
+                return Mono.just(new MockHttpResponse(request, status, body.getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildClient();
+
+        if (failUpdate) {
+            HttpResponseException error = assertThrows(HttpResponseException.class,
+                () -> KnowledgeSourceFilePreviewExample.runFileLifecycle(client, source));
+            assertEquals(400, error.getResponse().getStatusCode());
+        } else {
+            KnowledgeSourceFilePreviewExample.runFileLifecycle(client, source);
+        }
+        assertEquals(Arrays.asList("PUT " + sourcePath + "/files('file-123')",
+            "DELETE " + sourcePath + "/files('" + (failUpdate ? "file-123" : "file-456") + "')",
+            "DELETE " + sourcePath + "/files('" + (failUpdate ? "file-456" : "file-123") + "')",
+            "DELETE " + sourcePath), mutations);
+    }
+
+    private static String sampleFile(String fileId, String fileName, String metadata) {
+        return "{\"fileId\":\"" + fileId + "\",\"fileName\":\"release-notes/august/" + fileName
+            + "\",\"prefix\":\"release-notes/august/\",\"parsingMode\":\"markdown\",\"extractionMode\":\"minimal\","
+            + "\"metadata\":" + metadata + "}";
     }
 
     @Test
