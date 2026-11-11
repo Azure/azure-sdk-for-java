@@ -513,6 +513,26 @@ public class GptLiveSamplesTests {
         assertEquals("one", GptLiveFunctionToolSample.object(((List<?>) item.get("content")).get(0)).get("text"));
     }
 
+    @Test
+    public void liveConnectionSampleUpdatesSessionAndAppendsInstructions() {
+        startConnectionServer();
+        Mono.usingWhen(
+            builder().beta()
+                .buildBetaVoiceAgentsLiveWebSocketAsyncClient()
+                .openWebSocketSession("agent", new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(false)),
+            GptLiveConnectionAsyncSample::runConnection, BetaVoiceAgentsLiveWebSocketSessionAsyncClient::closeAsync)
+            .block(TIMEOUT);
+
+        assertEquals(Arrays.asList("session.update", "session.instructions.append", "session.input_audio.append",
+            "session.close"), commandTypes());
+        Map<?, ?> update = GptLiveFunctionToolSample.object(commands.get(0).get("session"));
+        assertEquals("realtime", update.get("type"));
+        assertEquals("client", GptLiveFunctionToolSample.object(update.get("delegation")).get("type"));
+        assertEquals("Keep responses brief. Do not invent external facts.", commands.get(1).get("content"));
+        assertEquals(null, commands.get(1).get("delegation_id"));
+        assertEquals(2400, Base64.getDecoder().decode((String) commands.get(2).get("audio")).length);
+    }
+
     @ParameterizedTest
     @MethodSource("interactiveExitCases")
     public void interactiveTextSamplesReadMultipleTurnsAndCloseOnExit(boolean async, String exit) {
@@ -1387,6 +1407,29 @@ public class GptLiveSamplesTests {
                                 return silentInputs.getAndIncrement() % 5 == 0 ? Flux.just(silentOutput) : Flux.empty();
                             }
                             return "session.close".equals(command.get("type")) ? Flux.just(CLOSED) : Flux.empty();
+                        })))
+                    .then()))
+            .bindNow();
+    }
+
+    private void startConnectionServer() {
+        server = VoiceAgentWebSocketSessionTests.tlsServer()
+            .host("localhost")
+            .port(0)
+            .handle((request,
+                response) -> response.sendWebsocket((inbound, outbound) -> outbound
+                    .sendString(Flux.concat(Mono.just(STARTED).delayElement(Duration.ofMillis(50)),
+                        inbound.receive().asString().concatMap(json -> {
+                            Map<?, ?> command = GptLiveFunctionToolSample.object(BinaryData.fromString(json));
+                            commands.add(command);
+                            String type = (String) command.get("type");
+                            if ("session.update".equals(type)) {
+                                return Flux.just("{\"type\":\"session.updated\"}");
+                            }
+                            if ("session.instructions.append".equals(type)) {
+                                return Flux.just("{\"type\":\"session.instructions.appended\"}");
+                            }
+                            return "session.close".equals(type) ? Flux.just(CLOSED) : Flux.empty();
                         })))
                     .then()))
             .bindNow();

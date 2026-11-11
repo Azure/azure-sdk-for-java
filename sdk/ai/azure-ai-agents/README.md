@@ -1172,17 +1172,19 @@ terminates the session unless a drop strategy explicitly permits event loss.
 
 #### Runnable GPT Live scenarios
 
-These examples create a uniquely named `VoiceAgentLiveDefinition` agent with **Responses delegation**, connect
-using native GPT Live WebSockets, and delete the agent on exit, including on failure. They do not modify or delete
-an existing agent. Set these environment variables before running a sample's `main` method:
+These examples create a uniquely named `VoiceAgentLiveDefinition` agent and connect using native GPT Live WebSockets.
+Most use **Responses delegation** and delete their generated agent on exit, including on failure. The connection
+lifecycle sample uses client delegation and deletes only the agent version it created. None modifies or deletes an
+existing agent. Set these environment variables before running a sample's `main` method:
 
 | Variable | Value |
 |---|---|
 | `FOUNDRY_PROJECT_ENDPOINT` | Your Foundry project endpoint. Authentication uses `DefaultAzureCredential`. |
-| `FOUNDRY_GPT_LIVE_MODEL` | Optional. Your GPT Live **deployment name**, not a model catalog ID. Defaults to `gpt-live-1` when unset. |
+| `FOUNDRY_GPT_LIVE_MODEL` | Your GPT Live **deployment name**, not a model catalog ID. Required by the connection lifecycle sample; optional for other samples, which default to `gpt-live-1`. |
 | `FOUNDRY_GPT_LIVE_BACKEND_MODEL` | Optional. Your Responses backend **deployment name in the Live resource**. Defaults to `gpt-5.6-terra` when unset. |
 | `FOUNDRY_GPT_LIVE_STORE` | Optional, text and microphone/speaker examples. Set to `true` to persist conversation content and audio. Defaults to `false`. |
 | `FOUNDRY_KEEP_GPT_LIVE_AGENT` | Optional. Set to `true` to retain the sample-created agent; defaults to `false`. |
+| `FOUNDRY_VOICE_AGENT_NAME` | Optional prefix used by the connection lifecycle sample. Defaults to `sample-live-connection`. |
 
 Each sample reads, defaults, and validates these settings and configures its client builder directly in its own `main` method.
 Shared helpers receive explicit values rather than reading environment variables.
@@ -1193,6 +1195,7 @@ Generated agent names use `gpt-live-<scenario>-<UUID>` and fit the service's 63-
 |---|---|
 | Synchronous multi-turn text | [GptLiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
 | Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
+| Asynchronous connection lifecycle (no audio devices) | [GptLiveConnectionAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveConnectionAsyncSample.java) |
 | Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
 | Responses backend function tool | [GptLiveFunctionToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
 | Advanced synchronous console input and speaker | [GptLiveInteractiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationSample.java) |
