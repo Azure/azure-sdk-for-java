@@ -116,7 +116,10 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     # create empty sources/javadocs jars using the README.md. Not every library
     # has a README.md and, in these cases, it uses the README.md from the root service
     # directory. This will also trim the number of paths down considerably.
-    sparse_checkout_directories: Set[str] = set()
+    sparse_checkout_directories: Set[str] = {
+        '/sdk/tools/apiview-java-processor',
+        '/.vscode',
+    }
     service_directories: Set[str] = set()
     for p in source_projects:
         # Get the service directory. If there's a ci.yml file in the directory path then
