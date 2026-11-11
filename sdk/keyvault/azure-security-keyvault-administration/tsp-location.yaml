@@ -1,4 +1,4 @@
 directory: specification/keyvault/data-plane/Administration
-commit: 4fa18eb25269da05ccc35a73241f0df9db19b6c8
+commit: 4da6683055b80ab91fe05747f3cbe597241e17ca
 repo: Azure/azure-rest-api-specs
 cleanup: true
