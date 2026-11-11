@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0 (Unreleased)
+## 4.10.0 (2026-11-11)
 
 ### Features Added
 
@@ -13,8 +13,6 @@
 - These changes do not impact the API of stable versions such as 4.9.1. Only code written against a beta version such as 4.9.0-beta.1 may be affected.
 
 - Removed `KeyVaultAdministrationServiceVersion.V2026_01_01_PREVIEW`; use `V2026_04_01` instead.
-
-### Bugs Fixed
 
 ### Other Changes
 
