@@ -6,6 +6,7 @@
 
 - Added direct Markdown output with `--renderer=markdown`; JSON remains the default.
 - Added `Generate-ApiMarkdown.ps1` and SDK generation integration to write package-root `api.md` and `api.metadata.yml` files.
+- Generate API Markdown and metadata during SDK Maven packaging, reusing one processor build across parallel reactor modules.
 
 ### Bugs Fixed
 

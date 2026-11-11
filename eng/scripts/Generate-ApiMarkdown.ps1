@@ -12,6 +12,12 @@ Path to the SDK package containing pom.xml. Defaults to the current directory.
 .PARAMETER SourcesJar
 Optional existing sources JAR. When supplied, the SDK package build is skipped.
 
+.PARAMETER ProcessorBuildId
+Build identifier used to reuse the processor across modules in one Maven invocation.
+
+.PARAMETER FromMaven
+Skip non-library modules when invoked by the Maven lifecycle.
+
 .EXAMPLE
 pwsh ../../../eng/scripts/Generate-ApiMarkdown.ps1
 Run from a library module directory.
@@ -23,7 +29,11 @@ pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-j
 param(
     [string]$PackagePath = '.',
 
-    [string]$SourcesJar
+    [string]$SourcesJar,
+
+    [string]$ProcessorBuildId,
+
+    [switch]$FromMaven
 )
 
 Set-StrictMode -Version 4
@@ -49,6 +59,9 @@ if (-not (Test-Path -LiteralPath $packagePomPath -PathType Leaf)) {
 $packagePom = [xml](Get-Content -LiteralPath $packagePomPath -Raw)
 $packaging = $packagePom.SelectSingleNode("/*[local-name()='project']/*[local-name()='packaging']")
 if ($packaging -and $packaging.InnerText -eq 'pom') {
+    if ($FromMaven) {
+        return
+    }
     throw "Package path is a Maven aggregator. Run from a library module or supply -PackagePath."
 }
 $versionNode = $packagePom.SelectSingleNode("/*[local-name()='project']/*[local-name()='version']")
@@ -76,7 +89,8 @@ $buildOptions = @(
 )
 if (-not $SourcesJar) {
     Invoke-ApiMarkdownCommand 'mvn' (@(
-        'clean', 'package', '-f', (Join-Path $repositoryRoot 'pom.xml'), '-pl', $relativePackage, '-am'
+        'clean', 'package', '-f', (Join-Path $repositoryRoot 'pom.xml'), '-pl', $relativePackage, '-am',
+        '-P!generate-api-markdown'
     ) + $buildOptions)
     $sources = @(Get-ChildItem -LiteralPath (Join-Path $packageDirectory 'target') -Filter '*-sources.jar' -File)
     if ($sources.Count -ne 1) {
@@ -87,16 +101,43 @@ if (-not $SourcesJar) {
 
 $processorDirectory = Join-Path $repositoryRoot 'sdk' 'tools' 'apiview-java-processor'
 $processorPomPath = Join-Path $processorDirectory 'pom.xml'
-Invoke-ApiMarkdownCommand 'mvn' (@('package', '-f', $processorPomPath) + $buildOptions)
 $processorPom = [xml](Get-Content -LiteralPath $processorPomPath -Raw)
 $processorJar = Join-Path $processorDirectory 'target' "$($processorPom.project.artifactId)-$($processorPom.project.version).jar"
-if (-not (Test-Path -LiteralPath $processorJar -PathType Leaf)) {
-    throw "Processor JAR not found: $processorJar."
-}
-
-$temporaryDirectory = Join-Path $packageDirectory 'target' "api-markdown-$([guid]::NewGuid().ToString('N'))"
-New-Item -ItemType Directory -Path $temporaryDirectory -Force | Out-Null
+$processorBuildIdPath = Join-Path $processorDirectory 'target' 'api-markdown-build-id'
+$hasher = [Security.Cryptography.SHA256]::Create()
 try {
+    $lockId = [BitConverter]::ToString($hasher.ComputeHash([Text.Encoding]::UTF8.GetBytes($processorDirectory))).Replace('-', '')
+}
+finally {
+    $hasher.Dispose()
+}
+$processorMutex = [Threading.Mutex]::new($false, "AzureSdkApiMarkdown-$lockId")
+$lockTaken = $false
+$temporaryDirectory = Join-Path $packageDirectory 'target' "api-markdown-$([guid]::NewGuid().ToString('N'))"
+try {
+    try {
+        $lockTaken = $processorMutex.WaitOne([TimeSpan]::FromMinutes(10))
+    }
+    catch [Threading.AbandonedMutexException] {
+        $lockTaken = $true
+    }
+    if (-not $lockTaken) {
+        throw 'Timed out waiting for the API Markdown processor.'
+    }
+    $processorBuilt = $ProcessorBuildId -and
+        (Test-Path -LiteralPath $processorJar -PathType Leaf) -and
+        (Test-Path -LiteralPath $processorBuildIdPath -PathType Leaf) -and
+        [IO.File]::ReadAllText($processorBuildIdPath) -ceq $ProcessorBuildId
+    if (-not $processorBuilt) {
+        Invoke-ApiMarkdownCommand 'mvn' (@('package', '-f', $processorPomPath) + $buildOptions)
+    }
+    if (-not (Test-Path -LiteralPath $processorJar -PathType Leaf)) {
+        throw "Processor JAR not found: $processorJar."
+    }
+    if ($ProcessorBuildId) {
+        [IO.File]::WriteAllText($processorBuildIdPath, $ProcessorBuildId)
+    }
+    New-Item -ItemType Directory -Path $temporaryDirectory -Force | Out-Null
     Invoke-ApiMarkdownCommand 'java' @('-jar', $processorJar, '--renderer=markdown', $SourcesJar, $temporaryDirectory)
     $renderedPath = Join-Path $temporaryDirectory "$([IO.Path]::GetFileNameWithoutExtension($SourcesJar)).md"
     if (-not (Test-Path -LiteralPath $renderedPath -PathType Leaf)) {
@@ -124,5 +165,15 @@ try {
     Write-Output "Generated API metadata: $metadataOutputPath"
 }
 finally {
-    Remove-Item -LiteralPath $temporaryDirectory -Recurse -Force
+    try {
+        if (Test-Path -LiteralPath $temporaryDirectory) {
+            Remove-Item -LiteralPath $temporaryDirectory -Recurse -Force
+        }
+    }
+    finally {
+        if ($lockTaken) {
+            $processorMutex.ReleaseMutex()
+        }
+        $processorMutex.Dispose()
+    }
 }

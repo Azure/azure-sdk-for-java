@@ -92,24 +92,8 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
     return True
 
 
-def generate_api_markdown(sdk_root: str, sdk_folder: str) -> List[str]:
+def get_api_review_artifacts(sdk_root: str, sdk_folder: str) -> List[str]:
     package_directory = os.path.abspath(os.path.join(sdk_root, sdk_folder))
-    sources = glob.glob(os.path.join(package_directory, "target", "*-sources.jar"))
-    if len(sources) != 1:
-        raise RuntimeError(f"Expected one sources JAR in {package_directory}/target; found {len(sources)}.")
-    check_call(
-        [
-            "pwsh",
-            "-NoProfile",
-            "-File",
-            os.path.join(sdk_root, "eng", "scripts", "Generate-ApiMarkdown.ps1"),
-            "-PackagePath",
-            package_directory,
-            "-SourcesJar",
-            sources[0],
-        ],
-        sdk_root,
-    )
     artifacts = []
     for filename in ("api.md", "api.metadata.yml"):
         artifact_path = os.path.join(package_directory, filename)

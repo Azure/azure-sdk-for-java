@@ -26,7 +26,7 @@ from generate_data import (
 from generate_utils import (
     compare_with_maven_package,
     compile_arm_package,
-    generate_api_markdown,
+    get_api_review_artifacts,
     generate_typespec_project,
 )
 
@@ -257,7 +257,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         artifacts = ["{0}/pom.xml".format(sdk_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(sdk_folder))]
         if succeeded:
-            artifacts.extend(generate_api_markdown(sdk_root, sdk_folder))
+            artifacts.extend(get_api_review_artifacts(sdk_root, sdk_folder))
         result = "succeeded" if succeeded else "failed"
 
         return {

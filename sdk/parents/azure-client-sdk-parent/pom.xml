@@ -1138,6 +1138,47 @@
 
   <profiles>
 
+    <profile>
+      <id>generate-api-markdown</id>
+      <activation>
+        <file>
+          <exists>${basedir}/../../../eng/scripts/Generate-ApiMarkdown.ps1</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-api-markdown</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>-NoProfile</argument>
+                    <argument>-File</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/Generate-ApiMarkdown.ps1</argument>
+                    <argument>-PackagePath</argument>
+                    <argument>${project.basedir}</argument>
+                    <argument>-SourcesJar</argument>
+                    <argument>${packageOutputDirectory}/${project.build.finalName}-sources.jar</argument>
+                    <argument>-ProcessorBuildId</argument>
+                    <argument>maven-${session.request.startTime.time}</argument>
+                    <argument>-FromMaven</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Skip module-info.java on Java 8 -->
     <profile>
       <id>java8</id>

@@ -107,9 +107,30 @@ Describe 'Generate-ApiMarkdown' {
 
         Should -Invoke mvn -Times 2 -Exactly
         Should -Invoke mvn -Times 1 -Exactly -ParameterFilter {
-            $args -contains '-pl' -and $args -contains 'sdk/example/azure-example' -and $args -contains '-am'
+            $args -contains '-pl' -and $args -contains 'sdk/example/azure-example' -and $args -contains '-am' -and
+                $args -contains '-P!generate-api-markdown'
         }
         [IO.File]::ReadAllText($script:Output) | Should -Not -Be 'previous API'
+    }
+
+    It 'builds the processor once per Maven invocation' {
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -ProcessorBuildId 'first-build'
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -ProcessorBuildId 'first-build'
+
+        Should -Invoke mvn -Times 1 -Exactly
+        Should -Invoke java -Times 2 -Exactly
+
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -ProcessorBuildId 'next-build'
+
+        Should -Invoke mvn -Times 2 -Exactly
+        Should -Invoke java -Times 3 -Exactly
+    }
+
+    It 'skips aggregator modules invoked by Maven' {
+        & $script:Command -PackagePath $script:Repository -FromMaven
+
+        Should -Invoke mvn -Times 0
+        Should -Invoke java -Times 0
     }
 
     It 'rejects ambiguous sources JARs' {

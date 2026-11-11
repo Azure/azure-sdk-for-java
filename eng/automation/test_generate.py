@@ -388,65 +388,34 @@ class TestUpdateServiceFilesForNewLib(unittest.TestCase):
         )
 
 
-class TestGenerateApiMarkdown(unittest.TestCase):
+class TestApiReviewArtifacts(unittest.TestCase):
 
-    def test_runs_shared_script_with_sources_jar_and_returns_bundle_paths(self):
+    def test_collects_maven_generated_bundle_without_running_a_command(self):
         with tempfile.TemporaryDirectory(prefix="api markdown ") as root:
             folder = os.path.join("sdk", "example", "azure-example")
             package = os.path.join(root, folder)
-            target = os.path.join(package, "target")
-            os.makedirs(target)
-            sources = os.path.join(target, "azure-example-1.0.0-sources.jar")
-            with open(sources, "w"):
-                pass
+            os.makedirs(package)
+            for filename in ("api.md", "api.metadata.yml"):
+                with open(os.path.join(package, filename), "w") as output:
+                    output.write("generated")
 
-            def render(*args, **kwargs):
-                for filename in ("api.md", "api.metadata.yml"):
-                    with open(os.path.join(package, filename), "w") as output:
-                        output.write("generated")
-
-            with patch("generate_utils.subprocess.check_call", side_effect=render) as command:
-                artifacts = generate_utils.generate_api_markdown(root, folder)
+            with patch("generate_utils.subprocess.check_call") as command:
+                artifacts = generate_utils.get_api_review_artifacts(root, folder)
             self.assertEqual(
                 ["sdk/example/azure-example/api.md", "sdk/example/azure-example/api.metadata.yml"],
                 artifacts,
             )
-            command.assert_called_once_with(
-                [
-                    "pwsh", "-NoProfile", "-File",
-                    os.path.join(root, "eng", "scripts", "Generate-ApiMarkdown.ps1"),
-                    "-PackagePath", package, "-SourcesJar", sources,
-                ],
-                cwd=root,
-                shell=False,
-            )
+            command.assert_not_called()
 
     def test_rejects_an_incomplete_review_bundle(self):
         for missing in ("api.md", "api.metadata.yml"):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root:
-                target = os.path.join(root, "target")
-                os.makedirs(target)
-                with open(os.path.join(target, "example-sources.jar"), "w"):
-                    pass
                 present = "api.md" if missing == "api.metadata.yml" else "api.metadata.yml"
                 with open(os.path.join(root, present), "w"):
                     pass
                 with patch("generate_utils.subprocess.check_call"):
                     with self.assertRaisesRegex(RuntimeError, "API review file was not produced"):
-                        generate_utils.generate_api_markdown(root, ".")
-
-    def test_rejects_missing_or_ambiguous_sources(self):
-        for count in (0, 2):
-            with self.subTest(count=count), tempfile.TemporaryDirectory() as root:
-                target = os.path.join(root, "target")
-                os.makedirs(target)
-                for index in range(count):
-                    with open(os.path.join(target, f"example-{index}-sources.jar"), "w"):
-                        pass
-                with patch("generate_utils.subprocess.check_call") as command:
-                    with self.assertRaisesRegex(RuntimeError, "Expected one sources JAR"):
-                        generate_utils.generate_api_markdown(root, ".")
-                    command.assert_not_called()
+                        generate_utils.get_api_review_artifacts(root, ".")
 
     def _generate_project(self, management, compiled=True, fallback=False):
         module = generate if management else generate_data
@@ -478,8 +447,8 @@ class TestGenerateApiMarkdown(unittest.TestCase):
             stack.enter_context(patch.object(module, "compare_with_maven_package", return_value=(False, "", [])))
             stack.enter_context(patch.object(module, "get_latest_ga_version", return_value="1.0.0"))
             stack.enter_context(patch.object(module.glob, "glob", return_value=[sources]))
-            renderer = stack.enter_context(patch.object(
-                module, "generate_api_markdown", return_value=[api_path, metadata_path],
+            collector = stack.enter_context(patch.object(
+                module, "get_api_review_artifacts", return_value=[api_path, metadata_path],
             ))
             if management:
                 for name in ("update_version", "update_revapi_skip", "update_changelog_version"):
@@ -489,22 +458,22 @@ class TestGenerateApiMarkdown(unittest.TestCase):
                 stack.enter_context(patch.object(module, "clean_sdk_folder", return_value=True))
             result = module.sdk_automation_typespec_project("specification/example", config)
             if compiled or fallback:
-                renderer.assert_called_once()
+                collector.assert_called_once()
                 self.assertIn(api_path, result["artifacts"])
                 self.assertIn(metadata_path, result["artifacts"])
                 self.assertEqual(sources, result["apiViewArtifact"])
                 self.assertEqual("succeeded", result["result"])
             else:
-                renderer.assert_not_called()
+                collector.assert_not_called()
                 self.assertEqual([], result["artifacts"])
                 self.assertEqual("failed", result["result"])
 
-    def test_both_generation_flows_include_markdown_after_success(self):
+    def test_both_generation_flows_include_maven_generated_review_files(self):
         for management in (False, True):
             with self.subTest(management=management):
                 self._generate_project(management)
 
-    def test_failed_builds_do_not_run_markdown_generation(self):
+    def test_failed_builds_do_not_collect_review_files(self):
         for management in (False, True):
             with self.subTest(management=management):
                 self._generate_project(management, compiled=False)
