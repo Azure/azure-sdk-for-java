@@ -75,7 +75,7 @@ public class MetadataMonitorThread extends Thread {
 
         int containersPollDelayInMs = this.metadataConfig.getMetadataPollDelayInMs();
         if (containersPollDelayInMs >= 0) {
-            this.monitoringSubscription.update(Mono
+            this.updateMonitoringSubscription(Mono
                 .delay(Duration.ofMillis(containersPollDelayInMs))
                 .flatMap(t -> {
                     if (this.isRunning.get()) {
@@ -100,6 +100,10 @@ public class MetadataMonitorThread extends Thread {
         } else {
             LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
         }
+    }
+
+    void updateMonitoringSubscription(Disposable subscription) {
+        this.monitoringSubscription.update(subscription);
     }
 
     private Mono<Boolean> shouldRequestTaskReconfiguration() {
