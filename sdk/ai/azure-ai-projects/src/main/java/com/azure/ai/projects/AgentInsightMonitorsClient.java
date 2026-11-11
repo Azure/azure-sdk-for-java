@@ -4,22 +4,22 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.projects.implementation.BetaAgentInsightMonitorsImpl;
+import com.azure.ai.projects.implementation.AgentInsightMonitorsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.implementation.utils.Beta;
+import com.azure.ai.projects.implementation.models.CreateRequest;
+import com.azure.ai.projects.implementation.models.CreateRunRequest;
 import com.azure.ai.projects.models.AgentInsight;
 import com.azure.ai.projects.models.AgentInsightMonitor;
-import com.azure.ai.projects.models.AgentInsightMonitorCreate;
 import com.azure.ai.projects.models.AgentInsightMonitorListItem;
-import com.azure.ai.projects.models.AgentInsightMonitorUpdate;
+import com.azure.ai.projects.models.AgentInsightPriorities;
 import com.azure.ai.projects.models.AgentInsightRun;
-import com.azure.ai.projects.models.AgentInsightRunCreate;
 import com.azure.ai.projects.models.AgentInsightRunResult;
 import com.azure.ai.projects.models.AgentInsightRunTrigger;
 import com.azure.ai.projects.models.AgentInsightSeverity;
 import com.azure.ai.projects.models.AgentInsightStatus;
-import com.azure.ai.projects.models.AgentInsightUpdate;
 import com.azure.ai.projects.models.JobStatus;
+import com.azure.ai.projects.models.UpdateAgentInsightMonitorPatchRequest;
+import com.azure.ai.projects.models.UpdateAgentInsightPatchRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -34,24 +34,26 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
-@Beta(warningText = "This class is in preview and may change in future releases.")
-public final class BetaAgentInsightMonitorsClient {
+public final class AgentInsightMonitorsClient {
 
     @Generated
-    private final BetaAgentInsightMonitorsImpl serviceClient;
+    private final AgentInsightMonitorsImpl serviceClient;
 
     /**
-     * Initializes an instance of BetaAgentInsightMonitorsClient class.
+     * Initializes an instance of AgentInsightMonitorsClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    BetaAgentInsightMonitorsClient(BetaAgentInsightMonitorsImpl serviceClient) {
+    AgentInsightMonitorsClient(AgentInsightMonitorsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -94,6 +96,12 @@ public final class BetaAgentInsightMonitorsClient {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      *     updated_at: long (Required)
      * }
      * }
@@ -123,6 +131,12 @@ public final class BetaAgentInsightMonitorsClient {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Required)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -150,10 +164,14 @@ public final class BetaAgentInsightMonitorsClient {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -167,7 +185,7 @@ public final class BetaAgentInsightMonitorsClient {
      * <tr><td>Location</td><td>String</td><td>URL of the created monitor.</td></tr>
      * </table>
      *
-     * @param monitor The monitor to create.
+     * @param createRequest The createRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -178,9 +196,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentInsightMonitorWithResponse(BinaryData monitor,
+    public Response<BinaryData> createAgentInsightMonitorWithResponse(BinaryData createRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.createAgentInsightMonitorWithResponse(monitor, requestOptions);
+        return this.serviceClient.createAgentInsightMonitorWithResponse(createRequest, requestOptions);
     }
 
     /**
@@ -208,10 +226,14 @@ public final class BetaAgentInsightMonitorsClient {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -259,8 +281,11 @@ public final class BetaAgentInsightMonitorsClient {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Optional)
-     *     overview_override (Optional): {
-     *         content: String (Optional, Required on create)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      * }
      * }
@@ -289,10 +314,14 @@ public final class BetaAgentInsightMonitorsClient {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -300,7 +329,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param monitor The monitor fields to update.
+     * @param updateRequest The updateRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -311,13 +340,13 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData monitor,
+    public Response<BinaryData> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData updateRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentInsightMonitorWithResponse(monitorId, monitor, requestOptions);
+        return this.serviceClient.updateAgentInsightMonitorWithResponse(monitorId, updateRequest, requestOptions);
     }
 
     /**
-     * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
+     * Reset an Agent Insights monitor's generated summary, checkpoint, and active insight state.
      *
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -414,7 +443,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,9 +454,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData run,
+    public SyncPoller<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData createRunRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateAgentInsightRun(monitorId, run, requestOptions);
+        return this.serviceClient.beginCreateAgentInsightRun(monitorId, createRunRequest, requestOptions);
     }
 
     /**
@@ -681,7 +710,7 @@ public final class BetaAgentInsightMonitorsClient {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -693,11 +722,13 @@ public final class BetaAgentInsightMonitorsClient {
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
-     * <tr><td>category</td><td>String</td><td>No</td><td>Filter insights by category.</td></tr>
-     * <tr><td>severity</td><td>String</td><td>No</td><td>Filter insights by severity. Allowed values: "high", "medium",
-     * "low".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter insights by lifecycle status. Allowed values: "active",
-     * "resolved", "ignored".</td></tr>
+     * <tr><td>categories</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed category. Commas separate
+     * identifiers; identifiers containing commas cannot be filtered individually. In the form of "," separated
+     * string.</td></tr>
+     * <tr><td>severities</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed severity. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed status. In the form of ","
+     * separated string.</td></tr>
      * <tr><td>include_details</td><td>Boolean</td><td>No</td><td>Whether to include expanded insight details such as
      * evidence and run links in the response. Defaults to false.</td></tr>
      * </table>
@@ -921,7 +952,7 @@ public final class BetaAgentInsightMonitorsClient {
      *
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
-     * @param update The insight fields to update.
+     * @param updateInsightRequest The updateInsightRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -931,9 +962,48 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentInsightWithResponse(String monitorId, String insightId, BinaryData update,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentInsightWithResponse(monitorId, insightId, update, requestOptions);
+    public Response<BinaryData> updateAgentInsightWithResponse(String monitorId, String insightId,
+        BinaryData updateInsightRequest, RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentInsightWithResponse(monitorId, insightId, updateInsightRequest,
+            requestOptions);
+    }
+
+    /**
+     * List Agent Insights monitors, optionally filtered by agent name.
+     *
+     * @param after A cursor that identifies the last item in the previous page.
+     * @param before A cursor that identifies the first item in the next page.
+     * @param limit The maximum number of items to return. Defaults to 20.
+     * @param order Sort order by creation time. Defaults to descending.
+     * @param agentName Filter monitors by agent name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before,
+        Integer limit, PageOrder order, String agentName) {
+        // Generated convenience method for listAgentInsightMonitors
+        RequestOptions requestOptions = new RequestOptions();
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        return serviceClient.listAgentInsightMonitors(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
     /**
@@ -958,7 +1028,12 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Create an Agent Insights monitor for an agent.
      *
-     * @param monitor The monitor to create.
+     * @param agentName The agent this monitor should analyze.
+     * @param modelDeploymentName The model deployment to use for analyzing traces. Accepts either the deployment name
+     * alone or with the connection name as '{connectionName}/modelDeploymentName'.
+     * @param enabled Whether scheduled insight generation should be armed. Defaults to false.
+     * @param runIntervalHours Interval between scheduled insight runs, in hours. Defaults to 6.
+     * @param priorities Analysis priorities for the monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -969,10 +1044,40 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor createAgentInsightMonitor(AgentInsightMonitorCreate monitor) {
+    public AgentInsightMonitor createAgentInsightMonitor(String agentName, String modelDeploymentName, Boolean enabled,
+        Double runIntervalHours, AgentInsightPriorities priorities) {
         // Generated convenience method for createAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAgentInsightMonitorWithResponse(BinaryData.fromObject(monitor), requestOptions).getValue()
+        CreateRequest createRequestObj = new CreateRequest(agentName, modelDeploymentName).setEnabled(enabled)
+            .setRunIntervalHours(runIntervalHours)
+            .setPriorities(priorities);
+        BinaryData createRequest = BinaryData.fromObject(createRequestObj);
+        return createAgentInsightMonitorWithResponse(createRequest, requestOptions).getValue()
+            .toObject(AgentInsightMonitor.class);
+    }
+
+    /**
+     * Create an Agent Insights monitor for an agent.
+     *
+     * @param agentName The agent this monitor should analyze.
+     * @param modelDeploymentName The model deployment to use for analyzing traces. Accepts either the deployment name
+     * alone or with the connection name as '{connectionName}/modelDeploymentName'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a per-agent Agent Insights monitor that owns configuration, runs, and discovered insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentInsightMonitor createAgentInsightMonitor(String agentName, String modelDeploymentName) {
+        // Generated convenience method for createAgentInsightMonitorWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateRequest createRequestObj = new CreateRequest(agentName, modelDeploymentName);
+        BinaryData createRequest = BinaryData.fromObject(createRequestObj);
+        return createAgentInsightMonitorWithResponse(createRequest, requestOptions).getValue()
             .toObject(AgentInsightMonitor.class);
     }
 
@@ -1020,7 +1125,7 @@ public final class BetaAgentInsightMonitorsClient {
      * Update an Agent Insights monitor.
      *
      * @param monitorId The identifier of the monitor.
-     * @param monitor The monitor fields to update.
+     * @param updateRequest The updateRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1031,20 +1136,23 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor updateAgentInsightMonitor(String monitorId, AgentInsightMonitorUpdate monitor) {
+    public AgentInsightMonitor updateAgentInsightMonitor(String monitorId,
+        UpdateAgentInsightMonitorPatchRequest updateRequest) {
         // Generated convenience method for updateAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, true);
-        BinaryData monitorInBinaryData = BinaryData.fromObject(monitor);
+        JsonMergePatchHelper.getUpdateAgentInsightMonitorPatchRequestAccessor()
+            .prepareModelForJsonMergePatch(updateRequest, true);
+        BinaryData updateRequestInBinaryData = BinaryData.fromObject(updateRequest);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        monitorInBinaryData.getLength();
-        JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, false);
-        return updateAgentInsightMonitorWithResponse(monitorId, monitorInBinaryData, requestOptions).getValue()
+        updateRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentInsightMonitorPatchRequestAccessor()
+            .prepareModelForJsonMergePatch(updateRequest, false);
+        return updateAgentInsightMonitorWithResponse(monitorId, updateRequestInBinaryData, requestOptions).getValue()
             .toObject(AgentInsightMonitor.class);
     }
 
     /**
-     * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
+     * Reset an Agent Insights monitor's generated summary, checkpoint, and active insight state.
      *
      * @param monitorId The identifier of the monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1066,9 +1174,10 @@ public final class BetaAgentInsightMonitorsClient {
      * Start an Agent Insights run for a monitor.
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
      * unconditionally.
+     * @param lookbackHours Optional finite positive number of hours of trace history to analyze, up to 2,160. Defaults
+     * to 168.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1081,20 +1190,21 @@ public final class BetaAgentInsightMonitorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
-        AgentInsightRunCreate run, String operationId) {
+        String operationId, Double lookbackHours) {
         // Generated convenience method for beginCreateAgentInsightRunWithModel
         RequestOptions requestOptions = new RequestOptions();
+        CreateRunRequest createRunRequestObj = new CreateRunRequest().setLookbackHours(lookbackHours);
+        BinaryData createRunRequest = BinaryData.fromObject(createRunRequestObj);
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
+        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, createRunRequest, requestOptions);
     }
 
     /**
      * Start an Agent Insights run for a monitor.
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1106,11 +1216,55 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
-        AgentInsightRunCreate run) {
+    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId) {
         // Generated convenience method for beginCreateAgentInsightRunWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
+        CreateRunRequest createRunRequestObj = new CreateRunRequest();
+        BinaryData createRunRequest = BinaryData.fromObject(createRunRequestObj);
+        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, createRunRequest, requestOptions);
+    }
+
+    /**
+     * List Agent Insights runs for a monitor.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
+     * @param before A cursor that identifies the first item in the next page.
+     * @param limit The maximum number of items to return. Defaults to 20.
+     * @param order Sort order by creation time. Defaults to descending.
+     * @param status Filter runs by status.
+     * @param trigger Filter runs by trigger.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
+        Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
+        // Generated convenience method for listAgentInsightRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (trigger != null) {
+            requestOptions.addQueryParam("trigger", trigger.toString(), false);
+        }
+        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
     /**
@@ -1179,7 +1333,73 @@ public final class BetaAgentInsightMonitorsClient {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
+     * @param before A cursor that identifies the first item in the next page.
+     * @param limit The maximum number of items to return. Defaults to 20.
+     * @param order Sort order by creation time. Defaults to descending.
+     * @param categories Match any listed category. Commas separate identifiers; identifiers containing commas cannot be
+     * filtered individually.
+     * @param severities Match any listed severity.
+     * @param statuses Match any listed status.
+     * @param includeDetails Whether to include expanded insight details such as evidence and run links in the response.
+     * Defaults to false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
+        PageOrder order, List<String> categories, List<AgentInsightSeverity> severities,
+        List<AgentInsightStatus> statuses, Boolean includeDetails) {
+        // Generated convenience method for listAgentInsights
+        RequestOptions requestOptions = new RequestOptions();
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (categories != null) {
+            requestOptions.addQueryParam("categories",
+                categories.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (severities != null) {
+            requestOptions.addQueryParam("severities",
+                severities.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (statuses != null) {
+            requestOptions.addQueryParam("statuses",
+                statuses.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (includeDetails != null) {
+            requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
+        }
+        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
+    }
+
+    /**
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      *
      * @param monitorId The identifier of the monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1253,7 +1473,7 @@ public final class BetaAgentInsightMonitorsClient {
      *
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
-     * @param update The insight fields to update.
+     * @param updateInsightRequest The updateInsightRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1264,149 +1484,19 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsight updateAgentInsight(String monitorId, String insightId, AgentInsightUpdate update) {
+    public AgentInsight updateAgentInsight(String monitorId, String insightId,
+        UpdateAgentInsightPatchRequest updateInsightRequest) {
         // Generated convenience method for updateAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, true);
-        BinaryData updateInBinaryData = BinaryData.fromObject(update);
+        JsonMergePatchHelper.getUpdateAgentInsightPatchRequestAccessor()
+            .prepareModelForJsonMergePatch(updateInsightRequest, true);
+        BinaryData updateInsightRequestInBinaryData = BinaryData.fromObject(updateInsightRequest);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        updateInBinaryData.getLength();
-        JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, false);
-        return updateAgentInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions).getValue()
+        updateInsightRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentInsightPatchRequestAccessor()
+            .prepareModelForJsonMergePatch(updateInsightRequest, false);
+        return updateAgentInsightWithResponse(monitorId, insightId, updateInsightRequestInBinaryData, requestOptions)
+            .getValue()
             .toObject(AgentInsight.class);
-    }
-
-    /**
-     * List Agent Insights monitors, optionally filtered by agent name.
-     *
-     * @param after A cursor that identifies the last item in the previous page.
-     * @param before A cursor that identifies the first item in the next page.
-     * @param limit The maximum number of items to return. Defaults to 20.
-     * @param order Sort order by creation time. Defaults to descending.
-     * @param agentName Filter monitors by agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before,
-        Integer limit, PageOrder order, String agentName) {
-        // Generated convenience method for listAgentInsightMonitors
-        RequestOptions requestOptions = new RequestOptions();
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        return serviceClient.listAgentInsightMonitors(after, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
-    }
-
-    /**
-     * List Agent Insights runs for a monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param after A cursor that identifies the last item in the previous page.
-     * @param before A cursor that identifies the first item in the next page.
-     * @param limit The maximum number of items to return. Defaults to 20.
-     * @param order Sort order by creation time. Defaults to descending.
-     * @param status Filter runs by status.
-     * @param trigger Filter runs by trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
-        Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listAgentInsightRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (trigger != null) {
-            requestOptions.addQueryParam("trigger", trigger.toString(), false);
-        }
-        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
-    }
-
-    /**
-     * List current insights for an Agent Insights monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param after A cursor that identifies the last item in the previous page.
-     * @param before A cursor that identifies the first item in the next page.
-     * @param limit The maximum number of items to return. Defaults to 20.
-     * @param order Sort order by creation time. Defaults to descending.
-     * @param category Filter insights by category.
-     * @param severity Filter insights by severity.
-     * @param status Filter insights by lifecycle status.
-     * @param includeDetails Whether to include expanded insight details such as evidence and run links in the response.
-     * Defaults to false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
-        PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
-        Boolean includeDetails) {
-        // Generated convenience method for listAgentInsights
-        RequestOptions requestOptions = new RequestOptions();
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (category != null) {
-            requestOptions.addQueryParam("category", category, false);
-        }
-        if (severity != null) {
-            requestOptions.addQueryParam("severity", severity.toString(), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (includeDetails != null) {
-            requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
-        }
-        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 }

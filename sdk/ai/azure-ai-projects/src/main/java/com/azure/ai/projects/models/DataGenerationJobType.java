@@ -19,7 +19,7 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
     public static final DataGenerationJobType SIMPLE_QNA = fromString("simple_qna");
 
     /**
-     * Single turn query and response from agent traces.
+     * Samples from captured turns in agent traces.
      */
     @Generated
     public static final DataGenerationJobType TRACES = fromString("traces");
@@ -66,4 +66,11 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
      */
     @Generated
     public static final DataGenerationJobType SIMULATION_SEED = fromString("simulation_seed");
+
+    /**
+     * Reconstruction of existing traced conversations for evaluation. This is a preview feature, not synthetic
+     * conversation simulation.
+     */
+    @Generated
+    public static final DataGenerationJobType CONVERSATIONS = fromString("conversations");
 }

@@ -795,6 +795,8 @@ public final class DatasetsAsyncClient {
      * Get a data generation job
      *
      * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs. Reading an existing job does not require preview opt-in.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -814,6 +816,12 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
@@ -847,7 +855,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -874,8 +882,9 @@ public final class DatasetsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a data generation job
      *
-     * Retrieves the specified data generation job and its current status along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -887,6 +896,8 @@ public final class DatasetsAsyncClient {
      * List data generation jobs
      *
      * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -926,6 +937,12 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
@@ -959,7 +976,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -988,6 +1005,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -1010,7 +1042,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1039,6 +1071,12 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
@@ -1072,7 +1110,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1121,6 +1159,12 @@ public final class DatasetsAsyncClient {
      *             completion_tokens: long (Required)
      *             total_tokens: long (Required)
      *         }
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String(test_case_description_generation_incomplete) (Optional)
+     *                 message: String (Required)
+     *             }
+     *         ]
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
@@ -1154,7 +1198,7 @@ public final class DatasetsAsyncClient {
      *         }
      *     ]
      *     generation_configuration (Required): {
-     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         type: String(simple_qna/traces/tool_use/simulation_seed/conversations) (Required)
      *         train_split: Double (Optional)
      *         model_options (Optional): {
      *             model: String (Required)
@@ -1203,6 +1247,8 @@ public final class DatasetsAsyncClient {
      * Get a data generation job
      *
      * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs. Reading an existing job does not require preview opt-in.
      *
      * @param jobId The ID of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1213,7 +1259,9 @@ public final class DatasetsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data generation job
      *
-     * Retrieves the specified data generation job and its current status on successful completion of {@link Mono}.
+     * Retrieves the specified data generation job and its current status.
+     * Returns effective generation settings and preserves `type: conversations` for
+     * conversation jobs on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1228,6 +1276,8 @@ public final class DatasetsAsyncClient {
      * List data generation jobs
      *
      * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1267,6 +1317,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      *
      * @param job The data generation job inputs to create.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
@@ -1295,6 +1360,21 @@ public final class DatasetsAsyncClient {
      * Create a data generation job
      *
      * Submits a new data generation job for asynchronous execution.
+     * Requests with `type` set to `conversations`, or `traces` with
+     * `generate_test_case_rubric` set to true, require
+     * `Foundry-Features: DataGenerationJobs=V1Preview`; the service rejects
+     * these requests without this opt-in. Ordinary turn-level trace requests
+     * without rubric generation do not require the header.
+     * Conversation samples require `scenario` to be `evaluation`.
+     * Jobs with `type: conversations` reconstruct existing traced conversations,
+     * use sources of type `traces`, and do not support `sample_level`.
+     * The `generate_test_case_rubric` flag is supported for both trace and
+     * conversation jobs and requires a nonempty `model_options.model` when true.
+     * The conversation-only `generate_test_case_description` flag also requires
+     * a nonempty `model_options.model` when true. For conversation jobs, model
+     * options must be omitted when neither flag is enabled.
+     * Create, get, and list responses preserve `type: conversations`.
+     * The response includes the effective generation settings.
      *
      * @param job The data generation job inputs to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,6 +1443,8 @@ public final class DatasetsAsyncClient {
      * List data generation jobs
      *
      * Returns a list of data generation jobs.
+     * Each trace job includes its effective settings. Conversation jobs preserve
+     * `type: conversations`. Listing existing jobs does not require preview opt-in.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.

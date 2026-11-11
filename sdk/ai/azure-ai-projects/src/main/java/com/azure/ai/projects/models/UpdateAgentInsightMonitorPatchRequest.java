@@ -4,7 +4,6 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -16,11 +15,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Fields that can be updated on an Agent Insights monitor.
+ * The UpdateAgentInsightMonitorPatchRequest model.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentInsights=V1Preview")
-public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentInsightMonitorUpdate> {
+public final class UpdateAgentInsightMonitorPatchRequest
+    implements JsonSerializable<UpdateAgentInsightMonitorPatchRequest> {
 
     /*
      * Whether scheduled insight generation is armed for the monitor.
@@ -42,11 +41,10 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
     private String modelDeploymentName;
 
     /*
-     * Sets the effective user overview, or clears it when explicitly set to null. Omission leaves
-     * the overview unchanged. This field cannot be combined with other monitor updates.
+     * Replaces all priorities. Omit to preserve them; null clears them.
      */
     @Generated
-    private AgentInsightsOverviewOverride overviewOverride;
+    private AgentInsightPriorities priorities;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -63,28 +61,28 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
     }
 
     static {
-        JsonMergePatchHelper
-            .setAgentInsightMonitorUpdateAccessor(new JsonMergePatchHelper.AgentInsightMonitorUpdateAccessor() {
+        JsonMergePatchHelper.setUpdateAgentInsightMonitorPatchRequestAccessor(
+            new JsonMergePatchHelper.UpdateAgentInsightMonitorPatchRequestAccessor() {
 
                 @Override
-                public AgentInsightMonitorUpdate prepareModelForJsonMergePatch(AgentInsightMonitorUpdate model,
-                    boolean jsonMergePatchEnabled) {
+                public UpdateAgentInsightMonitorPatchRequest prepareModelForJsonMergePatch(
+                    UpdateAgentInsightMonitorPatchRequest model, boolean jsonMergePatchEnabled) {
                     model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                     return model;
                 }
 
                 @Override
-                public boolean isJsonMergePatch(AgentInsightMonitorUpdate model) {
+                public boolean isJsonMergePatch(UpdateAgentInsightMonitorPatchRequest model) {
                     return model.jsonMergePatch;
                 }
             });
     }
 
     /**
-     * Creates an instance of AgentInsightMonitorUpdate class.
+     * Creates an instance of UpdateAgentInsightMonitorPatchRequest class.
      */
     @Generated
-    public AgentInsightMonitorUpdate() {
+    public UpdateAgentInsightMonitorPatchRequest() {
     }
 
     /**
@@ -101,10 +99,10 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
      * Set the enabled property: Whether scheduled insight generation is armed for the monitor.
      *
      * @param enabled the enabled value to set.
-     * @return the AgentInsightMonitorUpdate object itself.
+     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
      */
     @Generated
-    public AgentInsightMonitorUpdate setEnabled(Boolean enabled) {
+    public UpdateAgentInsightMonitorPatchRequest setEnabled(Boolean enabled) {
         this.enabled = enabled;
         this.updatedProperties.add("enabled");
         return this;
@@ -124,10 +122,10 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
      * Set the runIntervalHours property: Interval between scheduled insight runs, in hours.
      *
      * @param runIntervalHours the runIntervalHours value to set.
-     * @return the AgentInsightMonitorUpdate object itself.
+     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
      */
     @Generated
-    public AgentInsightMonitorUpdate setRunIntervalHours(Double runIntervalHours) {
+    public UpdateAgentInsightMonitorPatchRequest setRunIntervalHours(Double runIntervalHours) {
         this.runIntervalHours = runIntervalHours;
         this.updatedProperties.add("runIntervalHours");
         return this;
@@ -149,39 +147,35 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
      * deployment name alone or with the connection name as '{connectionName}/modelDeploymentName'.
      *
      * @param modelDeploymentName the modelDeploymentName value to set.
-     * @return the AgentInsightMonitorUpdate object itself.
+     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
      */
     @Generated
-    public AgentInsightMonitorUpdate setModelDeploymentName(String modelDeploymentName) {
+    public UpdateAgentInsightMonitorPatchRequest setModelDeploymentName(String modelDeploymentName) {
         this.modelDeploymentName = modelDeploymentName;
         this.updatedProperties.add("modelDeploymentName");
         return this;
     }
 
     /**
-     * Get the overviewOverride property: Sets the effective user overview, or clears it when explicitly set to null.
-     * Omission leaves
-     * the overview unchanged. This field cannot be combined with other monitor updates.
+     * Get the priorities property: Replaces all priorities. Omit to preserve them; null clears them.
      *
-     * @return the overviewOverride value.
+     * @return the priorities value.
      */
     @Generated
-    public AgentInsightsOverviewOverride getOverviewOverride() {
-        return this.overviewOverride;
+    public AgentInsightPriorities getPriorities() {
+        return this.priorities;
     }
 
     /**
-     * Set the overviewOverride property: Sets the effective user overview, or clears it when explicitly set to null.
-     * Omission leaves
-     * the overview unchanged. This field cannot be combined with other monitor updates.
+     * Set the priorities property: Replaces all priorities. Omit to preserve them; null clears them.
      *
-     * @param overviewOverride the overviewOverride value to set.
-     * @return the AgentInsightMonitorUpdate object itself.
+     * @param priorities the priorities value to set.
+     * @return the UpdateAgentInsightMonitorPatchRequest object itself.
      */
     @Generated
-    public AgentInsightMonitorUpdate setOverviewOverride(AgentInsightsOverviewOverride overviewOverride) {
-        this.overviewOverride = overviewOverride;
-        this.updatedProperties.add("overviewOverride");
+    public UpdateAgentInsightMonitorPatchRequest setPriorities(AgentInsightPriorities priorities) {
+        this.priorities = priorities;
+        this.updatedProperties.add("priorities");
         return this;
     }
 
@@ -198,7 +192,7 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
             jsonWriter.writeBooleanField("enabled", this.enabled);
             jsonWriter.writeNumberField("run_interval_hours", this.runIntervalHours);
             jsonWriter.writeStringField("model_deployment_name", this.modelDeploymentName);
-            jsonWriter.writeJsonField("overview_override", this.overviewOverride);
+            jsonWriter.writeJsonField("priorities", this.priorities);
             return jsonWriter.writeEndObject();
         }
     }
@@ -227,49 +221,52 @@ public final class AgentInsightMonitorUpdate implements JsonSerializable<AgentIn
                 jsonWriter.writeStringField("model_deployment_name", this.modelDeploymentName);
             }
         }
-        if (updatedProperties.contains("overviewOverride")) {
-            if (this.overviewOverride == null) {
-                jsonWriter.writeNullField("overview_override");
+        if (updatedProperties.contains("priorities")) {
+            if (this.priorities == null) {
+                jsonWriter.writeNullField("priorities");
             } else {
-                JsonMergePatchHelper.getAgentInsightsOverviewOverrideAccessor()
-                    .prepareModelForJsonMergePatch(this.overviewOverride, true);
-                jsonWriter.writeJsonField("overview_override", this.overviewOverride);
-                JsonMergePatchHelper.getAgentInsightsOverviewOverrideAccessor()
-                    .prepareModelForJsonMergePatch(this.overviewOverride, false);
+                JsonMergePatchHelper.getAgentInsightPrioritiesAccessor()
+                    .prepareModelForJsonMergePatch(this.priorities, true);
+                jsonWriter.writeJsonField("priorities", this.priorities);
+                JsonMergePatchHelper.getAgentInsightPrioritiesAccessor()
+                    .prepareModelForJsonMergePatch(this.priorities, false);
             }
         }
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of AgentInsightMonitorUpdate from the JsonReader.
+     * Reads an instance of UpdateAgentInsightMonitorPatchRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentInsightMonitorUpdate if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AgentInsightMonitorUpdate.
+     * @return An instance of UpdateAgentInsightMonitorPatchRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAgentInsightMonitorPatchRequest.
      */
     @Generated
-    public static AgentInsightMonitorUpdate fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateAgentInsightMonitorPatchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentInsightMonitorUpdate deserializedAgentInsightMonitorUpdate = new AgentInsightMonitorUpdate();
+            UpdateAgentInsightMonitorPatchRequest deserializedUpdateAgentInsightMonitorPatchRequest
+                = new UpdateAgentInsightMonitorPatchRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("enabled".equals(fieldName)) {
-                    deserializedAgentInsightMonitorUpdate.enabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedUpdateAgentInsightMonitorPatchRequest.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("run_interval_hours".equals(fieldName)) {
-                    deserializedAgentInsightMonitorUpdate.runIntervalHours = reader.getNullable(JsonReader::getDouble);
+                    deserializedUpdateAgentInsightMonitorPatchRequest.runIntervalHours
+                        = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_deployment_name".equals(fieldName)) {
-                    deserializedAgentInsightMonitorUpdate.modelDeploymentName = reader.getString();
-                } else if ("overview_override".equals(fieldName)) {
-                    deserializedAgentInsightMonitorUpdate.overviewOverride
-                        = AgentInsightsOverviewOverride.fromJson(reader);
+                    deserializedUpdateAgentInsightMonitorPatchRequest.modelDeploymentName = reader.getString();
+                } else if ("priorities".equals(fieldName)) {
+                    deserializedUpdateAgentInsightMonitorPatchRequest.priorities
+                        = AgentInsightPriorities.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAgentInsightMonitorUpdate;
+            return deserializedUpdateAgentInsightMonitorPatchRequest;
         });
     }
 }

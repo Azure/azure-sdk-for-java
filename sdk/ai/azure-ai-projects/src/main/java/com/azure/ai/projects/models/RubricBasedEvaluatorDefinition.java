@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Rubric-based evaluator definition — stores dimensions produced by the generate API. Used for both quality and safety
- * evaluators.
+ * Rubric evaluator definition. Ordinary quality rubrics report one aggregate. Safety rubrics require Boolean scoring
+ * and an explicit allowed classification on every dimension, and report disallowed_behavior_violated and
+ * allowed_behavior_violated as two independent lower-is-better metrics. Safety rubrics have no weights, threshold, or
+ * combined safety score.
  */
 @Fluent
 public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
@@ -27,18 +29,17 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     private EvaluatorDefinitionType type = EvaluatorDefinitionType.RUBRIC;
 
     /*
-     * The set of dimensions — the scoring blueprint used by the LLM judge. Quality evaluators include a non-editable
-     * residual dimension with id 'general_quality' (always_applicable: true); safety evaluators include
-     * 'general_policy_compliance'. Both use the same Dimension structure.
+     * The rubric criteria. Safety dimensions require allowed and omit weight. Rating generation includes a service
+     * residual; Boolean generation does not inject a generic residual. Existing ordinary and legacy definitions retain
+     * their behavior.
      */
     @Generated
     private final List<Dimension> dimensions;
 
     /*
-     * Pass/fail threshold for the aggregate rubric score, on the same normalized 0.0-1.0 scale as the emitted `score`.
-     * When the runtime weighted average meets or exceeds this value, the result is `pass`. Defaults to 0.5 (equivalent
-     * to a raw 1-5 weighted average of 3.0). The 'any dimension scored 1 → fail' rule still applies regardless of this
-     * threshold.
+     * Optional normalized threshold for Likert scoring, interpreted as 0.5 when omitted. Ordinary Boolean scoring
+     * requires all applicable checks to pass: omit this field or set it to 1; its effective threshold is 1 and other
+     * values are rejected. Safety rubrics omit this field and report two separate metrics without an overall threshold.
      */
     @Generated
     private Double passThreshold;
@@ -65,9 +66,9 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     }
 
     /**
-     * Get the dimensions property: The set of dimensions — the scoring blueprint used by the LLM judge. Quality
-     * evaluators include a non-editable residual dimension with id 'general_quality' (always_applicable: true); safety
-     * evaluators include 'general_policy_compliance'. Both use the same Dimension structure.
+     * Get the dimensions property: The rubric criteria. Safety dimensions require allowed and omit weight. Rating
+     * generation includes a service residual; Boolean generation does not inject a generic residual. Existing ordinary
+     * and legacy definitions retain their behavior.
      *
      * @return the dimensions value.
      */
@@ -77,10 +78,10 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     }
 
     /**
-     * Get the passThreshold property: Pass/fail threshold for the aggregate rubric score, on the same normalized
-     * 0.0-1.0 scale as the emitted `score`. When the runtime weighted average meets or exceeds this value, the result
-     * is `pass`. Defaults to 0.5 (equivalent to a raw 1-5 weighted average of 3.0). The 'any dimension scored 1 → fail'
-     * rule still applies regardless of this threshold.
+     * Get the passThreshold property: Optional normalized threshold for Likert scoring, interpreted as 0.5 when
+     * omitted. Ordinary Boolean scoring requires all applicable checks to pass: omit this field or set it to 1; its
+     * effective threshold is 1 and other values are rejected. Safety rubrics omit this field and report two separate
+     * metrics without an overall threshold.
      *
      * @return the passThreshold value.
      */
@@ -90,10 +91,10 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     }
 
     /**
-     * Set the passThreshold property: Pass/fail threshold for the aggregate rubric score, on the same normalized
-     * 0.0-1.0 scale as the emitted `score`. When the runtime weighted average meets or exceeds this value, the result
-     * is `pass`. Defaults to 0.5 (equivalent to a raw 1-5 weighted average of 3.0). The 'any dimension scored 1 → fail'
-     * rule still applies regardless of this threshold.
+     * Set the passThreshold property: Optional normalized threshold for Likert scoring, interpreted as 0.5 when
+     * omitted. Ordinary Boolean scoring requires all applicable checks to pass: omit this field or set it to 1; its
+     * effective threshold is 1 and other values are rejected. Safety rubrics omit this field and report two separate
+     * metrics without an overall threshold.
      *
      * @param passThreshold the passThreshold value to set.
      * @return the RubricBasedEvaluatorDefinition object itself.
@@ -149,6 +150,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
         jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("pass_threshold", this.passThreshold);
+        jsonWriter.writeJsonField("scoring", this.scoring);
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +172,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
             List<Dimension> dimensions = null;
             EvaluatorDefinitionType type = EvaluatorDefinitionType.RUBRIC;
             Double passThreshold = null;
+            RubricScoring scoring = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -187,6 +190,8 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
                     type = EvaluatorDefinitionType.fromString(reader.getString());
                 } else if ("pass_threshold".equals(fieldName)) {
                     passThreshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("scoring".equals(fieldName)) {
+                    scoring = RubricScoring.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -198,6 +203,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
             deserializedRubricBasedEvaluatorDefinition.setMetrics(metrics);
             deserializedRubricBasedEvaluatorDefinition.type = type;
             deserializedRubricBasedEvaluatorDefinition.passThreshold = passThreshold;
+            deserializedRubricBasedEvaluatorDefinition.scoring = scoring;
             return deserializedRubricBasedEvaluatorDefinition;
         });
     }
@@ -210,6 +216,37 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     public RubricBasedEvaluatorDefinition
         setInitializationParameters(Map<String, BinaryData> initializationParameters) {
         super.setInitializationParameters(initializationParameters);
+        return this;
+    }
+
+    /*
+     * Simple scoring choices. Omission preserves existing legacy scoring for existing clients. No policy version is
+     * required from the caller.
+     */
+    @Generated
+    private RubricScoring scoring;
+
+    /**
+     * Get the scoring property: Simple scoring choices. Omission preserves existing legacy scoring for existing
+     * clients. No policy version is required from the caller.
+     *
+     * @return the scoring value.
+     */
+    @Generated
+    public RubricScoring getScoring() {
+        return this.scoring;
+    }
+
+    /**
+     * Set the scoring property: Simple scoring choices. Omission preserves existing legacy scoring for existing
+     * clients. No policy version is required from the caller.
+     *
+     * @param scoring the scoring value to set.
+     * @return the RubricBasedEvaluatorDefinition object itself.
+     */
+    @Generated
+    public RubricBasedEvaluatorDefinition setScoring(RubricScoring scoring) {
+        this.scoring = scoring;
         return this;
     }
 }

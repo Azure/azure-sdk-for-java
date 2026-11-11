@@ -53,7 +53,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        BetaAgentInsightMonitorsClient.class,
         BetaModelsClient.class,
         BetaRedTeamsClient.class,
         BetaEvaluationTaxonomiesClient.class,
@@ -62,13 +61,13 @@ import java.util.Objects;
         BetaSchedulesClient.class,
         BetaRoutinesClient.class,
         BetaSkillsClient.class,
+        AgentInsightMonitorsClient.class,
         ConnectionsClient.class,
         DatasetsClient.class,
         IndexesClient.class,
         DeploymentsClient.class,
         EvaluationRulesClient.class,
         EvaluatorsClient.class,
-        BetaAgentInsightMonitorsAsyncClient.class,
         BetaModelsAsyncClient.class,
         BetaRedTeamsAsyncClient.class,
         BetaEvaluationTaxonomiesAsyncClient.class,
@@ -77,6 +76,7 @@ import java.util.Objects;
         BetaSchedulesAsyncClient.class,
         BetaRoutinesAsyncClient.class,
         BetaSkillsAsyncClient.class,
+        AgentInsightMonitorsAsyncClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
@@ -1120,5 +1120,25 @@ public final class AIProjectClientBuilder
     public EvaluatorsClient buildEvaluatorsClient() {
         return new EvaluatorsClient(
             buildInnerClient(allowPreview ? EVALUATIONS_PREVIEW_FEATURES : null).getEvaluators());
+    }
+
+    /**
+     * Builds an instance of AgentInsightMonitorsAsyncClient class.
+     *
+     * @return an instance of AgentInsightMonitorsAsyncClient.
+     */
+    @Generated
+    public AgentInsightMonitorsAsyncClient buildAgentInsightMonitorsAsyncClient() {
+        return new AgentInsightMonitorsAsyncClient(buildInnerClient().getAgentInsightMonitors());
+    }
+
+    /**
+     * Builds an instance of AgentInsightMonitorsClient class.
+     *
+     * @return an instance of AgentInsightMonitorsClient.
+     */
+    @Generated
+    public AgentInsightMonitorsClient buildAgentInsightMonitorsClient() {
+        return new AgentInsightMonitorsClient(buildInnerClient().getAgentInsightMonitors());
     }
 }

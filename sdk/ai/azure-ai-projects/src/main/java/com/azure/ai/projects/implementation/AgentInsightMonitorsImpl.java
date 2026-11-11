@@ -47,14 +47,14 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in BetaAgentInsightMonitors.
+ * An instance of this class provides access to all the operations defined in AgentInsightMonitors.
  */
-public final class BetaAgentInsightMonitorsImpl {
+public final class AgentInsightMonitorsImpl {
 
     /**
      * The proxy service used to perform REST calls.
      */
-    private final BetaAgentInsightMonitorsService service;
+    private final AgentInsightMonitorsService service;
 
     /**
      * The service client containing this operation class.
@@ -62,12 +62,12 @@ public final class BetaAgentInsightMonitorsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of BetaAgentInsightMonitorsImpl.
+     * Initializes an instance of AgentInsightMonitorsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    BetaAgentInsightMonitorsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(BetaAgentInsightMonitorsService.class, client.getHttpPipeline(),
+    AgentInsightMonitorsImpl(AIProjectClientImpl client) {
+        this.service = RestProxy.create(AgentInsightMonitorsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
@@ -82,12 +82,12 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientBetaAgentInsightMonitors to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AIProjectClientAgentInsightMonitors to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientBetaAgentInsightMonitors")
-    public interface BetaAgentInsightMonitorsService {
+    @ServiceInterface(name = "AIProjectClientAgentInsightMonitors")
+    public interface AgentInsightMonitorsService {
 
         @Get("/agent_insight_monitors")
         @ExpectedResponses({ 200 })
@@ -117,7 +117,7 @@ public final class BetaAgentInsightMonitorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAgentInsightMonitor(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData monitor,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/agent_insight_monitors")
@@ -128,7 +128,7 @@ public final class BetaAgentInsightMonitorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createAgentInsightMonitorSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData monitor,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createRequest,
             RequestOptions requestOptions, Context context);
 
         @Get("/agent_insight_monitors/{monitor_id}")
@@ -180,7 +180,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Mono<Response<BinaryData>> updateAgentInsightMonitor(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData monitor, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData updateRequest, RequestOptions requestOptions,
             Context context);
 
         @Patch("/agent_insight_monitors/{monitor_id}")
@@ -192,7 +192,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> updateAgentInsightMonitorSync(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData monitor, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData updateRequest, RequestOptions requestOptions,
             Context context);
 
         @Post("/agent_insight_monitors/{monitor_id}:reset")
@@ -224,7 +224,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Mono<Response<BinaryData>> createAgentInsightRun(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData run, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createRunRequest, RequestOptions requestOptions, Context context);
 
         @Post("/agent_insight_monitors/{monitor_id}/runs")
         @ExpectedResponses({ 201 })
@@ -235,7 +235,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> createAgentInsightRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData run, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createRunRequest, RequestOptions requestOptions, Context context);
 
         @Get("/agent_insight_monitors/{monitor_id}/runs")
         @ExpectedResponses({ 200 })
@@ -352,8 +352,9 @@ public final class BetaAgentInsightMonitorsImpl {
         Mono<Response<BinaryData>> updateAgentInsight(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @PathParam("insight_id") String insightId,
             @HeaderParam("Content-Type") String contentType, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData update,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/merge-patch+json") BinaryData updateInsightRequest, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/agent_insight_monitors/{monitor_id}/insights/{insight_id}")
         @ExpectedResponses({ 200 })
@@ -364,8 +365,9 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> updateAgentInsightSync(@HostParam("endpoint") String endpoint,
             @PathParam("monitor_id") String monitorId, @PathParam("insight_id") String insightId,
             @HeaderParam("Content-Type") String contentType, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData update,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/merge-patch+json") BinaryData updateInsightRequest, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -406,6 +408,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *         details (Optional): {
      *             String: BinaryData (Required)
      *         }
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -468,6 +476,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *         details (Optional): {
      *             String: BinaryData (Required)
      *         }
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -553,6 +567,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      *     updated_at: long (Required)
      * }
      * }
@@ -613,6 +633,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      *     updated_at: long (Required)
      * }
      * }
@@ -669,6 +695,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Required)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -696,10 +728,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -713,7 +749,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>Location</td><td>String</td><td>URL of the created monitor.</td></tr>
      * </table>
      *
-     * @param monitor The monitor to create.
+     * @param createRequest The createRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -723,12 +759,12 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentInsightMonitorWithResponseAsync(BinaryData monitor,
+    public Mono<Response<BinaryData>> createAgentInsightMonitorWithResponseAsync(BinaryData createRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createAgentInsightMonitor(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, monitor, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, createRequest, requestOptions, context));
     }
 
     /**
@@ -742,6 +778,12 @@ public final class BetaAgentInsightMonitorsImpl {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Required)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -769,10 +811,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -786,7 +832,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>Location</td><td>String</td><td>URL of the created monitor.</td></tr>
      * </table>
      *
-     * @param monitor The monitor to create.
+     * @param createRequest The createRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -796,12 +842,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentInsightMonitorWithResponse(BinaryData monitor,
+    public Response<BinaryData> createAgentInsightMonitorWithResponse(BinaryData createRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createAgentInsightMonitorSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, monitor, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, createRequest, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -829,10 +876,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -880,10 +931,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -950,8 +1005,11 @@ public final class BetaAgentInsightMonitorsImpl {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Optional)
-     *     overview_override (Optional): {
-     *         content: String (Optional, Required on create)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      * }
      * }
@@ -980,10 +1038,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -991,7 +1053,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param monitor The monitor fields to update.
+     * @param updateRequest The updateRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1001,12 +1063,12 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentInsightMonitorWithResponseAsync(String monitorId, BinaryData monitor,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAgentInsightMonitorWithResponseAsync(String monitorId,
+        BinaryData updateRequest, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateAgentInsightMonitor(this.client.getEndpoint(), monitorId,
-            contentType, this.client.getServiceVersion().getVersion(), accept, monitor, requestOptions, context));
+            contentType, this.client.getServiceVersion().getVersion(), accept, updateRequest, requestOptions, context));
     }
 
     /**
@@ -1019,8 +1081,11 @@ public final class BetaAgentInsightMonitorsImpl {
      *     enabled: Boolean (Optional)
      *     run_interval_hours: Double (Optional)
      *     model_deployment_name: String (Optional)
-     *     overview_override (Optional): {
-     *         content: String (Optional, Required on create)
+     *     priorities (Optional): {
+     *         categories (Optional, Required on create): [
+     *             String (Optional, Required on create)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      * }
      * }
@@ -1049,10 +1114,14 @@ public final class BetaAgentInsightMonitorsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     overview (Required): {
-     *         content: String (Required)
-     *         source: String(generated/user_override) (Required)
-     *         updated_at: long (Required)
+     *     agent_summary (Optional): {
+     *         markdown: String (Required)
+     *     }
+     *     priorities (Optional): {
+     *         categories (Required): [
+     *             String (Required)
+     *         ]
+     *         instructions: String (Optional)
      *     }
      *     updated_at: long (Required)
      * }
@@ -1060,7 +1129,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param monitor The monitor fields to update.
+     * @param updateRequest The updateRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1070,16 +1139,16 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData monitor,
+    public Response<BinaryData> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData updateRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.updateAgentInsightMonitorSync(this.client.getEndpoint(), monitorId, contentType,
-            this.client.getServiceVersion().getVersion(), accept, monitor, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, updateRequest, requestOptions, Context.NONE);
     }
 
     /**
-     * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
+     * Reset an Agent Insights monitor's generated summary, checkpoint, and active insight state.
      *
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1097,7 +1166,7 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
+     * Reset an Agent Insights monitor's generated summary, checkpoint, and active insight state.
      *
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1194,7 +1263,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1204,12 +1273,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createAgentInsightRunWithResponseAsync(String monitorId, BinaryData run,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createAgentInsightRunWithResponseAsync(String monitorId,
+        BinaryData createRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createAgentInsightRun(this.client.getEndpoint(), monitorId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, run, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, createRunRequest, requestOptions,
+            context));
     }
 
     /**
@@ -1293,7 +1363,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1303,12 +1373,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createAgentInsightRunWithResponse(String monitorId, BinaryData run,
+    private Response<BinaryData> createAgentInsightRunWithResponse(String monitorId, BinaryData createRunRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createAgentInsightRunSync(this.client.getEndpoint(), monitorId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, run, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, createRunRequest, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1392,7 +1463,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1403,9 +1474,9 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRunWithModelAsync(String monitorId,
-        BinaryData run, RequestOptions requestOptions) {
+        BinaryData createRunRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createAgentInsightRunWithResponseAsync(monitorId, run, requestOptions),
+            () -> this.createAgentInsightRunWithResponseAsync(monitorId, createRunRequest, requestOptions),
             new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1499,7 +1570,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1510,9 +1581,9 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRunWithModel(String monitorId,
-        BinaryData run, RequestOptions requestOptions) {
+        BinaryData createRunRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createAgentInsightRunWithResponse(monitorId, run, requestOptions),
+            () -> this.createAgentInsightRunWithResponse(monitorId, createRunRequest, requestOptions),
             new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1606,7 +1677,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1616,10 +1687,10 @@ public final class BetaAgentInsightMonitorsImpl {
      * that agent's insights.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateAgentInsightRunAsync(String monitorId, BinaryData run,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateAgentInsightRunAsync(String monitorId,
+        BinaryData createRunRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createAgentInsightRunWithResponseAsync(monitorId, run, requestOptions),
+            () -> this.createAgentInsightRunWithResponseAsync(monitorId, createRunRequest, requestOptions),
             new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1712,7 +1783,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </pre>
      *
      * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param createRunRequest The createRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1722,10 +1793,10 @@ public final class BetaAgentInsightMonitorsImpl {
      * that agent's insights.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData run,
+    public SyncPoller<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData createRunRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createAgentInsightRunWithResponse(monitorId, run, requestOptions),
+            () -> this.createAgentInsightRunWithResponse(monitorId, createRunRequest, requestOptions),
             new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -2491,7 +2562,7 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2503,11 +2574,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
-     * <tr><td>category</td><td>String</td><td>No</td><td>Filter insights by category.</td></tr>
-     * <tr><td>severity</td><td>String</td><td>No</td><td>Filter insights by severity. Allowed values: "high", "medium",
-     * "low".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter insights by lifecycle status. Allowed values: "active",
-     * "resolved", "ignored".</td></tr>
+     * <tr><td>categories</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed category. Commas separate
+     * identifiers; identifiers containing commas cannot be filtered individually. In the form of "," separated
+     * string.</td></tr>
+     * <tr><td>severities</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed severity. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed status. In the form of ","
+     * separated string.</td></tr>
      * <tr><td>include_details</td><td>Boolean</td><td>No</td><td>Whether to include expanded insight details such as
      * evidence and run links in the response. Defaults to false.</td></tr>
      * </table>
@@ -2588,7 +2661,7 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2600,11 +2673,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
-     * <tr><td>category</td><td>String</td><td>No</td><td>Filter insights by category.</td></tr>
-     * <tr><td>severity</td><td>String</td><td>No</td><td>Filter insights by severity. Allowed values: "high", "medium",
-     * "low".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter insights by lifecycle status. Allowed values: "active",
-     * "resolved", "ignored".</td></tr>
+     * <tr><td>categories</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed category. Commas separate
+     * identifiers; identifiers containing commas cannot be filtered individually. In the form of "," separated
+     * string.</td></tr>
+     * <tr><td>severities</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed severity. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed status. In the form of ","
+     * separated string.</td></tr>
      * <tr><td>include_details</td><td>Boolean</td><td>No</td><td>Whether to include expanded insight details such as
      * evidence and run links in the response. Defaults to false.</td></tr>
      * </table>
@@ -2706,7 +2781,7 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2718,11 +2793,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
-     * <tr><td>category</td><td>String</td><td>No</td><td>Filter insights by category.</td></tr>
-     * <tr><td>severity</td><td>String</td><td>No</td><td>Filter insights by severity. Allowed values: "high", "medium",
-     * "low".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter insights by lifecycle status. Allowed values: "active",
-     * "resolved", "ignored".</td></tr>
+     * <tr><td>categories</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed category. Commas separate
+     * identifiers; identifiers containing commas cannot be filtered individually. In the form of "," separated
+     * string.</td></tr>
+     * <tr><td>severities</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed severity. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed status. In the form of ","
+     * separated string.</td></tr>
      * <tr><td>include_details</td><td>Boolean</td><td>No</td><td>Whether to include expanded insight details such as
      * evidence and run links in the response. Defaults to false.</td></tr>
      * </table>
@@ -2800,7 +2877,7 @@ public final class BetaAgentInsightMonitorsImpl {
     }
 
     /**
-     * List current insights for an Agent Insights monitor.
+     * List current insights for a monitor. Filter types combine with AND; values within each list combine with OR.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2812,11 +2889,13 @@ public final class BetaAgentInsightMonitorsImpl {
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by creation time. Defaults to descending. Allowed
      * values: "asc", "desc".</td></tr>
-     * <tr><td>category</td><td>String</td><td>No</td><td>Filter insights by category.</td></tr>
-     * <tr><td>severity</td><td>String</td><td>No</td><td>Filter insights by severity. Allowed values: "high", "medium",
-     * "low".</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter insights by lifecycle status. Allowed values: "active",
-     * "resolved", "ignored".</td></tr>
+     * <tr><td>categories</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed category. Commas separate
+     * identifiers; identifiers containing commas cannot be filtered individually. In the form of "," separated
+     * string.</td></tr>
+     * <tr><td>severities</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed severity. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Match any listed status. In the form of ","
+     * separated string.</td></tr>
      * <tr><td>include_details</td><td>Boolean</td><td>No</td><td>Whether to include expanded insight details such as
      * evidence and run links in the response. Defaults to false.</td></tr>
      * </table>
@@ -3151,7 +3230,7 @@ public final class BetaAgentInsightMonitorsImpl {
      *
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
-     * @param update The insight fields to update.
+     * @param updateInsightRequest The updateInsightRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3162,12 +3241,12 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAgentInsightWithResponseAsync(String monitorId, String insightId,
-        BinaryData update, RequestOptions requestOptions) {
+        BinaryData updateInsightRequest, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.updateAgentInsight(this.client.getEndpoint(), monitorId, insightId,
-                contentType, this.client.getServiceVersion().getVersion(), accept, update, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.updateAgentInsight(this.client.getEndpoint(), monitorId, insightId, contentType,
+                this.client.getServiceVersion().getVersion(), accept, updateInsightRequest, requestOptions, context));
     }
 
     /**
@@ -3239,7 +3318,7 @@ public final class BetaAgentInsightMonitorsImpl {
      *
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
-     * @param update The insight fields to update.
+     * @param updateInsightRequest The updateInsightRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3248,12 +3327,12 @@ public final class BetaAgentInsightMonitorsImpl {
      * @return a persisted issue discovered from an agent's traces along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentInsightWithResponse(String monitorId, String insightId, BinaryData update,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateAgentInsightWithResponse(String monitorId, String insightId,
+        BinaryData updateInsightRequest, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.updateAgentInsightSync(this.client.getEndpoint(), monitorId, insightId, contentType,
-            this.client.getServiceVersion().getVersion(), accept, update, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, updateInsightRequest, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String... path) {

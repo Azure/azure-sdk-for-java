@@ -4,7 +4,6 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -16,11 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Fields that can be updated on an agent insight.
+ * The UpdateAgentInsightPatchRequest model.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentInsights=V1Preview")
-public final class AgentInsightUpdate implements JsonSerializable<AgentInsightUpdate> {
+public final class UpdateAgentInsightPatchRequest implements JsonSerializable<UpdateAgentInsightPatchRequest> {
 
     /*
      * The lifecycle status to apply to the insight.
@@ -43,27 +41,28 @@ public final class AgentInsightUpdate implements JsonSerializable<AgentInsightUp
     }
 
     static {
-        JsonMergePatchHelper.setAgentInsightUpdateAccessor(new JsonMergePatchHelper.AgentInsightUpdateAccessor() {
+        JsonMergePatchHelper.setUpdateAgentInsightPatchRequestAccessor(
+            new JsonMergePatchHelper.UpdateAgentInsightPatchRequestAccessor() {
 
-            @Override
-            public AgentInsightUpdate prepareModelForJsonMergePatch(AgentInsightUpdate model,
-                boolean jsonMergePatchEnabled) {
-                model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
-                return model;
-            }
+                @Override
+                public UpdateAgentInsightPatchRequest
+                    prepareModelForJsonMergePatch(UpdateAgentInsightPatchRequest model, boolean jsonMergePatchEnabled) {
+                    model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
+                    return model;
+                }
 
-            @Override
-            public boolean isJsonMergePatch(AgentInsightUpdate model) {
-                return model.jsonMergePatch;
-            }
-        });
+                @Override
+                public boolean isJsonMergePatch(UpdateAgentInsightPatchRequest model) {
+                    return model.jsonMergePatch;
+                }
+            });
     }
 
     /**
-     * Creates an instance of AgentInsightUpdate class.
+     * Creates an instance of UpdateAgentInsightPatchRequest class.
      */
     @Generated
-    public AgentInsightUpdate() {
+    public UpdateAgentInsightPatchRequest() {
     }
 
     /**
@@ -80,10 +79,10 @@ public final class AgentInsightUpdate implements JsonSerializable<AgentInsightUp
      * Set the status property: The lifecycle status to apply to the insight.
      *
      * @param status the status value to set.
-     * @return the AgentInsightUpdate object itself.
+     * @return the UpdateAgentInsightPatchRequest object itself.
      */
     @Generated
-    public AgentInsightUpdate setStatus(AgentInsightStatus status) {
+    public UpdateAgentInsightPatchRequest setStatus(AgentInsightStatus status) {
         this.status = status;
         this.updatedProperties.add("status");
         return this;
@@ -118,27 +117,29 @@ public final class AgentInsightUpdate implements JsonSerializable<AgentInsightUp
     }
 
     /**
-     * Reads an instance of AgentInsightUpdate from the JsonReader.
+     * Reads an instance of UpdateAgentInsightPatchRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentInsightUpdate if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AgentInsightUpdate.
+     * @return An instance of UpdateAgentInsightPatchRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAgentInsightPatchRequest.
      */
     @Generated
-    public static AgentInsightUpdate fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateAgentInsightPatchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentInsightUpdate deserializedAgentInsightUpdate = new AgentInsightUpdate();
+            UpdateAgentInsightPatchRequest deserializedUpdateAgentInsightPatchRequest
+                = new UpdateAgentInsightPatchRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("status".equals(fieldName)) {
-                    deserializedAgentInsightUpdate.status = AgentInsightStatus.fromString(reader.getString());
+                    deserializedUpdateAgentInsightPatchRequest.status
+                        = AgentInsightStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAgentInsightUpdate;
+            return deserializedUpdateAgentInsightPatchRequest;
         });
     }
 }

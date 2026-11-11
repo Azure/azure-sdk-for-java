@@ -12,6 +12,10 @@
 
 ### Other Changes
 
+- Reused OpenAI JSONL file-source and evaluation input-message reference models instead of generating duplicates.
+- Reused the Agents user-conversation simulation test-case, audio-effects, and user-behavior models for inline evaluation
+  scenarios and simulation defaults instead of generating duplicates.
+- Reused the Agents evaluation model configuration and its voice configuration models for conversation simulation.
 - Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
 
 ## 2.9.0 (2026-10-30)
