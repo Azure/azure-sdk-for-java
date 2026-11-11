@@ -33,9 +33,10 @@ public class RenameDestinationClientTests {
         ShareFileAsyncClient destination
             = source.renameWithResponse(new ShareFileRenameOptions(DESTINATION)).block().getValue();
         destination.delete().block();
+        String actualUrl = lastRequestUrl();
 
+        assertEquals(expectedFileDeleteUrl(), actualUrl);
         assertEquals(DESTINATION, destination.getFilePath());
-        assertEquals(expectedFileDeleteUrl(), lastRequestUrl());
     }
 
     @Test
@@ -44,9 +45,10 @@ public class RenameDestinationClientTests {
 
         ShareFileClient destination = source.rename(DESTINATION);
         destination.delete();
+        String actualUrl = lastRequestUrl();
 
+        assertEquals(expectedFileDeleteUrl(), actualUrl);
         assertEquals(DESTINATION, destination.getFilePath());
-        assertEquals(expectedFileDeleteUrl(), lastRequestUrl());
     }
 
     @Test
@@ -56,9 +58,10 @@ public class RenameDestinationClientTests {
         ShareDirectoryAsyncClient destination
             = source.renameWithResponse(new ShareFileRenameOptions(DESTINATION)).block().getValue();
         destination.delete().block();
+        String actualUrl = lastRequestUrl();
 
+        assertEquals(expectedDirectoryDeleteUrl(), actualUrl);
         assertEquals(DESTINATION, destination.getDirectoryPath());
-        assertEquals(expectedDirectoryDeleteUrl(), lastRequestUrl());
     }
 
     @Test
@@ -67,9 +70,10 @@ public class RenameDestinationClientTests {
 
         ShareDirectoryClient destination = source.rename(DESTINATION);
         destination.delete();
+        String actualUrl = lastRequestUrl();
 
+        assertEquals(expectedDirectoryDeleteUrl(), actualUrl);
         assertEquals(DESTINATION, destination.getDirectoryPath());
-        assertEquals(expectedDirectoryDeleteUrl(), lastRequestUrl());
     }
 
     private ShareFileClientBuilder builder() {
