@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
 
 ### Other Changes
 

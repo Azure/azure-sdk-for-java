@@ -713,6 +713,15 @@ public class ShareFileAsyncClient {
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
+        try {
+            return beginCopyInternal(sourceUrl, options, pollInterval);
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(LOGGER.logExceptionAsError(ex));
+        }
+    }
+
+    private PollerFlux<ShareFileCopyInfo, Void> beginCopyInternal(String sourceUrl, ShareFileCopyOptions options,
+        Duration pollInterval) {
         ShareErrors.validatePathOperation(fileId, "beginCopy");
 
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
