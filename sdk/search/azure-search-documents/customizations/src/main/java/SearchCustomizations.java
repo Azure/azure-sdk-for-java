@@ -130,7 +130,10 @@ public class SearchCustomizations extends Customization {
             ClassCustomization client = indexes.getClass(className);
             addTypedListingMethod(client, "listIndexStatsSummary", "IndexStatisticsSummary", false);
             addTypedListingMethod(client, "listKnowledgeSourceFiles", "KnowledgeSourceFile", true);
+            addListingMetadataMethods(client, className.endsWith("AsyncClient"));
         }
+        addListingMetadataRetrieval(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("SearchIndexClientImpl"));
         libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE)
             .getClass("KnowledgeBaseIndexedSqlReference")
             .customizeAst(ast -> ast.getClassByName("KnowledgeBaseIndexedSqlReference").ifPresent(clazz -> {
@@ -149,6 +152,81 @@ public class SearchCustomizations extends Customization {
         // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
         addNoArgConstructorToEncryptionKey(libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
             .getClass("SearchResourceEncryptionKey"));
+    }
+
+    private static void addListingMetadataRetrieval(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedResponse");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                for (String operation : Arrays.asList("listIndexes", "listIndexStatsSummary")) {
+                    for (String suffix : Arrays.asList("", "Async")) {
+                        for (String page : Arrays.asList("", "Next")) {
+                            String original = operation + page + "SinglePage" + suffix;
+                            String name = operation + page + "SinglePageWithMetadata" + suffix;
+                            clazz.getMethodsByName(name).forEach(MethodDeclaration::remove);
+                            MethodDeclaration method = clazz.getMethodsByName(original).get(0).clone();
+                            method.setName(name).setPrivate(false).setPublic(true);
+                            method.addTypeParameter("T");
+                            method.addParameter("Class<T>", "itemType");
+                            method.setType(suffix.isEmpty() ? "IndexListingPagedResponse<T>"
+                                : "Mono<IndexListingPagedResponse<T>>");
+                            method.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+                                .filter(expression -> expression.getType().getNameAsString()
+                                    .equals("PagedResponseBase"))
+                                .forEach(expression -> expression.replace(StaticJavaParser.parseExpression(
+                                    "new IndexListingPagedResponse<>(res, itemType)")));
+                            method.setJavadocComment("Retrieves a listing page without discarding its metadata.\n"
+                                + "@param <T> the item type.\n"
+                                + (page.isEmpty() ? "" : "@param nextLink the continuation link.\n")
+                                + "@param requestOptions the request options.\n"
+                                + "@param itemType the item deserialization type.\n"
+                                + "@return the typed page and optional total count.");
+                            clazz.addMember(method);
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    private static void addListingMetadataMethods(ClassCustomization customization, boolean async) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedIterable");
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedFlux");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                for (String operation : Arrays.asList("listIndexes", "listIndexStatsSummary")) {
+                    String model = operation.equals("listIndexes") ? "SearchIndex" : "IndexStatisticsSummary";
+                    String name = operation + "WithMetadata";
+                    String pagedType = async ? "IndexListingPagedFlux" : "IndexListingPagedIterable";
+                    String suffix = async ? "Async" : "";
+                    String retrieval = "(token == null ? serviceClient." + operation + "SinglePageWithMetadata"
+                        + suffix + "(requestOptions, " + model + ".class) : serviceClient."
+                        + operation + "NextSinglePageWithMetadata" + suffix + "(token, nextOptions, "
+                        + model + ".class))" + (async ? ".flux()" : "");
+                    clazz.getMethodsByName(name).forEach(MethodDeclaration::remove);
+                    MethodDeclaration method = StaticJavaParser.parseMethodDeclaration(
+                        "public " + pagedType + "<" + model + "> " + name + "(RequestOptions requestOptions) {"
+                            + "RequestOptions nextOptions = new RequestOptions().setContext("
+                            + "requestOptions != null && requestOptions.getContext() != null"
+                            + " ? requestOptions.getContext() : Context.NONE);"
+                            + "return new " + pagedType + "<>(() -> (token, pageSize) -> " + retrieval + "); }");
+                    method.addAnnotation(StaticJavaParser.parseAnnotation(
+                        "@ServiceMethod(returns = ReturnType.COLLECTION)"));
+                    method.setJavadocComment("Lists " + (model.equals("SearchIndex") ? "indexes" : "index statistics")
+                        + " with HTTP and optional total-count metadata on each page.\n"
+                        + "Counts are null when not returned by the service. This method does not add a count-request "
+                        + "parameter, which is not defined by the preview listing contract.\n"
+                        + "Continuation links control subsequent requests; the initial request's context is retained.\n"
+                        + "@param requestOptions options for the initial HTTP request, or null for defaults.\n"
+                        + "@return the lazy listing with typed pages and optional total counts.\n"
+                        + "@throws com.azure.core.exception.HttpResponseException if a request is rejected.");
+                    clazz.addMember(method);
+                }
+            });
+            ast.getImports().removeIf(importDeclaration -> importDeclaration.getNameAsString()
+                .equals("com.azure.search.documents.indexes.models."
+                    + (async ? "IndexListingPagedIterable" : "IndexListingPagedFlux")));
+        });
     }
 
     private static void addGaRetrieveOverload(ClassCustomization customization) {

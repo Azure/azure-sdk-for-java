@@ -5,14 +5,21 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.models.IndexListingPagedResponse;
+import com.azure.search.documents.indexes.models.IndexListingPagedIterable;
+import com.azure.search.documents.indexes.models.IndexListingPagedFlux;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.RandomScoringFunction;
 import com.azure.search.documents.indexes.models.KnowledgeBaseMicrosoftRetriever1Model;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
@@ -39,6 +46,7 @@ import com.azure.search.documents.models.GraphOptions;
 import com.azure.search.documents.models.GraphQueryExecutionMode;
 import com.azure.search.documents.models.GraphQueryExplainStage;
 import com.azure.search.documents.models.GraphQueryResult;
+import com.azure.search.documents.models.GraphQueryError;
 import com.azure.search.documents.models.NoneVectorQueryTopicGraph;
 import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.VectorQueryTopicGraph;
@@ -48,12 +56,16 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -95,6 +107,123 @@ public class PreviewApiTests {
         assertEquals(0, indexers.buildAsyncClient().listIndexers().collectList().block().size());
         assertEquals(0, indexers.buildClient().listSkillsets().stream().count());
         assertEquals(0, indexers.buildAsyncClient().listSkillsets().collectList().block().size());
+    }
+
+    @Test
+    public void metadataListingsRetainTotalsContinuationHttpMetadataAndContext() {
+        AtomicInteger requests = new AtomicInteger();
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint("https://example.search.windows.net")
+            .credential(new AzureKeyCredential("key"))
+            .addPolicy((context, next) -> {
+                assertEquals("retained", context.getData("listing-context").orElse(null));
+                return next.process();
+            })
+            .httpClient(request -> {
+                requests.incrementAndGet();
+                String query = request.getUrl().getQuery();
+                assertFalse(query.contains("$count"));
+                boolean last = query.contains("cursor=next");
+                if (!last) {
+                    assertTrue(query.contains("search=only"));
+                    assertEquals("initial", request.getHeaders().getValue("X-Listing-Test"));
+                }
+                String nextLink = last
+                    ? ""
+                    : ",\"@odata.nextLink\":\"https://example.search.windows.net" + request.getUrl().getPath()
+                        + "?api-version=2026-11-01-preview&cursor=next\"";
+                String body = "{\"@odata.count\":42,\"value\":[{\"name\":\"" + (last ? "second" : "first")
+                    + "\",\"fields\":[],\"documentCount\":1,\"storageSize\":2,\"vectorIndexSize\":3}]" + nextLink + "}";
+                return Mono.just(new MockHttpResponse(request, 200,
+                    new HttpHeaders().set("X-Listing-Page", last ? "second" : "first"),
+                    body.getBytes(StandardCharsets.UTF_8)));
+            });
+        RequestOptions options = new RequestOptions().setContext(new Context("listing-context", "retained"))
+            .setHeader("X-Listing-Test", "initial")
+            .addQueryParam("search", "only");
+        IndexListingPagedIterable<SearchIndex> indexes = builder.buildClient().listIndexesWithMetadata(options);
+        IndexListingPagedFlux<SearchIndex> asyncIndexes = builder.buildAsyncClient().listIndexesWithMetadata(options);
+        assertEquals(0, requests.get());
+        assertMetadataPages(indexes.streamByPage().collect(Collectors.toList()));
+        assertMetadataPages(asyncIndexes.byPage().collectList().block());
+        assertMetadataPages(builder.buildClient()
+            .listIndexStatsSummaryWithMetadata(options)
+            .streamByPage()
+            .collect(Collectors.toList()));
+        assertMetadataPages(
+            builder.buildAsyncClient().listIndexStatsSummaryWithMetadata(options).byPage().collectList().block());
+        assertEquals(8, requests.get());
+        assertEquals("second",
+            indexes
+                .iterableByPage(
+                    "https://example.search.windows.net/indexes" + "?api-version=2026-11-01-preview&cursor=next")
+                .iterator()
+                .next()
+                .getValue()
+                .get(0)
+                .getName());
+    }
+
+    private static void assertMetadataPages(List<? extends IndexListingPagedResponse<?>> pages) {
+        assertNotNull(pages);
+        assertEquals(2, pages.size());
+        for (IndexListingPagedResponse<?> page : pages) {
+            assertEquals(42L, page.getCount());
+            assertEquals(1, page.getValue().size());
+            assertEquals(200, page.getStatusCode());
+            assertNotNull(page.getRequest());
+        }
+        assertEquals("first", pages.get(0).getHeaders().getValue("X-Listing-Page"));
+        assertNotNull(pages.get(0).getContinuationToken());
+        assertEquals("second", pages.get(1).getHeaders().getValue("X-Listing-Page"));
+        assertNull(pages.get(1).getContinuationToken());
+    }
+
+    @Test
+    public void metadataCountsRemainNullableAndSupportLongTotals() {
+        for (String count : new String[] { null, "null", "0", "2147483648" }) {
+            Long expected = count == null || "null".equals(count) ? null : Long.valueOf(count);
+            String body = "{\"value\":[{\"name\":\"only\",\"fields\":[],"
+                + "\"documentCount\":1,\"storageSize\":2,\"vectorIndexSize\":3}]"
+                + (count == null ? "" : ",\"@odata.count\":" + count) + "}";
+            SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+                .endpoint("https://example.search.windows.net")
+                .credential(new AzureKeyCredential("key"))
+                .httpClient(
+                    request -> Mono.just(new MockHttpResponse(request, 200, body.getBytes(StandardCharsets.UTF_8))));
+            assertEquals(expected,
+                builder.buildClient().listIndexesWithMetadata(null).iterableByPage().iterator().next().getCount());
+            assertEquals(expected,
+                builder.buildAsyncClient().listIndexesWithMetadata(null).byPage().blockFirst().getCount());
+            assertEquals(expected,
+                builder.buildClient()
+                    .listIndexStatsSummaryWithMetadata(null)
+                    .iterableByPage()
+                    .iterator()
+                    .next()
+                    .getCount());
+            assertEquals(expected,
+                builder.buildAsyncClient().listIndexStatsSummaryWithMetadata(null).byPage().blockFirst().getCount());
+            assertEquals("only", builder.buildClient().listIndexes(null).iterator().next().getName());
+            assertEquals("only", builder.buildAsyncClient().listIndexes(null).blockFirst().getName());
+            assertEquals("only", builder.buildClient().listIndexStatsSummary(null).iterator().next().getName());
+            assertEquals("only", builder.buildAsyncClient().listIndexStatsSummary(null).blockFirst().getName());
+        }
+    }
+
+    @Test
+    public void metadataListingsKeepServiceErrorMapping() {
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint("https://example.search.windows.net")
+            .credential(new AzureKeyCredential("key"))
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 404,
+                "{\"error\":{\"code\":\"NotFound\",\"message\":\"Missing\"}}".getBytes(StandardCharsets.UTF_8))));
+        assertThrows(ResourceNotFoundException.class,
+            () -> builder.buildClient().listIndexesWithMetadata(null).iterator().next());
+        assertThrows(ResourceNotFoundException.class,
+            () -> builder.buildAsyncClient().listIndexesWithMetadata(null).blockFirst());
+        assertThrows(ResourceNotFoundException.class,
+            () -> builder.buildClient().listIndexStatsSummaryWithMetadata(null).iterator().next());
+        assertThrows(ResourceNotFoundException.class,
+            () -> builder.buildAsyncClient().listIndexStatsSummaryWithMetadata(null).blockFirst());
     }
 
     @Test
@@ -203,6 +332,43 @@ public class PreviewApiTests {
         assertEquals(400, sync.getResponse().getStatusCode());
         assertTrue(sync.getResponse().getBodyAsString().block().contains("UnknownVariable"));
         assertTrue(async.getResponse().getBodyAsString().block().contains("UnknownVariable"));
+        for (HttpResponseException exception : Arrays.asList(sync, async)) {
+            GraphQueryError details = BinaryData.fromString(exception.getResponse().getBodyAsString().block())
+                .toObject(GraphQueryError.class);
+            assertEquals("InvalidRequestParameter", details.getError().getCode());
+            assertEquals("UnknownVariable", details.getDiagnostics().get(0).getCode());
+            assertNull(details.getStatistics());
+            assertFalse(exception.getValue() instanceof GraphQueryError);
+        }
+    }
+
+    @Test
+    public void graphErrorsPreserveOptionalGraphFieldsAndStandardErrorBodies() {
+        String body = "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Invalid graph query\"},"
+            + "\"@search.graphProvenanceDocuments\":{\"doc1\":{\"title\":\"Ada\"}}," + GRAPH_RESPONSE.substring(1);
+        GraphQueryError details = BinaryData.fromString(body).toObject(GraphQueryError.class);
+        assertEquals(1L, details.getCount());
+        assertEquals("Ada", details.getValue().get(0).getAdditionalProperties().get("name"));
+        assertEquals(12L, details.getStatistics().getPlanningMs());
+        assertEquals("PlanReady", details.getDiagnostics().get(0).getCode());
+        assertTrue(details.getExplain().getAdditionalProperties().containsKey("logical"));
+        assertEquals("Ada",
+            details.getProvenanceDocuments()
+                .getAdditionalProperties()
+                .get("doc1")
+                .getAdditionalProperties()
+                .get("title"));
+        assertEquals(BinaryData.fromString(body).toObject(Map.class),
+            BinaryData.fromObject(details).toObject(Map.class));
+        GraphQueryError minimal
+            = BinaryData.fromString("{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Invalid\"},"
+                + "\"@search.graphDiagnostics\":null}").toObject(GraphQueryError.class);
+        assertEquals("Invalid", minimal.getError().getMessage());
+        assertNull(minimal.getDiagnostics());
+        assertNull(minimal.getValue());
+        assertNull(minimal.getCount());
+        assertNull(minimal.getProvenanceDocuments());
+        assertNull(BinaryData.fromString("null").toObject(GraphQueryError.class));
     }
 
     @Test

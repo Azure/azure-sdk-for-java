@@ -22,6 +22,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.search.documents.SearchAsyncClient;
@@ -33,6 +34,7 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.IndexListingPagedFlux;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
@@ -6239,5 +6241,49 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
         return this.serviceClient.listKnowledgeSourceFilesAsync(name, requestOptions)
             .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Lists indexes with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedFlux<SearchIndex> listIndexesWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedFlux<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexesSinglePageWithMetadataAsync(requestOptions, SearchIndex.class)
+                : serviceClient.listIndexesNextSinglePageWithMetadataAsync(token, nextOptions, SearchIndex.class))
+                    .flux());
+    }
+
+    /**
+     * Lists index statistics with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedFlux<IndexStatisticsSummary>
+        listIndexStatsSummaryWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedFlux<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexStatsSummarySinglePageWithMetadataAsync(requestOptions,
+                    IndexStatisticsSummary.class)
+                : serviceClient.listIndexStatsSummaryNextSinglePageWithMetadataAsync(token, nextOptions,
+                    IndexStatisticsSummary.class)).flux());
     }
 }

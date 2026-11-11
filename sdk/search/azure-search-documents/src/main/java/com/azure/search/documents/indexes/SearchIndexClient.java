@@ -20,6 +20,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
@@ -30,6 +31,7 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.IndexListingPagedIterable;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
@@ -5910,5 +5912,48 @@ public final class SearchIndexClient {
     public PagedIterable<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
         return this.serviceClient.listKnowledgeSourceFiles(name, requestOptions)
             .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Lists indexes with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedIterable<SearchIndex> listIndexesWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedIterable<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexesSinglePageWithMetadata(requestOptions, SearchIndex.class)
+                : serviceClient.listIndexesNextSinglePageWithMetadata(token, nextOptions, SearchIndex.class)));
+    }
+
+    /**
+     * Lists index statistics with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedIterable<IndexStatisticsSummary>
+        listIndexStatsSummaryWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedIterable<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexStatsSummarySinglePageWithMetadata(requestOptions,
+                    IndexStatisticsSummary.class)
+                : serviceClient.listIndexStatsSummaryNextSinglePageWithMetadata(token, nextOptions,
+                    IndexStatisticsSummary.class)));
     }
 }

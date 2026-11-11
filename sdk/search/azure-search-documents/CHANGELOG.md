@@ -6,6 +6,8 @@
 
 - Added support for `2026-11-01-preview`, now the default service version. Previously supported GA service versions remain available.
 - Added synchronous and asynchronous graph queries, typed HTTP responses, query planning, diagnostics, statistics, and provenance models.
+- Added `GraphQueryError` for opt-in typed parsing of graph error bodies without changing existing exceptions.
+- Added `listIndexesWithMetadata` and `listIndexStatsSummaryWithMetadata` to read optional service-supplied total counts while preserving existing listing APIs. The preview contract does not define a count-request parameter.
 - Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
 - Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
 - Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
