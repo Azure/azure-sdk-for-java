@@ -59,16 +59,30 @@ Describe 'Generate-ApiMarkdown' {
         Should -Invoke java -Times 1 -Exactly -ParameterFilter { $args -contains '--renderer=markdown' }
     }
 
-    It 'keeps the API hash unchanged when only the package version changes' {
+    It 'hashes the complete Markdown including Maven version metadata' {
+        Mock java {
+            $packageDirectory = Split-Path (Split-Path $args[-2] -Parent) -Parent
+            $version = ([xml](Get-Content -LiteralPath (Join-Path $packageDirectory 'pom.xml') -Raw)).project.version
+            $rendered = Join-Path $args[-1] "$([IO.Path]::GetFileNameWithoutExtension($args[-2])).md"
+            [IO.File]::WriteAllText($rendered, '```java' +
+                "`r`nmaven {`r`n    properties : com.azure:azure-example:$version`r`n}`r`npublic class Example {}`r`n" +
+                '```')
+            $global:LASTEXITCODE = 0
+        }
+
         & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
         $originalHash = (Get-Content -LiteralPath $script:Metadata)[0]
+        $originalMarkdown = [IO.File]::ReadAllText($script:Output)
         $pomPath = Join-Path $script:Package 'pom.xml'
         (Get-Content -LiteralPath $pomPath -Raw).Replace('1.0.0-beta.1', '1.0.0') |
             Set-Content -LiteralPath $pomPath
 
         & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
 
-        (Get-Content -LiteralPath $script:Metadata)[0] | Should -Be $originalHash
+        [IO.File]::ReadAllText($script:Output) | Should -Be $originalMarkdown.Replace('1.0.0-beta.1', '1.0.0')
+        (Get-Content -LiteralPath $script:Metadata)[0] | Should -Not -Be $originalHash
+        $hash = (Get-FileHash -LiteralPath $script:Output -Algorithm SHA256).Hash.ToLowerInvariant()
+        (Get-Content -LiteralPath $script:Metadata)[0] | Should -Be "apiHash: $hash"
         Get-Content -LiteralPath $script:Metadata | Should -Contain "packageVersion: '1.0.0'"
     }
 
