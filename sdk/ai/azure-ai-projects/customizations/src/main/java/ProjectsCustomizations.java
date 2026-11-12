@@ -94,9 +94,10 @@ public class ProjectsCustomizations extends Customization {
 
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
         List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobConfiguration",
-            "DataGenerationJobSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
-            "EvaluatorGenerationJobSource", "InsightRequest", "RecurrenceSchedule", "RoutineAction",
-            "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "Trigger");
+            "DataGenerationJobSource", "EvaluationRunDataSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
+            "EvaluatorGenerationJobSource", "InsightRequest", "ItemGenerationParameters", "RecurrenceSchedule",
+            "RoutineAction", "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "TraceSource",
+            "Trigger");
         for (String className : classNames) {
             customization.getClass("com.azure.ai.projects.models", className)
                 .customizeAst(ast -> ast.getClassByName(className)

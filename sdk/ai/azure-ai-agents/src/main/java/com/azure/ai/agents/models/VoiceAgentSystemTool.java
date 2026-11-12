@@ -171,13 +171,13 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
     }
 
     /*
-     * Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60 seconds.
+     * The execution timeout in seconds, from 1 to 300. If omitted, the service defaults to 60 seconds.
      */
     @Generated
     private Long timeout;
 
     /**
-     * Get the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * Get the timeout property: The execution timeout in seconds, from 1 to 300. If omitted, the service defaults to 60
      * seconds.
      *
      * @return the timeout value.
@@ -191,7 +191,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
     }
 
     /**
-     * Set the timeout property: Execution timeout, from 1 to 300 seconds. If omitted, the service defaults to 60
+     * Set the timeout property: The execution timeout in seconds, from 1 to 300. If omitted, the service defaults to 60
      * seconds.
      *
      * @param timeout the timeout value to set.
