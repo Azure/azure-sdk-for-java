@@ -96,8 +96,17 @@ public class DocumentProducerTest {
     private final String collectionRid = "myrid";
     private final String collectionLink = "/dbs/mydb/colls/mycol";
 
-    @Test(groups = "unit")
-    public void nonStreamingVectorTopRetainsWinningCandidatesAcrossPages() {
+    @DataProvider
+    public Object[][] nonStreamingVectorBounds() {
+        return new Object[][] {
+            {"TOP 60 ", "", "\"top\":60"},
+            {"", " OFFSET 0 LIMIT 60", "\"offset\":0,\"limit\":60"}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "nonStreamingVectorBounds")
+    public void nonStreamingVectorQueryRetainsAndOrdersWinningCandidatesAcrossPages(
+        String selectTop, String offsetLimit, String queryPlanBounds) {
         List<Range<String>> ranges = IntStream.range(0, 6)
             .mapToObj(i -> new Range<>("0" + i, "0" + (i + 1), true, false))
             .collect(Collectors.toList());
@@ -110,7 +119,8 @@ public class DocumentProducerTest {
             Range<String> range = ((FeedRangeEpkImpl) request.getFeedRange()).getRange();
             boolean winningRange = ranges.get(0).equals(range);
             boolean firstPage = request.getHeaders().get(HttpConstants.HttpHeaders.CONTINUATION) == null;
-            int start = winningRange ? (firstPage ? 0 : 30) : 60 + ranges.indexOf(range);
+            // Each page is sorted, but the best candidates arrive on the second page.
+            int start = winningRange ? (firstPage ? 30 : 0) : 60 + ranges.indexOf(range);
             int end = start + (winningRange ? 30 : 1);
             List<Document> rows = IntStream.range(start, end)
                 .mapToObj(score -> new Document("{\"payload\":{\"id\":\"item-" + score
@@ -127,9 +137,10 @@ public class DocumentProducerTest {
         DocumentCollection collection = new DocumentCollection();
         collection.setResourceId(collectionRid);
         collection.setSelfLink(collectionLink);
-        QueryInfo queryInfo = new QueryInfo("{\"top\":60,\"orderBy\":[\"Ascending\"],"
+        QueryInfo queryInfo = new QueryInfo("{" + queryPlanBounds + ",\"orderBy\":[\"Ascending\"],"
             + "\"orderByExpressions\":[\"VectorDistance(c.embedding, [0, 0])\"],\"hasNonStreamingOrderBy\":true}");
-        SqlQuerySpec query = new SqlQuerySpec("SELECT TOP 60 c.id FROM c ORDER BY VectorDistance(c.embedding, [0, 0])");
+        SqlQuerySpec query = new SqlQuerySpec(
+            "SELECT " + selectTop + "c.id FROM c ORDER BY VectorDistance(c.embedding, [0, 0])" + offsetLimit);
         List<String> expectedIds = IntStream.range(0, 60)
             .mapToObj(score -> "item-" + score)
             .collect(Collectors.toList());
@@ -141,7 +152,7 @@ public class DocumentProducerTest {
             .concatMapIterable(FeedResponse::getResults)
             .map(Document::getId)
             .collectList())
-            .assertNext(ids -> assertThat(ids).containsExactlyInAnyOrderElementsOf(expectedIds))
+            .assertNext(ids -> assertThat(ids).containsExactlyElementsOf(expectedIds))
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
