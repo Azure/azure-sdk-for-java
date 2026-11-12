@@ -464,7 +464,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListInner parameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverDomainListName,
@@ -741,7 +741,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginUpdate(
+    private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListPatch parameters,
         String ifMatch) {
         Response<BinaryData> response
@@ -986,7 +986,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverDomainListName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverDomainListName,
         String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverDomainListName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1485,7 +1485,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
+    private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListBulk parameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response

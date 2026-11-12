@@ -90,22 +90,28 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
     /**
      * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
      * access the upstream source repository.
+     * Omitted fields retain their current values. When authentication is first configured, all
+     * required fields of the selected authentication type must be supplied. Changing an existing
+     * authentication type is not supported.
      * 
      * @return the additionalAuthenticationProperties value.
      */
-    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+    public AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().additionalAuthenticationProperties();
     }
 
     /**
      * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
      * access the upstream source repository.
+     * Omitted fields retain their current values. When authentication is first configured, all
+     * required fields of the selected authentication type must be supplied. Changing an existing
+     * authentication type is not supported.
      * 
      * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
      * @return the CacheRuleUpdateParameters object itself.
      */
-    public CacheRuleUpdateParameters
-        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+    public CacheRuleUpdateParameters withAdditionalAuthenticationProperties(
+        AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CacheRuleUpdateProperties();
         }

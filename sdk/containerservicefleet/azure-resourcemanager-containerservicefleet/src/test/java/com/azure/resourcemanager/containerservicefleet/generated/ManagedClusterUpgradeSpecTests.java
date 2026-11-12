@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedClusterUpgradeSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedClusterUpgradeSpec model = BinaryData.fromString("{\"type\":\"Full\",\"kubernetesVersion\":\"wrck\"}")
+        ManagedClusterUpgradeSpec model = BinaryData.fromString("{\"type\":\"Full\",\"kubernetesVersion\":\"lirc\"}")
             .toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.type());
-        Assertions.assertEquals("wrck", model.kubernetesVersion());
+        Assertions.assertEquals("lirc", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedClusterUpgradeSpec model
-            = new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL).withKubernetesVersion("wrck");
+            = new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL).withKubernetesVersion("lirc");
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.type());
-        Assertions.assertEquals("wrck", model.kubernetesVersion());
+        Assertions.assertEquals("lirc", model.kubernetesVersion());
     }
 }

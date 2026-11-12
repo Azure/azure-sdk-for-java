@@ -774,7 +774,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of a cache instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName,
         CacheInner cache) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, cacheName, cache);
         return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
@@ -1983,7 +1983,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName,
         PrimingJob primingjob) {
         Response<BinaryData> response = startPrimingJobWithResponse(resourceGroupName, cacheName, primingjob);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -2210,7 +2210,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId) {
         Response<BinaryData> response = stopPrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -2439,7 +2439,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId) {
         Response<BinaryData> response = pausePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -2669,7 +2669,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId) {
         Response<BinaryData> response = resumePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -3057,7 +3057,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName,
         List<StorageTargetSpaceAllocation> spaceAllocation) {
         Response<BinaryData> response = spaceAllocationWithResponse(resourceGroupName, cacheName, spaceAllocation);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
