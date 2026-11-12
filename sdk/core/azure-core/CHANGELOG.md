@@ -12,9 +12,6 @@
 
 ### Bugs Fixed
 
-- Fixed the HTTP tracing span ending before a streamed (non-replayable) `BinaryData` response body was consumed,
-  which reported success for failures or cancellation while reading the body and excluded the read from the span's
-  duration.
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
@@ -26,7 +23,8 @@
 
 - Added an internal `Context` key, `azure-stream-response-body`, that lets a client library opt in to the
   asynchronous `RestProxy` streaming a `BinaryData` response body as it's consumed instead of buffering it, matching
-  the synchronous `RestProxy`. Default behavior is unchanged.
+  the synchronous `RestProxy`. For such calls, the HTTP tracing span ends when the body has been consumed, fails, or
+  is cancelled. Default behavior is unchanged.
 
 ## 1.61.0 (2026-10-27)
 

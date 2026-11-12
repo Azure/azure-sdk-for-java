@@ -46,6 +46,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -197,7 +198,7 @@ public class RestProxyTracingTests {
     public void streamedBodyErrorEndsHttpSpanWithErrorSync() {
         Flux<ByteBuffer> body
             = Flux.concat(Flux.just(ByteBuffer.wrap(CHUNK)), Flux.error(new IOException("Connection reset")));
-        Response<BinaryData> response = streamingInterface(body).streamBodySync(Context.NONE);
+        Response<BinaryData> response = streamingInterface(body).streamBodySync(STREAM_RESPONSE_BODY);
         Span http = getHttpSpan();
         assertNull(http.getEndContext());
 
@@ -205,6 +206,18 @@ public class RestProxyTracingTests {
 
         assertNotNull(http.getEndContext());
         assertInstanceOf(IOException.class, http.getThrowable());
+    }
+
+    @Test
+    public void httpSpanEndsWhenBodyIsRetrievedWithoutStreamResponseBody() {
+        Response<BinaryData> response
+            = streamingInterface(Flux.just(ByteBuffer.wrap(CHUNK))).streamBodySync(Context.NONE);
+        Span http = getHttpSpan();
+
+        assertFalse(response.getValue().isReplayable());
+        assertNotNull(http.getEndContext(), "Without the opt-in, the HTTP span ends when the body is retrieved.");
+        assertNull(http.getErrorMessage());
+        assertNull(http.getThrowable());
     }
 
     private TestInterface streamingInterface(Flux<ByteBuffer> body) {
