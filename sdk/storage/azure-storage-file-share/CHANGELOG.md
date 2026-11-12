@@ -1,6 +1,21 @@
 # Release History
 
-## 12.34.0-beta.1 (Unreleased)
+## 12.34.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
+- Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
+  `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
+  request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
+
+### Other Changes
+
+## 12.34.0-beta.1 (2026-11-05)
 
 ### Features Added
 - Added support for retrieving file and directory properties by file ID
@@ -12,12 +27,13 @@
   `getChangeFeedBlobContainerName()`.
 - Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
   creation time returned in list and get properties responses.
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2027-03-07.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
 
 ## 12.33.2 (2026-11-03)
 

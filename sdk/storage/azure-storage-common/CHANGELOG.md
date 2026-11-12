@@ -1,6 +1,16 @@
 # Release History
 
-## 12.37.0-beta.1 (Unreleased)
+## 12.37.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.37.0-beta.1 (2026-11-05)
 
 ### Features Added
 - Added `AutoRefreshingCache`, a generic, thread-safe cache for a single expiring value with jittered proactive
@@ -9,12 +19,7 @@
   downloads).
 - Added `DataLocalityPolicy`, an `HttpPipelinePolicy` that routes a request to an ideal endpoint set on the per-call
   `Context` (see `DataLocalityPolicy.LAYOUT_ENDPOINT_KEY`), for internal use by data-locality-aware download paths.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2027-03-07.
 
 ## 12.36.2 (2026-11-03)
 

@@ -22,7 +22,7 @@ public final class FirewallRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"jhhgdnhxmsi\",\"endIpAddress\":\"fomiloxgg\",\"description\":\"fi\",\"provisioningState\":\"Canceled\"},\"id\":\"euzaof\",\"name\":\"chvcyyysfgdo\",\"type\":\"cubiipuipw\"}]}";
+            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"sspuunnoxyhkx\",\"endIpAddress\":\"qddrihpfhoqcaae\",\"description\":\"aomdjvlpjxx\",\"provisioningState\":\"Failed\"},\"id\":\"msgeivsiykzk\",\"name\":\"ncj\",\"type\":\"xonbzoggculapz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class FirewallRulesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FirewallRule> response
-            = manager.firewallRules().list("phwzsoldweyuqdu", "vmnnrw", "biorktal", com.azure.core.util.Context.NONE);
+        PagedIterable<FirewallRule> response = manager.firewallRules()
+            .list("vsjcswsmystuluqy", "fcvlerch", "qbmfpjbabwidf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jhhgdnhxmsi", response.iterator().next().properties().startIpAddress());
-        Assertions.assertEquals("fomiloxgg", response.iterator().next().properties().endIpAddress());
-        Assertions.assertEquals("fi", response.iterator().next().properties().description());
+        Assertions.assertEquals("sspuunnoxyhkx", response.iterator().next().properties().startIpAddress());
+        Assertions.assertEquals("qddrihpfhoqcaae", response.iterator().next().properties().endIpAddress());
+        Assertions.assertEquals("aomdjvlpjxx", response.iterator().next().properties().description());
     }
 }

@@ -42,6 +42,23 @@ public class ClusterCommonProperties implements JsonSerializable<ClusterCommonPr
     private MaintenanceConfiguration maintenanceConfiguration;
 
     /*
+     * The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most 250 rules are supported, and
+     * non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     */
+    private List<FirewallRule> firewallRules;
+
+    /*
      * DNS name of the cluster endpoint
      */
     private String hostname;
@@ -166,6 +183,50 @@ public class ClusterCommonProperties implements JsonSerializable<ClusterCommonPr
      */
     public ClusterCommonProperties withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
         this.maintenanceConfiguration = maintenanceConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At
+     * most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     * 
+     * @return the firewallRules value.
+     */
+    public List<FirewallRule> firewallRules() {
+        return this.firewallRules;
+    }
+
+    /**
+     * Set the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At
+     * most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     * 
+     * @param firewallRules the firewallRules value to set.
+     * @return the ClusterCommonProperties object itself.
+     */
+    public ClusterCommonProperties withFirewallRules(List<FirewallRule> firewallRules) {
+        this.firewallRules = firewallRules;
         return this;
     }
 
@@ -328,6 +389,7 @@ public class ClusterCommonProperties implements JsonSerializable<ClusterCommonPr
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeJsonField("maintenanceConfiguration", this.maintenanceConfiguration);
+        jsonWriter.writeArrayField("firewallRules", this.firewallRules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -356,6 +418,9 @@ public class ClusterCommonProperties implements JsonSerializable<ClusterCommonPr
                 } else if ("maintenanceConfiguration".equals(fieldName)) {
                     deserializedClusterCommonProperties.maintenanceConfiguration
                         = MaintenanceConfiguration.fromJson(reader);
+                } else if ("firewallRules".equals(fieldName)) {
+                    List<FirewallRule> firewallRules = reader.readArray(reader1 -> FirewallRule.fromJson(reader1));
+                    deserializedClusterCommonProperties.firewallRules = firewallRules;
                 } else if ("hostName".equals(fieldName)) {
                     deserializedClusterCommonProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class AccessPolicyAssignmentListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseAccessPolicyAssignmentsList.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentList.

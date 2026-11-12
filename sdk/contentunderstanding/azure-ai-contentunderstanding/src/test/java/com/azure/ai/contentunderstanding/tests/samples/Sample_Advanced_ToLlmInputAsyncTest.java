@@ -40,6 +40,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
     private Mono<AnalysisResult> analyzeAsync(String analyzerId, List<AnalysisInput> inputs) {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, inputs);
+        setPlaybackPollerFluxPollInterval(poller);
         return poller.last().flatMap(response -> {
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
             return response.getFinalResult()

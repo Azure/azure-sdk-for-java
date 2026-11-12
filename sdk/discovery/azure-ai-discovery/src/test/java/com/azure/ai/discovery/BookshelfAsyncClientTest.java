@@ -18,6 +18,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,10 +41,11 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
     @Order(1)
     public void testBeginCreateOrUpdate() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
-        KnowledgeBase result = client.beginCreateOrUpdate(knowledgeBaseName, newKnowledgeBase())
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .block();
+        KnowledgeBase result
+            = setPlaybackPollerFluxPollInterval(client.beginCreateOrUpdate(knowledgeBaseName, newKnowledgeBase()))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .block();
 
         assertNotNull(result);
     }
@@ -72,17 +74,18 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
     @Order(4)
     public void testBeginStartIndexing() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
-        KnowledgeBaseOperationResponse response = client.beginStartIndexing(knowledgeBaseName).blockLast().getValue();
-
-        assertNotNull(response);
+        AsyncPollResponse<KnowledgeBaseOperationResponse, Void> completion
+            = setPlaybackPollerFluxPollInterval(client.beginStartIndexing(knowledgeBaseName)).blockLast();
+        assertNotNull(completion);
+        assertIndexingCompleted(completion.getStatus(), completion.getValue());
     }
 
     @Test
     @Order(5)
     public void testBeginSearch() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
-        KnowledgeBaseOperationResponse response
-            = client.beginSearch(knowledgeBaseName, new SearchRequest("immersion cooling")).blockLast().getValue();
+        KnowledgeBaseOperationResponse response = setPlaybackPollerFluxPollInterval(
+            client.beginSearch(knowledgeBaseName, new SearchRequest("immersion cooling"))).blockLast().getValue();
 
         assertNotNull(response);
     }
@@ -93,14 +96,18 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
         // The operation id is the indexing run id; read it from the typed operation result rather than the
         // top-level "id" field, which the test proxy sanitizes during playback.
+        AsyncPollResponse<KnowledgeBaseOperationResponse, Void> completion
+            = setPlaybackPollerFluxPollInterval(client.beginStartIndexing(knowledgeBaseName)).blockLast();
+        assertNotNull(completion);
+        assertIndexingCompleted(completion.getStatus(), completion.getValue());
         KnowledgeBaseIndexingOperationResponse operation
-            = (KnowledgeBaseIndexingOperationResponse) client.beginStartIndexing(knowledgeBaseName)
-                .blockLast()
-                .getValue();
+            = (KnowledgeBaseIndexingOperationResponse) completion.getValue();
         String operationId = operation.getIndexingResult().getRunId();
 
         KnowledgeBaseOperationResponse status = client.getOperationStatus(knowledgeBaseName, operationId).block();
         assertNotNull(status);
+        assertEquals(operation.getStatus(), status.getStatus());
+        assertEquals(operationId, ((KnowledgeBaseIndexingOperationResponse) status).getIndexingResult().getRunId());
     }
 
     @Test
@@ -108,9 +115,9 @@ public final class BookshelfAsyncClientTest extends DiscoveryClientTestBase {
     public void testBeginDelete() {
         BookshelfAsyncClient client = getBookshelfAsyncClient();
         String throwawayName = testResourceNamer.randomName("sdk-del-kb", 24);
-        client.beginCreateOrUpdate(throwawayName, newKnowledgeBase()).blockLast();
+        setPlaybackPollerFluxPollInterval(client.beginCreateOrUpdate(throwawayName, newKnowledgeBase())).blockLast();
 
-        client.beginDelete(throwawayName).blockLast();
+        setPlaybackPollerFluxPollInterval(client.beginDelete(throwawayName)).blockLast();
 
         // The knowledge base must no longer be retrievable after deletion.
         assertThrows(HttpResponseException.class, () -> client.get(throwawayName).block());

@@ -293,8 +293,19 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient
             = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
-        assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null), 201);
-        assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null), 409);
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null))
+            .assertNext(response -> {
+                assertEquals(201, response.getStatusCode());
+                assertTrue(response.getValue());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null))
+            .assertNext(response -> {
+                assertEquals(409, response.getStatusCode());
+                assertFalse(response.getValue());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -610,7 +621,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient
             = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
-        assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.deleteIfExistsWithResponse(null), 404);
+        StepVerifier.create(dataLakeFileSystemAsyncClient.deleteIfExistsWithResponse(null)).assertNext(response -> {
+            assertEquals(404, response.getStatusCode());
+            assertFalse(response.getValue());
+        }).verifyComplete();
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.exists()).expectNext(false).verifyComplete();
     }

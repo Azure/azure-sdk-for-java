@@ -14,8 +14,17 @@
 
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
+- Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
+  consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
+  times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
+  read.
 
 ### Other Changes
+
+- Added an internal `Context` key, `azure-stream-response-body`, that lets a client library opt in to the
+  asynchronous `RestProxy` streaming a `BinaryData` response body as it's consumed instead of buffering it, matching
+  the synchronous `RestProxy`. For such calls, the HTTP tracing span ends when the body has been consumed, fails, or
+  is cancelled. Default behavior is unchanged.
 
 ## 1.61.0 (2026-10-27)
 

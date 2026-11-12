@@ -26,7 +26,7 @@ public final class GatesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"ox\",\"gateType\":\"ScheduledStart\",\"scheduledStartProperties\":{\"startDay\":\"Monday\",\"startTime\":\"dbxiqx\",\"utcOffset\":\"iiqbi\",\"absoluteStartTime\":\"2021-09-05T09:18:35Z\"},\"target\":{\"id\":\"mwwinhehfqpofv\",\"updateRunProperties\":{\"name\":\"cblembnkbwv\",\"stage\":\"xk\",\"group\":\"vqihebwtswbzuwf\",\"timing\":\"After\"}},\"state\":\"Pending\"},\"eTag\":\"agegiz\",\"id\":\"jfelisdjubggbqig\",\"name\":\"xkbsazgakgac\",\"type\":\"rcmjdmspofapvuh\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"bfhfovvacqp\",\"gateType\":\"ScheduledStart\",\"scheduledStartProperties\":{\"startDay\":\"Wednesday\",\"startTime\":\"dxe\",\"utcOffset\":\"zab\",\"absoluteStartTime\":\"2021-07-01T15:33:02Z\"},\"target\":{\"id\":\"awumuaslzkwrrwo\",\"updateRunProperties\":{\"name\":\"qucwyhahnom\",\"stage\":\"kywuhpsvfuu\",\"group\":\"tlwexxwlalniexz\",\"timing\":\"Before\"}},\"state\":\"Skipped\"},\"eTag\":\"gepqtybbwwpg\",\"id\":\"k\",\"name\":\"hzyvlixqnrkcx\",\"type\":\"jibnxmysu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,16 +36,15 @@ public final class GatesListByFleetMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Gate> response = manager.gates()
-            .listByFleet("fgtayxonsup", "ujlzqnhcvsqltn", "oibgsxg", 1373050018, "fyq",
-                com.azure.core.util.Context.NONE);
+            .listByFleet("lyhb", "cu", "chxgs", 581977719, "oldforobw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ox", response.iterator().next().displayName());
+        Assertions.assertEquals("bfhfovvacqp", response.iterator().next().displayName());
         Assertions.assertEquals(GateType.SCHEDULED_START, response.iterator().next().gateType());
-        Assertions.assertEquals(DayOfWeek.MONDAY, response.iterator().next().scheduledStartProperties().startDay());
-        Assertions.assertEquals("dbxiqx", response.iterator().next().scheduledStartProperties().startTime());
-        Assertions.assertEquals("iiqbi", response.iterator().next().scheduledStartProperties().utcOffset());
-        Assertions.assertEquals("mwwinhehfqpofv", response.iterator().next().target().id());
-        Assertions.assertEquals(Timing.AFTER, response.iterator().next().target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, response.iterator().next().state());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, response.iterator().next().scheduledStartProperties().startDay());
+        Assertions.assertEquals("dxe", response.iterator().next().scheduledStartProperties().startTime());
+        Assertions.assertEquals("zab", response.iterator().next().scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("awumuaslzkwrrwo", response.iterator().next().target().id());
+        Assertions.assertEquals(Timing.BEFORE, response.iterator().next().target().updateRunProperties().timing());
+        Assertions.assertEquals(GateState.SKIPPED, response.iterator().next().state());
     }
 }

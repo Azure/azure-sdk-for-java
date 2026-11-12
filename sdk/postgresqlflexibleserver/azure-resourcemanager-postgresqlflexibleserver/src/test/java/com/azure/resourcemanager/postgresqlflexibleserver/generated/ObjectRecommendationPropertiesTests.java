@@ -14,19 +14,19 @@ public final class ObjectRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ObjectRecommendationProperties model = BinaryData.fromString(
-            "{\"initialRecommendedTime\":\"2021-07-23T04:24:07Z\",\"lastRecommendedTime\":\"2020-12-22T10:55:39Z\",\"timesRecommended\":954228901,\"improvedQueryIds\":[7931419591420767379],\"recommendationReason\":\"ljeamu\",\"currentState\":\"zmlovuanash\",\"recommendationType\":\"DropIndex\",\"implementationDetails\":{\"method\":\"jerbdkelvidizozs\",\"script\":\"ccxjm\"},\"analyzedWorkload\":{\"startTime\":\"2021-10-01T00:52:35Z\",\"endTime\":\"2021-03-14T12:33:12Z\",\"queryCount\":258073184},\"estimatedImpact\":[{\"dimensionName\":\"uuwwltv\",\"unit\":\"jctzenkei\",\"queryId\":3883485074610487115,\"absoluteValue\":98.14634375644947},{\"dimensionName\":\"svflyhbxcudch\",\"unit\":\"srboldforobw\",\"queryId\":9089138785694463975,\"absoluteValue\":63.48389442668607},{\"dimensionName\":\"fovvacqpbtuodxes\",\"unit\":\"bbelawumuaslzk\",\"queryId\":2589313714101269318,\"absoluteValue\":47.13898853939812},{\"dimensionName\":\"ucwyhahno\",\"unit\":\"rkywuhpsvfuu\",\"queryId\":6918467599956487615,\"absoluteValue\":91.51955288175284}],\"details\":{\"databaseName\":\"lalniex\",\"schema\":\"rzpgep\",\"table\":\"yb\",\"indexType\":\"wpgdak\",\"indexName\":\"zyvli\",\"indexColumns\":[\"rkcxkj\",\"bn\"],\"includedColumns\":[\"suxswqrntvlwijp\"]}}")
+            "{\"initialRecommendedTime\":\"2021-04-05T22:22:59Z\",\"lastRecommendedTime\":\"2021-04-08T00:16:43Z\",\"timesRecommended\":40795931,\"improvedQueryIds\":[2491791348135004746],\"recommendationReason\":\"qgqqihedsvqwthmk\",\"currentState\":\"bcysih\",\"recommendationType\":\"ReIndex\",\"implementationDetails\":{\"method\":\"dhohsdtmcdzsuf\",\"script\":\"hdxbzlm\"},\"analyzedWorkload\":{\"startTime\":\"2021-08-22T15:12:20Z\",\"endTime\":\"2021-04-04T03:22:51Z\",\"queryCount\":1828890303},\"estimatedImpact\":[{\"dimensionName\":\"v\",\"unit\":\"qxeysko\",\"queryId\":8223110297990231719,\"absoluteValue\":96.80823122099127},{\"dimensionName\":\"bgbzbowxeqoclj\",\"unit\":\"gvkzqkjjeokbze\",\"queryId\":214844452320743867,\"absoluteValue\":54.767737504543646},{\"dimensionName\":\"urtleipqxb\",\"unit\":\"vz\",\"queryId\":3286584437525688934,\"absoluteValue\":81.46978837338615}],\"details\":{\"databaseName\":\"ixz\",\"schema\":\"pnodawopqhe\",\"table\":\"ptmcgsbostzelnd\",\"indexType\":\"tutmzl\",\"indexName\":\"ojlvfhrbbpneqvc\",\"indexColumns\":[\"yurmochpprprs\",\"mo\",\"ayzejnhlbkpbz\",\"cpilj\"],\"includedColumns\":[\"zv\",\"chndbnwie\",\"olewjwi\",\"ubwefqs\"]}}")
             .toObject(ObjectRecommendationProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T04:24:07Z"), model.initialRecommendedTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T10:55:39Z"), model.lastRecommendedTime());
-        Assertions.assertEquals(954228901, model.timesRecommended());
-        Assertions.assertEquals(7931419591420767379L, model.improvedQueryIds().get(0));
-        Assertions.assertEquals("ljeamu", model.recommendationReason());
-        Assertions.assertEquals("zmlovuanash", model.currentState());
-        Assertions.assertEquals(RecommendationTypeEnum.DROP_INDEX, model.recommendationType());
-        Assertions.assertEquals("jerbdkelvidizozs", model.implementationDetails().method());
-        Assertions.assertEquals("ccxjm", model.implementationDetails().script());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T00:52:35Z"), model.analyzedWorkload().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T12:33:12Z"), model.analyzedWorkload().endTime());
-        Assertions.assertEquals(258073184, model.analyzedWorkload().queryCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T22:22:59Z"), model.initialRecommendedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T00:16:43Z"), model.lastRecommendedTime());
+        Assertions.assertEquals(40795931, model.timesRecommended());
+        Assertions.assertEquals(2491791348135004746L, model.improvedQueryIds().get(0));
+        Assertions.assertEquals("qgqqihedsvqwthmk", model.recommendationReason());
+        Assertions.assertEquals("bcysih", model.currentState());
+        Assertions.assertEquals(RecommendationTypeEnum.RE_INDEX, model.recommendationType());
+        Assertions.assertEquals("dhohsdtmcdzsuf", model.implementationDetails().method());
+        Assertions.assertEquals("hdxbzlm", model.implementationDetails().script());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-22T15:12:20Z"), model.analyzedWorkload().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T03:22:51Z"), model.analyzedWorkload().endTime());
+        Assertions.assertEquals(1828890303, model.analyzedWorkload().queryCount());
     }
 }

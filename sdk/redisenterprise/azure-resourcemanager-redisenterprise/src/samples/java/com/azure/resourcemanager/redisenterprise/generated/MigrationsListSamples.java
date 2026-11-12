@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class MigrationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationList.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationList.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationList.

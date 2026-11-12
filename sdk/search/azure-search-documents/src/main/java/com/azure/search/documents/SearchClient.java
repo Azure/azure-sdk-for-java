@@ -26,6 +26,7 @@ import com.azure.search.documents.implementation.models.AutocompletePostRequest;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -235,7 +236,7 @@ public final class SearchClient {
                             "Continuation token uses invalid apiVersion that doesn't match client serviceVersion."));
                 }
                 response = searchWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
-                    requestOptions);
+                    SearchUtils.addSearchHeaders(requestOptions, options));
             }
             return new SearchPagedResponse(response, serviceClient.getServiceVersion());
         });
@@ -385,6 +386,7 @@ public final class SearchClient {
      *     highlightPostTag: String (Optional)
      *     highlightPreTag: String (Optional)
      *     minimumCoverage: Double (Optional)
+     *     moreLikeThis: String (Optional)
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
@@ -401,8 +403,6 @@ public final class SearchClient {
      *         String (Optional)
      *     ]
      *     searchMode: String(any/all) (Optional)
-     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *     speller: String(none/lexicon) (Optional)
      *     select (Optional): [
      *         String (Optional)
      *     ]
@@ -414,30 +414,17 @@ public final class SearchClient {
      *     semanticQuery: String (Optional)
      *     answers: String(none/extractive) (Optional)
      *     captions: String(none/extractive) (Optional)
-     *     queryRewrites: String(none/generative) (Optional)
-     *     semanticFields (Optional): [
-     *         String (Optional)
-     *     ]
      *     vectorQueries (Optional): [
      *          (Optional){
-     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             kind: String(vector/text) (Required)
      *             k: Integer (Optional)
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
-     *             threshold (Optional): {
-     *                 kind: String(vectorSimilarity/searchScore) (Required)
-     *             }
-     *             filterOverride: String (Optional)
-     *             perDocumentVectorLimit: Integer (Optional)
      *         }
      *     ]
-     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *     hybridSearch (Optional): {
-     *         maxTextRecallSize: Integer (Optional)
-     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *     }
+     *     vectorFilterMode: String(postFilter/preFilter) (Optional)
      * }
      * }
      * </pre>
@@ -453,16 +440,6 @@ public final class SearchClient {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
-     *                 avg: Double (Optional)
-     *                 min: Double (Optional)
-     *                 max: Double (Optional)
-     *                 sum: Double (Optional)
-     *                 cardinality: Long (Optional)
-     *                 &#64;search.facets (Optional): {
-     *                     String (Required): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -480,19 +457,6 @@ public final class SearchClient {
      *             }
      *         }
      *     ]
-     *     &#64;search.debug (Optional): {
-     *         queryRewrites (Optional): {
-     *             text (Optional): {
-     *                 inputQuery: String (Optional)
-     *                 rewrites (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *             vectors (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -505,6 +469,7 @@ public final class SearchClient {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
@@ -521,8 +486,6 @@ public final class SearchClient {
      *             String (Optional)
      *         ]
      *         searchMode: String(any/all) (Optional)
-     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *         speller: String(none/lexicon) (Optional)
      *         select (Optional): [
      *             String (Optional)
      *         ]
@@ -534,30 +497,17 @@ public final class SearchClient {
      *         semanticQuery: String (Optional)
      *         answers: String(none/extractive) (Optional)
      *         captions: String(none/extractive) (Optional)
-     *         queryRewrites: String(none/generative) (Optional)
-     *         semanticFields (Optional): [
-     *             String (Optional)
-     *         ]
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
-     *                 threshold (Optional): {
-     *                     kind: String(vectorSimilarity/searchScore) (Required)
-     *                 }
-     *                 filterOverride: String (Optional)
-     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *         hybridSearch (Optional): {
-     *             maxTextRecallSize: Integer (Optional)
-     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *         }
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){
@@ -579,23 +529,6 @@ public final class SearchClient {
      *                 }
      *             ]
      *             &#64;search.documentDebugInfo (Optional): {
-     *                 semantic (Optional): {
-     *                     titleField (Optional): {
-     *                         name: String (Optional)
-     *                         state: String(used/unused/partial) (Optional)
-     *                     }
-     *                     contentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     keywordFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     rerankerInput (Optional): {
-     *                         title: String (Optional)
-     *                         content: String (Optional)
-     *                         keywords: String (Optional)
-     *                     }
-     *                 }
      *                 vectors (Optional): {
      *                     subscores (Optional): {
      *                         text (Optional): {
@@ -612,18 +545,6 @@ public final class SearchClient {
      *                         documentBoost: Double (Optional)
      *                     }
      *                 }
-     *                 innerHits (Optional): {
-     *                     String (Required): [
-     *                          (Required){
-     *                             ordinal: Long (Optional)
-     *                             vectors (Optional): [
-     *                                  (Optional){
-     *                                     String (Required): (recursive schema, see String above)
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
      *             }
      *              (Optional): {
      *                 String: Object (Required)
@@ -633,7 +554,6 @@ public final class SearchClient {
      *     &#64;odata.nextLink: String (Optional)
      *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
      *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
-     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
      * }
      * }
      * </pre>
@@ -935,6 +855,7 @@ public final class SearchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a document retrieved via a document lookup operation along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LookupDocument> getDocumentWithResponse(String key, RequestOptions requestOptions) {
         return convertResponse(this.serviceClient.getDocumentWithResponse(key, requestOptions), LookupDocument.class);
@@ -1050,5 +971,29 @@ public final class SearchClient {
                 false);
         }
         return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param options The options for the lookup: query source authorization, elevated read and selected fields. May be
+     * null.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it. May be null. Its
+     * callbacks run after the operation options are applied, so a header set explicitly with setHeader overrides the
+     * corresponding header from {@code options}. Query parameters added through RequestOptions are appended to the
+     * request, not substituted.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LookupDocument> getDocumentWithResponse(String key, GetDocumentOptions options,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getDocumentWithResponse(key, options, requestOptions),
+            LookupDocument.class);
     }
 }

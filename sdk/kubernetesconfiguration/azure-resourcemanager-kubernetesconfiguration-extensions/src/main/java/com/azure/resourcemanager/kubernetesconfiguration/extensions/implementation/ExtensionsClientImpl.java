@@ -892,7 +892,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
         String clusterResourceName, String clusterName, String extensionName, Boolean forceDelete) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterRp, clusterResourceName,
             clusterName, extensionName, forceDelete);

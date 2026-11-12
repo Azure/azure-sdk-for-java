@@ -398,16 +398,12 @@ See the full sample in [WebSearchSync.java](https://github.com/Azure/azure-sdk-f
 
 ---
 
-##### **Computer Use (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/computer-use?pivots=java))
+##### **Computer Use** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/computer-use?pivots=java))
 
 Interact with computer interfaces through simulated actions and screenshots:
 
 ```java com.azure.ai.agents.define_computer_use
-ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-    ComputerEnvironment.WINDOWS,
-    1026,
-    769
-);
+ComputerTool tool = new ComputerTool();
 ```
 
 See the full sample in [ComputerUseSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ComputerUseSync.java).
