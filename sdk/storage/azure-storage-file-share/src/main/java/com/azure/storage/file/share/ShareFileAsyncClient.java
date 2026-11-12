@@ -155,6 +155,10 @@ import static com.azure.storage.file.share.implementation.util.ModelHelper.toSha
 public class ShareFileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileAsyncClient.class);
 
+    // azure-core context key (HttpUtils.AZURE_STREAM_RESPONSE_BODY) that opts a call in to streaming its BinaryData
+    // response body instead of buffering it.
+    private static final String STREAM_RESPONSE_BODY = "azure-stream-response-body";
+
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String filePath;
@@ -1339,8 +1343,14 @@ public class ShareFileAsyncClient {
     private Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadRange(ShareFileRange range,
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
-        return fileClientInternal.downloadWithResponse(null, rangeString, rangeGetContentMD5,
-            requestConditions.getLeaseId(), null, scopedRequestOptions(context));
+        // Stream the body as it's consumed instead of buffering it, so large files aren't held in memory and a network
+        // error part-way through surfaces while reading, where the retriable download can resume from the offset.
+        Context streamingContext = (context == null ? Context.NONE : context).addData(STREAM_RESPONSE_BODY, true);
+        return fileClientInternal
+            .downloadWithResponse(null, rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), null,
+                scopedRequestOptions(streamingContext))
+            .map(response -> new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().toFluxByteBuffer(), response.getDeserializedHeaders()));
     }
 
     /**

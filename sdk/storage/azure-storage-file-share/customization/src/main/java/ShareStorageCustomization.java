@@ -14,7 +14,6 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.Statement;
@@ -28,7 +27,6 @@ import org.slf4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Customization class for File Share Storage.
@@ -88,10 +86,6 @@ public class ShareStorageCustomization extends Customization {
         relocateConvenienceClientsToImplementation(customization, logger);
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
-
-        base64EncodeByteArrayHeaders(customization, logger);
-
-        retypeDownloadResponseToStreaming(customization, logger);
 
         restoreFluentModels(customization, logger);
 
@@ -199,114 +193,6 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
         }
-    }
-
-    /**
-     * Base64-encodes {@code byte[]} header values in the relocated convenience clients. The emitter serializes every
-     * header argument with {@code String.valueOf(...)}; for a {@code byte[]} value (Content-MD5 and the source-CRC64
-     * headers) that yields the array's identity string ({@code "[B@..."}), which the service rejects with
-     * {@code InvalidHeaderValue}. The old RestProxy {@code @HeaderParam byte[]} layer Base64-encoded these. For each
-     * method, the {@code byte[]} parameters are detected and their {@code String.valueOf(param)} usages rewritten to
-     * {@code Base64.getEncoder().encodeToString(param)}.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void base64EncodeByteArrayHeaders(LibraryCustomization customization, Logger logger) {
-        List<String> internalClients = Arrays.asList("ShareServiceClientInternal", "ShareServiceAsyncClientInternal",
-            "ShareClientInternal", "ShareAsyncClientInternal", "ShareDirectoryClientInternal",
-            "ShareDirectoryAsyncClientInternal", "ShareFileClientInternal", "ShareFileAsyncClientInternal");
-        for (String internalName : internalClients) {
-            customization.getClass("com.azure.storage.file.share.implementation", internalName).customizeAst(ast -> {
-                int[] fixed = { 0 };
-                ast.findAll(MethodDeclaration.class).forEach(method -> {
-                    Set<String> byteArrayParams = method.getParameters()
-                        .stream()
-                        .filter(p -> "byte[]".equals(p.getType().asString()))
-                        .map(Parameter::getNameAsString)
-                        .collect(Collectors.toSet());
-                    if (byteArrayParams.isEmpty()) {
-                        return;
-                    }
-                    List<MethodCallExpr> valueOfCalls = method.findAll(MethodCallExpr.class)
-                        .stream()
-                        .filter(mc -> "valueOf".equals(mc.getNameAsString())
-                            && mc.getScope().map(Object::toString).map("String"::equals).orElse(false)
-                            && mc.getArguments().size() == 1 && mc.getArgument(0).isNameExpr()
-                            && byteArrayParams.contains(mc.getArgument(0).asNameExpr().getNameAsString()))
-                        .collect(Collectors.toList());
-                    for (MethodCallExpr valueOf : valueOfCalls) {
-                        String param = valueOf.getArgument(0).asNameExpr().getNameAsString();
-                        valueOf.replace(
-                            StaticJavaParser.parseExpression("Base64.getEncoder().encodeToString(" + param + ")"));
-                        fixed[0]++;
-                    }
-                });
-                if (fixed[0] > 0) {
-                    ast.addImport("java.util.Base64");
-                }
-                logger.info("Base64-encoded {} byte[] header value(s) in {}", fixed[0], internalName);
-            });
-        }
-    }
-
-    /**
-     * Restores the streaming ({@code Flux<ByteBuffer>}) response body for the asynchronous file download so the
-     * reliable download retry works and large files are not buffered into memory.
-     * <p>
-     * The TypeSpec emitter generates the async {@code download} REST method returning {@code Response<BinaryData>}. For
-     * an {@code application/octet-stream} body azure-core's {@code RestProxy} materializes that {@code BinaryData} with
-     * {@code BinaryData.fromFlux(body)} (buffer content = true), which eagerly collects the entire response before the
-     * {@code Mono} completes. That defeats {@code createRetriableDownloadFlux} (a mid-stream error surfaces before the
-     * retriable flux is built, so no resume happens) and loads whole files into memory. The shipped (pre-migration)
-     * client returned a lazy {@code Flux<ByteBuffer>} body; this restores that shape. Only the async path is retyped --
-     * the sync client delegates to the async {@code downloadWithResponse}, so {@code downloadSync} is left untouched.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void retypeDownloadResponseToStreaming(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-
-        String filesImplPath = PKG_ROOT + "implementation/FilesImpl.java";
-        String filesImpl = editor.getFileContent(filesImplPath);
-        String newFilesImpl = addStreamingImports(filesImpl
-            .replaceAll("Mono<Response<BinaryData>>(\\s+)download\\(@HostParam\\(\"url\"\\) String url,",
-                "Mono<Response<Flux<ByteBuffer>>>$1download(@HostParam(\"url\") String url,")
-            .replaceAll("public Mono<Response<BinaryData>>(\\s+)downloadWithResponseInternalAsync\\(",
-                "public Mono<Response<Flux<ByteBuffer>>>$1downloadWithResponseInternalAsync("));
-        if (!newFilesImpl.equals(filesImpl)) {
-            editor.replaceFile(filesImplPath, newFilesImpl);
-            logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in FilesImpl");
-        }
-
-        String asyncPath = PKG_ROOT + "implementation/ShareFileAsyncClientInternal.java";
-        String async = editor.getFileContent(asyncPath);
-        // Regex anchors tolerate the emitter's line wrapping, which shifts whenever the download signature gains a
-        // parameter, and either the generated or the relocated download headers class name.
-        String newAsync = addStreamingImports(async
-            .replaceAll("Mono<Response<BinaryData>>(\\s+)downloadWithResponseInternal\\(",
-                "Mono<Response<Flux<ByteBuffer>>>$1downloadWithResponseInternal(")
-            .replaceAll("public Mono<ResponseBase<(\\w+), BinaryData>>(\\s+)downloadWithResponse\\(",
-                "public Mono<ResponseBase<$1, Flux<ByteBuffer>>>$2downloadWithResponse(")
-            .replaceAll("public Mono<BinaryData>(\\s+)download\\(", "public Mono<Flux<ByteBuffer>>$1download("));
-        if (!newAsync.equals(async)) {
-            editor.replaceFile(asyncPath, newAsync);
-            logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in ShareFileAsyncClientInternal");
-        }
-    }
-
-    // Adds the reactor Flux and java.nio.ByteBuffer imports used by the streaming download retype, if absent.
-    private static String addStreamingImports(String content) {
-        if (!content.contains("import java.nio.ByteBuffer;")) {
-            content = content.replace("import com.azure.core.util.BinaryData;",
-                "import com.azure.core.util.BinaryData;\nimport java.nio.ByteBuffer;");
-        }
-        if (!content.contains("import reactor.core.publisher.Flux;")) {
-            content = content.replace("import reactor.core.publisher.Mono;",
-                "import reactor.core.publisher.Flux;\nimport reactor.core.publisher.Mono;");
-        }
-        return content;
     }
 
     /**

@@ -27,8 +27,6 @@ import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.implementation.models.ShareStorageErrorException;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -98,7 +96,7 @@ public final class FilesImpl {
         @Get("/")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(ShareStorageErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> download(@HostParam("url") String url,
+        Mono<Response<BinaryData>> download(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -866,7 +864,7 @@ public final class FilesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil
             .withContext(context -> service.download(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
