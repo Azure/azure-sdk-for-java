@@ -58,31 +58,32 @@ public class SessionTokenHelper {
                 HttpConstants.SubStatusCodes.MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT);
         }
 
-        ISessionToken sessionToken;
         if (StringUtils.isNotEmpty(originalSessionToken)) {
-            sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
+            ISessionToken sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
+            request.requestContext.sessionToken = sessionToken;
         } else {
             // use ambient session token.
-            sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, partitionKeyRangeId);
+            ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, partitionKeyRangeId);
+            request.requestContext.sessionToken = sessionToken;
         }
 
-        request.requestContext.sessionToken = sessionToken;
-        if (sessionToken == null) {
+        if (request.requestContext.sessionToken == null) {
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         } else {
+
             request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN,
-                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
+                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
         }
     }
 
-    static ISessionToken getLocalSessionToken(
+    private static ISessionToken getLocalSessionToken(
         RxDocumentServiceRequest request,
         String globalSessionToken,
         String partitionKeyRangeId) {
 
         Collection<String> parents = request.requestContext.resolvedPartitionKeyRange != null
             ? request.requestContext.resolvedPartitionKeyRange.getParents() : null;
-        ISessionToken sessionToken = getLocalSessionToken(globalSessionToken, partitionKeyRangeId, parents);
+        ISessionToken sessionToken = selectPartitionLocalSessionToken(globalSessionToken, partitionKeyRangeId, parents);
 
         if (sessionToken == null && StringUtils.isNotEmpty(globalSessionToken)) {
             recordUnmatchedSessionToken(request, globalSessionToken, partitionKeyRangeId);
@@ -104,7 +105,16 @@ public class SessionTokenHelper {
         }
     }
 
-    static boolean areSessionTokenRangesKnown(
+    // Returns null when topology cannot safely scope the caller's progress. Never reads ambient state.
+    static ISessionToken scopeCompoundSessionToken(
+        String originalToken, PartitionKeyRange target, CollectionRoutingMap routingMap) {
+
+        ISessionToken selected = selectPartitionLocalSessionToken(
+            originalToken, target != null ? target.getId() : "", target != null ? target.getParents() : null);
+        return selected != null && areSessionTokenRangesKnown(originalToken, routingMap, target) ? selected : null;
+    }
+
+    private static boolean areSessionTokenRangesKnown(
         String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
 
         if (target == null) {
@@ -121,8 +131,7 @@ public class SessionTokenHelper {
         return true;
     }
 
-    // Selects explicit progress without mutating a request or consulting ambient session state.
-    static ISessionToken getLocalSessionToken(
+    private static ISessionToken selectPartitionLocalSessionToken(
         String globalSessionToken,
         String partitionKeyRangeId,
         Collection<String> parentPartitionKeyRangeIds) {

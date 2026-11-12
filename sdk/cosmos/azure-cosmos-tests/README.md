@@ -8,13 +8,18 @@ n/a
 
 ### Gateway V2 compound session tokens
 
-Caller-supplied compound tokens are scoped in `RxDocumentClientImpl` at the existing
-metadata-ready points, using the collection definition and routing map already available.
-Selection reuses `SessionTokenHelper` and the Gateway session eligibility rules, merging
-progress for the target partition and its parents. Preparation returns the final routing
-map so PPCB/PPAF can use its range before dispatch. Scoping reuses these supplied inputs
-rather than looking them up again. `ThinClientStoreModel` serializes the prepared token;
-the inherited session handler preserves intentional omission rather than applying ambient progress.
+`ThinClientStoreModel` prepares compound session tokens after the normal Gateway
+session eligibility checks and before serialization. It resolves the partition from
+the collection routing map, reusing an existing range when it belongs to that map.
+The dedicated `SessionTokenHelper.scopeCompoundSessionToken` method merges progress
+for the target partition and its parents.
+
+The prepared token is stored in the request's existing native session-token context.
+Serialization uses a request copy carrying only that scoped token, or no token for an
+intentional omission. The caller's compound header is not mutated: no separate original
+token field or header restoration is needed, and a retry or clone can select against its
+current topology. An omitted wire token cannot activate ambient session resolution.
+Transport selection, document-client preparation, and partition failover helpers remain unchanged.
 
 If the target cannot be resolved, no token segment matches, or the topology does not account
 for every supplied range ID, the SDK refreshes once using the rejected routing map. It then
@@ -27,9 +32,6 @@ session token and caller progress is not enforced. The existing
 follows the helper's existing configuration. Metadata, parsing, and merge errors propagate;
 there is no refresh loop or token-driven transport fallback. Missing pinned physical ranges
 retain range-gone handling. Malformed tokens still fail.
-The original token is preserved across attempts and clones so omission cannot become an
-ambient-session lookup on retry.
-
 The regular and real-split live regression classes run together under the
 `thinclient-endpoint-probe` Maven profile. The split regression also verifies that unattainable
 child progress still fails with session-not-available after refreshing a genuinely stale map.

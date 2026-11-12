@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -148,14 +147,8 @@ public class ThinClientRangeHeadersTest {
 
     private static Map<Short, byte[]> serialize(ThinClientStoreModel model, RxDocumentServiceRequest request)
         throws Exception {
-        return decodeHeaders(model.wrapInHttpRequest(request, new URI("https://localhost:10250")));
-    }
-
-    static Map<Short, byte[]> decodeHeaders(HttpRequest request) {
-        return decodeTokens(request.body().single().block());
-    }
-
-    public static Map<Short, byte[]> decodeTokens(byte[] body) {
+        byte[] body = model.wrapInHttpRequest(request, new URI("https://localhost:10250"))
+            .body().single().block();
         ByteBuf buffer = Unpooled.wrappedBuffer(body);
         try {
             int headerLength = buffer.readIntLE();

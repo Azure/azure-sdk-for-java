@@ -15,8 +15,12 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -31,6 +35,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -90,18 +95,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        return Mono.defer(() -> {
-            String originalSessionToken = request.getOriginalSessionToken();
-            if (!SessionTokenHelper.isCompoundSessionToken(originalSessionToken)) {
-                originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-            }
-            String tokenToRestore = originalSessionToken;
-
-            // Restore before termination reaches retry handling, not in doFinally after it.
-            return super.processMessage(request)
-                .doOnTerminate(() -> SessionTokenHelper.setOriginalSessionToken(request, tokenToRestore))
-                .doOnCancel(() -> SessionTokenHelper.setOriginalSessionToken(request, tokenToRestore));
-        });
+        return super.processMessage(request);
     }
 
     @Override
@@ -222,6 +216,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        if (SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            return prepareCompoundSessionToken(request)
+                .then(Mono.defer(() -> super.performRequestInternal(request, requestUri)));
+        }
+
         // Ensure partitionKeyDefinition is resolved from the collection cache before
         // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
         // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
@@ -249,6 +248,86 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return super.performRequestInternal(request, requestUri);
     }
 
+    private Mono<Void> prepareCompoundSessionToken(RxDocumentServiceRequest request) {
+        String originalToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        ClientSideRequestStatistics statistics = request.requestContext.cosmosDiagnostics == null ? null
+            : ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+                .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
+        MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
+        return getCollectionCache().resolveCollectionAsync(diagnostics, request)
+            .flatMap(collection -> {
+                if (collection == null || collection.v == null) {
+                    return Mono.error(new IllegalStateException("Collection cannot be null"));
+                }
+                String collectionRid = collection.v.getResourceId();
+                PartitionKeyDefinition definition = collection.v.getPartitionKey();
+                request.setPartitionKeyDefinition(definition);
+                return getPartitionKeyRangeCache().tryLookupAsync(diagnostics, collectionRid, null, request.properties)
+                    .flatMap(cached -> {
+                        if (cached == null || cached.v == null) {
+                            return Mono.error(new CollectionRoutingMapNotFoundException(
+                                "No collection routing map found for collection rid " + collectionRid));
+                        }
+                        PartitionKeyRange target = resolveCompoundSessionTokenRange(request, definition, cached.v);
+                        ISessionToken token = SessionTokenHelper.scopeCompoundSessionToken(originalToken, target, cached.v);
+                        if (token != null) {
+                            request.requestContext.sessionToken = token;
+                            return Mono.empty();
+                        }
+                        return getPartitionKeyRangeCache().tryLookupAsync(
+                            diagnostics, collectionRid, cached.v, request.properties)
+                            .doOnNext(refreshed -> {
+                                if (refreshed == null || refreshed.v == null) {
+                                    throw new CollectionRoutingMapNotFoundException(
+                                        "No collection routing map found for collection rid " + collectionRid);
+                                }
+                                PartitionKeyRange refreshedTarget = resolveCompoundSessionTokenRange(
+                                    request, definition, refreshed.v);
+                                if (refreshedTarget == null && request.getPartitionKeyRangeIdentity() != null) {
+                                    throw new PartitionKeyRangeGoneException();
+                                }
+                                ISessionToken refreshedToken = SessionTokenHelper.scopeCompoundSessionToken(
+                                    originalToken, refreshedTarget, refreshed.v);
+                                request.requestContext.sessionToken = refreshedToken;
+                                if (refreshedToken == null) {
+                                    SessionTokenHelper.recordUnmatchedSessionToken(
+                                        request, originalToken, refreshedTarget != null ? refreshedTarget.getId() : "");
+                                }
+                            }).then();
+                    });
+            });
+    }
+
+    private PartitionKeyRange resolveCompoundSessionTokenRange(
+        RxDocumentServiceRequest request, PartitionKeyDefinition definition, CollectionRoutingMap routingMap) {
+
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        if (range == null || routingMap.tryGetRangeByPartitionKeyRangeId(range.getId()) != range) {
+            range = null;
+            if (request.getPartitionKeyRangeIdentity() != null) {
+                range = routingMap.getRangeByPartitionKeyRangeId(
+                    request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            } else if (PartitionKeyHelper.isFullPartitionKey(definition, request.getPartitionKeyInternal())) {
+                String epk = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                    request.getPartitionKeyInternal(), definition);
+                request.setEffectivePartitionKey(epk);
+                range = routingMap.getRangeByEffectivePartitionKey(epk);
+            } else {
+                String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+                String end = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+                if (start != null && end != null && ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
+                    request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
+                    List<PartitionKeyRange> ranges = routingMap.getOverlappingRanges(new Range<>(start, end, true, false));
+                    if (ranges.size() == 1) {
+                        range = ranges.get(0);
+                    }
+                }
+            }
+        }
+        request.requestContext.resolvedPartitionKeyRange = range;
+        return range;
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
@@ -267,7 +346,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
 
-        RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
+        RxDocumentServiceRequest wireRequest = request;
+        if (SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            // Keep caller progress unchanged; only the serialized attempt carries the scoped token.
+            wireRequest = request.clone();
+            ISessionToken token = request.requestContext.sessionToken;
+            SessionTokenHelper.setOriginalSessionToken(wireRequest, token == null ? null
+                : SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+                    request.requestContext.resolvedPartitionKeyRange.getId(), token.convertToString()));
+        }
+        RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(wireRequest);
 
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());

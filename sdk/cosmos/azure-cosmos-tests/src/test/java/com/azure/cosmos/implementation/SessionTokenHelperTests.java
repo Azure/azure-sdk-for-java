@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -35,7 +36,8 @@ public class SessionTokenHelperTests {
 
     @Test(groups = "unit", dataProvider = "explicitTokenSelections")
     public void selectsExplicitTargetAndParentProgress(String compoundToken, List<String> parents, String expected) {
-        ISessionToken selected = SessionTokenHelper.getLocalSessionToken(compoundToken, "1", parents);
+        PartitionKeyRange target = new PartitionKeyRange("1", "", "FF", parents);
+        ISessionToken selected = SessionTokenHelper.scopeCompoundSessionToken(compoundToken, target, knownRanges());
 
         if (expected == null) {
             assertThat(selected).isNull();
@@ -57,14 +59,15 @@ public class SessionTokenHelperTests {
 
     @Test(groups = "unit", dataProvider = "malformedTokens")
     public void validatesAllSegmentsIncludingNonmatchingOnes(String token) {
-        assertThatThrownBy(() -> SessionTokenHelper.getLocalSessionToken(token, "1", Collections.emptyList()))
+        assertThatThrownBy(() -> SessionTokenHelper.scopeCompoundSessionToken(
+            token, new PartitionKeyRange("1", "", "FF"), knownRanges()))
             .isInstanceOf(RuntimeException.class);
     }
 
     @Test(groups = "unit")
     public void propagatesIncompatibleRegionProgress() {
-        assertThatThrownBy(() -> SessionTokenHelper.getLocalSessionToken(
-            "1:1#20#1=20,1:1#30#2=30", "1", Collections.emptyList()))
+        assertThatThrownBy(() -> SessionTokenHelper.scopeCompoundSessionToken(
+            "1:1#20#1=20,1:1#30#2=30", new PartitionKeyRange("1", "", "FF"), knownRanges()))
             .isInstanceOfSatisfying(CosmosException.class, error -> {
                 assertThat(error.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
                 assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
@@ -84,6 +87,35 @@ public class SessionTokenHelperTests {
         assertThat(request.requestContext.sessionToken).isEqualTo(SessionTokenHelper.parse("1#10#1=10"));
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo("1:1#10#1=10");
         Mockito.verifyNoInteractions(ambient);
+    }
+
+    @Test(groups = "unit")
+    public void compoundScopingRejectsUnknownProgressEvenWhenParentMatches() {
+        CollectionRoutingMap topology = knownRanges();
+        Mockito.when(topology.tryGetRangeByPartitionKeyRangeId("2")).thenReturn(null);
+        PartitionKeyRange target = new PartitionKeyRange("1", "", "FF", Collections.singletonList("0"));
+
+        assertThat(SessionTokenHelper.scopeCompoundSessionToken(
+            "0:1#10#1=10,2:1#999#1=999", target, topology)).isNull();
+    }
+
+    @Test(groups = "unit")
+    public void compoundScopingAcceptsKnownParentsAbsentFromActiveTopology() {
+        CollectionRoutingMap topology = knownRanges();
+        Mockito.when(topology.tryGetRangeByPartitionKeyRangeId("0")).thenReturn(null);
+        PartitionKeyRange target = new PartitionKeyRange("1", "", "FF", Collections.singletonList("0"));
+
+        assertThat(SessionTokenHelper.scopeCompoundSessionToken(
+            "0:1#10#1=10,1:1#20#1=20", target, topology))
+            .isEqualTo(SessionTokenHelper.parse("1#20#1=20"));
+    }
+
+    @Test(groups = "unit")
+    public void compoundScopingValidatesTokensEvenWithoutATarget() {
+        assertThat(SessionTokenHelper.scopeCompoundSessionToken(
+            "0:1#10#1=10,1:1#20#1=20", null, knownRanges())).isNull();
+        assertThatThrownBy(() -> SessionTokenHelper.scopeCompoundSessionToken(
+            "0:1#10#1=10,invalid", null, knownRanges())).isInstanceOf(BadRequestException.class);
     }
 
     @Test(groups = "unit")
@@ -192,5 +224,14 @@ public class SessionTokenHelperTests {
     private static RxDocumentServiceRequest request() {
         return RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), OperationType.Read,
             "dbs/db/colls/coll/docs/item", ResourceType.Document);
+    }
+
+    private static CollectionRoutingMap knownRanges() {
+        CollectionRoutingMap topology = Mockito.mock(CollectionRoutingMap.class);
+        for (String id : Arrays.asList("0", "1", "2", "9")) {
+            Mockito.when(topology.tryGetRangeByPartitionKeyRangeId(id))
+                .thenReturn(new PartitionKeyRange(id, "", "FF"));
+        }
+        return topology;
     }
 }

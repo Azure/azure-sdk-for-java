@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ThinClientRangeHeadersTest;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -42,6 +41,8 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -57,6 +58,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -433,11 +435,50 @@ public class ThinClientSessionTokenSplitE2ETest {
                     bytes.write(chunk, 0, chunk.length);
                 }
                 byte[] body = bytes.toByteArray();
-                byte[] token = ThinClientRangeHeadersTest.decodeTokens(body).get(RntbdRequestHeader.SessionToken.id());
+                byte[] token = decodeTokens(body).get(RntbdRequestHeader.SessionToken.id());
                 requests.add(new ImmutablePair<>(request.uri(),
                     token == null ? null : new String(token, StandardCharsets.UTF_8)));
                 return request.withBody(Flux.just(body));
             });
+        }
+
+        private static Map<Short, byte[]> decodeTokens(byte[] body) {
+            ByteBuf buffer = Unpooled.wrappedBuffer(body);
+            try {
+                int headerLength = buffer.readIntLE();
+                buffer.skipBytes(20); // Resource type, operation type, and activity ID.
+                Map<Short, byte[]> tokens = new HashMap<>();
+                while (buffer.readerIndex() < headerLength) {
+                    short id = buffer.readShortLE();
+                    int type = buffer.readUnsignedByte();
+                    int length;
+                    switch (type) {
+                        case 0x00: length = 1; break;
+                        case 0x01: length = 2; break;
+                        case 0x02:
+                        case 0x03:
+                        case 0x0D: length = 4; break;
+                        case 0x04:
+                        case 0x05:
+                        case 0x0E: length = 8; break;
+                        case 0x06: length = 16; break;
+                        case 0x07:
+                        case 0x0A: length = buffer.readUnsignedByte(); break;
+                        case 0x08:
+                        case 0x0B: length = buffer.readUnsignedShortLE(); break;
+                        case 0x09:
+                        case 0x0C: length = buffer.readIntLE(); break;
+                        default: throw new AssertionError("Unexpected RNTBD token type: " + type);
+                    }
+                    byte[] value = new byte[length];
+                    buffer.readBytes(value);
+                    assertThat(tokens.put(id, value)).as("Duplicate wire token 0x%04X", id).isNull();
+                }
+                assertThat(buffer.readerIndex()).isEqualTo(headerLength);
+                return tokens;
+            } finally {
+                buffer.release();
+            }
         }
 
         private void clear() {
