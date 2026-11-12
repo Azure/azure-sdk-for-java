@@ -187,6 +187,13 @@ dependencyManagement {
 }
 ```
 
+### Key Vault Secrets in Spring Boot 4 native images
+
+To supply the Key Vault endpoint and credentials at deployment time, set
+`spring.cloud.azure.keyvault.secret.property-source-enabled=false` in the Spring AOT build environment.
+This skips Key Vault property source initialization during AOT processing. At runtime, enable the property source
+and supply the endpoint and credentials through your deployment configuration.
+
 ## Spring Boot 3 Support
 
 [Spring Cloud Azure 6.1.0](https://repo1.maven.org/maven2/com/azure/spring/spring-cloud-azure-dependencies/6.1.0/) is the latest supported version of Spring Boot 3.x.
