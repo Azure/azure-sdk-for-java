@@ -1,0 +1,7 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+#
+# V5-only build dependencies referenced by sdk-build.xml, not shared pom*.xml files.
+# Loaded by verify-build.py in addition to the shared external dependency map.
+# Entries must not duplicate shared dependencies or other entries in this file.
+org.apache.maven.plugins:maven-deploy-plugin;3.1.4

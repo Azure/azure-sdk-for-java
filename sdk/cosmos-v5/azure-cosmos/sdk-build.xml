@@ -1,0 +1,165 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure.v2</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-cosmos</artifactId>
+  <!-- Opt-in version configuration: ../versions.txt, not the shared v4 registration. -->
+  <version>5.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <name>Azure Cosmos DB SDK for Java - v5 (not for distribution)</name>
+  <description>Nonfunctional, nonpublishing Java 17 foundation for the Azure Cosmos DB v5 SDK.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.testRelease>17</maven.compiler.testRelease>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.includeTests>true</spotbugs.includeTests>
+    <!-- A foundation is not a distributable SDK, even on a manual deployment invocation. -->
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <!-- The approved successor retains com.azure.cosmos, not the v2 parent's com.azure.v2 namespace. -->
+          <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>require-java17</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[17,)</version>
+                  <message>The Cosmos v5 SDK requires JDK 17 or newer.</message>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <!-- Override execution-level releases, not just the top-level compiler properties. -->
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-modules-compile</id>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-compile</id>
+            <configuration>
+              <release>17</release>
+              <excludes combine.self="override"/>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <configuration>
+              <release>17</release>
+              <testRelease>17</testRelease>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-testCompile</id>
+            <configuration>
+              <release>17</release>
+              <testRelease>17</testRelease>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <cosmos.expectedVersion>${project.version}</cosmos.expectedVersion>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <sourceFileExcludes combine.self="override"/>
+          <!-- Document the reserved package even though this foundation exports no public APIs. -->
+          <additionalOptions>
+            <additionalOption>--module com.azure.cosmos</additionalOption>
+            <additionalOption>--show-packages all</additionalOption>
+            <additionalOption>--show-module-contents all</additionalOption>
+          </additionalOptions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <configuration>
+          <!-- Compare the future v5 API within its own major, without changing the existing v4 SDK. -->
+          <versionFormat>^5\.\d+\.\d+$</versionFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.1.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-deploy-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,55 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
+  - name: Artifacts
+    type: object
+  - name: AdditionalModules
+    type: object
+  - name: JavaVersions
+    type: object
+    default: ['17', '21', '25']
+
+# Do not extend the SDK release archetype: this artifact is deliberately not shippable.
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: Validate
+        displayName: Cosmos v5 validation
+        jobs:
+          - ${{ each javaVersion in parameters.JavaVersions }}:
+              - job: Java${{ javaVersion }}
+                timeoutInMinutes: 60
+                pool:
+                  name: azsdk-pool
+                  image: ubuntu-24.04
+                  os: linux
+                templateContext:
+                  outputs:
+                    - output: pipelineArtifact
+                      artifactName: cosmos-v5-validation-java${{ javaVersion }}
+                      targetPath: $(Build.SourcesDirectory)/sdk/cosmos-v5/azure-cosmos/target
+                      condition: succeededOrFailed()
+                      isProduction: false
+                      sbomEnabled: false
+                steps:
+                  - checkout: self
+                  - task: JavaToolInstaller@0
+                    inputs:
+                      versionSpec: '${{ javaVersion }}'
+                      jdkArchitectureOption: x64
+                      jdkSourceOption: PreInstalled
+                  - script: |
+                      python3 sdk/cosmos-v5/azure-cosmos/verify-build.py --maven-repository "$(Agent.TempDirectory)/cosmos-v5-validation-java${{ javaVersion }}-$(Build.BuildId)-$(System.JobAttempt)"
+                    displayName: Cold reactor bootstrap and Cosmos v5 build verification
+                    workingDirectory: $(Build.SourcesDirectory)
+                  - task: PublishTestResults@2
+                    condition: succeededOrFailed()
+                    inputs:
+                      testResultsFormat: JUnit
+                      testResultsFiles: sdk/cosmos-v5/azure-cosmos/target/surefire-reports/TEST-*.xml
+                      failTaskOnFailedTests: true
+                      failTaskOnMissingResultsFile: true
+                      testRunTitle: Cosmos v5 validation - Java ${{ javaVersion }}
