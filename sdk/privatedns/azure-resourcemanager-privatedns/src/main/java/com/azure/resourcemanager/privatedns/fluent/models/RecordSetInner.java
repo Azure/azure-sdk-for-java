@@ -6,6 +6,7 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -14,6 +15,7 @@ import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
 import com.azure.resourcemanager.privatedns.models.MxRecord;
+import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.SoaRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecord;
@@ -378,6 +380,41 @@ public final class RecordSetInner extends ProxyResource {
         }
         this.innerProperties().withTxtRecords(txtRecords);
         return this;
+    }
+
+    /**
+     * Get the trafficManagementProfile property: A reference to an azure private traffic manager profile resource from
+     * where the record set value is taken. Cannot be combined with aRecords, aaaaRecords, or cnameRecord.
+     * 
+     * @return the trafficManagementProfile value.
+     */
+    public SubResource trafficManagementProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().trafficManagementProfile();
+    }
+
+    /**
+     * Set the trafficManagementProfile property: A reference to an azure private traffic manager profile resource from
+     * where the record set value is taken. Cannot be combined with aRecords, aaaaRecords, or cnameRecord.
+     * 
+     * @param trafficManagementProfile the trafficManagementProfile value to set.
+     * @return the RecordSetInner object itself.
+     */
+    public RecordSetInner withTrafficManagementProfile(SubResource trafficManagementProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecordSetProperties();
+        }
+        this.innerProperties().withTrafficManagementProfile(trafficManagementProfile);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the record set. This is a read-only property and
+     * any attempt to set this value will be ignored.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

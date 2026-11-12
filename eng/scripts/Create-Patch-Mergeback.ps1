@@ -12,8 +12,9 @@ Creates the version, changelog, and generated POM changes for a patch merge-back
 Reads patch-changelog.md and a generated JSON representation of version_client.txt
 from a patch release branch, checks out origin/main, promotes released patch
 versions into the main branch dependency-version column without changing
-current-version, inserts the exact patch changelog entries, and regenerates POM
-files.
+current-version, preserves the manifest's dependency baselines, inserts the
+patch changelog entries after Unreleased sections in
+descending version order among released entries, and regenerates POM files.
 
 The script does not commit, push, or create a pull request.
 #>

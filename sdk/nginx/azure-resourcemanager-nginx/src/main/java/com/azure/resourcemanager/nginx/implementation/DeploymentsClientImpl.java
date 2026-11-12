@@ -398,7 +398,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link SyncPoller} for polling of nginx Deployment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner>
+    private SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, NginxDeploymentInner body) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, deploymentName, body);
         return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
@@ -623,7 +623,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link SyncPoller} for polling of nginx Deployment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<NginxDeploymentInner>, NginxDeploymentInner> beginUpdate(String resourceGroupName,
         String deploymentName, NginxDeploymentUpdateParameters body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, deploymentName, body);
         return this.client.<NginxDeploymentInner, NginxDeploymentInner>getLroResult(response,
