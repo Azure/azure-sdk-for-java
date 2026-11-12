@@ -11,7 +11,7 @@ import com.azure.resourcemanager.privatedns.models.RecordType;
  */
 public final class RecordSetsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetTXTDelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetTXTDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone TXT Record Set.
@@ -27,7 +27,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetMXDelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetMXDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone MX Record Set.
@@ -43,7 +43,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetCNAMEDelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetCNAMEDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone CNAME Record Set.
@@ -59,7 +59,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAAAADelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAAAADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone AAAA Record Set.
@@ -75,7 +75,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSRVDelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSRVDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone SRV Record Set.
@@ -91,7 +91,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetADelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone A Record Set.
@@ -107,7 +107,7 @@ public final class RecordSetsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetPTRDelete.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetPTRDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone PTR Record Set.

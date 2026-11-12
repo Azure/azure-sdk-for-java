@@ -1076,7 +1076,7 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, StartRequest body) {
         Response<BinaryData> response
             = startWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body);
@@ -1338,7 +1338,7 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
         String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, StopRequest body) {
         Response<BinaryData> response
             = stopWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body);

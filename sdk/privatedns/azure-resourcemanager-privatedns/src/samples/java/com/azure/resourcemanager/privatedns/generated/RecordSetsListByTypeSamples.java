@@ -11,7 +11,7 @@ import com.azure.resourcemanager.privatedns.models.RecordType;
  */
 public final class RecordSetsListByTypeSamples {
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetCNAMEList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetCNAMEList.json
      */
     /**
      * Sample code: GET Private DNS Zone CNAME Record Sets.
@@ -27,7 +27,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSOAList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSOAList.json
      */
     /**
      * Sample code: GET Private DNS Zone SOA Record Sets.
@@ -43,7 +43,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAAAAList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAAAAList.json
      */
     /**
      * Sample code: GET Private DNS Zone AAAA Record Sets.
@@ -59,7 +59,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAList.json
      */
     /**
      * Sample code: GET Private DNS Zone A Record Sets.
@@ -75,7 +75,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSRVList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSRVList.json
      */
     /**
      * Sample code: GET Private DNS Zone SRV Record Sets.
@@ -91,7 +91,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetMXList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetMXList.json
      */
     /**
      * Sample code: GET Private DNS Zone MX Record Sets.
@@ -107,7 +107,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetTXTList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetTXTList.json
      */
     /**
      * Sample code: GET Private DNS Zone TXT Record Sets.
@@ -123,7 +123,7 @@ public final class RecordSetsListByTypeSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetPTRList.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetPTRList.json
      */
     /**
      * Sample code: GET Private DNS Zone PTR Record Sets.

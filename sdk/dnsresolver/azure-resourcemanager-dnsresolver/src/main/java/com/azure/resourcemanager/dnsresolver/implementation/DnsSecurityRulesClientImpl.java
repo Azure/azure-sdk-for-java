@@ -427,7 +427,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of describes a DNS security rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName,
         DnsSecurityRuleInner parameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
@@ -714,7 +714,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of describes a DNS security rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<DnsSecurityRuleInner>, DnsSecurityRuleInner> beginUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsSecurityRuleName, DnsSecurityRulePatch parameters, String ifMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, parameters, ifMatch);
@@ -977,7 +977,7 @@ public final class DnsSecurityRulesClientImpl implements DnsSecurityRulesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsSecurityRuleName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch);

@@ -13,27 +13,27 @@ public final class BackupOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupOptions model = BinaryData.fromString(
-            "{\"backupLevel\":\"FULL\",\"jobDescription\":\"edplvwiwubmw\",\"backupCopyImmediately\":true,\"runSnapShotBackup\":false,\"notifyUserOnJobCompletion\":true}")
+            "{\"backupLevel\":\"INCREMENTAL\",\"jobDescription\":\"rfouyftaakcpw\",\"backupCopyImmediately\":false,\"runSnapShotBackup\":true,\"notifyUserOnJobCompletion\":false}")
             .toObject(BackupOptions.class);
-        Assertions.assertEquals(BackupLevel.FULL, model.backupLevel());
-        Assertions.assertEquals("edplvwiwubmw", model.jobDescription());
-        Assertions.assertTrue(model.backupCopyImmediately());
-        Assertions.assertFalse(model.runSnapShotBackup());
-        Assertions.assertTrue(model.notifyUserOnJobCompletion());
+        Assertions.assertEquals(BackupLevel.INCREMENTAL, model.backupLevel());
+        Assertions.assertEquals("rfouyftaakcpw", model.jobDescription());
+        Assertions.assertFalse(model.backupCopyImmediately());
+        Assertions.assertTrue(model.runSnapShotBackup());
+        Assertions.assertFalse(model.notifyUserOnJobCompletion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupOptions model = new BackupOptions().withBackupLevel(BackupLevel.FULL)
-            .withJobDescription("edplvwiwubmw")
-            .withBackupCopyImmediately(true)
-            .withRunSnapShotBackup(false)
-            .withNotifyUserOnJobCompletion(true);
+        BackupOptions model = new BackupOptions().withBackupLevel(BackupLevel.INCREMENTAL)
+            .withJobDescription("rfouyftaakcpw")
+            .withBackupCopyImmediately(false)
+            .withRunSnapShotBackup(true)
+            .withNotifyUserOnJobCompletion(false);
         model = BinaryData.fromObject(model).toObject(BackupOptions.class);
-        Assertions.assertEquals(BackupLevel.FULL, model.backupLevel());
-        Assertions.assertEquals("edplvwiwubmw", model.jobDescription());
-        Assertions.assertTrue(model.backupCopyImmediately());
-        Assertions.assertFalse(model.runSnapShotBackup());
-        Assertions.assertTrue(model.notifyUserOnJobCompletion());
+        Assertions.assertEquals(BackupLevel.INCREMENTAL, model.backupLevel());
+        Assertions.assertEquals("rfouyftaakcpw", model.jobDescription());
+        Assertions.assertFalse(model.backupCopyImmediately());
+        Assertions.assertTrue(model.runSnapShotBackup());
+        Assertions.assertFalse(model.notifyUserOnJobCompletion());
     }
 }

@@ -437,7 +437,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l2NetworkName, L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, l2NetworkName, l2NetworkParameters, ifMatch, ifNoneMatch);
@@ -799,7 +799,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

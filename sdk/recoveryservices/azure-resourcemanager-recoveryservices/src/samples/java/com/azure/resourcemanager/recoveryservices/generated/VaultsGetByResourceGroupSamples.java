@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GETVault.json
+     * x-ms-original-file: 2026-11-01/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
@@ -24,7 +24,7 @@ public final class VaultsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/GETVault_WithRegionOfChoiceSettings.json
+     * x-ms-original-file: 2026-11-01/GETVault_WithRegionOfChoiceSettings.json
      */
     /**
      * Sample code: Get Recovery Services Vault With Region Of Choice Settings.

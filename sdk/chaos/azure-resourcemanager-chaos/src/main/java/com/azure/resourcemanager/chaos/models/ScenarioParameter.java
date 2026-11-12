@@ -41,6 +41,11 @@ public final class ScenarioParameter implements JsonSerializable<ScenarioParamet
      */
     private String description;
 
+    /*
+     * Format validation applied to the parameter's value, and examples of values that satisfy it.
+     */
+    private ScenarioParameterFormat format;
+
     /**
      * Creates an instance of ScenarioParameter class.
      */
@@ -148,6 +153,28 @@ public final class ScenarioParameter implements JsonSerializable<ScenarioParamet
     }
 
     /**
+     * Get the format property: Format validation applied to the parameter's value, and examples of values that satisfy
+     * it.
+     * 
+     * @return the format value.
+     */
+    public ScenarioParameterFormat format() {
+        return this.format;
+    }
+
+    /**
+     * Set the format property: Format validation applied to the parameter's value, and examples of values that satisfy
+     * it.
+     * 
+     * @param format the format value to set.
+     * @return the ScenarioParameter object itself.
+     */
+    public ScenarioParameter withFormat(ScenarioParameterFormat format) {
+        this.format = format;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -158,6 +185,7 @@ public final class ScenarioParameter implements JsonSerializable<ScenarioParamet
         jsonWriter.writeStringField("default", this.defaultProperty);
         jsonWriter.writeBooleanField("required", this.required);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("format", this.format);
         return jsonWriter.writeEndObject();
     }
 
@@ -187,6 +215,8 @@ public final class ScenarioParameter implements JsonSerializable<ScenarioParamet
                     deserializedScenarioParameter.required = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
                     deserializedScenarioParameter.description = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedScenarioParameter.format = ScenarioParameterFormat.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

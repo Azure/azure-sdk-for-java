@@ -25,7 +25,7 @@ public final class PoolsStopMockTests {
     @Test
     public void testStop() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Provisioning\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":2009278020,\"vCores\":172604162},\"nodeCount\":741141390,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"dznx\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"InSync\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"tags\":{\"v\":\"volvtn\"},\"id\":\"zgemjdftuljlt\",\"name\":\"ucea\",\"type\":\"tmczuomejwcwwqi\"}";
+            = "{\"properties\":{\"state\":\"Inaccessible\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1976615224,\"vCores\":409506451},\"nodeCount\":791689891,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"qolj\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"PendingReboot\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"id\":\"sffgcvizqzd\",\"name\":\"l\",\"type\":\"w\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,16 @@ public final class PoolsStopMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Pool response
-            = manager.pools().stop("fmznba", "qphchqnrnrpxehuw", "ykqgaifmvik", com.azure.core.util.Context.NONE);
+        Pool response = manager.pools().stop("dvoqyt", "byowbblgyavutp", "hjoxo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, response.properties().computeModel().type());
-        Assertions.assertEquals(ComputeProcessorType.AMD, response.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(2009278020, response.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(172604162, response.properties().computeModel().vCores());
-        Assertions.assertEquals(741141390, response.properties().nodeCount());
-        Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT,
-            response.properties().highAvailability().mode());
-        Assertions.assertEquals("dznx", response.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ComputeProcessorType.INTEL, response.properties().computeModel().computeProcessor());
+        Assertions.assertEquals(1976615224, response.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(409506451, response.properties().computeModel().vCores());
+        Assertions.assertEquals(791689891, response.properties().nodeCount());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, response.properties().highAvailability().mode());
+        Assertions.assertEquals("qolj", response.properties().parameterGroup().parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT,
             response.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("volvtn", response.tags().get("v"));
     }
 }

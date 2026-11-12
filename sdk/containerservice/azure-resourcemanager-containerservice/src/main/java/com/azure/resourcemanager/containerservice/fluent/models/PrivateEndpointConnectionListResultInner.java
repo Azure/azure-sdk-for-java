@@ -23,6 +23,11 @@ public final class PrivateEndpointConnectionListResultInner
      */
     private List<PrivateEndpointConnectionInner> value;
 
+    /*
+     * The link to the next page, if any. Omitted when all results are returned in a single response.
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of PrivateEndpointConnectionListResultInner class.
      */
@@ -36,6 +41,16 @@ public final class PrivateEndpointConnectionListResultInner
      */
     public List<PrivateEndpointConnectionInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page, if any. Omitted when all results are returned in a single
+     * response.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -56,6 +71,7 @@ public final class PrivateEndpointConnectionListResultInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,6 +95,8 @@ public final class PrivateEndpointConnectionListResultInner
                     List<PrivateEndpointConnectionInner> value
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
                     deserializedPrivateEndpointConnectionListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionListResultInner.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

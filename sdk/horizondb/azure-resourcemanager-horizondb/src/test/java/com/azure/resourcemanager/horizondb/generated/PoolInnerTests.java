@@ -15,15 +15,13 @@ import com.azure.resourcemanager.horizondb.models.PoolHighAvailabilityMode;
 import com.azure.resourcemanager.horizondb.models.PoolParameterGroupReference;
 import com.azure.resourcemanager.horizondb.models.PoolProperties;
 import com.azure.resourcemanager.horizondb.models.ScheduledMaintenanceProperties;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Stopped\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":614073164,\"vCores\":62079989},\"nodeCount\":1667085881,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"xsqwpgrjbznorc\",\"applyMethod\":\"Immediate\",\"syncStatus\":\"Applying\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"tags\":{\"zafb\":\"abnmocpcyshu\",\"oq\":\"jjgpb\"},\"id\":\"mkljavb\",\"name\":\"idtqajzyu\",\"type\":\"pku\"}")
+            "{\"properties\":{\"state\":\"Stopped\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":614073164,\"vCores\":62079989},\"nodeCount\":1667085881,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"sqwpgrjb\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"PendingReboot\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Failed\"},\"id\":\"snb\",\"name\":\"xqabnmocpcysh\",\"type\":\"rzafbljjgpbtoqcj\"}")
             .toObject(PoolInner.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.properties().computeModel().computeProcessor());
@@ -31,25 +29,22 @@ public final class PoolInnerTests {
         Assertions.assertEquals(62079989, model.properties().computeModel().vCores());
         Assertions.assertEquals(1667085881, model.properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT, model.properties().highAvailability().mode());
-        Assertions.assertEquals("xsqwpgrjbznorc", model.properties().parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("abnmocpcyshu", model.tags().get("zafb"));
+        Assertions.assertEquals("sqwpgrjb", model.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.properties().parameterGroup().applyMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolInner model = new PoolInner()
-            .withProperties(new PoolProperties()
-                .withComputeModel(new PoolComputeModel().withType(PoolComputeModelType.PROVISIONED)
-                    .withComputeProcessor(ComputeProcessorType.INTEL)
-                    .withComputeGeneration(614073164)
-                    .withVCores(62079989))
-                .withNodeCount(1667085881)
-                .withHighAvailability(new PoolHighAvailability().withMode(PoolHighAvailabilityMode.ZONE_REDUNDANT))
-                .withParameterGroup(new PoolParameterGroupReference().withParameterGroupResourceId("xsqwpgrjbznorc")
-                    .withApplyMethod(ParameterApplyMethod.IMMEDIATE))
-                .withScheduledMaintenance(new ScheduledMaintenanceProperties()))
-            .withTags(mapOf("zafb", "abnmocpcyshu", "oq", "jjgpb"));
+        PoolInner model = new PoolInner().withProperties(new PoolProperties()
+            .withComputeModel(new PoolComputeModel().withType(PoolComputeModelType.PROVISIONED)
+                .withComputeProcessor(ComputeProcessorType.INTEL)
+                .withComputeGeneration(614073164)
+                .withVCores(62079989))
+            .withNodeCount(1667085881)
+            .withHighAvailability(new PoolHighAvailability().withMode(PoolHighAvailabilityMode.ZONE_REDUNDANT))
+            .withParameterGroup(new PoolParameterGroupReference().withParameterGroupResourceId("sqwpgrjb")
+                .withApplyMethod(ParameterApplyMethod.PENDING_REBOOT))
+            .withScheduledMaintenance(new ScheduledMaintenanceProperties()));
         model = BinaryData.fromObject(model).toObject(PoolInner.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.properties().computeModel().computeProcessor());
@@ -57,20 +52,7 @@ public final class PoolInnerTests {
         Assertions.assertEquals(62079989, model.properties().computeModel().vCores());
         Assertions.assertEquals(1667085881, model.properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT, model.properties().highAvailability().mode());
-        Assertions.assertEquals("xsqwpgrjbznorc", model.properties().parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("abnmocpcyshu", model.tags().get("zafb"));
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("sqwpgrjb", model.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.properties().parameterGroup().applyMethod());
     }
 }

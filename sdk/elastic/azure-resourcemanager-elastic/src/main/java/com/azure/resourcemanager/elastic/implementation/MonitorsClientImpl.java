@@ -407,7 +407,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+    private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, ElasticMonitorResourceInner body) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
         return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
@@ -646,7 +646,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+    private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName, ElasticMonitorResourceUpdateParameters body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
         return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,
@@ -888,7 +888,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         Boolean softDelete) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
