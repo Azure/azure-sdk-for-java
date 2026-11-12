@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Base class for source tasks whose source read can block indefinitely.
+ * Base class that keeps one asynchronous source read in flight while bounding each Kafka poll call.
  */
 public abstract class AsyncSourceTask extends SourceTask {
     private static final long POLL_WAIT_MS = 1_000;

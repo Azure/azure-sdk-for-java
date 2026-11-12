@@ -68,6 +68,20 @@ public class AsyncSourceTaskTest {
     }
 
     @Test(groups = "unit", timeOut = 30_000)
+    public void completedPollStartsNextRead() {
+        TestTask task = new TestTask();
+
+        try {
+            task.start(Collections.emptyMap());
+            assertThat(task.poll()).isEmpty();
+            assertThat(task.poll()).isEmpty();
+            assertThat(task.pollCount.get()).isEqualTo(2);
+        } finally {
+            task.stop();
+        }
+    }
+
+    @Test(groups = "unit", timeOut = 30_000)
     public void pollDoesNotRepeatAfterNonRetriableFailure() throws InterruptedException {
         TestTask task = new TestTask();
         AtomicInteger attempts = new AtomicInteger();
