@@ -210,8 +210,8 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
                 perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureFileStorageImpl(pipeline, getServiceVersion().getVersion(), shareTokenIntent, endpoint,
-            allowTrailingDot, allowSourceTrailingDot);
+        return new AzureFileStorageImpl(pipeline, endpoint, shareTokenIntent, allowTrailingDot, allowSourceTrailingDot,
+            getServiceVersion());
     }
 
     /**
@@ -231,7 +231,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
-        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryAsyncClient");
+        ShareErrors.validatePathOperation(fileId, "buildDirectoryAsyncClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
@@ -254,7 +254,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryClient buildDirectoryClient() {
-        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryClient");
+        ShareErrors.validatePathOperation(fileId, "buildDirectoryClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);

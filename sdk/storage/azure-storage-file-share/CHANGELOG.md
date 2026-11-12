@@ -6,9 +6,28 @@
 
 ### Breaking Changes
 
+- When no root element name is passed, `toXml`/`fromXml` on `ShareAccessPolicy`, `ShareRetentionPolicy` and
+  `ShareMetrics` now default to the service's element names (`AccessPolicy`, `RetentionPolicy` and `Metrics`) instead
+  of the class names. Requests and responses sent through the clients are unaffected.
+
 ### Bugs Fixed
+- Fixed a bug where `ShareProperties.isSmbDirectoryLeaseEnabled()` always returned `null` because the value returned by
+  the service was not mapped onto the public model.
 
 ### Other Changes
+- Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
+  in this release.
+- Range operations (download, upload range, clear range, upload range from URL, and listing ranges) now send the
+  standard `Range` request header instead of `x-ms-range`. The service treats both the same, so this does not change
+  results. `Range` has been added to the headers logged by default.
+- Deprecated `Range`; use `ShareFileRange` instead.
+- Deprecated `SourceModifiedAccessConditions`, which is unused and not referenced by any client method.
+- Deprecated `ShareFileRangeList.getNextMarker()` and `ShareFileRangeList.setNextMarker(String)`. Use
+  `ShareFileClient.listAllRanges` or `ShareFileClient.listAllRangesDiff` (or their async equivalents), which page
+  through ranges.
+- Deprecated the `toXml`/`fromXml` methods on `ShareItem` and `ShareProperties`. These are read-only public projections
+  of the wire model and are never serialized to or from the service directly; the methods are retained only for backward
+  compatibility.
 
 ## 12.34.0-beta.1 (2026-11-05)
 
