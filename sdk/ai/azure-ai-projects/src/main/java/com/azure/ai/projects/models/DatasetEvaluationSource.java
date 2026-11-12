@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Dataset inputs for a scheduled evaluation. Use the overloaded {@code of(...)} factories to select a source.
+ * Dataset inputs for a scheduled evaluation. Use the typed factories to select a source.
  * Preview sources may appear in responses for existing schedules but are rejected on create and update.
  */
 @Immutable
@@ -37,7 +37,7 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @return the dataset evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static DatasetEvaluationSource of(CreateEvalJsonlRunDataSource source) {
+    public static DatasetEvaluationSource ofJsonl(CreateEvalJsonlRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -47,7 +47,7 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @return the dataset evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static DatasetEvaluationSource of(CsvEvaluationRunDataSource source) {
+    public static DatasetEvaluationSource ofCsv(CsvEvaluationRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -57,7 +57,7 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @return the dataset evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static DatasetEvaluationSource of(CreateEvalCompletionsRunDataSource source) {
+    public static DatasetEvaluationSource ofCompletions(CreateEvalCompletionsRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -67,7 +67,7 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @return the dataset evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static DatasetEvaluationSource of(TargetCompletionEvaluationRunDataSource source) {
+    public static DatasetEvaluationSource ofTargetCompletions(TargetCompletionEvaluationRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -77,7 +77,8 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @return the dataset evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static DatasetEvaluationSource of(UserConversationSimulationEvaluationRunDataSource source) {
+    public static DatasetEvaluationSource
+        ofUserConversationSimulation(UserConversationSimulationEvaluationRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -88,7 +89,8 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
      * @throws NullPointerException if {@code source} is null.
      */
     @Beta(warningText = "Preview API. Evaluations=V1Preview")
-    public static DatasetEvaluationSource of(UserConversationSimulationPreviewEvaluationRunDataSource source) {
+    public static DatasetEvaluationSource
+        ofUserConversationSimulationPreview(UserConversationSimulationPreviewEvaluationRunDataSource source) {
         return new DatasetEvaluationSource(source);
     }
 
@@ -182,17 +184,20 @@ public final class DatasetEvaluationSource implements JsonSerializable<DatasetEv
                         sourceReader.nextToken();
                         BinaryData data = BinaryData.fromObject(sourceReader.readUntyped());
                         return "jsonl".equals(type)
-                            ? of(OpenAIJsonHelper.fromBinaryData(data, CreateEvalJsonlRunDataSource.class))
-                            : of(OpenAIJsonHelper.fromBinaryData(data, CreateEvalCompletionsRunDataSource.class));
+                            ? ofJsonl(OpenAIJsonHelper.fromBinaryData(data, CreateEvalJsonlRunDataSource.class))
+                            : ofCompletions(
+                                OpenAIJsonHelper.fromBinaryData(data, CreateEvalCompletionsRunDataSource.class));
                     }
                 } else if ("csv".equals(type)) {
-                    return of(CsvEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofCsv(CsvEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_target_completions".equals(type)) {
-                    return of(TargetCompletionEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofTargetCompletions(
+                        TargetCompletionEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_user_conversation_simulation".equals(type)) {
-                    return of(UserConversationSimulationEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofUserConversationSimulation(
+                        UserConversationSimulationEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_user_conversation_simulation_preview".equals(type)) {
-                    return of(
+                    return ofUserConversationSimulationPreview(
                         UserConversationSimulationPreviewEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 }
                 throw LOGGER.logExceptionAsError(

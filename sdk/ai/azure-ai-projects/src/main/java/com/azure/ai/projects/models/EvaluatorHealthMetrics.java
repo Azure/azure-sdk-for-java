@@ -21,12 +21,6 @@ import java.util.List;
 public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorHealthMetrics> {
 
     /*
-     * The number of rubric dimensions used by the computation.
-     */
-    @Generated
-    private final int nDimensions;
-
-    /*
      * The dimension identifiers in their order when health was computed.
      */
     @Generated
@@ -72,7 +66,7 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
     /**
      * Creates an instance of EvaluatorHealthMetrics class.
      *
-     * @param nDimensions the nDimensions value to set.
+     * @param numberOfDimensions the numberOfDimensions value to set.
      * @param dimensionIds the dimensionIds value to set.
      * @param diversity the diversity value to set.
      * @param coverage the coverage value to set.
@@ -82,10 +76,10 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
      * @param redundantPairs the redundantPairs value to set.
      */
     @Generated
-    private EvaluatorHealthMetrics(int nDimensions, List<String> dimensionIds, Double diversity, Double coverage,
+    private EvaluatorHealthMetrics(int numberOfDimensions, List<String> dimensionIds, Double diversity, Double coverage,
         double negativeVsPositive, Double overall, EvaluatorHealthConfidence confidence,
         List<List<Integer>> redundantPairs) {
-        this.nDimensions = nDimensions;
+        this.numberOfDimensions = numberOfDimensions;
         this.dimensionIds = dimensionIds;
         this.diversity = diversity;
         this.coverage = coverage;
@@ -93,16 +87,6 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
         this.overall = overall;
         this.confidence = confidence;
         this.redundantPairs = redundantPairs;
-    }
-
-    /**
-     * Get the nDimensions property: The number of rubric dimensions used by the computation.
-     *
-     * @return the nDimensions value.
-     */
-    @Generated
-    public int getNDimensions() {
-        return this.nDimensions;
     }
 
     /**
@@ -184,7 +168,7 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("n_dimensions", this.nDimensions);
+        jsonWriter.writeIntField("n_dimensions", this.numberOfDimensions);
         jsonWriter.writeArrayField("dimension_ids", this.dimensionIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("diversity", this.diversity);
@@ -209,7 +193,7 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
     @Generated
     public static EvaluatorHealthMetrics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int nDimensions = 0;
+            int numberOfDimensions = 0;
             List<String> dimensionIds = null;
             Double diversity = null;
             Double coverage = null;
@@ -221,7 +205,7 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("n_dimensions".equals(fieldName)) {
-                    nDimensions = reader.getInt();
+                    numberOfDimensions = reader.getInt();
                 } else if ("dimension_ids".equals(fieldName)) {
                     dimensionIds = reader.readArray(reader1 -> reader1.getString());
                 } else if ("diversity".equals(fieldName)) {
@@ -240,8 +224,24 @@ public final class EvaluatorHealthMetrics implements JsonSerializable<EvaluatorH
                     reader.skipChildren();
                 }
             }
-            return new EvaluatorHealthMetrics(nDimensions, dimensionIds, diversity, coverage, negativeVsPositive,
+            return new EvaluatorHealthMetrics(numberOfDimensions, dimensionIds, diversity, coverage, negativeVsPositive,
                 overall, confidence, redundantPairs);
         });
+    }
+
+    /*
+     * The number of rubric dimensions used by the computation.
+     */
+    @Generated
+    private final int numberOfDimensions;
+
+    /**
+     * Get the numberOfDimensions property: The number of rubric dimensions used by the computation.
+     *
+     * @return the numberOfDimensions value.
+     */
+    @Generated
+    public int getNumberOfDimensions() {
+        return this.numberOfDimensions;
     }
 }

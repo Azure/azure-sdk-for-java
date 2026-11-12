@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Trace inputs for a scheduled evaluation. Use the overloaded {@code of(...)} factories to select a source.
+ * Trace inputs for a scheduled evaluation. Use the typed factories to select a source.
  * Preview sources may appear in responses for existing schedules but are rejected on create and update.
  */
 @Immutable
@@ -33,7 +33,7 @@ public final class TraceEvaluationSource implements JsonSerializable<TraceEvalua
      * @return the trace evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static TraceEvaluationSource of(TracesEvaluationRunDataSource source) {
+    public static TraceEvaluationSource ofTraces(TracesEvaluationRunDataSource source) {
         return new TraceEvaluationSource(source);
     }
 
@@ -43,7 +43,7 @@ public final class TraceEvaluationSource implements JsonSerializable<TraceEvalua
      * @return the trace evaluation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static TraceEvaluationSource of(TraceSourceEvaluationRunDataSource source) {
+    public static TraceEvaluationSource ofTraceSource(TraceSourceEvaluationRunDataSource source) {
         return new TraceEvaluationSource(source);
     }
 
@@ -54,7 +54,7 @@ public final class TraceEvaluationSource implements JsonSerializable<TraceEvalua
      * @throws NullPointerException if {@code source} is null.
      */
     @Beta(warningText = "Preview API. Evaluations=V1Preview")
-    public static TraceEvaluationSource of(TracesPreviewEvaluationRunDataSource source) {
+    public static TraceEvaluationSource ofTracesPreview(TracesPreviewEvaluationRunDataSource source) {
         return new TraceEvaluationSource(source);
     }
 
@@ -65,7 +65,7 @@ public final class TraceEvaluationSource implements JsonSerializable<TraceEvalua
      * @throws NullPointerException if {@code source} is null.
      */
     @Beta(warningText = "Preview API. Evaluations=V1Preview")
-    public static TraceEvaluationSource of(TraceSourcePreviewEvaluationRunDataSource source) {
+    public static TraceEvaluationSource ofTraceSourcePreview(TraceSourcePreviewEvaluationRunDataSource source) {
         return new TraceEvaluationSource(source);
     }
 
@@ -134,13 +134,14 @@ public final class TraceEvaluationSource implements JsonSerializable<TraceEvalua
                     bufferedReader.skipChildren();
                 }
                 if ("azure_ai_traces".equals(type)) {
-                    return of(TracesEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofTraces(TracesEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_trace_data_source".equals(type)) {
-                    return of(TraceSourceEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofTraceSource(TraceSourceEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_traces_preview".equals(type)) {
-                    return of(TracesPreviewEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofTracesPreview(TracesPreviewEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 } else if ("azure_ai_trace_data_source_preview".equals(type)) {
-                    return of(TraceSourcePreviewEvaluationRunDataSource.fromJson(bufferedReader.reset()));
+                    return ofTraceSourcePreview(
+                        TraceSourcePreviewEvaluationRunDataSource.fromJson(bufferedReader.reset()));
                 }
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Unsupported trace evaluation source type: " + type));

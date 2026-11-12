@@ -216,9 +216,9 @@ class EvaluationSourceSerializationTests {
             + "\"item_reference\":\"item.messages\"},\"future_dataset\":true}";
         DatasetEvaluationSource source = "jsonl".equals(type)
             ? DatasetEvaluationSource
-                .of(ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalJsonlRunDataSource.class))
-            : DatasetEvaluationSource
-                .of(ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalCompletionsRunDataSource.class));
+                .ofJsonl(ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalJsonlRunDataSource.class))
+            : DatasetEvaluationSource.ofCompletions(
+                ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalCompletionsRunDataSource.class));
         DatasetEvaluationRuleAction original = new DatasetEvaluationRuleAction("eval-1", source);
 
         BinaryData serialized = BinaryData.fromObject(original);
@@ -242,7 +242,7 @@ class EvaluationSourceSerializationTests {
     void datasetUnionPreservesCsvAndTargetCompletionSources() {
         CsvEvaluationRunDataSource csv = new CsvEvaluationRunDataSource(new EvaluationCsvFileIdSource("csv-file"));
         DatasetEvaluationRuleAction csvAction
-            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.of(csv));
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.ofCsv(csv));
         DatasetEvaluationRuleAction restoredCsv
             = BinaryData.fromObject(csvAction).toObject(DatasetEvaluationRuleAction.class);
         assertEquals("csv-file", restoredCsv.getSource().getCsv().getSource().getId());
@@ -252,7 +252,7 @@ class EvaluationSourceSerializationTests {
             = new TargetCompletionEvaluationRunDataSource(Source.ofFileId(FileId.builder().id("target-file").build()),
                 new AzureAIModelTarget().setModel("deployment"));
         DatasetEvaluationRuleAction targetAction
-            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.of(target));
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.ofTargetCompletions(target));
         DatasetEvaluationRuleAction restoredTarget
             = BinaryData.fromObject(targetAction).toObject(DatasetEvaluationRuleAction.class);
         assertEquals(target.getSource(), restoredTarget.getSource().getTargetCompletions().getSource());
@@ -263,7 +263,7 @@ class EvaluationSourceSerializationTests {
     @ValueSource(booleans = { false, true })
     void simulationUnionPreservesExternalContentForBothDataSources(boolean preview) throws IOException {
         FileContent content = ObjectMappers.jsonMapper().readValue(FILE_CONTENT, FileContent.class);
-        UserConversationSimulationSource source = UserConversationSimulationSource.of(content);
+        UserConversationSimulationSource source = UserConversationSimulationSource.ofFileContent(content);
         Target target = new AzureAIModelTarget().setModel("target-model");
         EvaluationModelConfiguration model = new EvaluationModelConfiguration("simulation-model");
         EvaluationRunDataSource original = preview
@@ -286,9 +286,10 @@ class EvaluationSourceSerializationTests {
         Target target = new AzureAIModelTarget().setModel("target-model");
         EvaluationModelConfiguration model = new EvaluationModelConfiguration("simulation-model");
         UserConversationSimulationSource fileSource
-            = UserConversationSimulationSource.of(FileId.builder().id("simulation-file").build());
-        DatasetEvaluationRuleAction standard = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource
-            .of(new UserConversationSimulationEvaluationRunDataSource(fileSource, target, model)));
+            = UserConversationSimulationSource.ofFileId(FileId.builder().id("simulation-file").build());
+        DatasetEvaluationRuleAction standard
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.ofUserConversationSimulation(
+                new UserConversationSimulationEvaluationRunDataSource(fileSource, target, model)));
         DatasetEvaluationRuleAction restoredStandard
             = BinaryData.fromObject(standard).toObject(DatasetEvaluationRuleAction.class);
         assertEquals("simulation-file",
@@ -296,10 +297,11 @@ class EvaluationSourceSerializationTests {
         assertNull(restoredStandard.getSource().getUserConversationSimulationPreview());
 
         UserConversationSimulationSource inlineSource = UserConversationSimulationSource
-            .of(new UserConversationSimulationInlineTestCasesSource(Collections.singletonList(
+            .ofInlineTestCases(new UserConversationSimulationInlineTestCasesSource(Collections.singletonList(
                 new UserConversationSimulationTestCase().setTestCaseDescription("Ask about the weather"))));
-        DatasetEvaluationRuleAction preview = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource
-            .of(new UserConversationSimulationPreviewEvaluationRunDataSource(inlineSource, target, model)));
+        DatasetEvaluationRuleAction preview
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.ofUserConversationSimulationPreview(
+                new UserConversationSimulationPreviewEvaluationRunDataSource(inlineSource, target, model)));
         DatasetEvaluationRuleAction restoredPreview
             = BinaryData.fromObject(preview).toObject(DatasetEvaluationRuleAction.class);
         assertEquals("Ask about the weather",
@@ -331,19 +333,19 @@ class EvaluationSourceSerializationTests {
         if ("azure_ai_traces".equals(type)) {
             assertEquals("agent-1", source.getTraces().getAgentName());
             assertNull(source.getTraceSource());
-            reconstructed = TraceEvaluationSource.of(source.getTraces());
+            reconstructed = TraceEvaluationSource.ofTraces(source.getTraces());
         } else if ("azure_ai_trace_data_source".equals(type)) {
             assertNotNull(source.getTraceSource().getTraceSource());
             assertNull(source.getTraces());
-            reconstructed = TraceEvaluationSource.of(source.getTraceSource());
+            reconstructed = TraceEvaluationSource.ofTraceSource(source.getTraceSource());
         } else if ("azure_ai_traces_preview".equals(type)) {
             assertEquals("agent-1", source.getTracesPreview().getAgentName());
             assertNull(source.getTraceSourcePreview());
-            reconstructed = TraceEvaluationSource.of(source.getTracesPreview());
+            reconstructed = TraceEvaluationSource.ofTracesPreview(source.getTracesPreview());
         } else {
             assertNotNull(source.getTraceSourcePreview().getTraceSource());
             assertNull(source.getTracesPreview());
-            reconstructed = TraceEvaluationSource.of(source.getTraceSourcePreview());
+            reconstructed = TraceEvaluationSource.ofTraceSourcePreview(source.getTraceSourcePreview());
         }
         JsonNode serialized = ObjectMappers.jsonMapper()
             .readTree(BinaryData.fromObject(new TraceEvaluationRuleAction("eval-1", reconstructed)).toString());

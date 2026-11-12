@@ -18,7 +18,7 @@ import java.util.Objects;
 
 /**
  * Test scenarios for user-conversation simulation, shared by the standard and preview evaluation run data sources.
- * Use the overloaded {@code of(...)} factories to supply JSONL content, a file ID, or inline test cases.
+ * Use the typed factories to supply JSONL content, a file ID, or inline test cases.
  */
 @Immutable
 public final class UserConversationSimulationSource implements JsonSerializable<UserConversationSimulationSource> {
@@ -36,7 +36,7 @@ public final class UserConversationSimulationSource implements JsonSerializable<
      * @return the user-conversation simulation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static UserConversationSimulationSource of(FileContent source) {
+    public static UserConversationSimulationSource ofFileContent(FileContent source) {
         return new UserConversationSimulationSource(source);
     }
 
@@ -46,7 +46,7 @@ public final class UserConversationSimulationSource implements JsonSerializable<
      * @return the user-conversation simulation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static UserConversationSimulationSource of(FileId source) {
+    public static UserConversationSimulationSource ofFileId(FileId source) {
         return new UserConversationSimulationSource(source);
     }
 
@@ -56,7 +56,8 @@ public final class UserConversationSimulationSource implements JsonSerializable<
      * @return the user-conversation simulation source.
      * @throws NullPointerException if {@code source} is null.
      */
-    public static UserConversationSimulationSource of(UserConversationSimulationInlineTestCasesSource source) {
+    public static UserConversationSimulationSource
+        ofInlineTestCases(UserConversationSimulationInlineTestCasesSource source) {
         return new UserConversationSimulationSource(source);
     }
 
@@ -121,11 +122,12 @@ public final class UserConversationSimulationSource implements JsonSerializable<
                         sourceReader.nextToken();
                         BinaryData data = BinaryData.fromObject(sourceReader.readUntyped());
                         return "file_content".equals(type)
-                            ? of(OpenAIJsonHelper.fromBinaryData(data, FileContent.class))
-                            : of(OpenAIJsonHelper.fromBinaryData(data, FileId.class));
+                            ? ofFileContent(OpenAIJsonHelper.fromBinaryData(data, FileContent.class))
+                            : ofFileId(OpenAIJsonHelper.fromBinaryData(data, FileId.class));
                     }
                 } else if ("inline_user_conversation_simulation".equals(type)) {
-                    return of(UserConversationSimulationInlineTestCasesSource.fromJson(bufferedReader.reset()));
+                    return ofInlineTestCases(
+                        UserConversationSimulationInlineTestCasesSource.fromJson(bufferedReader.reset()));
                 }
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Unsupported user-conversation simulation source type: " + type));
