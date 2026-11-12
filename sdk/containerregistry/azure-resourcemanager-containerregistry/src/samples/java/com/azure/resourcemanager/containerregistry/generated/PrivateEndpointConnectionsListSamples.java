@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/PrivateEndpointConnectionList.json
+     * x-ms-original-file: 2026-10-15-preview/PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: PrivateEndpointConnectionList.

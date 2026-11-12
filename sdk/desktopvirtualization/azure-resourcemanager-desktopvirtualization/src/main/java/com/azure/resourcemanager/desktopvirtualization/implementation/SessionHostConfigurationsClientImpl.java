@@ -350,7 +350,7 @@ public final class SessionHostConfigurationsClientImpl implements SessionHostCon
      * @return the {@link SyncPoller} for polling of schema for SessionHostConfiguration properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginUpdate(
+    private SyncPoller<PollResult<SessionHostConfigurationInner>, SessionHostConfigurationInner> beginUpdate(
         String resourceGroupName, String hostPoolName, SessionHostConfigurationPatch sessionHostConfiguration) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, hostPoolName, sessionHostConfiguration);
         return this.client.<SessionHostConfigurationInner, SessionHostConfigurationInner>getLroResult(response,

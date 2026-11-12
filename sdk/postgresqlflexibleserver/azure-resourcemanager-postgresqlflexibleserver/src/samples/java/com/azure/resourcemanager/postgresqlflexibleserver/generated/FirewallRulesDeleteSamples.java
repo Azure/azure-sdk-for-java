@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/FirewallRulesDelete.json
+     * x-ms-original-file: 2026-10-01/FirewallRulesDelete.json
      */
     /**
      * Sample code: Delete an existing firewall rule.

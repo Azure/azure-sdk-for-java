@@ -12,6 +12,13 @@
 
 ### Bugs Fixed
 
+- Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
+  `InterruptedException`, which caused callers to silently lose the interruption signal.
+- Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
+  consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
+  times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
+  read.
+
 ### Other Changes
 
 ## 1.61.0 (2026-10-27)

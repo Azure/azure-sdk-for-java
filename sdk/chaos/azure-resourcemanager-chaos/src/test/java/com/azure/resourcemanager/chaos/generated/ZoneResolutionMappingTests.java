@@ -11,7 +11,7 @@ public final class ZoneResolutionMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneResolutionMapping model = BinaryData.fromString(
-            "{\"subscriptionId\":\"vtxnjmxmcuqud\",\"zoneMappings\":[{\"physicalZone\":\"vclx\",\"logicalZone\":\"npdkv\"},{\"physicalZone\":\"fabuiyjibu\",\"logicalZone\":\"phdu\"},{\"physicalZone\":\"neiknpg\",\"logicalZone\":\"xgjiuqh\"}]}")
+            "{\"subscriptionId\":\"kqscazuawxtzx\",\"zoneMappings\":[{\"physicalZone\":\"amwabzxrvxcushsp\",\"logicalZone\":\"aivmxyasflvgs\"},{\"physicalZone\":\"zwywako\",\"logicalZone\":\"hknsmjbl\"},{\"physicalZone\":\"ljhlnymzotq\",\"logicalZone\":\"ryuzcbmqqv\"}]}")
             .toObject(ZoneResolutionMapping.class);
     }
 }

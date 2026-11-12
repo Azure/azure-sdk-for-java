@@ -391,7 +391,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, updateStrategyName,
@@ -653,7 +653,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String updateStrategyName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, updateStrategyName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

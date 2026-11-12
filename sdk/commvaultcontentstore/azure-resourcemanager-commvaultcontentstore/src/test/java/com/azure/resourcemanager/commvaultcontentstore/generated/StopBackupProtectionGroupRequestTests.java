@@ -12,18 +12,18 @@ public final class StopBackupProtectionGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StopBackupProtectionGroupRequest model
-            = BinaryData.fromString("{\"reason\":\"kphywpnvjto\",\"comment\":\"ermclfplphoxuscr\"}")
+            = BinaryData.fromString("{\"reason\":\"joya\",\"comment\":\"slyjpkiid\"}")
                 .toObject(StopBackupProtectionGroupRequest.class);
-        Assertions.assertEquals("kphywpnvjto", model.reason());
-        Assertions.assertEquals("ermclfplphoxuscr", model.comment());
+        Assertions.assertEquals("joya", model.reason());
+        Assertions.assertEquals("slyjpkiid", model.comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StopBackupProtectionGroupRequest model
-            = new StopBackupProtectionGroupRequest().withReason("kphywpnvjto").withComment("ermclfplphoxuscr");
+            = new StopBackupProtectionGroupRequest().withReason("joya").withComment("slyjpkiid");
         model = BinaryData.fromObject(model).toObject(StopBackupProtectionGroupRequest.class);
-        Assertions.assertEquals("kphywpnvjto", model.reason());
-        Assertions.assertEquals("ermclfplphoxuscr", model.comment());
+        Assertions.assertEquals("joya", model.reason());
+        Assertions.assertEquals("slyjpkiid", model.comment());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-06-01/VirtualNetworkLinkPut.json
+     * x-ms-original-file: 2026-06-01-preview/VirtualNetworkLinkPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone Virtual Network Link.

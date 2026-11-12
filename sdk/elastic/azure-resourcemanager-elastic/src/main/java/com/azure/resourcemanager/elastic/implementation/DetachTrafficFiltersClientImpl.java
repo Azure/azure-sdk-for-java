@@ -191,7 +191,7 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName,
+    private SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName,
         String rulesetId) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, rulesetId);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

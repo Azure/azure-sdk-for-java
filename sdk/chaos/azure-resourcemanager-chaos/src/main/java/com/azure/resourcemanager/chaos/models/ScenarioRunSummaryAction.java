@@ -20,9 +20,10 @@ import java.util.List;
 @Immutable
 public final class ScenarioRunSummaryAction implements JsonSerializable<ScenarioRunSummaryAction> {
     /*
-     * The resources associated with the specified action.
+     * The resources associated with the specified action, including the concrete targets
+     * evaluated during execution.
      */
-    private List<ScenarioRunResource> resources;
+    private List<ScenarioRunSummaryResource> resources;
 
     /*
      * The urn for the given chaos action.
@@ -44,6 +45,18 @@ public final class ScenarioRunSummaryAction implements JsonSerializable<Scenario
      */
     private OffsetDateTime completedAt;
 
+    /*
+     * Structured information about the action failure.
+     */
+    private ActionError error;
+
+    /*
+     * Whether this action's failure was suppressed by the effective `failureBehavior`
+     * and therefore did not fail the scenario run. Present only for actions in the
+     * `Failed` state; absent otherwise.
+     */
+    private Boolean failureSuppressed;
+
     /**
      * Creates an instance of ScenarioRunSummaryAction class.
      */
@@ -51,11 +64,12 @@ public final class ScenarioRunSummaryAction implements JsonSerializable<Scenario
     }
 
     /**
-     * Get the resources property: The resources associated with the specified action.
+     * Get the resources property: The resources associated with the specified action, including the concrete targets
+     * evaluated during execution.
      * 
      * @return the resources value.
      */
-    public List<ScenarioRunResource> resources() {
+    public List<ScenarioRunSummaryResource> resources() {
         return this.resources;
     }
 
@@ -96,6 +110,27 @@ public final class ScenarioRunSummaryAction implements JsonSerializable<Scenario
     }
 
     /**
+     * Get the error property: Structured information about the action failure.
+     * 
+     * @return the error value.
+     */
+    public ActionError error() {
+        return this.error;
+    }
+
+    /**
+     * Get the failureSuppressed property: Whether this action's failure was suppressed by the effective
+     * `failureBehavior`
+     * and therefore did not fail the scenario run. Present only for actions in the
+     * `Failed` state; absent otherwise.
+     * 
+     * @return the failureSuppressed value.
+     */
+    public Boolean failureSuppressed() {
+        return this.failureSuppressed;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -121,8 +156,8 @@ public final class ScenarioRunSummaryAction implements JsonSerializable<Scenario
                 reader.nextToken();
 
                 if ("resources".equals(fieldName)) {
-                    List<ScenarioRunResource> resources
-                        = reader.readArray(reader1 -> ScenarioRunResource.fromJson(reader1));
+                    List<ScenarioRunSummaryResource> resources
+                        = reader.readArray(reader1 -> ScenarioRunSummaryResource.fromJson(reader1));
                     deserializedScenarioRunSummaryAction.resources = resources;
                 } else if ("actionUrn".equals(fieldName)) {
                     deserializedScenarioRunSummaryAction.actionUrn = reader.getString();
@@ -134,6 +169,10 @@ public final class ScenarioRunSummaryAction implements JsonSerializable<Scenario
                 } else if ("completedAt".equals(fieldName)) {
                     deserializedScenarioRunSummaryAction.completedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedScenarioRunSummaryAction.error = ActionError.fromJson(reader);
+                } else if ("failureSuppressed".equals(fieldName)) {
+                    deserializedScenarioRunSummaryAction.failureSuppressed = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

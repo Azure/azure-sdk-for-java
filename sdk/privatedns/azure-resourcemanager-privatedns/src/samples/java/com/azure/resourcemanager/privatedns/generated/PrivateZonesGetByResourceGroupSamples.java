@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class PrivateZonesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-06-01/PrivateZoneGet.json
+     * x-ms-original-file: 2026-06-01-preview/PrivateZoneGet.json
      */
     /**
      * Sample code: GET Private DNS Zone.

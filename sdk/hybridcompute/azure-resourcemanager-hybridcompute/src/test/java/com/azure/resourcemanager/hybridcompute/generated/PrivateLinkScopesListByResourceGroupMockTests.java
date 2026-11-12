@@ -24,7 +24,7 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"iyop\",\"privateLinkScopeId\":\"xivcnrlyxnu\",\"privateEndpointConnections\":[{\"id\":\"hblkwqpatvbq\",\"name\":\"tcjb\",\"type\":\"vivuzqymtuowo\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tsqhzvbrzcdban\",\"description\":\"zndscxmxeatkdbmw\"},\"provisioningState\":\"djyibqbnaomhjrm\",\"groupIds\":[\"maxljalfihcj\",\"obcancdexxqcw\",\"a\"]}},{\"id\":\"gvaknokzwjjzrl\",\"name\":\"xldzyyfytpqsix\",\"type\":\"m\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vyqlkjuvsmbmslzo\",\"description\":\"ovwzdbpqvybefg\"},\"provisioningState\":\"x\",\"groupIds\":[\"cvtlubseskvc\",\"artr\"]}},{\"id\":\"nlp\",\"name\":\"ykycndzfqi\",\"type\":\"reuykbbmnwagl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"eeonqlnfwm\",\"description\":\"ymvqdbpbhfckdvez\"},\"provisioningState\":\"cssbzhddu\",\"groupIds\":[\"qfblhkalehpa\",\"awugiqjti\",\"gqgdminictteajoh\",\"ygspnbonhpczykm\"]}},{\"id\":\"p\",\"name\":\"xqcsehch\",\"type\":\"ufmpqumqyjgy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"odsaeuzan\",\"description\":\"sfnhsenwphp\"},\"provisioningState\":\"ngqjclidf\",\"groupIds\":[\"wjjufwbe\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"dataorhtss\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"mdvhazcvjy\",\"tags\":{\"txtd\":\"swbqerzwxi\",\"ktg\":\"ukvlb\",\"bewreswmowegmmut\":\"styoua\"},\"id\":\"yxey\",\"name\":\"uqi\",\"type\":\"ijiitns\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"qbozoolzqoc\",\"privateLinkScopeId\":\"kuzlbcnn\",\"privateEndpointConnections\":[{\"id\":\"xawqy\",\"name\":\"lhdyzmyckzex\",\"type\":\"akckywym\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bjkdtfohf\",\"description\":\"ogzvk\"},\"provisioningState\":\"rsiwdyjqur\",\"groupIds\":[\"rra\",\"eek\",\"s\"]}},{\"id\":\"h\",\"name\":\"ddacbcbgydlqidy\",\"type\":\"hmptyrilkfbn\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vzt\",\"description\":\"bnfnqtxjtoma\"},\"provisioningState\":\"wbnfddepl\",\"groupIds\":[\"jnsfzygleexahvmy\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datarcarycsjj\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"dataaqaj\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]},\"location\":\"zptdmkrrbh\",\"tags\":{\"fbfunun\":\"ulubefgybp\",\"fkd\":\"pzkrvfy\"},\"id\":\"chlzvfi\",\"name\":\"tnkjjwgcwnphb\",\"type\":\"gfyrtogmhmjpjsc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HybridComputePrivateLinkScope> response
-            = manager.privateLinkScopes().listByResourceGroup("skndnelqkaadlknw", com.azure.core.util.Context.NONE);
+            = manager.privateLinkScopes().listByResourceGroup("mgnlqxsjxtel", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mdvhazcvjy", response.iterator().next().location());
-        Assertions.assertEquals("swbqerzwxi", response.iterator().next().tags().get("txtd"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
+        Assertions.assertEquals("zptdmkrrbh", response.iterator().next().location());
+        Assertions.assertEquals("ulubefgybp", response.iterator().next().tags().get("fbfunun"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
             response.iterator().next().properties().publicNetworkAccess());
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
             response.iterator().next().properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());

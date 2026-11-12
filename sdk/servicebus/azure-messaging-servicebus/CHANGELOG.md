@@ -1,9 +1,10 @@
 # Release History
 
-## 7.19.0-beta.1 (Unreleased)
+## 7.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added batch delete and client-driven purge operations to `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient`. Basic and Standard support up to 500 messages per request, Premium supports up to 4,000, and purge handles smaller batches caused by large messages.
 - Added `ServiceBusProcessorAsyncClient`, an asynchronous processor whose message and error handlers return a
   `reactor.core.publisher.Mono` instead of running as blocking `Consumer` callbacks. It provides the same
   push-based, auto-recovering, concurrency-managed message pump as `ServiceBusProcessorClient` for applications that
@@ -20,6 +21,16 @@
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
+
+## 7.19.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.12.2` to version `2.13.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 ## 7.18.1 (2026-10-06)
 

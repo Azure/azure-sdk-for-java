@@ -29,7 +29,7 @@ public final class ProtectionGroupsCreateOrupdateMockTests {
     @Test
     public void testCreateOrupdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"plan\":\"isze\",\"resources\":{\"manual\":[\"bjcrxgibbdaxco\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"uors\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"kwbqplhlvnuu\"},{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"lrphwzsoldw\"},{\"property\":\"tagName\",\"operator\":\"doesNotEqual\",\"value\":\"qdunvmnnrwrbior\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":1451955961,\"lastBackUpTime\":2046569881616478612,\"backupActivityStatus\":\"hhg\",\"provisioningState\":\"Succeeded\"},\"id\":\"msi\",\"name\":\"fomiloxgg\",\"type\":\"ufiqndieuzaof\"}";
+            = "{\"properties\":{\"plan\":\"gyavu\",\"resources\":{\"manual\":[\"hjoxo\",\"smsks\",\"pi\"],\"matchRules\":{\"rules\":[{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"jxkcgxxlxsff\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"all\",\"numberOfProtectedItems\":1112510482,\"lastBackUpTime\":4848854115585115882,\"backupActivityStatus\":\"dwl\",\"provisioningState\":\"Succeeded\"},\"id\":\"oupfgfb\",\"name\":\"jub\",\"type\":\"yhgk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,32 +39,25 @@ public final class ProtectionGroupsCreateOrupdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionGroup response = manager.protectionGroups()
-            .define("vbquwr")
-            .withExistingCloudAccount("bqgzslesjcbhern", "tiewdj")
-            .withProperties(new ProtectionGroupProperties().withPlan("hwagohbuffkmrqe")
-                .withResources(new ProtectionGroupResources()
-                    .withManual(Arrays.asList("hmxtdr", "futacoebjvewzc", "znmwcp"))
+            .define("miloxggdufiqndie")
+            .withExistingCloudAccount("biorktal", "wjhhgdnhxmsivf")
+            .withProperties(new ProtectionGroupProperties().withPlan("ao")
+                .withResources(new ProtectionGroupResources().withManual(Arrays.asList("hvcyyysfg", "otcubi", "p"))
                     .withMatchRules(new ProtectionGroupResourcesMatchRules().withRules(Arrays.asList(
-                        new Rule().withProperty(RuleProperty.REGION)
-                            .withOperator(Operator.CONTAINS)
-                            .withValue("draufactkah"),
-                        new Rule().withProperty(RuleProperty.STATUS)
+                        new Rule().withProperty(RuleProperty.NAME).withOperator(Operator.CONTAINS).withValue("qonmacj"),
+                        new Rule().withProperty(RuleProperty.TAG_NAME)
                             .withOperator(Operator.DOES_NOT_EQUAL)
-                            .withValue("ajjziuxxpshne"),
-                        new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.CONTAINS).withValue("lfg"),
-                        new Rule().withProperty(RuleProperty.REGION)
-                            .withOperator(Operator.DOES_NOT_CONTAINS)
-                            .withValue("ubkwdle")))
+                            .withValue("izsh")))
                         .withMatchType(MatchType.ALL))))
             .create();
 
-        Assertions.assertEquals("isze", response.properties().plan());
-        Assertions.assertEquals("bjcrxgibbdaxco", response.properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME,
+        Assertions.assertEquals("gyavu", response.properties().plan());
+        Assertions.assertEquals("hjoxo", response.properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP,
             response.properties().resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.STARTS_WITH,
+        Assertions.assertEquals(Operator.CONTAINS,
             response.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("uors", response.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("jxkcgxxlxsff", response.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, response.properties().resources().matchRules().matchType());
     }
 }

@@ -21,7 +21,7 @@ public final class ActionVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"canonicalId\":\"swzsnuyemlowuo\",\"displayName\":\"lxlnwyrmo\",\"description\":\"blgmokzkltrfowtd\",\"actionName\":\"fmvlihcvjdrqc\",\"version\":\"idhftu\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"wyojbfqzdkfnjyi\",\"requiredPermissions\":[\"fratqxmbjroumzz\"]},{\"targetType\":\"al\",\"requiredPermissions\":[\"huzgfxo\",\"jtpusllywpvtiotz\",\"pdbollg\",\"yfqiuasig\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"ocnequygdjboqgrm\",\"qjkqevadrmmwi\",\"awvcmjzkxiid\",\"scz\"]},\"id\":\"oswoqiqazugamx\",\"name\":\"krrcoiisbamnpp\",\"type\":\"cekuz\"}]}";
+            = "{\"value\":[{\"properties\":{\"canonicalId\":\"tnjuhpsprkzyaupi\",\"displayName\":\"cxnafbwqrooh\",\"description\":\"ovmaonurjtum\",\"actionName\":\"ihpvecmslclblyj\",\"version\":\"tbsjuscvsf\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"gxuupbezqccydrtc\",\"requiredPermissions\":[\"d\",\"kkyihzt\",\"eq\"]},{\"targetType\":\"qzgwldoychil\",\"requiredPermissions\":[\"cfehuwaoagu\",\"icq\"]},{\"targetType\":\"izs\",\"requiredPermissions\":[\"sjvh\",\"weftkwq\",\"jp\"]},{\"targetType\":\"sse\",\"requiredPermissions\":[\"pwamcxtczhupeuk\",\"ijdu\",\"yespydjfbocyv\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"rtywi\",\"dmhlakuflgbhgau\",\"cdixmx\",\"f\"]},\"id\":\"ryjqgdkf\",\"name\":\"ozo\",\"type\":\"oqbvjhvefgwbmqj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ActionVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ActionVersion> response
-            = manager.actionVersions().list("oqodkadpp", "ibngqladyw", "xwhydtluvv", com.azure.core.util.Context.NONE);
+            = manager.actionVersions().list("ewdogiyetesy", "vidbztjhqtfb", "vnynkb", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -750,9 +750,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("facetable", this.facetable);
         jsonWriter.writeStringField("permissionFilter",
             this.permissionFilter == null ? null : this.permissionFilter.toString());
-        jsonWriter.writeBooleanField("sensitivityLabelId", this.sensitivityLabelId);
-        jsonWriter.writeBooleanField("sensitivityLabelName", this.sensitivityLabelName);
-        jsonWriter.writeBooleanField("sourceDocumentId", this.sourceDocumentId);
+        jsonWriter.writeBooleanField("organizationAccessExpiration", this.organizationAccessExpiration);
         jsonWriter.writeBooleanField("sharepointSiteUrl", this.sharepointSiteUrl);
         jsonWriter.writeStringField("analyzer", this.analyzerName == null ? null : this.analyzerName.toString());
         jsonWriter.writeStringField("searchAnalyzer",
@@ -792,9 +790,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean sortable = null;
             Boolean facetable = null;
             PermissionFilter permissionFilter = null;
-            Boolean sensitivityLabelId = null;
-            Boolean sensitivityLabelName = null;
-            Boolean sourceDocumentId = null;
+            Boolean organizationAccessExpiration = null;
             Boolean sharepointSiteUrl = null;
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
@@ -828,12 +824,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     facetable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("permissionFilter".equals(fieldName)) {
                     permissionFilter = PermissionFilter.fromString(reader.getString());
-                } else if ("sensitivityLabelId".equals(fieldName)) {
-                    sensitivityLabelId = reader.getNullable(JsonReader::getBoolean);
-                } else if ("sensitivityLabelName".equals(fieldName)) {
-                    sensitivityLabelName = reader.getNullable(JsonReader::getBoolean);
-                } else if ("sourceDocumentId".equals(fieldName)) {
-                    sourceDocumentId = reader.getNullable(JsonReader::getBoolean);
+                } else if ("organizationAccessExpiration".equals(fieldName)) {
+                    organizationAccessExpiration = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sharepointSiteUrl".equals(fieldName)) {
                     sharepointSiteUrl = reader.getNullable(JsonReader::getBoolean);
                 } else if ("analyzer".equals(fieldName)) {
@@ -867,9 +859,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.sortable = sortable;
             deserializedSearchField.facetable = facetable;
             deserializedSearchField.permissionFilter = permissionFilter;
-            deserializedSearchField.sensitivityLabelId = sensitivityLabelId;
-            deserializedSearchField.sensitivityLabelName = sensitivityLabelName;
-            deserializedSearchField.sourceDocumentId = sourceDocumentId;
+            deserializedSearchField.organizationAccessExpiration = organizationAccessExpiration;
             deserializedSearchField.sharepointSiteUrl = sharepointSiteUrl;
             deserializedSearchField.analyzerName = analyzerName;
             deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
@@ -889,26 +879,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
      */
     @Generated
     private PermissionFilter permissionFilter;
-
-    /*
-     * A value indicating whether the field should be used for sensitivity label ID filtering. This enables
-     * document-level filtering based on Microsoft Purview sensitivity label IDs.
-     */
-    @Generated
-    private Boolean sensitivityLabelId;
-
-    /*
-     * A value indicating whether the field contains the name of a Microsoft Purview sensitivity label applied to the
-     * document.
-     */
-    @Generated
-    private Boolean sensitivityLabelName;
-
-    /*
-     * A value indicating whether the field contains the source document identifier used for Purview audit tracking.
-     */
-    @Generated
-    private Boolean sourceDocumentId;
 
     /*
      * A value indicating whether the field contains a SharePoint site URL used for SharePoint group-based filtering.
@@ -939,78 +909,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the sensitivityLabelId property: A value indicating whether the field should be used for sensitivity label ID
-     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity label IDs.
-     *
-     * @return the sensitivityLabelId value.
-     */
-    @Generated
-    public Boolean isSensitivityLabelId() {
-        return this.sensitivityLabelId;
-    }
-
-    /**
-     * Set the sensitivityLabelId property: A value indicating whether the field should be used for sensitivity label ID
-     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity label IDs.
-     *
-     * @param sensitivityLabelId the sensitivityLabelId value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setSensitivityLabelId(Boolean sensitivityLabelId) {
-        this.sensitivityLabelId = sensitivityLabelId;
-        return this;
-    }
-
-    /**
-     * Get the sensitivityLabelName property: A value indicating whether the field contains the name of a Microsoft
-     * Purview sensitivity label applied to the document.
-     *
-     * @return the sensitivityLabelName value.
-     */
-    @Generated
-    public Boolean isSensitivityLabelName() {
-        return this.sensitivityLabelName;
-    }
-
-    /**
-     * Set the sensitivityLabelName property: A value indicating whether the field contains the name of a Microsoft
-     * Purview sensitivity label applied to the document.
-     *
-     * @param sensitivityLabelName the sensitivityLabelName value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setSensitivityLabelName(Boolean sensitivityLabelName) {
-        this.sensitivityLabelName = sensitivityLabelName;
-        return this;
-    }
-
-    /**
-     * Get the sourceDocumentId property: A value indicating whether the field contains the source document identifier
-     * used for Purview audit tracking.
-     *
-     * @return the sourceDocumentId value.
-     */
-    @Generated
-    public Boolean isSourceDocumentId() {
-        return this.sourceDocumentId;
-    }
-
-    /**
-     * Set the sourceDocumentId property: A value indicating whether the field contains the source document identifier
-     * used for Purview audit tracking.
-     *
-     * @param sourceDocumentId the sourceDocumentId value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setSourceDocumentId(Boolean sourceDocumentId) {
-        this.sourceDocumentId = sourceDocumentId;
-        return this;
-    }
-
-    /**
      * Get the sharepointSiteUrl property: A value indicating whether the field contains a SharePoint site URL used for
      * SharePoint group-based filtering.
      *
@@ -1031,6 +929,52 @@ public final class SearchField implements JsonSerializable<SearchField> {
     @Generated
     public SearchField setSharepointSiteUrl(Boolean sharepointSiteUrl) {
         this.sharepointSiteUrl = sharepointSiteUrl;
+        return this;
+    }
+
+    /*
+     * A value indicating whether the field contains the expiration timestamp for organization-scoped SharePoint sharing
+     * links. At most one top-level field of type Edm.DateTimeOffset can have this property set to true. On
+     * permission-filtered queries, expiration applies only to orgLink:<tenantId> values in a userIds permission-filter
+     * field whose tenant ID matches the validated user's tenant ID. The grant is valid only before the timestamp; an
+     * absent expiration field or a null timestamp means no time limit. Expiration does not affect orgGroup:<tenantId>
+     * values in groupIds permission-filter fields or ordinary user and group grants. If omitted or false, this field is
+     * not used for organization-link expiration.
+     */
+    @Generated
+    private Boolean organizationAccessExpiration;
+
+    /**
+     * Get the organizationAccessExpiration property: A value indicating whether the field contains the expiration
+     * timestamp for organization-scoped SharePoint sharing links. At most one top-level field of type
+     * Edm.DateTimeOffset can have this property set to true. On permission-filtered queries, expiration applies only to
+     * orgLink:&lt;tenantId&gt; values in a userIds permission-filter field whose tenant ID matches the validated user's
+     * tenant ID. The grant is valid only before the timestamp; an absent expiration field or a null timestamp means no
+     * time limit. Expiration does not affect orgGroup:&lt;tenantId&gt; values in groupIds permission-filter fields or
+     * ordinary user and group grants. If omitted or false, this field is not used for organization-link expiration.
+     *
+     * @return the organizationAccessExpiration value.
+     */
+    @Generated
+    public Boolean isOrganizationAccessExpiration() {
+        return this.organizationAccessExpiration;
+    }
+
+    /**
+     * Set the organizationAccessExpiration property: A value indicating whether the field contains the expiration
+     * timestamp for organization-scoped SharePoint sharing links. At most one top-level field of type
+     * Edm.DateTimeOffset can have this property set to true. On permission-filtered queries, expiration applies only to
+     * orgLink:&lt;tenantId&gt; values in a userIds permission-filter field whose tenant ID matches the validated user's
+     * tenant ID. The grant is valid only before the timestamp; an absent expiration field or a null timestamp means no
+     * time limit. Expiration does not affect orgGroup:&lt;tenantId&gt; values in groupIds permission-filter fields or
+     * ordinary user and group grants. If omitted or false, this field is not used for organization-link expiration.
+     *
+     * @param organizationAccessExpiration the organizationAccessExpiration value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setOrganizationAccessExpiration(Boolean organizationAccessExpiration) {
+        this.organizationAccessExpiration = organizationAccessExpiration;
         return this;
     }
 }
