@@ -459,7 +459,7 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      * @return the {@link SyncPoller} for polling of list of Group Quota Limit details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner> beginUpdate(
+    private SyncPoller<PollResult<GroupQuotaLimitListInner>, GroupQuotaLimitListInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
         GroupQuotaLimitListInner groupQuotaRequest) {
         Response<BinaryData> response

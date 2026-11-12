@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class DatabasesForceUnlinkSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesForceUnlink.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesForceUnlink.json
      */
     /**
      * Sample code: How to unlink a database during a regional outage.

@@ -30,8 +30,8 @@ public final class DatabasesImportMethodMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databases()
-            .importMethod("brjcxe", "fuwutttxf", "jrbirphxepcyv",
-                new ImportClusterParameters().withSasUris(Arrays.asList("fnljky", "xjvuujqgidokg")),
+            .importMethod("ylihkaetckt", "fcivfsnkym", "ctq",
+                new ImportClusterParameters().withSasUris(Arrays.asList("fbebrjcxer")),
                 com.azure.core.util.Context.NONE);
 
     }

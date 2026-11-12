@@ -14,13 +14,6 @@ import java.util.Collection;
  */
 public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku> {
     /**
-     * Use a service Load Balancer, with native pod-level load balancing. This SKU is specifically built to scale for
-     * container-based workloads, with a single instance utilized for each application. For more information, see
-     * https://aka.ms/aks/container-native-slb.
-     */
-    public static final LoadBalancerSku SERVICE = fromString("service");
-
-    /**
      * Use a a standard Load Balancer. This is the recommended Load Balancer SKU. For more information about on working
      * with the load balancer in the managed cluster, see the [standard Load
      * Balancer](https://docs.microsoft.com/azure/aks/load-balancer-standard) article.

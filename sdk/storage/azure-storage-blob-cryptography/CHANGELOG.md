@@ -1,6 +1,6 @@
 # Release History
 
-## 12.37.0-beta.1 (Unreleased)
+## 12.37.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.37.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added support for service version 2027-03-07.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
 
 ## 12.36.2 (2026-11-03)
 

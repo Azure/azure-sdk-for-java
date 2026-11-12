@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OperationsList.json
+     * x-ms-original-file: 2026-10-01-preview/OperationsList.json
      */
     /**
      * Sample code: OperationsList.

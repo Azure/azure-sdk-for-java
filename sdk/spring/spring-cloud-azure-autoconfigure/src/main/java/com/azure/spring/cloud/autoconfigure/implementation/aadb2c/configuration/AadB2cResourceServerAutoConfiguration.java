@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constant
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
+import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cJwtUserFlowValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -112,6 +113,9 @@ public class AadB2cResourceServerAutoConfiguration {
                     && audiences.stream().anyMatch(validAudiences::contains)));
         }
         validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
+        if (!properties.getUserFlows().isEmpty()) {
+            validators.add(new AadB2cJwtUserFlowValidator(properties.getUserFlows().values()));
+        }
         validators.add(new AadJwtIssuerValidator(trustedIssuerRepository));
         validators.add(new JwtTimestampValidator());
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
@@ -142,4 +146,3 @@ public class AadB2cResourceServerAutoConfiguration {
         }
     }
 }
-

@@ -10,8 +10,9 @@ import com.azure.resourcemanager.horizondb.fluent.models.ActivateChangeDataCaptu
 public final class ActivateChangeDataCaptureIdentityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivateChangeDataCaptureIdentityResultInner model = BinaryData.fromString(
-            "{\"targetIdentityAssignmentResourceId\":\"tuzqogsexne\",\"previousIdentityAssignmentResourceId\":\"dnw\"}")
+        ActivateChangeDataCaptureIdentityResultInner model = BinaryData
+            .fromString(
+                "{\"targetIdentityAssignmentResourceId\":\"bzonok\",\"previousIdentityAssignmentResourceId\":\"rjqc\"}")
             .toObject(ActivateChangeDataCaptureIdentityResultInner.class);
     }
 }

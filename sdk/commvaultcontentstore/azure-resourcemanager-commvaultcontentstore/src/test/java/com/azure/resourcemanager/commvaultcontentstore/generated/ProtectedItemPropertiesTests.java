@@ -11,7 +11,7 @@ public final class ProtectedItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectedItemProperties model = BinaryData.fromString(
-            "{\"resourceName\":\"ebxmubyynt\",\"lastBackUpTime\":3360934059996911895,\"resourceGroup\":\"bqtkoievseotgqr\",\"location\":\"ltmuwlauwzizx\",\"vmGuid\":\"mpgcjefuzmuvpbt\"}")
+            "{\"resourceName\":\"ibahwflus\",\"lastBackUpTime\":7176903777537856658,\"resourceGroup\":\"mhrkwofyyvoqacp\",\"location\":\"expbtg\",\"vmGuid\":\"wbwo\"}")
             .toObject(ProtectedItemProperties.class);
     }
 }
