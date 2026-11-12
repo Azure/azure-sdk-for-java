@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
 
 /**
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersi
  */
 public final class ServersStartMajorVersionUpgradePrecheckSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ServersStartMajorVersionUpgradePrecheck.json
+     * x-ms-original-file: 2026-10-01/ServersStartMajorVersionUpgradePrecheck.json
      */
     /**
      * Sample code: Start a major version upgrade precheck validation for a PostgreSQL flexible server.
@@ -23,7 +22,7 @@ public final class ServersStartMajorVersionUpgradePrecheckSamples {
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.servers()
             .startMajorVersionUpgradePrecheck("exampleresourcegroup", "exampleserver",
-                new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_EIGHT),
+                new StartMajorVersionUpgradePrecheckRequest().withTargetVersion("18"),
                 com.azure.core.util.Context.NONE);
     }
 }

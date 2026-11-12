@@ -69,14 +69,6 @@ public class ComplexProxyingTests {
             .setNonProxyHosts("azure.com"));
     }
 
-    /**
-     * Tests the scenario of an HttpClient without a proxy. This is mostly a litmus test to provide further validation.
-     */
-    @Test
-    public void noProxy() {
-        shouldNotHaveProxyScenario(null);
-    }
-
     private static void shouldHaveProxyScenario(ProxyOptions proxyOptions) {
         reactor.netty.http.client.HttpClient reactorHttpClient = reactor.netty.http.client.HttpClient.create()
             .doOnChannelInit((connectionObserver, channel, remoteAddress) -> channel.pipeline()

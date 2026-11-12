@@ -13,9 +13,9 @@ public final class LogCaptureConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCaptureConfigurationInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\",\"retentionDays\":979577305,\"provisioningState\":\"Succeeded\"},\"id\":\"wyt\",\"name\":\"sibircgpi\",\"type\":\"pzimejzanlfzxi\"}")
+            "{\"properties\":{\"state\":\"Enabled\",\"retentionDays\":925264065,\"provisioningState\":\"Succeeded\"},\"id\":\"czhonnxkr\",\"name\":\"gnyhmossxkkg\",\"type\":\"h\"}")
             .toObject(LogCaptureConfigurationInner.class);
-        Assertions.assertEquals(LogCaptureState.DISABLED, model.properties().state());
-        Assertions.assertEquals(979577305, model.properties().retentionDays());
+        Assertions.assertEquals(LogCaptureState.ENABLED, model.properties().state());
+        Assertions.assertEquals(925264065, model.properties().retentionDays());
     }
 }

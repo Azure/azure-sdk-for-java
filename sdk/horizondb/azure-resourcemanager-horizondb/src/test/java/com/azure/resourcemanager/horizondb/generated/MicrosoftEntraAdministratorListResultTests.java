@@ -13,11 +13,11 @@ public final class MicrosoftEntraAdministratorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftEntraAdministratorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"principalName\":\"iuqgbdbutauv\",\"principalType\":\"User\",\"objectId\":\"kuwhh\",\"tenantId\":\"ykojoxafnndlpic\",\"provisioningState\":\"Failed\"},\"id\":\"mkcdyhbpkkpwdre\",\"name\":\"novvqfovljxy\",\"type\":\"suwsyrsnds\"},{\"properties\":{\"principalName\":\"g\",\"principalType\":\"Group\",\"objectId\":\"vraeaeneq\",\"tenantId\":\"arrwlquu\",\"provisioningState\":\"InProgress\"},\"id\":\"kacewiipfp\",\"name\":\"bjibwwiftohq\",\"type\":\"vpuvks\"},{\"properties\":{\"principalName\":\"lsa\",\"principalType\":\"ServicePrincipal\",\"objectId\":\"n\",\"tenantId\":\"ynl\",\"provisioningState\":\"Failed\"},\"id\":\"op\",\"name\":\"odlqiyntor\",\"type\":\"ihleos\"},{\"properties\":{\"principalName\":\"w\",\"principalType\":\"ServicePrincipal\",\"objectId\":\"slyzrpzbchckqq\",\"tenantId\":\"ioxiysuiizyn\",\"provisioningState\":\"InProgress\"},\"id\":\"atrwyhqmibzyh\",\"name\":\"itsmypyyn\",\"type\":\"cdpu\"}],\"nextLink\":\"zgmwznmabikns\"}")
+            "{\"value\":[{\"properties\":{\"principalName\":\"mrv\",\"principalType\":\"ServicePrincipal\",\"objectId\":\"tvb\",\"tenantId\":\"gsfraoyzkoow\",\"provisioningState\":\"Failed\"},\"id\":\"guxawqaldsyuuxi\",\"name\":\"erqf\",\"type\":\"bw\"},{\"properties\":{\"principalName\":\"nkbykutwpfhp\",\"principalType\":\"ServicePrincipal\",\"objectId\":\"hrskdsnfd\",\"tenantId\":\"oakgtdlmkkzev\",\"provisioningState\":\"Failed\"},\"id\":\"wpusdsttwvogv\",\"name\":\"bejdcn\",\"type\":\"qqmoaku\"},{\"properties\":{\"principalName\":\"m\",\"principalType\":\"Unknown\",\"objectId\":\"wr\",\"tenantId\":\"rtwaenuuzko\",\"provisioningState\":\"Failed\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}],\"nextLink\":\"mzqhoftrmaequi\"}")
             .toObject(MicrosoftEntraAdministratorListResult.class);
-        Assertions.assertEquals("iuqgbdbutauv", model.value().get(0).properties().principalName());
-        Assertions.assertEquals(PrincipalTypes.USER, model.value().get(0).properties().principalType());
-        Assertions.assertEquals("ykojoxafnndlpic", model.value().get(0).properties().tenantId());
-        Assertions.assertEquals("zgmwznmabikns", model.nextLink());
+        Assertions.assertEquals("mrv", model.value().get(0).properties().principalName());
+        Assertions.assertEquals(PrincipalTypes.SERVICE_PRINCIPAL, model.value().get(0).properties().principalType());
+        Assertions.assertEquals("gsfraoyzkoow", model.value().get(0).properties().tenantId());
+        Assertions.assertEquals("mzqhoftrmaequi", model.nextLink());
     }
 }

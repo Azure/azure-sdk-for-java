@@ -11,7 +11,7 @@ public final class AuthenticationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Provisioning\"},\"id\":\"ik\",\"name\":\"wggxkallat\",\"type\":\"elwuipi\"}")
+            "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"sl\",\"name\":\"eadcygqukyhejhz\",\"type\":\"sx\"}")
             .toObject(AuthenticationInner.class);
     }
 }

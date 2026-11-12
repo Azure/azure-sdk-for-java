@@ -1,6 +1,6 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.12.0 (2026-11-09)
+
+### Features Added
+
+- Improved Microsoft Entra ID authentication audience inference from the endpoint hostname, including sovereign cloud and staging endpoints. Explicitly configured audiences continue to override inference. Legacy `azconfig` endpoints now use the corresponding `azconfig` audience instead of an `appconfig` audience.
 
 ## 1.11.1 (2026-11-02)
 

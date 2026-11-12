@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleInner;
+import com.azure.resourcemanager.containerregistry.models.EcrAuthenticationProperties;
+import com.azure.resourcemanager.containerregistry.models.EntraFederatedIdentityCredentialAuthenticationProperties;
 import com.azure.resourcemanager.containerregistry.models.GarAuthenticationProperties;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ResourceIdentityType;
@@ -17,7 +19,33 @@ import java.util.Map;
  */
 public final class CacheRulesCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreate.json
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleCreateUserAssignedMIAws.json
+     */
+    /**
+     * Sample code: CacheRuleCreateUserAssignedMIAuthAws.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void cacheRuleCreateUserAssignedMIAuthAws(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .create("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleInner()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(
+                    new EcrAuthenticationProperties().withAccountNumber("123456789012")
+                        .withRegion("us-west-2")
+                        .withRoleName("my-ecr-pull-role")
+                        .withRolePath("/acr/"))
+                .withSourceRepository("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world")
+                .withTargetRepository("cached-ecr/hello-world"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleCreate.json
      */
     /**
      * Sample code: CacheRuleCreate.
@@ -35,7 +63,31 @@ public final class CacheRulesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleCreateUserAssignedMIEntraFederatedIdentityCredential.json
+     */
+    /**
+     * Sample code: CacheRuleCreateUserAssignedMIAuthEntraFederatedIdentityCredential.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void cacheRuleCreateUserAssignedMIAuthEntraFederatedIdentityCredential(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .create("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleInner()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(new EntraFederatedIdentityCredentialAuthenticationProperties()
+                    .withSourceTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                    .withFederatedApplicationClientId("abcdef12-3456-7890-abcd-ef1234567890"))
+                .withSourceRepository("myupstream.azurecr.io/hello-world")
+                .withTargetRepository("cached-upstream/hello-world"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleCreateUserAssignedMIAuthentication.json
      */
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthentication.
@@ -56,7 +108,7 @@ public final class CacheRulesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleCreateUserAssignedMIGoogle.json
      */
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthGoogle.

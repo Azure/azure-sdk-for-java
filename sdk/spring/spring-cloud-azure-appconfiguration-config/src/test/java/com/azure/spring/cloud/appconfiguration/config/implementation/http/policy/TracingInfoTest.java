@@ -73,6 +73,17 @@ public class TracingInfoTest {
     }
 
     @Test
+    public void snapshotReferenceTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.setUsesSnapshotReference();
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=SnapshotRef"));
+        tracingInfo.resetUsesSnapshotReference();
+        assertEquals("RequestType=Startup", tracingInfo.getValue(false, false, null));
+    }
+
+    @Test
     public void aiConfigurationTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
@@ -144,8 +155,9 @@ public class TracingInfoTest {
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
         tracingInfo.setUsesLoadBalancing();
         tracingInfo.updateAiConfigurationTracing("application/json; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        tracingInfo.setUsesSnapshotReference();
         String value = tracingInfo.getValue(false, false, null);
-        assertTrue(value.contains("Features=LB+AI"));
+        assertTrue(value.contains("Features=LB+AI+SnapshotRef"));
     }
 
     @Test
@@ -183,6 +195,7 @@ public class TracingInfoTest {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(true, 2, configuration);
         tracingInfo.setUsesLoadBalancing();
+        tracingInfo.setUsesSnapshotReference();
         tracingInfo.setFailoverRequest();
 
         FeatureFlagTracing ffTracing = new FeatureFlagTracing();
@@ -198,7 +211,7 @@ public class TracingInfoTest {
         assertTrue(value.contains("Filter=TRGT"));
         assertTrue(value.contains("MaxVariants=3"));
         assertTrue(value.contains("FFFeatures=Telemetry"));
-        assertTrue(value.contains("Features=LB"));
+        assertTrue(value.contains("Features=LB+SnapshotRef"));
         assertTrue(value.contains("UsesKeyVault"));
         assertTrue(value.contains("PushRefresh"));
         assertTrue(value.contains("Failover"));

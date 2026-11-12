@@ -11,7 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MajorVersionUpgradePrecheckStatus;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckResponse;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ServersStartMajorVersionUpgradePrecheckMockTests {
     @Test
     public void testStartMajorVersionUpgradePrecheck() throws Exception {
-        String responseStr = "{\"name\":\"qwzdvpiwhxq\",\"createTime\":\"2021-10-11T03:55:37Z\",\"status\":\"Failed\"}";
+        String responseStr = "{\"name\":\"whslwkoj\",\"createTime\":\"2021-07-07T00:00:35Z\",\"status\":\"Failed\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +32,12 @@ public final class ServersStartMajorVersionUpgradePrecheckMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StartMajorVersionUpgradePrecheckResponse response = manager.servers()
-            .startMajorVersionUpgradePrecheck("uunfprnjletlxsm", "pddouifamowaziyn",
-                new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_TWO),
+            .startMajorVersionUpgradePrecheck("juahokqto", "kauxof",
+                new StartMajorVersionUpgradePrecheckRequest().withTargetVersion("hfphwpnulaiywze"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qwzdvpiwhxq", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T03:55:37Z"), response.createTime());
+        Assertions.assertEquals("whslwkoj", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T00:00:35Z"), response.createTime());
         Assertions.assertEquals(MajorVersionUpgradePrecheckStatus.FAILED, response.status());
     }
 }

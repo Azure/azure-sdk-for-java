@@ -1,14 +1,22 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (2026-11-11)
 
-### Features Added
+- Package api-version 2026-06-01-preview.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.VirtualNetworkLinkListResult` was removed
 
-### Other Changes
+#### `models.PrivateZoneListResult` was removed
+
+#### `models.RecordSetListResult` was removed
+
+### Features Added
+
+* `models.PrivateDnsResourceReference` was added
+
+* `models.PrivateDnsResourceReferenceRequest` was added
 
 ## 2.54.1 (2026-11-02)
 

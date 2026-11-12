@@ -24,7 +24,7 @@ public final class ProtectionGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"plan\":\"rbgyefry\",\"resources\":{\"manual\":[\"aojfm\",\"nc\"],\"matchRules\":{\"rules\":[{\"property\":\"region\",\"operator\":\"equals\",\"value\":\"hirctymoxoftpipi\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"zuhx\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"qjlihhyuspska\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"discovered\",\"numberOfProtectedItems\":2119274239,\"lastBackUpTime\":8981770461637201272,\"backupActivityStatus\":\"dgzxulucvpamrsr\",\"provisioningState\":\"Failed\"},\"id\":\"xurisjnhnyt\",\"name\":\"ifqjz\",\"type\":\"xmrhu\"}";
+            = "{\"properties\":{\"plan\":\"zgemjdftuljlt\",\"resources\":{\"manual\":[\"eamtmcz\",\"o\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"doesNotEqual\",\"value\":\"w\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"backed_up_with_error\",\"numberOfProtectedItems\":1975439120,\"lastBackUpTime\":743851677000967136,\"backupActivityStatus\":\"sx\",\"provisioningState\":\"Succeeded\"},\"id\":\"sv\",\"name\":\"kjprvk\",\"type\":\"cfzq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,16 @@ public final class ProtectionGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionGroup response = manager.protectionGroups()
-            .getWithResponse("rujbzbomvzzbtdc", "vp", "iyujviylwdshfs", com.azure.core.util.Context.NONE)
+            .getWithResponse("hbejdznxcvdsrhnj", "volvtn", "v", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rbgyefry", response.properties().plan());
-        Assertions.assertEquals("aojfm", response.properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.REGION,
+        Assertions.assertEquals("zgemjdftuljlt", response.properties().plan());
+        Assertions.assertEquals("eamtmcz", response.properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.TAG_VALUE,
             response.properties().resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.EQUALS,
+        Assertions.assertEquals(Operator.DOES_NOT_EQUAL,
             response.properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("hirctymoxoftpipi",
-            response.properties().resources().matchRules().rules().get(0).value());
+        Assertions.assertEquals("w", response.properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY, response.properties().resources().matchRules().matchType());
     }
 }

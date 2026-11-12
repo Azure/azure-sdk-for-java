@@ -12,14 +12,14 @@ public final class AccessPolicyAssignmentPropertiesUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessPolicyAssignmentPropertiesUser model
-            = BinaryData.fromString("{\"objectId\":\"lkevle\"}").toObject(AccessPolicyAssignmentPropertiesUser.class);
-        Assertions.assertEquals("lkevle", model.objectId());
+            = BinaryData.fromString("{\"objectId\":\"zfbuhf\"}").toObject(AccessPolicyAssignmentPropertiesUser.class);
+        Assertions.assertEquals("zfbuhf", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyAssignmentPropertiesUser model = new AccessPolicyAssignmentPropertiesUser().withObjectId("lkevle");
+        AccessPolicyAssignmentPropertiesUser model = new AccessPolicyAssignmentPropertiesUser().withObjectId("zfbuhf");
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentPropertiesUser.class);
-        Assertions.assertEquals("lkevle", model.objectId());
+        Assertions.assertEquals("zfbuhf", model.objectId());
     }
 }

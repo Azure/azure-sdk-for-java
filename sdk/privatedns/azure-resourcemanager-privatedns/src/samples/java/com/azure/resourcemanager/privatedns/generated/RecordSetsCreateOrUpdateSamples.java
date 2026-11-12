@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public final class RecordSetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetTXTPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetTXTPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone TXT Record Set.
@@ -42,7 +43,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAAAAPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAAAAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone AAAA Record Set.
@@ -61,7 +62,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSOAPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSOAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone SOA Record Set.
@@ -86,7 +87,27 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetMXPut.json
+     * x-ms-original-file: 2026-06-01-preview/PTMLinkRecordSetAPut.json
+     */
+    /**
+     * Sample code: PUT Private DNS Zone PTMLink A Record Set.
+     * 
+     * @param manager Entry point to PrivateDnsZoneManager.
+     */
+    public static void
+        pUTPrivateDNSZonePTMLinkARecordSet(com.azure.resourcemanager.privatedns.PrivateDnsZoneManager manager) {
+        manager.serviceClient()
+            .getRecordSets()
+            .createOrUpdateWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "ptmlinkrecord",
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withTtl(3600L)
+                    .withTrafficManagementProfile(new SubResource().withId(
+                        "/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateTrafficManagerProfiles/ptm-profile1")),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01-preview/RecordSetMXPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone MX Record Set.
@@ -106,7 +127,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetCNAMEPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetCNAMEPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone CNAME Record Set.
@@ -125,7 +146,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetPTRPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetPTRPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone PTR Record Set.
@@ -144,7 +165,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetAPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone A Record Set.
@@ -162,7 +183,7 @@ public final class RecordSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-06-01/RecordSetSRVPut.json
+     * x-ms-original-file: 2026-06-01-preview/RecordSetSRVPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone SRV Record Set.

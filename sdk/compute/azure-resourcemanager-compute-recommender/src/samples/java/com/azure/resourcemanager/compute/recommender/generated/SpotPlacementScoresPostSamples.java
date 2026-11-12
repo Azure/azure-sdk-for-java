@@ -13,7 +13,28 @@ import java.util.Arrays;
  */
 public final class SpotPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-09-05-preview/GenerateSpotPlacementScores.json
+     * x-ms-original-file: 2026-10-05-preview/GenerateSpotPlacementScoresWithoutDesiredLocation.json
+     */
+    /**
+     * Sample code: Returns spot VM placement scores using the request URI location as the desired location when
+     * desiredLocations is not specified.
+     * 
+     * @param manager Entry point to ComputeRecommenderManager.
+     */
+    public static void
+        returnsSpotVMPlacementScoresUsingTheRequestURILocationAsTheDesiredLocationWhenDesiredLocationsIsNotSpecified(
+            com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
+        manager.spotPlacementScores()
+            .postWithResponse("eastus",
+                new SpotPlacementScoresInput()
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("Standard_D2_v2")))
+                    .withDesiredCount(1)
+                    .withAvailabilityZones(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-05-preview/GenerateSpotPlacementScores.json
      */
     /**
      * Sample code: Returns spot VM placement scores for given configurations.
