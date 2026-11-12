@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `MetricsClient` and `MetricsAsyncClient` batch queries failing for subscription-level resource IDs.
+
 ### Other Changes
 
 ## 1.5.9 (2025-08-11)

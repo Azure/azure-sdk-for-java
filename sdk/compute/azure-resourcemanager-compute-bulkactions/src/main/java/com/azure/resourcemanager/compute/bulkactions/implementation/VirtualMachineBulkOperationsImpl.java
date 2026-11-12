@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.AcknowledgeBulkOperationErrorsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.CancelOperationsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsRequest;
+import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.DeallocateResourceOperationResponse;
@@ -29,6 +34,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusCo
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.HibernateResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.ReimageResourceOperationResponse;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import com.azure.resourcemanager.compute.bulkactions.models.StartResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineBulkOperations;
 
@@ -173,6 +179,38 @@ public final class VirtualMachineBulkOperationsImpl implements VirtualMachineBul
             = this.serviceClient().bulkReimageOperation(resourceGroupName, location, requestBody);
         if (inner != null) {
             return new ReimageResourceOperationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location) {
+        PagedIterable<ResourceOperationInner> inner
+            = this.serviceClient().bulkListOperationErrors(resourceGroupName, location);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location,
+        Integer lookbackInMinutes, Context context) {
+        PagedIterable<ResourceOperationInner> inner
+            = this.serviceClient().bulkListOperationErrors(resourceGroupName, location, lookbackInMinutes, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
+    }
+
+    public Response<AcknowledgeBulkOperationErrorsResponse> bulkAcknowledgeOperationErrorsWithResponse(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context) {
+        Response<AcknowledgeBulkOperationErrorsResponseInner> inner = this.serviceClient()
+            .bulkAcknowledgeOperationErrorsWithResponse(resourceGroupName, location, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AcknowledgeBulkOperationErrorsResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public AcknowledgeBulkOperationErrorsResponse bulkAcknowledgeOperationErrors(String resourceGroupName,
+        String location, AcknowledgeBulkOperationErrorsRequest body) {
+        AcknowledgeBulkOperationErrorsResponseInner inner
+            = this.serviceClient().bulkAcknowledgeOperationErrors(resourceGroupName, location, body);
+        if (inner != null) {
+            return new AcknowledgeBulkOperationErrorsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

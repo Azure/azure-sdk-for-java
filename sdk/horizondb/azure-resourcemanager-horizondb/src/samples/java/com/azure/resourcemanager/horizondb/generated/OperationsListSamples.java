@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-10-01-preview/Operations_List.json
      */
     /**
-     * Sample code: List operations for Microsoft.HorizonDB.
+     * Sample code: List operations for Microsoft.HorizonDb.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listOperationsForMicrosoftHorizonDB(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listOperationsForMicrosoftHorizonDb(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

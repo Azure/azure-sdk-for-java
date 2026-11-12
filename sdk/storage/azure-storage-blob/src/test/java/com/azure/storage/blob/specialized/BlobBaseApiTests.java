@@ -25,7 +25,9 @@ import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -36,6 +38,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -837,6 +840,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void startCopyFromURLSmartAccessTier() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
@@ -852,6 +856,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void copyFromURLSmartAccessTier() {
         String srcBlobSas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
@@ -870,6 +875,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmart() {
         bc.setAccessTier(AccessTier.SMART);
 
@@ -880,6 +886,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartGetBlobs() {
         String blobName1 = generateBlobName();
         String blobName2 = generateBlobName();
@@ -891,7 +898,10 @@ public class BlobBaseApiTests extends BlobTestBase {
         blob1.setAccessTier(AccessTier.SMART);
         blob2.setAccessTier(AccessTier.SMART);
 
-        cc.listBlobs().forEach(blobItem -> {
+        ListBlobsOptions listOptions
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        cc.listBlobs(listOptions, null).forEach(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
                 assertEquals(AccessTier.SMART, blobItem.getProperties().getAccessTier());
                 assertNotNull(blobItem.getProperties().getSmartAccessTier());
@@ -901,6 +911,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartRehydrate() {
         bc.setAccessTier(AccessTier.ARCHIVE);
 
@@ -914,6 +925,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
     public void setTierSmartRehydrateGetBlobs() {
         String blobName1 = generateBlobName();
         String blobName2 = generateBlobName();
@@ -930,7 +942,10 @@ public class BlobBaseApiTests extends BlobTestBase {
         blob1.setAccessTierWithResponse(options, null, Context.NONE);
         blob2.setAccessTierWithResponse(options, null, Context.NONE);
 
-        cc.listBlobs().forEach(blobItem -> {
+        ListBlobsOptions listOptions
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        cc.listBlobs(listOptions, null).forEach(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
                 assertEquals(REHYDRATE_PENDING_TO_SMART, blobItem.getProperties().getArchiveStatus());
             }

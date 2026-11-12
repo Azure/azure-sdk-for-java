@@ -296,6 +296,14 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
+     * Gets the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    SmbOplocks smbOplocks();
+
+    /**
      * Gets the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -429,6 +437,13 @@ public interface Volume {
      * @return the isDefaultQuotaEnabled value.
      */
     Boolean isDefaultQuotaEnabled();
+
+    /**
+     * Gets the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    AsyncDirectoryDelete asyncDirectoryDelete();
 
     /**
      * Gets the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
@@ -567,6 +582,13 @@ public interface Volume {
      * @return the breakthroughMode value.
      */
     BreakthroughMode breakthroughMode();
+
+    /**
+     * Gets the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    VolumeNamespaceProperties geoNamespaceProperties();
 
     /**
      * Gets the region of the resource.
@@ -714,17 +736,19 @@ public interface Volume {
             DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
             DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
-            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
-            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess,
-            DefinitionStages.WithCoolnessPeriod, DefinitionStages.WithCoolAccessRetrievalPolicy,
-            DefinitionStages.WithCoolAccessTieringPolicy, DefinitionStages.WithUnixPermissions,
-            DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
+            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithSmbOplocks,
+            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
+            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
+            DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
+            DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
+            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithAsyncDirectoryDelete,
             DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
             DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
             DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
             DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume,
-            DefinitionStages.WithLargeVolumeType, DefinitionStages.WithLanguage, DefinitionStages.WithBreakthroughMode {
+            DefinitionStages.WithLargeVolumeType, DefinitionStages.WithLanguage, DefinitionStages.WithBreakthroughMode,
+            DefinitionStages.WithGeoNamespaceProperties {
             /**
              * Executes the create request.
              * 
@@ -1022,6 +1046,21 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            WithCreate withSmbOplocks(SmbOplocks smbOplocks);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify throughputMibps.
          */
         interface WithThroughputMibps {
@@ -1221,6 +1260,19 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify asyncDirectoryDelete.
+         */
+        interface WithAsyncDirectoryDelete {
+            /**
+             * Specifies the asyncDirectoryDelete property: Async Directory Delete configuration for the volume..
+             * 
+             * @param asyncDirectoryDelete Async Directory Delete configuration for the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify defaultUserQuotaInKiBs.
          */
         interface WithDefaultUserQuotaInKiBs {
@@ -1380,6 +1432,19 @@ public interface Volume {
              */
             WithCreate withBreakthroughMode(BreakthroughMode breakthroughMode);
         }
+
+        /**
+         * The stage of the Volume definition allowing to specify geoNamespaceProperties.
+         */
+        interface WithGeoNamespaceProperties {
+            /**
+             * Specifies the geoNamespaceProperties property: Geographic namespace properties for this volume..
+             * 
+             * @param geoNamespaceProperties Geographic namespace properties for this volume.
+             * @return the next definition stage.
+             */
+            WithCreate withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties);
+        }
     }
 
     /**
@@ -1394,12 +1459,12 @@ public interface Volume {
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithServiceLevel, UpdateStages.WithUsageThreshold,
         UpdateStages.WithExportPolicy, UpdateStages.WithProtocolTypes, UpdateStages.WithThroughputMibps,
-        UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled,
+        UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled, UpdateStages.WithAsyncDirectoryDelete,
         UpdateStages.WithDefaultUserQuotaInKiBs, UpdateStages.WithDefaultGroupQuotaInKiBs,
         UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
         UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithCoolAccessTieringPolicy,
         UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
-        UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithSmbNonBrowsable, UpdateStages.WithSmbOplocks, UpdateStages.WithGeoNamespaceProperties {
         /**
          * Executes the update request.
          * 
@@ -1540,6 +1605,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify asyncDirectoryDelete.
+         */
+        interface WithAsyncDirectoryDelete {
+            /**
+             * Specifies the asyncDirectoryDelete property: Async Directory Delete configuration for the volume..
+             * 
+             * @param asyncDirectoryDelete Async Directory Delete configuration for the volume.
+             * @return the next definition stage.
+             */
+            Update withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete);
         }
 
         /**
@@ -1712,6 +1790,34 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify smbOplocks.
+         */
+        interface WithSmbOplocks {
+            /**
+             * Specifies the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares.
+             * Only applicable for SMB/DualProtocol volume.
+             * 
+             * @param smbOplocks Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            Update withSmbOplocks(SmbOplocks smbOplocks);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify geoNamespaceProperties.
+         */
+        interface WithGeoNamespaceProperties {
+            /**
+             * Specifies the geoNamespaceProperties property: Geographic namespace properties for this volume..
+             * 
+             * @param geoNamespaceProperties Geographic namespace properties for this volume.
+             * @return the next definition stage.
+             */
+            Update withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties);
         }
     }
 

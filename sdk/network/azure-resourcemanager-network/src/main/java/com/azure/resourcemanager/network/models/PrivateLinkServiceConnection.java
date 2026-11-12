@@ -211,6 +211,31 @@ public final class PrivateLinkServiceConnection extends SubResource {
     }
 
     /**
+     * Get the approvalReference property: A reference to an existing approved private endpoint whose connection
+     * approval state should be inherited by this connection at creation time.
+     * 
+     * @return the approvalReference value.
+     */
+    public ApprovalReference approvalReference() {
+        return this.innerProperties() == null ? null : this.innerProperties().approvalReference();
+    }
+
+    /**
+     * Set the approvalReference property: A reference to an existing approved private endpoint whose connection
+     * approval state should be inherited by this connection at creation time.
+     * 
+     * @param approvalReference the approvalReference value to set.
+     * @return the PrivateLinkServiceConnection object itself.
+     */
+    public PrivateLinkServiceConnection withApprovalReference(ApprovalReference approvalReference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceConnectionProperties();
+        }
+        this.innerProperties().withApprovalReference(approvalReference);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

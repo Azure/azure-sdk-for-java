@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.CloudAccountInner;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccount;
+import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountIdentityUpdate;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountProperties;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdate;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdateProperties;
@@ -136,8 +137,12 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "cloudAccountName");
     }
 
     public CloudAccount refresh() {
@@ -199,17 +204,17 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccountImpl withIdentity(ManagedServiceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateProperties.withIdentity(identity);
-            return this;
-        }
+        this.innerModel().withIdentity(identity);
+        return this;
     }
 
     public CloudAccountImpl withProperties(CloudAccountUpdateProperties properties) {
         this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    public CloudAccountImpl withIdentity(CloudAccountIdentityUpdate identity) {
+        this.updateProperties.withIdentity(identity);
         return this;
     }
 

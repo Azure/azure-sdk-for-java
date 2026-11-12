@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
  */
 public final class ProjectsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateProjectMin.json
+     * x-ms-original-file: 2026-09-15-preview/CreateProjectMin.json
      */
     /**
      * Sample code: Create Project Min.
@@ -32,7 +32,7 @@ public final class ProjectsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateProject.json
+     * x-ms-original-file: 2026-09-15-preview/CreateProject.json
      */
     /**
      * Sample code: Create Project.

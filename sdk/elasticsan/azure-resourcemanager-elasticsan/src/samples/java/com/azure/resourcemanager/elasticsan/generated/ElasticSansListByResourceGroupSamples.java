@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class ElasticSansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: ElasticSans_ListByResourceGroup_MinimumSet_Gen.
@@ -22,15 +22,28 @@ public final class ElasticSansListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V1_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ElasticSans_ListByResourceGroup_MaximumSet_Gen.
+     * Sample code: ElasticSans_V1_ListByResourceGroup_MaximumSet_Gen.
      * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void
-        elasticSansListByResourceGroupMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        elasticSansV1ListByResourceGroupMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.elasticSans().listByResourceGroup("resourcegroupname", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V2_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ElasticSans_V2_ListByResourceGroup_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        elasticSansV2ListByResourceGroupMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.elasticSans().listByResourceGroup("resourcegroupname", com.azure.core.util.Context.NONE);
     }
 }

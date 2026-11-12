@@ -29,7 +29,7 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
      * Creates an instance of RealtimeConversationItem class.
      */
     @Generated
-    public RealtimeConversationItem() {
+    protected RealtimeConversationItem() {
     }
 
     /**
@@ -86,13 +86,13 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return RealtimeConversationItemFunctionCallOutput.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_response".equals(discriminatorValue)) {
-                    return RealtimeMcpApprovalResponse.fromJson(readerToUse.reset());
+                    return RealtimeMcpApprovalOutput.fromJson(readerToUse.reset());
                 } else if ("mcp_list_tools".equals(discriminatorValue)) {
                     return RealtimeMcpListTools.fromJson(readerToUse.reset());
                 } else if ("mcp_call".equals(discriminatorValue)) {
                     return RealtimeMcpToolCall.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_request".equals(discriminatorValue)) {
-                    return RealtimeMcpApprovalRequest.fromJson(readerToUse.reset());
+                    return RealtimeMcpApprovalInput.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

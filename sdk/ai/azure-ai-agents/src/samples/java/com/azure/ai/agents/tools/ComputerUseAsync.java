@@ -6,18 +6,15 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ComputerEnvironment;
-import com.azure.ai.agents.models.ComputerUsePreviewTool;
+import com.azure.ai.agents.models.ComputerTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.tools.ComputerUseUtil.HandleActionResult;
 import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
 import com.azure.ai.agents.tools.ComputerUseUtil.SearchState;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
@@ -53,8 +50,8 @@ import java.util.stream.Collectors;
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
  *       page of your Microsoft Foundry portal.</li>
  *   <li>(Optional) AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME - The deployment name of the
- *       computer-use-preview model, as found under the "Name" column in the "Models + endpoints"
- *       tab in your Microsoft Foundry project.</li>
+ *       computer-use model, as found under the "Name" column in the "Models + endpoints"
+ *       tab in your Microsoft Foundry project. If not set, defaults to "gpt-5.4".</li>
  * </ul>
  */
 public class ComputerUseAsync {
@@ -64,7 +61,8 @@ public class ComputerUseAsync {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
+        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "gpt-5.4");
+        String agentName = "ComputerUseAgent";
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -72,7 +70,7 @@ public class ComputerUseAsync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsAsyncClient agentsClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         // Load screenshot assets
         Map<String, ScreenshotInfo> screenshots;
@@ -85,11 +83,7 @@ public class ComputerUseAsync {
             return;
         }
 
-        ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-            ComputerEnvironment.WINDOWS,
-            1026,
-            769
-        );
+        ComputerTool tool = new ComputerTool();
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a computer automation assistant."
@@ -124,28 +118,25 @@ public class ComputerUseAsync {
         );
 
         // Create agent and run the interaction loop
-        agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition)
+        agentsClient.createAgentVersion(agentName, agentDefinition)
             .doOnNext(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                     agent.getId(), agent.getName(), agent.getVersion());
             })
             .flatMap(agent -> {
-                // Create the AgentReference for the response
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
 
                 System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
 
                 // Send initial request
-                return responsesClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
-                            .inputOfResponse(initialInput)
-                            .truncation(ResponseCreateParams.Truncation.AUTO))
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .inputOfResponse(initialInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build()))
                     .doOnNext(response -> System.out.printf("Initial response received (ID: %s)%n", response.id()))
                     .flatMap(response -> runInteractionLoop(
-                        responsesClient, agentReference, response, screenshots, SearchState.INITIAL, 0));
+                        openAIAsyncClient, response, screenshots, SearchState.INITIAL, 0));
             })
             .doFinally(signalType -> {
                 System.out.println("\nCleaning up...");
@@ -163,8 +154,7 @@ public class ComputerUseAsync {
     /**
      * Recursively processes the interaction loop with the Computer Use Agent.
      *
-     * @param responsesClient The responses async client.
-     * @param agentReference The agent reference.
+     * @param openAIAsyncClient The agent-scoped OpenAI async client.
      * @param response The current response from the agent.
      * @param screenshots The map of screenshot assets.
      * @param currentState The current search state.
@@ -172,8 +162,7 @@ public class ComputerUseAsync {
      * @return A Mono that completes when the loop finishes.
      */
     private static Mono<Void> runInteractionLoop(
-            ResponsesAsyncClient responsesClient,
-            AgentReference agentReference,
+            OpenAIClientAsync openAIAsyncClient,
             Response response,
             Map<String, ScreenshotInfo> screenshots,
             SearchState currentState,
@@ -222,14 +211,14 @@ public class ComputerUseAsync {
                     .build())
         );
 
-        return responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+        return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                 ResponseCreateParams.builder()
                     .previousResponseId(response.id())
                     .inputOfResponse(followUpInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO))
+                    .truncation(ResponseCreateParams.Truncation.AUTO)
+                    .build()))
             .doOnNext(newResponse -> System.out.printf("Follow-up response received (ID: %s)%n", newResponse.id()))
             .flatMap(newResponse -> runInteractionLoop(
-                responsesClient, agentReference, newResponse, screenshots, newState, iteration + 1));
+                openAIAsyncClient, newResponse, screenshots, newState, iteration + 1));
     }
 }

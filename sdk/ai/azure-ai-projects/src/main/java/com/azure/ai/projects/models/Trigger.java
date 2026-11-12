@@ -29,7 +29,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * Creates an instance of Trigger class.
      */
     @Generated
-    public Trigger() {
+    protected Trigger() {
     }
 
     /**

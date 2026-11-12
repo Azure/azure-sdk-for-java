@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExte
 import java.io.IOException;
 
 /**
- * A scheduled action associated with a specific compute resource.
+ * A recurring bulk action associated with a specific compute resource.
  */
 @Immutable
 public final class ScheduledActionResourcesInner extends ProxyResource {

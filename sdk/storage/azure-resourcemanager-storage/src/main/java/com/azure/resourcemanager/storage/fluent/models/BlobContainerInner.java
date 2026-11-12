@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storage.models.BlobAccessPointConfigurationConnection;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
@@ -405,6 +406,36 @@ public final class BlobContainerInner extends ProxyResource {
             this.innerContainerProperties = new ContainerProperties();
         }
         this.innerContainerProperties().withEnableNfsV3AllSquash(enableNfsV3AllSquash);
+        return this;
+    }
+
+    /**
+     * Get the blobAccessPointConfiguration property: Configuration that attaches this container to a Blob Access Point.
+     * If set, the container is a read-only virtual container whose read/list requests are forwarded to the connected
+     * backing data store. Cannot be changed, removed, or added after container creation.
+     * 
+     * @return the blobAccessPointConfiguration value.
+     */
+    public BlobAccessPointConfigurationConnection blobAccessPointConfiguration() {
+        return this.innerContainerProperties() == null
+            ? null
+            : this.innerContainerProperties().blobAccessPointConfiguration();
+    }
+
+    /**
+     * Set the blobAccessPointConfiguration property: Configuration that attaches this container to a Blob Access Point.
+     * If set, the container is a read-only virtual container whose read/list requests are forwarded to the connected
+     * backing data store. Cannot be changed, removed, or added after container creation.
+     * 
+     * @param blobAccessPointConfiguration the blobAccessPointConfiguration value to set.
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner
+        withBlobAccessPointConfiguration(BlobAccessPointConfigurationConnection blobAccessPointConfiguration) {
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withBlobAccessPointConfiguration(blobAccessPointConfiguration);
         return this;
     }
 

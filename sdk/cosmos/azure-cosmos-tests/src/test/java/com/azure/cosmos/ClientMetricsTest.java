@@ -300,7 +300,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 500
             );
 
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             state.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         }
@@ -329,7 +329,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 500
             );
 
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             state.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         }
@@ -369,7 +369,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 500
             );
 
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             state.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         }
@@ -412,7 +412,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 500
             );
 
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             state.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
             state.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         }

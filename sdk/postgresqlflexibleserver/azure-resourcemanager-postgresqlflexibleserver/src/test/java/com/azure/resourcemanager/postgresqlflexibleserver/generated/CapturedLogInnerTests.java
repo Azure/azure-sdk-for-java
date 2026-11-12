@@ -13,12 +13,12 @@ public final class CapturedLogInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapturedLogInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdTime\":\"2021-04-10T04:31:29Z\",\"lastModifiedTime\":\"2021-06-07T01:08:57Z\",\"sizeInKb\":4877326457534086186,\"type\":\"clnpkci\",\"url\":\"zriykhy\"},\"id\":\"fvjlboxqvkjlmx\",\"name\":\"omdynhdwdigum\",\"type\":\"nraauzz\"}")
+            "{\"properties\":{\"createdTime\":\"2020-12-28T03:47:06Z\",\"lastModifiedTime\":\"2021-05-28T12:54:39Z\",\"sizeInKb\":3858641849244084044,\"type\":\"dvetnws\",\"url\":\"utnw\"},\"id\":\"uycvuzhyrmewip\",\"name\":\"vekdxukuqgsjjxu\",\"type\":\"dxgketwzhhzjhfj\"}")
             .toObject(CapturedLogInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-10T04:31:29Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T01:08:57Z"), model.lastModifiedTime());
-        Assertions.assertEquals(4877326457534086186L, model.sizeInKb());
-        Assertions.assertEquals("clnpkci", model.typePropertiesType());
-        Assertions.assertEquals("zriykhy", model.url());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T03:47:06Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T12:54:39Z"), model.lastModifiedTime());
+        Assertions.assertEquals(3858641849244084044L, model.sizeInKb());
+        Assertions.assertEquals("dvetnws", model.typePropertiesType());
+        Assertions.assertEquals("utnw", model.url());
     }
 }

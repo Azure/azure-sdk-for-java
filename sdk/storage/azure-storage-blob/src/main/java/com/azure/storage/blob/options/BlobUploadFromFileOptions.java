@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Extended options that may be passed when uploading a blob from a file.
  */
 @Fluent
-public class BlobUploadFromFileOptions {
+public class BlobUploadFromFileOptions implements ValidatableContent {
     private final String filePath;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
@@ -173,6 +174,7 @@ public class BlobUploadFromFileOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -184,6 +186,7 @@ public class BlobUploadFromFileOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlobUploadFromFileOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

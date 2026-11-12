@@ -46,7 +46,6 @@
       <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
       <Class name="io.clientcore.core.utils.GeneratedCodeUtils" />
-      <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
     </Or>
   </Match>
@@ -189,7 +188,6 @@
     <Or>
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
-      <Class name="io.clientcore.core.utils.SharedExecutorService" />
     </Or>
   </Match>
   <Match>

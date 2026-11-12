@@ -359,6 +359,26 @@ public interface GalleryImageVersionsClient {
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete);
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -367,6 +387,26 @@ public interface GalleryImageVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
         String galleryImageName, String galleryImageVersionName);
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete);
 
     /**
      * Delete a gallery image version.
@@ -407,6 +447,27 @@ public interface GalleryImageVersionsClient {
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Boolean bypassSoftDelete, Context context);
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -416,6 +477,26 @@ public interface GalleryImageVersionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String galleryImageName, String galleryImageVersionName, Context context);
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName, Boolean bypassSoftDelete);
 
     /**
      * Delete a gallery image version.
@@ -446,6 +527,26 @@ public interface GalleryImageVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName);
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
+     * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
+     * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
+     * when the policy is disabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName,
+        Boolean bypassSoftDelete, Context context);
 
     /**
      * Delete a gallery image version.

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MongoIndexOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoIndexOptions model = BinaryData.fromString("{\"expireAfterSeconds\":1960012272,\"unique\":true}")
+        MongoIndexOptions model = BinaryData.fromString("{\"expireAfterSeconds\":1054159255,\"unique\":true}")
             .toObject(MongoIndexOptions.class);
-        Assertions.assertEquals(1960012272, model.expireAfterSeconds());
+        Assertions.assertEquals(1054159255, model.expireAfterSeconds());
         Assertions.assertTrue(model.unique());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoIndexOptions model = new MongoIndexOptions().withExpireAfterSeconds(1960012272).withUnique(true);
+        MongoIndexOptions model = new MongoIndexOptions().withExpireAfterSeconds(1054159255).withUnique(true);
         model = BinaryData.fromObject(model).toObject(MongoIndexOptions.class);
-        Assertions.assertEquals(1960012272, model.expireAfterSeconds());
+        Assertions.assertEquals(1054159255, model.expireAfterSeconds());
         Assertions.assertTrue(model.unique());
     }
 }

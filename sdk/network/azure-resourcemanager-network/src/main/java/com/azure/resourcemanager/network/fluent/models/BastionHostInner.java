@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
+import com.azure.resourcemanager.network.models.BastionSessionRecordingConfiguration;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
 import java.io.IOException;
@@ -42,6 +44,11 @@ public final class BastionHostInner extends Resource {
      * The sku of this Bastion Host.
      */
     private Sku sku;
+
+    /*
+     * The identity assigned to the Bastion Host resource
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource ID.
@@ -119,6 +126,26 @@ public final class BastionHostInner extends Resource {
      */
     public BastionHostInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The identity assigned to the Bastion Host resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity assigned to the Bastion Host resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -491,6 +518,30 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the sessionRecordingConfiguration property: The storage account and identity to use for session recording.
+     * 
+     * @return the sessionRecordingConfiguration value.
+     */
+    public BastionSessionRecordingConfiguration sessionRecordingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().sessionRecordingConfiguration();
+    }
+
+    /**
+     * Set the sessionRecordingConfiguration property: The storage account and identity to use for session recording.
+     * 
+     * @param sessionRecordingConfiguration the sessionRecordingConfiguration value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner
+        withSessionRecordingConfiguration(BastionSessionRecordingConfiguration sessionRecordingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withSessionRecordingConfiguration(sessionRecordingConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -501,6 +552,9 @@ public final class BastionHostInner extends Resource {
         }
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -515,6 +569,7 @@ public final class BastionHostInner extends Resource {
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
@@ -553,6 +608,8 @@ public final class BastionHostInner extends Resource {
                     deserializedBastionHostInner.etag = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedBastionHostInner.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBastionHostInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
                     deserializedBastionHostInner.id = reader.getString();
                 } else {

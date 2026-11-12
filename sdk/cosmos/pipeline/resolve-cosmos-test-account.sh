@@ -8,7 +8,7 @@
 # All Cosmos live-test matrix legs run on linux agents, so this is bash + jq.
 #
 # Inputs (environment variables):
-#   COSMOS_TEST_ACCOUNTS_JSON  Raw JSON matching live-test-accounts.schema.json
+#   COSMOS_TEST_ACCOUNTS_JSON  Versioned account JSON as documented in README.md
 #                              (the value of sub-config-cosmos-azure-cloud-test-resources).
 #   COSMOS_ACCOUNT_SELECTOR    Logical account name to select (e.g. multimaster-multiregion-session).
 #   COSMOS_ACCOUNTS_LOCAL      Optional. When "true", prints KEY=VALUE to stdout instead of

@@ -20,8 +20,10 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -32,6 +34,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -49,6 +53,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -61,6 +66,7 @@ import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxUtilTest {
@@ -472,6 +478,142 @@ public class FluxUtilTest {
             Arguments.arguments(new ByteArrayInputStream(singleRead), 8192, singleRead),
             Arguments.arguments(new ByteArrayInputStream(singleRead), 2048, singleRead),
             Arguments.arguments(new ByteArrayInputStream(multipleReads), 5432, multipleReads));
+    }
+
+    @Test
+    public void toFluxByteBufferWithDefaultAvailable() throws IOException {
+        byte[] expected = "ABCDEFGHI".getBytes(StandardCharsets.UTF_8);
+
+        try (InputStream inputStream = withDefaultAvailable(new ByteArrayInputStream(expected), 3)) {
+            assertEquals(0, inputStream.available());
+
+            StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream, 8), 0)
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("ABC", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("DEF", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("GHI", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .expectComplete()
+                .verify(Duration.ofSeconds(2));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void toFluxByteBufferEmitsPartialReadBeforeEndOfStream(boolean defaultAvailable) throws IOException {
+        byte[] expected = "data: hello\n\n".getBytes(StandardCharsets.UTF_8);
+
+        try (PipedInputStream inputStream = new PipedInputStream();
+            PipedOutputStream outputStream = new PipedOutputStream(inputStream)) {
+            InputStream stream = defaultAvailable ? withDefaultAvailable(inputStream, expected.length) : inputStream;
+            Flux<ByteBuffer> conversionFlux
+                = FluxUtil.toFluxByteBuffer(stream).subscribeOn(Schedulers.boundedElastic());
+
+            StepVerifier.create(conversionFlux).then(() -> {
+                try {
+                    outputStream.write(expected);
+                    outputStream.flush();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            })
+                .assertNext(buffer -> assertArraysEqual(expected, FluxUtil.byteBufferToArray(buffer)))
+                .thenCancel()
+                .verify(Duration.ofSeconds(2));
+        }
+    }
+
+    private static InputStream withDefaultAvailable(InputStream inputStream, int maxReadSize) {
+        return withDefaultAvailable(inputStream, new int[] { maxReadSize });
+    }
+
+    /*
+     * Wraps the stream so that available() reports 0 and each read returns at most the next of readSizes, repeating
+     * the last once exhausted.
+     */
+    private static InputStream withDefaultAvailable(InputStream inputStream, int[] readSizes) {
+        AtomicInteger readIndex = new AtomicInteger();
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return inputStream.read();
+            }
+
+            @Override
+            public int read(byte[] buffer, int offset, int length) throws IOException {
+                int maxReadSize = readSizes[Math.min(readIndex.getAndIncrement(), readSizes.length - 1)];
+                return inputStream.read(buffer, offset, Math.min(length, maxReadSize));
+            }
+
+            @Override
+            public void close() throws IOException {
+                inputStream.close();
+            }
+        };
+    }
+
+    @Test
+    public void toFluxByteBufferPartialReadsAreRightSized() throws IOException {
+        byte[] expected = new byte[100];
+        fillArray(expected);
+
+        try (InputStream inputStream = withDefaultAvailable(new ByteArrayInputStream(expected), 7)) {
+            List<ByteBuffer> buffers = FluxUtil.toFluxByteBuffer(inputStream, 64).collectList().block();
+
+            assertEquals(15, buffers.size());
+            for (ByteBuffer buffer : buffers) {
+                // A consumer retaining partial reads must not retain a chunkSize array for each one.
+                assertEquals(buffer.remaining(), buffer.array().length);
+            }
+            assertArraysEqual(expected, collectBytes(buffers));
+        }
+    }
+
+    @Test
+    public void toFluxByteBufferMixedPartialAndFullReads() throws IOException {
+        byte[] expected = new byte[20];
+        fillArray(expected);
+
+        // Partial, full, partial, full, then the 2 remaining bytes, all read into the same reused array.
+        try (InputStream inputStream
+            = withDefaultAvailable(new ByteArrayInputStream(expected), new int[] { 3, 8, 1, 8, 8 })) {
+            List<ByteBuffer> buffers = FluxUtil.toFluxByteBuffer(inputStream, 8).collectList().block();
+
+            int[] expectedSizes = { 3, 8, 1, 8 };
+            assertEquals(expectedSizes.length, buffers.size());
+            for (int i = 0; i < expectedSizes.length; i++) {
+                assertEquals(expectedSizes[i], buffers.get(i).remaining());
+                assertEquals(expectedSizes[i], buffers.get(i).array().length);
+            }
+            // Retained buffers must not share an array that a later read overwrites.
+            assertArraysEqual(expected, collectBytes(buffers));
+        }
+    }
+
+    @Test
+    public void toFluxByteBufferFullChunksAreIndependent() {
+        byte[] expected = new byte[10];
+        fillArray(expected);
+
+        List<ByteBuffer> buffers
+            = FluxUtil.toFluxByteBuffer(new ByteArrayInputStream(expected), 4).collectList().block();
+
+        assertEquals(3, buffers.size());
+        assertEquals(4, buffers.get(0).array().length);
+        assertEquals(4, buffers.get(1).array().length);
+        assertEquals(2, buffers.get(2).array().length);
+        assertNotSame(buffers.get(0).array(), buffers.get(1).array());
+        assertArraysEqual(expected, collectBytes(buffers));
+    }
+
+    private static byte[] collectBytes(List<ByteBuffer> buffers) {
+        ByteArrayOutputStream collected = new ByteArrayOutputStream();
+        for (ByteBuffer buffer : buffers) {
+            collected.write(buffer.array(), buffer.arrayOffset() + buffer.position(), buffer.remaining());
+        }
+        return collected.toByteArray();
     }
 
     @Test

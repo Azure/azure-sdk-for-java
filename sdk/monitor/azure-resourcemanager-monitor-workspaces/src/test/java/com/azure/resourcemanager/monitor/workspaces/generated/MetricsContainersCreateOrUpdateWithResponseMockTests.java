@@ -12,6 +12,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager;
 import com.azure.resourcemanager.monitor.workspaces.models.MetricsContainer;
 import com.azure.resourcemanager.monitor.workspaces.models.MetricsContainerResource;
+import com.azure.resourcemanager.monitor.workspaces.models.MetricsLimits;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public final class MetricsContainersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"q\"},\"id\":\"rnxrxcpj\",\"name\":\"isavok\",\"type\":\"dzf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"limits\":{\"enableAutoScale\":false,\"maxActiveTimeSeries\":73417168680761806,\"maxEventsPerMinute\":951472064558788618},\"version\":\"zoz\"},\"id\":\"hcxgkmoyx\",\"name\":\"dyuib\",\"type\":\"mfdn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +33,16 @@ public final class MetricsContainersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricsContainerResource response = manager.metricsContainers()
-            .define("jub")
-            .withExistingAccount("fgcviz", "zdwlvwlyoupfgfb")
-            .withProperties(new MetricsContainer().withVersion("fminsgowzf"))
+            .define("hlfkqojpy")
+            .withExistingAccount("ppnvdxz", "hihfrbbcevqagtlt")
+            .withProperties(new MetricsContainer().withLimits(new MetricsLimits().withEnableAutoScale(false)
+                .withMaxActiveTimeSeries(6979527660909916600L)
+                .withMaxEventsPerMinute(6866619646306248567L)).withVersion("dymbrny"))
             .create();
 
-        Assertions.assertEquals("q", response.properties().version());
+        Assertions.assertFalse(response.properties().limits().enableAutoScale());
+        Assertions.assertEquals(73417168680761806L, response.properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(951472064558788618L, response.properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("zoz", response.properties().version());
     }
 }

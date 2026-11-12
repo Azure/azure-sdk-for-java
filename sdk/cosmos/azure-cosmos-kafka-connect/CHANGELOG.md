@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.12.0-beta.1 (Unreleased)
+### 2.13.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -8,7 +8,15 @@
 
 #### Bugs Fixed
 
+* Fixed `ItemPatch` writes to skip items excluded by `azure.cosmos.sink.write.patch.filter` instead of failing with `412 Precondition Failed`.
+* Disposed source metadata monitoring subscriptions during connector shutdown. - See [PR 50593](https://github.com/Azure/azure-sdk-for-java/pull/50593)
+
 #### Other Changes
+
+### 2.12.0 (2026-09-22)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
 ### 2.11.0 (2026-06-08)
 
@@ -132,4 +140,3 @@
 * Added `ServicePrincipal` support - See [PR 39490](https://github.com/Azure/azure-sdk-for-java/pull/39490)
 * Added `ItemPatch support` in sink connector - See [PR 39558](https://github.com/Azure/azure-sdk-for-java/pull/39558)
 * Added support to use CosmosDB container for tracking metadata - See [PR 39634](https://github.com/Azure/azure-sdk-for-java/pull/39634)
-

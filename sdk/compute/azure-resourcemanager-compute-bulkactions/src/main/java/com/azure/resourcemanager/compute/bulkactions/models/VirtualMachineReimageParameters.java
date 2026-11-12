@@ -12,24 +12,24 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be reimaged.
+ * The parameters for reimaging a virtual machine. The operating system disk is always reimaged.
  */
 @Fluent
 public final class VirtualMachineReimageParameters implements JsonSerializable<VirtualMachineReimageParameters> {
     /*
-     * Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only
-     * supported for VM/VMSS with Ephemeral OS disk.
+     * Indicates whether to reimage the temporary disk. The default value is `false`. This option is supported only for
+     * virtual machines or virtual machine scale sets that use an ephemeral operating system disk.
      */
     private Boolean tempDisk;
 
     /*
-     * Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the
-     * OS disk is reimaged to the existing version of OS Disk.
+     * The exact image version to use when reimaging the operating system disk. When omitted, the disk is reimaged to
+     * its current image version.
      */
     private String exactVersion;
 
     /*
-     * Specifies information required for reimaging the non-ephemeral OS disk.
+     * The operating system profile used when reimaging a non-ephemeral operating system disk.
      */
     private OSProfileProvisioningData osProfile;
 
@@ -40,8 +40,9 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Get the tempDisk property: Specifies whether to reimage temp disk. Default value: false. Note: This temp disk
-     * reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * Get the tempDisk property: Indicates whether to reimage the temporary disk. The default value is `false`. This
+     * option is supported only for virtual machines or virtual machine scale sets that use an ephemeral operating
+     * system disk.
      * 
      * @return the tempDisk value.
      */
@@ -50,8 +51,9 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Set the tempDisk property: Specifies whether to reimage temp disk. Default value: false. Note: This temp disk
-     * reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * Set the tempDisk property: Indicates whether to reimage the temporary disk. The default value is `false`. This
+     * option is supported only for virtual machines or virtual machine scale sets that use an ephemeral operating
+     * system disk.
      * 
      * @param tempDisk the tempDisk value to set.
      * @return the VirtualMachineReimageParameters object itself.
@@ -62,8 +64,8 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Get the exactVersion property: Specifies in decimal number, the version the OS disk should be reimaged to. If
-     * exact version is not provided, the OS disk is reimaged to the existing version of OS Disk.
+     * Get the exactVersion property: The exact image version to use when reimaging the operating system disk. When
+     * omitted, the disk is reimaged to its current image version.
      * 
      * @return the exactVersion value.
      */
@@ -72,8 +74,8 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Set the exactVersion property: Specifies in decimal number, the version the OS disk should be reimaged to. If
-     * exact version is not provided, the OS disk is reimaged to the existing version of OS Disk.
+     * Set the exactVersion property: The exact image version to use when reimaging the operating system disk. When
+     * omitted, the disk is reimaged to its current image version.
      * 
      * @param exactVersion the exactVersion value to set.
      * @return the VirtualMachineReimageParameters object itself.
@@ -84,7 +86,8 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Get the osProfile property: Specifies information required for reimaging the non-ephemeral OS disk.
+     * Get the osProfile property: The operating system profile used when reimaging a non-ephemeral operating system
+     * disk.
      * 
      * @return the osProfile value.
      */
@@ -93,7 +96,8 @@ public final class VirtualMachineReimageParameters implements JsonSerializable<V
     }
 
     /**
-     * Set the osProfile property: Specifies information required for reimaging the non-ephemeral OS disk.
+     * Set the osProfile property: The operating system profile used when reimaging a non-ephemeral operating system
+     * disk.
      * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineReimageParameters object itself.

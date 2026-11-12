@@ -35,6 +35,7 @@ import com.azure.resourcemanager.storagecache.fluent.CachesClient;
 import com.azure.resourcemanager.storagecache.fluent.ExpansionJobsClient;
 import com.azure.resourcemanager.storagecache.fluent.ImportJobsClient;
 import com.azure.resourcemanager.storagecache.fluent.OperationsClient;
+import com.azure.resourcemanager.storagecache.fluent.RebalanceJobsClient;
 import com.azure.resourcemanager.storagecache.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.storagecache.fluent.SkusClient;
 import com.azure.resourcemanager.storagecache.fluent.StorageCacheManagementClient;
@@ -165,6 +166,20 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The RebalanceJobsClient object to access its operations.
+     */
+    private final RebalanceJobsClient rebalanceJobs;
+
+    /**
+     * Gets the RebalanceJobsClient object to access its operations.
+     * 
+     * @return the RebalanceJobsClient object.
+     */
+    public RebalanceJobsClient getRebalanceJobs() {
+        return this.rebalanceJobs;
     }
 
     /**
@@ -352,9 +367,10 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01";
+        this.apiVersion = "2026-08-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.rebalanceJobs = new RebalanceJobsClientImpl(this);
         this.caches = new CachesClientImpl(this);
         this.storageTargets = new StorageTargetsClientImpl(this);
         this.amlFilesystems = new AmlFilesystemsClientImpl(this);

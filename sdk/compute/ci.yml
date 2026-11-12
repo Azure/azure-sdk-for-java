@@ -9,9 +9,11 @@ trigger:
   paths:
     include:
       - sdk/compute/
+      - sdk/compute/azure-resourcemanager-compute-workloadmanager/
     exclude:
       - sdk/compute/pom.xml
       - sdk/compute/azure-resourcemanager-compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute-workloadmanager/pom.xml
 
 pr:
   branches:
@@ -23,9 +25,11 @@ pr:
   paths:
     include:
       - sdk/compute/
+      - sdk/compute/azure-resourcemanager-compute-workloadmanager/
     exclude:
       - sdk/compute/pom.xml
       - sdk/compute/azure-resourcemanager-compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute-workloadmanager/pom.xml
 
 parameters:
   - name: release_azureresourcemanagercompute
@@ -38,6 +42,10 @@ parameters:
     default: false
   - name: release_azureresourcemanagercomputebulkactions
     displayName: azure-resourcemanager-compute-bulkactions
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagercomputeworkloadmanager
+    displayName: azure-resourcemanager-compute-workloadmanager
     type: boolean
     default: false
 
@@ -58,3 +66,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercomputebulkactions
         releaseInBatch: ${{ parameters.release_azureresourcemanagercomputebulkactions }}
+      - name: azure-resourcemanager-compute-workloadmanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputeworkloadmanager
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercomputeworkloadmanager }}

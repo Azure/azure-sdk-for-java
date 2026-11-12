@@ -104,8 +104,21 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     SiteImpl(SiteInner innerObject, com.azure.resourcemanager.sitemanager.SiteManagerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.siteName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sites");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/sites/{siteName}",
+            "resourceGroupName");
+        this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/sites/{siteName}",
+            "siteName");
+        if (this.siteName == null) {
+            this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}", "siteName");
+        }
+        if (this.siteName == null) {
+            this.siteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}",
+                "siteName");
+        }
     }
 
     public Site refresh() {

@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteLagAuthorizationInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteLagLinkInner;
 import java.io.IOException;
 import java.util.List;
@@ -56,6 +58,18 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
      * The set of links of the ExpressRouteLag resource.
      */
     private List<ExpressRouteLagLinkInner> links;
+
+    /*
+     * Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRouteLag resource.
+     */
+    private List<SubResource> circuits;
+
+    /*
+     * ExpressRouteLagAuthorizations Child-Resources
+     * 
+     * The set of authorizations of the ExpressRouteLag resource.
+     */
+    private List<ExpressRouteLagAuthorizationInner> authorizations;
 
     /*
      * The date and time when the ExpressRouteLag was allocated.
@@ -212,6 +226,40 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
     }
 
     /**
+     * Get the circuits property: Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRouteLag
+     * resource.
+     * 
+     * @return the circuits value.
+     */
+    public List<SubResource> circuits() {
+        return this.circuits;
+    }
+
+    /**
+     * Get the authorizations property: ExpressRouteLagAuthorizations Child-Resources
+     * 
+     * The set of authorizations of the ExpressRouteLag resource.
+     * 
+     * @return the authorizations value.
+     */
+    public List<ExpressRouteLagAuthorizationInner> authorizations() {
+        return this.authorizations;
+    }
+
+    /**
+     * Set the authorizations property: ExpressRouteLagAuthorizations Child-Resources
+     * 
+     * The set of authorizations of the ExpressRouteLag resource.
+     * 
+     * @param authorizations the authorizations value to set.
+     * @return the ExpressRouteLagPropertiesFormat object itself.
+     */
+    public ExpressRouteLagPropertiesFormat withAuthorizations(List<ExpressRouteLagAuthorizationInner> authorizations) {
+        this.authorizations = authorizations;
+        return this;
+    }
+
+    /**
      * Get the allocationDate property: The date and time when the ExpressRouteLag was allocated.
      * 
      * @return the allocationDate value.
@@ -327,6 +375,9 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
         if (links() != null) {
             links().forEach(e -> e.validate());
         }
+        if (authorizations() != null) {
+            authorizations().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -339,6 +390,8 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
         jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
         jsonWriter.writeStringField("encapsulation", this.encapsulation == null ? null : this.encapsulation.toString());
         jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("authorizations", this.authorizations,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
         jsonWriter.writeNumberField("numberOfPorts", this.numberOfPorts);
         jsonWriter.writeNumberField("minimumActivePortsRequired", this.minimumActivePortsRequired);
@@ -381,6 +434,13 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
                     List<ExpressRouteLagLinkInner> links
                         = reader.readArray(reader1 -> ExpressRouteLagLinkInner.fromJson(reader1));
                     deserializedExpressRouteLagPropertiesFormat.links = links;
+                } else if ("circuits".equals(fieldName)) {
+                    List<SubResource> circuits = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedExpressRouteLagPropertiesFormat.circuits = circuits;
+                } else if ("authorizations".equals(fieldName)) {
+                    List<ExpressRouteLagAuthorizationInner> authorizations
+                        = reader.readArray(reader1 -> ExpressRouteLagAuthorizationInner.fromJson(reader1));
+                    deserializedExpressRouteLagPropertiesFormat.authorizations = authorizations;
                 } else if ("allocationDate".equals(fieldName)) {
                     deserializedExpressRouteLagPropertiesFormat.allocationDate = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

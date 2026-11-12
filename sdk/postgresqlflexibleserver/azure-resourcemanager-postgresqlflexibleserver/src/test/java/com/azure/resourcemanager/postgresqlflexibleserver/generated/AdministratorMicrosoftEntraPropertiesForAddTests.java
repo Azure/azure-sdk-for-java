@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraPropertiesForAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model = BinaryData
-            .fromString("{\"principalType\":\"User\",\"principalName\":\"qnyhgb\",\"tenantId\":\"tjivfxzsjabib\"}")
+            .fromString("{\"principalType\":\"Group\",\"principalName\":\"vyqia\",\"tenantId\":\"zwpcnpwzcjaesg\"}")
             .toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("qnyhgb", model.principalName());
-        Assertions.assertEquals("tjivfxzsjabib", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vyqia", model.principalName());
+        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model
-            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.USER)
-                .withPrincipalName("qnyhgb")
-                .withTenantId("tjivfxzsjabib");
+            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.GROUP)
+                .withPrincipalName("vyqia")
+                .withTenantId("zwpcnpwzcjaesg");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("qnyhgb", model.principalName());
-        Assertions.assertEquals("tjivfxzsjabib", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vyqia", model.principalName());
+        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
     }
 }

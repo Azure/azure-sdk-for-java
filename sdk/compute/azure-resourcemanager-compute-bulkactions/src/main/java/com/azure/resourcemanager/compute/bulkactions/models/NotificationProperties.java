@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Settings for notifications about upcoming scheduled action operations.
+ * Settings for notifications about upcoming recurring bulk action operations.
  */
 @Fluent
 public final class NotificationProperties implements JsonSerializable<NotificationProperties> {

@@ -12,14 +12,14 @@ public final class KeyVaultKeyReferenceSourceVaultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyVaultKeyReferenceSourceVault model
-            = BinaryData.fromString("{\"id\":\"udwxdndnvowguj\"}").toObject(KeyVaultKeyReferenceSourceVault.class);
-        Assertions.assertEquals("udwxdndnvowguj", model.id());
+            = BinaryData.fromString("{\"id\":\"fyexfwhy\"}").toObject(KeyVaultKeyReferenceSourceVault.class);
+        Assertions.assertEquals("fyexfwhy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyVaultKeyReferenceSourceVault model = new KeyVaultKeyReferenceSourceVault().withId("udwxdndnvowguj");
+        KeyVaultKeyReferenceSourceVault model = new KeyVaultKeyReferenceSourceVault().withId("fyexfwhy");
         model = BinaryData.fromObject(model).toObject(KeyVaultKeyReferenceSourceVault.class);
-        Assertions.assertEquals("udwxdndnvowguj", model.id());
+        Assertions.assertEquals("fyexfwhy", model.id());
     }
 }

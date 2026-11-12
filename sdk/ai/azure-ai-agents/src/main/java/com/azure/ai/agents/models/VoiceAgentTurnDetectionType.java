@@ -33,12 +33,6 @@ public final class VoiceAgentTurnDetectionType extends ExpandableStringEnum<Voic
     public static final VoiceAgentTurnDetectionType AZURE_SEMANTIC_VAD = fromString("azure_semantic_vad");
 
     /**
-     * English-optimized Azure semantic voice activity detection.
-     */
-    @Generated
-    public static final VoiceAgentTurnDetectionType AZURE_SEMANTIC_VAD_EN = fromString("azure_semantic_vad_en");
-
-    /**
      * Multilingual Azure semantic voice activity detection.
      */
     @Generated
@@ -75,4 +69,10 @@ public final class VoiceAgentTurnDetectionType extends ExpandableStringEnum<Voic
     public static Collection<VoiceAgentTurnDetectionType> values() {
         return values(VoiceAgentTurnDetectionType.class);
     }
+
+    /**
+     * English-optimized Azure semantic voice activity detection.
+     */
+    @Generated
+    public static final VoiceAgentTurnDetectionType AZURE_SEMANTIC_VAD_ENGLISH = fromString("azure_semantic_vad_en");
 }

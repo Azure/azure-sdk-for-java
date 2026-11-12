@@ -20,7 +20,9 @@ import java.security.Security;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -102,6 +104,44 @@ public class AttestationTokenValidationTests {
             () -> ((AttestationTokenImpl) token).validate(null, new AttestationTokenValidationOptions()));
         assertTrue(ex.getMessage().contains("Unable to find any certificates which can be used to validate the token"),
             () -> "Expected the self-vouching token to be rejected. Actual message: " + ex.getMessage());
+    }
+
+    @Test
+    void verifyTokenTimeValidationHonorsValidationSlack() {
+        // Live test agents can run behind the attestation service's clock, so a freshly issued token can appear to be
+        // not yet valid. Validation slack must tolerate that skew in both directions, but no more than configured.
+        OffsetDateTime timeNow = OffsetDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        TestObject notYetValid = new TestObject().setAlg("Test Algorithm")
+            .setIssuedOn(timeNow.plusSeconds(30))
+            .setNotBefore(timeNow.plusSeconds(30))
+            .setExpiresOn(timeNow.plusSeconds(3600))
+            .setIssuer("Fred");
+        TestObject recentlyExpired = new TestObject().setAlg("Test Algorithm")
+            .setIssuedOn(timeNow.minusSeconds(3600))
+            .setNotBefore(timeNow.minusSeconds(3600))
+            .setExpiresOn(timeNow.minusSeconds(30))
+            .setIssuer("Fred");
+
+        AttestationTokenImpl notYetValidToken = (AttestationTokenImpl) AttestationTokenImpl
+            .createUnsecuredToken(assertDoesNotThrow(notYetValid::toJsonString));
+        AttestationTokenImpl recentlyExpiredToken = (AttestationTokenImpl) AttestationTokenImpl
+            .createUnsecuredToken(assertDoesNotThrow(recentlyExpired::toJsonString));
+
+        AttestationTokenValidationOptions withinSlack
+            = new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(60));
+        assertDoesNotThrow(() -> notYetValidToken.validate(null, withinSlack));
+        assertDoesNotThrow(() -> recentlyExpiredToken.validate(null, withinSlack));
+
+        AttestationTokenValidationOptions belowSkew
+            = new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10));
+        RuntimeException notBeforeException
+            = assertThrows(RuntimeException.class, () -> notYetValidToken.validate(null, belowSkew));
+        assertTrue(notBeforeException.getMessage().contains("NotBefore"), notBeforeException::getMessage);
+        RuntimeException expiredException
+            = assertThrows(RuntimeException.class, () -> recentlyExpiredToken.validate(null, belowSkew));
+        assertTrue(expiredException.getMessage().contains("expiration"), expiredException::getMessage);
     }
 
     private static KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {

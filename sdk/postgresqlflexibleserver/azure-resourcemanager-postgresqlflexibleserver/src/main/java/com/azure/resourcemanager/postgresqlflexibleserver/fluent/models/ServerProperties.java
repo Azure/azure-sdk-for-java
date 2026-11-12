@@ -15,10 +15,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
@@ -50,7 +50,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     /*
      * Major version of PostgreSQL database engine.
      */
-    private PostgresMajorVersion version;
+    private String version;
 
     /*
      * Minor version of PostgreSQL database engine.
@@ -151,6 +151,12 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      */
     private Cluster cluster;
 
+    /*
+     * Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified on
+     * create, it defaults to Disabled.
+     */
+    private FipsMode fipsMode;
+
     /**
      * Creates an instance of ServerProperties class.
      */
@@ -212,7 +218,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 
      * @return the version value.
      */
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.version;
     }
 
@@ -222,7 +228,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * @param version the version value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withVersion(PostgresMajorVersion version) {
+    public ServerProperties withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -564,6 +570,28 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
+     * Get the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @return the fipsMode value.
+     */
+    public FipsMode fipsMode() {
+        return this.fipsMode;
+    }
+
+    /**
+     * Set the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @param fipsMode the fipsMode value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withFipsMode(FipsMode fipsMode) {
+        this.fipsMode = fipsMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -571,7 +599,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
-        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
+        jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeJsonField("storage", this.storage);
         jsonWriter.writeJsonField("authConfig", this.authConfig);
         jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
@@ -588,6 +616,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeJsonField("replica", this.replica);
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeStringField("fipsMode", this.fipsMode == null ? null : this.fipsMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -611,7 +640,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                 } else if ("administratorLoginPassword".equals(fieldName)) {
                     deserializedServerProperties.administratorLoginPassword = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedServerProperties.version = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedServerProperties.version = reader.getString();
                 } else if ("minorVersion".equals(fieldName)) {
                     deserializedServerProperties.minorVersion = reader.getString();
                 } else if ("state".equals(fieldName)) {
@@ -653,6 +682,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                     deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("cluster".equals(fieldName)) {
                     deserializedServerProperties.cluster = Cluster.fromJson(reader);
+                } else if ("fipsMode".equals(fieldName)) {
+                    deserializedServerProperties.fipsMode = FipsMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

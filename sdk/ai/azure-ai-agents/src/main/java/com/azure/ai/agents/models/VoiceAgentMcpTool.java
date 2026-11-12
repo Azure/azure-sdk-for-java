@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -15,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An MCP tool available to a voice agent.
+ * An MCP tool available to a voice agent. Server endpoints use `server_url`; connector and tunnel identifiers are not
+ * supported.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -91,7 +93,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     private Map<String, ToolConfig> toolConfigs;
 
     /*
-     * The URL for the MCP server.
+     * The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      */
     @Generated
     private String serverUrl;
@@ -208,8 +211,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      *
      * @return the allowedTools value.
      */
-    @Generated
-    public BinaryData getAllowedTools() {
+    BinaryData getAllowedTools() {
+        // AI Tooling: union type
         return this.allowedTools;
     }
 
@@ -219,8 +222,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      * @param allowedTools the allowedTools value to set.
      * @return the VoiceAgentMcpTool object itself.
      */
-    @Generated
-    public VoiceAgentMcpTool setAllowedTools(BinaryData allowedTools) {
+    VoiceAgentMcpTool setAllowedTools(BinaryData allowedTools) {
+        // AI Tooling: union type
         this.allowedTools = allowedTools;
         return this;
     }
@@ -252,8 +255,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      *
      * @return the requireApproval value.
      */
-    @Generated
-    public BinaryData getRequireApproval() {
+    BinaryData getRequireApproval() {
+        // AI Tooling: union type
         return this.requireApproval;
     }
 
@@ -263,8 +266,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      * @param requireApproval the requireApproval value to set.
      * @return the VoiceAgentMcpTool object itself.
      */
-    @Generated
-    public VoiceAgentMcpTool setRequireApproval(BinaryData requireApproval) {
+    VoiceAgentMcpTool setRequireApproval(BinaryData requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;
     }
@@ -338,7 +341,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     }
 
     /**
-     * Get the serverUrl property: The URL for the MCP server.
+     * Get the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @return the serverUrl value.
      */
@@ -348,7 +352,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
     }
 
     /**
-     * Set the serverUrl property: The URL for the MCP server.
+     * Set the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @param serverUrl the serverUrl value to set.
      * @return the VoiceAgentMcpTool object itself.
@@ -392,6 +397,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("server_label", this.serverLabel);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("authorization", this.authorization);
         jsonWriter.writeStringField("server_description", this.serverDescription);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
@@ -408,7 +414,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
         jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("response_scheduling",
             this.responseScheduling == null ? null : this.responseScheduling.toString());
         return jsonWriter.writeEndObject();
@@ -428,6 +433,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
             String type = "mcp";
+            String serverUrl = null;
             String authorization = null;
             String serverDescription = null;
             Map<String, String> headers = null;
@@ -437,7 +443,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             Boolean deferLoading = null;
             String projectConnectionId = null;
             Map<String, ToolConfig> toolConfigs = null;
-            String serverUrl = null;
             VoiceAgentToolResponseScheduling responseScheduling = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -446,6 +451,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
                     serverLabel = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("server_url".equals(fieldName)) {
+                    serverUrl = reader.getString();
                 } else if ("authorization".equals(fieldName)) {
                     authorization = reader.getString();
                 } else if ("server_description".equals(fieldName)) {
@@ -467,8 +474,6 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
                     projectConnectionId = reader.getString();
                 } else if ("tool_configs".equals(fieldName)) {
                     toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                } else if ("server_url".equals(fieldName)) {
-                    serverUrl = reader.getString();
                 } else if ("response_scheduling".equals(fieldName)) {
                     responseScheduling = VoiceAgentToolResponseScheduling.fromString(reader.getString());
                 } else {
@@ -477,6 +482,7 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             }
             VoiceAgentMcpTool deserializedVoiceAgentMcpTool = new VoiceAgentMcpTool(serverLabel);
             deserializedVoiceAgentMcpTool.type = type;
+            deserializedVoiceAgentMcpTool.serverUrl = serverUrl;
             deserializedVoiceAgentMcpTool.authorization = authorization;
             deserializedVoiceAgentMcpTool.serverDescription = serverDescription;
             deserializedVoiceAgentMcpTool.headers = headers;
@@ -486,9 +492,127 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             deserializedVoiceAgentMcpTool.deferLoading = deferLoading;
             deserializedVoiceAgentMcpTool.projectConnectionId = projectConnectionId;
             deserializedVoiceAgentMcpTool.toolConfigs = toolConfigs;
-            deserializedVoiceAgentMcpTool.serverUrl = serverUrl;
             deserializedVoiceAgentMcpTool.responseScheduling = responseScheduling;
             return deserializedVoiceAgentMcpTool;
         });
+    }
+
+    /**
+     * Set the allowedTools property: The allowed_tools property.
+     *
+     * @param allowedTools the list of tool name strings to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setAllowedTools(List<String> allowedTools) {
+        // AI Tooling: union type
+        this.allowedTools = allowedTools == null ? null : BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Get the allowedTools property: The allowed_tools property.
+     *
+     * @return the allowedTools value as a list of Strings, or {@code null} when it is not set or holds another variant.
+     */
+    public List<String> getAllowedToolsAsStringList() {
+        // AI Tooling: union type
+        if (this.allowedTools == null) {
+            return null;
+        }
+        String json = this.allowedTools.toString().trim();
+        if (!(json.startsWith("["))) {
+            return null;
+        }
+        return this.allowedTools.toObject(new TypeReference<List<String>>() {
+        });
+    }
+
+    /**
+     * Set the allowedTools property: The allowed_tools property.
+     *
+     * @param allowedTools the {@link McpToolFilter} to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setAllowedTools(McpToolFilter allowedTools) {
+        // AI Tooling: union type
+        this.allowedTools = allowedTools == null ? null : BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Get the allowedTools property: The allowed_tools property.
+     *
+     * @return the allowedTools value as a {@link McpToolFilter}, or {@code null} when it is not set or holds another
+     * variant.
+     */
+    public McpToolFilter getAllowedToolsAsMcpToolFilter() {
+        // AI Tooling: union type
+        if (this.allowedTools == null) {
+            return null;
+        }
+        String json = this.allowedTools.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.allowedTools.toObject(McpToolFilter.class);
+    }
+
+    /**
+     * Set the requireApproval property: The require_approval property.
+     *
+     * @param requireApproval the approval setting string to set (e.g., "always" or "never").
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setRequireApproval(String requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: The require_approval property.
+     *
+     * @return the requireApproval value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getRequireApprovalAsString() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.requireApproval.toObject(String.class);
+    }
+
+    /**
+     * Set the requireApproval property: The require_approval property.
+     *
+     * @param requireApproval the {@link McpToolRequireApproval} filter to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: The require_approval property.
+     *
+     * @return the requireApproval value as a {@link McpToolRequireApproval}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.requireApproval.toObject(McpToolRequireApproval.class);
     }
 }

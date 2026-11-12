@@ -436,7 +436,7 @@ public final class RacksClientImpl implements RacksClient {
      * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+    private SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
         RackInner rackParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, rackName, rackParameters, ifMatch, ifNoneMatch);
@@ -728,7 +728,7 @@ public final class RacksClientImpl implements RacksClient {
      * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName,
+    private SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName,
         String ifMatch, String ifNoneMatch, RackPatchParameters rackUpdateParameters) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, rackName, ifMatch, ifNoneMatch, rackUpdateParameters);
@@ -1001,7 +1001,7 @@ public final class RacksClientImpl implements RacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName, String ifMatch,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, rackName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

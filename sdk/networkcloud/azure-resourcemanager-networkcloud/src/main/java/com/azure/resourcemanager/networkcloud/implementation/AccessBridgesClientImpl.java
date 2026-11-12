@@ -625,7 +625,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      * @return the {@link SyncPoller} for polling of accessBridge represents a managed access bridge resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<AccessBridgeInner>, AccessBridgeInner> beginUpdate(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch,
         AccessBridgePatchParameters accessBridgeUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch,
@@ -898,7 +898,7 @@ public final class AccessBridgesClientImpl implements AccessBridgesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         AccessBridgeAllowedName accessBridgeName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, accessBridgeName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

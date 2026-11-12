@@ -3,10 +3,15 @@
 
 package com.azure.core.http.vertx;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.validation.http.HttpClientOptionsProviderTests;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpVersion;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
@@ -18,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -25,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Tests {@link VertxHttpClientProvider}.
  */
-public class VertxHttpClientProviderTests {
+public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests {
 
     @Test
     public void nullOptionsReturnsBaseClient() {
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
+        ProxyOptions environmentProxy = loadEnvironmentProxy();
         io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -46,7 +52,7 @@ public class VertxHttpClientProviderTests {
         VertxHttpClient httpClient
             = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
+        ProxyOptions environmentProxy = loadEnvironmentProxy();
         io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -54,6 +60,15 @@ public class VertxHttpClientProviderTests {
             assertNotNull(proxyOptions);
             assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
         }
+    }
+
+    /*
+     * Loads the environment proxy the way VertxHttpClientBuilder does, unresolved. Resolving it would make
+     * getHostName() perform a reverse DNS lookup when the proxy host is an IP address, returning a name that doesn't
+     * match the host the client was configured with.
+     */
+    private static ProxyOptions loadEnvironmentProxy() {
+        return ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration(), true);
     }
 
     @Test
@@ -84,7 +99,8 @@ public class VertxHttpClientProviderTests {
 
         assertEquals(timeout.toMillis(), httpClient.buildOptions.getConnectTimeout());
         assertEquals(timeout.toMillis(), httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(timeout.toMillis(), httpClient.buildOptions.getWriteIdleTimeout());
+        // The SDK write timeout is scoped to the request, not installed as a connection-wide idle handler.
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -127,6 +143,29 @@ public class VertxHttpClientProviderTests {
             vertx.close().andThen(event -> latch.countDown());
             latch.await(5, TimeUnit.SECONDS);
         }
+    }
+
+    @Override
+    protected HttpClientProvider createProvider(Configuration configuration) {
+        return new VertxHttpClientProvider(configuration);
+    }
+
+    @Override
+    protected void assertMaximumHttpVersion(HttpClient client, HttpProtocolVersion version) {
+        VertxHttpClient vertxClient = assertInstanceOf(VertxHttpClient.class, client);
+        assertEquals(version == HttpProtocolVersion.HTTP_2 ? HttpVersion.HTTP_2 : HttpVersion.HTTP_1_1,
+            vertxClient.buildOptions.getProtocolVersion());
+        assertEquals(version == HttpProtocolVersion.HTTP_2, vertxClient.buildOptions.isUseAlpn());
+        if (version != null) {
+            assertEquals(version == HttpProtocolVersion.HTTP_2
+                ? Arrays.asList(HttpVersion.HTTP_2, HttpVersion.HTTP_1_1)
+                : Collections.singletonList(HttpVersion.HTTP_1_1), vertxClient.buildOptions.getAlpnVersions());
+        }
+    }
+
+    @Override
+    protected void closeHttpClient(HttpClient client) throws Exception {
+        ((VertxHttpClient) client).client.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
     }
 
     private static final class CreateCountVertxProvider implements VertxProvider {

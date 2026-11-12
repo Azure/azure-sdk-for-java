@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class FullyManagedVersionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FullyManagedVersions model = BinaryData.fromString(
-            "{\"releaseChannels\":[{\"releaseChannel\":\"kfplgmgsxnk\",\"version\":\"zkd\"},{\"releaseChannel\":\"slpvlop\",\"version\":\"i\"}]}")
+        FullyManagedVersions model = BinaryData
+            .fromString("{\"releaseChannels\":[{\"releaseChannel\":\"rywn\",\"version\":\"zoqftiyqzrnkcqvy\"}]}")
             .toObject(FullyManagedVersions.class);
-        Assertions.assertEquals("kfplgmgsxnk", model.releaseChannels().get(0).releaseChannel());
-        Assertions.assertEquals("zkd", model.releaseChannels().get(0).version());
+        Assertions.assertEquals("rywn", model.releaseChannels().get(0).releaseChannel());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.releaseChannels().get(0).version());
     }
 }

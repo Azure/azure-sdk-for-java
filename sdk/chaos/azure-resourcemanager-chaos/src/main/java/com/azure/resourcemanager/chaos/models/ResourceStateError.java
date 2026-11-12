@@ -24,7 +24,7 @@ public final class ResourceStateError implements JsonSerializable<ResourceStateE
     /*
      * The error code.
      */
-    private int errorCode;
+    private String errorCode;
 
     /*
      * The error message.
@@ -56,7 +56,7 @@ public final class ResourceStateError implements JsonSerializable<ResourceStateE
      * 
      * @return the errorCode value.
      */
-    public int errorCode() {
+    public String errorCode() {
         return this.errorCode;
     }
 
@@ -106,7 +106,7 @@ public final class ResourceStateError implements JsonSerializable<ResourceStateE
                 if ("resourceId".equals(fieldName)) {
                     deserializedResourceStateError.resourceId = reader.getString();
                 } else if ("errorCode".equals(fieldName)) {
-                    deserializedResourceStateError.errorCode = reader.getInt();
+                    deserializedResourceStateError.errorCode = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {
                     deserializedResourceStateError.errorMessage = reader.getString();
                 } else if ("remediationUri".equals(fieldName)) {

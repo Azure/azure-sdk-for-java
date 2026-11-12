@@ -5,9 +5,11 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
+import com.azure.ai.agents.implementation.telemetry.TracedStreamIterable;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -32,14 +34,17 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ResponsesClient {
     private final ResponseService responseService;
+    private final GenAiResponseTracing tracer;
 
     /**
      * Initializes an instance of ResponsesClient class using the official OpenAI client library.
      *
      * @param openAIClient the OpenAI client.
+     * @param tracer the tracer used to emit GenAI spans for response operations.
      */
-    ResponsesClient(OpenAIClient openAIClient) {
+    ResponsesClient(OpenAIClient openAIClient, GenAiResponseTracing tracer) {
         this.responseService = openAIClient.responses();
+        this.tracer = tracer;
     }
 
     /**
@@ -67,7 +72,13 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.responseService.create(params.build());
+
+        if (!tracer.isEnabled()) {
+            return this.responseService.create(params.build());
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return tracer.traceResponse(createResponse, builtParams, () -> this.responseService.create(builtParams));
     }
 
     /**
@@ -86,7 +97,15 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+
+        if (!tracer.isEnabled()) {
+            return StreamingResponseUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        TracedStreamIterable traced = tracer.traceStreamingResponse(createResponse, builtParams,
+            () -> StreamingResponseUtils.toIterableStream(this.responseService.createStreaming(builtParams)));
+        return new IterableStream<>(traced);
     }
 
     /**
@@ -132,11 +151,12 @@ public final class ResponsesClient {
         RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return this.responseService.withRawResponse()
-            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawResponse(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions, params,
+            () -> this.responseService.withRawResponse()
+                .create(params, requestOptions == null ? RequestOptions.none() : requestOptions));
     }
 
     /**
@@ -162,11 +182,12 @@ public final class ResponsesClient {
         createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return this.responseService.withRawResponse()
-            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawStreamingResponse(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions,
+            params, () -> this.responseService.withRawResponse()
+                .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions));
     }
 
 }

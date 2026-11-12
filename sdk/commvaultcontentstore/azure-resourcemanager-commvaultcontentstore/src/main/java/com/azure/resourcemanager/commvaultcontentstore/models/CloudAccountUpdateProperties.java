@@ -17,14 +17,19 @@ import java.io.IOException;
 @Fluent
 public final class CloudAccountUpdateProperties implements JsonSerializable<CloudAccountUpdateProperties> {
     /*
+     * Optional company details for the cloud account
+     */
+    private CompanyProfile company;
+
+    /*
      * Marketplace details of the resource.
      */
-    private MarketplaceDetails marketplace;
+    private CloudAccountMarketplaceUpdate marketplace;
 
     /*
      * Details of the user.
      */
-    private UserDetails user;
+    private CloudAccountUserUpdate user;
 
     /**
      * Creates an instance of CloudAccountUpdateProperties class.
@@ -33,11 +38,31 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
     }
 
     /**
+     * Get the company property: Optional company details for the cloud account.
+     * 
+     * @return the company value.
+     */
+    public CompanyProfile company() {
+        return this.company;
+    }
+
+    /**
+     * Set the company property: Optional company details for the cloud account.
+     * 
+     * @param company the company value to set.
+     * @return the CloudAccountUpdateProperties object itself.
+     */
+    public CloudAccountUpdateProperties withCompany(CompanyProfile company) {
+        this.company = company;
+        return this;
+    }
+
+    /**
      * Get the marketplace property: Marketplace details of the resource.
      * 
      * @return the marketplace value.
      */
-    public MarketplaceDetails marketplace() {
+    public CloudAccountMarketplaceUpdate marketplace() {
         return this.marketplace;
     }
 
@@ -47,7 +72,7 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
      * @param marketplace the marketplace value to set.
      * @return the CloudAccountUpdateProperties object itself.
      */
-    public CloudAccountUpdateProperties withMarketplace(MarketplaceDetails marketplace) {
+    public CloudAccountUpdateProperties withMarketplace(CloudAccountMarketplaceUpdate marketplace) {
         this.marketplace = marketplace;
         return this;
     }
@@ -57,7 +82,7 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
      * 
      * @return the user value.
      */
-    public UserDetails user() {
+    public CloudAccountUserUpdate user() {
         return this.user;
     }
 
@@ -67,7 +92,7 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
      * @param user the user value to set.
      * @return the CloudAccountUpdateProperties object itself.
      */
-    public CloudAccountUpdateProperties withUser(UserDetails user) {
+    public CloudAccountUpdateProperties withUser(CloudAccountUserUpdate user) {
         this.user = user;
         return this;
     }
@@ -78,6 +103,7 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("company", this.company);
         jsonWriter.writeJsonField("marketplace", this.marketplace);
         jsonWriter.writeJsonField("user", this.user);
         return jsonWriter.writeEndObject();
@@ -98,10 +124,13 @@ public final class CloudAccountUpdateProperties implements JsonSerializable<Clou
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("marketplace".equals(fieldName)) {
-                    deserializedCloudAccountUpdateProperties.marketplace = MarketplaceDetails.fromJson(reader);
+                if ("company".equals(fieldName)) {
+                    deserializedCloudAccountUpdateProperties.company = CompanyProfile.fromJson(reader);
+                } else if ("marketplace".equals(fieldName)) {
+                    deserializedCloudAccountUpdateProperties.marketplace
+                        = CloudAccountMarketplaceUpdate.fromJson(reader);
                 } else if ("user".equals(fieldName)) {
-                    deserializedCloudAccountUpdateProperties.user = UserDetails.fromJson(reader);
+                    deserializedCloudAccountUpdateProperties.user = CloudAccountUserUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

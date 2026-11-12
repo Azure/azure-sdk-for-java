@@ -16,20 +16,20 @@ public final class TagSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagSettingsProperties model = BinaryData.fromString(
-            "{\"tags\":{\"ffeii\":[\"vleggzfbuhfmvfax\"],\"ggi\":[\"lvmezyvshxmzsbbz\"]},\"filterOperator\":\"Any\"}")
+            "{\"tags\":{\"iwkuofos\":[\"lb\",\"vnchrkcci\",\"wzjuqk\",\"rsa\"],\"xc\":[\"hsauuimjmvxied\",\"ugidyjrr\",\"byao\",\"v\"]},\"filterOperator\":\"All\"}")
             .toObject(TagSettingsProperties.class);
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.tags().get("ffeii").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filterOperator());
+        Assertions.assertEquals("lb", model.tags().get("iwkuofos").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagSettingsProperties model = new TagSettingsProperties()
-            .withTags(mapOf("ffeii", Arrays.asList("vleggzfbuhfmvfax"), "ggi", Arrays.asList("lvmezyvshxmzsbbz")))
-            .withFilterOperator(TagOperators.ANY);
+        TagSettingsProperties model
+            = new TagSettingsProperties().withTags(mapOf("iwkuofos", Arrays.asList("lb", "vnchrkcci", "wzjuqk", "rsa"),
+                "xc", Arrays.asList("hsauuimjmvxied", "ugidyjrr", "byao", "v"))).withFilterOperator(TagOperators.ALL);
         model = BinaryData.fromObject(model).toObject(TagSettingsProperties.class);
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.tags().get("ffeii").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filterOperator());
+        Assertions.assertEquals("lb", model.tags().get("iwkuofos").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filterOperator());
     }
 
     // Use "Map.of" if available

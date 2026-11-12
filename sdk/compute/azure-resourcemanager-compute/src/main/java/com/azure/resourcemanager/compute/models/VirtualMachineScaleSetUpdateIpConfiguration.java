@@ -165,6 +165,32 @@ public final class VirtualMachineScaleSetUpdateIpConfiguration
     }
 
     /**
+     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @return the privateIPAddressPrefixLength value.
+     */
+    public Integer privateIPAddressPrefixLength() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddressPrefixLength();
+    }
+
+    /**
+     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
+     * @return the VirtualMachineScaleSetUpdateIpConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateIpConfiguration
+        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateIPConfigurationProperties();
+        }
+        this.innerProperties().withPrivateIPAddressPrefixLength(privateIPAddressPrefixLength);
+        return this;
+    }
+
+    /**
      * Get the applicationGatewayBackendAddressPools property: The application gateway backend address pools.
      * 
      * @return the applicationGatewayBackendAddressPools value.

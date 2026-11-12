@@ -16,49 +16,49 @@ public final class StoragePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePlan model = BinaryData.fromString(
-            "{\"name\":\"wkuofoskghsauu\",\"storagePoolId\":\"jmvxie\",\"copyName\":\"ugidyjrr\",\"copyPrecedence\":207335442,\"retentionPeriod\":1774598517,\"retentionTime\":\"monthly\",\"backupRuleType\":\"ALL_JOBS\",\"extendedRetention\":[{\"retentionTime\":\"monthly\",\"retentionPeriod\":66931546,\"backupRuleType\":\"HALF_YEARLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":962869237,\"backupRuleType\":\"WEEKLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1882750055,\"backupRuleType\":\"ALL_JOBS\"}]}")
+            "{\"name\":\"injep\",\"storagePoolId\":\"tmryw\",\"copyName\":\"zoqftiyqzrnkcqvy\",\"copyPrecedence\":798441434,\"retentionPeriod\":1495315655,\"retentionTime\":\"yearly\",\"backupRuleType\":\"YEARLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"monthly\",\"retentionPeriod\":2046808928,\"backupRuleType\":\"HOURLY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":137418501,\"backupRuleType\":\"HALF_YEARLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1111271416,\"backupRuleType\":\"YEARLY_FULLS\"}]}")
             .toObject(StoragePlan.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.name());
-        Assertions.assertEquals("jmvxie", model.storagePoolId());
-        Assertions.assertEquals("ugidyjrr", model.copyName());
-        Assertions.assertEquals(207335442, model.copyPrecedence());
-        Assertions.assertEquals(1774598517, model.retentionPeriod());
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.retentionTime());
-        Assertions.assertEquals(BackupRuleType.ALL_JOBS, model.backupRuleType());
+        Assertions.assertEquals("injep", model.name());
+        Assertions.assertEquals("tmryw", model.storagePoolId());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.copyName());
+        Assertions.assertEquals(798441434, model.copyPrecedence());
+        Assertions.assertEquals(1495315655, model.retentionPeriod());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
+        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.backupRuleType());
         Assertions.assertEquals(RetentionTime.MONTHLY, model.extendedRetention().get(0).retentionTime());
-        Assertions.assertEquals(66931546, model.extendedRetention().get(0).retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.extendedRetention().get(0).backupRuleType());
+        Assertions.assertEquals(2046808928, model.extendedRetention().get(0).retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HOURLY_FULLS, model.extendedRetention().get(0).backupRuleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePlan model = new StoragePlan().withName("wkuofoskghsauu")
-            .withStoragePoolId("jmvxie")
-            .withCopyName("ugidyjrr")
-            .withCopyPrecedence(207335442)
-            .withRetentionPeriod(1774598517)
-            .withRetentionTime(RetentionTime.MONTHLY)
-            .withBackupRuleType(BackupRuleType.ALL_JOBS)
+        StoragePlan model = new StoragePlan().withName("injep")
+            .withStoragePoolId("tmryw")
+            .withCopyName("zoqftiyqzrnkcqvy")
+            .withCopyPrecedence(798441434)
+            .withRetentionPeriod(1495315655)
+            .withRetentionTime(RetentionTime.YEARLY)
+            .withBackupRuleType(BackupRuleType.YEARLY_FULLS)
             .withExtendedRetention(Arrays.asList(
                 new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                    .withRetentionPeriod(66931546)
+                    .withRetentionPeriod(2046808928)
+                    .withBackupRuleType(BackupRuleType.HOURLY_FULLS),
+                new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                    .withRetentionPeriod(137418501)
                     .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS),
                 new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                    .withRetentionPeriod(962869237)
-                    .withBackupRuleType(BackupRuleType.WEEKLY_FULLS),
-                new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                    .withRetentionPeriod(1882750055)
-                    .withBackupRuleType(BackupRuleType.ALL_JOBS)));
+                    .withRetentionPeriod(1111271416)
+                    .withBackupRuleType(BackupRuleType.YEARLY_FULLS)));
         model = BinaryData.fromObject(model).toObject(StoragePlan.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.name());
-        Assertions.assertEquals("jmvxie", model.storagePoolId());
-        Assertions.assertEquals("ugidyjrr", model.copyName());
-        Assertions.assertEquals(207335442, model.copyPrecedence());
-        Assertions.assertEquals(1774598517, model.retentionPeriod());
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.retentionTime());
-        Assertions.assertEquals(BackupRuleType.ALL_JOBS, model.backupRuleType());
+        Assertions.assertEquals("injep", model.name());
+        Assertions.assertEquals("tmryw", model.storagePoolId());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.copyName());
+        Assertions.assertEquals(798441434, model.copyPrecedence());
+        Assertions.assertEquals(1495315655, model.retentionPeriod());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.retentionTime());
+        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.backupRuleType());
         Assertions.assertEquals(RetentionTime.MONTHLY, model.extendedRetention().get(0).retentionTime());
-        Assertions.assertEquals(66931546, model.extendedRetention().get(0).retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS, model.extendedRetention().get(0).backupRuleType());
+        Assertions.assertEquals(2046808928, model.extendedRetention().get(0).retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HOURLY_FULLS, model.extendedRetention().get(0).backupRuleType());
     }
 }

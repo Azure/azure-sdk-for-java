@@ -10,6 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.chaos.fluent.WorkspacesClient;
+import com.azure.resourcemanager.chaos.fluent.models.WorkspaceDiscoveryInner;
+import com.azure.resourcemanager.chaos.fluent.models.WorkspaceEvaluationInner;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.chaos.models.Workspace;
 import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
@@ -76,28 +78,52 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public WorkspaceDiscovery discover(String resourceGroupName, String workspaceName) {
-        return this.serviceClient().discover(resourceGroupName, workspaceName);
+        WorkspaceDiscoveryInner inner = this.serviceClient().discover(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceDiscoveryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public WorkspaceDiscovery discover(String resourceGroupName, String workspaceName, Context context) {
-        return this.serviceClient().discover(resourceGroupName, workspaceName, context);
+        WorkspaceDiscoveryInner inner = this.serviceClient().discover(resourceGroupName, workspaceName, context);
+        if (inner != null) {
+            return new WorkspaceDiscoveryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName) {
-        return this.serviceClient().evaluate(resourceGroupName, workspaceName);
+        WorkspaceEvaluationInner inner = this.serviceClient().evaluate(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceEvaluationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName, Context context) {
-        return this.serviceClient().evaluate(resourceGroupName, workspaceName, context);
+        WorkspaceEvaluationInner inner = this.serviceClient().evaluate(resourceGroupName, workspaceName, context);
+        if (inner != null) {
+            return new WorkspaceEvaluationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Workspace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -106,12 +132,16 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public Response<Workspace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -120,12 +150,16 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -134,12 +168,16 @@ public final class WorkspacesImpl implements Workspaces {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}",
+            "workspaceName");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));

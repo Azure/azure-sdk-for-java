@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SharedGalleryInvitesGallerySharingAcceptSamples {
     /*
-     * x-ms-original-file: 2025-12-03/sharedGalleryInviteExamples/SharedGalleryInvite_Accept.json
+     * x-ms-original-file: 2026-03-03/sharedGalleryInviteExamples/SharedGalleryInvite_Accept.json
      */
     /**
      * Sample code: Accept a gallery shared to subscription.

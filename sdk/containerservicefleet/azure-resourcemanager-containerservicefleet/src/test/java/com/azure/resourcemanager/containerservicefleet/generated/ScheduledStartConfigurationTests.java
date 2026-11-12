@@ -13,21 +13,21 @@ public final class ScheduledStartConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledStartConfiguration model = BinaryData
-            .fromString("{\"startDay\":\"Saturday\",\"startTime\":\"wcfzqljyxgt\",\"utcOffset\":\"zheydbsdshmk\"}")
+            .fromString("{\"startDay\":\"Saturday\",\"startTime\":\"esutrgjupauutpw\",\"utcOffset\":\"qhih\"}")
             .toObject(ScheduledStartConfiguration.class);
         Assertions.assertEquals(DayOfWeek.SATURDAY, model.startDay());
-        Assertions.assertEquals("wcfzqljyxgt", model.startTime());
-        Assertions.assertEquals("zheydbsdshmk", model.utcOffset());
+        Assertions.assertEquals("esutrgjupauutpw", model.startTime());
+        Assertions.assertEquals("qhih", model.utcOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledStartConfiguration model = new ScheduledStartConfiguration().withStartDay(DayOfWeek.SATURDAY)
-            .withStartTime("wcfzqljyxgt")
-            .withUtcOffset("zheydbsdshmk");
+            .withStartTime("esutrgjupauutpw")
+            .withUtcOffset("qhih");
         model = BinaryData.fromObject(model).toObject(ScheduledStartConfiguration.class);
         Assertions.assertEquals(DayOfWeek.SATURDAY, model.startDay());
-        Assertions.assertEquals("wcfzqljyxgt", model.startTime());
-        Assertions.assertEquals("zheydbsdshmk", model.utcOffset());
+        Assertions.assertEquals("esutrgjupauutpw", model.startTime());
+        Assertions.assertEquals("qhih", model.utcOffset());
     }
 }

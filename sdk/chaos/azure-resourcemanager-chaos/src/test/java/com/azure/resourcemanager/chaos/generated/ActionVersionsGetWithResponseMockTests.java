@@ -20,7 +20,7 @@ public final class ActionVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"canonicalId\":\"ytiq\",\"displayName\":\"bqerzwx\",\"description\":\"txtd\",\"actionName\":\"kvlbpktgdstyoua\",\"version\":\"ewres\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"mmuteyxeyguq\",\"requiredPermissions\":[\"jiitnspxlzdesygr\",\"jwaiuf\"]},{\"targetType\":\"raybfueqfr\",\"requiredPermissions\":[\"ydgr\",\"ydkygywezskieca\",\"ygzmxieqvdsmak\"]},{\"targetType\":\"xq\",\"requiredPermissions\":[\"y\",\"xalybxawoijpo\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"xpkk\"]},\"id\":\"djodqhy\",\"name\":\"incnr\",\"type\":\"mehllizhceu\"}";
+            = "{\"properties\":{\"canonicalId\":\"rctat\",\"displayName\":\"intqpbrlcyr\",\"description\":\"czkgofxyfsrucvcr\",\"actionName\":\"cjttbstvjeaqnrm\",\"version\":\"fkoxmlghktuidvr\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"wwexymzvlazipbh\",\"requiredPermissions\":[\"qsg\"]},{\"targetType\":\"yuuzivens\",\"requiredPermissions\":[\"eyyvpkpatl\",\"ijp\",\"gsksrfhf\"]},{\"targetType\":\"lmknbnxwcdom\",\"requiredPermissions\":[\"fqawzfgbrttui\",\"clkiexhajl\",\"n\",\"hiqfyuttdiy\"]},{\"targetType\":\"pvn\",\"requiredPermissions\":[\"mtx\",\"yctww\",\"zwxjlm\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"gygzyvn\"]},\"id\":\"zaifghtmoqqtlff\",\"name\":\"zbkr\",\"type\":\"jjjavfqnvhnq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ActionVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ActionVersion response = manager.actionVersions()
-            .getWithResponse("tujwjju", "wbeqrkuor", "tssruqnmdvhazc", com.azure.core.util.Context.NONE)
+            .getWithResponse("wrq", "fulopmjnlexwhcb", "pibkephuu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

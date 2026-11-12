@@ -22,7 +22,7 @@ public final class VolumesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"volumeId\":\"nfwjlfltkacjvefk\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"kggkfpa\"},\"sizeGiB\":2099147795702198960,\"storageTarget\":{\"targetIqn\":\"ulpqblylsyxkqjn\",\"targetPortalHostname\":\"ervtiagxs\",\"targetPortalPort\":300652105,\"provisioningState\":\"Updating\",\"status\":\"Stopped\"},\"managedBy\":{\"resourceId\":\"zkfzbeyv\"},\"provisioningState\":\"Creating\"},\"id\":\"cvinvkjjxdxrbuuk\",\"name\":\"clewyhm\",\"type\":\"wp\"}";
+            = "{\"properties\":{\"volumeId\":\"rd\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"thtywub\"},\"sizeGiB\":7718798958168735300,\"storageTarget\":{\"targetIqn\":\"wqknfdn\",\"targetPortalHostname\":\"jchrdgoihxumw\",\"targetPortalPort\":614577379,\"provisioningState\":\"Creating\",\"status\":\"Invalid\"},\"managedBy\":[{\"clientId\":\"dfdlwggyts\",\"version\":676587800,\"resourceIds\":[\"vtgsei\"]}],\"provisioningState\":\"Creating\"},\"id\":\"ufxqknpirgnepttw\",\"name\":\"msniffc\",\"type\":\"mqnrojlpijnkr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,14 @@ public final class VolumesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .getWithResponse("atdooaojkniod", "oo", "bw", "ujhemmsbvdkcrodt", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "lrcoolsttpki", "kkbnu", "rywvtylbfpn", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, response.creationData().createSource());
-        Assertions.assertEquals("kggkfpa", response.creationData().sourceId());
-        Assertions.assertEquals(2099147795702198960L, response.sizeGiB());
-        Assertions.assertEquals("zkfzbeyv", response.managedBy().resourceId());
+        Assertions.assertEquals("thtywub", response.creationData().sourceId());
+        Assertions.assertEquals(7718798958168735300L, response.sizeGiB());
+        Assertions.assertEquals("dfdlwggyts", response.managedBy().get(0).clientId());
+        Assertions.assertEquals(676587800, response.managedBy().get(0).version());
+        Assertions.assertEquals("vtgsei", response.managedBy().get(0).resourceIds().get(0));
     }
 }

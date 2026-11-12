@@ -23,7 +23,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"iysui\",\"provisioningState\":\"Deleting\"},\"location\":\"ked\",\"tags\":{\"pyy\":\"rwyhqmibzyhwitsm\",\"mwzn\":\"pcdpumnz\",\"rgjhxb\":\"abikns\"},\"id\":\"dtlwwrlkd\",\"name\":\"tncvokot\",\"type\":\"lxdy\"}";
+            = "{\"properties\":{\"description\":\"oibjudpfrxtrthz\",\"provisioningState\":\"Succeeded\"},\"location\":\"dwkqbrq\",\"tags\":{\"tiirqtdqoa\":\"axhexiilivp\"},\"id\":\"oruzfgsquyfxrxx\",\"name\":\"eptra\",\"type\":\"xje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,17 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .define("e")
-            .withRegion("hqkvpuvksgplsak")
-            .withExistingResourceGroup("jfqka")
-            .withTags(mapOf("odlqiyntor", "fsynljphuop"))
-            .withDescription("pfpubjibww")
+            .define("lr")
+            .withRegion("wdmjsjqbjhhyx")
+            .withExistingResourceGroup("eqidbqfatpx")
+            .withTags(mapOf("duhpk", "lyc", "hky", "kgymareqnajxqug", "sofwqmzqalkrmnji", "ubeddg", "yxbaaabjyvayf",
+                "pxacqqudfn"))
+            .withDescription("jmoadsuv")
             .create();
 
-        Assertions.assertEquals("ked", response.location());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", response.tags().get("pyy"));
-        Assertions.assertEquals("iysui", response.description());
+        Assertions.assertEquals("dwkqbrq", response.location());
+        Assertions.assertEquals("axhexiilivp", response.tags().get("tiirqtdqoa"));
+        Assertions.assertEquals("oibjudpfrxtrthz", response.description());
     }
 
     // Use "Map.of" if available

@@ -10,13 +10,18 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.AudioTranscription.Delay;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Asynchronous input-audio transcription configuration. Extends the OpenAI Realtime transcription
- * options with the Azure and MAI transcription models, custom speech models, and phrase hints.
+ * Settings for transcribing input audio, including the transcription model, Custom Speech deployments,
+ * and phrase hints.
+ * When `model` is `azure-speech-streaming`, transcription is supported for cascaded text-model
+ * conversations only (not realtime speech-to-speech models), requires a nonempty `language` such as
+ * `en-US` (comma-separated locales are supported), and supports `custom_speech`, `phrase_list`, and
+ * `profanity_filter`.
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
@@ -25,7 +30,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /*
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      */
     @Generated
     private String language;
@@ -47,7 +54,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /*
      * An optional text to guide the model's style or continue a previous audio
      * segment.
-     * For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
+     * For `whisper-1`, the [prompt is a list of
+     * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
      * For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for
      * example "expect words related to technology".
      * Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
@@ -55,16 +63,14 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     @Generated
     private String prompt;
 
-    /*
-     * Controls how long the model waits before emitting transcription text.
-     * Higher values can improve transcription accuracy at the cost of latency.
-     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
-     */
-    @Generated
-    private VoiceAgentAudioInputConfigTranscriptionDelay delay;
+    // AI Tooling: openai-java de-dup
+    private Delay delay;
 
     /*
      * The transcription model identifier. Configure customer custom speech deployments in `custom_speech`.
+     * `azure-speech-streaming` is for cascaded text-model conversations only (not realtime speech-to-speech models),
+     * requires a nonempty `language` such as `en-US` (comma-separated locales are supported), and supports
+     * `custom_speech`, `phrase_list`, and `profanity_filter`.
      */
     @Generated
     private final VoiceAgentInputTranscriptionModel model;
@@ -94,7 +100,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Get the language property: The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      *
      * @return the language value.
      */
@@ -106,7 +114,9 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Set the language property: The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
-     * will improve accuracy and latency.
+     * will improve accuracy and latency. Optional for other transcription models; required and must be
+     * nonempty when `model` is `azure-speech-streaming` (such as `en-US`; comma-separated locales are
+     * supported).
      *
      * @param language the language value to set.
      * @return the VoiceAgentInputTranscription object itself.
@@ -170,7 +180,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Get the prompt property: An optional text to guide the model's style or continue a previous audio
      * segment.
-     * For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
+     * For `whisper-1`, the [prompt is a list of
+     * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
      * For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for
      * example "expect words related to technology".
      * Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
@@ -185,7 +196,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * Set the prompt property: An optional text to guide the model's style or continue a previous audio
      * segment.
-     * For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
+     * For `whisper-1`, the [prompt is a list of
+     * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
      * For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for
      * example "expect words related to technology".
      * Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
@@ -206,28 +218,16 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
      *
      * @return the delay value.
      */
-    @Generated
-    public VoiceAgentAudioInputConfigTranscriptionDelay getDelay() {
+    public Delay getDelay() {
+        // AI Tooling: openai-java de-dup
         return this.delay;
     }
 
     /**
-     * Set the delay property: Controls how long the model waits before emitting transcription text.
-     * Higher values can improve transcription accuracy at the cost of latency.
-     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
-     *
-     * @param delay the delay value to set.
-     * @return the VoiceAgentInputTranscription object itself.
-     */
-    @Generated
-    public VoiceAgentInputTranscription setDelay(VoiceAgentAudioInputConfigTranscriptionDelay delay) {
-        this.delay = delay;
-        return this;
-    }
-
-    /**
      * Get the model property: The transcription model identifier. Configure customer custom speech deployments in
-     * `custom_speech`.
+     * `custom_speech`. `azure-speech-streaming` is for cascaded text-model conversations only (not realtime
+     * speech-to-speech models), requires a nonempty `language` such as `en-US` (comma-separated locales are supported),
+     * and supports `custom_speech`, `phrase_list`, and `profanity_filter`.
      *
      * @return the model value.
      */
@@ -283,18 +283,20 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("prompt", this.prompt);
-        jsonWriter.writeStringField("delay", this.delay == null ? null : this.delay.toString());
+        jsonWriter.writeStringField("delay", this.delay == null ? null : this.delay.asString());
         jsonWriter.writeMapField("custom_speech", this.customSpeech, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("phrase_list", this.phraseList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("profanity_filter",
+            this.profanityFilter == null ? null : this.profanityFilter.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -307,17 +309,18 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VoiceAgentInputTranscription.
      */
-    @Generated
     public static VoiceAgentInputTranscription fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             VoiceAgentInputTranscriptionModel model = null;
             String language = null;
             List<String> languages = null;
             List<String> keywords = null;
             String prompt = null;
-            VoiceAgentAudioInputConfigTranscriptionDelay delay = null;
+            Delay delay = null;
             Map<String, String> customSpeech = null;
             List<String> phraseList = null;
+            VoiceAgentProfanityFilterMode profanityFilter = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -332,11 +335,13 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
                 } else if ("prompt".equals(fieldName)) {
                     prompt = reader.getString();
                 } else if ("delay".equals(fieldName)) {
-                    delay = VoiceAgentAudioInputConfigTranscriptionDelay.fromString(reader.getString());
+                    delay = reader.getNullable(r -> Delay.of(r.getString()));
                 } else if ("custom_speech".equals(fieldName)) {
                     customSpeech = reader.readMap(reader1 -> reader1.getString());
                 } else if ("phrase_list".equals(fieldName)) {
                     phraseList = reader.readArray(reader1 -> reader1.getString());
+                } else if ("profanity_filter".equals(fieldName)) {
+                    profanityFilter = reader.getNullable(r -> VoiceAgentProfanityFilterMode.fromString(r.getString()));
                 } else {
                     reader.skipChildren();
                 }
@@ -350,7 +355,70 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
             deserializedVoiceAgentInputTranscription.delay = delay;
             deserializedVoiceAgentInputTranscription.customSpeech = customSpeech;
             deserializedVoiceAgentInputTranscription.phraseList = phraseList;
+            deserializedVoiceAgentInputTranscription.profanityFilter = profanityFilter;
             return deserializedVoiceAgentInputTranscription;
         });
+    }
+
+    /**
+     * Set the delay property: Controls how long the model waits before emitting transcription text.
+     * Higher values can improve transcription accuracy at the cost of latency.
+     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
+     *
+     * @param delay the delay value to set.
+     * @return the VoiceAgentInputTranscription object itself.
+     */
+    public VoiceAgentInputTranscription setDelay(Delay delay) {
+        // AI Tooling: openai-java de-dup
+        this.delay = delay;
+        return this;
+    }
+
+    /*
+     * Controls how profanity is handled in input transcripts. Supported only with managed Azure Speech
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
+     * Set this property before the session starts. If omitted, the transcription provider's default applies.
+     * You cannot change the mode during a session.
+     * Filtering affects transcript events and the text sent to cascaded models. It does not change input
+     * audio, voice activity detection, or assistant speech; audio-native models still receive the original
+     * audio. Mandatory service masking policies apply even when you select `unfiltered`.
+     */
+    @Generated
+    private VoiceAgentProfanityFilterMode profanityFilter;
+
+    /**
+     * Get the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
+     * managed Azure Speech
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
+     * Set this property before the session starts. If omitted, the transcription provider's default applies.
+     * You cannot change the mode during a session.
+     * Filtering affects transcript events and the text sent to cascaded models. It does not change input
+     * audio, voice activity detection, or assistant speech; audio-native models still receive the original
+     * audio. Mandatory service masking policies apply even when you select `unfiltered`.
+     *
+     * @return the profanityFilter value.
+     */
+    @Generated
+    public VoiceAgentProfanityFilterMode getProfanityFilter() {
+        return this.profanityFilter;
+    }
+
+    /**
+     * Set the profanityFilter property: Controls how profanity is handled in input transcripts. Supported only with
+     * managed Azure Speech
+     * (`azure-speech` and `azure-speech-streaming`), including Custom Speech.
+     * Set this property before the session starts. If omitted, the transcription provider's default applies.
+     * You cannot change the mode during a session.
+     * Filtering affects transcript events and the text sent to cascaded models. It does not change input
+     * audio, voice activity detection, or assistant speech; audio-native models still receive the original
+     * audio. Mandatory service masking policies apply even when you select `unfiltered`.
+     *
+     * @param profanityFilter the profanityFilter value to set.
+     * @return the VoiceAgentInputTranscription object itself.
+     */
+    @Generated
+    public VoiceAgentInputTranscription setProfanityFilter(VoiceAgentProfanityFilterMode profanityFilter) {
+        this.profanityFilter = profanityFilter;
+        return this;
     }
 }

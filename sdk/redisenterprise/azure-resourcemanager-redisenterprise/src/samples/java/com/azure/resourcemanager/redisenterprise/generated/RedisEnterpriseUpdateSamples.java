@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.FirewallRule;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceDayOfWeek;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindow;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.
@@ -36,7 +37,7 @@ public final class RedisEnterpriseUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1"))
-            .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
+            .withSku(new Sku().withName(SkuName.BALANCED_B10))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withMaintenanceConfiguration(new MaintenanceConfiguration().withMaintenanceWindows(Arrays.asList(
@@ -52,6 +53,9 @@ public final class RedisEnterpriseUpdateSamples {
                     .withDuration("PT6H")
                     .withStartHourUtc(3)
                     .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)))))
+            .withFirewallRules(
+                Arrays.asList(new FirewallRule().withName("allowOfficeNetwork").withSourceAddressPrefix("10.0.0.0/24"),
+                    new FirewallRule().withName("allowPartnerNetwork").withSourceAddressPrefix("192.168.1.0/24")))
             .apply();
     }
 

@@ -22,6 +22,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
+     * Locally redundant storage. Supported only for ElasticSanVersion V2.
+     */
+    public static final SkuName ELASTIC_SAN_LRS = fromString("ElasticSAN_LRS");
+
+    /**
      * Creates a new instance of SkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

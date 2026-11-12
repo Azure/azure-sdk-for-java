@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -217,7 +218,7 @@ class ConnectionManager {
      * Gets the duration in milliseconds until the next client becomes available (exits backoff).
      * Returns 0 if a client is already available, or the minimum wait time if all clients are in backoff.
      * 
-     * @return duration in milliseconds until next client is available, or 0 if one is available now
+     * @return duration until next client is available, rounded up to milliseconds, or 0 if one is available now
      */
     long getMillisUntilNextClientAvailable() {
         Instant now = Instant.now();
@@ -253,9 +254,9 @@ class ConnectionManager {
             return 0L;
         }
 
-        long millisUntilNext = earliestAvailable.toEpochMilli() - now.toEpochMilli();
-        // Ensure we never return a negative duration, even in the presence of clock skew.
-        return Math.max(millisUntilNext, 0L);
+        Duration remaining = Duration.between(now, earliestAvailable);
+        // Round up so a positive sub-millisecond backoff does not become zero and trigger the startup fallback delay.
+        return remaining.toMillis() + (remaining.getNano() % 1_000_000 == 0 ? 0 : 1);
     }
 
     /**

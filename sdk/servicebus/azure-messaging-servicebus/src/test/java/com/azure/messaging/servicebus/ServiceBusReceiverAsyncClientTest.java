@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
@@ -45,6 +46,9 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -59,6 +63,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -84,6 +89,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -111,6 +120,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
@@ -220,6 +230,164 @@ class ServiceBusReceiverAsyncClientTest {
         sessionReceiver.close();
         mocksCloseable.close();
         Mockito.framework().clearInlineMock(this);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void asyncProcessorOwnsExactlyOneProcessingSpan(boolean isV2) throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
+        when(tracer.extractContext(any())).thenReturn(Context.NONE);
+        arrangeForAsyncProcessor(isV2, tracer);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(receiver);
+        final Sinks.Empty<Void> flush = Sinks.empty();
+        final CountDownLatch entered = new CountDownLatch(1);
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null, null, context -> {
+                entered.countDown();
+                return flush.asMono();
+            }, error -> Mono.empty(), new ServiceBusProcessorClientOptions().setDisableAutoComplete(true));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            Assertions.assertTrue(entered.await(5, TimeUnit.SECONDS));
+            verify(tracer, times(1)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
+            verify(tracer, never()).end(any(), any(), any());
+            flush.tryEmitEmpty();
+            verify(tracer, org.mockito.Mockito.timeout(5000)).end(isNull(), isNull(), eq(Context.NONE));
+        } finally {
+            flush.tryEmitEmpty();
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "false,false", "false,true", "true,false", "true,true" })
+    void asyncProcessorStopsRenewalAfterUnsettledHandler(boolean isV2, boolean failHandler) throws Exception {
+        arrangeForAsyncProcessor(isV2, null, Duration.ofMinutes(5));
+        final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString(PAYLOAD));
+        message.setLockToken(UUID.randomUUID());
+        message.setLockedUntil(OffsetDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(200)));
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(message);
+        final CountDownLatch renewalStarted = new CountDownLatch(1);
+        final CountDownLatch renewalCancelled = new CountDownLatch(1);
+        when(managementNode.renewMessageLock(anyString(), any())).thenReturn(Mono.<OffsetDateTime>never()
+            .doOnSubscribe(ignored -> renewalStarted.countDown())
+            .doOnCancel(renewalCancelled::countDown));
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(receiver);
+        final Sinks.Empty<Void> handler = Sinks.empty();
+        final Sinks.Empty<Void> errorHandler = Sinks.empty();
+        final CountDownLatch errorEntered = new CountDownLatch(1);
+        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null,
+            null, context -> handler.asMono(), error -> {
+                errorEntered.countDown();
+                return errorHandler.asMono();
+            }, new ServiceBusProcessorClientOptions().setDisableAutoComplete(true));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            assertTrue(renewalStarted.await(5, TimeUnit.SECONDS), "Expected actual receiver lock renewal");
+            processor.stop().block(DEFAULT_TIMEOUT);
+            assertEquals(1, renewalCancelled.getCount(), "Stopping must preserve active-handler renewal");
+            processor.start().block(DEFAULT_TIMEOUT);
+            if (failHandler) {
+                handler.tryEmitError(new IllegalStateException("manual handler failed"));
+                assertTrue(errorEntered.await(5, TimeUnit.SECONDS));
+                assertEquals(1, renewalCancelled.getCount(), "Renewal must cover asynchronous error handling");
+                errorHandler.tryEmitEmpty();
+            } else {
+                handler.tryEmitEmpty();
+            }
+            assertTrue(renewalCancelled.await(5, TimeUnit.SECONDS),
+                "Unsettled processing must release renewal without closing the processor");
+            assertTrue(processor.isRunning());
+            verify(amqpReceiveLink, never()).updateDisposition(anyString(), any());
+        } finally {
+            handler.tryEmitEmpty();
+            errorHandler.tryEmitEmpty();
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void asyncProcessorCancelsRenewalWhenDrainExpires(boolean isV2) throws Exception {
+        arrangeForAsyncProcessor(isV2, null, Duration.ofMinutes(5));
+        final ServiceBusReceiverAsyncClient processorReceiver = Mockito.spy(receiver);
+        final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString(PAYLOAD));
+        message.setLockToken(UUID.randomUUID());
+        message.setLockedUntil(OffsetDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(200)));
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(message);
+        final CountDownLatch renewalStarted = new CountDownLatch(1);
+        final CountDownLatch renewalCancelled = new CountDownLatch(1);
+        final CountDownLatch handlerEntered = new CountDownLatch(1);
+        final CountDownLatch handlerCancelled = new CountDownLatch(1);
+        when(managementNode.renewMessageLock(anyString(), any())).thenReturn(Mono.<OffsetDateTime>never()
+            .doOnSubscribe(ignored -> renewalStarted.countDown())
+            .doOnCancel(renewalCancelled::countDown));
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(processorReceiver);
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null, null, context -> {
+                handlerEntered.countDown();
+                return Mono.<Void>never().doOnCancel(handlerCancelled::countDown);
+            }, error -> Mono.empty(), new ServiceBusProcessorClientOptions().setDisableAutoComplete(true)
+                .setDrainTimeout(Duration.ofMillis(100)));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            assertTrue(handlerEntered.await(5, TimeUnit.SECONDS));
+            assertTrue(renewalStarted.await(5, TimeUnit.SECONDS));
+            processor.close();
+            assertTrue(handlerCancelled.await(5, TimeUnit.SECONDS));
+            assertTrue(renewalCancelled.await(5, TimeUnit.SECONDS));
+            verify(processorReceiver).endLockRenewal(message);
+        } finally {
+            processor.close();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void asyncProcessorResumesTheRealReceiverWithoutResubscribing(boolean isV2) throws Exception {
+        arrangeForAsyncProcessor(isV2, null);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(receiver);
+        final CountDownLatch first = new CountDownLatch(1);
+        final CountDownLatch second = new CountDownLatch(1);
+        final AtomicInteger processed = new AtomicInteger();
+        final AtomicReference<Throwable> failure = new AtomicReference<>();
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_PATH, null, null, context -> {
+                if (processed.incrementAndGet() == 1) {
+                    first.countDown();
+                } else {
+                    second.countDown();
+                }
+                return Mono.empty();
+            }, error -> {
+                failure.set(error.getException());
+                return Mono.empty();
+            }, new ServiceBusProcessorClientOptions().setDisableAutoComplete(true));
+        try {
+            processor.start().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(0), Sinks.EmitFailureHandler.FAIL_FAST);
+            assertTrue(first.await(5, TimeUnit.SECONDS));
+            processor.stop().block(DEFAULT_TIMEOUT);
+            messagesSink.emitNext(getMessages().get(1), Sinks.EmitFailureHandler.FAIL_FAST);
+            Assertions.assertFalse(second.await(100, TimeUnit.MILLISECONDS));
+            processor.start().block(DEFAULT_TIMEOUT);
+            assertTrue(second.await(5, TimeUnit.SECONDS));
+            assertNull(failure.get());
+            verify(builder).buildAsyncClientForProcessor();
+        } finally {
+            processor.close();
+        }
     }
 
     /**
@@ -1648,6 +1816,173 @@ class ServiceBusReceiverAsyncClientTest {
         assertCommonMetricAttributes(attributes, null);
     }
 
+    @Test
+    void deleteMessagesReturnsActualCount() {
+        final OffsetDateTime cutoff = OffsetDateTime.of(2026, 8, 27, 12, 30, 0, 0, ZoneOffset.UTC);
+        when(managementNode.deleteMessages(4000, cutoff, null, null))
+            .thenReturn(Mono.just(new DeleteMessagesResult(7)));
+
+        StepVerifier
+            .create(receiver.deleteMessages(4000, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff)))
+            .assertNext(result -> assertEquals(7, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @Test
+    void deleteMessagesCapturesDefaultCutoffOnSubscription() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(10), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final Mono<DeleteMessagesResult> operation = receiver.deleteMessages(10);
+        final OffsetDateTime operationStart = OffsetDateTime.now();
+
+        StepVerifier.create(operation).expectNextCount(1).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(10), cutoffCaptor.capture(), isNull(), isNull());
+        Assertions.assertFalse(cutoffCaptor.getValue().isBefore(operationStart));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0 })
+    void deleteMessagesRejectsNonPositiveCount(int maxMessages) {
+        StepVerifier.create(receiver.deleteMessages(maxMessages))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        verifyNoInteractions(managementNode);
+    }
+
+    @Test
+    void purgeMessagesAccumulatesShortPositiveBatchAndUsesOneCutoff() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(500)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(2)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        StepVerifier.create(receiver.purgeMessages())
+            .assertNext(result -> assertEquals(502, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(3)).deleteMessages(eq(500), cutoffCaptor.capture(), isNull(), isNull());
+        assertEquals(3, cutoffCaptor.getAllValues().size());
+        assertTrue(cutoffCaptor.getAllValues().stream().allMatch(cutoffCaptor.getValue()::equals));
+    }
+
+    @Test
+    void purgeMessagesHandlesManySynchronousBatchesWithoutRecursion() {
+        final int positiveBatches = 10_000;
+        final AtomicInteger requests = new AtomicInteger();
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull())).thenAnswer(
+            ignored -> Mono.just(new DeleteMessagesResult(requests.getAndIncrement() < positiveBatches ? 1 : 0)));
+
+        StepVerifier.create(receiver.purgeMessages())
+            .assertNext(result -> assertEquals(positiveBatches, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(positiveBatches + 1)).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(),
+            isNull());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void synchronousPurgeAllowsMultipleBatchesBeyondOperationTimeout(boolean useOptions) {
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(500)))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(2)))
+            .thenAnswer(ignored -> Mono.delay(Duration.ofMillis(400)).thenReturn(new DeleteMessagesResult(0)));
+
+        try (ServiceBusReceiverClient client = new ServiceBusReceiverClient(receiver, false, Duration.ofSeconds(1))) {
+            assertEquals(502, (useOptions ? client.purgeMessages(new PurgeMessagesOptions()) : client.purgeMessages())
+                .getDeletedCount());
+        }
+
+        verify(managementNode, times(3)).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
+    @Test
+    void purgeMessagesSupportsPremiumBatchSize() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(4000), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(4000)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(2)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions().setMaxMessagesPerBatch(4000);
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(result -> assertEquals(4002, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(3)).deleteMessages(eq(4000), cutoffCaptor.capture(), isNull(), isNull());
+        assertTrue(cutoffCaptor.getAllValues().stream().allMatch(cutoffCaptor.getValue()::equals));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0 })
+    void purgeMessagesRejectsInvalidBatchSize(int maxMessagesPerBatch) {
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new PurgeMessagesOptions().setMaxMessagesPerBatch(maxMessagesPerBatch));
+        verifyNoInteractions(managementNode);
+    }
+
+    @Test
+    void purgeMessagesAllowsServiceToEnforceBatchSize() {
+        when(managementNode.deleteMessages(eq(4001), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions().setMaxMessagesPerBatch(4001);
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(result -> assertEquals(0, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(4001), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
+    @Test
+    void purgeMessagesDispatchesOnceWhenRequestFails() {
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.error(new IllegalStateException("request failed")));
+
+        StepVerifier.create(receiver.purgeMessages(new PurgeMessagesOptions()))
+            .expectError(ServiceBusException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
+    @Test
+    void deleteMessagesForSessionForwardsSessionAndLinkName() {
+        final String linkName = "session-link";
+        final OffsetDateTime cutoff = OffsetDateTime.of(2026, 8, 27, 12, 30, 0, 0, ZoneOffset.UTC);
+        final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
+        when(sessionManager.getLinkName(SESSION_ID)).thenReturn(linkName);
+        when(managementNode.deleteMessages(5, cutoff, SESSION_ID, linkName))
+            .thenReturn(Mono.just(new DeleteMessagesResult(3)));
+
+        final ServiceBusReceiverAsyncClient client
+            = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+                createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID),
+                connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
+                sessionManager);
+        try {
+            StepVerifier
+                .create(client.deleteMessages(5, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff)))
+                .assertNext(result -> assertEquals(3, result.getDeletedCount()))
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
+        } finally {
+            client.close();
+        }
+
+        verify(managementNode).deleteMessages(5, cutoff, SESSION_ID, linkName);
+    }
+
     private ServiceBusReceivedMessage mockReceivedMessage(Instant enqueuedTime) {
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
         when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
@@ -1678,6 +2013,23 @@ class ServiceBusReceiverAsyncClientTest {
         assertEquals(NAMESPACE, attributes.get("hostName"));
         assertEquals(ENTITY_PATH, attributes.get("entityName"));
         assertEquals(subscriptionName, attributes.get("subscriptionName"));
+    }
+
+    private void arrangeForAsyncProcessor(boolean isV2, Tracer tracer) {
+        arrangeForAsyncProcessor(isV2, tracer, Duration.ZERO);
+    }
+
+    private void arrangeForAsyncProcessor(boolean isV2, Tracer tracer, Duration renewalDuration) {
+        arrangeIfV2(isV2);
+        receiver.close();
+        final ServiceBusReceiverInstrumentation processorInstrumentation
+            = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.PROCESSOR);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, ENTITY_TYPE,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, renewalDuration, false), connectionCacheWrapper,
+            CLEANUP_INTERVAL, processorInstrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(new ServiceBusReceivedMessage(BinaryData.fromString(PAYLOAD)));
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
     }
 
     // Once on V2 completely, block of code in this function should be moved to JUnit setup() method.

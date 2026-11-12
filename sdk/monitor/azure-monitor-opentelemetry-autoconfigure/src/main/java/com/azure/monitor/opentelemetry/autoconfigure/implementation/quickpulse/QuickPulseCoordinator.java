@@ -165,9 +165,14 @@ final class QuickPulseCoordinator implements Runnable {
 
         String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();
         if (!Strings.isNullOrEmpty(pollingIntervalHeader)) {
-            long newPollingInterval = Long.getLong(pingHeaders.getXMsQpsServicePollingIntervalHint());
-            if (newPollingInterval > 0) {
-                qpsServicePollingIntervalHintMillis = newPollingInterval;
+            // The hint is optional, so an invalid value only discards the hint rather than the whole ping response.
+            try {
+                long newPollingInterval = Long.parseLong(pollingIntervalHeader.trim());
+                if (newPollingInterval > 0) {
+                    qpsServicePollingIntervalHintMillis = newPollingInterval;
+                }
+            } catch (NumberFormatException e) {
+                logger.verbose("Ignoring invalid polling interval hint header: {}", pollingIntervalHeader);
             }
         }
 
@@ -182,6 +187,11 @@ final class QuickPulseCoordinator implements Runnable {
         } else {
             return QuickPulseStatus.QP_IS_OFF;
         }
+    }
+
+    // visible for testing
+    long getQpsServicePollingIntervalHintMillis() {
+        return qpsServicePollingIntervalHintMillis;
     }
 
     void stop() {

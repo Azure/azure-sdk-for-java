@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca;
 
 import java.security.KeyStore;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -60,9 +61,9 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     private boolean disableChallengeResourceVerification = false;
 
     /**
-     * Stores the certificate refresh interval in milliseconds.
+    * Stores the certificate refresh interval.
      */
-    private long certificatesRefreshIntervalInMs;
+    private Duration certificatesRefreshInterval = Duration.ZERO;
 
     /**
      * Stores a flag indicating whether AIA certificate downloads are disabled.
@@ -108,13 +109,17 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
             parameter.disableChallengeResourceVerification();
         }
 
+        KeyVaultKeyStore.warnIfRemovedCertificatesRefreshIntervalIsConfigured();
         String refreshInterval
-            = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS);
-        if (refreshInterval == null) {
-            refreshInterval = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL);
-        }
+            = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL);
         if (refreshInterval != null) {
-            parameter.setCertificatesRefreshIntervalInMs(Long.parseLong(refreshInterval));
+            Duration interval;
+            try {
+                interval = Duration.ofMillis(Long.parseLong(refreshInterval));
+            } catch (NumberFormatException exception) {
+                interval = Duration.parse(refreshInterval);
+            }
+            parameter.setCertificatesRefreshInterval(interval);
         }
 
         if (Boolean.parseBoolean(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD))) {
@@ -300,22 +305,24 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     }
 
     /**
-     * Gets the certificate refresh interval in milliseconds.
+     * Gets the certificate refresh interval.
      *
-     * @return The certificate refresh interval in milliseconds.
+     * @return The certificate refresh interval. Defaults to {@link Duration#ZERO}, which disables periodic refresh.
      */
-    public long getCertificatesRefreshIntervalInMs() {
-        return certificatesRefreshIntervalInMs;
+    public Duration getCertificatesRefreshInterval() {
+        return certificatesRefreshInterval;
     }
 
     /**
-     * Sets the certificate refresh interval in milliseconds.
+     * Sets the certificate refresh interval. Zero or negative intervals disable periodic refresh.
      *
-     * @param certificatesRefreshIntervalInMs The certificate refresh interval in milliseconds.
+     * @param certificatesRefreshInterval The certificate refresh interval, for example {@code Duration.parse("PT30S")}.
      * @return The KeyVaultLoadStoreParameter.
+     * @throws NullPointerException if {@code certificatesRefreshInterval} is {@code null}.
      */
-    public KeyVaultLoadStoreParameter setCertificatesRefreshIntervalInMs(long certificatesRefreshIntervalInMs) {
-        this.certificatesRefreshIntervalInMs = certificatesRefreshIntervalInMs;
+    public KeyVaultLoadStoreParameter setCertificatesRefreshInterval(Duration certificatesRefreshInterval) {
+        this.certificatesRefreshInterval
+            = Objects.requireNonNull(certificatesRefreshInterval, "'certificatesRefreshInterval' cannot be null.");
         return this;
     }
 

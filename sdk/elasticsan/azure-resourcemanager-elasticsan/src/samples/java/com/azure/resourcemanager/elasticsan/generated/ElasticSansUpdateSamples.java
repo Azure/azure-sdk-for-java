@@ -17,14 +17,15 @@ import java.util.Map;
  */
 public final class ElasticSansUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V2_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ElasticSans_Update_MinimumSet_Gen.
+     * Sample code: ElasticSans_V2_Update_MinimumSet_Gen.
      * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansUpdateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void
+        elasticSansV2UpdateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         ElasticSan resource = manager.elasticSans()
             .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE)
             .getValue();
@@ -32,14 +33,31 @@ public final class ElasticSansUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ElasticSans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V1_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ElasticSans_Update_MaximumSet_Gen.
+     * Sample code: ElasticSans_V1_Update_MinimumSet_Gen.
      * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansUpdateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void
+        elasticSansV1UpdateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        ElasticSan resource = manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V1_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ElasticSans_V1_Update_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        elasticSansV1UpdateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         ElasticSan resource = manager.elasticSans()
             .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE)
             .getValue();
@@ -53,6 +71,33 @@ public final class ElasticSansUpdateSamples {
                     .withIncreaseCapacityUnitByTiB(4L)
                     .withCapacityUnitScaleUpLimitTiB(17L)
                     .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.NONE)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/ElasticSans_V2_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ElasticSans_V2_Update_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        elasticSansV2UpdateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        ElasticSan resource = manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1931", "fakeTokenPlaceholder"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAutoScaleProperties(
+                new AutoScaleProperties().withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(24L)
+                    .withIncreaseCapacityUnitByTiB(4L)
+                    .withCapacityUnitScaleUpLimitTiB(17L)
+                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.NONE)))
+            .withTotalIops(22L)
+            .withTotalMBps(4L)
+            .withTotalSizeTiB(27L)
             .apply();
     }
 

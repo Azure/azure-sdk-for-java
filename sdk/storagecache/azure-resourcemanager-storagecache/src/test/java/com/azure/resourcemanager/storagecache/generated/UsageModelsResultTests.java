@@ -12,11 +12,11 @@ public final class UsageModelsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageModelsResult model = BinaryData.fromString(
-            "{\"value\":[{\"display\":{\"description\":\"zfoqouicybxar\"},\"modelName\":\"szufoxciqopidoa\",\"targetType\":\"iodhkhazxkhnz\"},{\"display\":{\"description\":\"lwntoego\"},\"modelName\":\"wbw\",\"targetType\":\"szzcmrvexztv\"}],\"nextLink\":\"qgsfraoyzkoow\"}")
+            "{\"value\":[{\"display\":{\"description\":\"dphqamv\"},\"modelName\":\"fwynwcvtbvkay\",\"targetType\":\"tnvyqiatkzwp\"},{\"display\":{\"description\":\"wzcjaesgvvsccy\"},\"modelName\":\"g\",\"targetType\":\"fhwygzlvdnkfxus\"}],\"nextLink\":\"dwzrmuh\"}")
             .toObject(UsageModelsResult.class);
-        Assertions.assertEquals("zfoqouicybxar", model.value().get(0).display().description());
-        Assertions.assertEquals("szufoxciqopidoa", model.value().get(0).modelName());
-        Assertions.assertEquals("iodhkhazxkhnz", model.value().get(0).targetType());
-        Assertions.assertEquals("qgsfraoyzkoow", model.nextLink());
+        Assertions.assertEquals("dphqamv", model.value().get(0).display().description());
+        Assertions.assertEquals("fwynwcvtbvkay", model.value().get(0).modelName());
+        Assertions.assertEquals("tnvyqiatkzwp", model.value().get(0).targetType());
+        Assertions.assertEquals("dwzrmuh", model.nextLink());
     }
 }

@@ -41,7 +41,7 @@ public final class VoiceResponseAudioOutput implements JsonSerializable<VoiceRes
      * The audio format used for the response's audio output.
      */
     @Generated
-    private RealtimeAudioFormats format;
+    private RealtimeAudioFormat format;
 
     /**
      * Creates an instance of VoiceResponseAudioOutput class.
@@ -86,7 +86,7 @@ public final class VoiceResponseAudioOutput implements JsonSerializable<VoiceRes
      * @return the format value.
      */
     @Generated
-    public RealtimeAudioFormats getFormat() {
+    public RealtimeAudioFormat getFormat() {
         return this.format;
     }
 
@@ -126,7 +126,7 @@ public final class VoiceResponseAudioOutput implements JsonSerializable<VoiceRes
                 } else if ("voice_locale".equals(fieldName)) {
                     deserializedVoiceResponseAudioOutput.voiceLocale = reader.getString();
                 } else if ("format".equals(fieldName)) {
-                    deserializedVoiceResponseAudioOutput.format = RealtimeAudioFormats.fromJson(reader);
+                    deserializedVoiceResponseAudioOutput.format = RealtimeAudioFormat.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

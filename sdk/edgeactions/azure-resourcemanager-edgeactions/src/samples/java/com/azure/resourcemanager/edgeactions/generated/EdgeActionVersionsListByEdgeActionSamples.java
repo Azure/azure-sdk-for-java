@@ -9,15 +9,15 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionVersionsListByEdgeActionSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_ListByEdgeAction.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_ListByEdgeAction.json
      */
     /**
-     * Sample code: GetEdgeActionVersionsByEdgeAction.
+     * Sample code: ListEdgeActionVersionsByEdgeAction.
      * 
      * @param manager Entry point to EdgeActionsManager.
      */
     public static void
-        getEdgeActionVersionsByEdgeAction(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
+        listEdgeActionVersionsByEdgeAction(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         manager.edgeActionVersions().listByEdgeAction("testrg", "edgeAction1", com.azure.core.util.Context.NONE);
     }
 }

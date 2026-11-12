@@ -10,7 +10,6 @@ trigger:
       - sdk/translation/
     exclude:
       - sdk/translation/pom.xml
-      - sdk/translation/azure-ai-documenttranslator/pom.xml
       - sdk/translation/azure-ai-translation-text/pom.xml
       - sdk/translation/azure-ai-translation-document/pom.xml
 
@@ -26,15 +25,10 @@ pr:
       - sdk/translation/
     exclude:
       - sdk/translation/pom.xml
-      - sdk/translation/azure-ai-documenttranslator/pom.xml
       - sdk/translation/azure-ai-translation-text/pom.xml
       - sdk/translation/azure-ai-translation-document/pom.xml
 
 parameters:
-  - name: release_azureaidocumenttranslator
-    displayName: 'azure-ai-documenttranslator'
-    type: boolean
-    default: false
   - name: release_azureaitranslationtext
     displayName: 'azure-ai-translation-text'
     type: boolean
@@ -49,10 +43,6 @@ extends:
   parameters:
     ServiceDirectory: translation
     Artifacts:
-      - name: azure-ai-documenttranslator
-        groupId: com.azure
-        safeName: azureaidocumenttranslator
-        releaseInBatch: ${{ parameters.release_azureaidocumenttranslator }}
       - name: azure-ai-translation-text
         groupId: com.azure
         safeName: azureaitranslationtext

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appnetwork.models.MetricsProfile;
 public final class MetricsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricsProfile model = BinaryData.fromString("{\"metricsEndpoint\":\"pg\"}").toObject(MetricsProfile.class);
+        MetricsProfile model = BinaryData.fromString("{\"metricsEndpoint\":\"jwzrl\"}").toObject(MetricsProfile.class);
     }
 
     @org.junit.jupiter.api.Test

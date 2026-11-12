@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ttexoqqpwcyyufmh\",\"display\":{\"provider\":\"cuwmqsp\",\"resource\":\"dqzh\",\"operation\":\"tddunqnd\",\"description\":\"pchrqbn\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"wboxjumvqqo\",\"displayName\":\"hrraiouaubrj\",\"displayDescription\":\"oq\",\"unit\":\"uojrngiflr\",\"aggregationType\":\"asccbiui\",\"supportedAggregationTypes\":[\"lyjdfqwm\",\"yoqufdvruz\"],\"supportedTimeGrainTypes\":[\"ojhp\",\"tfnmdx\",\"tngfdgugeyzihgr\"],\"category\":\"ui\"},{\"name\":\"bsnmfpph\",\"displayName\":\"eevy\",\"displayDescription\":\"hsgz\",\"unit\":\"zbgomfgbeg\",\"aggregationType\":\"gleohi\",\"supportedAggregationTypes\":[\"nlu\",\"nkrrf\",\"eeebtijvacv\"],\"supportedTimeGrainTypes\":[\"z\",\"qqxlajr\",\"wxacevehj\",\"uyxoaf\"],\"category\":\"oqltfae\"},{\"name\":\"inmfgvxirp\",\"displayName\":\"riypoqeyhlqhyk\",\"displayDescription\":\"lpyznuciqdsmexi\",\"unit\":\"dfuxtya\",\"aggregationType\":\"ibmi\",\"supportedAggregationTypes\":[\"nustgnljh\",\"mgixhcmavmqfou\"],\"supportedTimeGrainTypes\":[\"hcgyyprotwyp\"],\"category\":\"d\"}],\"logSpecifications\":[{\"name\":\"ugcmjkavlgorb\",\"displayName\":\"tp\",\"blobDuration\":\"tzfjltf\"},{\"name\":\"zcyjtot\",\"displayName\":\"opv\",\"blobDuration\":\"dbzqgqqihed\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"winhehfqpo\",\"display\":{\"provider\":\"bcblemb\",\"resource\":\"bwvqvxkdi\",\"operation\":\"ihebwtsw\",\"description\":\"uwfmduragegizvc\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"ggbqi\",\"displayName\":\"xkbsazgakgac\",\"displayDescription\":\"cmjdmspof\",\"unit\":\"vuhrylni\",\"aggregationType\":\"rz\",\"supportedAggregationTypes\":[\"jed\",\"st\",\"vnlvxbcuiiznktwf\"],\"supportedTimeGrainTypes\":[\"nv\",\"dibmikostbzbkiwb\",\"qnyophzfyls\"],\"category\":\"rpfbcunezz\"},{\"name\":\"zelfwyfwl\",\"displayName\":\"jwetnpsihcla\",\"displayDescription\":\"va\",\"unit\":\"pt\",\"aggregationType\":\"qqwzt\",\"supportedAggregationTypes\":[\"qkc\"],\"supportedTimeGrainTypes\":[\"waxfewzjkj\",\"xfdeqvhpsyl\",\"ksh\"],\"category\":\"ffmbmxzjrg\"},{\"name\":\"wpgj\",\"displayName\":\"nptfujgi\",\"displayDescription\":\"aaoepttaqut\",\"unit\":\"wemxswvruunzz\",\"aggregationType\":\"ehkfkimrtixok\",\"supportedAggregationTypes\":[\"yinljqe\",\"qwhix\"],\"supportedTimeGrainTypes\":[\"stshiy\",\"gvelfc\"],\"category\":\"uccbirdsvuw\"}],\"logSpecifications\":[{\"name\":\"egstmninwjizci\",\"displayName\":\"ghgshejjtbxqmu\",\"blobDuration\":\"xlxqzvn\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
     }
 }

@@ -16,12 +16,6 @@ import java.util.Collection;
 public final class TelephonyProvider extends ExpandableStringEnum<TelephonyProvider> {
 
     /**
-     * Microsoft Teams Phone Extension.
-     */
-    @Generated
-    public static final TelephonyProvider TEAMS_PHONE_EXTENSION = fromString("teams_phone_extension");
-
-    /**
      * Twilio Programmable Voice.
      */
     @Generated
@@ -57,4 +51,10 @@ public final class TelephonyProvider extends ExpandableStringEnum<TelephonyProvi
     public static Collection<TelephonyProvider> values() {
         return values(TelephonyProvider.class);
     }
+
+    /**
+     * Microsoft Teams Phone extensibility.
+     */
+    @Generated
+    public static final TelephonyProvider TEAMS_PHONE_EXTENSIBILITY = fromString("teams_phone_extensibility");
 }

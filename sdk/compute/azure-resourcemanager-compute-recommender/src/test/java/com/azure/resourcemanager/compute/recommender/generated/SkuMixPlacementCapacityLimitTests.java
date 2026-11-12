@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementCapacityLimitTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementCapacityLimit model = BinaryData.fromString(
-            "{\"name\":\"phejkotynqgoulz\",\"priority\":\"Spot\",\"zone\":\"i\",\"limit\":485783320,\"reason\":\"InsufficientCapacity\"}")
+        SkuMixPlacementCapacityLimit model = BinaryData
+            .fromString("{\"name\":\"l\",\"priority\":\"Spot\",\"zone\":\"a\",\"limit\":269185067,\"reason\":\"None\"}")
             .toObject(SkuMixPlacementCapacityLimit.class);
-        Assertions.assertEquals("phejkotynqgoulz", model.name());
+        Assertions.assertEquals("l", model.name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.priority());
-        Assertions.assertEquals("i", model.zone());
-        Assertions.assertEquals(485783320, model.limit());
-        Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.INSUFFICIENT_CAPACITY, model.reason());
+        Assertions.assertEquals("a", model.zone());
+        Assertions.assertEquals(269185067, model.limit());
+        Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.NONE, model.reason());
     }
 }

@@ -54,58 +54,149 @@ public interface HorizonDbManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the HorizonDbClustersClient object to access its operations.
+     * Gets the CapabilitiesClient object to access its operations.
      * 
-     * @return the HorizonDbClustersClient object.
+     * @return the CapabilitiesClient object.
      */
-    HorizonDbClustersClient getHorizonDbClusters();
+    CapabilitiesClient getCapabilities();
 
     /**
-     * Gets the HorizonDbPoolsClient object to access its operations.
+     * Gets the ClustersClient object to access its operations.
      * 
-     * @return the HorizonDbPoolsClient object.
+     * @return the ClustersClient object.
      */
-    HorizonDbPoolsClient getHorizonDbPools();
+    ClustersClient getClusters();
 
     /**
-     * Gets the HorizonDbReplicasClient object to access its operations.
+     * Gets the PoolsClient object to access its operations.
      * 
-     * @return the HorizonDbReplicasClient object.
+     * @return the PoolsClient object.
      */
-    HorizonDbReplicasClient getHorizonDbReplicas();
+    PoolsClient getPools();
 
     /**
-     * Gets the HorizonDbFirewallRulesClient object to access its operations.
+     * Gets the FirewallRulesClient object to access its operations.
      * 
-     * @return the HorizonDbFirewallRulesClient object.
+     * @return the FirewallRulesClient object.
      */
-    HorizonDbFirewallRulesClient getHorizonDbFirewallRules();
+    FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the HorizonDbPrivateEndpointConnectionsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
-     * @return the HorizonDbPrivateEndpointConnectionsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    HorizonDbPrivateEndpointConnectionsClient getHorizonDbPrivateEndpointConnections();
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
-     * Gets the HorizonDbPrivateLinkResourcesClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
-     * @return the HorizonDbPrivateLinkResourcesClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    HorizonDbPrivateLinkResourcesClient getHorizonDbPrivateLinkResources();
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the HorizonDbParameterGroupsClient object to access its operations.
+     * Gets the ParameterGroupsClient object to access its operations.
      * 
-     * @return the HorizonDbParameterGroupsClient object.
+     * @return the ParameterGroupsClient object.
      */
-    HorizonDbParameterGroupsClient getHorizonDbParameterGroups();
+    ParameterGroupsClient getParameterGroups();
 
     /**
-     * Gets the HorizonDbAdministratorsClient object to access its operations.
+     * Gets the DefaultParameterGroupsClient object to access its operations.
      * 
-     * @return the HorizonDbAdministratorsClient object.
+     * @return the DefaultParameterGroupsClient object.
      */
-    HorizonDbAdministratorsClient getHorizonDbAdministrators();
+    DefaultParameterGroupsClient getDefaultParameterGroups();
+
+    /**
+     * Gets the MicrosoftEntraAdministratorsClient object to access its operations.
+     * 
+     * @return the MicrosoftEntraAdministratorsClient object.
+     */
+    MicrosoftEntraAdministratorsClient getMicrosoftEntraAdministrators();
+
+    /**
+     * Gets the AuthenticationsClient object to access its operations.
+     * 
+     * @return the AuthenticationsClient object.
+     */
+    AuthenticationsClient getAuthentications();
+
+    /**
+     * Gets the PasswordAuthenticationsClient object to access its operations.
+     * 
+     * @return the PasswordAuthenticationsClient object.
+     */
+    PasswordAuthenticationsClient getPasswordAuthentications();
+
+    /**
+     * Gets the MicrosoftEntraAuthenticationsClient object to access its operations.
+     * 
+     * @return the MicrosoftEntraAuthenticationsClient object.
+     */
+    MicrosoftEntraAuthenticationsClient getMicrosoftEntraAuthentications();
+
+    /**
+     * Gets the ChangeDataCaptureCapabilitiesClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureCapabilitiesClient object.
+     */
+    ChangeDataCaptureCapabilitiesClient getChangeDataCaptureCapabilities();
+
+    /**
+     * Gets the ChangeDataCaptureDestinationsClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureDestinationsClient object.
+     */
+    ChangeDataCaptureDestinationsClient getChangeDataCaptureDestinations();
+
+    /**
+     * Gets the IdentityAssignmentsClient object to access its operations.
+     * 
+     * @return the IdentityAssignmentsClient object.
+     */
+    IdentityAssignmentsClient getIdentityAssignments();
+
+    /**
+     * Gets the ChangeDataCaptureConfigurationsClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureConfigurationsClient object.
+     */
+    ChangeDataCaptureConfigurationsClient getChangeDataCaptureConfigurations();
+
+    /**
+     * Gets the EndpointsClient object to access its operations.
+     * 
+     * @return the EndpointsClient object.
+     */
+    EndpointsClient getEndpoints();
+
+    /**
+     * Gets the MaintenanceEventsClient object to access its operations.
+     * 
+     * @return the MaintenanceEventsClient object.
+     */
+    MaintenanceEventsClient getMaintenanceEvents();
+
+    /**
+     * Gets the NodesClient object to access its operations.
+     * 
+     * @return the NodesClient object.
+     */
+    NodesClient getNodes();
+
+    /**
+     * Gets the LogCaptureConfigurationsClient object to access its operations.
+     * 
+     * @return the LogCaptureConfigurationsClient object.
+     */
+    LogCaptureConfigurationsClient getLogCaptureConfigurations();
+
+    /**
+     * Gets the LogFilesClient object to access its operations.
+     * 
+     * @return the LogFilesClient object.
+     */
+    LogFilesClient getLogFiles();
 }

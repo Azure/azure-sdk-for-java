@@ -12,11 +12,13 @@ trigger:
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
       - sdk/containerregistry/azure-resourcemanager-containerregistry/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
       - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/pom.xml
 
 pr:
   branches:
@@ -31,11 +33,13 @@ pr:
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
       - sdk/containerregistry/azure-resourcemanager-containerregistry/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
       - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/pom.xml
 
 parameters:
   - name: release_dependsonlivetests

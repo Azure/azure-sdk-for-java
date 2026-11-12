@@ -45,7 +45,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     private Error errorDetails;
 
     /*
-     * The Azure resource ID of the scheduled action that owns the occurrence.
+     * The Azure resource ID of the recurring bulk action that owns the occurrence.
      */
     private String scheduledActionId;
 
@@ -102,7 +102,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the scheduledActionId property: The Azure resource ID of the scheduled action that owns the occurrence.
+     * Get the scheduledActionId property: The Azure resource ID of the recurring bulk action that owns the occurrence.
      * 
      * @return the scheduledActionId value.
      */

@@ -36,12 +36,6 @@ public final class VoiceConversation implements JsonSerializable<VoiceConversati
     private final String id;
 
     /*
-     * The object type. Always `voice.conversation`.
-     */
-    @Generated
-    private final String object = "voice.conversation";
-
-    /*
      * The lifecycle status of the conversation.
      */
     @Generated
@@ -106,16 +100,6 @@ public final class VoiceConversation implements JsonSerializable<VoiceConversati
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the object property: The object type. Always `voice.conversation`.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public String getObject() {
-        return this.object;
     }
 
     /**
@@ -192,7 +176,7 @@ public final class VoiceConversation implements JsonSerializable<VoiceConversati
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.objectType);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeNumberField("completed_at", this.completedAt);
@@ -255,5 +239,21 @@ public final class VoiceConversation implements JsonSerializable<VoiceConversati
             deserializedVoiceConversation.lastError = lastError;
             return deserializedVoiceConversation;
         });
+    }
+
+    /*
+     * The object type. Always `voice.conversation`.
+     */
+    @Generated
+    private final String objectType = "voice.conversation";
+
+    /**
+     * Get the objectType property: The object type. Always `voice.conversation`.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public String getObjectType() {
+        return this.objectType;
     }
 }

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.edgeactions.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -29,9 +29,8 @@ public final class EdgeActionVersionInnerTests {
     public void testSerialize() throws Exception {
         EdgeActionVersionInner model = new EdgeActionVersionInner().withLocation("jrwzox")
             .withTags(mapOf("fpjkjlxofp", "felluwfzitonpe", "uybbkpodep", "vhpfxxypininmay"))
-            .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS)
-                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE));
+            .withProperties(new EdgeActionVersionProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS)
+                .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE));
         model = BinaryData.fromObject(model).toObject(EdgeActionVersionInner.class);
         Assertions.assertEquals("jrwzox", model.location());
         Assertions.assertEquals("felluwfzitonpe", model.tags().get("fpjkjlxofp"));

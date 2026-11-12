@@ -12,7 +12,7 @@ public final class CountProtectedItemsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CountProtectedItemsResponseInner model
-            = BinaryData.fromString("{\"count\":\"pkwhojvpa\"}").toObject(CountProtectedItemsResponseInner.class);
-        Assertions.assertEquals("pkwhojvpa", model.count());
+            = BinaryData.fromString("{\"count\":\"ohqkvpuvksgpls\"}").toObject(CountProtectedItemsResponseInner.class);
+        Assertions.assertEquals("ohqkvpuvksgpls", model.count());
     }
 }

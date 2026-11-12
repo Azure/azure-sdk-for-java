@@ -55,6 +55,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -93,6 +96,11 @@ jobs:
             binaryLanguages: java
             compiled:
               enabled: true
+          sbom:
+            ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk
+            ${{ else }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
     pool:
       name: $(LINUXPOOL)
@@ -305,6 +313,7 @@ jobs:
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+    timeoutInMinutes: 120
 
     pool:
       name: $(LINUXPOOL)
@@ -515,6 +524,7 @@ jobs:
         Cloud: Public
       AdditionalParameters:
         SDKType: ${{ parameters.SDKType }}
+        IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ExcludePaths: ${{ parameters.ExcludePaths }}
         TestPipeline: ${{ parameters.TestPipeline }}

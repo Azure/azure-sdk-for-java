@@ -6,26 +6,25 @@ package com.azure.resourcemanager.relationships.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.relationships.fluent.models.ServiceGroupMemberRelationshipInner;
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipProperties;
+import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipPropertiesV2;
 import org.junit.jupiter.api.Assertions;
 
 public final class ServiceGroupMemberRelationshipInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceGroupMemberRelationshipInner model = BinaryData.fromString(
-            "{\"properties\":{\"sourceId\":\"uxinpmqnjaq\",\"targetId\":\"ixjsprozvcputeg\",\"targetTenant\":\"wmfdatscmdvpjhul\",\"originInformation\":{\"relationshipOriginType\":\"UserDiscoveredByRule\",\"discoveryEngine\":\"vmkjozkrwfndiodj\"},\"metadata\":{\"sourceType\":\"slwejdpvw\",\"targetType\":\"yoqpsoaccta\"},\"provisioningState\":\"Succeeded\"},\"id\":\"j\",\"name\":\"ahbc\",\"type\":\"yffdfdos\"}")
+            "{\"properties\":{\"sourceId\":\"xth\",\"targetId\":\"tusivyevcciqihn\",\"sourceTenant\":\"ngbwjz\",\"originInformation\":{\"relationshipOriginType\":\"UserDiscoveredByRule\",\"discoveryEngine\":\"gxg\"},\"metadata\":{\"sourceType\":\"pemvtzfkufubljof\",\"targetType\":\"qeof\"},\"provisioningState\":\"Failed\"},\"id\":\"jhqjbasvmsmjqul\",\"name\":\"gsntnbybkzgcwr\",\"type\":\"clxxwrljdo\"}")
             .toObject(ServiceGroupMemberRelationshipInner.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.properties().targetId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.properties().targetTenant());
+        Assertions.assertEquals("xth", model.properties().sourceId());
+        Assertions.assertEquals("ngbwjz", model.properties().sourceTenant());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceGroupMemberRelationshipInner model = new ServiceGroupMemberRelationshipInner()
-            .withProperties(new ServiceGroupMemberRelationshipProperties().withTargetId("ixjsprozvcputeg")
-                .withTargetTenant("wmfdatscmdvpjhul"));
+        ServiceGroupMemberRelationshipInner model = new ServiceGroupMemberRelationshipInner().withProperties(
+            new ServiceGroupMemberRelationshipPropertiesV2().withSourceId("xth").withSourceTenant("ngbwjz"));
         model = BinaryData.fromObject(model).toObject(ServiceGroupMemberRelationshipInner.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.properties().targetId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.properties().targetTenant());
+        Assertions.assertEquals("xth", model.properties().sourceId());
+        Assertions.assertEquals("ngbwjz", model.properties().sourceTenant());
     }
 }

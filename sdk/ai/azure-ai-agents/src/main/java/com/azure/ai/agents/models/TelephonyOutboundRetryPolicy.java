@@ -37,7 +37,7 @@ public class TelephonyOutboundRetryPolicy implements JsonSerializable<TelephonyO
      * Creates an instance of TelephonyOutboundRetryPolicy class.
      */
     @Generated
-    public TelephonyOutboundRetryPolicy() {
+    protected TelephonyOutboundRetryPolicy() {
     }
 
     /**
