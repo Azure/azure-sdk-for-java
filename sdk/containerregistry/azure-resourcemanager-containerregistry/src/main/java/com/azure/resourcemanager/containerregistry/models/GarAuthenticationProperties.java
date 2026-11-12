@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class GarAuthenticationProperties extends AdditionalAuthenticationProperties {
     /*
-     * Authentication type discriminator.
+     * Authentication type discriminator. The authentication type cannot change once configured.
      */
     private AdditionalAuthenticationType authenticationType = AdditionalAuthenticationType.GOOGLE_ARTIFACT_REGISTRY;
 
@@ -46,7 +46,8 @@ public final class GarAuthenticationProperties extends AdditionalAuthenticationP
     }
 
     /**
-     * Get the authenticationType property: Authentication type discriminator.
+     * Get the authenticationType property: Authentication type discriminator. The authentication type cannot change
+     * once configured.
      * 
      * @return the authenticationType value.
      */
