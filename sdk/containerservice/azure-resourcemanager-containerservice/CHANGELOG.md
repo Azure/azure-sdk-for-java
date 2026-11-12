@@ -4,6 +4,10 @@
 
 - Package api-version 2026-09-01.
 
+### Other Changes
+
+- Package api-version 2026-09-01.
+
 ## 2.66.1 (2026-11-02)
 
 ### Other Changes
