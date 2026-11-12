@@ -17,6 +17,7 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
@@ -28,11 +29,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,10 @@ public class CosmosSourceTask extends SourceTask {
     private CosmosClientCacheItem throughputControlCosmosClientItem;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
 
-    private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+    private final PriorityQueue<ScheduledTaskUnit> taskUnitsQueue = new PriorityQueue<>();
+    private final Object stopSignal = new Object();
+    private volatile boolean stopped;
+    private volatile long lifecycleGeneration;
 
     private long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
@@ -63,6 +67,10 @@ public class CosmosSourceTask extends SourceTask {
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
         try {
+            synchronized (this.stopSignal) {
+                this.stopped = false;
+                this.lifecycleGeneration++;
+            }
             LOGGER.info("Resetting task queue");
             this.taskUnitsQueue.clear();
 
@@ -70,7 +78,7 @@ public class CosmosSourceTask extends SourceTask {
             if (this.taskConfig.getMetadataTaskUnit() != null) {
                 // adding metadata task units into the head of the queue
                 LOGGER.info("Adding metadata task to task {}", this.taskConfig.getTaskId());
-                this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(this.taskConfig.getMetadataTaskUnit(), 0));
             }
 
             LOGGER.info(
@@ -82,7 +90,7 @@ public class CosmosSourceTask extends SourceTask {
 
             for (FeedRangeTaskUnit taskUnit : this.taskConfig.getFeedRangeTaskUnits()) {
                 this.applyContinuationStateFromOffsetIfExists(taskUnit);
-                this.taskUnitsQueue.add(taskUnit);
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, 0));
             }
 
             LOGGER.info("Creating the cosmos client");
@@ -167,14 +175,29 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public List<SourceRecord> poll() {
+        long pollGeneration = this.lifecycleGeneration;
+        if (isStopped(pollGeneration)) {
+            return new ArrayList<>();
+        }
+
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
-        ITaskUnit taskUnit = this.taskUnitsQueue.poll();
+        ScheduledTaskUnit scheduledTaskUnit = this.taskUnitsQueue.poll();
+        ITaskUnit taskUnit = null;
         try {
-            if (taskUnit == null) {
+            if (scheduledTaskUnit == null) {
                 // there is no task to do
                 return new ArrayList<>();
             }
+
+            long delayInMs = scheduledTaskUnit.getDelayInMs();
+            if (delayInMs > 0 && !waitForPollDelay(delayInMs, pollGeneration)) {
+                return new ArrayList<>();
+            }
+            if (isStopped(pollGeneration)) {
+                return new ArrayList<>();
+            }
+            taskUnit = scheduledTaskUnit.getTaskUnit();
 
             List<SourceRecord> results = new ArrayList<>();
             if (taskUnit instanceof MetadataTaskUnit) {
@@ -186,22 +209,26 @@ public class CosmosSourceTask extends SourceTask {
                 Stopwatch stopwatch = Stopwatch.createStarted();
 
                 LOGGER.trace("Polling for task {}", taskUnit);
-                Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
-                results.addAll(feedRangeTaskResults.getLeft());
+                FeedRangeTaskUnit feedRangeTaskUnit = (FeedRangeTaskUnit) taskUnit;
+                FeedRangeTaskResult feedRangeTaskResult = executeFeedRangeTask(feedRangeTaskUnit);
+                results.addAll(feedRangeTaskResult.records);
 
                 // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
-                if (!feedRangeTaskResults.getRight()) {
+                if (!feedRangeTaskResult.removeTaskUnit) {
                     LOGGER.trace("Adding task {} back to queue", taskUnit);
-                    this.taskUnitsQueue.add(taskUnit);
+                    int pollDelayInMs = getPollDelayInMs(
+                        feedRangeTaskResult.noChanges,
+                        this.taskConfig.getChangeFeedConfig().getPollDelayInMs());
+                    this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, pollDelayInMs));
                 }
 
                 stopwatch.stop();
-                
+
                 // Update count for this feed range
-                String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
+                String feedRangeKey = feedRangeTaskUnit.getFeedRange().toString();
                 feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
                     if (loggingContext == null) {
-                        loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
+                        loggingContext = new FeedRangeLoggingContext(feedRangeTaskUnit);
                     }
                     loggingContext.increaseCount((long) results.size());
                     return loggingContext;
@@ -211,13 +238,37 @@ public class CosmosSourceTask extends SourceTask {
             }
 
             return results;
+        } catch (InterruptedException e) {
+            this.taskUnitsQueue.add(scheduledTaskUnit);
+            Thread.currentThread().interrupt();
+            throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask interrupted");
         } catch (Exception e) {
             // for error cases, we should always put the task back to the queue
-            this.taskUnitsQueue.add(taskUnit);
+            if (taskUnit != null) {
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, 0));
+            } else {
+                this.taskUnitsQueue.add(scheduledTaskUnit);
+            }
             LOGGER.warn("Polling task failed", e);
 
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
+    }
+
+    private boolean waitForPollDelay(long delayInMs, long pollGeneration) throws InterruptedException {
+        synchronized (this.stopSignal) {
+            long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(delayInMs);
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            while (!isStopped(pollGeneration) && remainingNanos > 0) {
+                TimeUnit.NANOSECONDS.timedWait(this.stopSignal, remainingNanos);
+                remainingNanos = deadlineNanos - System.nanoTime();
+            }
+            return !isStopped(pollGeneration);
+        }
+    }
+
+    private boolean isStopped(long pollGeneration) {
+        return this.stopped || this.lifecycleGeneration != pollGeneration;
     }
 
     private void logFeedRangeCounts(boolean flushLogs) {
@@ -310,7 +361,7 @@ public class CosmosSourceTask extends SourceTask {
         return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
-    private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
+    private FeedRangeTaskResult executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosAsyncContainer container =
             this.cosmosClientItem
                 .getClient()
@@ -340,17 +391,61 @@ public class CosmosSourceTask extends SourceTask {
             .next()
             .map(feedResponse -> {
                 List<SourceRecord> records = handleSuccessfulResponse(feedResponse, feedRangeTaskUnit);
-                return Pair.of(records, false);
+                return new FeedRangeTaskResult(
+                    records,
+                    false,
+                    ModelBridgeInternal.getNoChangesFromFeedResponse(feedResponse));
             })
             .onErrorResume(throwable -> {
                 if (KafkaCosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
                     return this.handleFeedRangeGone(feedRangeTaskUnit)
-                        .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
+                        .map(shouldRemoveOriginalTaskUnit ->
+                            new FeedRangeTaskResult(new ArrayList<>(), shouldRemoveOriginalTaskUnit, false));
                 }
 
                 return Mono.error(throwable);
             })
             .block();
+    }
+
+    static final class ScheduledTaskUnit implements Comparable<ScheduledTaskUnit> {
+        private final ITaskUnit taskUnit;
+        private final long availableAtNanos;
+
+        ScheduledTaskUnit(ITaskUnit taskUnit, int delayInMs) {
+            this.taskUnit = taskUnit;
+            this.availableAtNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(delayInMs);
+        }
+
+        ITaskUnit getTaskUnit() {
+            return this.taskUnit;
+        }
+
+        long getDelayInMs() {
+            long remainingNanos = this.availableAtNanos - System.nanoTime();
+            return remainingNanos <= 0 ? 0 : (remainingNanos + 999_999) / 1_000_000;
+        }
+
+        @Override
+        public int compareTo(ScheduledTaskUnit other) {
+            return Long.compare(this.availableAtNanos, other.availableAtNanos);
+        }
+    }
+
+    static int getPollDelayInMs(boolean noChanges, int configuredPollDelayInMs) {
+        return noChanges ? configuredPollDelayInMs : 0;
+    }
+
+    private static final class FeedRangeTaskResult {
+        private final List<SourceRecord> records;
+        private final boolean removeTaskUnit;
+        private final boolean noChanges;
+
+        private FeedRangeTaskResult(List<SourceRecord> records, boolean removeTaskUnit, boolean noChanges) {
+            this.records = records;
+            this.removeTaskUnit = removeTaskUnit;
+            this.noChanges = noChanges;
+        }
     }
 
     private List<SourceRecord> handleSuccessfulResponse(
@@ -435,7 +530,7 @@ public class CosmosSourceTask extends SourceTask {
                                 feedRangeTaskUnit.getTopic());
                         applyContinuationStateFromOffsetIfExists(childTaskUnit);
 
-                        this.taskUnitsQueue.add(childTaskUnit);
+                        this.taskUnitsQueue.add(new ScheduledTaskUnit(childTaskUnit, 0));
                     }
 
                     // remove the current task unit from the queue
@@ -541,6 +636,11 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
+        synchronized (this.stopSignal) {
+            this.stopped = true;
+            this.lifecycleGeneration++;
+            this.stopSignal.notifyAll();
+        }
         this.logFeedRangeCounts(true);
         this.cleanup();
     }
