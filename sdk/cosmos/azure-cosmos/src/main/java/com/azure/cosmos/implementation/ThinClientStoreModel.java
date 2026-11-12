@@ -337,21 +337,19 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
 
-        RxDocumentServiceRequest wireRequest = request;
+        RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
+        RntbdRequest rntbdRequest;
         if (SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            // Keep caller progress unchanged; only the serialized attempt carries the scoped token.
-            wireRequest = request.clone();
             ISessionToken token = request.requestContext.sessionToken;
-            SessionTokenHelper.setOriginalSessionToken(wireRequest, token == null ? null
+            rntbdRequest = RntbdRequest.from(rntbdRequestArgs, token == null ? null
                 : SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
                     request.requestContext.resolvedPartitionKeyRange.getId(), token.convertToString()));
+        } else {
+            rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
         }
-        RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(wireRequest);
 
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
-
-        RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
 
         String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
         String endEpk = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);

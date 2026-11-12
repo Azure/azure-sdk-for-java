@@ -211,6 +211,42 @@ public class ThinClientRangeHeadersTest {
         }
     }
 
+    @DataProvider
+    public Object[][] wireSessionTokens() {
+        return new Object[][] {
+            {"0:1#10#1=10,1:1#20#1=20", "1#10#1=10", "0:1#10#1=10"},
+            {"0:1#10#1=10,1:1#20#1=20", null, null},
+            {"0:1#10#1=10", "1#99#1=99", "0:1#10#1=10"},
+            {null, "1#99#1=99", null},
+            {"", "1#99#1=99", null}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "wireSessionTokens")
+    public void serializesSessionTokenWithoutCloningOrChangingOriginalHeader(
+        String originalToken, String scopedToken, String expectedWireToken) throws Exception {
+
+        ThinClientStoreModel model = createModel();
+        RxDocumentServiceRequest request = Mockito.spy(createRequest(OperationType.Query, "", "FF"));
+        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
+        request.requestContext.sessionToken = scopedToken == null ? null : SessionTokenHelper.parse(scopedToken);
+        if (originalToken != null) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, originalToken);
+        }
+
+        for (int attempt = 0; attempt < 2; attempt++) {
+            Map<Short, byte[]> tokens = serialize(model, request);
+            if (expectedWireToken == null) {
+                assertThat(tokens).doesNotContainKey(RntbdRequestHeader.SessionToken.id());
+            } else {
+                assertThat(tokens.get(RntbdRequestHeader.SessionToken.id()))
+                    .containsExactly(expectedWireToken.getBytes(StandardCharsets.UTF_8));
+            }
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
+        }
+        Mockito.verify(request, Mockito.never()).clone();
+    }
+
     private static ThinClientStoreModel createModel() {
         return createModel(Mockito.mock(HttpClient.class));
     }
@@ -244,7 +280,8 @@ public class ThinClientRangeHeadersTest {
         ByteBuf buffer = Unpooled.wrappedBuffer(body);
         try {
             int headerLength = buffer.readIntLE();
-            buffer.skipBytes(20); // Resource type, operation type, and activity ID.
+            RntbdRequestFrame frame = RntbdRequestFrame.decode(buffer);
+            assertThat(frame.getActivityId()).isEqualTo(request.getActivityId());
             Map<Short, byte[]> tokens = new HashMap<>();
             while (buffer.readerIndex() < headerLength) {
                 short id = buffer.readShortLE();
