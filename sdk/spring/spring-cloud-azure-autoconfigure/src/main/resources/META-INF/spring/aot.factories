@@ -1,5 +1,6 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar= \
-com.azure.spring.cloud.autoconfigure.implementation.jdbc.PasswordlessRuntimeHints
+com.azure.spring.cloud.autoconfigure.implementation.jdbc.PasswordlessRuntimeHints,\
+com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentRuntimeHints
 
 org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter=\
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration.AzureGlobalPropertiesBeanRegistrationExcludeFilter

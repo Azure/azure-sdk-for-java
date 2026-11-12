@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Register native image reflection hints for binding Key Vault Secrets property sources during Spring Boot startup.
+
 ### Other Changes
 
 - Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.
