@@ -20,6 +20,7 @@ The shared `sdk/tools/ci.yml` builds and tests the tool using the SDK pipeline. 
 
 SDK modules using `azure-client-sdk-parent` generate `api.md` and `api.metadata.yml` during Maven's `package` phase.
 This requires PowerShell 7+, Maven, and a JDK. Parallel reactor builds share one processor build per Maven invocation.
+The Maven hook skips generation when a module produces no sources JAR.
 Use `--define apiMarkdown.skip=true` to skip API Markdown and metadata generation for a Maven build.
 
 From a library module directory, using PowerShell 7+, Maven, and a JDK:
@@ -37,6 +38,7 @@ pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-j
 This builds the package and the in-repo processor, then writes `api.md` and `api.metadata.yml` in the package directory.
 Metadata contains the SHA-256 hash of the normalized UTF-8/LF `api.md`, the package POM version, and the repository-relative package path.
 To reuse a built sources JAR, add `-SourcesJar <path-to-sources.jar>`.
+Add `-SkipIfSourcesJarMissing` to skip generation if that JAR is absent; existing invalid JARs still fail.
 SDK generation automation collects both files from the Maven build; it does not run generation again.
 
 ## Usage

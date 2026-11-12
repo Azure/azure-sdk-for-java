@@ -15,6 +15,9 @@ Optional existing sources JAR. When supplied, the SDK package build is skipped.
 .PARAMETER ProcessorBuildId
 Build identifier used to reuse the processor across modules in one Maven invocation.
 
+.PARAMETER SkipIfSourcesJarMissing
+Skip generation when the supplied sources JAR does not exist.
+
 .PARAMETER FromMaven
 Skip non-library modules when invoked by the Maven lifecycle.
 
@@ -32,6 +35,8 @@ param(
     [string]$SourcesJar,
 
     [string]$ProcessorBuildId,
+
+    [switch]$SkipIfSourcesJarMissing,
 
     [switch]$FromMaven
 )
@@ -72,6 +77,10 @@ if (-not $versionNode -or [string]::IsNullOrWhiteSpace($versionNode.InnerText) -
 $packageVersion = $versionNode.InnerText.Trim()
 $relativePackage = [IO.Path]::GetRelativePath($repositoryRoot, $packageDirectory).Replace('\', '/')
 if ($SourcesJar) {
+    if ($SkipIfSourcesJarMissing -and -not (Test-Path -LiteralPath $SourcesJar)) {
+        Write-Output "Skipping API Markdown generation: sources JAR not found: $SourcesJar."
+        return
+    }
     $SourcesJar = (Resolve-Path -LiteralPath $SourcesJar).Path
     if (-not (Test-Path -LiteralPath $SourcesJar -PathType Leaf) -or
         -not $SourcesJar.EndsWith('-sources.jar', [StringComparison]::Ordinal)) {

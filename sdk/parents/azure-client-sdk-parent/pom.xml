@@ -1172,6 +1172,7 @@
                     <argument>-ProcessorBuildId</argument>
                     <argument>maven-${session.request.startTime.time}</argument>
                     <argument>-FromMaven</argument>
+                    <argument>-SkipIfSourcesJarMissing</argument>
                   </arguments>
                 </configuration>
               </execution>

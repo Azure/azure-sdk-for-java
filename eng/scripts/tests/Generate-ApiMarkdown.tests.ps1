@@ -46,7 +46,7 @@ Describe 'Generate-ApiMarkdown' {
     }
 
     It 'reuses a sources JAR and writes normalized Markdown with matching metadata' {
-        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -SkipIfSourcesJarMissing
 
         [IO.File]::ReadAllText($script:Output) | Should -Be ('```java' + "`npublic class Example {}`n" + '```' + "`n")
         [IO.File]::ReadAllBytes($script:Output)[0] | Should -Be 96
@@ -133,6 +133,21 @@ Describe 'Generate-ApiMarkdown' {
         Should -Invoke java -Times 0
     }
 
+    It 'skips a missing supplied sources JAR only when requested' {
+        Remove-Item -LiteralPath $script:Sources
+
+        & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -SkipIfSourcesJarMissing |
+            Should -Match 'Skipping API Markdown generation: sources JAR not found'
+
+        Should -Invoke mvn -Times 0
+        Should -Invoke java -Times 0
+        [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
+
+        { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources } |
+            Should -Throw
+    }
+
     It 'rejects ambiguous sources JARs' {
         Set-Content -LiteralPath (Join-Path $script:Package 'target' 'other-sources.jar') -Value ''
 
@@ -195,7 +210,7 @@ Describe 'Generate-ApiMarkdown' {
     It 'preserves the review bundle when the renderer fails' {
         Mock java { $global:LASTEXITCODE = 1 }
 
-        { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources } |
+        { & $script:Command -PackagePath $script:Package -SourcesJar $script:Sources -SkipIfSourcesJarMissing } |
             Should -Throw '*java failed with exit code 1*'
 
         [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
