@@ -211,7 +211,7 @@ independently of `allowPreview`.
 
 The session API supports text and audio in the format configured on the voice agent, typed streaming server events,
 response cancellation, client-executed function tools, and optional persisted conversations. See
-[Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples-preview) for complete samples.
+[Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples) for complete samples.
 
 Use `VoiceAgentWebSocketConnectionOptions` with `openWebSocketSession` to configure session IDs, agent version
 selection, transport, structured inputs, persistence, buffering, and timeouts. Options are copied when the session is opened, so
@@ -960,7 +960,7 @@ See the full sample in [CreateResponseWithStructuredInput.java](https://github.c
 
 ---
 
-### Voice agent samples (preview)
+### Voice agent samples
 
 The following [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice) cover agent management and persisted conversations.
 
@@ -1195,11 +1195,11 @@ Generated agent names use `gpt-live-<scenario>-<UUID>` and fit the service's 63-
 |---|---|
 | Synchronous multi-turn text | [GptLiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
 | Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
-| Asynchronous connection lifecycle (no audio devices) | [GptLiveConnectionAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveConnectionAsyncSample.java) |
+| Asynchronous connection lifecycle (no audio devices) | [GptLiveConnectionAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveConnectionAsyncSample.java) |
 | Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
 | Responses backend function tool | [GptLiveFunctionToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
-| Advanced synchronous console input and speaker | [GptLiveInteractiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationSample.java) |
-| Advanced asynchronous console input and speaker | [GptLiveInteractiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationAsyncSample.java) |
+| Advanced synchronous console input and speaker | [GptLiveInteractiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationSample.java) |
+| Advanced asynchronous console input and speaker | [GptLiveInteractiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/GptLiveInteractiveTextConversationAsyncSample.java) |
 
 #### Read persisted GPT Live conversations and audio
 
