@@ -16,7 +16,7 @@ class;com.azure.ai.agents.models.BingCustomSearchToolParameters;Preview API. pre
 class;com.azure.ai.agents.models.BrowserAutomationPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
-field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
+field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. A2AAgents=V1Preview, DigitalWorker=V1Preview, DraftAgents=V1Preview, GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.DatasetReference;Preview API. VoiceAgents=V1Preview;
@@ -28,6 +28,7 @@ class;com.azure.ai.agents.models.FabricIqPreviewToolboxTool;Preview API. preview
 field;com.azure.ai.agents.models.GenerateVoiceAgentRequest;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.GitHubCopilotHarness;Preview API. GitHubCopilot=V1Preview;
 class;com.azure.ai.agents.models.GitHubCopilotToolsetPreview;Preview API. GitHubCopilot=V1Preview;
+field;com.azure.ai.agents.models.HostedAgentDefinition;Preview API. A2AAgents=V1Preview;protocol_versions
 class;com.azure.ai.agents.models.InlineVoiceSubagent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.LiveAllowedServerEventParam;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.LiveAllowedToolsChoiceParam;Preview API. VoiceAgents=V1Preview;
