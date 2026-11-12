@@ -35,6 +35,8 @@ Various documentation is available to help you get started
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
+- A [project in Microsoft Foundry](https://learn.microsoft.com/azure/foundry/how-to/create-projects).
+- An [Application Insights resource connected to your Foundry project](https://learn.microsoft.com/azure/foundry/observability/how-to/trace-agent-setup) for agent tracing.
 
 ### Adding the package to your product
 
@@ -43,7 +45,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.8.0</version>
+    <version>2.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -105,6 +107,8 @@ EvalCreateParams.TestingCriterion testingCriterion
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
+
+For setup, see [Quickstart: Set up Microsoft Foundry resources](https://learn.microsoft.com/azure/foundry/tutorials/quickstart-create-foundry-resources).
 
 ```java com.azure.ai.projects.agentsSubClients
 AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();

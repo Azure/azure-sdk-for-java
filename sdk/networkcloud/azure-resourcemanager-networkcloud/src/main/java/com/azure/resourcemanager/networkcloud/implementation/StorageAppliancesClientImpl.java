@@ -521,7 +521,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
@@ -825,7 +825,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
         String storageApplianceName, String ifMatch, String ifNoneMatch,
         StorageAppliancePatchParameters storageApplianceUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
@@ -1105,7 +1105,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
@@ -1796,7 +1796,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginEnableRemoteVendorManagement(
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginEnableRemoteVendorManagement(
         String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
         Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,

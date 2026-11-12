@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithRegionOfChoiceSettings.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithRegionOfChoiceSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Region Of Choice Settings.
@@ -64,7 +64,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithCostManagementSettings.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithCostManagementSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Cost Management Settings.
@@ -86,7 +86,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithCMK.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
@@ -114,7 +114,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault.json
+     * x-ms-original-file: 2026-11-01/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
@@ -134,7 +134,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithImmutabilityConfig.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithImmutabilityConfig.json
      */
     /**
      * Sample code: Create or Update Vault With Immutability Config.
@@ -158,7 +158,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-11-01/PUTVault_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create or Update Vault performing critical operation With MUA.
@@ -188,7 +188,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
@@ -211,7 +211,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
@@ -239,7 +239,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithRedundancySettings.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Create or Update Vault With Redundancy Setting.
@@ -262,7 +262,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/PUTVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2026-11-01/PUTVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Create or Update Vault with Source scan configuration.

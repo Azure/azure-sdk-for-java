@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationContextRunnerUtils.webApplicationAndResourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,6 +53,17 @@ class AadWebApplicationConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("testSecurityFilterChain");
+                assertThat(context).doesNotHaveBean("defaultAadWebApplicationFilterChain");
+            });
+    }
+
+    @Test
+    void combinedApplicationTypeDoesNotCreateDefaultSecurityChains() {
+        webApplicationAndResourceServerContextRunner()
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                assertThat(context).doesNotHaveBean("defaultAadWebApplicationFilterChain");
+                assertThat(context).doesNotHaveBean("defaultAadResourceServerFilterChain");
             });
     }
 

@@ -9,7 +9,21 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_Get.json
+     * x-ms-original-file: 2026-11-01/Workspaces_Get_EncryptionPending.json
+     */
+    /**
+     * Sample code: Get a CMK-created Workspace while its customer key is being replaced.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void getACMKCreatedWorkspaceWhileItsCustomerKeyIsBeingReplaced(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Get.json
      */
     /**
      * Sample code: Get a Workspace in a resource group.
@@ -17,6 +31,48 @@ public final class WorkspacesGetByResourceGroupSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getAWorkspaceInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Get_EncryptionUnknown.json
+     */
+    /**
+     * Sample code: Get a Workspace when active encryption protection is unknown.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        getAWorkspaceWhenActiveEncryptionProtectionIsUnknown(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Get_EncryptionFailed.json
+     */
+    /**
+     * Sample code: Get a Workspace after a customer key replacement fails.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        getAWorkspaceAfterACustomerKeyReplacementFails(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_Get_EncryptionNotConfigured.json
+     */
+    /**
+     * Sample code: Get a Workspace service application before customer key enrollment.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void getAWorkspaceServiceApplicationBeforeCustomerKeyEnrollment(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
         manager.workspaces()
             .getByResourceGroupWithResponse("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }

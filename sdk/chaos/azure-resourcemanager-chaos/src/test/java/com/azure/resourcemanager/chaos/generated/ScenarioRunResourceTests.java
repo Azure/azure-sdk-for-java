@@ -11,6 +11,6 @@ public final class ScenarioRunResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScenarioRunResource model
-            = BinaryData.fromString("{\"id\":\"gratzvzbglbyvict\"}").toObject(ScenarioRunResource.class);
+            = BinaryData.fromString("{\"id\":\"fbzdixzmqpnoda\"}").toObject(ScenarioRunResource.class);
     }
 }

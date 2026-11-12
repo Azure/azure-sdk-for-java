@@ -44,12 +44,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
     private Integer count;
 
     /*
-     * Statistics about image serving for this retrieval activity
-     */
-    @Generated
-    private ImageServingStatistics imageServing;
-
-    /*
      * The web arguments for the retrieval activity.
      */
     @Generated
@@ -108,16 +102,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
     }
 
     /**
-     * Get the imageServing property: Statistics about image serving for this retrieval activity.
-     *
-     * @return the imageServing value.
-     */
-    @Generated
-    public ImageServingStatistics getImageServing() {
-        return this.imageServing;
-    }
-
-    /**
      * Get the webArguments property: The web arguments for the retrieval activity.
      *
      * @return the webArguments value.
@@ -147,7 +131,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
         jsonWriter.writeStringField("queryTime",
             this.queryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryTime));
         jsonWriter.writeNumberField("count", this.count);
-        jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("webArguments", this.webArguments);
         return jsonWriter.writeEndObject();
     }
@@ -174,7 +157,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
             String knowledgeSourceName = null;
             OffsetDateTime queryTime = null;
             Integer count = null;
-            ImageServingStatistics imageServing = null;
             KnowledgeBaseWebActivityArguments webArguments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -202,8 +184,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getInt);
-                } else if ("imageServing".equals(fieldName)) {
-                    imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("webArguments".equals(fieldName)) {
                     webArguments = KnowledgeBaseWebActivityArguments.fromJson(reader);
                 } else {
@@ -221,7 +201,6 @@ public final class KnowledgeBaseWebActivityRecord extends KnowledgeBaseActivityR
             deserializedKnowledgeBaseWebActivityRecord.knowledgeSourceName = knowledgeSourceName;
             deserializedKnowledgeBaseWebActivityRecord.queryTime = queryTime;
             deserializedKnowledgeBaseWebActivityRecord.count = count;
-            deserializedKnowledgeBaseWebActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseWebActivityRecord.webArguments = webArguments;
             return deserializedKnowledgeBaseWebActivityRecord;
         });

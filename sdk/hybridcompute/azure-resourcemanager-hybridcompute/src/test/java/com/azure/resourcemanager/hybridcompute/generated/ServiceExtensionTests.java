@@ -14,7 +14,7 @@ public final class ServiceExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceExtension model = BinaryData.fromString(
-            "{\"serviceExtensionType\":\"\\\"dataoyqhlwig\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}")
+            "{\"serviceExtensionType\":\"\\\"datatvlwijpsttexoq\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}")
             .toObject(ServiceExtension.class);
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
             model.serviceExtensionPublicNetworkAccess());
@@ -23,7 +23,7 @@ public final class ServiceExtensionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceExtension model = new ServiceExtension()
-            .withServiceExtensionType(BinaryData.fromBytes("\"dataoyqhlwig\"".getBytes(StandardCharsets.UTF_8)))
+            .withServiceExtensionType(BinaryData.fromBytes("\"datatvlwijpsttexoq\"".getBytes(StandardCharsets.UTF_8)))
             .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ServiceExtension.class);
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,

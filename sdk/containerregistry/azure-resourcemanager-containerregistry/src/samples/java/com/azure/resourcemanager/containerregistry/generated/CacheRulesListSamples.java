@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class CacheRulesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/CacheRuleList.json
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleList.json
      */
     /**
      * Sample code: CacheRuleList.

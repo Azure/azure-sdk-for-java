@@ -12,8 +12,8 @@ public final class ExtensionTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionTypeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"cqpbtuo\",\"name\":\"eszabbelawumuas\"},{\"id\":\"kwrrwo\",\"name\":\"qucwyhahnom\"},{\"id\":\"kywuhpsvfuu\",\"name\":\"tlwexxwlalniexz\"},{\"id\":\"zpgepqty\",\"name\":\"wwpgdakchzyvlixq\"}],\"nextLink\":\"kcxk\"}")
+            "{\"value\":[{\"id\":\"hcxwaxfewzjk\",\"name\":\"xfdeqvhpsyl\"},{\"id\":\"shk\",\"name\":\"f\"}],\"nextLink\":\"mxzjrgywwpgjx\"}")
             .toObject(ExtensionTypeListResult.class);
-        Assertions.assertEquals("kcxk", model.nextLink());
+        Assertions.assertEquals("mxzjrgywwpgjx", model.nextLink());
     }
 }

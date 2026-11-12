@@ -1044,4 +1044,34 @@ public final class BlobDownloadHeaders {
         internalHeaders.setXMsCreationTime(creationTime);
         return this;
     }
+
+    // TODO: Restore manual getLayout guidance when getLayout is made public.
+    /**
+     * Get the xMsDownloadHint property: A hint from the service that data-locality layout information is available
+     * for this blob. When {@link com.azure.storage.common.LayoutAwareRouting#ENABLED} is set on supported download
+     * options, the SDK uses the layout to route range downloads to the optimal endpoint automatically.
+     *
+     * @return the downloadHint value.
+     */
+    public DownloadHint getDownloadHint() {
+        String downloadHint
+            = internalHeaders.getXMsDownloadHint() == null ? null : internalHeaders.getXMsDownloadHint().toString();
+        return downloadHint == null ? null : DownloadHint.fromString(downloadHint);
+    }
+
+    // TODO: Restore manual getLayout guidance when getLayout is made public.
+    /**
+     * Set the xMsDownloadHint property: A hint from the service that data-locality layout information is available
+     * for this blob. When {@link com.azure.storage.common.LayoutAwareRouting#ENABLED} is set on supported download
+     * options, the SDK uses the layout to route range downloads to the optimal endpoint automatically.
+     *
+     * @param downloadHint the xMsDownloadHint value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setDownloadHint(DownloadHint downloadHint) {
+        internalHeaders.setXMsDownloadHint(downloadHint == null
+            ? null
+            : com.azure.storage.blob.implementation.models.DownloadHint.fromString(downloadHint.toString()));
+        return this;
+    }
 }

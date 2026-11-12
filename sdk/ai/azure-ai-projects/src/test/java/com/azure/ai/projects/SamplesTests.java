@@ -94,7 +94,6 @@ public class SamplesTests extends ClientTestBase {
             })).verifyComplete();
     }
 
-    @Disabled("The live service returns 400: API operation not supported for token authentication.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
@@ -114,7 +113,6 @@ public class SamplesTests extends ClientTestBase {
         }
     }
 
-    @Disabled("The live service returns 400: API operation not supported for token authentication.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {

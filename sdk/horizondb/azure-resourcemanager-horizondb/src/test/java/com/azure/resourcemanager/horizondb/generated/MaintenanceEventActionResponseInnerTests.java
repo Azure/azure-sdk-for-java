@@ -14,14 +14,14 @@ public final class MaintenanceEventActionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceEventActionResponseInner model = BinaryData.fromString(
-            "{\"maintenanceEventId\":\"vvwxqi\",\"poolResourceId\":\"qunyowxwlmdjr\",\"status\":\"InProgress\",\"plannedStartTimeUtc\":\"2021-11-11T06:04:24Z\",\"plannedEndTimeUtc\":\"2021-11-13T18:34:35Z\",\"appliedNow\":false,\"lastUpdatedTimeUtc\":\"2021-07-21T07:28:03Z\"}")
+            "{\"maintenanceEventId\":\"o\",\"poolResourceId\":\"ttpkiwkkbnujrywv\",\"status\":\"InProgress\",\"plannedStartTimeUtc\":\"2021-09-05T02:20:51Z\",\"plannedEndTimeUtc\":\"2021-11-25T06:14:55Z\",\"appliedNow\":false,\"lastUpdatedTimeUtc\":\"2021-06-14T14:38:01Z\"}")
             .toObject(MaintenanceEventActionResponseInner.class);
-        Assertions.assertEquals("vvwxqi", model.maintenanceEventId());
-        Assertions.assertEquals("qunyowxwlmdjr", model.poolResourceId());
+        Assertions.assertEquals("o", model.maintenanceEventId());
+        Assertions.assertEquals("ttpkiwkkbnujrywv", model.poolResourceId());
         Assertions.assertEquals(MaintenanceEventStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T06:04:24Z"), model.plannedStartTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T18:34:35Z"), model.plannedEndTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T02:20:51Z"), model.plannedStartTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T06:14:55Z"), model.plannedEndTimeUtc());
         Assertions.assertFalse(model.appliedNow());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T07:28:03Z"), model.lastUpdatedTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T14:38:01Z"), model.lastUpdatedTimeUtc());
     }
 }
