@@ -17,49 +17,42 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class BufferedSourceTaskTest {
+public class AsyncSourceTaskTest {
     @Test(groups = "unit", timeOut = 30_000)
     public void blockedReadStartsLazilyAndStopsCleanly() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
-        CountDownLatch requestExited = new CountDownLatch(1);
-        CountDownLatch taskStopped = new CountDownLatch(1);
-        task.pollAction = () -> {
-            requestStarted.countDown();
-            try {
-                taskStopped.await();
-                return Collections.emptyList();
-            } finally {
-                requestExited.countDown();
-            }
-        };
-        task.stopAction = taskStopped::countDown;
+        CountDownLatch requestCancelled = new CountDownLatch(1);
+        task.pollAction = () -> Mono.<List<SourceRecord>>never()
+            .doOnSubscribe(ignored -> requestStarted.countDown())
+            .doOnCancel(requestCancelled::countDown);
         task.start(Collections.emptyMap());
         assertThat(requestStarted.getCount()).isEqualTo(1);
 
         assertThat(task.poll()).isEmpty();
         assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
+        assertThat(task.poll()).isEmpty();
+        assertThat(task.pollCount.get()).isEqualTo(1);
 
         task.stop();
 
-        assertThat(requestExited.await(1, TimeUnit.SECONDS)).isTrue();
+        assertThat(requestCancelled.await(1, TimeUnit.SECONDS)).isTrue();
         assertThat(task.stopCount.get()).isEqualTo(1);
     }
 
     @Test(groups = "unit", timeOut = 30_000)
-    public void readerRecoversAfterRetriableFailure() {
+    public void pollRecoversAfterRetriableFailure() {
         TestTask task = new TestTask();
         RetriableException transientFailure =
             new RetriableException("temporarily unavailable");
-        SourceRecord expected =
-            new SourceRecord(Collections.emptyMap(), Collections.emptyMap(), "topic", null, null);
+        SourceRecord expected = org.mockito.Mockito.mock(SourceRecord.class);
         AtomicInteger attempts = new AtomicInteger();
-        task.pollAction = () -> {
+        task.pollAction = () -> Mono.defer(() -> {
             if (attempts.incrementAndGet() == 1) {
-                throw transientFailure;
+                return Mono.error(transientFailure);
             }
-            return Collections.singletonList(expected);
-        };
+            return Mono.just(Collections.singletonList(expected));
+        });
 
         try {
             task.start(Collections.emptyMap());
@@ -75,14 +68,14 @@ public class BufferedSourceTaskTest {
     }
 
     @Test(groups = "unit", timeOut = 30_000)
-    public void readerStopsAfterNonRetriableFailure() throws InterruptedException {
+    public void pollDoesNotRepeatAfterNonRetriableFailure() throws InterruptedException {
         TestTask task = new TestTask();
         AtomicInteger attempts = new AtomicInteger();
         RuntimeException terminalFailure = new RuntimeException("terminal");
-        task.pollAction = () -> {
+        task.pollAction = () -> Mono.defer(() -> {
             attempts.incrementAndGet();
-            throw terminalFailure;
-        };
+            return Mono.error(terminalFailure);
+        });
 
         try {
             task.start(Collections.emptyMap());
@@ -95,27 +88,27 @@ public class BufferedSourceTaskTest {
     }
 
     @Test(groups = "unit", timeOut = 30_000)
-    public void stopWaitsForReaderToExit() throws InterruptedException {
+    public void stopCancelsInFlightPoll() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
-        task.pollAction = () -> task.blockPoll(Mono.defer(() -> {
-            requestStarted.countDown();
-            return Mono.never();
-        }));
+        CountDownLatch requestCancelled = new CountDownLatch(1);
+        task.pollAction = () -> Mono.<List<SourceRecord>>never()
+            .doOnSubscribe(ignored -> requestStarted.countDown())
+            .doOnCancel(requestCancelled::countDown);
 
         task.start(Collections.emptyMap());
         assertThat(task.poll()).isEmpty();
         assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
 
-        Thread stopThread = new Thread(task::stop);
-        stopThread.start();
-        stopThread.join(5_000);
-        assertThat(stopThread.isAlive()).isFalse();
+        task.stop();
+
+        assertThat(requestCancelled.await(1, TimeUnit.SECONDS)).isTrue();
     }
 
-    private static final class TestTask extends BufferedSourceTask {
-        private PollAction pollAction = Collections::emptyList;
+    private static final class TestTask extends AsyncSourceTask {
+        private PollAction pollAction = () -> Mono.just(Collections.emptyList());
         private Runnable stopAction = () -> { };
+        private final AtomicInteger pollCount = new AtomicInteger();
         private final AtomicInteger stopCount = new AtomicInteger();
 
         @Override
@@ -128,13 +121,9 @@ public class BufferedSourceTaskTest {
         }
 
         @Override
-        protected List<SourceRecord> pollTask() {
-            try {
-                return this.pollAction.run();
-            } catch (InterruptedException exception) {
-                Thread.currentThread().interrupt();
-                return Collections.emptyList();
-            }
+        protected Mono<List<SourceRecord>> pollTask() {
+            this.pollCount.incrementAndGet();
+            return this.pollAction.run();
         }
 
         @Override
@@ -146,6 +135,6 @@ public class BufferedSourceTaskTest {
 
     @FunctionalInterface
     private interface PollAction {
-        List<SourceRecord> run() throws InterruptedException;
+        Mono<List<SourceRecord>> run();
     }
 }

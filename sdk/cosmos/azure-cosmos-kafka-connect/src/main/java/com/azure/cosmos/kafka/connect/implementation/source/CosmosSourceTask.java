@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosSourceTask extends BufferedSourceTask {
+public class CosmosSourceTask extends AsyncSourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
     private static final String METADATA_ATTRIBUTE_NAME = "metadata";
@@ -165,58 +165,68 @@ public class CosmosSourceTask extends BufferedSourceTask {
     }
 
     @Override
-    protected List<SourceRecord> pollTask() {
-        // do not poll it from the queue yet
-        // we need to make sure not losing tasks for failure cases
-        ITaskUnit taskUnit = this.taskUnitsQueue.poll();
-        try {
+    protected Mono<List<SourceRecord>> pollTask() {
+        return Mono.defer(() -> {
+            // do not poll it from the queue yet
+            // we need to make sure not losing tasks for failure cases
+            ITaskUnit taskUnit = this.taskUnitsQueue.poll();
             if (taskUnit == null) {
                 // there is no task to do
-                return new ArrayList<>();
+                return Mono.just(new ArrayList<>());
             }
 
-            List<SourceRecord> results = new ArrayList<>();
+            Mono<List<SourceRecord>> poll;
             if (taskUnit instanceof MetadataTaskUnit) {
-                results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
-                LOGGER.info(
-                    "Return {} metadata records, databaseName {}", results.size(), ((MetadataTaskUnit) taskUnit).getDatabaseName());
-
+                poll = Mono.fromSupplier(() -> {
+                    List<SourceRecord> results = executeMetadataTask((MetadataTaskUnit) taskUnit);
+                    LOGGER.info(
+                        "Return {} metadata records, databaseName {}",
+                        results.size(),
+                        ((MetadataTaskUnit) taskUnit).getDatabaseName());
+                    return results;
+                });
             } else {
                 Stopwatch stopwatch = Stopwatch.createStarted();
 
                 LOGGER.trace("Polling for task {}", taskUnit);
-                Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
-                results.addAll(feedRangeTaskResults.getLeft());
+                poll = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit)
+                    .map(feedRangeTaskResults -> {
+                        List<SourceRecord> results = feedRangeTaskResults.getLeft();
 
-                // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
-                if (!feedRangeTaskResults.getRight()) {
-                    LOGGER.trace("Adding task {} back to queue", taskUnit);
-                    this.taskUnitsQueue.add(taskUnit);
-                }
+                        // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
+                        if (!feedRangeTaskResults.getRight()) {
+                            LOGGER.trace("Adding task {} back to queue", taskUnit);
+                            this.taskUnitsQueue.add(taskUnit);
+                        }
 
-                stopwatch.stop();
-                
-                // Update count for this feed range
-                String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
-                feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
-                    if (loggingContext == null) {
-                        loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
-                    }
-                    loggingContext.increaseCount((long) results.size());
-                    return loggingContext;
-                });
+                        stopwatch.stop();
 
-                logFeedRangeCounts(false);
+                        // Update count for this feed range
+                        String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
+                        feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
+                            if (loggingContext == null) {
+                                loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
+                            }
+                            loggingContext.increaseCount((long) results.size());
+                            return loggingContext;
+                        });
+
+                        logFeedRangeCounts(false);
+                        return results;
+                    });
             }
 
-            return results;
-        } catch (Exception e) {
-            // for error cases, we should always put the task back to the queue
-            this.taskUnitsQueue.add(taskUnit);
-            LOGGER.warn("Polling task failed", e);
+            return poll.onErrorMap(error -> {
+                // for error cases, we should always put the task back to the queue
+                this.taskUnitsQueue.add(taskUnit);
+                LOGGER.warn("Polling task failed", error);
 
-            throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
-        }
+                if (error instanceof Error) {
+                    return error;
+                }
+                return KafkaCosmosExceptionsHelper.convertToConnectException(error, "PollTask failed");
+            });
+        });
     }
 
     private void logFeedRangeCounts(boolean flushLogs) {
@@ -309,7 +319,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
         return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
-    private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
+    private Mono<Pair<List<SourceRecord>, Boolean>> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosAsyncContainer container =
             this.cosmosClientItem
                 .getClient()
@@ -334,7 +344,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
                 changeFeedRequestOptions,
                 this.taskConfig.getThroughputControlConfig());
 
-        return this.blockPoll(container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+        return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
             .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCountHint())
             .next()
             .map(feedResponse -> {
@@ -347,7 +357,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
                         .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
                 }
                 return Mono.error(throwable);
-            }));
+            });
     }
 
     private List<SourceRecord> handleSuccessfulResponse(
