@@ -33,6 +33,10 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
+    static final String COMP_QUERY_PARAMETER = "comp";
+
+    static final String LAYOUT_QUERY_PARAMETER_VALUE = "layout";
+
     /**
      * Context key under which a per-download-operation {@link CseV2NonceOrderValidator} is shared, so that the CSEv2
      * nonce scheme is enforced consistently across every (possibly concurrent) chunk of a single download.

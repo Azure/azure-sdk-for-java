@@ -22,13 +22,6 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
      */
     private Boolean enabled;
 
-    /*
-     * Quick Attach Detach settings for the AzureDisk CSI driver. Quick Attach Detach enables faster, higher-scale Azure
-     * Disk attach and detach operations for stateful AKS workloads by bypassing ARM/CRP control-plane bottlenecks. For
-     * more information, see https://aka.ms/aks/qad.
-     */
-    private ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach quickAttachDetach;
-
     /**
      * Creates an instance of ManagedClusterStorageProfileDiskCsiDriver class.
      */
@@ -56,39 +49,11 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
     }
 
     /**
-     * Get the quickAttachDetach property: Quick Attach Detach settings for the AzureDisk CSI driver. Quick Attach
-     * Detach enables faster, higher-scale Azure Disk attach and detach operations for stateful AKS workloads by
-     * bypassing ARM/CRP control-plane bottlenecks. For more information, see https://aka.ms/aks/qad.
-     * 
-     * @return the quickAttachDetach value.
-     */
-    public ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach quickAttachDetach() {
-        return this.quickAttachDetach;
-    }
-
-    /**
-     * Set the quickAttachDetach property: Quick Attach Detach settings for the AzureDisk CSI driver. Quick Attach
-     * Detach enables faster, higher-scale Azure Disk attach and detach operations for stateful AKS workloads by
-     * bypassing ARM/CRP control-plane bottlenecks. For more information, see https://aka.ms/aks/qad.
-     * 
-     * @param quickAttachDetach the quickAttachDetach value to set.
-     * @return the ManagedClusterStorageProfileDiskCsiDriver object itself.
-     */
-    public ManagedClusterStorageProfileDiskCsiDriver
-        withQuickAttachDetach(ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach quickAttachDetach) {
-        this.quickAttachDetach = quickAttachDetach;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (quickAttachDetach() != null) {
-            quickAttachDetach().validate();
-        }
     }
 
     /**
@@ -98,7 +63,6 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
-        jsonWriter.writeJsonField("quickAttachDetach", this.quickAttachDetach);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,9 +85,6 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterStorageProfileDiskCsiDriver.enabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("quickAttachDetach".equals(fieldName)) {
-                    deserializedManagedClusterStorageProfileDiskCsiDriver.quickAttachDetach
-                        = ManagedClusterStorageProfileDiskCSIDriverQuickAttachDetach.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

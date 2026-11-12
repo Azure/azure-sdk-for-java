@@ -12,15 +12,15 @@ public final class FabricDestinationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricDestinationDetails model = BinaryData
-            .fromString("{\"destinationType\":\"Fabric\",\"workspaceId\":\"jhkycub\",\"protocol\":\"Native\"}")
+            .fromString("{\"destinationType\":\"Fabric\",\"workspaceId\":\"mwutwbdsre\",\"protocol\":\"Native\"}")
             .toObject(FabricDestinationDetails.class);
-        Assertions.assertEquals("jhkycub", model.workspaceId());
+        Assertions.assertEquals("mwutwbdsre", model.workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricDestinationDetails model = new FabricDestinationDetails().withWorkspaceId("jhkycub");
+        FabricDestinationDetails model = new FabricDestinationDetails().withWorkspaceId("mwutwbdsre");
         model = BinaryData.fromObject(model).toObject(FabricDestinationDetails.class);
-        Assertions.assertEquals("jhkycub", model.workspaceId());
+        Assertions.assertEquals("mwutwbdsre", model.workspaceId());
     }
 }

@@ -1040,7 +1040,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, StartRequest body) {
         Response<BinaryData> response
             = startWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body);
@@ -1290,7 +1290,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
         String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, StopRequest body) {
         Response<BinaryData> response
             = stopWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body);

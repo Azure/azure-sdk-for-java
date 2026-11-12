@@ -19,7 +19,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
@@ -244,7 +243,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the version value.
      */
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
@@ -254,7 +253,7 @@ public final class ServerInner extends Resource {
      * @param version the version value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withVersion(PostgresMajorVersion version) {
+    public ServerInner withVersion(String version) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

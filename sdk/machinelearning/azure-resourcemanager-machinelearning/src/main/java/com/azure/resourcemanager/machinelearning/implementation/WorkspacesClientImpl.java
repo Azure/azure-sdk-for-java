@@ -898,7 +898,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Boolean forceToPurge) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, forceToPurge);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1397,7 +1397,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner>
+    private SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner>
         beginDiagnose(String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters body) {
         Response<BinaryData> response = diagnoseWithResponse(resourceGroupName, workspaceName, body);
         return this.client.<DiagnoseResponseResultInner, DiagnoseResponseResultInner>getLroResult(response,

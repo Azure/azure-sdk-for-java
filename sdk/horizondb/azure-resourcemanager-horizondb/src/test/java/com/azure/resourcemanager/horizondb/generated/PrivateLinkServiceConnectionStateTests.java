@@ -13,22 +13,22 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model = BinaryData
-            .fromString("{\"status\":\"Rejected\",\"description\":\"gidyjrrf\",\"actionsRequired\":\"aos\"}")
+            .fromString("{\"status\":\"Approved\",\"description\":\"imoryocfsfksym\",\"actionsRequired\":\"ys\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("gidyjrrf", model.description());
-        Assertions.assertEquals("aos", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("imoryocfsfksym", model.description());
+        Assertions.assertEquals("ys", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                .withDescription("gidyjrrf")
-                .withActionsRequired("aos");
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                .withDescription("imoryocfsfksym")
+                .withActionsRequired("ys");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("gidyjrrf", model.description());
-        Assertions.assertEquals("aos", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("imoryocfsfksym", model.description());
+        Assertions.assertEquals("ys", model.actionsRequired());
     }
 }

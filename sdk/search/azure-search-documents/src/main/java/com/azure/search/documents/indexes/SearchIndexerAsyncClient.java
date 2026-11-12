@@ -16,26 +16,17 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
-import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SkillNames;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -86,13 +77,6 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new datasource or updates a datasource if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -111,7 +95,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -141,7 +124,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -155,7 +137,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -185,7 +166,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -312,15 +292,6 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new indexer or updates an indexer if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -368,6 +339,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -401,13 +373,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -450,6 +415,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -483,13 +449,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -580,15 +539,6 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new skillset in a search service or updates the skillset if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -679,12 +629,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -714,7 +658,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -800,12 +743,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -835,7 +772,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1053,7 +989,20 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections() {
-        return getDataSourceConnections(null, null, null, null);
+        return listDataSourceConnections(new RequestOptions());
+    }
+
+    /**
+     * Lists all matching datasources, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching datasources as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions) {
+        return this.serviceClient.listDataSourceConnectionsAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SearchIndexerDataSourceConnection.class));
     }
 
     /**
@@ -1063,45 +1012,18 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listDataSourceConnectionNames() {
-        return getDataSourceConnections(java.util.Collections.singletonList("name"), null, null, null)
+        return listDataSourceConnections(new RequestOptions().addQueryParam("$select", "name", false))
             .mapPage(SearchIndexerDataSourceConnection::getName);
     }
 
     /**
      * Lists all datasources available for a search service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
+     * @return the datasources as a paginated response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchIndexerDataSourceConnection> getDataSourceConnections() {
-        // Generated convenience method for getDataSourceConnections
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getDataSourceConnections(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerDataSourceConnection>(
-                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return listDataSourceConnections();
     }
 
     /**
@@ -1292,7 +1214,30 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexer> listIndexers() {
-        return getIndexers(null, null, null, null);
+        return listIndexers(new RequestOptions());
+    }
+
+    /**
+     * Lists all matching indexers, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexers as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexersAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SearchIndexer.class));
+    }
+
+    /**
+     * Lists the names of all indexers available for a search service.
+     *
+     * @return the names of all indexers as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SearchIndexer> getIndexers() {
+        return listIndexers();
     }
 
     /**
@@ -1302,45 +1247,8 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexerNames() {
-        return getIndexers(java.util.Collections.singletonList("name"), null, null, null)
+        return listIndexers(new RequestOptions().addQueryParam("$select", "name", false))
             .mapPage(SearchIndexer::getName);
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SearchIndexer> getIndexers() {
-        // Generated convenience method for getIndexers
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getIndexers(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexer>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -1507,49 +1415,35 @@ public final class SearchIndexerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request as paginated response with {@link PagedFlux}.
+     * @return all skillsets as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchIndexerSkillset> getSkillsets() {
-        // Generated convenience method for getSkillsets
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getSkillsets(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerSkillset>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+        return listSkillsets(null);
+    }
+
+    /**
+     * Lists all skillsets available for a search service.
+     *
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching skillsets as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerSkillset> listSkillsets() {
+        return listSkillsets(null);
     }
 
     /**
      * List all skillsets in a search service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all skillsets as paginated response with {@link PagedFlux}.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching skillsets as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SearchIndexerSkillset> listSkillsets() {
-        return getSkillsets(null, null, null, null);
+    public PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
+        return this.serviceClient.listSkillsetsAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SearchIndexerSkillset.class));
     }
 
     /**
@@ -1559,7 +1453,7 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSkillsetNames() {
-        return getSkillsets(java.util.Collections.singletonList("name"), null, null, null)
+        return listSkillsets(new RequestOptions().addQueryParam("$select", "name", false))
             .mapPage(SearchIndexerSkillset::getName);
     }
 
@@ -1723,7 +1617,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -1753,7 +1646,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1785,7 +1677,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -1815,7 +1706,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1829,7 +1719,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -1859,7 +1748,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1920,6 +1808,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1953,13 +1842,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2018,6 +1900,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2051,13 +1934,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2100,6 +1976,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2133,13 +2010,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2169,7 +2039,7 @@ public final class SearchIndexerAsyncClient {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -2177,8 +2047,6 @@ public final class SearchIndexerAsyncClient {
      *     }
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
-     *         statusDetail: String(resetDocs/resync) (Optional)
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2213,21 +2081,6 @@ public final class SearchIndexerAsyncClient {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
-     *     }
-     *     currentState (Optional): {
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         allDocsInitialTrackingState: String (Optional)
-     *         allDocsFinalTrackingState: String (Optional)
-     *         resetDocsInitialTrackingState: String (Optional)
-     *         resetDocsFinalTrackingState: String (Optional)
-     *         resyncInitialTrackingState: String (Optional)
-     *         resyncFinalTrackingState: String (Optional)
-     *         resetDocumentKeys (Optional): [
-     *             String (Optional)
-     *         ]
-     *         resetDatasourceDocumentIds (Optional): [
-     *             String (Optional)
-     *         ]
      *     }
      * }
      * }
@@ -2330,12 +2183,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2365,7 +2212,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2467,12 +2313,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2502,7 +2342,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2588,12 +2427,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2623,7 +2456,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2675,83 +2507,6 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>overwrite</td><td>Boolean</td><td>No</td><td>If false, keys or ids will be appended to existing ones. If
-     * true, only the keys or ids in this payload will be queued to be re-ingested.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     documentKeys (Optional): [
-     *         String (Optional)
-     *     ]
-     *     datasourceDocumentIds (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetDocumentsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.resetDocumentsWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> hiddenGeneratedResetSkillsWithResponse(String name, BinaryData skillNames,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponseAsync(name, skillNames, requestOptions);
-    }
-
-    /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      *
      * @param name The name of the indexer.
@@ -2771,265 +2526,6 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions)
             .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
-     * payload will be queued to be re-ingested.
-     * @param keysOrIds The keys or ids of the documents to be re-ingested. If keys are provided, the document key field
-     * must be specified in the indexer configuration. If ids are provided, the document key field is ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetDocuments(String name, Boolean overwrite, DocumentKeysOrIds keysOrIds) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (overwrite != null) {
-            requestOptions.addQueryParam("overwrite", String.valueOf(overwrite), false);
-        }
-        if (keysOrIds != null) {
-            requestOptions.setBody(BinaryData.fromObject(keysOrIds));
-        }
-        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetDocuments(String name) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all datasources available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SearchIndexerDataSourceConnection> getDataSourceConnections(List<String> select, String search,
-        Integer pageSize, ListingSearchType searchType) {
-        // Generated convenience method for getDataSourceConnections
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = getDataSourceConnections(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerDataSourceConnection>(
-                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SearchIndexer> getIndexers(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        // Generated convenience method for getIndexers
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = getIndexers(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexer>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SearchIndexerSkillset> getSkillsets(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        // Generated convenience method for getSkillsets
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = getSkillsets(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerSkillset>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -3057,7 +2553,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -3087,7 +2582,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3102,8 +2596,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BinaryData> getDataSourceConnections(RequestOptions requestOptions) {
-        return this.serviceClient.getDataSourceConnectionsAsync(requestOptions);
+    PagedFlux<BinaryData> hiddenGeneratedListDataSourceConnections(RequestOptions requestOptions) {
+        return this.serviceClient.listDataSourceConnectionsAsync(requestOptions);
     }
 
     /**
@@ -3160,6 +2654,7 @@ public final class SearchIndexerAsyncClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3193,13 +2688,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -3214,8 +2702,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BinaryData> getIndexers(RequestOptions requestOptions) {
-        return this.serviceClient.getIndexersAsync(requestOptions);
+    PagedFlux<BinaryData> hiddenGeneratedListIndexers(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexersAsync(requestOptions);
     }
 
     /**
@@ -3315,12 +2803,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3350,7 +2832,6 @@ public final class SearchIndexerAsyncClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3365,7 +2846,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BinaryData> getSkillsets(RequestOptions requestOptions) {
-        return this.serviceClient.getSkillsetsAsync(requestOptions);
+    PagedFlux<BinaryData> hiddenGeneratedListSkillsets(RequestOptions requestOptions) {
+        return this.serviceClient.listSkillsetsAsync(requestOptions);
     }
 }

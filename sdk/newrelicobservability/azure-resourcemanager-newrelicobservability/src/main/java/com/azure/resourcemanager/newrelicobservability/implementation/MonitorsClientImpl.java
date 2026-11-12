@@ -2584,7 +2584,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
+    private SyncPoller<PollResult<NewRelicMonitorResourceInner>, NewRelicMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
         Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
         return this.client.<NewRelicMonitorResourceInner, NewRelicMonitorResourceInner>getLroResult(response,

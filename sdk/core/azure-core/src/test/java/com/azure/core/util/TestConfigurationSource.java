@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TestConfigurationSource implements ConfigurationSource {
-    private Map<String, String> testData;
+    private final Map<String, String> testData;
 
     public TestConfigurationSource() {
         this.testData = new HashMap<>();

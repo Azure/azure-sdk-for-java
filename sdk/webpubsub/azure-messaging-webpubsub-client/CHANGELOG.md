@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,26 +8,37 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.3.0 (2026-11-04)
+
+### Bugs Fixed
+
+- Fixed secure WebSocket connections accepting untrusted certificates or certificates for a different hostname. Connections now validate certificates against the JDK's default trust store and verify the hostname.
+- Fixed a race condition where send operations could miss fast acknowledgment responses.
 - Fixed JSON payloads sent to groups or server events being encoded as strings instead of JSON values.
-
-- Replaced outgoing WebSocket message contents in verbose logs with the payload length in bytes.
-
 - Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
-- Fixed incomplete WebSocket messages being decoded when a connection closes or its handler is removed.
-- Fixed WebSocket connection attempts hanging when the handshake times out, the connection closes, or the handshake request fails to send.
-- Fixed WebSocket event loop resources leaking after failed connections and remote disconnects.
-- Fixed exceptions in WebSocket lifecycle callbacks leaving connection or close operations incomplete and leaking close frames.
-- Fixed WebSocket close operations hanging when the peer does not respond or the close frame cannot be sent.
-- Fixed interrupted WebSocket close operations losing the thread interrupt flag and skipping event loop cleanup.
-- Fixed unexpected WebSocket disconnects being reported as normal closures when no close frame was received.
+- Fixed incomplete fragmented messages being decoded when a WebSocket connection closes or its handler is removed.
+- Fixed WebSocket connection attempts hanging when the peer does not complete the handshake, disconnects, or the handshake request cannot be sent. Opening handshakes now time out after 10 seconds.
+- Fixed WebSocket event loop resources leaking after connection failures and remote disconnects.
+- Fixed exceptions in open and close callbacks leaving operations incomplete or leaking received close frames.
+- Fixed WebSocket close operations hanging when the peer does not respond or the close frame cannot be sent. Closing handshakes now force the transport closed after a 10-second timeout.
+- Fixed interrupted WebSocket close operations losing the thread interrupt flag and skipping resource cleanup.
+- Fixed unexpected WebSocket disconnects being reported as normal closures. Disconnects without a received close frame now report abnormal-closure status 1006.
 
-- Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
+### Other Changes
+
+- Verbose WebSocket send logs now record the payload length in bytes instead of message contents.
+- Updated WebSocket event loops and compression handling to use Netty 4.2 APIs.
+
+## 1.2.1 (2026-11-02)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Migrated `netty-codec-http` to `4.2.19.Final` and updated WebSocket event loops for Netty 4.2.
+- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 
 ## 1.1.11 (2026-10-06)
 

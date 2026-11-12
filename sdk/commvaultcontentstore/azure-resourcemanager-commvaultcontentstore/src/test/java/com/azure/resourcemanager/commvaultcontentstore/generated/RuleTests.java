@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Rule model = BinaryData.fromString("{\"property\":\"region\",\"operator\":\"doesNotEqual\",\"value\":\"xpkd\"}")
+        Rule model = BinaryData.fromString("{\"property\":\"name\",\"operator\":\"equals\",\"value\":\"xdjzlmwlxk\"}")
             .toObject(Rule.class);
-        Assertions.assertEquals(RuleProperty.REGION, model.property());
-        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.operator());
-        Assertions.assertEquals("xpkd", model.value());
+        Assertions.assertEquals(RuleProperty.NAME, model.property());
+        Assertions.assertEquals(Operator.EQUALS, model.operator());
+        Assertions.assertEquals("xdjzlmwlxk", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Rule model
-            = new Rule().withProperty(RuleProperty.REGION).withOperator(Operator.DOES_NOT_EQUAL).withValue("xpkd");
+        Rule model = new Rule().withProperty(RuleProperty.NAME).withOperator(Operator.EQUALS).withValue("xdjzlmwlxk");
         model = BinaryData.fromObject(model).toObject(Rule.class);
-        Assertions.assertEquals(RuleProperty.REGION, model.property());
-        Assertions.assertEquals(Operator.DOES_NOT_EQUAL, model.operator());
-        Assertions.assertEquals("xpkd", model.value());
+        Assertions.assertEquals(RuleProperty.NAME, model.property());
+        Assertions.assertEquals(Operator.EQUALS, model.operator());
+        Assertions.assertEquals("xdjzlmwlxk", model.value());
     }
 }

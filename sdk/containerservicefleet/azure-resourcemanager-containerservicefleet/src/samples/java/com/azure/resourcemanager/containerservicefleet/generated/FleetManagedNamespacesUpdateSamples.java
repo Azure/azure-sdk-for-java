@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class FleetManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/FleetManagedNamespaces_Update.json
+     * x-ms-original-file: 2026-11-01/FleetManagedNamespaces_Update.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Update.

@@ -22,6 +22,11 @@ public final class IdentityKeyStore extends ExpandableStringEnum<IdentityKeyStor
     public static final IdentityKeyStore DEFAULT = fromString("Default");
 
     /**
+     * The machine is transitioning its identity key store to TPM.
+     */
+    public static final IdentityKeyStore TPM_TRANSITION = fromString("TpmTransition");
+
+    /**
      * Creates a new instance of IdentityKeyStore value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
