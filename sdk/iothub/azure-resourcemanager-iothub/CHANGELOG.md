@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (2026-10-23)
+## 1.4.0 (2026-11-12)
 
 - Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package api-version 2026-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -36,9 +36,9 @@
 
 * `GroupIdInformationProperties()` was changed to private access
 * `validate()` was removed
-* `withRequiredMembers(java.util.List)` was removed
-* `withGroupId(java.lang.String)` was removed
 * `withRequiredZoneNames(java.util.List)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withRequiredMembers(java.util.List)` was removed
 
 #### `models.ArmIdentity` was modified
 
@@ -68,20 +68,20 @@
 #### `models.RouteCompilationError` was modified
 
 * `RouteCompilationError()` was changed to private access
-* `withMessage(java.lang.String)` was removed
 * `validate()` was removed
-* `withSeverity(models.RouteErrorSeverity)` was removed
 * `withLocation(models.RouteErrorRange)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withSeverity(models.RouteErrorSeverity)` was removed
 
 #### `models.UserSubscriptionQuota` was modified
 
 * `UserSubscriptionQuota()` was changed to private access
+* `withLimit(java.lang.Integer)` was removed
 * `withName(models.Name)` was removed
-* `withId(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 * `withUnit(java.lang.String)` was removed
 * `validate()` was removed
-* `withLimit(java.lang.Integer)` was removed
 * `withCurrentValue(java.lang.Integer)` was removed
 
 #### `models.EventHubConsumerGroupName` was modified
@@ -100,15 +100,15 @@
 
 * `IotHubLocationDescription()` was changed to private access
 * `withLocation(java.lang.String)` was removed
-* `validate()` was removed
 * `withRole(models.IotHubReplicaRoleType)` was removed
+* `validate()` was removed
 
 #### `models.IotHubResources` was modified
 
-* `models.IotHubDescription deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.IotHubDescription delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.IotHubDescription deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.IotHubDescription deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `models.IotHubDescription deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 
 #### `models.RoutingProperties` was modified
 
@@ -187,8 +187,8 @@
 
 #### `models.PrivateEndpointConnections` was modified
 
-* `models.PrivateEndpointConnection delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
 * `models.PrivateEndpointConnection delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.PrivateEndpointConnection delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
 
 #### `models.EventHubProperties` was modified
 
@@ -311,10 +311,10 @@
 
 #### `models.IotHubProperties` was modified
 
-* `iotHubDetails()` was added
-* `deviceHostName()` was added
-* `deviceRegistry()` was added
 * `serviceHostName()` was added
+* `deviceHostName()` was added
+* `iotHubDetails()` was added
+* `deviceRegistry()` was added
 
 #### `models.CertificatePropertiesWithNonce` was modified
 
@@ -322,8 +322,8 @@
 
 #### `models.CertificateProperties` was modified
 
-* `certificateAuthorityResourceId()` was added
 * `withCertificateAuthorityResourceId(java.lang.String)` was added
+* `certificateAuthorityResourceId()` was added
 
 #### `models.RoutingEndpoints` was modified
 
