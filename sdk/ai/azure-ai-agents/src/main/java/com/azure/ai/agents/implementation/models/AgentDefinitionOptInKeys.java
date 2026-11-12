@@ -9,6 +9,11 @@ package com.azure.ai.agents.implementation.models;
  */
 public enum AgentDefinitionOptInKeys {
     /**
+     * Enum value A2AAgents=V1Preview.
+     */
+    A2A_AGENTS_V1_PREVIEW("A2AAgents=V1Preview"),
+
+    /**
      * Enum value WorkflowAgents=V1Preview.
      */
     WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),

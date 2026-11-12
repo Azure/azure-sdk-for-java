@@ -54,4 +54,16 @@ public final class EvaluationRuleActionType extends ExpandableStringEnum<Evaluat
      */
     @Generated
     public static final EvaluationRuleActionType HUMAN_EVALUATION_PREVIEW = fromString("humanEvaluationPreview");
+
+    /**
+     * Evaluate agent traces on the rule's schedule.
+     */
+    @Generated
+    public static final EvaluationRuleActionType TRACE_EVALUATION = fromString("traceEvaluation");
+
+    /**
+     * Evaluate dataset inputs on the rule's schedule.
+     */
+    @Generated
+    public static final EvaluationRuleActionType DATASET_EVALUATION = fromString("datasetEvaluation");
 }

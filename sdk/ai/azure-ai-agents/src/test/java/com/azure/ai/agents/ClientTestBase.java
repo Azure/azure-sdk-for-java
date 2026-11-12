@@ -93,11 +93,6 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildAgentsClient();
     }
 
-    protected AgentsClient getPreviewAgentsSyncClient(HttpClient httpClient,
-        AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion, true).buildAgentsClient();
-    }
-
     protected AgentsAsyncClient getAgentsAsyncClient(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion) {
         return getClientBuilder(httpClient, agentsServiceVersion).buildAgentsAsyncClient();
     }

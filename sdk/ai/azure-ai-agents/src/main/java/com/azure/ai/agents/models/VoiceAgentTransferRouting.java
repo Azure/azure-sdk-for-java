@@ -89,15 +89,15 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
     }
 
     /*
-     * Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service defaults to 20 seconds. Must not
-     * exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     * The per-destination ring timeout in seconds, from 1 to 300. If omitted, the service defaults to 20 seconds. Must
+     * not exceed the tool's execution timeout. ACS allows at most 180 seconds.
      */
     @Generated
     private Long ringTimeout;
 
     /**
-     * Get the ringTimeout property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
-     * defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     * Get the ringTimeout property: The per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
+     * defaults to 20 seconds. Must not exceed the tool's execution timeout. ACS allows at most 180 seconds.
      *
      * @return the ringTimeout value.
      */
@@ -110,8 +110,8 @@ public final class VoiceAgentTransferRouting implements JsonSerializable<VoiceAg
     }
 
     /**
-     * Set the ringTimeout property: Per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
-     * defaults to 20 seconds. Must not exceed the tool's timeout_seconds. ACS allows at most 180 seconds.
+     * Set the ringTimeout property: The per-destination ring timeout in seconds, from 1 to 300. If omitted, the service
+     * defaults to 20 seconds. Must not exceed the tool's execution timeout. ACS allows at most 180 seconds.
      *
      * @param ringTimeout the ringTimeout value to set.
      * @return the VoiceAgentTransferRouting object itself.
