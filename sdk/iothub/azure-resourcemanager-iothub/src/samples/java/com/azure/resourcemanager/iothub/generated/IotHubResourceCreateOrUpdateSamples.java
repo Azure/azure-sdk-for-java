@@ -11,7 +11,6 @@ import com.azure.resourcemanager.iothub.models.DefaultAction;
 import com.azure.resourcemanager.iothub.models.EventHubProperties;
 import com.azure.resourcemanager.iothub.models.EventStreamAuthenticationType;
 import com.azure.resourcemanager.iothub.models.FallbackRouteProperties;
-import com.azure.resourcemanager.iothub.models.FallbackRouteSource;
 import com.azure.resourcemanager.iothub.models.FeedbackProperties;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSku;
@@ -75,7 +74,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
                         .withEndpointNames(Arrays.asList("events"))
                         .withIsEnabled(true)))
                     .withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
-                        .withSource(FallbackRouteSource.DEVICE_MESSAGES)
+                        .withSource(RoutingSource.DEVICE_MESSAGES)
                         .withCondition("true")
                         .withEndpointNames(Arrays.asList("events"))
                         .withIsEnabled(true)))
@@ -141,7 +140,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
                         .withSourceId("33333333-3333-3333-3333-333333333333"))))
                     .withRoutes(Arrays.asList())
                     .withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
-                        .withSource(FallbackRouteSource.DEVICE_MESSAGES)
+                        .withSource(RoutingSource.DEVICE_MESSAGES)
                         .withCondition("true")
                         .withEndpointNames(Arrays.asList("events"))
                         .withIsEnabled(true)))

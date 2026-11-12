@@ -127,9 +127,7 @@
 
 #### `models.FallbackRouteProperties` was modified
 
-* `withSource(models.RoutingSource)` was removed
 * `validate()` was removed
-* `models.RoutingSource source()` -> `models.FallbackRouteSource source()`
 
 #### `models.CertificatePropertiesWithNonce` was modified
 
@@ -285,8 +283,6 @@
 
 ### Features Added
 
-* `models.FallbackRouteSource` was added
-
 * `models.DeviceRegistryLinkingProperties` was added
 
 * `models.DeviceRegistry` was added
@@ -319,10 +315,6 @@
 * `deviceHostName()` was added
 * `deviceRegistry()` was added
 * `serviceHostName()` was added
-
-#### `models.FallbackRouteProperties` was modified
-
-* `withSource(models.FallbackRouteSource)` was added
 
 #### `models.CertificatePropertiesWithNonce` was modified
 

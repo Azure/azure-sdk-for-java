@@ -6,7 +6,7 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.FallbackRouteProperties;
-import com.azure.resourcemanager.iothub.models.FallbackRouteSource;
+import com.azure.resourcemanager.iothub.models.RoutingSource;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,10 +14,10 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FallbackRouteProperties model = BinaryData.fromString(
-            "{\"name\":\"debfqkkrbmpukgri\",\"source\":\"DeviceMessages\",\"condition\":\"zlfbxzpuzycispnq\",\"endpointNames\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"isEnabled\":false}")
+            "{\"name\":\"debfqkkrbmpukgri\",\"source\":\"TwinChangeEvents\",\"condition\":\"zlfbxzpuzycispnq\",\"endpointNames\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"isEnabled\":false}")
             .toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("debfqkkrbmpukgri", model.name());
-        Assertions.assertEquals(FallbackRouteSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
         Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
         Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());
@@ -26,13 +26,13 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FallbackRouteProperties model = new FallbackRouteProperties().withName("debfqkkrbmpukgri")
-            .withSource(FallbackRouteSource.DEVICE_MESSAGES)
+            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
             .withCondition("zlfbxzpuzycispnq")
             .withEndpointNames(Arrays.asList("hmgkbrpyy", "hibnuqqkpika"))
             .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("debfqkkrbmpukgri", model.name());
-        Assertions.assertEquals(FallbackRouteSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
         Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
         Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());
