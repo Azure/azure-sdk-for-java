@@ -28,7 +28,6 @@ class;com.azure.ai.agents.models.FabricIqPreviewToolboxTool;Preview API. preview
 field;com.azure.ai.agents.models.GenerateVoiceAgentRequest;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.GitHubCopilotHarness;Preview API. GitHubCopilot=V1Preview;
 class;com.azure.ai.agents.models.GitHubCopilotToolsetPreview;Preview API. GitHubCopilot=V1Preview;
-field;com.azure.ai.agents.models.HostedAgentDefinition;Preview API. A2AAgents=V1Preview;protocol_versions
 class;com.azure.ai.agents.models.InlineVoiceSubagent;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.LiveAllowedServerEventParam;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.LiveAllowedToolsChoiceParam;Preview API. VoiceAgents=V1Preview;

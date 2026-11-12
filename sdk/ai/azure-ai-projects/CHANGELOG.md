@@ -1,46 +1,67 @@
 # Release History
 
-## 2.10.0 (Unreleased)
+## 2.10.0 (2026-11-13)
 
 ### Features Added
 
+- Promoted Agent Insights monitors, runs, insights, and related models to GA through `AgentInsightMonitorsClient` and
+  `AgentInsightMonitorsAsyncClient`. Build these clients directly through `AIProjectClientBuilder`; the Agent Insights
+  preview header is no longer required.
+- Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for filtered paging. Each options object contains
+  the monitor ID as well as cursors, page size, ordering, and operation-specific filters.
+- Added monitor priorities through `AgentInsightPriorities` and `AgentInsightPrioritiesDetails`, and generated agent
+  summaries through `AgentInsightSummary`.
+- Added scheduled dataset and trace evaluation rules through `DatasetEvaluationRuleAction`,
+  `TraceEvaluationRuleAction`, `EvaluationRule.schedule`, timer-trigger events, and schedule provisioning status/error
+  reporting. Scheduling trigger and recurrence models are now GA.
+- Added evaluation run data sources for CSV files, target completions, traces, and user-conversation simulation.
+  Trace selection supports trace and conversation IDs, agent filters, time ranges, sampling, and ingestion delay.
+  Added item-generation parameters for response retrieval, synthetic data generation, target completions, and
+  red teaming with seed prompts and taxonomies.
 - Added typed `DatasetEvaluationSource`, `TraceEvaluationSource`, and `UserConversationSimulationSource` unions with
-  overloaded `of(...)` factories for evaluation rule actions and conversation simulation data sources.
-- Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for listing monitor insights and runs.
-- Refined item-generation parameter names, turn-count properties, trace and trigger timestamps, ingestion delay,
-  evaluation IDs, and agent-insight details and update options.
-- Added `TimeZone` properties to cron and one-time triggers, preserving string time-zone IDs on the wire.
-- Expanded `Eval` to `Evaluation` throughout the Java evaluation run data-source hierarchy and CSV file-ID source, with
-  `TraceSourceEvaluationRunDataSource`, `TraceSourcePreviewEvaluationRunDataSource`, and `CsvEvaluationRunDataSource`
-  variant names. The shared TypeSpec names retain `Eval`, and wire discriminators are unchanged.
+  overloaded `of(...)` factories and typed getters. Standard and preview conversation simulation data sources share
+  `UserConversationSimulationSource`. Evaluation sources reuse OpenAI types directly where applicable; simulation
+  scenarios and evaluation-model settings reuse Agents types.
+- Expanded evaluator generation with optional model selection, dimensions, generated weights, pass thresholds, and
+  explicit trace IDs. Added preview quality/safety categories, Boolean/Likert rubric scoring, dimension eligibility,
+  and endpoint evaluator schema-version selection.
+- Added preview evaluator diagnostics through `BetaEvaluatorsClient.listEvaluatorDiagnostics` and the asynchronous
+  equivalent, including dimension, definition, version-change, and health diagnostics.
+- Added preview conversation data generation with sample limits, redaction, descriptions, rubrics, and model options,
+  plus per-test-case rubric generation for trace jobs. Data-generation results now expose warnings and warning codes.
+- Added `deleteSkillVersion` and `deleteSkillVersionWithResponse` to the synchronous and asynchronous beta Skills clients.
+- Added `JobStatus.SKIPPED`.
 
 ### Breaking Changes
 
-- Replaced `BinaryData` source properties on dataset and trace evaluation rule actions and standard and preview
-  conversation simulation data sources with typed source unions.
+- Replaced `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient` with the GA clients. Replace
+  `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and its asynchronous equivalent with
+  `buildAgentInsightMonitorsClient()` and `buildAgentInsightMonitorsAsyncClient()` on the main builder.
+- Replaced `AgentInsightMonitorCreate` inputs with `createAgentInsightMonitor(agentName, modelDeploymentName, ...)`
+  overloads. Replaced `AgentInsightMonitorUpdate` and `AgentInsightUpdate` with `UpdateAgentInsightMonitorOptions`
+  and `UpdateAgentInsightOptions`.
+- Replaced the `AgentInsightRunCreate` convenience-method input with `beginCreateAgentInsightRun(monitorId, ...)`
+  overloads. `AgentInsightRun.getInputs()` now returns `AgentInsightRunInputs`.
 - Replaced the positional convenience overloads of `listAgentInsights` and `listAgentInsightRuns` with options bags.
+  Pass the monitor ID in the options object rather than as a separate method argument.
+- Replaced monitor overview/override models with agent summaries and priorities. `AgentInsightMonitor.getOverview()`
+  is now `getAgentSummary()`, returning `AgentInsightSummary`; removed `AgentInsightsOverview`,
+  `AgentInsightsOverviewOverride`, and `AgentInsightOverviewSource`.
+  Renamed `AgentInsightDetails.getRecommendedActions()` to `getRecommendedAction()`.
+- Renamed cron and recurrence trigger `startTime`/`endTime` accessors to `startAt`/`endAt`.
+  Cron and one-time trigger time zones now use `java.util.TimeZone` instead of `String`.
+- Replaced `DailyRecurrenceSchedule(List<Integer> hours)` with a no-argument constructor and `setHours(...)`.
 
 ### Bugs Fixed
 
-- Restored the model-taking `EvaluatorGenerationInputs` constructor for compatibility.
-- Restored skill and skill-version deletion methods on the synchronous and asynchronous beta Skills clients.
-- Restored the weight-taking `Dimension` constructor and primitive `getWeight()` for compatibility. An unset weight
-  returns zero without configuring a wire weight.
-- Removed obsolete beta agent-insight builder methods and preview-header wiring.
-- Protected evaluation run data-source, item-generation parameter, and trace-source base constructors.
-- Marked `DataGenerationJobType.CONVERSATIONS` as preview.
-- Added missing preview annotations to conversation data generation, trace rubric generation, endpoint evaluator schema
-  versions, rubric-scoring properties, and preview evaluation run data-source variants.
 - Fixed long-running job polling to recognize the service's `cancelled` status as terminal.
 
 ### Other Changes
 
-- Reused the OpenAI JSONL source union for target-completion evaluation sources and response-retrieval parameters.
-- Reused OpenAI JSONL file-source and evaluation input-message reference models instead of generating duplicates.
-- Reused the Agents user-conversation simulation test-case, audio-effects, and user-behavior models for inline evaluation
-  scenarios and simulation defaults instead of generating duplicates.
-- Reused the Agents evaluation model configuration and its voice configuration models for conversation simulation.
-- Regenerated the client with `@azure-tools/openai-typespec` version `1.33.0`.
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated `azure-ai-agents` from `2.9.0` to `2.10.0`.
+- Updated `openai-java` from `4.69.0` to `4.99.0`.
+- Updated `azure-storage-blob` from `12.36.0` to `12.37.2`.
 
 ## 2.9.0 (2026-10-30)
 
