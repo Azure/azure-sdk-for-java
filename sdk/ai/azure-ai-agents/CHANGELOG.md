@@ -66,6 +66,9 @@
   `objectType`, and voice audio/recording `getBlobUri()` accessors to `getBlobUrl()`.
 - Removed unit suffixes from duration-typed voice and telephony accessors. Audio item `getStartOffsetMs()` is now
   `getOffset()`. Transcription segment start/end values and server VAD prefix padding now use `Duration`.
+- Renamed `MemoryStoreDefaultOptions.getDefaultTtlSeconds()` and `setDefaultTtlSeconds(Duration)` to
+  `getDefaultTtl()` and `setDefaultTtl(Duration)`, and `RoutingTraceEntry.getLatencyMs()` to `getLatency()`.
+  Wire values remain in seconds and milliseconds, respectively.
 - Changed voice tool, greeting, interim-response, engine, error, and audio-timestamp type properties from strings to
   typed enums. Recording channel roles now use `VoiceAudioRole`.
 - Changed `VoiceAgentSubagentConfiguration` to a polymorphic base. Use `VoiceAgentDelegateSubagentConfiguration` for
@@ -80,7 +83,8 @@
   `SessionAffinityRequestStrategy`. Removed `SessionAffinitySource.CONVERSATION` and `PREVIOUS_RESPONSE_ID` and added
   `DERIVED_FINGERPRINT`. The documented default affinity strategy is now adaptive rather than sticky.
 - Hosted-agent A2A passthrough requires `Foundry-Features: A2AAgents=V1Preview` when creating or modifying a definition
-  declaring the `a2a` protocol. `allowPreview(true)` adds the opt-in; the protocol-version accessors remain GA.
+  declaring the `a2a` protocol. `allowPreview(true)` adds the opt-in; `HostedAgentDefinition.getProtocolVersions()` and
+  `setProtocolVersions(...)` are now marked preview.
 
 ### Bugs Fixed
 
