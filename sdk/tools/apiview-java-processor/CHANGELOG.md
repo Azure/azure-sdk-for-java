@@ -12,6 +12,7 @@
 - Fail on source JAR processing errors instead of replacing API snapshots with incomplete output.
 - Preserve existing review bundles if generation fails after Maven cleanup.
 - Recognize explicit builder protocols and check required methods independently for each builder.
+- Finish and close compressed JSON output so it can be decompressed successfully.
 
 ### Other Changes
 

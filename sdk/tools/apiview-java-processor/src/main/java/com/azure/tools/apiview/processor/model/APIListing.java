@@ -184,7 +184,9 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
             if (!gzipOutput) {
                 Files.write(outputFile.toPath(), rawJsonBytes);
             } else {
-                new GZIPOutputStream(Files.newOutputStream(outputFile.toPath())).write(rawJsonBytes);
+                try (GZIPOutputStream output = new GZIPOutputStream(Files.newOutputStream(outputFile.toPath()))) {
+                    output.write(rawJsonBytes);
+                }
             }
 
             return rawJsonBytes;
