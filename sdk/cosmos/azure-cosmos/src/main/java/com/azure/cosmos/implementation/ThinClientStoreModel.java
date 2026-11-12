@@ -90,7 +90,18 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        return super.processMessage(request);
+        return Mono.defer(() -> {
+            String originalSessionToken = request.getOriginalSessionToken();
+            if (!SessionTokenHelper.isCompoundSessionToken(originalSessionToken)) {
+                originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            String tokenToRestore = originalSessionToken;
+
+            // Restore before termination reaches retry handling, not in doFinally after it.
+            return super.processMessage(request)
+                .doOnTerminate(() -> SessionTokenHelper.setOriginalSessionToken(request, tokenToRestore))
+                .doOnCancel(() -> SessionTokenHelper.setOriginalSessionToken(request, tokenToRestore));
+        });
     }
 
     @Override

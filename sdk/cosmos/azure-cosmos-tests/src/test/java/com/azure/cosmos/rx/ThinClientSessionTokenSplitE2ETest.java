@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -239,7 +240,7 @@ public class ThinClientSessionTokenSplitE2ETest {
                     assertThat(error.getStatusCode()).isEqualTo(404);
                     assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
                     assertThat(error.getDiagnostics().toString())
-                        .doesNotContain("compound_session_token_scope_unresolved_after_refresh");
+                        .doesNotContain("could not be evaluated");
                 });
             assertThat(negativeRequests.requests).isNotEmpty();
             assertThat(negativeRequests.requests).allSatisfy(attempt -> {
@@ -311,7 +312,20 @@ public class ThinClientSessionTokenSplitE2ETest {
         recorder.clear();
         CosmosItemRequestOptions options = options(original);
         CosmosItemResponse<ObjectNode> response = container.readItem(
-            item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class).block(WAIT);
+            item.get("id").asText(), new PartitionKey(item.get("pk").asText()), options, ObjectNode.class)
+            .doOnError(CosmosException.class, error -> LOGGER.info(
+                "Split read failed: status={}, substatus={}, wireAttempts={}",
+                error.getStatusCode(), error.getSubStatusCode(), recorder.requests.size()))
+            .block(WAIT);
+        LOGGER.info("Split read completed: status={}, gatewayStatuses={}, wireAttempts={}, sessionTokenPresentPerAttempt={}",
+            response.getStatusCode(),
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+                .getClientSideRequestStatistics(response.getDiagnostics()).stream()
+                .flatMap(statistics -> statistics.getGatewayStatisticsList().stream())
+                .map(statistics -> statistics.getStatusCode() + "/" + statistics.getSubStatusCode())
+                .collect(Collectors.toList()),
+            recorder.requests.size(),
+            recorder.requests.stream().map(attempt -> attempt.getRight() != null).collect(Collectors.toList()));
         assertThat(response.getItem().get("id")).isEqualTo(item.get("id"));
         assertThat(response.getItem().get("pk")).isEqualTo(item.get("pk"));
         assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));

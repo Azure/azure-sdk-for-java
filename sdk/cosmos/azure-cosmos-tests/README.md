@@ -5,81 +5,37 @@ Library containing tests for azure-cosmos and azure-cosmos-test libraries. Only 
 n/a
 
 ## Key concepts
-n/a
+
+### Gateway V2 compound session tokens
+
+Caller-supplied compound tokens are scoped in `RxDocumentClientImpl` at the existing
+metadata-ready points, using the collection definition and routing map already available.
+Selection reuses `SessionTokenHelper` and the Gateway session eligibility rules, merging
+progress for the target partition and its parents. Preparation returns the final routing
+map so PPCB/PPAF can use its range before dispatch. Scoping reuses these supplied inputs
+rather than looking them up again. `ThinClientStoreModel` serializes the prepared token;
+the inherited session handler preserves intentional omission rather than applying ambient progress.
+
+If the target cannot be resolved, no token segment matches, or the topology does not account
+for every supplied range ID, the SDK refreshes once using the rejected routing map. It then
+resolves the target again and scopes from the original token. Unknown child IDs trigger this
+refresh even if a lower parent token matches the stale topology.
+
+If refreshed metadata still cannot establish a safe scope, the request proceeds without a
+session token and caller progress is not enforced. The existing
+`SessionTokenHelper` diagnostics and logging report the unmatched progress; warning logging
+follows the helper's existing configuration. Metadata, parsing, and merge errors propagate;
+there is no refresh loop or token-driven transport fallback. Missing pinned physical ranges
+retain range-gone handling. Malformed tokens still fail.
+The original token is preserved across attempts and clones so omission cannot become an
+ambient-session lookup on retry.
+
+The regular and real-split live regression classes run together under the
+`thinclient-endpoint-probe` Maven profile. The split regression also verifies that unattainable
+child progress still fails with session-not-available after refreshing a genuinely stale map.
 
 ## Examples
 n/a
-
-### Gateway V2 live split regression (endpoint-probe CI)
-
-`ThinClientSessionTokenSplitE2ETest` runs in the `thinclientEndpointProbe` TestNG
-group, selected by the `thinclient-endpoint-probe` Maven profile and the existing
-`Cosmos_Live_Test_ThinClient_EndpointProbe` CI stage. That stage supplies the account,
-allows 210 minutes per job, and runs post-job resource cleanup. The profile enables
-HTTP/2 but leaves `COSMOS.THINCLIENT_ENABLED` unset so the connectivity probe decides
-whether Gateway V2 is available.
-
-`ThinClientSessionTokenSplitE2ETest` creates an owned container at **400 RU/s manual
-throughput**, then raises it to **10,100 RU/s**. It uses the same blocking split-wait
-pattern as the vector-search split test: a **15-minute** deadline, **10 seconds**
-between polls, and `SplitTimeoutException` if the partition count does not increase.
-Polls run sequentially, so a slow metadata refresh cannot accumulate timer ticks.
-Each poll logs the throughput replacement's pending status, current RU/s, and observed ranges.
-The overall test timeout remains **20 minutes**. A completed throughput update alone
-is not accepted as proof of a split. If no split is observed, the test fails and cleans up.
-It does not inject synthetic ranges or increase throughput beyond 10,100 RU/s.
-
-Use a global `ACCOUNT_HOST` for an account with **at least two Gateway V2 regions**
-and configure credentials through the existing `cosmos-v4.properties` mechanism.
-The global endpoint and two regional endpoints isolate the positive stale reader,
-the split observer, and a separate stale reader for the negative control. This prevents
-either metadata polling or the positive refreshed read from refreshing the negative
-control's endpoint-shared routing cache. Only the test's own database/container is
-changed or deleted.
-
-To run just this test locally, from the repository root in PowerShell:
-
-```powershell
-mvn -f sdk\cosmos\pom.xml -pl azure-cosmos-tests -am test-compile failsafe:integration-test failsafe:verify `
-  -Pthinclient-endpoint-probe '-Dit.test=ThinClientSessionTokenSplitE2ETest' `
-  '-Dfailsafe.failIfNoSpecifiedTests=false' '-Dgpg.skip=true'
-```
-
-The test calls `readItem` with parent progress/current child metadata, child
-progress/current child metadata, and child progress/stale parent metadata. The
-stale reader refreshes its routing map before sending the scoped token through V2.
-Observation-only HTTP wrappers record the actual session headers (including decoded
-Gateway V2 bytes) and forward every request to the real service. A mixed lower-parent
-and advanced-child progress control must refresh the stale map, stay on V2, and fail
-with 404/1002 instead of succeeding after the child's progress is lost.
-When the initial container has a single range, the parent compound token concatenates
-two genuine responses from that parent; no partition ID or progress is fabricated.
-
-No custom group override is needed; the endpoint-probe suite includes this test
-automatically. It is not part of the force-enabled `thinclient` group. Provisioned
-throughput incurs charges; let the unconditional cleanup finish when debugging.
-
-Explicit compound tokens are scoped in the normal request pipeline, using the collection,
-routing map, and resolved range already available to the operation. There is no separate
-preparation pipeline before hedging. A prepared request or its clones can reuse their
-scoped token while the scope remains valid; independently constructed hedge and retry
-requests scope the original caller token independently.
-
-Scoping uses the existing target/parent token selection. An unresolved target, no matching
-progress, or an unknown token range triggers one routing-map refresh for that preparation.
-The unknown-range check also applies when a parent token matches: V2 can route by EPK to
-a split child without rejecting the client's stale parent map.
-
-If refreshed metadata still cannot establish the scope, the request stays on V2 but
-omits the caller's token; ambient cached progress is not substituted. The WARN message
-and `sessionTokenEvaluationResults` diagnostics explain that the supplied session progress
-is **not enforced**, include a safe reason and request identifiers, and advise checking
-the token/container association and capturing diagnostics for recurring cases. Full
-session tokens are not included in this warning. Do not blindly retry non-idempotent
-writes in response to it. Metadata and token-parsing failures remain errors rather than
-being converted to this weaker-consistency outcome. A fixed physical range that is still
-missing after refresh retains normal range-gone handling; omitting a token does not
-make an invalid physical route usable.
 
 ## Troubleshooting
 n/a

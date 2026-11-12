@@ -244,7 +244,8 @@ class ChangeFeedQueryImpl<T> {
 
         if (
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
-                || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+                || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)
+                || this.client.shouldResolvePartitionKeyRangeForCompoundSessionToken(request)) {
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
@@ -262,18 +263,23 @@ class ChangeFeedQueryImpl<T> {
                                 changeFeedOptionsAccessor().setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
                                 changeFeedOptionsAccessor().setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
+                                return this.client.prepareCompoundSessionToken(
+                                    req, documentCollectionValueHolder.v.getResourceId(),
+                                    documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v);
+                            })
+                            .map(finalRoutingMap -> {
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = this.client
                                     .setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
                                         req,
                                         options,
-                                        collectionRoutingMapValueHolder.v,
-                                        null);
+                                        finalRoutingMap,
+                                        RxDocumentClientImpl.getPreparedCompoundSessionTokenRange(req));
 
                                 this.client
                                     .addPartitionLevelUnavailableRegionsForChangeFeedOperationRequestForPerPartitionCircuitBreaker(
                                         req,
                                         options,
-                                        collectionRoutingMapValueHolder.v,
+                                        finalRoutingMap,
                                         preResolvedPartitionKeyRangeIfAny);
 
                                 if (req.requestContext.getClientRetryPolicySupplier() != null) {
@@ -281,7 +287,7 @@ class ChangeFeedQueryImpl<T> {
                                     documentClientRetryPolicy.onBeforeSendRequest(req);
                                 }
 
-                                return Mono.just(req);
+                                return req;
                             });
                     }));
         } else {

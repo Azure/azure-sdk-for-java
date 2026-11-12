@@ -130,7 +130,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1930,12 +1929,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> deleteAllItemsByPartitionKey(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy, OperationContextAndListenerTuple operationContextAndListenerTuple) {
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
-                RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
-                return storeProxy.processMessage(requestPopulated, operationContextAndListenerTuple);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated, operationContextAndListenerTuple);
             });
     }
 
@@ -2627,26 +2625,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                        return prepareCompoundSessionToken(request, documentCollectionValueHolder.v.getResourceId(),
+                            documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v);
+                    })
+                    .map(finalRoutingMap -> {
                         PartitionKeyRange preResolvePartitionKeyRangeIfAny
                             = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                             request,
                             options,
-                            collectionRoutingMapValueHolder.v,
+                            finalRoutingMap,
                             requestRetryPolicy,
                             true,
-                            null);
+                            getPreparedCompoundSessionTokenRange(request));
 
                         addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                             request,
                             options,
-                            collectionRoutingMapValueHolder.v,
+                            finalRoutingMap,
                             requestRetryPolicy,
                             preResolvePartitionKeyRangeIfAny);
 
-                        return prepareSessionTokenForOperation(
-                            request,
-                            documentCollectionValueHolder.v,
-                            collectionRoutingMapValueHolder.v);
+                        return request;
                     });
             });
     }
@@ -2736,8 +2735,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
         if (this.requiresFeedRangeFiltering(request)) {
-            String previousCollectionRid = request.requestContext.resolvedCollectionRid;
-            PartitionKeyRange previousRange = request.requestContext.resolvedPartitionKeyRange;
             return request.getFeedRange()
                           .populateFeedRangeFilteringHeaders(
                               this.getPartitionKeyRangeCache(),
@@ -2753,13 +2750,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                       return Mono.just(documentCollectionValueHolder);
                                   })
                           )
-                          .doOnNext(filtered -> invalidateSessionTokenOnScopeChange(
-                              filtered, previousCollectionRid, previousRange))
-                          .flatMap(this::populateAuthorizationHeader)
-                          .flatMap(this::prepareSessionTokenForAttempt);
+                          .flatMap(this::populateAuthorizationHeader);
         }
 
-        return this.populateAuthorizationHeader(request).flatMap(this::prepareSessionTokenForAttempt);
+        return this.populateAuthorizationHeader(request);
     }
 
     private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
@@ -2873,12 +2867,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                    OperationContextAndListenerTuple operationContextAndListenerTuple) {
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
-                RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
-                return storeProxy.processMessage(requestPopulated, operationContextAndListenerTuple);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated, operationContextAndListenerTuple);
             });
     }
 
@@ -3040,7 +3033,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         request,
                         documentCollectionValueHolder.v)
-                        .flatMap(collectionRoutingMapValueHolder -> {
+                        .flatMap(collectionRoutingMapValueHolder -> prepareCompoundSessionToken(
+                            request, documentCollectionValueHolder.v.getResourceId(),
+                            documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v))
+                        .flatMap(finalRoutingMap -> {
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
@@ -3048,15 +3044,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
-                                collectionRoutingMapValueHolder.v,
+                                finalRoutingMap,
                                 requestRetryPolicy,
                                 true,
-                                null);
+                                getPreparedCompoundSessionTokenRange(request));
 
                             addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                 request,
                                 options,
-                                collectionRoutingMapValueHolder.v,
+                                finalRoutingMap,
                                 requestRetryPolicy,
                                 preResolvedPartitionKeyRangeIfAny);
 
@@ -3068,14 +3064,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             // to the RxDocumentServiceRequest instance
                             mergeContextInformationIntoDiagnosticsForPointRequest(request, crossRegionAvailabilityContextForRequest);
 
-                            return prepareSessionTokenForOperation(
-                                request,
-                                documentCollectionValueHolder.v,
-                                collectionRoutingMapValueHolder.v)
-                                .flatMap(scoped -> create(
-                                    scoped,
-                                    requestRetryPolicy,
-                                    getOperationContextAndListenerTuple(options)));
+                            return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
 
                         })
                         .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -3430,7 +3419,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         request,
                         documentCollectionValueHolder.v)
-                        .flatMap(collectionRoutingMapValueHolder -> {
+                        .flatMap(collectionRoutingMapValueHolder -> prepareCompoundSessionToken(
+                            request, documentCollectionValueHolder.v.getResourceId(),
+                            documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v))
+                        .flatMap(finalRoutingMap -> {
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
                             request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
@@ -3438,15 +3430,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
-                                collectionRoutingMapValueHolder.v,
+                                finalRoutingMap,
                                 retryPolicyInstance,
                                 true,
-                                null);
+                                getPreparedCompoundSessionTokenRange(request));
 
                             addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                 request,
                                 options,
-                                collectionRoutingMapValueHolder.v,
+                                finalRoutingMap,
                                 retryPolicyInstance,
                                 preResolvedPartitionKeyRangeIfAny);
 
@@ -3458,14 +3450,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             // to the RxDocumentServiceRequest instance
                             mergeContextInformationIntoDiagnosticsForPointRequest(request, crossRegionAvailabilityContextForRequest);
 
-                            return prepareSessionTokenForOperation(
-                                request,
-                                documentCollectionValueHolder.v,
-                                collectionRoutingMapValueHolder.v)
-                                .flatMap(scoped -> upsert(
-                                    scoped,
-                                    retryPolicyInstance,
-                                    getOperationContextAndListenerTuple(options)));
+                            return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                         })
                         .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
@@ -3699,22 +3684,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     documentCollectionValueHolder.v)
                     .flatMap(collectionRoutingMapValueHolder -> {
 
-                        return requestObs.flatMap(req -> {
+                        return requestObs.flatMap(req -> prepareCompoundSessionToken(
+                            req, documentCollectionValueHolder.v.getResourceId(),
+                            documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v)
+                            .flatMap(finalRoutingMap -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     true,
-                                    null);
+                                    getPreparedCompoundSessionTokenRange(req));
 
                                 addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
@@ -3726,14 +3714,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // to the RxDocumentServiceRequest instance
                                 mergeContextInformationIntoDiagnosticsForPointRequest(request, crossRegionAvailabilityContextForRequest);
 
-                                return prepareSessionTokenForOperation(
-                                    request,
-                                    documentCollectionValueHolder.v,
-                                    collectionRoutingMapValueHolder.v)
-                                    .flatMap(scoped -> replace(
-                                        scoped,
-                                        retryPolicyInstance));
-                            })
+                                return replace(request, retryPolicyInstance);
+                            }))
                             .map(resp -> toResourceResponse(resp, Document.class));
                     });
             });
@@ -3947,7 +3929,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     .flatMap(collectionRoutingMapValueHolder -> {
 
                         return requestObs
-                            .flatMap(req -> {
+                            .flatMap(req -> prepareCompoundSessionToken(
+                                req, documentCollectionValueHolder.v.getResourceId(),
+                                documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v)
+                                .flatMap(finalRoutingMap -> {
 
                                 checkNotNull(options, "Argument 'options' cannot be null!");
 
@@ -3956,15 +3941,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     true,
-                                    null);
+                                    getPreparedCompoundSessionTokenRange(req));
 
                                 addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
@@ -3976,14 +3961,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // to the RxDocumentServiceRequest instance
                                 mergeContextInformationIntoDiagnosticsForPointRequest(request, crossRegionAvailabilityContextForRequest);
 
-                                return prepareSessionTokenForOperation(
-                                    request,
-                                    documentCollectionValueHolder.v,
-                                    collectionRoutingMapValueHolder.v)
-                                    .flatMap(scoped -> patch(
-                                        scoped,
-                                        retryPolicyInstance));
-                            })
+                                return patch(request, retryPolicyInstance);
+                            }))
                             .map(resp -> toResourceResponse(resp, Document.class));
                     });
             });
@@ -4146,7 +4125,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                     .flatMap(collectionRoutingMapValueHolder -> {
                         return requestObs
-                            .flatMap(req -> {
+                            .flatMap(req -> prepareCompoundSessionToken(
+                                req, documentCollectionValueHolder.v.getResourceId(),
+                                documentCollectionValueHolder.v.getPartitionKey(), collectionRoutingMapValueHolder.v)
+                                .flatMap(finalRoutingMap -> {
 
                                 checkNotNull(options, "Argument 'options' cannot be null!");
 
@@ -4155,15 +4137,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     true,
-                                    null);
+                                    getPreparedCompoundSessionTokenRange(req));
 
                                 addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
@@ -4175,15 +4157,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // to the RxDocumentServiceRequest instance
                                 mergeContextInformationIntoDiagnosticsForPointRequest(req, crossRegionAvailabilityContextForRequest);
 
-                                return prepareSessionTokenForOperation(
-                                    req,
-                                    documentCollectionValueHolder.v,
-                                    collectionRoutingMapValueHolder.v)
-                                    .flatMap(scoped -> this.delete(
-                                        scoped,
-                                        retryPolicyInstance,
-                                        getOperationContextAndListenerTuple(options)));
-                            })
+                                return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                            }))
                             .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
                     }));
@@ -4370,7 +4345,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 collectionObs,
                                 crossRegionAvailabilityContextForRequest);
 
-                            return requestObs.flatMap(req -> {
+                            return requestObs.flatMap(req -> prepareCompoundSessionToken(
+                                req, documentCollection.getResourceId(), documentCollection.getPartitionKey(),
+                                collectionRoutingMapValueHolder.v)
+                                .flatMap(finalRoutingMap -> {
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
                                 req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
@@ -4378,15 +4356,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     false,
-                                    null);
+                                    getPreparedCompoundSessionTokenRange(req));
 
                                 addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
                                     req,
                                     options,
-                                    collectionRoutingMapValueHolder.v,
+                                    finalRoutingMap,
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
@@ -4398,15 +4376,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // to the RxDocumentServiceRequest instance
                                 mergeContextInformationIntoDiagnosticsForPointRequest(req, crossRegionAvailabilityContextForRequest);
 
-                                return prepareSessionTokenForOperation(
-                                    req,
-                                    documentCollectionValueHolder.v,
-                                    collectionRoutingMapValueHolder.v)
-                                    .flatMap(scoped -> this.read(
-                                        scoped,
-                                        retryPolicyInstance))
+                                return this.read(req, retryPolicyInstance)
                                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
-                            });
+                            }));
 
                         });
 
@@ -5767,7 +5739,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions, DocumentClientRetryPolicy documentClientRetryPolicy) {
 
-                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request) || RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
+                    || RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)
+                    || RxDocumentClientImpl.this.shouldResolvePartitionKeyRangeForCompoundSessionToken(request)) {
 
                     String collectionRid = queryOptionsAccessor()
                         .getCollectionRid(queryRequestOptions);
@@ -5781,17 +5755,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
                             }
 
+                            return RxDocumentClientImpl.this.prepareCompoundSessionToken(
+                                request, collectionRid, queryOptionsAccessor().getPartitionKeyDefinition(queryRequestOptions),
+                                collectionRoutingMapValueHolder.v);
+                        })
+                        .map(finalRoutingMap -> {
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny
                                 = RxDocumentClientImpl.this.setPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
                                 request,
                                 queryRequestOptions,
-                                collectionRoutingMapValueHolder.v,
-                                null);
+                                finalRoutingMap,
+                                getPreparedCompoundSessionTokenRange(request));
 
                             RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequestForPerPartitionCircuitBreaker(
                                 request,
                                 queryRequestOptions,
-                                collectionRoutingMapValueHolder.v,
+                                finalRoutingMap,
                                 preResolvedPartitionKeyRangeIfAny);
 
                             // onBeforeSendRequest uses excluded regions to know the next location endpoint
@@ -5800,7 +5779,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 documentClientRetryPolicy.onBeforeSendRequest(request);
                             }
 
-                            return Mono.just(request);
+                            return request;
                         });
                 } else {
                     return Mono.just(request);
@@ -6402,7 +6381,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ResourceType.StoredProcedure, path,
                     procedureParams != null && !procedureParams.isEmpty() ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
-            request.setOriginalSessionToken(requestHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN));
 
             if (options != null) {
                 request.requestContext.setExcludeRegions(options.getExcludedRegions());
@@ -6421,7 +6399,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     options,
                     null,
                     PartitionKeyPolicy.PASS_THROUGH);
-            return reqObs.flatMap(req -> create(request, retryPolicy, getOperationContextAndListenerTuple(options))
+            return reqObs.flatMap(req -> {
+                if (!shouldScopeCompoundSessionToken(req)) {
+                    return Mono.just(req);
+                }
+                MetadataDiagnosticsContext diagnostics = BridgeInternal.getMetaDataDiagnosticContext(
+                    req.requestContext.cosmosDiagnostics);
+                return this.collectionCache.resolveCollectionAsync(diagnostics, req)
+                    .flatMap(collection -> lookupCollectionRoutingMapWithRetry(diagnostics, req, collection.v)
+                        .flatMap(map -> prepareCompoundSessionToken(
+                            req, collection.v.getResourceId(), collection.v.getPartitionKey(), map.v)))
+                    .thenReturn(req);
+            }).flatMap(req -> create(req, retryPolicy, getOperationContextAndListenerTuple(options))
                     .map(response -> {
                         this.captureSessionToken(request, response);
                         return toStoredProcedureResponse(response);
@@ -7599,150 +7588,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         });
     }
 
-    private Mono<RxDocumentServiceRequest> prepareSessionTokenForOperation(
-        RxDocumentServiceRequest request,
-        DocumentCollection collection,
-        CollectionRoutingMap routingMap) {
-        if (request.getOriginalSessionToken() == null) {
-            request.setOriginalSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-        }
-        request.useThinClientMode = !request.useGatewayMode && useThinClientStoreModel(request);
-        if (!request.useThinClientMode
-            || !SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
-            || !this.thinProxy.shouldApplySessionToken(request)) {
-            return Mono.just(request);
-        }
-
-        return Mono.defer(() -> {
-            if (routingMap == null) {
-                return Mono.error(new NotFoundException("Collection routing map could not be resolved."));
-            }
-            String original = request.getOriginalSessionToken();
-            request.requestContext.resolvedCollectionRid = collection.getResourceId();
-            request.requestContext.resolvedPartitionKeyRange =
-                SessionTokenHelper.resolveSessionTokenRange(request, collection, routingMap);
-            ISessionToken token = SessionTokenHelper.resolveExplicitSessionToken(request, original);
-            boolean knownRanges = SessionTokenHelper.areSessionTokenRangesKnown(
-                original, routingMap, request.requestContext.resolvedPartitionKeyRange);
-            if (token != null && knownRanges) {
-                SessionTokenHelper.applyScopedSessionToken(request, original, token);
-                return Mono.just(request);
-            }
-
-            ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
-                .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
-            MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
-            return this.partitionKeyRangeCache.tryLookupAsync(
-                diagnostics, collection.getResourceId(), routingMap, request.properties).map(refreshed -> {
-                    if (refreshed == null || refreshed.v == null) {
-                        throw new NotFoundException("Collection routing map could not be refreshed.");
-                    }
-                    request.requestContext.resolvedPartitionKeyRange =
-                        SessionTokenHelper.resolveSessionTokenRange(request, collection, refreshed.v);
-                    if (request.requestContext.resolvedPartitionKeyRange == null
-                        && request.getPartitionKeyRangeIdentity() != null) {
-                        throw new PartitionKeyRangeGoneException();
-                    }
-                    ISessionToken scoped = SessionTokenHelper.resolveExplicitSessionToken(request, original);
-                    boolean recognized = SessionTokenHelper.areSessionTokenRangesKnown(
-                        original, refreshed.v, request.requestContext.resolvedPartitionKeyRange);
-                    SessionTokenHelper.applyScopedSessionToken(request, original, recognized ? scoped : null);
-                    if (!recognized || scoped == null) {
-                        SessionTokenHelper.warnUnscopedSessionToken(request,
-                            request.requestContext.resolvedPartitionKeyRange == null ? "unresolved_target"
-                                : !recognized ? "unknown_range_or_ancestry" : "no_target_or_parent_progress");
-                    }
-                    return request;
-                });
-        });
-    }
-
-    private Mono<RxDocumentServiceRequest> prepareSessionTokenForAttempt(
-        RxDocumentServiceRequest request) {
-        request.useThinClientMode = !request.useGatewayMode && useThinClientStoreModel(request);
-        String original = request.getOriginalSessionToken();
-        if (!SessionTokenHelper.isCompoundSessionToken(original)) {
-            return Mono.just(request);
-        }
-        if (!request.useThinClientMode) {
-            SessionTokenHelper.setOriginalSessionToken(request, original);
-            return Mono.just(request);
-        }
-        if (!this.thinProxy.shouldApplySessionToken(request)) {
-            return Mono.just(request);
-        }
-        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-        String intendedRid = request.getHeaders().get(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
-        String header = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        if (hasPreparedSessionToken(request)
-            && !request.isForceNameCacheRefresh()
-            && !request.forceCollectionRoutingMapRefresh
-            && !request.forcePartitionKeyRangeRefresh
-            && (request.requestContext.sessionToken == null
-                || (range != null && header != null && header.startsWith(range.getId() + ":")))
-            && (identity == null || (range != null && range.getId().equals(identity.getPartitionKeyRangeId())
-                && (identity.getCollectionRid() == null
-                    || identity.getCollectionRid().equals(request.requestContext.resolvedCollectionRid))))
-            && (StringUtils.isEmpty(intendedRid) || intendedRid.equals(request.requestContext.resolvedCollectionRid))) {
-            return Mono.just(request);
-        }
-        if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
-            return Mono.error(new IllegalStateException("Session token resolution requires metadata caches."));
-        }
-        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
-            .getCosmosDiagnosticsAccessor().getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
-        MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
-        return this.collectionCache.resolveCollectionAsync(diagnostics, request).flatMap(collection -> {
-            if (collection == null || collection.v == null) {
-                return Mono.error(new NotFoundException("Collection could not be resolved."));
-            }
-            return this.partitionKeyRangeCache.tryLookupAsync(
-                diagnostics, collection.v.getResourceId(), null, request.properties)
-                .flatMap(map -> prepareSessionTokenForOperation(
-                    request, collection.v, map == null ? null : map.v));
-        });
-    }
-
-    private static boolean hasPreparedSessionToken(RxDocumentServiceRequest request) {
-        return SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
-            && !Objects.equals(request.getOriginalSessionToken(),
-                request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-    }
-
-    private static boolean hasSamePartitionKeyRange(PartitionKeyRange range, PartitionKeyRange previousRange) {
-        return Objects.equals(range == null ? null : range.getId(), previousRange == null ? null : previousRange.getId())
-            && new HashSet<>(range == null || range.getParents() == null ? Collections.emptyList() : range.getParents())
-                .equals(new HashSet<>(previousRange == null || previousRange.getParents() == null
-                    ? Collections.emptyList() : previousRange.getParents()));
-    }
-
-    private static void setResolvedPartitionKeyRange(RxDocumentServiceRequest request, PartitionKeyRange range) {
-        PartitionKeyRange previous = request.requestContext.resolvedPartitionKeyRange;
-        request.requestContext.resolvedPartitionKeyRange = range;
-        invalidateSessionTokenOnScopeChange(request, request.requestContext.resolvedCollectionRid, previous);
-    }
-
-    private static void invalidateSessionTokenOnScopeChange(
-        RxDocumentServiceRequest request, String previousCollectionRid, PartitionKeyRange previousRange) {
-        if (request.useThinClientMode && hasPreparedSessionToken(request)
-            && (!Objects.equals(previousCollectionRid, request.requestContext.resolvedCollectionRid)
-                || !hasSamePartitionKeyRange(previousRange, request.requestContext.resolvedPartitionKeyRange))) {
-            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
-            request.requestContext.sessionToken = null;
-        }
-    }
-
-    private static RxDocumentServiceRequest clonePreparedRequest(RxDocumentServiceRequest request) {
-        RxDocumentServiceRequest clone = request.clone();
-        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        if (range != null) {
-            clone.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(range.getPropertyBag().deepCopy());
-        }
-        clone.requestContext.getSessionTokenEvaluationResults().addAll(request.requestContext.getSessionTokenEvaluationResults());
-        return clone;
-    }
-
     /**
      * Certain requests must be routed through gateway even when the client connectivity mode is direct.
      *
@@ -7750,15 +7595,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        boolean useThinClient = !request.useGatewayMode && useThinClientStoreModel(request);
+        if (useThinClient && this.thinProxy.shouldApplySessionToken(request)
+            && (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+                || SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)))) {
+            // Do not switch into V2 after preparation skipped it.
+            useThinClient = request.useThinClientMode
+                && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken());
+        }
+        request.useThinClientMode = useThinClient;
+        if (useThinClient) {
+            if (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+                && request.requestContext.sessionToken == null && this.thinProxy.shouldApplySessionToken(request)
+                && Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+                PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+                SessionTokenHelper.recordUnmatchedSessionToken(
+                    request, request.getOriginalSessionToken(), range != null ? range.getId() : "");
+            }
+            return this.thinProxy;
+        }
+        if (SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())) {
+            SessionTokenHelper.setOriginalSessionToken(request, request.getOriginalSessionToken());
+            request.requestContext.sessionToken = null;
+        }
+
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {
             return this.gatewayProxy;
-        }
-
-        if (useThinClientStoreModel(request)) {
-            request.useThinClientMode = true;
-            return this.thinProxy;
         }
 
         ResourceType resourceType = request.getResourceType();
@@ -8059,6 +7923,159 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new FeedRangeEpkImpl(pkRange.toRange());
     }
 
+    boolean shouldResolvePartitionKeyRangeForCompoundSessionToken(RxDocumentServiceRequest request) {
+        String sessionToken = SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+            ? request.getOriginalSessionToken() : request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        return SessionTokenHelper.isCompoundSessionToken(sessionToken)
+            && !request.useGatewayMode
+            && request.getOperationType() != OperationType.QueryPlan
+            && useThinClientStoreModel(request);
+    }
+
+    private boolean shouldScopeCompoundSessionToken(RxDocumentServiceRequest request) {
+        String sessionToken = SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+            ? request.getOriginalSessionToken() : request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        if (!SessionTokenHelper.isCompoundSessionToken(sessionToken)) {
+            return false;
+        }
+
+        request.setOriginalSessionToken(sessionToken);
+        SessionTokenHelper.setOriginalSessionToken(request, sessionToken);
+        request.requestContext.sessionToken = null;
+        request.useThinClientMode = !request.useGatewayMode && useThinClientStoreModel(request);
+        if (!request.useThinClientMode) {
+            return false;
+        }
+        if (!this.thinProxy.shouldApplySessionToken(request)) {
+            request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            request.requestContext.resolvedPartitionKeyRange = null;
+            return false;
+        }
+        return true;
+    }
+
+    Mono<CollectionRoutingMap> prepareCompoundSessionToken(
+        RxDocumentServiceRequest request, String collectionRid,
+        PartitionKeyDefinition definition, CollectionRoutingMap routingMap) {
+
+        if (!shouldScopeCompoundSessionToken(request)) {
+            return Mono.just(routingMap);
+        }
+        String original = request.getOriginalSessionToken();
+        PartitionKeyRange previous = request.requestContext.resolvedPartitionKeyRange;
+        if (previous != null && routingMap.tryGetRangeByPartitionKeyRangeId(previous.getId()) != previous) {
+            previous = null;
+            request.setEffectivePartitionKey(null);
+        }
+        PartitionKeyRange target = resolvePartitionKeyRangeForCompoundSessionToken(
+            request, definition, routingMap, previous);
+        ISessionToken selected = SessionTokenHelper.getLocalSessionToken(
+            original, target != null ? target.getId() : "", target != null ? target.getParents() : null);
+        if (selected != null && SessionTokenHelper.areSessionTokenRangesKnown(original, routingMap, target)) {
+            applyCompoundSessionToken(request, selected);
+            return Mono.just(routingMap);
+        }
+
+        return this.partitionKeyRangeCache.tryLookupAsync(
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+            collectionRid, routingMap, request.properties)
+            .map(refreshed -> {
+                if (refreshed == null || refreshed.v == null) {
+                    throw new CollectionRoutingMapNotFoundException(
+                        "No collection routing map found for collection rid " + collectionRid);
+                }
+                PartitionKeyRange refreshedTarget = resolvePartitionKeyRangeForCompoundSessionToken(
+                    request, definition, refreshed.v, null);
+                if (refreshedTarget == null && request.getPartitionKeyRangeIdentity() != null) {
+                    throw new PartitionKeyRangeGoneException();
+                }
+                ISessionToken refreshedToken = SessionTokenHelper.getLocalSessionToken(
+                    original, refreshedTarget != null ? refreshedTarget.getId() : "",
+                    refreshedTarget != null ? refreshedTarget.getParents() : null);
+                if (!SessionTokenHelper.areSessionTokenRangesKnown(original, refreshed.v, refreshedTarget)) {
+                    refreshedToken = null;
+                }
+                applyCompoundSessionToken(request, refreshedToken);
+                return refreshed.v;
+            });
+    }
+
+    static PartitionKeyRange getPreparedCompoundSessionTokenRange(RxDocumentServiceRequest request) {
+        return request.useThinClientMode && SessionTokenHelper.isCompoundSessionToken(request.getOriginalSessionToken())
+            ? request.requestContext.resolvedPartitionKeyRange : null;
+    }
+
+    private void applyCompoundSessionToken(RxDocumentServiceRequest request, ISessionToken localToken) {
+
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        request.requestContext.sessionToken = localToken;
+        if (localToken != null) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN,
+                SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(range.getId(), localToken.convertToString()));
+        } else {
+            request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        }
+    }
+
+    private PartitionKeyRange tryResolvePartitionKeyRangeForCompoundSessionToken(
+        RxDocumentServiceRequest request,
+        PartitionKeyDefinition partitionKeyDefinition,
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
+
+        if (!shouldResolvePartitionKeyRangeForCompoundSessionToken(request)) {
+            return preResolvedPartitionKeyRangeIfAny;
+        }
+
+        return resolvePartitionKeyRangeForCompoundSessionToken(
+            request, partitionKeyDefinition, collectionRoutingMap, preResolvedPartitionKeyRangeIfAny != null
+                ? preResolvedPartitionKeyRangeIfAny : request.requestContext.resolvedPartitionKeyRange);
+    }
+
+    private PartitionKeyRange resolvePartitionKeyRangeForCompoundSessionToken(
+        RxDocumentServiceRequest request,
+        PartitionKeyDefinition partitionKeyDefinition,
+        CollectionRoutingMap collectionRoutingMap,
+        PartitionKeyRange range) {
+
+        if (range == null) {
+            checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+            if (request.getPartitionKeyRangeIdentity() != null) {
+                range = collectionRoutingMap.getRangeByPartitionKeyRangeId(
+                    request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            } else if (PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, request.getPartitionKeyInternal())) {
+                String effectivePartitionKey = request.getEffectivePartitionKey();
+                if (StringUtils.isEmpty(effectivePartitionKey)) {
+                    effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                        request.getPartitionKeyInternal(), partitionKeyDefinition);
+                    request.setEffectivePartitionKey(effectivePartitionKey);
+                }
+                range = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKey);
+            } else {
+                String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+                String endEpk = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+                if (startEpk != null && endEpk != null
+                    && ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
+                        request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
+                    List<PartitionKeyRange> ranges = collectionRoutingMap.getOverlappingRanges(
+                        new Range<>(startEpk, endEpk, true, false));
+                    if (ranges.size() == 1) {
+                        range = ranges.get(0);
+                    }
+                }
+            }
+        }
+
+        request.requestContext.resolvedPartitionKeyRange = range;
+        if (range == null) {
+            // A prefix key or EPK interval can span multiple physical ranges.
+            logger.debug("No single partition key range resolved for Gateway V2 compound-token request. activityId={}",
+                request.getActivityId());
+        }
+        return range;
+    }
+
     public PartitionKeyRange addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(
         RxDocumentServiceRequest request,
         RequestOptions options,
@@ -8068,6 +8085,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+        preResolvedPartitionKeyRangeIfAny = tryResolvePartitionKeyRangeForCompoundSessionToken(
+            request, options != null ? options.getPartitionKeyDefinition() : null,
+            collectionRoutingMap, preResolvedPartitionKeyRangeIfAny);
 
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
@@ -8079,7 +8100,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8134,7 +8155,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8186,7 +8207,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8234,7 +8255,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8281,6 +8302,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CollectionRoutingMap collectionRoutingMap,
         PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
+        preResolvedPartitionKeyRangeIfAny = tryResolvePartitionKeyRangeForCompoundSessionToken(
+            request, options != null ? queryOptionsAccessor().getPartitionKeyDefinition(options) : null,
+            collectionRoutingMap, preResolvedPartitionKeyRangeIfAny);
+
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
             checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
@@ -8292,7 +8317,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8335,7 +8360,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8372,7 +8397,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (preResolvedPartitionKeyRangeIfAny != null) {
 
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
                 request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = preResolvedPartitionKeyRangeIfAny;
 
                 return preResolvedPartitionKeyRangeIfAny;
@@ -8397,7 +8422,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8418,6 +8443,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CollectionRoutingMap collectionRoutingMap,
         PartitionKeyRange preResolvedPartitionKeyRangeIfAny) {
 
+        preResolvedPartitionKeyRangeIfAny = tryResolvePartitionKeyRangeForCompoundSessionToken(
+            request, options != null ? changeFeedOptionsAccessor().getPartitionKeyDefinition(options) : null,
+            collectionRoutingMap, preResolvedPartitionKeyRangeIfAny);
+
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
             if (preResolvedPartitionKeyRangeIfAny != null) {
@@ -8428,7 +8457,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8464,7 +8493,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8500,7 +8529,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, preResolvedPartitionKeyRangeIfAny);
+                request.requestContext.resolvedPartitionKeyRange = preResolvedPartitionKeyRangeIfAny;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -8529,7 +8558,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // help failover as well)
                 // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
                 // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
-                setResolvedPartitionKeyRange(request, resolvedPartitionKeyRange);
+                request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
                 // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
                 // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
@@ -9019,9 +9048,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         checkNotNull(retryPolicyFactory, "Argument 'retryPolicyFactory' must not be null.");
         checkNotNull(req, "Argument 'req' must not be null.");
-        if (req.getOriginalSessionToken() == null) {
-            req.setOriginalSessionToken(req.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-        }
         assert(resourceType == ResourceType.Document);
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
@@ -9096,7 +9122,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         orderedApplicableRegionsForSpeculation
             .forEach(region -> {
-                RxDocumentServiceRequest clonedRequest = clonePreparedRequest(req);
+                RxDocumentServiceRequest clonedRequest = req.clone();
 
                 if (monoList.isEmpty()) {
                     // no special error handling for transient errors to suppress them here

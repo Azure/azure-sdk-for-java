@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redisenterprise.models.MigrationValidationReque
  */
 public final class MigrationsValidateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationValidateWithDataMigration.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationValidateWithDataMigration.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationValidateWithDataMigration.
@@ -27,7 +27,7 @@ public final class MigrationsValidateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationValidate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationValidate.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationValidate.

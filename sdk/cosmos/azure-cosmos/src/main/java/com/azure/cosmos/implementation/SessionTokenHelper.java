@@ -5,18 +5,14 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.PartitionKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,93 +27,8 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    public static boolean isCompoundSessionToken(String sessionToken) {
-        // Classify without parsing; validation happens when selecting partition-local progress.
+    static boolean isCompoundSessionToken(String sessionToken) {
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
-    }
-
-    public static boolean areSessionTokenRangesKnown(
-        String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
-        if (target == null) {
-            return false;
-        }
-        List<String> parents = target.getParents();
-        for (String segment : StringUtils.split(originalToken, ",")) {
-            String[] parts = StringUtils.split(segment, ":");
-            if (parts.length != 2 || (routingMap.tryGetRangeByPartitionKeyRangeId(parts[0]) == null
-                && (parents == null || !parents.contains(parts[0])))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static ISessionToken resolveExplicitSessionToken(RxDocumentServiceRequest request, String originalToken) {
-        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        return range == null
-            ? getLocalSessionToken(originalToken, Collections.emptySet(), null)
-            : getLocalSessionToken(request, originalToken, range.getId());
-    }
-
-    public static void applyScopedSessionToken(
-        RxDocumentServiceRequest request, String originalToken, ISessionToken token) {
-        request.setOriginalSessionToken(originalToken);
-        request.requestContext.sessionToken = token;
-        setOriginalSessionToken(request, token == null ? null
-            : concatPartitionKeyRangeIdWithSessionToken(
-                request.requestContext.resolvedPartitionKeyRange.getId(), token.convertToString()));
-    }
-
-    public static void warnUnscopedSessionToken(RxDocumentServiceRequest request, String reason) {
-        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
-        String message = String.format(
-            "compound_session_token_scope_unresolved_after_refresh: No applicable caller session token could be "
-                + "selected after refreshing partition-range metadata. Sending this request through Gateway V2 "
-                + "without a session token. The supplied session progress is NOT enforced; read-your-writes may "
-                + "not hold. Reason=%s; collectionRid=%s; rangeId=%s; activityId=%s. Verify that the token belongs "
-                + "to this container. If it does and this warning recurs, capture CosmosDiagnostics and contact support.",
-            reason, request.requestContext.resolvedCollectionRid, range == null ? "unresolved" : range.getId(),
-            request.getActivityId());
-        if (request.requestContext.getSessionTokenEvaluationResults().add(message)) {
-            logger.warn(message);
-        }
-    }
-
-    public static PartitionKeyRange resolveSessionTokenRange(
-        RxDocumentServiceRequest request, DocumentCollection collection, CollectionRoutingMap routingMap) {
-        if (!collection.getResourceId().equals(routingMap.getCollectionUniqueId())) {
-            return null;
-        }
-        PartitionKeyRangeIdentity identity = request.getPartitionKeyRangeIdentity();
-        if (identity != null && identity.getCollectionRid() != null
-            && !identity.getCollectionRid().equals(collection.getResourceId())) {
-            return null;
-        }
-        if (identity != null) {
-            return routingMap.tryGetRangeByPartitionKeyRangeId(identity.getPartitionKeyRangeId());
-        }
-
-        PartitionKeyInternal key = request.getPartitionKeyInternal();
-        if (key != null) {
-            if (collection.getPartitionKey().getKind() == PartitionKind.MULTI_HASH
-                && key.getComponents().size() < collection.getPartitionKey().getPaths().size()) {
-                return null;
-            }
-            PartitionKeyRange resolved = request.requestContext.resolvedPartitionKeyRange;
-            if (resolved != null) {
-                PartitionKeyRange current = routingMap.tryGetRangeByPartitionKeyRangeId(resolved.getId());
-                if (current != null) {
-                    return current;
-                }
-            }
-            String epk = request.getEffectivePartitionKey();
-            if (StringUtils.isEmpty(epk)) {
-                epk = PartitionKeyInternalHelper.getEffectivePartitionKeyString(key, collection.getPartitionKey());
-            }
-            request.setEffectivePartitionKey(epk);
-            return routingMap.getRangeByEffectivePartitionKey(epk);
-        }
-        return null;
     }
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {
@@ -147,30 +58,74 @@ public class SessionTokenHelper {
                 HttpConstants.SubStatusCodes.MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT);
         }
 
+        ISessionToken sessionToken;
         if (StringUtils.isNotEmpty(originalSessionToken)) {
-            request.requestContext.sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
+            sessionToken = getLocalSessionToken(request, originalSessionToken, partitionKeyRangeId);
         } else {
             // use ambient session token.
-            ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, partitionKeyRangeId);
-            request.requestContext.sessionToken = sessionToken;
+            sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, partitionKeyRangeId);
         }
 
-        if (request.requestContext.sessionToken == null) {
+        request.requestContext.sessionToken = sessionToken;
+        if (sessionToken == null) {
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
-            if (StringUtils.isNotEmpty(originalSessionToken)) {
-                recordUnmatchedSessionToken(request, originalSessionToken, partitionKeyRangeId);
-            }
         } else {
-
             request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN,
-                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
+                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
         }
     }
 
-    private static ISessionToken getLocalSessionToken(
-            RxDocumentServiceRequest request,
-            String globalSessionToken,
-            String partitionKeyRangeId) {
+    static ISessionToken getLocalSessionToken(
+        RxDocumentServiceRequest request,
+        String globalSessionToken,
+        String partitionKeyRangeId) {
+
+        Collection<String> parents = request.requestContext.resolvedPartitionKeyRange != null
+            ? request.requestContext.resolvedPartitionKeyRange.getParents() : null;
+        ISessionToken sessionToken = getLocalSessionToken(globalSessionToken, partitionKeyRangeId, parents);
+
+        if (sessionToken == null && StringUtils.isNotEmpty(globalSessionToken)) {
+            recordUnmatchedSessionToken(request, globalSessionToken, partitionKeyRangeId);
+        }
+
+        return sessionToken;
+    }
+
+    static void recordUnmatchedSessionToken(
+        RxDocumentServiceRequest request, String globalSessionToken, String partitionKeyRangeId) {
+
+        String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
+            " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+            "the request will fallback " +
+            "to eventual consistency.";
+        request.requestContext.getSessionTokenEvaluationResults().add(evaluationResult);
+        if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+            logger.warn(evaluationResult);
+        }
+    }
+
+    static boolean areSessionTokenRangesKnown(
+        String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
+
+        if (target == null) {
+            return false;
+        }
+        List<String> parents = target.getParents();
+        for (String segment : StringUtils.split(originalToken, ",")) {
+            String[] parts = StringUtils.split(segment, ":");
+            if (parts.length != 2 || (routingMap.tryGetRangeByPartitionKeyRangeId(parts[0]) == null
+                && (parents == null || !parents.contains(parts[0])))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Selects explicit progress without mutating a request or consulting ambient session state.
+    static ISessionToken getLocalSessionToken(
+        String globalSessionToken,
+        String partitionKeyRangeId,
+        Collection<String> parentPartitionKeyRangeIds) {
 
         if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
@@ -183,20 +138,16 @@ public class SessionTokenHelper {
         //          2:425344,748:2341234,99:42344
         // Local session token is single <partitionkeyrangeid>:<lsn> pair.
         // Backend only cares about pair which relates to the range owned by the partition.
+        String[] localTokens = StringUtils.split(globalSessionToken, ",");
         Set<String> partitionKeyRangeSet = new HashSet<>();
         partitionKeyRangeSet.add(partitionKeyRangeId);
 
-        if (request.requestContext.resolvedPartitionKeyRange != null && request.requestContext.resolvedPartitionKeyRange.getParents() != null) {
-            partitionKeyRangeSet.addAll(request.requestContext.resolvedPartitionKeyRange.getParents());
+        ISessionToken highestSessionToken = null;
+
+        if (parentPartitionKeyRangeIds != null) {
+            partitionKeyRangeSet.addAll(parentPartitionKeyRangeIds);
         }
 
-        return getLocalSessionToken(globalSessionToken, partitionKeyRangeSet, partitionKeyRangeId);
-    }
-
-    private static ISessionToken getLocalSessionToken(
-        String globalSessionToken, Set<String> partitionKeyRangeSet, String partitionKeyRangeId) {
-        String[] localTokens = StringUtils.split(globalSessionToken, ",");
-        ISessionToken highestSessionToken = null;
         for (String localToken : localTokens) {
             String[] items = StringUtils.split(localToken, ":");
             if (items.length != 2) {
@@ -216,16 +167,6 @@ public class SessionTokenHelper {
         }
 
         return highestSessionToken;
-    }
-
-    private static void recordUnmatchedSessionToken(RxDocumentServiceRequest request, String token, String rangeId) {
-        String message = "The session token : " + token + " for pkRangeId : " + rangeId +
-            " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
-            "the request will fallback to eventual consistency.";
-        request.requestContext.getSessionTokenEvaluationResults().add(message);
-        if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
-            logger.warn(message);
-        }
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,

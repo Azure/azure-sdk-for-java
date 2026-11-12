@@ -172,9 +172,9 @@ public class ThinClientSessionTokenE2ETest {
         return new Object[][] {{true, false}, {false, false}, {true, true}, {false, true}};
     }
 
-    // Verify unmatched progress is omitted with diagnostics after refresh without switching away from Gateway V2.
+    // Verify unmatched progress is omitted with helper diagnostics without switching away from Gateway V2.
     @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "targetProgress", timeOut = 90000)
-    public void unrelatedProgressRefreshesAndStaysOnV2(boolean includeTargetProgress, boolean unknownRange) {
+    public void unrelatedProgressStaysOnV2(boolean includeTargetProgress, boolean unknownRange) {
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
             Map.Entry<String, ObjectNode> target = representatives.entrySet().iterator().next();
@@ -198,7 +198,7 @@ public class ThinClientSessionTokenE2ETest {
             TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
             if (unknownRange || !includeTargetProgress) {
                 assertThat(response.getDiagnostics().toString())
-                    .contains("compound_session_token_scope_unresolved_after_refresh", "NOT enforced", "CosmosDiagnostics");
+                    .contains("could not be evaluated");
             }
             assertThat(options.getSessionToken()).isEqualTo(original);
         }

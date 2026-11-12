@@ -13,14 +13,16 @@ public final class BackupStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupStoreDetails model
-            = BinaryData.fromString("{\"sasUriList\":[\"wwnpj\"]}").toObject(BackupStoreDetails.class);
-        Assertions.assertEquals("wwnpj", model.sasUriList().get(0));
+            = BinaryData.fromString("{\"sasUriList\":[\"dzgtil\",\"xhnfhqly\",\"ijouwivkxoyzunb\",\"xxrtikvc\"]}")
+                .toObject(BackupStoreDetails.class);
+        Assertions.assertEquals("dzgtil", model.sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupStoreDetails model = new BackupStoreDetails().withSasUriList(Arrays.asList("wwnpj"));
+        BackupStoreDetails model = new BackupStoreDetails()
+            .withSasUriList(Arrays.asList("dzgtil", "xhnfhqly", "ijouwivkxoyzunb", "xxrtikvc"));
         model = BinaryData.fromObject(model).toObject(BackupStoreDetails.class);
-        Assertions.assertEquals("wwnpj", model.sasUriList().get(0));
+        Assertions.assertEquals("dzgtil", model.sasUriList().get(0));
     }
 }

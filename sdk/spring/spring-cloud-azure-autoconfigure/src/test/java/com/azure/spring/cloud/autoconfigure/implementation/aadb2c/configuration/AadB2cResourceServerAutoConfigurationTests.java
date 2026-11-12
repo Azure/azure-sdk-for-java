@@ -11,13 +11,22 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
@@ -32,13 +41,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtValidationException;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
@@ -48,6 +65,10 @@ import static org.mockito.Mockito.verify;
 class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigurations {
 
     private WebApplicationContextRunner getResourceServerContextRunner() {
+        return getResourceServerContextRunner(getB2CResourceServerProperties());
+    }
+
+    private WebApplicationContextRunner getResourceServerContextRunner(String... propertyValues) {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
             .withConfiguration(AutoConfigurations.of(
@@ -56,7 +77,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 AadB2cResourceServerAutoConfiguration.class,
                 HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
-            .withPropertyValues(getB2CResourceServerProperties());
+            .withPropertyValues(propertyValues);
     }
 
     @Override
@@ -324,6 +345,172 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 assertThat(jwtDecoder).isNotNull();
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
             });
+    }
+
+    @Test
+    void testUserProvidedJwtDecoderIsNotReplaced() {
+        JwtDecoder customDecoder = mock(JwtDecoder.class);
+        getResourceServerContextRunner()
+            .withBean(JwtDecoder.class, () -> customDecoder)
+            .run(context -> {
+                assertThat(context).hasSingleBean(JwtDecoder.class);
+                assertThat(context.getBean(JwtDecoder.class)).isSameAs(customDecoder);
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("userFlowClaims")
+    void testJwtDecoderValidatesConfiguredUserFlows(Map<String, Object> userFlowClaims, boolean valid) throws Exception {
+        JWTClaimsSet.Builder builder = validJwtClaims();
+        userFlowClaims.forEach(builder::claim);
+        JWTClaimsSet claims = builder.build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .run(context -> {
+                JwtDecoder decoder = context.getBean(JwtDecoder.class);
+                if (valid) {
+                    assertThat(decoder.decode(token(claims))).isNotNull();
+                } else {
+                    assertThatExceptionOfType(JwtValidationException.class)
+                        .isThrownBy(() -> decoder.decode(token(claims)))
+                        .withMessageContaining("The tfp or acr claim does not match a configured user flow.");
+                }
+            });
+    }
+
+    private static Stream<Arguments> userFlowClaims() {
+        String allowedFlow = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        return Stream.of(
+            Arguments.of(Map.of("tfp", allowedFlow), true),
+            Arguments.of(Map.of("tfp", "FAKE-SIGN-IN-OR-UP"), true),
+            Arguments.of(Map.of("acr", allowedFlow), true),
+            Arguments.of(Map.of("acr", "FAKE-SIGN-IN-OR-UP"), true),
+            Arguments.of(Map.of("tfp", allowedFlow, "acr", "unconfigured-flow"), true),
+            Arguments.of(Map.of(), false),
+            Arguments.of(Map.of("tfp", "unconfigured-flow"), false),
+            Arguments.of(Map.of("acr", "unconfigured-flow"), false),
+            Arguments.of(Map.of("tfp", AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN), false),
+            Arguments.of(Map.of("tfp", "unconfigured-flow", "acr", allowedFlow), false),
+            Arguments.of(Map.of("tfp", "", "acr", allowedFlow), false),
+            Arguments.of(Map.of("tfp", " ", "acr", allowedFlow), false),
+            Arguments.of(Map.of("tfp", 123, "acr", allowedFlow), false),
+            Arguments.of(Map.of("tfp", Arrays.asList(allowedFlow)), false),
+            Arguments.of(Map.of("acr", 123), false),
+            Arguments.of(Map.of("acr", Arrays.asList(allowedFlow)), false));
+    }
+
+    @Test
+    void testJwtDecoderAcceptsAnyConfiguredUserFlowValue() throws Exception {
+        JWTClaimsSet claims = validJwtClaims().claim("tfp", "PROFILE_EDIT").build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .withPropertyValues(AadB2cConstants.USER_FLOWS + "." + AadB2cConstants.TEST_KEY_PROFILE_EDIT
+                + "=" + AadB2cConstants.TEST_PROFILE_EDIT_NAME)
+            .run(context -> assertThat(context.getBean(JwtDecoder.class).decode(token(claims))).isNotNull());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "tfp", "acr" })
+    void testJwtDecoderRejectsBlankClaimWhenOptionalUserFlowIsEmpty(String claimName) throws Exception {
+        JWTClaimsSet claims = validJwtClaims().claim(claimName, "").build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .withPropertyValues(AadB2cConstants.USER_FLOWS + "." + AadB2cConstants.TEST_KEY_PROFILE_EDIT + "=")
+            .run(context -> {
+                assertThat(context.getBean(AadB2cProperties.class).getUserFlows())
+                    .containsEntry(AadB2cConstants.TEST_KEY_PROFILE_EDIT, "");
+                assertThatExceptionOfType(JwtValidationException.class)
+                    .isThrownBy(() -> context.getBean(JwtDecoder.class).decode(token(claims)))
+                    .withMessageContaining("The tfp or acr claim does not match a configured user flow.");
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "fake-sign-in-or-up", "unconfigured-flow" })
+    void testJwtDecoderValidatesUserFlowWithPolicySpecificIssuer(String userFlow) throws Exception {
+        JWTClaimsSet claims = validJwtClaims()
+            .issuer("https://faketenant.b2clogin.com/tfp/fake-tenant-id/fake-sign-in-or-up/v2.0/")
+            .claim("tfp", userFlow)
+            .build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .run(context -> {
+                JwtDecoder decoder = context.getBean(JwtDecoder.class);
+                if (AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME.equals(userFlow)) {
+                    assertThat(decoder.decode(token(claims))).isNotNull();
+                } else {
+                    assertThatExceptionOfType(JwtValidationException.class)
+                        .isThrownBy(() -> decoder.decode(token(claims)))
+                        .withMessageContaining("The tfp or acr claim does not match a configured user flow.");
+                }
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void testJwtDecoderDoesNotRestrictUserFlowsWhenUnconfigured(boolean includeUserFlowClaim) throws Exception {
+        JWTClaimsSet.Builder builder = validJwtClaims();
+        if (includeUserFlowClaim) {
+            builder.claim("tfp", "unconfigured-flow");
+        }
+        JWTClaimsSet claims = builder.build();
+        String[] propertyValues = Arrays.stream(getB2CResourceServerProperties())
+            .filter(property -> !property.startsWith(AadB2cConstants.USER_FLOWS + "."))
+            .toArray(String[]::new);
+        getContextRunnerWithMockJwtProcessor(claims, propertyValues)
+            .run(context -> assertThat(context.getBean(JwtDecoder.class).decode(token(claims))).isNotNull());
+    }
+
+    @Test
+    void testJwtDecoderRejectsMissingUserFlowClaimWithPolicySpecificIssuer() throws Exception {
+        JWTClaimsSet claims = validJwtClaims()
+            .issuer("https://faketenant.b2clogin.com/tfp/fake-tenant-id/fake-sign-in-or-up/v2.0/")
+            .build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .run(context -> assertThatExceptionOfType(JwtValidationException.class)
+                .isThrownBy(() -> context.getBean(JwtDecoder.class).decode(token(claims)))
+                .withMessageContaining("The tfp or acr claim does not match a configured user flow."));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidJwtClaims")
+    void testJwtDecoderRetainsExistingValidators(String claimName, Object claimValue) throws Exception {
+        JWTClaimsSet claims = validJwtClaims()
+            .claim("tfp", AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME)
+            .claim(claimName, claimValue)
+            .build();
+        getContextRunnerWithMockJwtProcessor(claims, getB2CResourceServerProperties())
+            .run(context -> assertThatExceptionOfType(JwtValidationException.class)
+                .isThrownBy(() -> context.getBean(JwtDecoder.class).decode(token(claims))));
+    }
+
+    private static Stream<Arguments> invalidJwtClaims() {
+        return Stream.of(
+            Arguments.of("aud", Arrays.asList("unconfigured-audience")),
+            Arguments.of("aud", Arrays.asList()),
+            Arguments.of("tid", "unconfigured-tenant"),
+            Arguments.of("iss", "https://untrusted.example.com/v2.0/"),
+            Arguments.of("exp", Date.from(Instant.now().minusSeconds(300))),
+            Arguments.of("nbf", Date.from(Instant.now().plusSeconds(300))));
+    }
+
+    private static JWTClaimsSet.Builder validJwtClaims() {
+        return new JWTClaimsSet.Builder()
+            .subject("fake-subject")
+            .issuer("https://faketenant.b2clogin.com/fake-tenant-id/v2.0/")
+            .audience(AadB2cConstants.TEST_CLIENT_ID)
+            .claim("tid", AadB2cConstants.TEST_TENANT_ID)
+            .issueTime(Date.from(Instant.now().minusSeconds(600)))
+            .expirationTime(Date.from(Instant.now().plusSeconds(300)));
+    }
+
+    private WebApplicationContextRunner getContextRunnerWithMockJwtProcessor(JWTClaimsSet claims,
+                                                                            String... propertyValues) throws Exception {
+        DefaultJWTProcessor<SecurityContext> processor = spy(new DefaultJWTProcessor<>());
+        doReturn(claims).when(processor).process(any(JWT.class), any());
+        return getResourceServerContextRunner(propertyValues)
+            .withBean("jwtProcessor", DefaultJWTProcessor.class, () -> processor);
+    }
+
+    private static String token(JWTClaimsSet claims) {
+        return new JWSHeader(JWSAlgorithm.RS256).toBase64URL() + "."
+            + Base64URL.encode(claims.toString()) + "." + Base64URL.encode("fake-signature");
     }
 
     @Test

@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added batch delete and client-driven purge operations to `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient`. Basic and Standard support up to 500 messages per request, Premium supports up to 4,000, and purge handles smaller batches caused by large messages.
 - Added `ServiceBusProcessorAsyncClient`, an asynchronous processor whose message and error handlers return a
   `reactor.core.publisher.Mono` instead of running as blocking `Consumer` callbacks. It provides the same
   push-based, auto-recovering, concurrency-managed message pump as `ServiceBusProcessorClient` for applications that
