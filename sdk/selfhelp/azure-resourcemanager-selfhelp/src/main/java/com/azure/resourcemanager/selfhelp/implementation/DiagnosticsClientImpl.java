@@ -299,7 +299,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link SyncPoller} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
+    private SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
         String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
         Response<BinaryData> response = createWithResponse(scope, diagnosticsResourceName, diagnosticResourceRequest);
         return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(response,

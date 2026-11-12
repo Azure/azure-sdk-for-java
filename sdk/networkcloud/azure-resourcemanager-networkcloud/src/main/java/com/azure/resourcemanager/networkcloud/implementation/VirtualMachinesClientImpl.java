@@ -546,7 +546,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualMachineName, VirtualMachineInner virtualMachineParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, virtualMachineName,
@@ -841,7 +841,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
         String virtualMachineName, String ifMatch, String ifNoneMatch,
         VirtualMachinePatchParameters virtualMachineUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, virtualMachineName, ifMatch, ifNoneMatch,
@@ -1115,7 +1115,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, virtualMachineName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1628,7 +1628,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginAssignRelay(
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginAssignRelay(
         String resourceGroupName, String virtualMachineName,
         VirtualMachineAssignRelayParameters virtualMachineAssignRelayParameters) {
         Response<BinaryData> response
@@ -1865,7 +1865,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
         String virtualMachineName, VirtualMachinePowerOffParameters virtualMachinePowerOffParameters) {
         Response<BinaryData> response
             = powerOffWithResponse(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters);

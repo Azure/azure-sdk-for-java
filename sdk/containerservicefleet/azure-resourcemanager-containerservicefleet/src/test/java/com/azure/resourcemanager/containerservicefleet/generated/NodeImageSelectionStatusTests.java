@@ -10,8 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection
 public final class NodeImageSelectionStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeImageSelectionStatus model = BinaryData.fromString(
-            "{\"selectedNodeImageVersions\":[{\"version\":\"cjznmwcpmg\"},{\"version\":\"adraufactkahzo\"},{\"version\":\"jjziuxxpsh\"},{\"version\":\"e\"}]}")
+        NodeImageSelectionStatus model = BinaryData
+            .fromString(
+                "{\"selectedNodeImageVersions\":[{\"version\":\"sdshmkxmaehvb\"},{\"version\":\"uripltfnhtba\"}]}")
             .toObject(NodeImageSelectionStatus.class);
     }
 }
