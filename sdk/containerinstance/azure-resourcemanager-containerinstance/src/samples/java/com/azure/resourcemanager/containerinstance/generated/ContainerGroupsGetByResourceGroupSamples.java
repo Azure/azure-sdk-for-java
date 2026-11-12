@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainerGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsGetPriority.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsGetPriority.json
      */
     /**
      * Sample code: ContainerGroupsGetWithPriority.
@@ -24,7 +24,7 @@ public final class ContainerGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsGet_Succeeded.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsGet_Succeeded.json
      */
     /**
      * Sample code: ContainerGroupsGet_Succeeded.
@@ -39,7 +39,7 @@ public final class ContainerGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsGet_Failed.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsGet_Failed.json
      */
     /**
      * Sample code: ContainerGroupsGet_Failed.

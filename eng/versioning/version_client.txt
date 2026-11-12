@@ -266,7 +266,7 @@ com.azure.resourcemanager:azure-resourcemanager-appservice;2.57.1;2.58.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.54.1;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.55.1;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.63.1;2.64.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.54.1;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.54.1;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.56.1;2.57.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.66.1;2.67.0
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.56.1;2.57.0-beta.1
