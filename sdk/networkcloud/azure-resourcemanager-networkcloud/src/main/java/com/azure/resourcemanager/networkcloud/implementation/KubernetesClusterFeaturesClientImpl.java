@@ -437,7 +437,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName,
         KubernetesClusterFeatureInner kubernetesClusterFeatureParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesClusterName,
@@ -749,7 +749,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginUpdate(
+    private SyncPoller<PollResult<KubernetesClusterFeatureInner>, KubernetesClusterFeatureInner> beginUpdate(
         String resourceGroupName, String kubernetesClusterName, String featureName, String ifMatch, String ifNoneMatch,
         KubernetesClusterFeaturePatchParameters kubernetesClusterFeatureUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesClusterName, featureName,
@@ -1037,7 +1037,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
         String featureName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch);

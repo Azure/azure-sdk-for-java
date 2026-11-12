@@ -453,7 +453,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * platform will be allocated and represented in the status of this resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudServicesNetworkName,
@@ -757,7 +757,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * platform will be allocated and represented in the status of this resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
+    private SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
         String resourceGroupName, String cloudServicesNetworkName, String ifMatch, String ifNoneMatch,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch,
@@ -1037,7 +1037,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch);

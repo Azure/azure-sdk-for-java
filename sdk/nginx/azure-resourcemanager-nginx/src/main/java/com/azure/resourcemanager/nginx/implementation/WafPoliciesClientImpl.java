@@ -482,7 +482,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
      * @return the {@link SyncPoller} for polling of nginx Deployment Waf Policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner> beginCreate(
+    private SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner> beginCreate(
         String resourceGroupName, String deploymentName, String wafPolicyName, NginxDeploymentWafPolicyInner body) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, deploymentName, wafPolicyName, body);
         return this.client.<NginxDeploymentWafPolicyInner, NginxDeploymentWafPolicyInner>getLroResult(response,

@@ -2870,7 +2870,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of commit Configuration Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CommitConfigurationResponseInner>, CommitConfigurationResponseInner>
+    private SyncPoller<PollResult<CommitConfigurationResponseInner>, CommitConfigurationResponseInner>
         beginCommitConfiguration(String resourceGroupName, String networkFabricName, CommitConfigurationRequest body) {
         Response<BinaryData> response = commitConfigurationWithResponse(resourceGroupName, networkFabricName, body);
         return this.client.<CommitConfigurationResponseInner, CommitConfigurationResponseInner>getLroResult(response,

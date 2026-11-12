@@ -494,7 +494,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link SyncPoller} for polling of model that represents a Workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner resource, String ifNoneMatch, String ifMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, workspaceName, resource, ifNoneMatch, ifMatch);
