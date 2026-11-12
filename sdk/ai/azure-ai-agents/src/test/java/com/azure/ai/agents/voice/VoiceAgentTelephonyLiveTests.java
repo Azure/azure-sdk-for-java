@@ -84,7 +84,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
      */
     @Override
     protected List<String> getAdditionalTestProxyExcludedHeaders() {
-        return Collections.singletonList("If-Match");
+        return Arrays.asList("If-Match", "Foundry-Features");
     }
 
     /**

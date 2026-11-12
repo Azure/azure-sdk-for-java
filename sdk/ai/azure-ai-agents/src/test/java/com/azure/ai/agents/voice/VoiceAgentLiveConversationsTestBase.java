@@ -39,6 +39,8 @@ import java.nio.charset.StandardCharsets;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -60,6 +62,11 @@ abstract class VoiceAgentLiveConversationsTestBase extends ClientTestBase {
 
     public static Stream<Arguments> getTestParameters() {
         return getHttpClients().map(client -> Arguments.of(client, AgentsServiceVersion.V1));
+    }
+
+    @Override
+    protected List<String> getAdditionalTestProxyExcludedHeaders() {
+        return Collections.singletonList("Foundry-Features");
     }
 
     static void assertItemAudio(VoiceAudioItem audio, LiveConversationResource resource) {

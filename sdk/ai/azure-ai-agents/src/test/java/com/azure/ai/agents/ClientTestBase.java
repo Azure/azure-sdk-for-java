@@ -167,8 +167,8 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        List<String> excludedHeaders = new ArrayList<>(
-            Arrays.asList("Cookie", "Set-Cookie", "Accept", "Foundry-Features", "X-Stainless-Arch", "X-Stainless-Lang",
+        List<String> excludedHeaders
+            = new ArrayList<>(Arrays.asList("Cookie", "Set-Cookie", "Accept", "X-Stainless-Arch", "X-Stainless-Lang",
                 "X-Stainless-OS", "X-Stainless-OS-Version", "X-Stainless-Package-Version", "X-Stainless-Runtime",
                 "X-Stainless-Runtime-Version", "X-Stainless-Kotlin-Version", "X-Stainless-Retry-Count"));
         excludedHeaders.addAll(getAdditionalTestProxyExcludedHeaders());
