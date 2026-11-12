@@ -13,22 +13,22 @@ public final class FirewallRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"startIpAddress\":\"hejjz\",\"endIpAddress\":\"v\",\"description\":\"dgwdslfhot\",\"provisioningState\":\"Succeeded\"},\"id\":\"npwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"}")
+            "{\"properties\":{\"startIpAddress\":\"qdrabhjybigehoqf\",\"endIpAddress\":\"owskanyktz\",\"description\":\"u\",\"provisioningState\":\"Canceled\"},\"id\":\"qyw\",\"name\":\"ndrvynhzg\",\"type\":\"phrcgyncoc\"}")
             .toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("hejjz", model.properties().startIpAddress());
-        Assertions.assertEquals("v", model.properties().endIpAddress());
-        Assertions.assertEquals("dgwdslfhot", model.properties().description());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.properties().startIpAddress());
+        Assertions.assertEquals("owskanyktz", model.properties().endIpAddress());
+        Assertions.assertEquals("u", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirewallRuleInner model
-            = new FirewallRuleInner().withProperties(new FirewallRuleProperties().withStartIpAddress("hejjz")
-                .withEndIpAddress("v")
-                .withDescription("dgwdslfhot"));
+            = new FirewallRuleInner().withProperties(new FirewallRuleProperties().withStartIpAddress("qdrabhjybigehoqf")
+                .withEndIpAddress("owskanyktz")
+                .withDescription("u"));
         model = BinaryData.fromObject(model).toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("hejjz", model.properties().startIpAddress());
-        Assertions.assertEquals("v", model.properties().endIpAddress());
-        Assertions.assertEquals("dgwdslfhot", model.properties().description());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.properties().startIpAddress());
+        Assertions.assertEquals("owskanyktz", model.properties().endIpAddress());
+        Assertions.assertEquals("u", model.properties().description());
     }
 }

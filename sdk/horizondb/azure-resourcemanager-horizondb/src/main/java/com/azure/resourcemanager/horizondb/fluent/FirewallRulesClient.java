@@ -28,7 +28,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,7 +47,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,7 +65,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +84,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,7 +145,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +165,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,7 +184,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -189,7 +203,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +223,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -225,7 +243,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,7 +262,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,7 +282,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,7 +300,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,7 +318,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -308,7 +336,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -325,7 +355,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,7 +372,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,7 +388,9 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the HorizonDB cluster.
      * @param poolName The name of the HorizonDB pool.
-     * @param firewallRuleName The name of the HorizonDB pool firewall rule.
+     * @param firewallRuleName The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters,
+     * contain only ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with
+     * a letter, digit, or underscore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

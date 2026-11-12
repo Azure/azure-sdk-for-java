@@ -12,9 +12,9 @@ public final class FleetUpdateStrategyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"lnwiaaomylwe\"},{\"name\":\"z\"},{\"name\":\"lcsethwwnpj\"},{\"name\":\"l\"}]}},\"eTag\":\"swpchwahfbousn\",\"id\":\"pgfewetwlyx\",\"name\":\"ncxykxhdjhlimm\",\"type\":\"cxfhbcporxv\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"qizxfpxtgqscjavf\"},{\"name\":\"juhdqazkmtgguwpi\"},{\"name\":\"r\"},{\"name\":\"jcivmmg\"}]}},\"eTag\":\"cf\",\"id\":\"rxgkne\",\"name\":\"vyi\",\"type\":\"zqodfvpgshox\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"fgzdjtxvz\"}]}},\"eTag\":\"bqvgaqv\",\"id\":\"a\",\"name\":\"cqusr\",\"type\":\"vetnwsdtutn\"},{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"cvuzhyrmewipmve\"},{\"name\":\"dxukuqgsjjxundxg\"},{\"name\":\"etw\"},{\"name\":\"hhzjhfj\"}]}},\"eTag\":\"vvmu\",\"id\":\"pmuneqsx\",\"name\":\"mhfbuzjy\",\"type\":\"hsasbhu\"}],\"nextLink\":\"pohyuemslynsqyr\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"gogtqxepnylbf\"},{\"name\":\"ajlyjtlvofqzhv\"},{\"name\":\"cib\"}]}},\"eTag\":\"mowuxrk\",\"id\":\"vdwxfzwi\",\"name\":\"vwzjbhyz\",\"type\":\"xjrk\"}],\"nextLink\":\"btrnegvm\"}")
             .toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("lnwiaaomylwe", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("pohyuemslynsqyr", model.nextLink());
+        Assertions.assertEquals("gogtqxepnylbf", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("btrnegvm", model.nextLink());
     }
 }

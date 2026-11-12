@@ -1282,7 +1282,7 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of container App's Job execution name.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
+    private SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(String resourceGroupName,
         String jobName, JobExecutionTemplate template) {
         Response<BinaryData> response = startWithResponse(resourceGroupName, jobName, template);
         return this.client.<JobExecutionBaseInner, JobExecutionBaseInner>getLroResult(response,

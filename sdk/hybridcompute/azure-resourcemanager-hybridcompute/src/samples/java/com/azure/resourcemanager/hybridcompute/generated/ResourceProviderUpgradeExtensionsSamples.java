@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ResourceProviderUpgradeExtensionsSamples {
     /*
-     * x-ms-original-file: 2026-07-15/extension/Extensions_Upgrade.json
+     * x-ms-original-file: 2026-09-01/extension/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.

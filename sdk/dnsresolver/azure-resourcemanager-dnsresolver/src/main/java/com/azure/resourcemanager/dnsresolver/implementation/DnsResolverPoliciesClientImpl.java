@@ -475,7 +475,7 @@ public final class DnsResolverPoliciesClientImpl implements DnsResolverPoliciesC
      * @return the {@link SyncPoller} for polling of describes a DNS resolver policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverPolicyInner>, DnsResolverPolicyInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<DnsResolverPolicyInner>, DnsResolverPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverPolicyName, DnsResolverPolicyInner parameters, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response
@@ -750,7 +750,7 @@ public final class DnsResolverPoliciesClientImpl implements DnsResolverPoliciesC
      * @return the {@link SyncPoller} for polling of describes a DNS resolver policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverPolicyInner>, DnsResolverPolicyInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<DnsResolverPolicyInner>, DnsResolverPolicyInner> beginUpdate(String resourceGroupName,
         String dnsResolverPolicyName, DnsResolverPolicyPatch parameters, String ifMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, dnsResolverPolicyName, parameters, ifMatch);
@@ -993,7 +993,7 @@ public final class DnsResolverPoliciesClientImpl implements DnsResolverPoliciesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverPolicyName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

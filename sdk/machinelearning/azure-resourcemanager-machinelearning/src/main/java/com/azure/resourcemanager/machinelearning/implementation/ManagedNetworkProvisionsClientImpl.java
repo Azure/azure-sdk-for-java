@@ -208,7 +208,7 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
      * learning workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
+    private SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String workspaceName,
             ManagedNetworkProvisionOptions body) {
         Response<BinaryData> response = provisionManagedNetworkWithResponse(resourceGroupName, workspaceName, body);

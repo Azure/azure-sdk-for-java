@@ -1253,7 +1253,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginStart(String resourceGroupName, String sapVirtualInstanceName, StartRequest body) {
         Response<BinaryData> response = startWithResponse(resourceGroupName, sapVirtualInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
@@ -1481,7 +1481,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginStop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body) {
         Response<BinaryData> response = stopWithResponse(resourceGroupName, sapVirtualInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,

@@ -30,7 +30,7 @@ public final class PlansListByCloudAccountMockTests {
     @Test
     public void testListByCloudAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"location\":\"nhlmctlpdng\",\"storagePlans\":[{\"name\":\"vgbmhr\",\"storagePoolId\":\"kw\",\"copyName\":\"ijejvegrhbpn\",\"copyPrecedence\":2035857816,\"retentionPeriod\":1096684768,\"retentionTime\":\"yearly\",\"backupRuleType\":\"MONTHLY_FULLS\",\"extendedRetention\":[{},{},{},{}]},{\"name\":\"ax\",\"storagePoolId\":\"exdrrvqahqkg\",\"copyName\":\"pwijnhy\",\"copyPrecedence\":1624043548,\"retentionPeriod\":175357143,\"retentionTime\":\"monthly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{},{}]},{\"name\":\"oowvrv\",\"storagePoolId\":\"gjqppy\",\"copyName\":\"tronzmyhgfi\",\"copyPrecedence\":884290238,\"retentionPeriod\":1762342215,\"retentionTime\":\"yearly\",\"backupRuleType\":\"DAILY_FULLS\",\"extendedRetention\":[{},{}]},{\"name\":\"rrjreafxtsgu\",\"storagePoolId\":\"jglikkxwslolb\",\"copyName\":\"vuzlm\",\"copyPrecedence\":1023850423,\"retentionPeriod\":1613313334,\"retentionTime\":\"monthly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{}]}],\"schedules\":[{\"backupType\":\"FULL\",\"frequency\":\"weekly\",\"runsEvery\":2026276313,\"weekOfMonth\":\"FOURTH\",\"dayOfWeek\":\"SUNDAY\",\"monthOfYear\":\"AUGUST\",\"dayOfMonth\":76074858,\"weeklyDays\":[\"TUESDAY\"],\"time\":\"pn\",\"timeZone\":\"azej\"},{\"backupType\":\"INCREMENTAL\",\"frequency\":\"weekly\",\"runsEvery\":1158960220,\"weekOfMonth\":\"THIRD\",\"dayOfWeek\":\"SUNDAY\",\"monthOfYear\":\"DECEMBER\",\"dayOfMonth\":1479780432,\"weeklyDays\":[\"THURSDAY\",\"WEDNESDAY\"],\"time\":\"aa\",\"timeZone\":\"xdtnkdmkqjjlw\"}],\"retention\":{\"numberOfSnapshots\":1206033090},\"provisioningState\":\"Canceled\"},\"id\":\"yo\",\"name\":\"aibrebqaaysjkixq\",\"type\":\"nqttezl\"}]}";
+            = "{\"value\":[{\"properties\":{\"location\":\"zxnfaaz\",\"storagePlans\":[{\"name\":\"dtnkdmkq\",\"storagePoolId\":\"lwuenvrkp\",\"copyName\":\"uaibrebqaaysj\",\"copyPrecedence\":1330578772,\"retentionPeriod\":1662544736,\"retentionTime\":\"yearly\",\"backupRuleType\":\"ALL_FULLS\",\"extendedRetention\":[{},{},{}]},{\"name\":\"lwfffi\",\"storagePoolId\":\"pjpqqmtedltmmji\",\"copyName\":\"eozphv\",\"copyPrecedence\":1760801565,\"retentionPeriod\":404997188,\"retentionTime\":\"monthly\",\"backupRuleType\":\"HALF_YEARLY_FULLS\",\"extendedRetention\":[{}]},{\"name\":\"kvi\",\"storagePoolId\":\"dscwxqupevzhf\",\"copyName\":\"otxhojujby\",\"copyPrecedence\":159734052,\"retentionPeriod\":93878588,\"retentionTime\":\"monthly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{}]},{\"name\":\"jxyfwnylrcoolstt\",\"storagePoolId\":\"iwkkbn\",\"copyName\":\"rywvtylbfpn\",\"copyPrecedence\":296163908,\"retentionPeriod\":1036989495,\"retentionTime\":\"yearly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{},{},{},{}]}],\"schedules\":[{\"backupType\":\"BOTH\",\"frequency\":\"minutes\",\"runsEvery\":1797172930,\"weekOfMonth\":\"THIRD\",\"dayOfWeek\":\"DAY\",\"monthOfYear\":\"MARCH\",\"dayOfMonth\":1576184743,\"weeklyDays\":[\"SUNDAY\",\"SATURDAY\"],\"time\":\"chrdgoihxumwcto\",\"timeZone\":\"zj\"}],\"retention\":{\"numberOfSnapshots\":382280149},\"provisioningState\":\"Failed\"},\"id\":\"wggytsbwtovvt\",\"name\":\"seinqfiuf\",\"type\":\"qknp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,37 +40,37 @@ public final class PlansListByCloudAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommvaultPlan> response
-            = manager.plans().listByCloudAccount("opbyrqufegxu", "wz", com.azure.core.util.Context.NONE);
+            = manager.plans().listByCloudAccount("jjoqkagf", "sxtta", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nhlmctlpdng", response.iterator().next().properties().location());
-        Assertions.assertEquals("vgbmhr", response.iterator().next().properties().storagePlans().get(0).name());
-        Assertions.assertEquals("kw", response.iterator().next().properties().storagePlans().get(0).storagePoolId());
-        Assertions.assertEquals("ijejvegrhbpn",
+        Assertions.assertEquals("zxnfaaz", response.iterator().next().properties().location());
+        Assertions.assertEquals("dtnkdmkq", response.iterator().next().properties().storagePlans().get(0).name());
+        Assertions.assertEquals("lwuenvrkp",
+            response.iterator().next().properties().storagePlans().get(0).storagePoolId());
+        Assertions.assertEquals("uaibrebqaaysj",
             response.iterator().next().properties().storagePlans().get(0).copyName());
-        Assertions.assertEquals(2035857816,
+        Assertions.assertEquals(1330578772,
             response.iterator().next().properties().storagePlans().get(0).copyPrecedence());
-        Assertions.assertEquals(1096684768,
+        Assertions.assertEquals(1662544736,
             response.iterator().next().properties().storagePlans().get(0).retentionPeriod());
         Assertions.assertEquals(RetentionTime.YEARLY,
             response.iterator().next().properties().storagePlans().get(0).retentionTime());
-        Assertions.assertEquals(BackupRuleType.MONTHLY_FULLS,
+        Assertions.assertEquals(BackupRuleType.ALL_FULLS,
             response.iterator().next().properties().storagePlans().get(0).backupRuleType());
-        Assertions.assertEquals(BackUpType.FULL,
+        Assertions.assertEquals(BackUpType.BOTH,
             response.iterator().next().properties().schedules().get(0).backupType());
-        Assertions.assertEquals(Frequency.WEEKLY,
+        Assertions.assertEquals(Frequency.MINUTES,
             response.iterator().next().properties().schedules().get(0).frequency());
-        Assertions.assertEquals(2026276313, response.iterator().next().properties().schedules().get(0).runsEvery());
-        Assertions.assertEquals(WeekOfMonth.FOURTH,
+        Assertions.assertEquals(1797172930, response.iterator().next().properties().schedules().get(0).runsEvery());
+        Assertions.assertEquals(WeekOfMonth.THIRD,
             response.iterator().next().properties().schedules().get(0).weekOfMonth());
-        Assertions.assertEquals(DayOfWeek.SUNDAY,
-            response.iterator().next().properties().schedules().get(0).dayOfWeek());
-        Assertions.assertEquals(MonthOfYear.AUGUST,
+        Assertions.assertEquals(DayOfWeek.DAY, response.iterator().next().properties().schedules().get(0).dayOfWeek());
+        Assertions.assertEquals(MonthOfYear.MARCH,
             response.iterator().next().properties().schedules().get(0).monthOfYear());
-        Assertions.assertEquals(76074858, response.iterator().next().properties().schedules().get(0).dayOfMonth());
-        Assertions.assertEquals(WeeklyDays.TUESDAY,
+        Assertions.assertEquals(1576184743, response.iterator().next().properties().schedules().get(0).dayOfMonth());
+        Assertions.assertEquals(WeeklyDays.SUNDAY,
             response.iterator().next().properties().schedules().get(0).weeklyDays().get(0));
-        Assertions.assertEquals("pn", response.iterator().next().properties().schedules().get(0).time());
-        Assertions.assertEquals("azej", response.iterator().next().properties().schedules().get(0).timeZone());
-        Assertions.assertEquals(1206033090, response.iterator().next().properties().retention().numberOfSnapshots());
+        Assertions.assertEquals("chrdgoihxumwcto", response.iterator().next().properties().schedules().get(0).time());
+        Assertions.assertEquals("zj", response.iterator().next().properties().schedules().get(0).timeZone());
+        Assertions.assertEquals(382280149, response.iterator().next().properties().retention().numberOfSnapshots());
     }
 }

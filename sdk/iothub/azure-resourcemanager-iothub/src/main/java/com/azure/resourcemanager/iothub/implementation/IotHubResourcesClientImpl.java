@@ -895,7 +895,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, resourceName, iotHubDescription, ifMatch);

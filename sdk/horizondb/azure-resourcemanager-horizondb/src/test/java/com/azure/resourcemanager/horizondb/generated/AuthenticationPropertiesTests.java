@@ -11,7 +11,7 @@ public final class AuthenticationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationProperties model
-            = BinaryData.fromString("{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"}")
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"}")
                 .toObject(AuthenticationProperties.class);
     }
 }
