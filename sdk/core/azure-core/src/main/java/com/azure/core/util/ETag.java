@@ -59,7 +59,7 @@ public final class ETag {
     }
 
     /**
-     * Checks if the {@code eTag} a valid ETag value. Valid ETags show below,
+     * Checks if the {@code eTag} is a valid ETag value. Valid ETags show below,
      *  - The special character, '*'.
      *  - A strong ETag, which the value is wrapped in quotes, ex, "12345".
      *  - A weak ETag, which value is wrapped in quotes and prefixed by "W/", ex, W/"12345".
