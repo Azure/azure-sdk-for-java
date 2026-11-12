@@ -5,6 +5,11 @@ package com.azure.resourcemanager.cognitiveservices;
 
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestProxyUtils;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,25 +18,35 @@ import org.junit.jupiter.params.provider.CsvSource;
 public final class CostControlSanitizerTests {
     @ParameterizedTest
     @CsvSource({
-        "rg(test),rg\\(test\\)",
-        "rg.prod,rg\\.prod",
-        "rg(,rg\\(",
-        "rg),rg\\)",
-        "rg(test).prod,rg\\(test\\)\\.prod",
+        "rg(test),rg[(]test[)]",
+        "rg.prod,rg[.]prod",
+        "rg(,rg[(]",
+        "rg),rg[)]",
+        "rg(test).prod,rg[(]test[)][.]prod",
         "rg-test,rg-test" })
-    public void sanitizesLiteralIdentifiersInUrlsAndBodies(String value, String expectedRegex) {
+    public void sanitizesLiteralIdentifiersInUrlsAndBodies(String value, String expectedRegex) throws Exception {
         String replacement = "sanitized-resource-group";
         TestProxySanitizer[] sanitizers
             = CostControlLifecycleTests.createValueSanitizers("resourceGroups", value, replacement);
         Assertions.assertEquals(2, sanitizers.length);
         Assertions.assertEquals(TestProxySanitizerType.URL, sanitizers[0].getType());
         Assertions.assertEquals(TestProxySanitizerType.BODY_REGEX, sanitizers[1].getType());
+        List<?> registration
+            = TestProxyUtils.createAddSanitizersRequest(Arrays.asList(sanitizers), new URL("http://localhost:5000"))
+                .getBodyAsBinaryData()
+                .toObject(List.class);
+        Assertions.assertEquals(2, registration.size());
 
         String resourceId = "/subscriptions/test-subscription/resourceGroups/" + value
             + "/providers/Microsoft.CognitiveServices/accounts/test-account";
         String sanitizedResourceId = resourceId.replace(value, replacement);
-        for (TestProxySanitizer sanitizer : sanitizers) {
-            Assertions.assertEquals("(?<=/resourceGroups/)" + expectedRegex + "(?=/|[?\"#]|$)", sanitizer.getRegex());
+        for (int i = 0; i < sanitizers.length; i++) {
+            TestProxySanitizer sanitizer = sanitizers[i];
+            Map<?, ?> registeredBody = (Map<?, ?>) ((Map<?, ?>) registration.get(i)).get("Body");
+            Assertions.assertEquals(sanitizer.getRegex(), registeredBody.get("regex"));
+            Assertions.assertEquals(replacement, registeredBody.get("value"));
+            Assertions.assertEquals("(?<=/resourceGroups/)" + expectedRegex + "(?![A-Za-z0-9_.()-])",
+                sanitizer.getRegex());
             Assertions.assertEquals(replacement, sanitizer.getRedactedValue());
             Pattern pattern = Pattern.compile(sanitizer.getRegex());
             Assertions.assertEquals("https://management.azure.com" + sanitizedResourceId,

@@ -12,19 +12,14 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
-import com.azure.resourcemanager.cognitiveservices.models.CostControl;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlDimension;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlDimensionType;
+import com.azure.resourcemanager.cognitiveservices.models.AccountCostControl;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlCategory;
 import com.azure.resourcemanager.cognitiveservices.models.CostControlPatchProperties;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlPeriod;
 import com.azure.resourcemanager.cognitiveservices.models.CostControlProperties;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlRule;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlThreshold;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdAction;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdType;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlUnit;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlTimeGrain;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlTimePeriod;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import java.util.Collections;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +31,7 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
     private static final String RESOURCE_GROUP_PLACEHOLDER = "sanitized-resource-group";
     private static final String ACCOUNT_NAME_PLACEHOLDER = "sanitized-cognitive-account";
     private static final String SANITIZED_ETAG = "sanitized-etag";
-    private static final String RECORDED_API_VERSION = "2026-09-15-preview";
+    private static final String RECORDED_API_VERSION = "2026-11-15-preview";
     private static final String COST_CONTROL_NAME = "sdk-cost-control-lifecycle";
 
     private CognitiveServicesManager manager;
@@ -95,51 +90,50 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         RuntimeException testFailure = null;
 
         try {
-            CostControl createdCostControl = manager.costControls()
+            AccountCostControl createdCostControl = manager.accountCostControls()
                 .define(COST_CONTROL_NAME)
                 .withExistingAccount(resourceGroupName, accountName)
-                .withProperties(createProperties("SDK Cost Control lifecycle", 25))
+                .withProperties(createProperties(25))
                 .withIfNoneMatch("*")
                 .create();
             created = true;
             Assertions.assertEquals(COST_CONTROL_NAME, createdCostControl.name());
-            Assertions.assertEquals(CostControlThresholdAction.ALERT,
-                createdCostControl.properties().rules().get(0).thresholds().get(0).action());
-            Assertions.assertEquals(80.0, createdCostControl.properties().rules().get(0).thresholds().get(0).value());
-            Assertions.assertEquals(CostControlDimensionType.ACCOUNT,
-                createdCostControl.properties().rules().get(0).counterKey().type());
+            Assertions.assertEquals(CostControlCategory.COST, createdCostControl.properties().category());
+            Assertions.assertEquals(CostControlTimeGrain.MONTHLY, createdCostControl.properties().timeGrain());
+            Assertions.assertEquals(25.0, createdCostControl.properties().amount());
 
-            CostControl fetched = manager.costControls().get(resourceGroupName, accountName, COST_CONTROL_NAME);
+            manager.accountCostControls().checkExistence(resourceGroupName, accountName, COST_CONTROL_NAME);
+            AccountCostControl fetched
+                = manager.accountCostControls().get(resourceGroupName, accountName, COST_CONTROL_NAME);
             Assertions.assertNotNull(fetched.etag());
-            Assertions.assertEquals(25.0, fetched.properties().rules().get(0).amount());
+            Assertions.assertEquals(25.0, fetched.properties().amount());
 
-            List<String> names = manager.costControls()
+            List<String> names = manager.accountCostControls()
                 .list(resourceGroupName, accountName)
                 .stream()
-                .map(CostControl::name)
+                .map(AccountCostControl::name)
                 .collect(Collectors.toList());
             Assertions.assertTrue(names.contains(COST_CONTROL_NAME));
 
-            CostControl updated = createdCostControl.update()
-                .withProperties(new CostControlPatchProperties().withDisplayName("SDK Cost Control lifecycle updated")
-                    .withRules(Collections.singletonList(createRule(50))))
+            AccountCostControl updated = createdCostControl.update()
+                .withProperties(new CostControlPatchProperties().withAmount(50.0))
                 .withIfMatch(fetched.etag())
                 .apply();
-            Assertions.assertEquals("SDK Cost Control lifecycle updated", updated.properties().displayName());
-            Assertions.assertEquals(50.0, updated.properties().rules().get(0).amount());
+            Assertions.assertEquals(50.0, updated.properties().amount());
+            Assertions.assertEquals(CostControlCategory.COST, updated.properties().category());
 
-            CostControl fetchedAfterUpdate
-                = manager.costControls().get(resourceGroupName, accountName, COST_CONTROL_NAME);
+            AccountCostControl fetchedAfterUpdate
+                = manager.accountCostControls().get(resourceGroupName, accountName, COST_CONTROL_NAME);
             Assertions.assertNotNull(fetchedAfterUpdate.etag());
-            Assertions.assertEquals(50.0, fetchedAfterUpdate.properties().rules().get(0).amount());
+            Assertions.assertEquals(50.0, fetchedAfterUpdate.properties().amount());
 
-            manager.costControls()
+            manager.accountCostControls()
                 .deleteWithResponse(resourceGroupName, accountName, COST_CONTROL_NAME, fetchedAfterUpdate.etag(),
                     com.azure.core.util.Context.NONE);
             created = false;
 
             ManagementException exception = Assertions.assertThrows(ManagementException.class,
-                () -> manager.costControls().get(resourceGroupName, accountName, COST_CONTROL_NAME));
+                () -> manager.accountCostControls().get(resourceGroupName, accountName, COST_CONTROL_NAME));
             Assertions.assertEquals(404, exception.getResponse().getStatusCode());
         } catch (RuntimeException exception) {
             testFailure = exception;
@@ -147,7 +141,7 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         } finally {
             if (created) {
                 try {
-                    manager.costControls().delete(resourceGroupName, accountName, COST_CONTROL_NAME);
+                    manager.accountCostControls().delete(resourceGroupName, accountName, COST_CONTROL_NAME);
                 } catch (ManagementException exception) {
                     if (!isNotFound(exception) && testFailure == null) {
                         throw exception;
@@ -158,9 +152,9 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
     }
 
     static TestProxySanitizer[] createValueSanitizers(String segment, String value, String replacement) {
-        // Escape identifier metacharacters using syntax supported by the .NET test proxy.
-        String regex = value.replace(".", "\\.").replace("(", "\\(").replace(")", "\\)");
-        regex = "(?<=/" + segment + "/)" + regex + "(?=/|[?\"#]|$)";
+        // Character classes also survive the test utility's unescaped JSON registration payload.
+        String regex = value.replace(".", "[.]").replace("(", "[(]").replace(")", "[)]");
+        regex = "(?<=/" + segment + "/)" + regex + "(?![A-Za-z0-9_.()-])";
         return new TestProxySanitizer[] {
             new TestProxySanitizer(regex, replacement, TestProxySanitizerType.URL),
             new TestProxySanitizer(regex, replacement, TestProxySanitizerType.BODY_REGEX) };
@@ -178,22 +172,12 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         return value;
     }
 
-    private static CostControlProperties createProperties(String displayName, double amount) {
-        return new CostControlProperties().withDisplayName(displayName)
-            .withRules(Collections.singletonList(createRule(amount)));
-    }
-
-    private static CostControlRule createRule(double amount) {
-        return new CostControlRule().withName("account-budget")
-            .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.ACCOUNT))
-            .withUnit(CostControlUnit.USD)
+    private static CostControlProperties createProperties(double amount) {
+        return new CostControlProperties().withCategory(CostControlCategory.COST)
             .withAmount(amount)
-            .withPeriod(CostControlPeriod.MONTH)
-            .withRecurring(true)
-            .withThresholds(
-                Collections.singletonList(new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
-                    .withValue(80)
-                    .withAction(CostControlThresholdAction.ALERT)));
+            .withTimeGrain(CostControlTimeGrain.MONTHLY)
+            .withTimePeriod(new CostControlTimePeriod().withStartDate(OffsetDateTime.parse("2026-11-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2027-11-01T00:00:00Z")));
     }
 
     private static boolean isNotFound(ManagementException exception) {

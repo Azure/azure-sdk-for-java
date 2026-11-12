@@ -13,17 +13,21 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.cognitiveservices.models.CostControl;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlDimension;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlDimensionType;
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.cognitiveservices.models.AccountCostControl;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlAction;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlActionPatch;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlCategory;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlNotification;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlNotificationPatch;
 import com.azure.resourcemanager.cognitiveservices.models.CostControlPatchProperties;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlPeriod;
 import com.azure.resourcemanager.cognitiveservices.models.CostControlProperties;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlRule;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlThreshold;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdAction;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlProviderProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlProviderPropertiesPatch;
 import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdType;
-import com.azure.resourcemanager.cognitiveservices.models.CostControlUnit;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlTimeGrain;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlTimePeriod;
+import com.azure.resourcemanager.cognitiveservices.models.ProjectCostControl;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayDeque;
@@ -36,185 +40,251 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 public final class CostControlWireTests {
-    private static final String SUBSCRIPTION_ID = "00000000-0000-0000-0000-000000000000";
-    private static final String RESOURCE_GROUP = "test-resource-group";
-    private static final String ACCOUNT_NAME = "test-account";
-    private static final String COST_CONTROL_NAME = "test-cost-control";
-    private static final String RESOURCE_ID = "/subscriptions/" + SUBSCRIPTION_ID + "/resourceGroups/" + RESOURCE_GROUP
-        + "/providers/Microsoft.CognitiveServices/accounts/" + ACCOUNT_NAME + "/costControls/" + COST_CONTROL_NAME;
+    private static final String SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    private static final String GROUP = "test-resource-group";
+    private static final String ACCOUNT = "test-account";
+    private static final String PROJECT = "test-project";
+    private static final String NAME = "test-budget";
+    private static final OffsetDateTime START = OffsetDateTime.parse("2026-11-15T00:00:00Z");
+    private static final OffsetDateTime END = OffsetDateTime.parse("2027-11-15T00:00:00Z");
 
     @ParameterizedTest
-    @ValueSource(strings = { "Alert", "Block" })
-    public void createsWithRuleThresholdAndIfNoneMatch(String action) {
-        String created = response("Cost Control", 25, "\"etag-1\"", action);
-        QueueHttpClient httpClient = new QueueHttpClient(Collections.singletonList(response(201, created)));
-        CognitiveServicesManager manager = createManager(httpClient);
-        CostControlProperties requestProperties = createProperties("Cost Control", 25);
-        requestProperties.rules().get(0).thresholds().get(0).withAction(CostControlThresholdAction.fromString(action));
-        CostControl createdCostControl = manager.costControls()
-            .define(COST_CONTROL_NAME)
-            .withExistingAccount(RESOURCE_GROUP, ACCOUNT_NAME)
-            .withProperties(requestProperties)
-            .withIfNoneMatch("*")
-            .create();
-
-        Assertions.assertEquals("etag-1", createdCostControl.etag());
-        HttpRequest createRequest = httpClient.requests().get(0);
-        Assertions.assertEquals("PUT", createRequest.getHttpMethod().toString());
-        Assertions.assertTrue(createRequest.getUrl().getPath().endsWith(RESOURCE_ID));
-        assertApiVersion(createRequest);
-        Assertions.assertEquals("*", createRequest.getHeaders().getValue("if-none-match"));
-
-        Map<?, ?> createBody = createRequest.getBodyAsBinaryData().toObject(Map.class);
-        Map<?, ?> properties = (Map<?, ?>) createBody.get("properties");
-        List<?> rules = (List<?>) properties.get("rules");
-        Map<?, ?> rule = (Map<?, ?>) rules.get(0);
-        Map<?, ?> threshold = (Map<?, ?>) ((List<?>) rule.get("thresholds")).get(0);
-        Assertions.assertEquals("Account", ((Map<?, ?>) rule.get("counterKey")).get("type"));
-        Assertions.assertEquals("Usd", rule.get("unit"));
-        Assertions.assertEquals("Month", rule.get("period"));
-        Assertions.assertEquals(25.0, ((Number) rule.get("amount")).doubleValue());
-        Assertions.assertEquals("Percentage", threshold.get("type"));
-        Assertions.assertEquals(action, threshold.get("action"));
-        Assertions.assertEquals(80.0, ((Number) threshold.get("value")).doubleValue());
+    @ValueSource(booleans = { false, true })
+    public void createsBudgetWithNotificationsAndBlockingAction(boolean project) {
+        QueueHttpClient client = new QueueHttpClient(Collections.singletonList(response(201, resource(project, 25))));
+        CognitiveServicesManager manager = manager(client);
+        CostControlProperties properties = properties(25)
+            .withNotifications(Collections.singletonMap("usageAlert",
+                new CostControlNotification().withEventGridConnectionId(accountId() + "/connections/budget-alerts")
+                    .withThresholdType(CostControlThresholdType.PERCENTAGE)
+                    .withThreshold(80)
+                    .withEnabled(true)))
+            .withProviderProperties(new CostControlProviderProperties().withActions(Collections.singletonMap(
+                "stopRequests",
+                new CostControlAction().withThresholdType(CostControlThresholdType.PERCENTAGE).withThreshold(100))));
+        CostControlProperties result;
+        if (project) {
+            result = manager.projectCostControls()
+                .define(NAME)
+                .withExistingProject(GROUP, ACCOUNT, PROJECT)
+                .withProperties(properties)
+                .withIfNoneMatch("*")
+                .create()
+                .properties();
+        } else {
+            result = manager.accountCostControls()
+                .define(NAME)
+                .withExistingAccount(GROUP, ACCOUNT)
+                .withProperties(properties)
+                .withIfNoneMatch("*")
+                .create()
+                .properties();
+        }
+        Assertions.assertEquals(25, result.amount());
+        assertRequest(client.requests.get(0), "PUT", resourceId(project));
+        Assertions.assertEquals("*", client.requests.get(0).getHeaders().getValue("if-none-match"));
+        Map<?, ?> body = bodyProperties(client.requests.get(0));
+        Assertions.assertEquals("Cost", body.get("category"));
+        Assertions.assertEquals(25.0, ((Number) body.get("amount")).doubleValue());
+        Assertions.assertEquals("Monthly", body.get("timeGrain"));
+        Map<?, ?> period = (Map<?, ?>) body.get("timePeriod");
+        Assertions.assertEquals(START, OffsetDateTime.parse((String) period.get("startDate")));
+        Assertions.assertEquals(END, OffsetDateTime.parse((String) period.get("endDate")));
+        Map<?, ?> notification = (Map<?, ?>) ((Map<?, ?>) body.get("notifications")).get("usageAlert");
+        Assertions.assertEquals(accountId() + "/connections/budget-alerts", notification.get("eventGridConnectionId"));
+        Assertions.assertEquals("Percentage", notification.get("thresholdType"));
+        Assertions.assertEquals(80.0, ((Number) notification.get("threshold")).doubleValue());
+        Assertions.assertEquals(true, notification.get("enabled"));
+        Map<?, ?> action
+            = (Map<?, ?>) ((Map<?, ?>) ((Map<?, ?>) body.get("providerProperties")).get("actions")).get("stopRequests");
+        Assertions.assertEquals("Block", action.get("type"));
+        Assertions.assertEquals("Percentage", action.get("thresholdType"));
+        Assertions.assertEquals("GreaterThanOrEqualTo", action.get("operator"));
+        Assertions.assertEquals(100.0, ((Number) action.get("threshold")).doubleValue());
+        Assertions.assertFalse(body.containsKey("rules"));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "Alert", "Block", "Audit" })
-    public void getsAndDeserializesThreshold(String action) {
-        QueueHttpClient httpClient = new QueueHttpClient(
-            Collections.singletonList(response(200, response("Cost Control", 25, "\"etag-1\"", action))));
-        CognitiveServicesManager manager = createManager(httpClient);
-        CostControl fetched = manager.costControls().get(RESOURCE_GROUP, ACCOUNT_NAME, COST_CONTROL_NAME);
-
-        Assertions.assertEquals(CostControlThresholdAction.fromString(action),
-            fetched.properties().rules().get(0).thresholds().get(0).action());
-        Assertions.assertEquals(CostControlDimensionType.ACCOUNT,
-            fetched.properties().rules().get(0).counterKey().type());
-        Assertions.assertEquals(80.0, fetched.properties().rules().get(0).thresholds().get(0).value());
-        Assertions.assertEquals(25.0, fetched.properties().rules().get(0).amount());
-        Assertions.assertEquals("GET", httpClient.requests().get(0).getHttpMethod().toString());
-        assertApiVersion(httpClient.requests().get(0));
+    @ValueSource(booleans = { false, true })
+    public void getsBudgetAndFollowsListNextLink(boolean project) {
+        QueueHttpClient client = new QueueHttpClient(Arrays.asList(response(200, resource(project, 25)),
+            request -> response(200,
+                "{\"value\":[" + resource(project, 25) + "],\"nextLink\":\"" + request.getUrl() + "&$skiptoken=next\"}")
+                    .apply(request),
+            response(200, "{\"value\":[" + resource(project, 50) + "]}")));
+        CognitiveServicesManager manager = manager(client);
+        CostControlProperties fetched = project
+            ? manager.projectCostControls().get(GROUP, ACCOUNT, PROJECT, NAME).properties()
+            : manager.accountCostControls().get(GROUP, ACCOUNT, NAME).properties();
+        Assertions.assertEquals(CostControlCategory.COST, fetched.category());
+        Assertions.assertEquals(CostControlTimeGrain.MONTHLY, fetched.timeGrain());
+        Assertions.assertEquals(START, fetched.timePeriod().startDate());
+        Assertions.assertEquals(END, fetched.timePeriod().endDate());
+        CostControlNotification notification = fetched.notifications().get("usageAlert");
+        Assertions.assertEquals(accountId() + "/connections/budget-alerts", notification.eventGridConnectionId());
+        Assertions.assertEquals(CostControlThresholdType.PERCENTAGE, notification.thresholdType());
+        Assertions.assertEquals(80.0, notification.threshold());
+        Assertions.assertTrue(notification.enabled());
+        CostControlAction action = fetched.providerProperties().actions().get("stopRequests");
+        Assertions.assertEquals("Block", action.type());
+        Assertions.assertEquals(CostControlThresholdType.PERCENTAGE, action.thresholdType());
+        Assertions.assertEquals(100.0, action.threshold());
+        Assertions.assertEquals("GreaterThanOrEqualTo", action.operator());
+        List<Double> amounts = project
+            ? manager.projectCostControls()
+                .list(GROUP, ACCOUNT, PROJECT)
+                .stream()
+                .map(item -> item.properties().amount())
+                .collect(Collectors.toList())
+            : manager.accountCostControls()
+                .list(GROUP, ACCOUNT)
+                .stream()
+                .map(item -> item.properties().amount())
+                .collect(Collectors.toList());
+        Assertions.assertEquals(Arrays.asList(25.0, 50.0), amounts);
+        assertRequest(client.requests.get(0), "GET", resourceId(project));
+        assertRequest(client.requests.get(1), "GET", ownerId(project) + "/costControls");
+        Assertions.assertEquals(client.requests.get(1).getUrl() + "&$skiptoken=next",
+            client.requests.get(2).getUrl().toString());
     }
 
-    @Test
-    public void followsListNextLink() {
-        String created = response("Cost Control", 25, "\"etag-1\"");
-        String updated = response("Cost Control updated", 50, "\"etag-2\"");
-        QueueHttpClient httpClient = new QueueHttpClient(Arrays.asList(request -> response(200,
-            "{\"value\":[" + created + "],\"nextLink\":\"" + request.getUrl() + "&$skiptoken=next\"}").apply(request),
-            response(200, "{\"value\":[" + updated + "]}")));
-        CognitiveServicesManager manager = createManager(httpClient);
-        List<CostControl> listed
-            = manager.costControls().list(RESOURCE_GROUP, ACCOUNT_NAME).stream().collect(Collectors.toList());
-
-        Assertions.assertEquals(Arrays.asList("Cost Control", "Cost Control updated"),
-            listed.stream().map(item -> item.properties().displayName()).collect(Collectors.toList()));
-        Assertions.assertEquals(httpClient.requests().get(0).getUrl() + "&$skiptoken=next",
-            httpClient.requests().get(1).getUrl().toString());
-        assertApiVersion(httpClient.requests().get(0));
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void patchesNamedSettingsWithIfMatch(boolean project) {
+        QueueHttpClient client = new QueueHttpClient(
+            Arrays.asList(response(200, resource(project, 25)), response(200, resource(project, 50))));
+        CognitiveServicesManager manager = manager(client);
+        CostControlPatchProperties patch = new CostControlPatchProperties().withAmount(50.0)
+            .withGrouping(Collections.emptyList())
+            .withNotifications(
+                Collections.singletonMap("usageAlert", new CostControlNotificationPatch().withEnabled(false)))
+            .withProviderProperties(new CostControlProviderPropertiesPatch().withActions(
+                Collections.singletonMap("stopRequests", new CostControlActionPatch().withThreshold(90.0))));
+        CostControlProperties updated;
+        if (project) {
+            ProjectCostControl fetched = manager.projectCostControls().get(GROUP, ACCOUNT, PROJECT, NAME);
+            updated = fetched.update().withProperties(patch).withIfMatch(fetched.etag()).apply().properties();
+        } else {
+            AccountCostControl fetched = manager.accountCostControls().get(GROUP, ACCOUNT, NAME);
+            updated = fetched.update().withProperties(patch).withIfMatch(fetched.etag()).apply().properties();
+        }
+        Assertions.assertEquals(50, updated.amount());
+        HttpRequest request = client.requests.get(1);
+        assertRequest(request, "PATCH", resourceId(project));
+        Assertions.assertEquals("\"etag-1\"", request.getHeaders().getValue("if-match"));
+        Map<?, ?> body = bodyProperties(request);
+        Assertions.assertEquals(50.0, ((Number) body.get("amount")).doubleValue());
+        Assertions.assertEquals(Collections.emptyList(), body.get("grouping"));
+        Assertions.assertFalse(body.containsKey("category"));
+        Assertions.assertFalse(body.containsKey("timePeriod"));
+        Assertions.assertEquals(Collections.singletonMap("enabled", false),
+            ((Map<?, ?>) body.get("notifications")).get("usageAlert"));
+        Map<?, ?> action
+            = (Map<?, ?>) ((Map<?, ?>) ((Map<?, ?>) body.get("providerProperties")).get("actions")).get("stopRequests");
+        Assertions.assertEquals(90.0, ((Number) action.get("threshold")).doubleValue());
     }
 
-    @Test
-    public void updatesWithIfMatchAndReplacementRules() {
-        String created = response("Cost Control", 25, "\"etag-1\"");
-        String updated = response("Cost Control updated", 50, "\"etag-2\"");
-        QueueHttpClient httpClient = new QueueHttpClient(Arrays.asList(response(200, created), response(200, updated)));
-        CognitiveServicesManager manager = createManager(httpClient);
-        CostControl fetched = manager.costControls().get(RESOURCE_GROUP, ACCOUNT_NAME, COST_CONTROL_NAME);
-
-        CostControl updatedCostControl = fetched.update()
-            .withProperties(new CostControlPatchProperties().withDisplayName("Cost Control updated")
-                .withRules(Collections.singletonList(createRule(50))))
-            .withIfMatch(fetched.etag())
-            .apply();
-
-        Assertions.assertEquals(50.0, updatedCostControl.properties().rules().get(0).amount());
-        HttpRequest updateRequest = httpClient.requests().get(1);
-        Assertions.assertEquals("PATCH", updateRequest.getHttpMethod().toString());
-        Assertions.assertEquals("etag-1", updateRequest.getHeaders().getValue("if-match"));
-        Map<?, ?> updateBody = updateRequest.getBodyAsBinaryData().toObject(Map.class);
-        Map<?, ?> updateProperties = (Map<?, ?>) updateBody.get("properties");
-        Map<?, ?> updateRule = (Map<?, ?>) ((List<?>) updateProperties.get("rules")).get(0);
-        Assertions.assertEquals(50.0, ((Number) updateRule.get("amount")).doubleValue());
-        Assertions.assertEquals("Account", ((Map<?, ?>) updateRule.get("counterKey")).get("type"));
-        Map<?, ?> threshold = (Map<?, ?>) ((List<?>) updateRule.get("thresholds")).get(0);
-        Assertions.assertEquals("Alert", threshold.get("action"));
-        Assertions.assertEquals(80.0, ((Number) threshold.get("value")).doubleValue());
-        assertApiVersion(updateRequest);
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void preservesNullMapEntriesForRemovingNamedSettings(boolean project) {
+        QueueHttpClient client = new QueueHttpClient(
+            Arrays.asList(response(200, resource(project, 25)), response(200, resource(project, 25))));
+        CognitiveServicesManager manager = manager(client);
+        CostControlPatchProperties patch = new CostControlPatchProperties()
+            .withNotifications(Collections.singletonMap("usageAlert", null))
+            .withProviderProperties(
+                new CostControlProviderPropertiesPatch().withActions(Collections.singletonMap("stopRequests", null)));
+        if (project) {
+            manager.projectCostControls().get(GROUP, ACCOUNT, PROJECT, NAME).update().withProperties(patch).apply();
+        } else {
+            manager.accountCostControls().get(GROUP, ACCOUNT, NAME).update().withProperties(patch).apply();
+        }
+        Map<?, ?> body = bodyProperties(client.requests.get(1));
+        Assertions.assertEquals(Collections.singletonMap("usageAlert", null), body.get("notifications"));
+        Assertions.assertEquals(Collections.singletonMap("stopRequests", null),
+            ((Map<?, ?>) body.get("providerProperties")).get("actions"));
     }
 
-    @Test
-    public void deletesWithIfMatchAndSurfacesNotFound() {
-        QueueHttpClient httpClient = new QueueHttpClient(Arrays.asList(response(204, ""),
-            response(404, "{\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"Cost Control not found.\"}}")));
-        CognitiveServicesManager manager = createManager(httpClient);
-        manager.costControls()
-            .deleteWithResponse(RESOURCE_GROUP, ACCOUNT_NAME, COST_CONTROL_NAME, "etag-2",
-                com.azure.core.util.Context.NONE);
-
-        HttpRequest deleteRequest = httpClient.requests().get(0);
-        Assertions.assertEquals("DELETE", deleteRequest.getHttpMethod().toString());
-        Assertions.assertEquals("etag-2", deleteRequest.getHeaders().getValue("if-match"));
-
-        ManagementException exception = Assertions.assertThrows(ManagementException.class,
-            () -> manager.costControls().get(RESOURCE_GROUP, ACCOUNT_NAME, COST_CONTROL_NAME));
-        Assertions.assertEquals(404, exception.getResponse().getStatusCode());
-        Assertions.assertEquals("GET", httpClient.requests().get(1).getHttpMethod().toString());
-        assertApiVersion(deleteRequest);
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void checksExistenceDeletesConditionallyAndSurfacesNotFound(boolean project) {
+        QueueHttpClient client = new QueueHttpClient(Arrays.asList(response(200, ""), response(204, ""),
+            response(404, "{\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"Budget not found.\"}}")));
+        CognitiveServicesManager manager = manager(client);
+        ManagementException error;
+        if (project) {
+            manager.projectCostControls().checkExistence(GROUP, ACCOUNT, PROJECT, NAME);
+            manager.projectCostControls().deleteWithResponse(GROUP, ACCOUNT, PROJECT, NAME, "\"etag-1\"", Context.NONE);
+            error = Assertions.assertThrows(ManagementException.class,
+                () -> manager.projectCostControls().get(GROUP, ACCOUNT, PROJECT, NAME));
+        } else {
+            manager.accountCostControls().checkExistence(GROUP, ACCOUNT, NAME);
+            manager.accountCostControls().deleteWithResponse(GROUP, ACCOUNT, NAME, "\"etag-1\"", Context.NONE);
+            error = Assertions.assertThrows(ManagementException.class,
+                () -> manager.accountCostControls().get(GROUP, ACCOUNT, NAME));
+        }
+        assertRequest(client.requests.get(0), "HEAD", resourceId(project));
+        assertRequest(client.requests.get(1), "DELETE", resourceId(project));
+        Assertions.assertEquals("\"etag-1\"", client.requests.get(1).getHeaders().getValue("if-match"));
+        Assertions.assertEquals(404, error.getResponse().getStatusCode());
     }
 
-    private static void assertApiVersion(HttpRequest request) {
-        Assertions.assertNotNull(request.getUrl().getQuery());
-        Assertions.assertTrue(request.getUrl().getQuery().matches(".*(?:^|&)api-version=[^&]+.*"));
-    }
-
-    private static CognitiveServicesManager createManager(HttpClient httpClient) {
-        return CognitiveServicesManager.configure()
-            .withHttpClient(httpClient)
-            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("unit-test-token", OffsetDateTime.MAX)),
-                new AzureProfile("", SUBSCRIPTION_ID, AzureCloud.AZURE_PUBLIC_CLOUD));
-    }
-
-    private static CostControlProperties createProperties(String displayName, double amount) {
-        return new CostControlProperties().withDisplayName(displayName)
-            .withRules(Collections.singletonList(createRule(amount)));
-    }
-
-    private static CostControlRule createRule(double amount) {
-        return new CostControlRule().withName("account-budget")
-            .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.ACCOUNT))
-            .withUnit(CostControlUnit.USD)
+    private static CostControlProperties properties(double amount) {
+        return new CostControlProperties().withCategory(CostControlCategory.COST)
             .withAmount(amount)
-            .withPeriod(CostControlPeriod.MONTH)
-            .withRecurring(true)
-            .withThresholds(
-                Collections.singletonList(new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
-                    .withValue(80)
-                    .withAction(CostControlThresholdAction.ALERT)));
+            .withTimeGrain(CostControlTimeGrain.MONTHLY)
+            .withTimePeriod(new CostControlTimePeriod().withStartDate(START).withEndDate(END));
     }
 
-    private static String response(String displayName, double amount, String etag) {
-        return response(displayName, amount, etag, "Alert");
+    private static String accountId() {
+        return "/subscriptions/" + SUBSCRIPTION + "/resourceGroups/" + GROUP
+            + "/providers/Microsoft.CognitiveServices/accounts/" + ACCOUNT;
     }
 
-    private static String response(String displayName, double amount, String etag, String action) {
-        return "{\"id\":\"" + RESOURCE_ID + "\",\"name\":\"" + COST_CONTROL_NAME
-            + "\",\"type\":\"Microsoft.CognitiveServices/accounts/costControls\",\"etag\":" + etag
-            + ",\"properties\":{\"displayName\":\"" + displayName + "\",\"rules\":["
-            + "{\"name\":\"account-budget\",\"counterKey\":{\"type\":\"Account\"},\"unit\":\"Usd\"," + "\"amount\":"
-            + amount + ",\"period\":\"Month\",\"recurring\":true,\"thresholds\":["
-            + "{\"type\":\"Percentage\",\"value\":80,\"action\":\"" + action + "\"}]}]}}";
+    private static String ownerId(boolean project) {
+        return accountId() + (project ? "/projects/" + PROJECT : "");
     }
 
-    private static Function<HttpRequest, HttpResponse> response(int statusCode, String body) {
-        return request -> new MockHttpResponse(request, statusCode,
+    private static String resourceId(boolean project) {
+        return ownerId(project) + "/costControls/" + NAME;
+    }
+
+    private static String resource(boolean project, double amount) {
+        return "{\"id\":\"" + resourceId(project) + "\",\"name\":\"" + NAME
+            + "\",\"type\":\"Microsoft.CognitiveServices/accounts/" + (project ? "projects/" : "")
+            + "costControls\",\"etag\":\"\\\"etag-1\\\"\",\"properties\":{\"provider\":\"Microsoft.CognitiveServices\","
+            + "\"category\":\"Cost\",\"amount\":" + amount + ",\"timeGrain\":\"Monthly\","
+            + "\"timePeriod\":{\"startDate\":\"" + START + "\",\"endDate\":\"" + END + "\"},"
+            + "\"notifications\":{\"usageAlert\":{\"eventGridConnectionId\":\"" + accountId()
+            + "/connections/budget-alerts\",\"thresholdType\":\"Percentage\",\"threshold\":80,\"enabled\":true}},"
+            + "\"providerProperties\":{\"actions\":{\"stopRequests\":{\"type\":\"Block\","
+            + "\"thresholdType\":\"Percentage\",\"threshold\":100,\"operator\":\"GreaterThanOrEqualTo\"}}}}}";
+    }
+
+    private static Map<?, ?> bodyProperties(HttpRequest request) {
+        return (Map<?, ?>) request.getBodyAsBinaryData().toObject(Map.class).get("properties");
+    }
+
+    private static void assertRequest(HttpRequest request, String method, String path) {
+        Assertions.assertEquals(method, request.getHttpMethod().toString());
+        Assertions.assertEquals(path, request.getUrl().getPath());
+        Assertions.assertEquals("api-version=2026-11-15-preview", request.getUrl().getQuery());
+    }
+
+    private static CognitiveServicesManager manager(HttpClient client) {
+        return CognitiveServicesManager.configure()
+            .withHttpClient(client)
+            .authenticate(context -> Mono.just(new AccessToken("unit-test-token", OffsetDateTime.MAX)),
+                new AzureProfile("", SUBSCRIPTION, AzureCloud.AZURE_PUBLIC_CLOUD));
+    }
+
+    private static Function<HttpRequest, HttpResponse> response(int status, String body) {
+        return request -> new MockHttpResponse(request, status,
             new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
             body.getBytes(StandardCharsets.UTF_8));
     }
@@ -230,16 +300,8 @@ public final class CostControlWireTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             requests.add(request);
-            Function<HttpRequest, HttpResponse> response = responses.poll();
-            if (response == null) {
-                return Mono.error(new IllegalStateException(
-                    "Unexpected request: " + request.getHttpMethod() + " " + request.getUrl()));
-            }
-            return Mono.just(response.apply(request));
-        }
-
-        private List<HttpRequest> requests() {
-            return requests;
+            Assertions.assertFalse(responses.isEmpty(), "Unexpected HTTP request: " + request.getUrl());
+            return Mono.just(responses.removeFirst().apply(request));
         }
     }
 }

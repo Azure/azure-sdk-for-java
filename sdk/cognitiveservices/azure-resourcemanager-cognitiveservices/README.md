@@ -90,6 +90,48 @@ account = cognitiveServicesManager.accounts()
 
 For details on contributing to this repository, see the [contributing guide][cg].
 
+### Cost control tests
+
+From the repository root, run all credential-free cost control tests (generated tests,
+hand-written wire tests, and sanitizer regression tests):
+
+```bat
+mvn -f sdk\cognitiveservices\azure-resourcemanager-cognitiveservices\pom.xml "-Dtest=*CostControl*Tests,!CostControlLifecycleTests" test
+```
+
+The wire tests cover both account and project scopes for API version `2026-11-15-preview`,
+including notifications, blocking actions, named PATCH updates/removals, pagination,
+existence checks, conditional requests, and not-found responses.
+They use mock HTTP responses and need no Azure credentials, recordings, or test proxy.
+
+The separate `CostControlLifecycleTests` exercises account budget creation, existence,
+get/list, amount updates, and deletion. It creates no notifications or blocking actions.
+To run it directly against an existing cost-control-enabled test account without recording,
+authenticate with `az login` and use the following in Command Prompt:
+
+```bat
+set "AZURE_TEST_MODE=LIVE"
+set "AZURE_SUBSCRIPTION_ID=<subscription-id>"
+set "AZURE_RESOURCE_GROUP=<resource-group>"
+set "AZURE_COGNITIVE_SERVICES_ACCOUNT=<account-name>"
+mvn -f sdk\cognitiveservices\azure-resourcemanager-cognitiveservices\pom.xml "-Dtest=CostControlLifecycleTests" test
+set "AZURE_TEST_MODE="
+```
+
+The identity must be allowed to manage cost controls. The test creates and deletes
+`sdk-cost-control-lifecycle`; do not run concurrent copies against the same account.
+Its monthly USD budget changes from 25 to 50, with a fixed validity window from
+November 1, 2026 through November 1, 2027 (exclusive).
+LIVE mode skips the test if the account variable is unset or blank. Once an account
+is specified, subscription and resource-group variables are required.
+RECORD mode requires all three variables and uses the test proxy.
+
+The lifecycle test defaults to PLAYBACK, using the November API recording referenced by
+`assets.json`. Playback requires the test proxy but no Azure credentials or resource
+environment variables. After changing recorded interactions, verify local playback,
+publish the recordings with `test-proxy push -a sdk\cognitiveservices\azure-resourcemanager-cognitiveservices\assets.json`
+from the repository root, and commit the updated manifest with the test changes.
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
