@@ -51,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -729,8 +730,19 @@ public class QueueAsyncApiTests extends QueueTestBase {
 
         QueueMessageItem dequeueMsg = queueAsyncClient.receiveMessage().block();
 
-        assertAsyncResponseStatusCode(queueAsyncClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)), 204);
+        // Update Message returns its result purely in the x-ms-popreceipt and x-ms-time-next-visible response
+        // headers, which reach the client through the generated MessageIdsUpdateHeaders model. Assert the values
+        // actually come through, not just the status code.
+        StepVerifier
+            .create(queueAsyncClient.updateMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
+                updateMsg, Duration.ofSeconds(1)))
+            .assertNext(response -> {
+                assertEquals(204, response.getStatusCode());
+                assertNotNull(response.getValue().getPopReceipt());
+                assertNotEquals(dequeueMsg.getPopReceipt(), response.getValue().getPopReceipt());
+                assertNotNull(response.getValue().getTimeNextVisible());
+            })
+            .verifyComplete();
 
         StepVerifier.create(queueAsyncClient.peekMessage().delaySubscription(getMessageUpdateDelay(2000)))
             .assertNext(peekedMessageItem -> assertEquals(updateMsg, peekedMessageItem.getMessageText()))

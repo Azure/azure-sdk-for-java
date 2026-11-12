@@ -6,9 +6,17 @@
 
 ### Breaking Changes
 
+- When no root element name is passed, `toXml`/`fromXml` on `QueueAccessPolicy`, `QueueAnalyticsLogging`,
+  `QueueMetrics`, `QueueRetentionPolicy` and `QueueServiceStatistics` now default to the service's element names
+  (`AccessPolicy`, `Logging`, `Metrics`, `RetentionPolicy` and `StorageServiceStats`) instead of the class names.
+  Requests and responses sent through the clients are unaffected.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+- Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
+  in this release.
 
 ## 12.33.0-beta.1 (2026-11-05)
 
