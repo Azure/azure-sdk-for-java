@@ -11,11 +11,6 @@
           "justification": "EvaluationLevel was deprecated and unused by any public API; it is removed in this release. See CHANGELOG.md."
         },
         {
-          "code": "java.field.removed",
-          "old": "field com.azure.ai.agents.models.AgentEndpointProtocol.A2A",
-          "justification": "A2A protocol support requires the preview feature flag. The constant is retained and now correctly annotated @Beta; the beta filter reports it as removed."
-        },
-        {
           "code": "java.method.removed",
           "old": "method java.util.List<com.azure.ai.agents.models.ProtocolVersionRecord> com.azure.ai.agents.models.HostedAgentDefinition::getProtocolVersions()",
           "justification": "Protocol versions include preview A2A support. The accessor is retained and now correctly annotated @Beta; the beta filter reports it as removed."

@@ -4,7 +4,6 @@ class;com.azure.ai.agents.models.A2APreviewToolboxTool;Preview API. preview_tool
 class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
 field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Preview;digital_worker_type
-field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;A2A
 class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview, MicrosoftCopilot=V1Preview;
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
 field;com.azure.ai.agents.models.AzureCreateResponseDetails;Preview API. ModelRouterControls=V1Preview;model_selection_details

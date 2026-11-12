@@ -77,7 +77,9 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("message".equals(discriminatorValue)) {
+                if ("system_tool".equals(discriminatorValue)) {
+                    return VoiceAgentSystemToolItem.fromJson(readerToUse.reset());
+                } else if ("message".equals(discriminatorValue)) {
                     return RealtimeConversationItemMessage.fromJson(readerToUse.reset());
                 } else if ("function_call".equals(discriminatorValue)) {
                     return RealtimeConversationItemFunctionCall.fromJson(readerToUse.reset());
@@ -91,8 +93,6 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                     return RealtimeMcpToolCall.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_request".equals(discriminatorValue)) {
                     return RealtimeMcpApprovalInput.fromJson(readerToUse.reset());
-                } else if ("system_tool".equals(discriminatorValue)) {
-                    return VoiceAgentSystemToolItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
