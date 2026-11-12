@@ -86,15 +86,13 @@ $buildOptions = @(
     '--batch-mode', '--no-transfer-progress',
     '-Dmaven.javadoc.skip=true', '-Dgpg.skip', '-Dmaven.test.skip=true', '-Djacoco.skip', '-Drevapi.skip'
 )
-if (-not $SourcesJar) {
-    Invoke-ApiMarkdownCommand 'mvn' (@(
-        'clean', 'package', '-f', (Join-Path $repositoryRoot 'pom.xml'), '-pl', $relativePackage, '-am'
-    ) + $buildOptions)
-    $sources = @(Get-ChildItem -LiteralPath (Join-Path $packageDirectory 'target') -Filter '*-sources.jar' -File)
-    if ($sources.Count -ne 1) {
-        throw "Expected one sources JAR in $packageDirectory/target; found $($sources.Count)."
+$previousBundle = @{}
+foreach ($fileName in @('api.md', 'api.metadata.yml')) {
+    $path = Join-Path $OutputDirectory $fileName
+    if (Test-Path -LiteralPath $path -PathType Leaf) {
+        # Maven clean can remove the output directory before generation succeeds.
+        $previousBundle[$path] = [IO.File]::ReadAllBytes($path)
     }
-    $SourcesJar = $sources[0].FullName
 }
 
 $processorDirectory = Join-Path $repositoryRoot 'sdk' 'tools' 'apiview-java-processor'
@@ -112,6 +110,16 @@ $processorMutex = [Threading.Mutex]::new($false, "AzureSdkApiMarkdown-$lockId")
 $lockTaken = $false
 $temporaryDirectory = Join-Path $OutputDirectory "api-markdown-$([guid]::NewGuid().ToString('N'))"
 try {
+    if (-not $SourcesJar) {
+        Invoke-ApiMarkdownCommand 'mvn' (@(
+            'clean', 'package', '-f', (Join-Path $repositoryRoot 'pom.xml'), '-pl', $relativePackage, '-am'
+        ) + $buildOptions)
+        $sources = @(Get-ChildItem -LiteralPath (Join-Path $packageDirectory 'target') -Filter '*-sources.jar' -File)
+        if ($sources.Count -ne 1) {
+            throw "Expected one sources JAR in $packageDirectory/target; found $($sources.Count)."
+        }
+        $SourcesJar = $sources[0].FullName
+    }
     try {
         $lockTaken = $processorMutex.WaitOne([TimeSpan]::FromMinutes(10))
     }
@@ -151,6 +159,15 @@ try {
     [IO.File]::Move($metadataPath, $metadataOutputPath, $true)
     Write-Output "Generated API Markdown: $outputPath"
     Write-Output "Generated API metadata: $metadataOutputPath"
+}
+catch {
+    if ($previousBundle.Count -gt 0) {
+        [IO.Directory]::CreateDirectory($OutputDirectory) | Out-Null
+        foreach ($path in $previousBundle.Keys) {
+            [IO.File]::WriteAllBytes($path, $previousBundle[$path])
+        }
+    }
+    throw
 }
 finally {
     try {

@@ -12,7 +12,7 @@ import com.github.javaparser.ast.type.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,17 +35,14 @@ public class RequiredBuilderMethodsDiagnosticRule implements DiagnosticRule {
 
     private final String builderProtocol;
 
-    private final List<String> missingMethods = new ArrayList<>();
-
     public RequiredBuilderMethodsDiagnosticRule(String builderProtocol) {
-        this.builderMethods = new HashMap<>();
+        this.builderMethods = new LinkedHashMap<>();
         this.builderProtocol = builderProtocol;
     }
 
     public RequiredBuilderMethodsDiagnosticRule addMethod(String methodName,
         Function<MethodDeclaration, Optional<Diagnostic>> func) {
         builderMethods.put(methodName, func);
-        missingMethods.add(methodName);
         return this;
     }
 
@@ -69,15 +66,17 @@ public class RequiredBuilderMethodsDiagnosticRule implements DiagnosticRule {
                     .filter(p -> "protocol".equals(p.getNameAsString()))
                     .map(MemberValuePair::getValue)
                     .map(Node::toString)
+                    .map(name -> name.substring(name.lastIndexOf('.') + 1))
                     .findFirst()
                     .orElse("http");  // TODO for now we assume that no specified protocol in the builder means we will be http
 
                 if (builderProtocol != null) {
-                    if (!builderProtocol.equals(protocolName) || protocolName.isEmpty()) {
+                    if (!builderProtocol.equalsIgnoreCase(protocolName) || protocolName.isEmpty()) {
                         return;
                     }
                 }
 
+                final List<String> missingMethods = new ArrayList<>(builderMethods.keySet());
                 getPublicOrProtectedMethods(typeDeclaration).forEach(methodDeclaration -> {
                     final String methodName = methodDeclaration.getNameAsString();
                     if (builderMethods.containsKey(methodName)) {

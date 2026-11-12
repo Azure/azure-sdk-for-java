@@ -37,7 +37,11 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
                         .stream()
                         .filter(pair -> pair.getNameAsString().equals("protocol"))
                         .findFirst();
-                    this.isHttpService = !protocol.isPresent() || protocol.get().getNameAsString().contains("HTTP");
+                    this.isHttpService = protocol.map(MemberValuePair::getValue)
+                        .map(Object::toString)
+                        .map(name -> name.substring(name.lastIndexOf('.') + 1))
+                        .map("HTTP"::equalsIgnoreCase)
+                        .orElse(true);
                 }
             });
         }

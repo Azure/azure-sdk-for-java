@@ -107,6 +107,17 @@ Describe 'Generate-ApiMarkdown' {
     }
 
     It 'builds the selected SDK package when no sources JAR is supplied' {
+        Mock mvn {
+            if ($args -contains '-pl') {
+                $root = Split-Path $args[([array]::IndexOf($args, '-f') + 1)] -Parent
+                $package = Join-Path $root $args[([array]::IndexOf($args, '-pl') + 1)]
+                $target = Join-Path $package 'target'
+                Remove-Item -LiteralPath $target -Recurse -Force
+                New-Item -ItemType Directory -Path $target | Out-Null
+                Set-Content -LiteralPath (Join-Path $target 'azure-example-1.0.0-sources.jar') -Value ''
+            }
+            $global:LASTEXITCODE = 0
+        }
         & $script:Command -PackagePath $script:Package
 
         Should -Invoke mvn -Times 2 -Exactly
@@ -114,6 +125,38 @@ Describe 'Generate-ApiMarkdown' {
             $args -contains '-pl' -and $args -contains 'sdk/example/azure-example' -and $args -contains '-am'
         }
         [IO.File]::ReadAllText($script:Output) | Should -Not -Be 'previous API'
+    }
+
+    It 'restores the review bundle after cleanup and a <Failure> failure' -ForEach @(
+        @{ Failure = 'package build' }
+        @{ Failure = 'processor build' }
+        @{ Failure = 'renderer' }
+    ) {
+        Mock mvn {
+            $global:LASTEXITCODE = 0
+            if ($args -contains '-pl') {
+                $root = Split-Path $args[([array]::IndexOf($args, '-f') + 1)] -Parent
+                $package = Join-Path $root $args[([array]::IndexOf($args, '-pl') + 1)]
+                $target = Join-Path $package 'target'
+                Remove-Item -LiteralPath $target -Recurse -Force
+                if ($Failure -eq 'package build') {
+                    $global:LASTEXITCODE = 1
+                    return
+                }
+                New-Item -ItemType Directory -Path $target | Out-Null
+                Set-Content -LiteralPath (Join-Path $target 'azure-example-1.0.0-sources.jar') -Value ''
+            }
+            elseif ($Failure -eq 'processor build') {
+                $global:LASTEXITCODE = 1
+            }
+        }
+        Mock java { $global:LASTEXITCODE = 1 }
+
+        { & $script:Command -PackagePath $script:Package } | Should -Throw '*failed with exit code 1*'
+
+        [IO.File]::ReadAllText($script:Output) | Should -Be 'previous API'
+        [IO.File]::ReadAllText($script:Metadata) | Should -Be 'previous metadata'
+        @(Get-ChildItem -LiteralPath $script:Bundle -Directory).Count | Should -Be 0
     }
 
     It 'writes to an external output directory relative to the caller' {
