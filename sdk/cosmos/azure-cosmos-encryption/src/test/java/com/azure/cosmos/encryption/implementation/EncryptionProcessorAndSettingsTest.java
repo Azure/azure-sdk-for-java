@@ -273,4 +273,52 @@ public class EncryptionProcessorAndSettingsTest {
             CosmosItemSerializer.DEFAULT_SERIALIZER).block().getLeft());
         assertThat(output).isEqualTo(json);
     }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void encryptPatchMixedArray() throws Exception {
+        CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
+        Mockito.when(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolver()).thenReturn(keyEncryptionKeyResolver);
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+        EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
+
+        EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
+            cosmosEncryptionAsyncClient);
+        JsonNode patchValue = OBJECT_MAPPER.readTree(
+            "[{\"label\":\"patched\"},\"PATCH_SECRET\",[\"NESTED_SECRET\"],null,42,{\"tail\":\"TAIL_SECRET\"}]");
+        JsonNode expectedValue = patchValue.deepCopy();
+
+        JsonNode encryptedPatchValue = encryptionProcessor.encryptPatchNode(patchValue, "/sensitiveString").block();
+
+        assertThat(encryptedPatchValue.get(0).get("label").isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(1).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(2).get(0).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(3).isNull()).isTrue();
+        assertThat(encryptedPatchValue.get(4).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(5).get("tail").isBinary()).isTrue();
+
+        ObjectNode patchedDocument = OBJECT_MAPPER.createObjectNode();
+        patchedDocument.put("id", "patchItem");
+        patchedDocument.set("sensitiveString", encryptedPatchValue);
+        JsonNode decryptedPatchedDocument = encryptionProcessor.decrypt(patchedDocument,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedPatchedDocument.get("sensitiveString").toString()).isEqualTo(expectedValue.toString());
+
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "createItem");
+        document.set("sensitiveString", expectedValue.deepCopy());
+        byte[] encryptedDocumentBytes = encryptionProcessor.encrypt(document).block();
+        JsonNode encryptedDocument = OBJECT_MAPPER.readTree(encryptedDocumentBytes);
+        assertThat(encryptedDocument.toString()).doesNotContain("patched", "PATCH_SECRET", "NESTED_SECRET",
+            "TAIL_SECRET");
+        JsonNode decryptedDocument = encryptionProcessor.decrypt(encryptedDocumentBytes,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedDocument.get("sensitiveString").toString()).isEqualTo(expectedValue.toString());
+    }
 }

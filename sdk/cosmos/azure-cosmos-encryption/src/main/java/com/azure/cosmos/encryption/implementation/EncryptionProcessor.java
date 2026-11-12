@@ -365,46 +365,19 @@ public class EncryptionProcessor {
         else if (propertyValueHolder.isArray()) {
             assert propertyValueHolder instanceof ArrayNode;
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
-                List<JsonNode> encryptedArray = new ArrayList<>();
-                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
-                    JsonNode nodeInArray = arrayIterator.next();
-                    if (nodeInArray.isArray()) {
-                        encryptedArray.add(encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
-                    } else {
-                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
-                            Map.Entry<String, JsonNode> child = it.next();
-                            if (child.getValue().isObject() || child.getValue().isArray()) {
-                                JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings,
-                                    child.getValue(), child.getKey());
-                                ((ObjectNode) nodeInArray).set(child.getKey(), encryptedValue);
-
-                            } else if (!child.getValue().isNull()) {
-                                encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
-                                    child.getKey());
-                            }
-                        }
-                        encryptedArray.add(nodeInArray);
-                    }
-                }
-                arrayNode.removeAll();
-                for (JsonNode encryptedValue : encryptedArray) {
-                    arrayNode.add(encryptedValue);
-                }
-            } else {
-                List<byte[]> encryptedArray = new ArrayList<>();
-                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
-                    encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(),
-                        StringUtils.EMPTY));
-                }
-                arrayNode.removeAll();
-                for (byte[] encryptedValue : encryptedArray) {
-                    arrayNode.add(encryptedValue);
+            for (int i = 0; i < arrayNode.size(); i++) {
+                JsonNode nodeInArray = arrayNode.get(i);
+                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                    arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+                } else if (!nodeInArray.isNull()) {
+                    arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                        nodeInArray, StringUtils.EMPTY)));
                 }
             }
             return arrayNode;
-        } else {
-            encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName);
+        } else if (!propertyValueHolder.isNull()) {
+            return BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder,
+                propertyName));
         }
         return propertyValueHolder;
     }
@@ -425,40 +398,14 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
-            boolean hasElements = checkArrayIterator.hasNext();
-            if (hasElements) {
-                JsonNode nextNode = checkArrayIterator.next();
-                hasElements &= nextNode.isObject() || nextNode.isArray();
-            }
-            if (hasElements) {
-                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
-                    JsonNode nodeInArray = arrayIterator.next();
-                    if (nodeInArray.isArray()) {
-                        encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null,
-                            nodeInArray, StringUtils.EMPTY);
-                    } else {
-                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
-                            Map.Entry<String, JsonNode> child = it.next();
-                            if (child.getValue().isObject() || child.getValue().isArray()) {
-                                encryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
-                                    child.getValue(), propertyName);
-                            } else if (!child.getValue().isNull()) {
-                                encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
-                                    child.getKey());
-                            }
-                        }
-                    }
-                }
-            } else {
-                List<byte[]> encryptedArray = new ArrayList<>();
-                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
-                    encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(),
-                        StringUtils.EMPTY));
-                }
-                arrayNode.removeAll();
-                for (byte[] encryptedValue : encryptedArray) {
-                    arrayNode.add(encryptedValue);
+            for (int i = 0; i < arrayNode.size(); i++) {
+                JsonNode nodeInArray = arrayNode.get(i);
+                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                    encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
+                        StringUtils.EMPTY);
+                } else if (!nodeInArray.isNull()) {
+                    arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                        nodeInArray, StringUtils.EMPTY)));
                 }
             }
         } else {
@@ -582,40 +529,14 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
-            boolean hasElements = checkArrayIterator.hasNext();
-            if (hasElements) {
-                JsonNode nextNode = checkArrayIterator.next();
-                hasElements &= nextNode.isObject() || nextNode.isArray();
-            }
-            if (hasElements) {
-                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
-                    JsonNode nodeInArray = arrayIterator.next();
-                    if (nodeInArray.isArray()) {
-                        decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null,
-                            nodeInArray, StringUtils.EMPTY);
-                    } else {
-                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
-                            Map.Entry<String, JsonNode> child = it.next();
-                            if (child.getValue().isObject() || child.getValue().isArray()) {
-                                decryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
-                                    child.getValue(), propertyName);
-                            } else if (!child.getValue().isNull()) {
-                                decryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
-                                    child.getKey());
-                            }
-                        }
-                    }
-                }
-            } else {
-                List<JsonNode> decryptedArray = new ArrayList<>();
-                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
-                    decryptedArray.add(decryptAndSerializeValue(encryptionSettings, null, it.next(),
+            for (int i = 0; i < arrayNode.size(); i++) {
+                JsonNode nodeInArray = arrayNode.get(i);
+                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                    decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
+                        StringUtils.EMPTY);
+                } else if (!nodeInArray.isNull()) {
+                    arrayNode.set(i, decryptAndSerializeValue(encryptionSettings, null, nodeInArray,
                         StringUtils.EMPTY));
-                }
-                arrayNode.removeAll();
-                for (JsonNode encryptedValue : decryptedArray) {
-                    arrayNode.add(encryptedValue);
                 }
             }
         } else {
