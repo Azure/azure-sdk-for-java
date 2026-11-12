@@ -15,10 +15,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -26,7 +22,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.queue.QueueServiceVersion;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
+import com.azure.storage.queue.implementation.models.QueueStorageErrorException;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import reactor.core.publisher.Mono;
 
@@ -64,7 +60,7 @@ public final class MessageIdsImpl {
     public QueueServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -79,28 +75,28 @@ public final class MessageIdsImpl {
 
         @Put("/messages/{messageId}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<Void>> update(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @PathParam("messageId") String messageId, @QueryParam("popreceipt") String popReceipt,
             @QueryParam("visibilitytimeout") int visibilityTimeout, RequestOptions requestOptions, Context context);
 
         @Put("/messages/{messageId}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<Void> updateSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @PathParam("messageId") String messageId, @QueryParam("popreceipt") String popReceipt,
             @QueryParam("visibilitytimeout") int visibilityTimeout, RequestOptions requestOptions, Context context);
 
         @Delete("/messages/{messageId}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<Void>> delete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @PathParam("messageId") String messageId, @QueryParam("popreceipt") String popReceipt,
             RequestOptions requestOptions, Context context);
 
         @Delete("/messages/{messageId}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<Void> deleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @PathParam("messageId") String messageId, @QueryParam("popreceipt") String popReceipt,
             RequestOptions requestOptions, Context context);
@@ -162,10 +158,7 @@ public final class MessageIdsImpl {
      * larger than or equal to 1 second, and cannot be larger than 7 days. The visibility timeout of a message
      * can be set to a value later than the expiry time.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -180,7 +173,7 @@ public final class MessageIdsImpl {
         return FluxUtil
             .withContext(context -> service.update(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 messageId, popReceipt, visibilityTimeout, requestOptionsLocal, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -239,10 +232,7 @@ public final class MessageIdsImpl {
      * larger than or equal to 1 second, and cannot be larger than 7 days. The visibility timeout of a message
      * can be set to a value later than the expiry time.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -258,7 +248,7 @@ public final class MessageIdsImpl {
             });
             return service.updateSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), messageId,
                 popReceipt, visibilityTimeout, requestOptionsLocal, Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -294,10 +284,7 @@ public final class MessageIdsImpl {
      * @param popReceipt An opaque value required to delete the message. If deletion fails using this
      * PopReceipt then the message has been dequeued by another client.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -306,7 +293,7 @@ public final class MessageIdsImpl {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 messageId, popReceipt, requestOptions, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -340,10 +327,7 @@ public final class MessageIdsImpl {
      * @param popReceipt An opaque value required to delete the message. If deletion fails using this
      * PopReceipt then the message has been dequeued by another client.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -352,7 +336,7 @@ public final class MessageIdsImpl {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), messageId,
                 popReceipt, requestOptions, Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }

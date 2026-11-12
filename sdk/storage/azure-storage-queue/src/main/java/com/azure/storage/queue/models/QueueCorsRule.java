@@ -49,6 +49,32 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     private int maxAgeInSeconds;
 
     /**
+     * Creates an instance of QueueCorsRule class.
+     */
+    @Generated
+    public QueueCorsRule() {
+    }
+
+    /**
+     * Creates an instance of QueueCorsRule class.
+     *
+     * @param allowedOrigins the allowedOrigins value to set.
+     * @param allowedMethods the allowedMethods value to set.
+     * @param allowedHeaders the allowedHeaders value to set.
+     * @param exposedHeaders the exposedHeaders value to set.
+     * @param maxAgeInSeconds the maxAgeInSeconds value to set.
+     */
+    @Generated
+    private QueueCorsRule(String allowedOrigins, String allowedMethods, String allowedHeaders, String exposedHeaders,
+        int maxAgeInSeconds) {
+        this.allowedOrigins = allowedOrigins;
+        this.allowedMethods = allowedMethods;
+        this.allowedHeaders = allowedHeaders;
+        this.exposedHeaders = exposedHeaders;
+        this.maxAgeInSeconds = maxAgeInSeconds;
+    }
+
+    /**
      * Get the allowedOrigins property: The allowed origins.
      *
      * @return the allowedOrigins value.
@@ -56,6 +82,18 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     @Generated
     public String getAllowedOrigins() {
         return this.allowedOrigins;
+    }
+
+    /**
+     * Set the allowedOrigins property.
+     *
+     * @param allowedOrigins the allowedOrigins value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedOrigins(String allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+        return this;
     }
 
     /**
@@ -69,6 +107,18 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     }
 
     /**
+     * Set the allowedMethods property.
+     *
+     * @param allowedMethods the allowedMethods value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedMethods(String allowedMethods) {
+        this.allowedMethods = allowedMethods;
+        return this;
+    }
+
+    /**
      * Get the allowedHeaders property: The allowed headers.
      *
      * @return the allowedHeaders value.
@@ -76,6 +126,18 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     @Generated
     public String getAllowedHeaders() {
         return this.allowedHeaders;
+    }
+
+    /**
+     * Set the allowedHeaders property.
+     *
+     * @param allowedHeaders the allowedHeaders value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedHeaders(String allowedHeaders) {
+        this.allowedHeaders = allowedHeaders;
+        return this;
     }
 
     /**
@@ -89,6 +151,18 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     }
 
     /**
+     * Set the exposedHeaders property.
+     *
+     * @param exposedHeaders the exposedHeaders value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setExposedHeaders(String exposedHeaders) {
+        this.exposedHeaders = exposedHeaders;
+        return this;
+    }
+
+    /**
      * Get the maxAgeInSeconds property: The maximum age in seconds.
      *
      * @return the maxAgeInSeconds value.
@@ -96,6 +170,18 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     @Generated
     public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
+    }
+
+    /**
+     * Set the maxAgeInSeconds property.
+     *
+     * @param maxAgeInSeconds the maxAgeInSeconds value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
+        this.maxAgeInSeconds = maxAgeInSeconds;
+        return this;
     }
 
     @Generated
@@ -168,80 +254,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
                     reader.skipElement();
                 }
             }
-            QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
-            deserializedQueueCorsRule.allowedOrigins = allowedOrigins;
-            deserializedQueueCorsRule.allowedMethods = allowedMethods;
-            deserializedQueueCorsRule.allowedHeaders = allowedHeaders;
-            deserializedQueueCorsRule.exposedHeaders = exposedHeaders;
-            deserializedQueueCorsRule.maxAgeInSeconds = maxAgeInSeconds;
-            return deserializedQueueCorsRule;
+            return new QueueCorsRule(allowedOrigins, allowedMethods, allowedHeaders, exposedHeaders, maxAgeInSeconds);
         });
-    }
-
-    /**
-     * Creates an instance of QueueCorsRule class.
-     */
-    @Generated
-    public QueueCorsRule() {
-    }
-
-    /**
-     * Set the allowedOrigins property: The allowed origins.
-     *
-     * @param allowedOrigins the allowedOrigins value to set.
-     * @return the QueueCorsRule object itself.
-     */
-    @Generated
-    public QueueCorsRule setAllowedOrigins(String allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-        return this;
-    }
-
-    /**
-     * Set the allowedMethods property: The allowed methods.
-     *
-     * @param allowedMethods the allowedMethods value to set.
-     * @return the QueueCorsRule object itself.
-     */
-    @Generated
-    public QueueCorsRule setAllowedMethods(String allowedMethods) {
-        this.allowedMethods = allowedMethods;
-        return this;
-    }
-
-    /**
-     * Set the allowedHeaders property: The allowed headers.
-     *
-     * @param allowedHeaders the allowedHeaders value to set.
-     * @return the QueueCorsRule object itself.
-     */
-    @Generated
-    public QueueCorsRule setAllowedHeaders(String allowedHeaders) {
-        this.allowedHeaders = allowedHeaders;
-        return this;
-    }
-
-    /**
-     * Set the exposedHeaders property: The exposed headers.
-     *
-     * @param exposedHeaders the exposedHeaders value to set.
-     * @return the QueueCorsRule object itself.
-     */
-    @Generated
-    public QueueCorsRule setExposedHeaders(String exposedHeaders) {
-        this.exposedHeaders = exposedHeaders;
-        return this;
-    }
-
-    /**
-     * Set the maxAgeInSeconds property: The maximum age in seconds.
-     *
-     * @param maxAgeInSeconds the maxAgeInSeconds value to set.
-     * @return the QueueCorsRule object itself.
-     */
-    @Generated
-    public QueueCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
-        this.maxAgeInSeconds = maxAgeInSeconds;
-        return this;
     }
 }

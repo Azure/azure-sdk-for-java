@@ -31,6 +31,23 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     private Integer days;
 
     /**
+     * Creates an instance of QueueRetentionPolicy class.
+     */
+    @Generated
+    public QueueRetentionPolicy() {
+    }
+
+    /**
+     * Creates an instance of QueueRetentionPolicy class.
+     *
+     * @param enabled the enabled value to set.
+     */
+    @Generated
+    private QueueRetentionPolicy(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Get the enabled property: Whether to enable the retention policy.
      *
      * @return the enabled value.
@@ -38,6 +55,18 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     @Generated
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * Set the enabled property.
+     *
+     * @param enabled the enabled value to set.
+     * @return the QueueRetentionPolicy object itself.
+     */
+    @Generated
+    public QueueRetentionPolicy setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 
     /**
@@ -120,29 +149,9 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
                     reader.skipElement();
                 }
             }
-            QueueRetentionPolicy deserializedQueueRetentionPolicy = new QueueRetentionPolicy();
-            deserializedQueueRetentionPolicy.enabled = enabled;
+            QueueRetentionPolicy deserializedQueueRetentionPolicy = new QueueRetentionPolicy(enabled);
             deserializedQueueRetentionPolicy.days = days;
             return deserializedQueueRetentionPolicy;
         });
-    }
-
-    /**
-     * Creates an instance of QueueRetentionPolicy class.
-     */
-    @Generated
-    public QueueRetentionPolicy() {
-    }
-
-    /**
-     * Set the enabled property: Whether to enable the retention policy.
-     *
-     * @param enabled the enabled value to set.
-     * @return the QueueRetentionPolicy object itself.
-     */
-    @Generated
-    public QueueRetentionPolicy setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
     }
 }

@@ -15,10 +15,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -26,7 +22,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.queue.QueueServiceVersion;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
+import com.azure.storage.queue.implementation.models.QueueStorageErrorException;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import reactor.core.publisher.Mono;
 
@@ -63,7 +59,7 @@ public final class MessagesImpl {
     public QueueServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -78,31 +74,31 @@ public final class MessagesImpl {
 
         @Get("/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<BinaryData>> dequeue(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<BinaryData> dequeueSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<Void>> clear(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             RequestOptions requestOptions, Context context);
 
         @Delete("/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<Void> clearSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             RequestOptions requestOptions, Context context);
 
         @Post("/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<BinaryData>> enqueue(@HostParam("url") String url,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @BodyParam("application/xml") BinaryData queueMessage,
@@ -110,20 +106,20 @@ public final class MessagesImpl {
 
         @Post("/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<BinaryData> enqueueSync(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/xml") BinaryData queueMessage, RequestOptions requestOptions, Context context);
 
         @Get("/messages?peekonly=true")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Mono<Response<BinaryData>> peek(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages?peekonly=true")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageErrorException.class)
         Response<BinaryData> peekSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -185,10 +181,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of receive messages along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -197,7 +190,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.dequeue(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -257,10 +250,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of receive messages along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,7 +259,7 @@ public final class MessagesImpl {
             final String accept = "application/xml";
             return service.dequeueSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
                 requestOptions, Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -302,10 +292,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -313,7 +300,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.clear(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -344,10 +331,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -355,7 +339,7 @@ public final class MessagesImpl {
         try {
             return service.clearSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
                 Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -431,10 +415,7 @@ public final class MessagesImpl {
      * with UTF-8
      * encoding. The encoded message can be up to 64 KB in size.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of send message along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -445,7 +426,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.enqueue(this.client.getUrl(), contentType,
                 this.client.getServiceVersion().getVersion(), accept, queueMessage, requestOptions, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -519,10 +500,7 @@ public final class MessagesImpl {
      * with UTF-8
      * encoding. The encoded message can be up to 64 KB in size.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of send message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -532,7 +510,7 @@ public final class MessagesImpl {
             final String accept = "application/xml";
             return service.enqueueSync(this.client.getUrl(), contentType, this.client.getServiceVersion().getVersion(),
                 accept, queueMessage, requestOptions, Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
@@ -588,10 +566,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of peek messages along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -600,7 +575,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.peek(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -654,10 +629,7 @@ public final class MessagesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws QueueStorageErrorException thrown if the request is rejected by server.
      * @return the response of peek messages along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -666,7 +638,7 @@ public final class MessagesImpl {
             final String accept = "application/xml";
             return service.peekSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
                 requestOptions, Context.NONE);
-        } catch (QueueStorageExceptionInternal internalException) {
+        } catch (QueueStorageErrorException internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }

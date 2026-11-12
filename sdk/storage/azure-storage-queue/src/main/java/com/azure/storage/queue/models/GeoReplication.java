@@ -36,6 +36,29 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     private DateTimeRfc1123 lastSyncTime;
 
     /**
+     * Creates an instance of GeoReplication class.
+     */
+    @Generated
+    public GeoReplication() {
+    }
+
+    /**
+     * Creates an instance of GeoReplication class.
+     *
+     * @param status the status value to set.
+     * @param lastSyncTime the lastSyncTime value to set.
+     */
+    @Generated
+    private GeoReplication(GeoReplicationStatus status, OffsetDateTime lastSyncTime) {
+        this.status = status;
+        if (lastSyncTime == null) {
+            this.lastSyncTime = null;
+        } else {
+            this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
+        }
+    }
+
+    /**
      * Get the status property: The status of the secondary location.
      *
      * @return the status value.
@@ -43,6 +66,18 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     @Generated
     public GeoReplicationStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * Set the status property.
+     *
+     * @param status the status value to set.
+     * @return the GeoReplication object itself.
+     */
+    @Generated
+    public GeoReplication setStatus(GeoReplicationStatus status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -59,6 +94,18 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
             return null;
         }
         return this.lastSyncTime.getDateTime();
+    }
+
+    /**
+     * Set the lastSyncTime property.
+     *
+     * @param lastSyncTime the lastSyncTime value to set.
+     * @return the GeoReplication object itself.
+     */
+    @Generated
+    public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
+        this.lastSyncTime = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
+        return this;
     }
 
     @Generated
@@ -122,48 +169,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
                     reader.skipElement();
                 }
             }
-            GeoReplication deserializedGeoReplication = new GeoReplication();
-            deserializedGeoReplication.status = status;
-            deserializedGeoReplication.lastSyncTime = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
-            return deserializedGeoReplication;
+            return new GeoReplication(status, lastSyncTime);
         });
-    }
-
-    /**
-     * Creates an instance of GeoReplication class.
-     */
-    @Generated
-    public GeoReplication() {
-    }
-
-    /**
-     * Set the status property: The status of the secondary location.
-     *
-     * @param status the status value to set.
-     * @return the GeoReplication object itself.
-     */
-    @Generated
-    public GeoReplication setStatus(GeoReplicationStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Set the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
-     * guaranteed to be available
-     * for read operations at the secondary. Primary writes after this point in time may or may not be available
-     * for reads.
-     *
-     * @param lastSyncTime the lastSyncTime value to set.
-     * @return the GeoReplication object itself.
-     */
-    @Generated
-    public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
-        if (lastSyncTime == null) {
-            this.lastSyncTime = null;
-        } else {
-            this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
-        }
-        return this;
     }
 }

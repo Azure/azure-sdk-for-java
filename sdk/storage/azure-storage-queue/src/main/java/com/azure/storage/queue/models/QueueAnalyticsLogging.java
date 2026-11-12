@@ -49,6 +49,32 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     private QueueRetentionPolicy retentionPolicy;
 
     /**
+     * Creates an instance of QueueAnalyticsLogging class.
+     */
+    @Generated
+    public QueueAnalyticsLogging() {
+    }
+
+    /**
+     * Creates an instance of QueueAnalyticsLogging class.
+     *
+     * @param version the version value to set.
+     * @param delete the delete value to set.
+     * @param read the read value to set.
+     * @param write the write value to set.
+     * @param retentionPolicy the retentionPolicy value to set.
+     */
+    @Generated
+    private QueueAnalyticsLogging(String version, boolean delete, boolean read, boolean write,
+        QueueRetentionPolicy retentionPolicy) {
+        this.version = version;
+        this.delete = delete;
+        this.read = read;
+        this.write = write;
+        this.retentionPolicy = retentionPolicy;
+    }
+
+    /**
      * Get the version property: The version of the logging properties.
      *
      * @return the version value.
@@ -56,6 +82,18 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     @Generated
     public String getVersion() {
         return this.version;
+    }
+
+    /**
+     * Set the version property.
+     *
+     * @param version the version value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**
@@ -69,6 +107,18 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
+     * Set the delete property.
+     *
+     * @param delete the delete value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setDelete(boolean delete) {
+        this.delete = delete;
+        return this;
+    }
+
+    /**
      * Get the read property: Whether read operation is logged.
      *
      * @return the read value.
@@ -76,6 +126,18 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     @Generated
     public boolean isRead() {
         return this.read;
+    }
+
+    /**
+     * Set the read property.
+     *
+     * @param read the read value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setRead(boolean read) {
+        this.read = read;
+        return this;
     }
 
     /**
@@ -89,6 +151,18 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
+     * Set the write property.
+     *
+     * @param write the write value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setWrite(boolean write) {
+        this.write = write;
+        return this;
+    }
+
+    /**
      * Get the retentionPolicy property: The retention policy of the logs.
      *
      * @return the retentionPolicy value.
@@ -96,6 +170,18 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     @Generated
     public QueueRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
     }
 
     @Generated
@@ -168,80 +254,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
                     reader.skipElement();
                 }
             }
-            QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
-            deserializedQueueAnalyticsLogging.version = version;
-            deserializedQueueAnalyticsLogging.delete = delete;
-            deserializedQueueAnalyticsLogging.read = read;
-            deserializedQueueAnalyticsLogging.write = write;
-            deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
-            return deserializedQueueAnalyticsLogging;
+            return new QueueAnalyticsLogging(version, delete, read, write, retentionPolicy);
         });
-    }
-
-    /**
-     * Creates an instance of QueueAnalyticsLogging class.
-     */
-    @Generated
-    public QueueAnalyticsLogging() {
-    }
-
-    /**
-     * Set the version property: The version of the logging properties.
-     *
-     * @param version the version value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
-    @Generated
-    public QueueAnalyticsLogging setVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * Set the delete property: Whether delete operation is logged.
-     *
-     * @param delete the delete value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
-    @Generated
-    public QueueAnalyticsLogging setDelete(boolean delete) {
-        this.delete = delete;
-        return this;
-    }
-
-    /**
-     * Set the read property: Whether read operation is logged.
-     *
-     * @param read the read value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
-    @Generated
-    public QueueAnalyticsLogging setRead(boolean read) {
-        this.read = read;
-        return this;
-    }
-
-    /**
-     * Set the write property: Whether write operation is logged.
-     *
-     * @param write the write value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
-    @Generated
-    public QueueAnalyticsLogging setWrite(boolean write) {
-        this.write = write;
-        return this;
-    }
-
-    /**
-     * Set the retentionPolicy property: The retention policy of the logs.
-     *
-     * @param retentionPolicy the retentionPolicy value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
-    @Generated
-    public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
-        return this;
     }
 }

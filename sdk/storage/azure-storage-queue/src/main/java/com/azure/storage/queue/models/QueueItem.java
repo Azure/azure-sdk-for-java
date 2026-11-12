@@ -33,6 +33,23 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of QueueItem class.
+     */
+    @Generated
+    public QueueItem() {
+    }
+
+    /**
+     * Creates an instance of QueueItem class.
+     *
+     * @param name the name value to set.
+     */
+    @Generated
+    private QueueItem(String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the queue.
      *
      * @return the name value.
@@ -43,6 +60,18 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     }
 
     /**
+     * Set the name property.
+     *
+     * @param name the name value to set.
+     * @return the QueueItem object itself.
+     */
+    @Generated
+    public QueueItem setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the metadata property: The metadata of the queue.
      *
      * @return the metadata value.
@@ -50,6 +79,18 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Set the metadata property.
+     *
+     * @param metadata the metadata value to set.
+     * @return the QueueItem object itself.
+     */
+    @Generated
+    public QueueItem setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
     @Generated
@@ -120,41 +161,9 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
                     reader.skipElement();
                 }
             }
-            QueueItem deserializedQueueItem = new QueueItem();
-            deserializedQueueItem.name = name;
+            QueueItem deserializedQueueItem = new QueueItem(name);
             deserializedQueueItem.metadata = metadata;
             return deserializedQueueItem;
         });
-    }
-
-    /**
-     * Creates an instance of QueueItem class.
-     */
-    @Generated
-    public QueueItem() {
-    }
-
-    /**
-     * Set the name property: The name of the queue.
-     *
-     * @param name the name value to set.
-     * @return the QueueItem object itself.
-     */
-    @Generated
-    public QueueItem setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Set the metadata property: The metadata of the queue.
-     *
-     * @param metadata the metadata value to set.
-     * @return the QueueItem object itself.
-     */
-    @Generated
-    public QueueItem setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
     }
 }

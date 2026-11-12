@@ -31,6 +31,25 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     private QueueAccessPolicy accessPolicy;
 
     /**
+     * Creates an instance of QueueSignedIdentifier class.
+     */
+    @Generated
+    public QueueSignedIdentifier() {
+    }
+
+    /**
+     * Creates an instance of QueueSignedIdentifier class.
+     *
+     * @param id the id value to set.
+     * @param accessPolicy the accessPolicy value to set.
+     */
+    @Generated
+    private QueueSignedIdentifier(String id, QueueAccessPolicy accessPolicy) {
+        this.id = id;
+        this.accessPolicy = accessPolicy;
+    }
+
+    /**
      * Get the id property: The unique ID for the signed identifier.
      *
      * @return the id value.
@@ -41,6 +60,18 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     }
 
     /**
+     * Set the id property.
+     *
+     * @param id the id value to set.
+     * @return the QueueSignedIdentifier object itself.
+     */
+    @Generated
+    public QueueSignedIdentifier setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the accessPolicy property: The access policy for the signed identifier.
      *
      * @return the accessPolicy value.
@@ -48,6 +79,18 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     @Generated
     public QueueAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
+    }
+
+    /**
+     * Set the accessPolicy property.
+     *
+     * @param accessPolicy the accessPolicy value to set.
+     * @return the QueueSignedIdentifier object itself.
+     */
+    @Generated
+    public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
+        this.accessPolicy = accessPolicy;
+        return this;
     }
 
     @Generated
@@ -108,41 +151,7 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
                     reader.skipElement();
                 }
             }
-            QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
-            deserializedQueueSignedIdentifier.id = id;
-            deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
-            return deserializedQueueSignedIdentifier;
+            return new QueueSignedIdentifier(id, accessPolicy);
         });
-    }
-
-    /**
-     * Creates an instance of QueueSignedIdentifier class.
-     */
-    @Generated
-    public QueueSignedIdentifier() {
-    }
-
-    /**
-     * Set the id property: The unique ID for the signed identifier.
-     *
-     * @param id the id value to set.
-     * @return the QueueSignedIdentifier object itself.
-     */
-    @Generated
-    public QueueSignedIdentifier setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Set the accessPolicy property: The access policy for the signed identifier.
-     *
-     * @param accessPolicy the accessPolicy value to set.
-     * @return the QueueSignedIdentifier object itself.
-     */
-    @Generated
-    public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
-        this.accessPolicy = accessPolicy;
-        return this;
     }
 }

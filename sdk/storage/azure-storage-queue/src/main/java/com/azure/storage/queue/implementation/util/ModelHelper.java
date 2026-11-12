@@ -15,7 +15,8 @@ import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
+import com.azure.storage.queue.implementation.models.QueueStorageError;
+import com.azure.storage.queue.implementation.models.QueueStorageErrorException;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageItem;
@@ -105,19 +106,17 @@ public class ModelHelper {
     }
 
     /**
-     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
-     * {@link QueueStorageExceptionInternal} and it will be mapped to {@link QueueStorageException}.
-     * <p>
-     * The internal exception is required as the public exception was created using Object as the exception value. This
-     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
+     * Maps the generated {@link QueueStorageErrorException} to the public {@link QueueStorageException}, which is the
+     * exception type the clients have always thrown. The message is enriched from the deserialized error body (for
+     * example, the x-ms-version mismatch hint, which relies on the error's {@code HeaderName}).
      *
-     * @param internal The internal exception.
+     * @param internal The exception thrown by the generated implementation layer.
      * @return The public exception.
      */
-    public static QueueStorageException mapToQueueStorageException(QueueStorageExceptionInternal internal) {
-        String code = internal.getValue() == null ? null : internal.getValue().getCode();
-        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+    public static QueueStorageException mapToQueueStorageException(QueueStorageErrorException internal) {
+        QueueStorageError error = internal.getValue();
+        String code = error == null || error.getCode() == null ? null : error.getCode().toString();
+        String headerName = error == null ? null : error.getHeaderName();
         return new QueueStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }

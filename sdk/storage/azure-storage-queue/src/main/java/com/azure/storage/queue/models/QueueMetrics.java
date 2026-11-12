@@ -43,6 +43,23 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     private QueueRetentionPolicy retentionPolicy;
 
     /**
+     * Creates an instance of QueueMetrics class.
+     */
+    @Generated
+    public QueueMetrics() {
+    }
+
+    /**
+     * Creates an instance of QueueMetrics class.
+     *
+     * @param enabled the enabled value to set.
+     */
+    @Generated
+    private QueueMetrics(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Get the version property: The version of the metrics properties.
      *
      * @return the version value.
@@ -72,6 +89,18 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     @Generated
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * Set the enabled property.
+     *
+     * @param enabled the enabled value to set.
+     * @return the QueueMetrics object itself.
+     */
+    @Generated
+    public QueueMetrics setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 
     /**
@@ -184,31 +213,11 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
                     reader.skipElement();
                 }
             }
-            QueueMetrics deserializedQueueMetrics = new QueueMetrics();
-            deserializedQueueMetrics.enabled = enabled;
+            QueueMetrics deserializedQueueMetrics = new QueueMetrics(enabled);
             deserializedQueueMetrics.version = version;
             deserializedQueueMetrics.includeApis = includeApis;
             deserializedQueueMetrics.retentionPolicy = retentionPolicy;
             return deserializedQueueMetrics;
         });
-    }
-
-    /**
-     * Creates an instance of QueueMetrics class.
-     */
-    @Generated
-    public QueueMetrics() {
-    }
-
-    /**
-     * Set the enabled property: Whether it is enabled.
-     *
-     * @param enabled the enabled value to set.
-     * @return the QueueMetrics object itself.
-     */
-    @Generated
-    public QueueMetrics setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
     }
 }

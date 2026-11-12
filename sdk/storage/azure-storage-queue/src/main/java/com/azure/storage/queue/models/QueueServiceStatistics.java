@@ -25,6 +25,13 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
     private GeoReplication geoReplication;
 
     /**
+     * Creates an instance of QueueServiceStatistics class.
+     */
+    @Generated
+    public QueueServiceStatistics() {
+    }
+
+    /**
      * Get the geoReplication property: The geo replication stats.
      *
      * @return the geoReplication value.
@@ -32,6 +39,18 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
     @Generated
     public GeoReplication getGeoReplication() {
         return this.geoReplication;
+    }
+
+    /**
+     * Set the geoReplication property.
+     *
+     * @param geoReplication the geoReplication value to set.
+     * @return the QueueServiceStatistics object itself.
+     */
+    @Generated
+    public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
+        this.geoReplication = geoReplication;
+        return this;
     }
 
     @Generated
@@ -91,24 +110,5 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
             }
             return deserializedQueueServiceStatistics;
         });
-    }
-
-    /**
-     * Creates an instance of QueueServiceStatistics class.
-     */
-    @Generated
-    public QueueServiceStatistics() {
-    }
-
-    /**
-     * Set the geoReplication property: The geo replication stats.
-     *
-     * @param geoReplication the geoReplication value to set.
-     * @return the QueueServiceStatistics object itself.
-     */
-    @Generated
-    public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
-        this.geoReplication = geoReplication;
-        return this;
     }
 }

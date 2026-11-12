@@ -53,6 +53,44 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     private DateTimeRfc1123 timeNextVisible;
 
     /**
+     * Creates an instance of SendMessageResult class.
+     */
+    @Generated
+    public SendMessageResult() {
+    }
+
+    /**
+     * Creates an instance of SendMessageResult class.
+     *
+     * @param messageId the messageId value to set.
+     * @param insertionTime the insertionTime value to set.
+     * @param expirationTime the expirationTime value to set.
+     * @param popReceipt the popReceipt value to set.
+     * @param timeNextVisible the timeNextVisible value to set.
+     */
+    @Generated
+    private SendMessageResult(String messageId, OffsetDateTime insertionTime, OffsetDateTime expirationTime,
+        String popReceipt, OffsetDateTime timeNextVisible) {
+        this.messageId = messageId;
+        if (insertionTime == null) {
+            this.insertionTime = null;
+        } else {
+            this.insertionTime = new DateTimeRfc1123(insertionTime);
+        }
+        if (expirationTime == null) {
+            this.expirationTime = null;
+        } else {
+            this.expirationTime = new DateTimeRfc1123(expirationTime);
+        }
+        this.popReceipt = popReceipt;
+        if (timeNextVisible == null) {
+            this.timeNextVisible = null;
+        } else {
+            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
+        }
+    }
+
+    /**
      * Get the messageId property: The ID of the message.
      *
      * @return the messageId value.
@@ -60,6 +98,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     @Generated
     public String getMessageId() {
         return this.messageId;
+    }
+
+    /**
+     * Set the messageId property.
+     *
+     * @param messageId the messageId value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
     }
 
     /**
@@ -76,6 +126,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
+     * Set the insertionTime property.
+     *
+     * @param insertionTime the insertionTime value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
+        this.insertionTime = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
+        return this;
+    }
+
+    /**
      * Get the expirationTime property: The time that the message will expire and be automatically deleted.
      *
      * @return the expirationTime value.
@@ -86,6 +148,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
             return null;
         }
         return this.expirationTime.getDateTime();
+    }
+
+    /**
+     * Set the expirationTime property.
+     *
+     * @param expirationTime the expirationTime value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
+        this.expirationTime = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
+        return this;
     }
 
     /**
@@ -100,6 +174,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
+     * Set the popReceipt property.
+     *
+     * @param popReceipt the popReceipt value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setPopReceipt(String popReceipt) {
+        this.popReceipt = popReceipt;
+        return this;
+    }
+
+    /**
      * Get the timeNextVisible property: The time that the message will again become visible in the queue.
      *
      * @return the timeNextVisible value.
@@ -110,6 +196,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
             return null;
         }
         return this.timeNextVisible.getDateTime();
+    }
+
+    /**
+     * Set the timeNextVisible property.
+     *
+     * @param timeNextVisible the timeNextVisible value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
+        this.timeNextVisible = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
+        return this;
     }
 
     @Generated
@@ -191,96 +289,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
                     reader.skipElement();
                 }
             }
-            SendMessageResult deserializedSendMessageResult = new SendMessageResult();
-            deserializedSendMessageResult.messageId = messageId;
-            deserializedSendMessageResult.insertionTime
-                = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
-            deserializedSendMessageResult.expirationTime
-                = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
-            deserializedSendMessageResult.popReceipt = popReceipt;
-            deserializedSendMessageResult.timeNextVisible
-                = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
-            return deserializedSendMessageResult;
+            return new SendMessageResult(messageId, insertionTime, expirationTime, popReceipt, timeNextVisible);
         });
-    }
-
-    /**
-     * Creates an instance of SendMessageResult class.
-     */
-    @Generated
-    public SendMessageResult() {
-    }
-
-    /**
-     * Set the messageId property: The ID of the message.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SendMessageResult object itself.
-     */
-    @Generated
-    public SendMessageResult setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-    /**
-     * Set the insertionTime property: The time the message was inserted into the queue.
-     *
-     * @param insertionTime the insertionTime value to set.
-     * @return the SendMessageResult object itself.
-     */
-    @Generated
-    public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
-        if (insertionTime == null) {
-            this.insertionTime = null;
-        } else {
-            this.insertionTime = new DateTimeRfc1123(insertionTime);
-        }
-        return this;
-    }
-
-    /**
-     * Set the expirationTime property: The time that the message will expire and be automatically deleted.
-     *
-     * @param expirationTime the expirationTime value to set.
-     * @return the SendMessageResult object itself.
-     */
-    @Generated
-    public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
-        if (expirationTime == null) {
-            this.expirationTime = null;
-        } else {
-            this.expirationTime = new DateTimeRfc1123(expirationTime);
-        }
-        return this;
-    }
-
-    /**
-     * Set the popReceipt property: An opaque value required to delete the message. If deletion fails using this
-     * PopReceipt then the message has been dequeued by another client.
-     *
-     * @param popReceipt the popReceipt value to set.
-     * @return the SendMessageResult object itself.
-     */
-    @Generated
-    public SendMessageResult setPopReceipt(String popReceipt) {
-        this.popReceipt = popReceipt;
-        return this;
-    }
-
-    /**
-     * Set the timeNextVisible property: The time that the message will again become visible in the queue.
-     *
-     * @param timeNextVisible the timeNextVisible value to set.
-     * @return the SendMessageResult object itself.
-     */
-    @Generated
-    public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
-        if (timeNextVisible == null) {
-            this.timeNextVisible = null;
-        } else {
-            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
-        }
-        return this;
     }
 }
