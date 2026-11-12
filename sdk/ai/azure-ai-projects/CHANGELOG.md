@@ -19,9 +19,10 @@
   Added item-generation parameters for response retrieval, synthetic data generation, target completions, and
   red teaming with seed prompts and taxonomies.
 - Added typed `DatasetEvaluationSource`, `TraceEvaluationSource`, and `UserConversationSimulationSource` unions with
-  overloaded `of(...)` factories and typed getters. Standard and preview conversation simulation data sources share
-  `UserConversationSimulationSource`. Evaluation sources reuse OpenAI types directly where applicable; simulation
-  scenarios and evaluation-model settings reuse Agents types.
+  source-specific factories such as `ofCsv(...)`, `ofTraces(...)`, and `ofFileId(...)`, respectively, and typed getters.
+  Standard and preview conversation simulation data sources share `UserConversationSimulationSource`. Evaluation
+  sources reuse OpenAI types directly where applicable; simulation scenarios and evaluation-model settings reuse
+  Agents types.
 - Expanded evaluator generation with optional model selection, dimensions, generated weights, pass thresholds, and
   explicit trace IDs. Added preview quality/safety categories, Boolean/Likert rubric scoring, dimension eligibility,
   and endpoint evaluator schema-version selection.
