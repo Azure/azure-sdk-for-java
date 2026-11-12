@@ -15,17 +15,17 @@ public final class NodeImageSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeImageSelection model = BinaryData.fromString(
-            "{\"type\":\"Custom\",\"customNodeImageVersions\":[{\"version\":\"hpluodpvruudlg\"},{\"version\":\"bth\"},{\"version\":\"tgk\"},{\"version\":\"tvdxeclzedqb\"}]}")
+            "{\"type\":\"Latest\",\"customNodeImageVersions\":[{\"version\":\"ydfce\"},{\"version\":\"vlhv\"},{\"version\":\"dyftumrtwna\"},{\"version\":\"slbi\"}]}")
             .toObject(NodeImageSelection.class);
-        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeImageSelection model = new NodeImageSelection().withType(NodeImageSelectionType.CUSTOM)
+        NodeImageSelection model = new NodeImageSelection().withType(NodeImageSelectionType.LATEST)
             .withCustomNodeImageVersions(Arrays.asList(new NodeImageVersion(), new NodeImageVersion(),
                 new NodeImageVersion(), new NodeImageVersion()));
         model = BinaryData.fromObject(model).toObject(NodeImageSelection.class);
-        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.type());
     }
 }
