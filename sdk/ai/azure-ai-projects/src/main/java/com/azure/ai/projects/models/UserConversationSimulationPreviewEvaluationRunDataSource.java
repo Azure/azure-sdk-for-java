@@ -7,7 +7,6 @@ import com.azure.ai.agents.models.EvaluationModelConfiguration;
 import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -32,7 +31,7 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
      * Test scenarios supplied as JSONL rows or strongly typed inline test cases.
      */
     @Generated
-    private final BinaryData source;
+    private final UserConversationSimulationSource source;
 
     /*
      * Model or agent being evaluated. It receives turns from the simulated user.
@@ -63,21 +62,6 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
     private Map<String, String> dataMapping;
 
     /**
-     * Creates an instance of UserConversationSimulationPreviewEvaluationRunDataSource class.
-     *
-     * @param source the source value to set.
-     * @param target the target value to set.
-     * @param modelConfiguration the modelConfiguration value to set.
-     */
-    @Generated
-    public UserConversationSimulationPreviewEvaluationRunDataSource(BinaryData source, Target target,
-        EvaluationModelConfiguration modelConfiguration) {
-        this.source = source;
-        this.target = target;
-        this.modelConfiguration = modelConfiguration;
-    }
-
-    /**
      * Get the type property: The data source type discriminator.
      *
      * @return the type value.
@@ -94,7 +78,7 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
      * @return the source value.
      */
     @Generated
-    public BinaryData getSource() {
+    public UserConversationSimulationSource getSource() {
         return this.source;
     }
 
@@ -181,8 +165,7 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeFieldName("source");
-        this.source.writeTo(jsonWriter);
+        jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeJsonField("target", this.target);
         jsonWriter.writeJsonField("model_configuration", this.modelConfiguration);
         jsonWriter.writeStringField("type", this.type);
@@ -205,7 +188,7 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
     public static UserConversationSimulationPreviewEvaluationRunDataSource fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            BinaryData source = null;
+            UserConversationSimulationSource source = null;
             Target target = null;
             EvaluationModelConfiguration modelConfiguration = null;
             String type = "azure_ai_user_conversation_simulation_preview";
@@ -215,7 +198,7 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("source".equals(fieldName)) {
-                    source = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    source = UserConversationSimulationSource.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     target = Target.fromJson(reader);
                 } else if ("model_configuration".equals(fieldName)) {
@@ -238,5 +221,20 @@ public final class UserConversationSimulationPreviewEvaluationRunDataSource exte
             deserializedUserConversationSimulationPreviewEvaluationRunDataSource.dataMapping = dataMapping;
             return deserializedUserConversationSimulationPreviewEvaluationRunDataSource;
         });
+    }
+
+    /**
+     * Creates an instance of UserConversationSimulationPreviewEvaluationRunDataSource class.
+     *
+     * @param source the source value to set.
+     * @param target the target value to set.
+     * @param modelConfiguration the modelConfiguration value to set.
+     */
+    @Generated
+    public UserConversationSimulationPreviewEvaluationRunDataSource(UserConversationSimulationSource source,
+        Target target, EvaluationModelConfiguration modelConfiguration) {
+        this.source = source;
+        this.target = target;
+        this.modelConfiguration = modelConfiguration;
     }
 }

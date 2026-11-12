@@ -3,10 +3,16 @@
 
 package com.azure.ai.projects.models;
 
+import com.azure.ai.agents.models.EvaluationModelConfiguration;
+import com.azure.ai.agents.models.UserConversationSimulationTestCase;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.core.ObjectMappers;
+import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource;
 import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource.InputMessages.ItemReference;
+import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileContent;
 import com.openai.models.evals.runs.CreateEvalJsonlRunDataSource.Source.FileId;
@@ -20,6 +26,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EvaluationSourceSerializationTests {
@@ -198,5 +206,165 @@ class EvaluationSourceSerializationTests {
         assertNull(restored.getInputMessages());
         assertNull(
             BinaryData.fromObject(restored).toObject(TargetCompletionEvaluationRunDataSource.class).getInputMessages());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "jsonl", "completions" })
+    void datasetUnionPreservesExternalSources(String type) throws IOException {
+        String sourceJson = "{\"source\":" + FILE_ID + ",\"type\":\"" + type
+            + "\",\"model\":\"deployment\",\"input_messages\":{\"type\":\"item_reference\","
+            + "\"item_reference\":\"item.messages\"},\"future_dataset\":true}";
+        DatasetEvaluationSource source = "jsonl".equals(type)
+            ? DatasetEvaluationSource
+                .of(ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalJsonlRunDataSource.class))
+            : DatasetEvaluationSource
+                .of(ObjectMappers.jsonMapper().readValue(sourceJson, CreateEvalCompletionsRunDataSource.class));
+        DatasetEvaluationRuleAction original = new DatasetEvaluationRuleAction("eval-1", source);
+
+        BinaryData serialized = BinaryData.fromObject(original);
+        assertEquals(ObjectMappers.jsonMapper().readTree(sourceJson),
+            ObjectMappers.jsonMapper().readTree(serialized.toString()).get("source"));
+
+        EvaluationRuleAction restored = serialized.toObject(EvaluationRuleAction.class);
+        DatasetEvaluationSource restoredSource = ((DatasetEvaluationRuleAction) restored).getSource();
+        if ("jsonl".equals(type)) {
+            assertEquals(source.getJsonl(), restoredSource.getJsonl());
+            assertNull(restoredSource.getCompletions());
+        } else {
+            assertEquals(source.getCompletions(), restoredSource.getCompletions());
+            assertNull(restoredSource.getJsonl());
+        }
+        assertEquals(ObjectMappers.jsonMapper().readTree(serialized.toString()),
+            ObjectMappers.jsonMapper().readTree(BinaryData.fromObject(restored).toString()));
+    }
+
+    @Test
+    void datasetUnionPreservesCsvAndTargetCompletionSources() {
+        CsvEvaluationRunDataSource csv = new CsvEvaluationRunDataSource(new EvaluationCsvFileIdSource("csv-file"));
+        DatasetEvaluationRuleAction csvAction
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.of(csv));
+        DatasetEvaluationRuleAction restoredCsv
+            = BinaryData.fromObject(csvAction).toObject(DatasetEvaluationRuleAction.class);
+        assertEquals("csv-file", restoredCsv.getSource().getCsv().getSource().getId());
+        assertNull(restoredCsv.getSource().getTargetCompletions());
+
+        TargetCompletionEvaluationRunDataSource target
+            = new TargetCompletionEvaluationRunDataSource(Source.ofFileId(FileId.builder().id("target-file").build()),
+                new AzureAIModelTarget().setModel("deployment"));
+        DatasetEvaluationRuleAction targetAction
+            = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource.of(target));
+        DatasetEvaluationRuleAction restoredTarget
+            = BinaryData.fromObject(targetAction).toObject(DatasetEvaluationRuleAction.class);
+        assertEquals(target.getSource(), restoredTarget.getSource().getTargetCompletions().getSource());
+        assertNull(restoredTarget.getSource().getCsv());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void simulationUnionPreservesExternalContentForBothDataSources(boolean preview) throws IOException {
+        FileContent content = ObjectMappers.jsonMapper().readValue(FILE_CONTENT, FileContent.class);
+        UserConversationSimulationSource source = UserConversationSimulationSource.of(content);
+        Target target = new AzureAIModelTarget().setModel("target-model");
+        EvaluationModelConfiguration model = new EvaluationModelConfiguration("simulation-model");
+        EvaluationRunDataSource original = preview
+            ? new UserConversationSimulationPreviewEvaluationRunDataSource(source, target, model)
+            : new UserConversationSimulationEvaluationRunDataSource(source, target, model);
+
+        BinaryData serialized = BinaryData.fromObject(original);
+        assertEquals(ObjectMappers.jsonMapper().readTree(FILE_CONTENT),
+            ObjectMappers.jsonMapper().readTree(serialized.toString()).get("source"));
+        EvaluationRunDataSource restored = serialized.toObject(EvaluationRunDataSource.class);
+        UserConversationSimulationSource restoredSource = preview
+            ? ((UserConversationSimulationPreviewEvaluationRunDataSource) restored).getSource()
+            : ((UserConversationSimulationEvaluationRunDataSource) restored).getSource();
+        assertEquals(content, restoredSource.getFileContent());
+        assertNull(restoredSource.getInlineTestCases());
+    }
+
+    @Test
+    void datasetUnionPreservesStandardAndPreviewSimulationVariants() {
+        Target target = new AzureAIModelTarget().setModel("target-model");
+        EvaluationModelConfiguration model = new EvaluationModelConfiguration("simulation-model");
+        UserConversationSimulationSource fileSource
+            = UserConversationSimulationSource.of(FileId.builder().id("simulation-file").build());
+        DatasetEvaluationRuleAction standard = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource
+            .of(new UserConversationSimulationEvaluationRunDataSource(fileSource, target, model)));
+        DatasetEvaluationRuleAction restoredStandard
+            = BinaryData.fromObject(standard).toObject(DatasetEvaluationRuleAction.class);
+        assertEquals("simulation-file",
+            restoredStandard.getSource().getUserConversationSimulation().getSource().getFileId().id());
+        assertNull(restoredStandard.getSource().getUserConversationSimulationPreview());
+
+        UserConversationSimulationSource inlineSource = UserConversationSimulationSource
+            .of(new UserConversationSimulationInlineTestCasesSource(Collections.singletonList(
+                new UserConversationSimulationTestCase().setTestCaseDescription("Ask about the weather"))));
+        DatasetEvaluationRuleAction preview = new DatasetEvaluationRuleAction("eval-1", DatasetEvaluationSource
+            .of(new UserConversationSimulationPreviewEvaluationRunDataSource(inlineSource, target, model)));
+        DatasetEvaluationRuleAction restoredPreview
+            = BinaryData.fromObject(preview).toObject(DatasetEvaluationRuleAction.class);
+        assertEquals("Ask about the weather",
+            restoredPreview.getSource()
+                .getUserConversationSimulationPreview()
+                .getSource()
+                .getInlineTestCases()
+                .getTestCases()
+                .get(0)
+                .getTestCaseDescription());
+        assertNull(restoredPreview.getSource().getUserConversationSimulation());
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "azure_ai_traces",
+            "azure_ai_trace_data_source",
+            "azure_ai_traces_preview",
+            "azure_ai_trace_data_source_preview" })
+    void traceUnionDispatchesStandardAndPreviewSources(String type) throws IOException {
+        String json = "{\"evalId\":\"eval-1\",\"source\":{\"trace_source\":{\"type\":\"trace_id_source\","
+            + "\"trace_ids\":[\"trace-1\"]},\"agent_name\":\"agent-1\",\"type\":\"" + type
+            + "\"},\"type\":\"traceEvaluation\"}";
+        TraceEvaluationRuleAction restored
+            = (TraceEvaluationRuleAction) BinaryData.fromString(json).toObject(EvaluationRuleAction.class);
+        TraceEvaluationSource source = restored.getSource();
+        TraceEvaluationSource reconstructed;
+        if ("azure_ai_traces".equals(type)) {
+            assertEquals("agent-1", source.getTraces().getAgentName());
+            assertNull(source.getTraceSource());
+            reconstructed = TraceEvaluationSource.of(source.getTraces());
+        } else if ("azure_ai_trace_data_source".equals(type)) {
+            assertNotNull(source.getTraceSource().getTraceSource());
+            assertNull(source.getTraces());
+            reconstructed = TraceEvaluationSource.of(source.getTraceSource());
+        } else if ("azure_ai_traces_preview".equals(type)) {
+            assertEquals("agent-1", source.getTracesPreview().getAgentName());
+            assertNull(source.getTraceSourcePreview());
+            reconstructed = TraceEvaluationSource.of(source.getTracesPreview());
+        } else {
+            assertNotNull(source.getTraceSourcePreview().getTraceSource());
+            assertNull(source.getTracesPreview());
+            reconstructed = TraceEvaluationSource.of(source.getTraceSourcePreview());
+        }
+        JsonNode serialized = ObjectMappers.jsonMapper()
+            .readTree(BinaryData.fromObject(new TraceEvaluationRuleAction("eval-1", reconstructed)).toString());
+        assertEquals(type, serialized.get("source").get("type").asText());
+        if ("azure_ai_trace_data_source".equals(type) || "azure_ai_trace_data_source_preview".equals(type)) {
+            assertEquals("trace-1", serialized.get("source").get("trace_source").get("trace_ids").get(0).asText());
+        }
+        assertEquals(ObjectMappers.jsonMapper().readTree(BinaryData.fromObject(source).toString()),
+            serialized.get("source"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "{}", "{\"type\":\"unsupported\"}" })
+    void evaluationUnionsRejectMissingAndUnsupportedTypes(String json) throws IOException {
+        try (JsonReader datasetReader = JsonProviders.createReader(json);
+            JsonReader traceReader = JsonProviders.createReader(json);
+            JsonReader simulationReader = JsonProviders.createReader(json)) {
+            assertThrows(IllegalStateException.class, () -> DatasetEvaluationSource.fromJson(datasetReader));
+            assertThrows(IllegalStateException.class, () -> TraceEvaluationSource.fromJson(traceReader));
+            assertThrows(IllegalStateException.class,
+                () -> UserConversationSimulationSource.fromJson(simulationReader));
+        }
     }
 }

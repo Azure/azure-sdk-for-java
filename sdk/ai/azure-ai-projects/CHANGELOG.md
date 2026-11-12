@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added typed `DatasetEvaluationSource`, `TraceEvaluationSource`, and `UserConversationSimulationSource` unions with
+  overloaded `of(...)` factories for evaluation rule actions and conversation simulation data sources.
 - Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for listing monitor insights and runs.
 - Refined item-generation parameter names, turn-count properties, trace and trigger timestamps, ingestion delay,
   evaluation IDs, and agent-insight details and update options.
@@ -14,6 +16,8 @@
 
 ### Breaking Changes
 
+- Replaced `BinaryData` source properties on dataset and trace evaluation rule actions and standard and preview
+  conversation simulation data sources with typed source unions.
 - Replaced the positional convenience overloads of `listAgentInsights` and `listAgentInsightRuns` with options bags.
 
 ### Bugs Fixed

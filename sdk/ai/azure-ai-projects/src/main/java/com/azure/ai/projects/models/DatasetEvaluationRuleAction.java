@@ -5,7 +5,6 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -28,25 +27,13 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
      * but are rejected on create and update.
      */
     @Generated
-    private final BinaryData source;
+    private final DatasetEvaluationSource source;
 
     /*
      * Level at which each scheduled run evaluates. Required when the evaluation uses the messages item schema.
      */
     @Generated
     private EvaluationLevel evaluationLevel;
-
-    /**
-     * Creates an instance of DatasetEvaluationRuleAction class.
-     *
-     * @param evaluationId the evaluationId value to set.
-     * @param source the source value to set.
-     */
-    @Generated
-    public DatasetEvaluationRuleAction(String evaluationId, BinaryData source) {
-        this.evaluationId = evaluationId;
-        this.source = source;
-    }
 
     /**
      * Get the type property: Type of the evaluation action.
@@ -66,7 +53,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
      * @return the source value.
      */
     @Generated
-    public BinaryData getSource() {
+    public DatasetEvaluationSource getSource() {
         return this.source;
     }
 
@@ -102,8 +89,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("evalId", this.evaluationId);
-        jsonWriter.writeFieldName("source");
-        this.source.writeTo(jsonWriter);
+        jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("evaluation_level",
             this.evaluationLevel == null ? null : this.evaluationLevel.toString());
@@ -123,7 +109,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     public static DatasetEvaluationRuleAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String evaluationId = null;
-            BinaryData source = null;
+            DatasetEvaluationSource source = null;
             EvaluationRuleActionType type = EvaluationRuleActionType.DATASET_EVALUATION;
             EvaluationLevel evaluationLevel = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -132,7 +118,7 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
                 if ("evalId".equals(fieldName)) {
                     evaluationId = reader.getString();
                 } else if ("source".equals(fieldName)) {
-                    source = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    source = DatasetEvaluationSource.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = EvaluationRuleActionType.fromString(reader.getString());
                 } else if ("evaluation_level".equals(fieldName)) {
@@ -163,5 +149,17 @@ public final class DatasetEvaluationRuleAction extends EvaluationRuleAction {
     @Generated
     public String getEvaluationId() {
         return this.evaluationId;
+    }
+
+    /**
+     * Creates an instance of DatasetEvaluationRuleAction class.
+     *
+     * @param evaluationId the evaluationId value to set.
+     * @param source the source value to set.
+     */
+    @Generated
+    public DatasetEvaluationRuleAction(String evaluationId, DatasetEvaluationSource source) {
+        this.evaluationId = evaluationId;
+        this.source = source;
     }
 }

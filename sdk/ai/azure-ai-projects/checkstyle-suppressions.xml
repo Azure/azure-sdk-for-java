@@ -5,11 +5,13 @@
 <suppressions>
   <suppress files="com.azure.ai.projects.AIProjectClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.ApiError.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.projects.models.DatasetEvaluationSource.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.RedTeamSeedPromptsItemGenerationParameters.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.RedTeamTaxonomyItemGenerationParameters.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.ResponseRetrievalItemGenerationParameters.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.SyntheticDataGenerationItemGenerationParameters.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.models.TargetCompletionEvaluationRunDataSource.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.projects.models.UserConversationSimulationSource.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.projects.BetaModelsClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.projects.BetaModelsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.projects.BetaRoutinesClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />

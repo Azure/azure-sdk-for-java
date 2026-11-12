@@ -79,14 +79,14 @@ public class EvaluationRunDataSource implements JsonSerializable<EvaluationRunDa
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("azure_ai_traces_preview".equals(discriminatorValue)) {
                     return TracesPreviewEvaluationRunDataSource.fromJson(readerToUse.reset());
-                } else if ("azure_ai_trace_data_source".equals(discriminatorValue)) {
-                    return TraceSourceEvaluationRunDataSource.fromJson(readerToUse.reset());
-                } else if ("azure_ai_trace_data_source_preview".equals(discriminatorValue)) {
-                    return TraceSourcePreviewEvaluationRunDataSource.fromJson(readerToUse.reset());
                 } else if ("azure_ai_user_conversation_simulation".equals(discriminatorValue)) {
                     return UserConversationSimulationEvaluationRunDataSource.fromJson(readerToUse.reset());
                 } else if ("azure_ai_user_conversation_simulation_preview".equals(discriminatorValue)) {
                     return UserConversationSimulationPreviewEvaluationRunDataSource.fromJson(readerToUse.reset());
+                } else if ("azure_ai_trace_data_source".equals(discriminatorValue)) {
+                    return TraceSourceEvaluationRunDataSource.fromJson(readerToUse.reset());
+                } else if ("azure_ai_trace_data_source_preview".equals(discriminatorValue)) {
+                    return TraceSourcePreviewEvaluationRunDataSource.fromJson(readerToUse.reset());
                 } else if ("csv".equals(discriminatorValue)) {
                     return CsvEvaluationRunDataSource.fromJson(readerToUse.reset());
                 } else if ("azure_ai_target_completions".equals(discriminatorValue)) {

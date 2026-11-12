@@ -44,7 +44,6 @@ public final class ResponseRetrievalItemGenerationParameters extends ItemGenerat
     private final Map<String, String> dataMapping;
 
     /*
-     * 
      * The inline JSONL content containing the response identifiers to retrieve.
      * The `azure_ai_responses` data source supports `file_content` only;
      * providing a `file_id` results in a `400 Bad Request` response.
@@ -87,8 +86,7 @@ public final class ResponseRetrievalItemGenerationParameters extends ItemGenerat
     }
 
     /**
-     * Get the source property:
-     * The inline JSONL content containing the response identifiers to retrieve.
+     * Get the source property: The inline JSONL content containing the response identifiers to retrieve.
      * The `azure_ai_responses` data source supports `file_content` only;
      * providing a `file_id` results in a `400 Bad Request` response.
      *
