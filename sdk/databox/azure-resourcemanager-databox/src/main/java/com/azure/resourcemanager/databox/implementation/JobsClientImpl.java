@@ -714,7 +714,7 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
         String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);

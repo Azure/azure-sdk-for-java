@@ -6,22 +6,23 @@ package com.azure.resourcemanager.compute.recommender.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresResponseInner;
+import com.azure.resourcemanager.compute.recommender.models.PlacementScoreValue;
 import org.junit.jupiter.api.Assertions;
 
 public final class SpotPlacementScoresResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpotPlacementScoresResponseInner model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"fpsalgbqu\"],\"desiredSizes\":[{\"sku\":\"yjgzjaoyfhrtxiln\"},{\"sku\":\"kujysvlejuvfq\"},{\"sku\":\"rlyxwjkcprbnw\"},{\"sku\":\"gjvtbv\"}],\"desiredCount\":1783786624,\"availabilityZones\":false,\"placementScores\":[{\"sku\":\"uj\",\"region\":\"uhmuouqfprwzwbn\",\"availabilityZone\":\"itnwuizgazxufi\",\"score\":\"ckyfih\",\"isQuotaAvailable\":false}]}")
+            "{\"desiredLocations\":[\"vcputegj\",\"wmfdatscmdvpjhul\",\"uuvmkjozkrwfnd\",\"odjpslwejd\"],\"desiredSizes\":[{\"sku\":\"yoqpsoaccta\"},{\"sku\":\"kljla\"},{\"sku\":\"cr\"}],\"desiredCount\":1060950423,\"availabilityZones\":false,\"placementScores\":[{\"sku\":\"ygexpaojakhmsb\",\"region\":\"hcrzevd\",\"availabilityZone\":\"lxaolthqtrgqjbp\",\"score\":\"DataNotFoundOrStale\",\"placementPreference\":1977769752},{\"sku\":\"zgvfcjrwz\",\"region\":\"xjtfelluwfzit\",\"availabilityZone\":\"peqfpjkjl\",\"score\":\"High\",\"placementPreference\":1536107931}]}")
             .toObject(SpotPlacementScoresResponseInner.class);
-        Assertions.assertEquals("fpsalgbqu", model.desiredLocations().get(0));
-        Assertions.assertEquals("yjgzjaoyfhrtxiln", model.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1783786624, model.desiredCount());
+        Assertions.assertEquals("vcputegj", model.desiredLocations().get(0));
+        Assertions.assertEquals("yoqpsoaccta", model.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1060950423, model.desiredCount());
         Assertions.assertFalse(model.availabilityZones());
-        Assertions.assertEquals("uj", model.placementScores().get(0).sku());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.placementScores().get(0).region());
-        Assertions.assertEquals("itnwuizgazxufi", model.placementScores().get(0).availabilityZone());
-        Assertions.assertEquals("ckyfih", model.placementScores().get(0).score());
-        Assertions.assertFalse(model.placementScores().get(0).isQuotaAvailable());
+        Assertions.assertEquals("ygexpaojakhmsb", model.placementScores().get(0).sku());
+        Assertions.assertEquals("hcrzevd", model.placementScores().get(0).region());
+        Assertions.assertEquals("lxaolthqtrgqjbp", model.placementScores().get(0).availabilityZone());
+        Assertions.assertEquals(PlacementScoreValue.DATA_NOT_FOUND_OR_STALE, model.placementScores().get(0).score());
+        Assertions.assertEquals(1977769752, model.placementScores().get(0).placementPreference());
     }
 }

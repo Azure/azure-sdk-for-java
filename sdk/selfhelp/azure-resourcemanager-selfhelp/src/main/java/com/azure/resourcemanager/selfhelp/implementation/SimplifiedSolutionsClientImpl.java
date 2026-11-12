@@ -319,7 +319,7 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
      * @return the {@link SyncPoller} for polling of simplified Solutions response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner> beginCreate(
+    private SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner> beginCreate(
         String scope, String simplifiedSolutionsResourceName,
         SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody) {
         Response<BinaryData> response

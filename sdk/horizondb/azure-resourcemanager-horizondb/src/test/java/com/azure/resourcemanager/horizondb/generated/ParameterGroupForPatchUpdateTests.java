@@ -17,25 +17,27 @@ public final class ParameterGroupForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterGroupForPatchUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"k\":\"fcnj\"},\"properties\":{\"parameters\":[{\"name\":\"bttk\",\"description\":\"ywpnvjt\",\"value\":\"nermcl\",\"defaultValue\":\"lphox\",\"valueSource\":\"SystemDefault\",\"dataType\":\"pabgyeps\",\"allowedValues\":\"tazqugxywpmueefj\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"ujidsuyono\",\"unit\":\"laocqxtccmg\"}],\"description\":\"dxyt\"}}")
+            "{\"tags\":{\"urqhaka\":\"dawkzbali\",\"xcug\":\"hashsfwxosow\",\"ovbvmeueciv\":\"cjooxdjebwpucwwf\",\"otwmcdyt\":\"hzceuojgjrwjue\"},\"properties\":{\"parameters\":[{\"name\":\"xnrj\",\"description\":\"gqwgxhniskxfbkp\",\"value\":\"gklwn\",\"defaultValue\":\"hjdauwhvylwz\",\"valueSource\":\"UserOverride\",\"dataType\":\"xujznbmpowu\",\"allowedValues\":\"rzqlveu\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"khfxobbcswsrt\",\"unit\":\"iplrbpbewtghfgb\"}],\"description\":\"gw\"}}")
             .toObject(ParameterGroupForPatchUpdate.class);
-        Assertions.assertEquals("fcnj", model.tags().get("k"));
-        Assertions.assertEquals("bttk", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("nermcl", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("dxyt", model.properties().description());
+        Assertions.assertEquals("dawkzbali", model.tags().get("urqhaka"));
+        Assertions.assertEquals("xnrj", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("gklwn", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("gw", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterGroupForPatchUpdate model = new ParameterGroupForPatchUpdate().withTags(mapOf("k", "fcnj"))
+        ParameterGroupForPatchUpdate model = new ParameterGroupForPatchUpdate()
+            .withTags(mapOf("urqhaka", "dawkzbali", "xcug", "hashsfwxosow", "ovbvmeueciv", "cjooxdjebwpucwwf",
+                "otwmcdyt", "hzceuojgjrwjue"))
             .withProperties(new ParameterGroupPropertiesForPatchUpdate()
-                .withParameters(Arrays.asList(new ParameterProperties().withName("bttk").withValue("nermcl")))
-                .withDescription("dxyt"));
+                .withParameters(Arrays.asList(new ParameterProperties().withName("xnrj").withValue("gklwn")))
+                .withDescription("gw"));
         model = BinaryData.fromObject(model).toObject(ParameterGroupForPatchUpdate.class);
-        Assertions.assertEquals("fcnj", model.tags().get("k"));
-        Assertions.assertEquals("bttk", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("nermcl", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("dxyt", model.properties().description());
+        Assertions.assertEquals("dawkzbali", model.tags().get("urqhaka"));
+        Assertions.assertEquals("xnrj", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("gklwn", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("gw", model.properties().description());
     }
 
     // Use "Map.of" if available

@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
@@ -33,9 +34,11 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -55,13 +58,13 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.PREBUILT_CLIENT_PATH;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -75,10 +78,10 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
-    private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
-    private static final String JAVA_HTTP_PROXY_PORT = "http.proxyPort";
-    private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
-    private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String JAVA_HTTPS_PROXY_HOST = "https.proxyHost";
+    private static final String JAVA_HTTPS_PROXY_PORT = "https.proxyPort";
+    private static final String JAVA_HTTPS_PROXY_USER = "https.proxyUser";
+    private static final String JAVA_HTTPS_PROXY_PASSWORD = "https.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
@@ -87,6 +90,45 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static final Exception EXPECTED_EXCEPTION = new IOException(
         "This is a local test so we " + "cannot connect to remote hosts eagerly. This is exception is expected.");
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) builder.build();
+        assertArrayEquals(version == HttpProtocolVersion.HTTP_2
+            ? new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2 }
+            : new HttpProtocol[] { HttpProtocol.HTTP11 }, client.nettyClient.configuration().protocols());
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2);
+        NettyAsyncHttpClient first = (NettyAsyncHttpClient) builder.build();
+        NettyAsyncHttpClient cleared = (NettyAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11 }, cleared.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2 },
+            first.nettyClient.configuration().protocols());
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        HttpClient internalClient = HttpClient.create().protocol(HttpProtocol.H2C);
+        NettyAsyncHttpClientBuilder builder
+            = new NettyAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
+        NettyAsyncHttpClient original = (NettyAsyncHttpClient) builder.build();
+        NettyAsyncHttpClient limited
+            = (NettyAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        NettyAsyncHttpClient cleared = (NettyAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, original.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11 }, limited.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, cleared.nettyClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, internalClient.configuration().protocols());
+    }
 
     /**
      * Tests that constructing a {@link NettyAsyncHttpClient} from a pre-configured Netty {@link HttpClient} will use
@@ -126,6 +168,16 @@ public class NettyAsyncHttpClientBuilderTests {
     public void preconfiguredAllocatorIsMaintained() {
         HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
         NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).build();
+        assertSame(UnpooledByteBufAllocator.DEFAULT,
+            client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
+    }
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersionPreservesPreconfiguredAllocator(HttpProtocolVersion version) {
+        HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
+        NettyAsyncHttpClient client
+            = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).maximumHttpVersion(version).build();
         assertSame(UnpooledByteBufAllocator.DEFAULT,
             client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
     }
@@ -277,8 +329,10 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
         Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier
-            = () -> new TestConfigurationSource().put(JAVA_HTTP_PROXY_HOST, "localhost")
-                .put(JAVA_HTTP_PROXY_PORT, "12345");
+            = () -> new TestConfigurationSource().put(JAVA_HTTPS_PROXY_HOST, "localhost")
+                .put(JAVA_HTTPS_PROXY_PORT, "12345")
+                .put(JAVA_NON_PROXY_HOSTS, "")
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false");
 
         List<Arguments> arguments = new ArrayList<>();
 
@@ -300,8 +354,8 @@ public class NettyAsyncHttpClientBuilderTests {
          * HTTP proxy with authentication configured.
          */
         TestConfigurationSource javaProxyWithAuthentication = baseJavaProxyConfigurationSupplier.get()
-            .put(JAVA_HTTP_PROXY_USER, "1")
-            .put(JAVA_HTTP_PROXY_PASSWORD, "1");
+            .put(JAVA_HTTPS_PROXY_USER, "1")
+            .put(JAVA_HTTPS_PROXY_PASSWORD, "1");
         arguments.add(Arguments.of(true, true,
             new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), DEFAULT_URL));
 
@@ -359,7 +413,7 @@ public class NettyAsyncHttpClientBuilderTests {
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
         Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier
-            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
+            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTPS_PROXY_USER, "1").put(JAVA_HTTPS_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
@@ -486,19 +540,19 @@ public class NettyAsyncHttpClientBuilderTests {
                     switch (proxyType) {
                         case HTTP:
                             if (usesAzureHttpProxyHandler) {
-                                assertTrue(
-                                    proxyHandler instanceof com.azure.core.http.netty.implementation.HttpProxyHandler);
+                                assertInstanceOf(com.azure.core.http.netty.implementation.HttpProxyHandler.class,
+                                    proxyHandler);
                             } else {
-                                assertTrue(proxyHandler instanceof HttpProxyHandler);
+                                assertInstanceOf(HttpProxyHandler.class, proxyHandler);
                             }
                             break;
 
                         case SOCKS5:
-                            assertTrue(proxyHandler instanceof Socks5ProxyHandler);
+                            assertInstanceOf(Socks5ProxyHandler.class, proxyHandler);
                             break;
 
                         case SOCKS4:
-                            assertTrue(proxyHandler instanceof Socks4ProxyHandler);
+                            assertInstanceOf(Socks4ProxyHandler.class, proxyHandler);
                             break;
 
                         default:

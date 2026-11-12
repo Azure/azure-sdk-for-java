@@ -22,13 +22,6 @@ public final class GpuProfile implements JsonSerializable<GpuProfile> {
     private GpuDriver driver;
 
     /*
-     * Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects the
-     * driver based on system compatibility. This cannot be changed once the AgentPool has been created. This cannot be
-     * set on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
-     */
-    private DriverType driverType;
-
-    /*
      * NVIDIA-specific GPU settings.
      */
     private NvidiaGPUProfile nvidia;
@@ -56,32 +49,6 @@ public final class GpuProfile implements JsonSerializable<GpuProfile> {
      */
     public GpuProfile withDriver(GpuDriver driver) {
         this.driver = driver;
-        return this;
-    }
-
-    /**
-     * Get the driverType property: Specify the type of GPU driver to install when creating Windows agent pools. If not
-     * provided, AKS selects the driver based on system compatibility. This cannot be changed once the AgentPool has
-     * been created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on
-     * system compatibility.
-     * 
-     * @return the driverType value.
-     */
-    public DriverType driverType() {
-        return this.driverType;
-    }
-
-    /**
-     * Set the driverType property: Specify the type of GPU driver to install when creating Windows agent pools. If not
-     * provided, AKS selects the driver based on system compatibility. This cannot be changed once the AgentPool has
-     * been created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on
-     * system compatibility.
-     * 
-     * @param driverType the driverType value to set.
-     * @return the GpuProfile object itself.
-     */
-    public GpuProfile withDriverType(DriverType driverType) {
-        this.driverType = driverType;
         return this;
     }
 
@@ -123,7 +90,6 @@ public final class GpuProfile implements JsonSerializable<GpuProfile> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("driver", this.driver == null ? null : this.driver.toString());
-        jsonWriter.writeStringField("driverType", this.driverType == null ? null : this.driverType.toString());
         jsonWriter.writeJsonField("nvidia", this.nvidia);
         return jsonWriter.writeEndObject();
     }
@@ -145,8 +111,6 @@ public final class GpuProfile implements JsonSerializable<GpuProfile> {
 
                 if ("driver".equals(fieldName)) {
                     deserializedGpuProfile.driver = GpuDriver.fromString(reader.getString());
-                } else if ("driverType".equals(fieldName)) {
-                    deserializedGpuProfile.driverType = DriverType.fromString(reader.getString());
                 } else if ("nvidia".equals(fieldName)) {
                     deserializedGpuProfile.nvidia = NvidiaGPUProfile.fromJson(reader);
                 } else {

@@ -11,7 +11,7 @@ public final class ActionVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"canonicalId\":\"jbabwidf\",\"displayName\":\"sspuunnoxyhkx\",\"description\":\"ddrihpf\",\"actionName\":\"qcaaewdaomdjvl\",\"version\":\"x\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"sgeivsiy\",\"requiredPermissions\":[\"dncj\",\"xonbzoggculapz\"]},{\"targetType\":\"rpgogtqxep\",\"requiredPermissions\":[\"b\"]},{\"targetType\":\"ajlyjtlvofqzhv\",\"requiredPermissions\":[\"byfmowuxr\",\"jpvd\"]},{\"targetType\":\"fzwiivwzjbhyz\",\"requiredPermissions\":[\"rkambt\",\"negvmnvuqe\",\"vldspa\",\"tjb\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"flvestmjlxrrilo\",\"apeewchpxlkt\"]},\"id\":\"uziycsl\",\"name\":\"vu\",\"type\":\"uztcktyhjtqed\"}")
+            "{\"properties\":{\"canonicalId\":\"qzudphq\",\"displayName\":\"vdkfwynwcvtbvk\",\"description\":\"hmtnvy\",\"actionName\":\"atkzwpcnpw\",\"version\":\"jaesgvvsccya\",\"actionType\":\"Discrete\",\"supportedTargetTypes\":[{\"targetType\":\"wygzlvdnkfxusem\",\"requiredPermissions\":[\"rmuhapfcq\",\"psqxq\",\"psvuoymgc\",\"elvezrypq\"]},{\"targetType\":\"feo\",\"requiredPermissions\":[\"qwkyhkobop\",\"xedk\"]},{\"targetType\":\"epbqpcrfkbw\",\"requiredPermissions\":[\"njv\",\"dw\",\"lpqekf\",\"nkhtjsyingw\"]},{\"targetType\":\"atmtdhtmdvy\",\"requiredPermissions\":[\"kdgszywkbirr\",\"uzhlhkjoqrv\",\"qaatjinrv\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"mfiibfggj\"]},\"id\":\"olvrw\",\"name\":\"kvtkkg\",\"type\":\"lqwjygvjayvblm\"}")
             .toObject(ActionVersionInner.class);
     }
 }

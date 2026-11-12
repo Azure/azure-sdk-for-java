@@ -396,7 +396,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      * @return the {@link SyncPoller} for polling of a model source registered with an AI Manager.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ModelSourceInner>, ModelSourceInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String modelSourceName, ModelSourceInner resource, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, modelSourceName,
             resource, ifMatch, ifNoneMatch);
@@ -670,7 +670,7 @@ public final class ModelSourcesClientImpl implements ModelSourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String modelSourceName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, modelSourceName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

@@ -438,7 +438,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
      * @return the {@link SyncPoller} for polling of the AI Manager namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AIManagerNamespaceInner>, AIManagerNamespaceInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<AIManagerNamespaceInner>, AIManagerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, AIManagerNamespaceInner resource,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
@@ -697,7 +697,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
