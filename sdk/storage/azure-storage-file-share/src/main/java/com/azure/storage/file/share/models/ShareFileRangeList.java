@@ -89,8 +89,8 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
-     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async
-     * equivalents), which page through ranges and handle the continuation marker.
+     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async equivalents),
+     * which page through ranges and handle the continuation marker.
      */
     @Deprecated
     public String getNextMarker() {
@@ -102,8 +102,8 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ShareFileRangeList object itself.
-     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async
-     * equivalents), which page through ranges and handle the continuation marker.
+     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async equivalents),
+     * which page through ranges and handle the continuation marker.
      */
     @Deprecated
     public ShareFileRangeList setNextMarker(String nextMarker) {

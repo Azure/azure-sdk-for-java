@@ -328,9 +328,8 @@ public final class ShareStorageError
                 bufferedReader.nextToken();
                 if ("error".equals(fieldName)) {
                     return readShareStorageError(bufferedReader);
-                } else {
-                    bufferedReader.skipChildren();
                 }
+                bufferedReader.skipChildren();
             }
             return readShareStorageError(bufferedReader.reset());
         });

@@ -7,6 +7,7 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
@@ -14,19 +15,32 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.LambdaExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.modules.ModuleDirective;
+import com.github.javaparser.ast.modules.ModuleExportsDirective;
+import com.github.javaparser.ast.modules.ModuleOpensDirective;
+import com.github.javaparser.ast.modules.ModuleRequiresDirective;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
+import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.ast.type.UnknownType;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Customization class for File Share Storage.
@@ -44,11 +58,13 @@ public class ShareStorageCustomization extends Customization {
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
         "ShareSignedIdentifier", "UserDelegationKey");
 
-    // Generated builders / main service-client surface emitted by typespec-java on top of the
-    // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
-    // hand-written Share*-prefixed clients. (The per-resource convenience clients are NOT deleted —
-    // they are relocated into the implementation package as the internal typed layer; see
-    // CONVENIENCE_CLIENTS_TO_RELOCATE / relocateConvenienceClientsToImplementation.)
+    // The generator emits three layers of code:
+    //   1. implementation/*Impl: raw REST operations. Kept.
+    //   2. Per-resource convenience clients: typed WithResponse methods over the Impl layer. Kept, but moved into the
+    //      implementation package (see CONVENIENCE_CLIENTS_TO_RELOCATE).
+    //   3. Top-level service client, async client and builders: deleted (this list).
+    // The public API is the hand-written Share* clients, so layer 3 would only duplicate it. The list also deletes the
+    // generated service version enum, as the hand-written ShareServiceVersion is the public one.
     private static final List<String> GENERATED_CLIENTS_TO_REMOVE = Arrays.asList(
         // Main service-client public surface — the impl (AzureFileStorageImpl) is kept; only the
         // public client/async-client/builder are removed. Both naming variants are listed because
@@ -72,7 +88,20 @@ public class ShareStorageCustomization extends Customization {
         "FileClient", "FileAsyncClient",
         "ShareClient", "ShareAsyncClient");
 
-    private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList("src/main/java/module-info.java");
+    private static final String MODULE_INFO_PATH = "src/main/java/module-info.java";
+
+    // Directives the hand-written code needs that the generated module-info doesn't declare: the storage-common
+    // dependency, the hand-written public packages, and the implementation packages azure-core reflects on.
+    private static final List<String> MODULE_INFO_DIRECTIVES = Arrays.asList(
+        "requires transitive com.azure.storage.common;",
+        "exports com.azure.storage.file.share.options;",
+        "exports com.azure.storage.file.share.sas;",
+        "exports com.azure.storage.file.share.specialized;",
+        "opens com.azure.storage.file.share.implementation to com.azure.core;",
+        "opens com.azure.storage.file.share.implementation.util to com.azure.core;");
+
+    private static final List<Class<?>> DIRECTIVE_ORDER
+        = Arrays.asList(ModuleRequiresDirective.class, ModuleExportsDirective.class, ModuleOpensDirective.class);
 
     // Generated implementation classes typed to the generated FileServiceVersion enum, which is deleted (above) in
     // favor of the hand-written public ShareServiceVersion. These are retyped to ShareServiceVersion after generation.
@@ -82,6 +111,8 @@ public class ShareStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         removeGeneratedConvenienceClients(customization, logger);
+
+        patchModuleInfo(customization);
 
         relocateConvenienceClientsToImplementation(customization, logger);
 
@@ -97,9 +128,9 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Deletes the generated builders / main service-client surface and descriptor files so the shipped
-     * public surface is limited to the hand-written Share*-prefixed clients. The generated
-     * {@code implementation/*Impl} operation layer and the relocated convenience clients are retained.
+     * Deletes the generated builders / main service-client surface so the shipped public surface is limited to the
+     * hand-written Share*-prefixed clients. The generated {@code implementation/*Impl} operation layer and the
+     * relocated convenience clients are retained.
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -110,25 +141,46 @@ public class ShareStorageCustomization extends Customization {
             customization.getRawEditor().removeFile(path);
             logger.info("Removed generated client file: {}", path);
         }
-        for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
-            customization.getRawEditor().removeFile(path);
-            logger.info("Removed generated descriptor file (hand-written version preserved): {}", path);
-        }
     }
 
     /**
-     * Moves the generated per-resource convenience clients from the public
-     * {@code com.azure.storage.file.share} package into {@code com.azure.storage.file.share.implementation} and
-     * renames them to the hand-written {@code Share*} naming with an {@code Internal} suffix (e.g. {@code FileClient}
-     * -> {@code ShareFileClientInternal}, {@code ShareClient} -> {@code ShareClientInternal}).
-     * They carry the typed {@code WithResponse} methods (e.g.
-     * {@code ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(...)}) that wrap the
-     * protocol {@code *WithResponseInternal} methods, so they are kept as the internal typed layer instead of being
-     * hand-written. Relocating them (1) keeps them off the public API surface (implementation is not exported) and
-     * (2) resolves the name collision between the generated {@code ShareClient}/{@code ShareAsyncClient} and the
-     * hand-written public ones. The package-private constructors are made public so the hand-written Share* clients
-     * (now in a different package) can construct them from {@code AzureFileStorageImpl.get*()}. The
-     * {@code @ServiceClient} marker annotation is dropped because its {@code AzureFileStorageBuilder} is deleted.
+     * Adds the directives the hand-written code needs to the generated {@code module-info.java}, keeping everything
+     * the generator declares, and keeps the directives grouped by kind.
+     *
+     * @param customization The library customization.
+     */
+    private static void patchModuleInfo(LibraryCustomization customization) {
+        Editor editor = customization.getRawEditor();
+        CompilationUnit ast = StaticJavaParser.parse(editor.getFileContent(MODULE_INFO_PATH));
+        ast.getModule().ifPresent(module -> {
+            NodeList<ModuleDirective> directives = module.getDirectives();
+            MODULE_INFO_DIRECTIVES.stream()
+                .map(StaticJavaParser::parseModuleDirective)
+                .filter(directive -> !directives.contains(directive))
+                .forEach(directives::add);
+            directives.sort(Comparator.comparingInt(directive -> DIRECTIVE_ORDER.indexOf(directive.getClass())));
+        });
+        // JavaParser doesn't print the comments ahead of a module declaration, so carry the license header over.
+        String header = ast.getOrphanComments()
+            .stream()
+            .map(comment -> comment.toString().trim())
+            .collect(Collectors.joining(System.lineSeparator()));
+        editor.replaceFile(MODULE_INFO_PATH, header + System.lineSeparator() + System.lineSeparator() + ast);
+    }
+
+    /**
+     * Moves each generated convenience client into the {@code implementation} package and renames it with an
+     * {@code Internal} suffix, e.g. {@code FileClient} becomes {@code ShareFileClientInternal}.
+     * <p>
+     * These clients provide the typed {@code WithResponse} methods (for example
+     * {@code ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(...)}) that the
+     * hand-written {@code Share*} clients delegate to. Moving them:
+     * <ul>
+     * <li>keeps them out of the public API, because {@code implementation} is not exported;</li>
+     * <li>avoids a name clash between the generated and hand-written {@code ShareClient}/{@code ShareAsyncClient}.</li>
+     * </ul>
+     * Each moved class also gets a public constructor, because the hand-written clients now call it from another
+     * package, and loses its {@code @ServiceClient} annotation, because the builder it refers to is deleted.
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -200,52 +252,71 @@ public class ShareStorageCustomization extends Customization {
      * migration but is absent from the spec model. The spec splits range listing into {@code getRangeList}
      * ({@code ShareFileRangeList}, no marker) and the paged {@code listAllRanges} ({@code ShareFileRangeListSegment},
      * which carries {@code NextMarker}); the {@code listAllRanges} / {@code listAllRangesDiff} paged iterables use the
-     * latter, as the other languages do. The getter/setter are retained only for backward compatibility and are
-     * deprecated. Field, getter, fluent setter, and XML round-trip (matching the shipped shape) are added here;
-     * {@code restoreFluentModels} skips the field because it already has a setter.
+     * latter, as the other languages do. The getter and setter are kept only for backward compatibility and are
+     * deprecated. The field, getter and setter are added ahead of {@code toXml}, and the XML round trip is extended to
+     * write and read {@code NextMarker}.
      *
      * @param customization The library customization.
      * @param logger The logger.
      */
     private static void restoreShareFileRangeListNextMarker(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        String path = PKG_ROOT + "models/ShareFileRangeList.java";
-        String content = editor.getFileContent(path);
-        if (content.contains("getNextMarker")) {
-            return;
-        }
-        content = content.replace(
-            "    @Generated\n    @Override\n    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {\n"
-                + "        return toXml(xmlWriter, null);\n    }\n",
-            "    private String nextMarker;\n\n"
-                + "    /**\n     * Get the nextMarker property: The NextMarker property.\n     *\n"
-                + "     * @return the nextMarker value.\n"
-                + "     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async\n"
-                + "     * equivalents), which page through ranges and handle the continuation marker.\n     */\n"
-                + "    @Deprecated\n"
-                + "    public String getNextMarker() {\n        return this.nextMarker;\n    }\n\n"
-                + "    /**\n     * Set the nextMarker property: The NextMarker property.\n     *\n"
-                + "     * @param nextMarker the nextMarker value to set.\n"
-                + "     * @return the ShareFileRangeList object itself.\n"
-                + "     * @deprecated Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the async\n"
-                + "     * equivalents), which page through ranges and handle the continuation marker.\n     */\n"
-                + "    @Deprecated\n"
-                + "    public ShareFileRangeList setNextMarker(String nextMarker) {\n"
-                + "        this.nextMarker = nextMarker;\n        return this;\n    }\n\n"
-                + "    @Generated\n    @Override\n    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {\n"
-                + "        return toXml(xmlWriter, null);\n    }\n");
-        content = content.replace("        }\n        return xmlWriter.writeEndElement();",
-            "        }\n        xmlWriter.writeStringElement(\"NextMarker\", this.nextMarker);\n"
-                + "        return xmlWriter.writeEndElement();");
-        content = content.replace(
-            "                    deserializedShareFileRangeList.clearRanges.add(ClearRange.fromXml(reader, \"ClearRange\"));\n"
-                + "                } else {",
-            "                    deserializedShareFileRangeList.clearRanges.add(ClearRange.fromXml(reader, \"ClearRange\"));\n"
-                + "                } else if (\"NextMarker\".equals(elementName.getLocalPart())) {\n"
-                + "                    deserializedShareFileRangeList.nextMarker = reader.getStringElement();\n"
-                + "                } else {");
-        editor.replaceFile(path, content);
-        logger.info("Restored ShareFileRangeList.nextMarker (getter/setter + XML round-trip)");
+        customization.getClass(MODELS_PACKAGE, "ShareFileRangeList").customizeAst(ast -> ast
+            .getClassByName("ShareFileRangeList")
+            .ifPresent(clazz -> {
+                if (clazz.getFieldByName("nextMarker").isPresent()) {
+                    return;
+                }
+                String deprecation = "Use {@code ShareFileClient.listAllRanges} / {@code listAllRangesDiff} (or the "
+                    + "async equivalents), which page through ranges and handle the continuation marker.";
+
+                MethodDeclaration getter = new MethodDeclaration();
+                getter.setName("getNextMarker");
+                getter.setModifiers(Modifier.Keyword.PUBLIC);
+                getter.setType("String");
+                getter.setBody(StaticJavaParser.parseBlock("{ return this.nextMarker; }"));
+                getter.addMarkerAnnotation("Deprecated");
+                getter.setJavadocComment(
+                    new Javadoc(JavadocDescription.parseText("Get the nextMarker property: The NextMarker property."))
+                        .addBlockTag("return", "the nextMarker value.")
+                        .addBlockTag("deprecated", deprecation));
+
+                MethodDeclaration setter = new MethodDeclaration();
+                setter.setName("setNextMarker");
+                setter.setModifiers(Modifier.Keyword.PUBLIC);
+                setter.setType("ShareFileRangeList");
+                setter.addParameter("String", "nextMarker");
+                setter.setBody(StaticJavaParser.parseBlock("{ this.nextMarker = nextMarker; return this; }"));
+                setter.addMarkerAnnotation("Deprecated");
+                setter.setJavadocComment(
+                    new Javadoc(JavadocDescription.parseText("Set the nextMarker property: The NextMarker property."))
+                        .addBlockTag("param", "nextMarker", "the nextMarker value to set.")
+                        .addBlockTag("return", "the ShareFileRangeList object itself.")
+                        .addBlockTag("deprecated", deprecation));
+
+                NodeList<BodyDeclaration<?>> members = clazz.getMembers();
+                int toXmlIndex = indexOfFirstMethod(members, "toXml");
+                members.add(toXmlIndex, setter);
+                members.add(toXmlIndex, getter);
+                members.add(toXmlIndex, StaticJavaParser.parseBodyDeclaration("private String nextMarker;"));
+
+                // Write NextMarker last, ahead of the closing element.
+                clazz.getMethodsBySignature("toXml", "XmlWriter", "String").forEach(toXml -> {
+                    BlockStmt body = toXml.getBody().get();
+                    body.addStatement(body.getStatements().size() - 1, StaticJavaParser
+                        .parseStatement("xmlWriter.writeStringElement(\"NextMarker\", this.nextMarker);"));
+                });
+
+                // Read NextMarker in a new branch after ClearRange, ahead of the branch skipping unknown elements.
+                clazz.getMethodsBySignature("fromXml", "XmlReader", "String")
+                    .forEach(fromXml -> fromXml
+                        .findFirst(IfStmt.class, branch -> branch.getCondition().toString().contains("\"ClearRange\""))
+                        .ifPresent(clearRangeBranch -> clearRangeBranch.setElseStmt(new IfStmt(
+                            StaticJavaParser.parseExpression("\"NextMarker\".equals(elementName.getLocalPart())"),
+                            StaticJavaParser.parseBlock(
+                                "{ deserializedShareFileRangeList.nextMarker = reader.getStringElement(); }"),
+                            clearRangeBranch.getElseStmt().map(Statement::clone).orElse(null)))));
+                logger.info("Restored ShareFileRangeList.nextMarker");
+            }));
     }
 
     /**
@@ -359,6 +430,17 @@ public class ShareStorageCustomization extends Customization {
         return -1;
     }
 
+    private static int indexOfFirstMethod(NodeList<BodyDeclaration<?>> members, String methodName) {
+        for (int i = 0; i < members.size(); i++) {
+            BodyDeclaration<?> member = members.get(i);
+            if (member instanceof MethodDeclaration
+                && ((MethodDeclaration) member).getNameAsString().equals(methodName)) {
+                return i;
+            }
+        }
+        return members.size();
+    }
+
     private static int indexOfGetter(NodeList<BodyDeclaration<?>> members, String fieldName) {
         String capitalized = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
         String getterName = "get" + capitalized;
@@ -382,7 +464,8 @@ public class ShareStorageCustomization extends Customization {
      * {@code implementation.models} (it is opened only to {@code com.azure.core}), so the error would surface as a
      * plain {@code HttpResponseException}/{@code RuntimeException} instead of {@code ShareStorageException}. The
      * pre-migration model implemented both interfaces; this restores that, accepting both the bare and the
-     * {@code {"error": {...}}}-wrapped forms.
+     * {@code {"error": {...}}}-wrapped forms. Each field is read and written under its own (camel case) name, as the
+     * pre-migration model did, so fields the spec adds are picked up automatically.
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -400,26 +483,29 @@ public class ShareStorageCustomization extends Customization {
                 ast.addImport("java.io.IOException");
                 clazz.addImplementedType("JsonSerializable<ShareStorageError>");
 
-                clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                    "@Override",
-                    "public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {",
-                    "    jsonWriter.writeStartObject();",
-                    "    jsonWriter.writeStringField(\"code\", this.code == null ? null : this.code.toString());",
-                    "    jsonWriter.writeStringField(\"message\", this.message);",
-                    "    jsonWriter.writeNumberField(\"copySourceStatusCode\", this.copySourceStatusCode);",
-                    "    jsonWriter.writeStringField(\"copySourceErrorCode\", this.copySourceErrorCode);",
-                    "    jsonWriter.writeStringField(\"copySourceErrorMessage\", this.copySourceErrorMessage);",
-                    "    jsonWriter.writeStringField(\"headerName\", this.headerName);",
-                    "    jsonWriter.writeStringField(\"headerValue\", this.headerValue);",
-                    "    jsonWriter.writeStringField(\"queryParameterName\", this.queryParameterName);",
-                    "    jsonWriter.writeStringField(\"queryParameterValue\", this.queryParameterValue);",
-                    "    jsonWriter.writeStringField(\"reason\", this.reason);",
-                    "    jsonWriter.writeStringField(\"extendedErrorDetail\", this.extendedErrorDetail);",
-                    "    return jsonWriter.writeEndObject();",
-                    "}")));
+                List<VariableDeclarator> fields = clazz.getFields()
+                    .stream()
+                    .filter(field -> !field.isStatic())
+                    .map(field -> field.getVariable(0))
+                    .collect(Collectors.toList());
 
-                MethodDeclaration fromJson = StaticJavaParser.parseMethodDeclaration(String.join("\n",
-                    "public static ShareStorageError fromJson(JsonReader jsonReader) throws IOException {",
+                BlockStmt toJsonBody = new BlockStmt().addStatement("jsonWriter.writeStartObject();");
+                fields.forEach(field -> toJsonBody.addStatement(jsonWriteStatement(field)));
+                toJsonBody.addStatement("return jsonWriter.writeEndObject();");
+                MethodDeclaration toJson = clazz.addMethod("toJson", Modifier.Keyword.PUBLIC);
+                toJson.setType("JsonWriter");
+                toJson.addParameter("JsonWriter", "jsonWriter");
+                toJson.addThrownException(StaticJavaParser.parseClassOrInterfaceType("IOException"));
+                toJson.addMarkerAnnotation("Override");
+                toJson.setBody(toJsonBody);
+
+                MethodDeclaration fromJson = clazz.addMethod("fromJson", Modifier.Keyword.PUBLIC,
+                    Modifier.Keyword.STATIC);
+                fromJson.setType("ShareStorageError");
+                fromJson.addParameter("JsonReader", "jsonReader");
+                fromJson.addThrownException(StaticJavaParser.parseClassOrInterfaceType("IOException"));
+                fromJson.setBody(StaticJavaParser.parseBlock(String.join("\n",
+                    "{",
                     "    return jsonReader.readObject(reader -> {",
                     "        // The error may be the object itself or wrapped in an \"error\" node.",
                     "        JsonReader bufferedReader = reader.bufferObject();",
@@ -429,60 +515,78 @@ public class ShareStorageCustomization extends Customization {
                     "            bufferedReader.nextToken();",
                     "            if (\"error\".equals(fieldName)) {",
                     "                return readShareStorageError(bufferedReader);",
-                    "            } else {",
-                    "                bufferedReader.skipChildren();",
                     "            }",
+                    "            bufferedReader.skipChildren();",
                     "        }",
                     "        return readShareStorageError(bufferedReader.reset());",
                     "    });",
-                    "}"));
-                fromJson.setJavadocComment(String.join("\n",
-                    "Reads an instance of ShareStorageError from the JsonReader.",
-                    "",
-                    "@param jsonReader The JsonReader being read.",
-                    "@return An instance of ShareStorageError if the JsonReader was pointing to an instance of it, or "
-                        + "null if it was pointing to JSON null.",
-                    "@throws IOException If an error occurs while reading the ShareStorageError."));
-                clazz.addMember(fromJson);
-
-                clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                    "private static ShareStorageError readShareStorageError(JsonReader jsonReader) throws IOException {",
-                    "    return jsonReader.readObject(reader -> {",
-                    "        ShareStorageError deserialized = new ShareStorageError();",
-                    "        while (reader.nextToken() != JsonToken.END_OBJECT) {",
-                    "            String fieldName = reader.getFieldName();",
-                    "            reader.nextToken();",
-                    "            if (\"code\".equals(fieldName)) {",
-                    "                deserialized.code = ShareErrorCode.fromString(reader.getString());",
-                    "            } else if (\"message\".equals(fieldName)) {",
-                    "                deserialized.message = reader.getString();",
-                    "            } else if (\"copySourceStatusCode\".equals(fieldName)) {",
-                    "                deserialized.copySourceStatusCode = reader.getNullable(JsonReader::getInt);",
-                    "            } else if (\"copySourceErrorCode\".equals(fieldName)) {",
-                    "                deserialized.copySourceErrorCode = reader.getString();",
-                    "            } else if (\"copySourceErrorMessage\".equals(fieldName)) {",
-                    "                deserialized.copySourceErrorMessage = reader.getString();",
-                    "            } else if (\"headerName\".equals(fieldName)) {",
-                    "                deserialized.headerName = reader.getString();",
-                    "            } else if (\"headerValue\".equals(fieldName)) {",
-                    "                deserialized.headerValue = reader.getString();",
-                    "            } else if (\"queryParameterName\".equals(fieldName)) {",
-                    "                deserialized.queryParameterName = reader.getString();",
-                    "            } else if (\"queryParameterValue\".equals(fieldName)) {",
-                    "                deserialized.queryParameterValue = reader.getString();",
-                    "            } else if (\"reason\".equals(fieldName)) {",
-                    "                deserialized.reason = reader.getString();",
-                    "            } else if (\"extendedErrorDetail\".equals(fieldName)) {",
-                    "                deserialized.extendedErrorDetail = reader.getString();",
-                    "            } else {",
-                    "                reader.skipChildren();",
-                    "            }",
-                    "        }",
-                    "        return deserialized;",
-                    "    });",
                     "}")));
+                fromJson.setJavadocComment(new Javadoc(
+                    JavadocDescription.parseText("Reads an instance of ShareStorageError from the JsonReader."))
+                    .addBlockTag("param", "jsonReader", "The JsonReader being read.")
+                    .addBlockTag("return", "An instance of ShareStorageError if the JsonReader was pointing to an "
+                        + "instance of it, or null if it was pointing to JSON null.")
+                    .addBlockTag("throws", "IOException", "If an error occurs while reading the ShareStorageError."));
+
+                // One branch per field, then skip anything else.
+                Statement readField = StaticJavaParser.parseBlock("{ reader.skipChildren(); }");
+                for (int i = fields.size() - 1; i >= 0; i--) {
+                    String name = fields.get(i).getNameAsString();
+                    readField = new IfStmt(StaticJavaParser.parseExpression("\"" + name + "\".equals(fieldName)"),
+                        new BlockStmt().addStatement("deserialized." + name + " = " + jsonReadExpression(fields.get(i))
+                            + ";"),
+                        readField);
+                }
+                BlockStmt readObject = StaticJavaParser.parseBlock(String.join("\n",
+                    "{",
+                    "    ShareStorageError deserialized = new ShareStorageError();",
+                    "    while (reader.nextToken() != JsonToken.END_OBJECT) {",
+                    "        String fieldName = reader.getFieldName();",
+                    "        reader.nextToken();",
+                    "    }",
+                    "    return deserialized;",
+                    "}"));
+                readObject.findFirst(WhileStmt.class).get().getBody().asBlockStmt().addStatement(readField);
+                MethodDeclaration readShareStorageError = clazz.addMethod("readShareStorageError",
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC);
+                readShareStorageError.setType("ShareStorageError");
+                readShareStorageError.addParameter("JsonReader", "jsonReader");
+                readShareStorageError.addThrownException(StaticJavaParser.parseClassOrInterfaceType("IOException"));
+                readShareStorageError.setBody(new BlockStmt().addStatement(new ReturnStmt(new MethodCallExpr(
+                    new NameExpr("jsonReader"), "readObject",
+                    new NodeList<>(new LambdaExpr(new Parameter(new UnknownType(), "reader"), readObject))))));
                 logger.info("Restored JSON deserialization on ShareStorageError");
             }));
+    }
+
+    // Writes a ShareStorageError field: strings and numbers directly, and expandable string enums by their value.
+    private static String jsonWriteStatement(VariableDeclarator field) {
+        String name = field.getNameAsString();
+        switch (field.getTypeAsString()) {
+            case "String":
+                return "jsonWriter.writeStringField(\"" + name + "\", this." + name + ");";
+
+            case "Integer":
+                return "jsonWriter.writeNumberField(\"" + name + "\", this." + name + ");";
+
+            default:
+                return "jsonWriter.writeStringField(\"" + name + "\", this." + name + " == null ? null : this." + name
+                    + ".toString());";
+        }
+    }
+
+    // Reads a ShareStorageError field, the counterpart of jsonWriteStatement.
+    private static String jsonReadExpression(VariableDeclarator field) {
+        switch (field.getTypeAsString()) {
+            case "String":
+                return "reader.getString()";
+
+            case "Integer":
+                return "reader.getNullable(JsonReader::getInt)";
+
+            default:
+                return field.getTypeAsString() + ".fromString(reader.getString())";
+        }
     }
 
     /**
