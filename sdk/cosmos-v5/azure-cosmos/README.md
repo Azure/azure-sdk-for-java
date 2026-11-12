@@ -52,13 +52,19 @@ after bootstrapping the dependencies. The validation script performs both steps.
 These alternate filenames intentionally exclude v5 from the shared `pom*.xml`
 discovery used by aggregate builds, version updates, and version scanning.
 `sdk/cosmos-v5/versions.txt` supplies the isolated Cosmos version; it is **not**
-an additional registration in `eng/versioning/version_client.txt`. The validation
-script uses the existing version-update implementation on a temporary copy to
-check the alternate descriptor against this local override and the shared
-dependency/plugin versions, failing on drift without rewriting source files.
+an additional registration in `eng/versioning/version_client.txt`.
+`sdk/cosmos-v5/external_dependencies.txt` pins build plugins used only by the
+alternate descriptor. Such plugins must not be added to the shared external
+dependency manifest: its unused-entry checker scans only `pom*.xml` references.
+The validation script loads the local plugin pins into the shared external
+dependency map using the existing loader, rejecting duplicates within the local
+file or across both maps. It then uses the existing version-update implementation
+on a temporary descriptor copy to check local and shared versions, failing on
+drift without rewriting source files.
 Configuration regression tests also exercise actual shared aggregate discovery
-and check that the default and opt-in reactors each select only their own Cosmos
-version. Run them independently with:
+and the shared unused-entry checker, reject local plugin version drift and
+duplicate entries, and check that the default and opt-in reactors each select
+only their own Cosmos version. Run them independently with:
 
 ```bash
 python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_configuration.py
@@ -67,6 +73,8 @@ python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_conf
 When changing the v5 version, update both the local manifest and `sdk-build.xml`.
 Do not run the shared version updater's `--target-file` option on this descriptor:
 without the local override it would apply the v4 version.
+When changing a v5-only plugin version, update its local external dependency
+entry and the corresponding version marker in `sdk-build.xml` together.
 
 The v5 CI `Artifacts` and `AdditionalModules` lists are empty intentionally, so
 shared package/release discovery still registers only v4. CI uploads validation

@@ -5,6 +5,7 @@
 
 import importlib.util
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -44,6 +45,39 @@ class BuildConfigurationTests(unittest.TestCase):
                          "/sdk/cosmos/azure-cosmos/pom.xml")
         # Both the shared version updater and scanner enumerate pom*.xml.
         self.assertEqual(list(MODULE.parent.rglob("pom*.xml")), [])
+
+    def test_local_plugin_version_drift_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = Path(directory) / "sdk-build.xml"
+            project = ET.parse(verify_build.BUILD).getroot()
+            plugin = project.find(
+                "m:build/m:plugins/m:plugin[m:artifactId='maven-deploy-plugin']", verify_build.NS)
+            version = plugin.findtext("m:version", namespaces=verify_build.NS)
+            marker = "{x-version-update;org.apache.maven.plugins:maven-deploy-plugin;external_dependency}"
+            candidate.write_text(verify_build.BUILD.read_text().replace(
+                f"<version>{version}</version> <!-- {marker} -->",
+                f"<version>0.0.0</version> <!-- {marker} -->", 1))
+            with patch.object(verify_build, "BUILD", candidate):
+                with self.assertRaisesRegex(RuntimeError, "differs from versions.txt"):
+                    verify_build.verify_version_configuration()
+
+    def test_local_external_dependencies_cannot_duplicate_entries(self):
+        local = verify_build.LOCAL_EXTERNAL_VERSIONS.read_text()
+        shared = (ROOT / "eng/versioning/external_dependencies.txt").read_text()
+        for label, content in (("local", local), ("shared", shared)):
+            entry = next(line for line in content.splitlines() if line.strip() and not line.startswith("#"))
+            with self.subTest(source=label), tempfile.TemporaryDirectory() as directory:
+                candidate = Path(directory) / "external_dependencies.txt"
+                candidate.write_text(local + "\n" + entry + "\n")
+                with patch.object(verify_build, "LOCAL_EXTERNAL_VERSIONS", candidate):
+                    with self.assertRaisesRegex(ValueError, "duplicate entry"):
+                        verify_build.verify_version_configuration()
+
+    def test_shared_version_manifests_have_no_unused_entries(self):
+        result = subprocess.run(
+            [sys.executable, "-B", str(ROOT / "eng/versioning/find_unused_dependencies.py")],
+            cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_reactors_never_select_both_cosmos_versions(self):
         def projects_in(path):

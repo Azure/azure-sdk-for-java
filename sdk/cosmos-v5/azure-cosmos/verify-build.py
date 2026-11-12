@@ -18,6 +18,7 @@ MODULE = Path(__file__).resolve().parent
 ROOT = MODULE.parents[2]
 BUILD = MODULE / "sdk-build.xml"
 REACTOR = MODULE.parent / "reactor.xml"
+LOCAL_EXTERNAL_VERSIONS = MODULE.parent / "external_dependencies.txt"
 NS = {"m": "http://maven.apache.org/POM/4.0.0"}
 
 
@@ -35,6 +36,7 @@ def verify_version_configuration():
     versions, external, local = {}, {}, {}
     load_version_map_from_file(str(ROOT / "eng/versioning/version_client.txt"), versions)
     load_version_map_from_file(str(ROOT / "eng/versioning/external_dependencies.txt"), external)
+    load_version_map_from_file(str(LOCAL_EXTERNAL_VERSIONS), external)
     load_version_map_from_file(str(MODULE.parent / "versions.txt"), local)
     require(set(local) == {"com.azure:azure-cosmos"}, "Only Cosmos may override the shared versions")
     require(local["com.azure:azure-cosmos"].current.startswith("5."), "Expected an isolated v5 version")
@@ -46,7 +48,7 @@ def verify_version_configuration():
         update_versions(versions, external, str(candidate), True, False, [])
         require(not exception_list, f"Version validation failed: {exception_list}")
         require(candidate.read_bytes() == BUILD.read_bytes(),
-                "sdk-build.xml differs from versions.txt or the shared dependency/plugin versions")
+                "sdk-build.xml differs from versions.txt or the local/shared dependency/plugin versions")
 
 
 def verify_effective_pom(path):
