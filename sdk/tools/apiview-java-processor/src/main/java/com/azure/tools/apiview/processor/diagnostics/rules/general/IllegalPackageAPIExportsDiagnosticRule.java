@@ -49,7 +49,7 @@ public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
     }
 
     private void validateType(String methodName, ClassOrInterfaceType type, final APIListing listing) {
-        String typeAsString = type.getNameAsString();
+        String typeAsString = type.getNameWithScope();
 
         if (typeAsString.contains(".")) {
             // the type is fully-qualified, e.g. 'com.azure.storage.implementation.models.BlobOptions'.

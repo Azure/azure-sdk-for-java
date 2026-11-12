@@ -13,6 +13,7 @@
 - Preserve existing review bundles if generation fails after Maven cleanup.
 - Recognize explicit builder protocols and check required methods independently for each builder.
 - Finish and close compressed JSON output so it can be decompressed successfully.
+- Detect prohibited packages in fully qualified public API types.
 
 ### Other Changes
 
