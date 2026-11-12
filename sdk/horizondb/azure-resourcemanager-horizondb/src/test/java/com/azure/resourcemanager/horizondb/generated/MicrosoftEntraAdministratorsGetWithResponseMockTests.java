@@ -22,7 +22,7 @@ public final class MicrosoftEntraAdministratorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalName\":\"muoyxprimr\",\"principalType\":\"User\",\"objectId\":\"teecjmeislst\",\"tenantId\":\"sylwxdzaumweooh\",\"provisioningState\":\"Provisioning\"},\"id\":\"uzboyjathw\",\"name\":\"zolbaemwmdxmebw\",\"type\":\"scjpahlxv\"}";
+            = "{\"properties\":{\"principalName\":\"gqqihedsvqwt\",\"principalType\":\"Unknown\",\"objectId\":\"yibcy\",\"tenantId\":\"hsgqc\",\"provisioningState\":\"InProgress\"},\"id\":\"hsdtmc\",\"name\":\"zsu\",\"type\":\"cohdx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MicrosoftEntraAdministratorsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MicrosoftEntraAdministrator response = manager.microsoftEntraAdministrators()
-            .getWithResponse("a", "ankjpdnjzh", "joylh", com.azure.core.util.Context.NONE)
+            .getWithResponse("nzcyjtotp", "opv", "bdb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("muoyxprimr", response.properties().principalName());
-        Assertions.assertEquals(PrincipalTypes.USER, response.properties().principalType());
-        Assertions.assertEquals("sylwxdzaumweooh", response.properties().tenantId());
+        Assertions.assertEquals("gqqihedsvqwt", response.properties().principalName());
+        Assertions.assertEquals(PrincipalTypes.UNKNOWN, response.properties().principalType());
+        Assertions.assertEquals("hsgqc", response.properties().tenantId());
     }
 }

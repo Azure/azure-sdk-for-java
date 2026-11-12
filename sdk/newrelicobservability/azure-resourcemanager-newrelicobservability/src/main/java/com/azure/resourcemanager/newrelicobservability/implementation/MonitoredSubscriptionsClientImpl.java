@@ -414,7 +414,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+    private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body) {
         Response<BinaryData> response
@@ -705,7 +705,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+    private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);

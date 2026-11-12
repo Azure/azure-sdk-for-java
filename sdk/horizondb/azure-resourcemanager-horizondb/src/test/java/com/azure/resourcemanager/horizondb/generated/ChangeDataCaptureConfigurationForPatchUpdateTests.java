@@ -14,17 +14,17 @@ public final class ChangeDataCaptureConfigurationForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureConfigurationForPatchUpdate model
-            = BinaryData.fromString("{\"properties\":{\"desiredState\":\"Enabled\"}}")
+            = BinaryData.fromString("{\"properties\":{\"desiredState\":\"Disabled\"}}")
                 .toObject(ChangeDataCaptureConfigurationForPatchUpdate.class);
-        Assertions.assertEquals(ChangeDataCaptureDesiredState.ENABLED, model.properties().desiredState());
+        Assertions.assertEquals(ChangeDataCaptureDesiredState.DISABLED, model.properties().desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChangeDataCaptureConfigurationForPatchUpdate model = new ChangeDataCaptureConfigurationForPatchUpdate()
             .withProperties(new ChangeDataCaptureConfigurationPropertiesForPatchUpdate()
-                .withDesiredState(ChangeDataCaptureDesiredState.ENABLED));
+                .withDesiredState(ChangeDataCaptureDesiredState.DISABLED));
         model = BinaryData.fromObject(model).toObject(ChangeDataCaptureConfigurationForPatchUpdate.class);
-        Assertions.assertEquals(ChangeDataCaptureDesiredState.ENABLED, model.properties().desiredState());
+        Assertions.assertEquals(ChangeDataCaptureDesiredState.DISABLED, model.properties().desiredState());
     }
 }

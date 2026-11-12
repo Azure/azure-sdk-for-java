@@ -817,7 +817,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @return the {@link SyncPoller} for polling of organization resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+    private SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
         beginCreate(String resourceGroupName, String organizationName, OrganizationResourceInner body) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, organizationName, body);
         return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,

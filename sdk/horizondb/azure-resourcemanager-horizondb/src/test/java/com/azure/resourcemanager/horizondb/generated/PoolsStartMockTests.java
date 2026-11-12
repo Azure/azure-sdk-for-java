@@ -25,7 +25,7 @@ public final class PoolsStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Updating\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1190049726,\"vCores\":856089944},\"nodeCount\":866301348,\"highAvailability\":{\"mode\":\"Disabled\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"xurisjnhnyt\",\"applyMethod\":\"Immediate\",\"syncStatus\":\"FailedToApply\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"tags\":{\"upauut\":\"rhublwpcesutrg\",\"qg\":\"woqhihe\",\"foimwkslircizjxv\":\"zpnfqntcypsxj\"},\"id\":\"fceacvlhvygd\",\"name\":\"ftumrtwnawjslbiw\",\"type\":\"ojgcyzt\"}";
+            = "{\"properties\":{\"state\":\"Restarting\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":336746051,\"vCores\":1050222716},\"nodeCount\":2037696822,\"highAvailability\":{\"mode\":\"Disabled\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"b\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"FailedToApply\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dxsm\",\"name\":\"ccwr\",\"type\":\"fscjfnynszquji\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class PoolsStartMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Pool response = manager.pools().start("h", "yuspskas", "vlmfwdgzxulucv", com.azure.core.util.Context.NONE);
+        Pool response = manager.pools().start("p", "ipwoqonmacjek", "izsh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, response.properties().computeModel().type());
-        Assertions.assertEquals(ComputeProcessorType.AMD, response.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1190049726, response.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(856089944, response.properties().computeModel().vCores());
-        Assertions.assertEquals(866301348, response.properties().nodeCount());
+        Assertions.assertEquals(ComputeProcessorType.INTEL, response.properties().computeModel().computeProcessor());
+        Assertions.assertEquals(336746051, response.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(1050222716, response.properties().computeModel().vCores());
+        Assertions.assertEquals(2037696822, response.properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.DISABLED, response.properties().highAvailability().mode());
-        Assertions.assertEquals("xurisjnhnyt", response.properties().parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, response.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("rhublwpcesutrg", response.tags().get("upauut"));
+        Assertions.assertEquals("b", response.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT,
+            response.properties().parameterGroup().applyMethod());
     }
 }

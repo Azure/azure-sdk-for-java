@@ -413,6 +413,7 @@ class AadResourceServerConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("testAadResourceServerFilterChain");
+                assertThat(context).doesNotHaveBean("defaultAadResourceServerFilterChain");
             });
     }
 

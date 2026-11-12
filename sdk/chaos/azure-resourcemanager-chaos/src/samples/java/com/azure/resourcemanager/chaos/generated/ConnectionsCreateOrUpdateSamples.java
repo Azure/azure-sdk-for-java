@@ -12,7 +12,7 @@ import com.azure.resourcemanager.chaos.models.ConnectionProperties;
  */
 public final class ConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Connections_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/Connections_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a connection.
@@ -25,9 +25,9 @@ public final class ConnectionsCreateOrUpdateSamples {
             .withExistingWorkspace("exampleRG", "exampleWorkspace")
             .withProperties(new ConnectionProperties().withKind(ConnectionKind.AKS_EXTENSION)
                 .withTargetResourceId(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster")
-                .withPrincipalId("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d")
-                .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47"))
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster")
+                .withPrincipalId("00000000-0000-0000-0000-000000000000")
+                .withTenantId("00000000-0000-0000-0000-000000000000"))
             .create();
     }
 }

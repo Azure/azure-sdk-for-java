@@ -13,12 +13,12 @@ public final class SkuMixPlacementDeploymentChoiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementDeploymentChoice model = BinaryData.fromString(
-            "{\"score\":1426022661,\"skuSplit\":[{\"name\":\"lgphu\",\"priority\":\"Spot\",\"capacity\":1962929741,\"zone\":\"dvkaozw\"},{\"name\":\"i\",\"priority\":\"Spot\",\"capacity\":1076965227,\"zone\":\"xhurok\"},{\"name\":\"tyxolniwpwc\",\"priority\":\"Regular\",\"capacity\":12030769,\"zone\":\"kgiawxklryplwck\"}]}")
+            "{\"score\":1794282260,\"skuSplit\":[{\"name\":\"iy\",\"priority\":\"Spot\",\"capacity\":748845194,\"zone\":\"sqwpgrjb\"},{\"name\":\"norcjxvsnbyxqab\",\"priority\":\"Regular\",\"capacity\":1299140464,\"zone\":\"pcyshu\"},{\"name\":\"zafb\",\"priority\":\"Regular\",\"capacity\":160493338,\"zone\":\"pbtoqcjmkl\"},{\"name\":\"a\",\"priority\":\"Regular\",\"capacity\":300306842,\"zone\":\"dtqajzyulpkudj\"}]}")
             .toObject(SkuMixPlacementDeploymentChoice.class);
-        Assertions.assertEquals(1426022661, model.score());
-        Assertions.assertEquals("lgphu", model.skuSplit().get(0).name());
+        Assertions.assertEquals(1794282260, model.score());
+        Assertions.assertEquals("iy", model.skuSplit().get(0).name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.skuSplit().get(0).priority());
-        Assertions.assertEquals(1962929741, model.skuSplit().get(0).capacity());
-        Assertions.assertEquals("dvkaozw", model.skuSplit().get(0).zone());
+        Assertions.assertEquals(748845194, model.skuSplit().get(0).capacity());
+        Assertions.assertEquals("sqwpgrjb", model.skuSplit().get(0).zone());
     }
 }

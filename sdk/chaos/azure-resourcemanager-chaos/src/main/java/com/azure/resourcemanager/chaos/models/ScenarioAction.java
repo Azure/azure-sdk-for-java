@@ -44,6 +44,14 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
     private List<KeyValuePair> parameters;
 
     /*
+     * Action-specific target selectors evaluated during execution. When provided,
+     * the collection must contain either `logicalZone` and `location`, or `physicalZone`.
+     * Selector names must be unique, the two modes cannot be combined, and the service
+     * enforces the cross-item combination at runtime.
+     */
+    private List<ScenarioActionSelector> selectors;
+
+    /*
      * Action dependencies that control when this action starts.
      */
     private RunAfter runAfter;
@@ -62,6 +70,13 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
      * External resource reference for the action.
      */
     private ExternalResource externalResource;
+
+    /*
+     * Per-action override for how the scenario run reacts when this action fails. When omitted,
+     * the action inherits the scenario-level `failureBehavior`; when neither is supplied the
+     * effective behavior is `Stop`.
+     */
+    private FailureBehavior failureBehavior;
 
     /**
      * Creates an instance of ScenarioAction class.
@@ -172,6 +187,32 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
     }
 
     /**
+     * Get the selectors property: Action-specific target selectors evaluated during execution. When provided,
+     * the collection must contain either `logicalZone` and `location`, or `physicalZone`.
+     * Selector names must be unique, the two modes cannot be combined, and the service
+     * enforces the cross-item combination at runtime.
+     * 
+     * @return the selectors value.
+     */
+    public List<ScenarioActionSelector> selectors() {
+        return this.selectors;
+    }
+
+    /**
+     * Set the selectors property: Action-specific target selectors evaluated during execution. When provided,
+     * the collection must contain either `logicalZone` and `location`, or `physicalZone`.
+     * Selector names must be unique, the two modes cannot be combined, and the service
+     * enforces the cross-item combination at runtime.
+     * 
+     * @param selectors the selectors value to set.
+     * @return the ScenarioAction object itself.
+     */
+    public ScenarioAction withSelectors(List<ScenarioActionSelector> selectors) {
+        this.selectors = selectors;
+        return this;
+    }
+
+    /**
      * Get the runAfter property: Action dependencies that control when this action starts.
      * 
      * @return the runAfter value.
@@ -254,6 +295,32 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
     }
 
     /**
+     * Get the failureBehavior property: Per-action override for how the scenario run reacts when this action fails.
+     * When omitted,
+     * the action inherits the scenario-level `failureBehavior`; when neither is supplied the
+     * effective behavior is `Stop`.
+     * 
+     * @return the failureBehavior value.
+     */
+    public FailureBehavior failureBehavior() {
+        return this.failureBehavior;
+    }
+
+    /**
+     * Set the failureBehavior property: Per-action override for how the scenario run reacts when this action fails.
+     * When omitted,
+     * the action inherits the scenario-level `failureBehavior`; when neither is supplied the
+     * effective behavior is `Stop`.
+     * 
+     * @param failureBehavior the failureBehavior value to set.
+     * @return the ScenarioAction object itself.
+     */
+    public ScenarioAction withFailureBehavior(FailureBehavior failureBehavior) {
+        this.failureBehavior = failureBehavior;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -264,10 +331,13 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
         jsonWriter.writeStringField("duration", this.duration);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("selectors", this.selectors, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("runAfter", this.runAfter);
         jsonWriter.writeStringField("waitBefore", this.waitBefore);
         jsonWriter.writeStringField("timeout", this.timeout);
         jsonWriter.writeJsonField("externalResource", this.externalResource);
+        jsonWriter.writeStringField("failureBehavior",
+            this.failureBehavior == null ? null : this.failureBehavior.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -298,6 +368,10 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
                 } else if ("parameters".equals(fieldName)) {
                     List<KeyValuePair> parameters = reader.readArray(reader1 -> KeyValuePair.fromJson(reader1));
                     deserializedScenarioAction.parameters = parameters;
+                } else if ("selectors".equals(fieldName)) {
+                    List<ScenarioActionSelector> selectors
+                        = reader.readArray(reader1 -> ScenarioActionSelector.fromJson(reader1));
+                    deserializedScenarioAction.selectors = selectors;
                 } else if ("runAfter".equals(fieldName)) {
                     deserializedScenarioAction.runAfter = RunAfter.fromJson(reader);
                 } else if ("waitBefore".equals(fieldName)) {
@@ -306,6 +380,8 @@ public final class ScenarioAction implements JsonSerializable<ScenarioAction> {
                     deserializedScenarioAction.timeout = reader.getString();
                 } else if ("externalResource".equals(fieldName)) {
                     deserializedScenarioAction.externalResource = ExternalResource.fromJson(reader);
+                } else if ("failureBehavior".equals(fieldName)) {
+                    deserializedScenarioAction.failureBehavior = FailureBehavior.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

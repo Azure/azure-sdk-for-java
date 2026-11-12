@@ -187,7 +187,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("maxRuntimeInSeconds", this.maxRuntimeInSeconds);
-        jsonWriter.writeNumberField("maxOutputSize", this.maxOutputSize);
         jsonWriter.writeNumberField("maxOutputDocuments", this.maxOutputDocuments);
         jsonWriter.writeNumberField("maxOutputSizeInTokens", this.maxOutputSizeInTokens);
         jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
@@ -225,8 +224,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
                 } else if ("maxRuntimeInSeconds".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxRuntimeInSeconds
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("maxOutputSize".equals(fieldName)) {
-                    deserializedKnowledgeBaseRetrievalOptions.maxOutputSize = reader.getNullable(JsonReader::getInt);
                 } else if ("maxOutputDocuments".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxOutputDocuments
                         = reader.getNullable(JsonReader::getInt);
@@ -259,12 +256,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
      */
     @Generated
     private List<KnowledgeBaseMessage> messages;
-
-    /*
-     * Limits the maximum size of the content in the output.
-     */
-    @Generated
-    private Integer maxOutputSize;
 
     /*
      * Limits the maximum number of documents in the output.
@@ -303,28 +294,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     @Generated
     public KnowledgeBaseRetrievalOptions setMessages(List<KnowledgeBaseMessage> messages) {
         this.messages = messages;
-        return this;
-    }
-
-    /**
-     * Get the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @return the maxOutputSize value.
-     */
-    @Generated
-    public Integer getMaxOutputSize() {
-        return this.maxOutputSize;
-    }
-
-    /**
-     * Set the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @param maxOutputSize the maxOutputSize value to set.
-     * @return the KnowledgeBaseRetrievalOptions object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalOptions setMaxOutputSize(Integer maxOutputSize) {
-        this.maxOutputSize = maxOutputSize;
         return this;
     }
 
@@ -392,6 +361,39 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     @Generated
     public KnowledgeBaseRetrievalOptions setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
         this.outputMode = outputMode;
+        return this;
+    }
+
+    /**
+     * Token identifying the user for which the query is being executed. Client-only value that is sent as the
+     * x-ms-query-source-authorization header and is never serialized into the request body.
+     */
+    private String querySourceAuthorization;
+
+    /**
+     * Get the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
+     * token is used to enforce security restrictions on documents. It is only sent as the
+     * x-ms-query-source-authorization request header and is never part of the request body. A non-null authorization
+     * passed explicitly to a retrieve method overrides this value; a null explicit authorization falls back to it.
+     *
+     * @return the querySourceAuthorization value.
+     */
+    public String getQuerySourceAuthorization() {
+        return this.querySourceAuthorization;
+    }
+
+    /**
+     * Set the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
+     * token is used to enforce security restrictions on documents. It is only sent as the
+     * x-ms-query-source-authorization request header and is never part of the request body. A non-null authorization
+     * passed explicitly to a retrieve method overrides this value; a null explicit authorization falls back to it. An
+     * empty string is treated as a value.
+     *
+     * @param querySourceAuthorization the querySourceAuthorization value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    public KnowledgeBaseRetrievalOptions setQuerySourceAuthorization(String querySourceAuthorization) {
+        this.querySourceAuthorization = querySourceAuthorization;
         return this;
     }
 }

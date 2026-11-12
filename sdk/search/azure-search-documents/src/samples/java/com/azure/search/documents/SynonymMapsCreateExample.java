@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -37,6 +38,10 @@ public class SynonymMapsCreateExample {
 
         System.out.println("Create synonym map...\n");
         createSynonymMap(serviceClient, synonymMapName);
+        serviceClient.listSynonymMaps(new RequestOptions().addQueryParam("search", synonymMapName)
+            .addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1").addQueryParam("$select", "name"))
+            .iterableByPage().forEach(page -> page.getValue()
+                .forEach(map -> System.out.println("Listed synonym map: " + map.getName())));
 
         System.out.println("Create index and assign synonym map to it...\n");
         SearchIndex searchIndex = assignSynonymMapToIndex(synonymMapName);

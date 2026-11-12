@@ -39,11 +39,13 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     private PoolHighAvailability highAvailability;
 
     /*
-     * The required parameter group associated with the pool. When creating a new pool in this API version, the caller
-     * must supply the corresponding default parameter group; customer-created parameter groups are not accepted during
-     * creation. For an existing pool, PUT or PATCH can associate either the corresponding default parameter group or a
-     * customer-created parameter group. The create-visible shape intentionally supports both resource ID forms so a
-     * future API version can allow customer-created parameter groups during creation without a breaking schema change.
+     * The parameter group associated with the pool. When omitted during creation, the service applies the default
+     * parameter group compatible with the parent cluster's PostgreSQL version. When supplied during creation in this
+     * API version, it must reference the corresponding default parameter group; customer-created parameter groups are
+     * not accepted during creation. For an existing pool, PUT or PATCH can associate either the corresponding default
+     * parameter group or a customer-created parameter group. The create-visible shape intentionally supports both
+     * resource ID forms so a future API version can allow customer-created parameter groups during creation without a
+     * breaking schema change.
      */
     private PoolParameterGroupReference parameterGroup;
 
@@ -138,12 +140,13 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     }
 
     /**
-     * Get the parameterGroup property: The required parameter group associated with the pool. When creating a new pool
-     * in this API version, the caller must supply the corresponding default parameter group; customer-created parameter
-     * groups are not accepted during creation. For an existing pool, PUT or PATCH can associate either the
-     * corresponding default parameter group or a customer-created parameter group. The create-visible shape
-     * intentionally supports both resource ID forms so a future API version can allow customer-created parameter groups
-     * during creation without a breaking schema change.
+     * Get the parameterGroup property: The parameter group associated with the pool. When omitted during creation, the
+     * service applies the default parameter group compatible with the parent cluster's PostgreSQL version. When
+     * supplied during creation in this API version, it must reference the corresponding default parameter group;
+     * customer-created parameter groups are not accepted during creation. For an existing pool, PUT or PATCH can
+     * associate either the corresponding default parameter group or a customer-created parameter group. The
+     * create-visible shape intentionally supports both resource ID forms so a future API version can allow
+     * customer-created parameter groups during creation without a breaking schema change.
      * 
      * @return the parameterGroup value.
      */
@@ -152,12 +155,13 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     }
 
     /**
-     * Set the parameterGroup property: The required parameter group associated with the pool. When creating a new pool
-     * in this API version, the caller must supply the corresponding default parameter group; customer-created parameter
-     * groups are not accepted during creation. For an existing pool, PUT or PATCH can associate either the
-     * corresponding default parameter group or a customer-created parameter group. The create-visible shape
-     * intentionally supports both resource ID forms so a future API version can allow customer-created parameter groups
-     * during creation without a breaking schema change.
+     * Set the parameterGroup property: The parameter group associated with the pool. When omitted during creation, the
+     * service applies the default parameter group compatible with the parent cluster's PostgreSQL version. When
+     * supplied during creation in this API version, it must reference the corresponding default parameter group;
+     * customer-created parameter groups are not accepted during creation. For an existing pool, PUT or PATCH can
+     * associate either the corresponding default parameter group or a customer-created parameter group. The
+     * create-visible shape intentionally supports both resource ID forms so a future API version can allow
+     * customer-created parameter groups during creation without a breaking schema change.
      * 
      * @param parameterGroup the parameterGroup value to set.
      * @return the PoolProperties object itself.
@@ -234,10 +238,10 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
                     deserializedPoolProperties.nodeCount = reader.getInt();
                 } else if ("highAvailability".equals(fieldName)) {
                     deserializedPoolProperties.highAvailability = PoolHighAvailability.fromJson(reader);
-                } else if ("parameterGroup".equals(fieldName)) {
-                    deserializedPoolProperties.parameterGroup = PoolParameterGroupReference.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedPoolProperties.state = PoolState.fromString(reader.getString());
+                } else if ("parameterGroup".equals(fieldName)) {
+                    deserializedPoolProperties.parameterGroup = PoolParameterGroupReference.fromJson(reader);
                 } else if ("scheduledMaintenance".equals(fieldName)) {
                     deserializedPoolProperties.scheduledMaintenance = ScheduledMaintenanceProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {

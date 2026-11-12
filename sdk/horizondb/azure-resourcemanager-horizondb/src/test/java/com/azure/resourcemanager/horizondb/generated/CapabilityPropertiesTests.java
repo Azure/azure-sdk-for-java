@@ -11,7 +11,7 @@ public final class CapabilityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"clusterCapabilities\":{\"recommendedPostgreSqlVersion\":\"17\",\"supportedPostgreSqlVersions\":[{\"name\":\"18\",\"supportedVersionsToUpgrade\":[\"17\",\"17\"]}],\"supportedFeatures\":[{\"name\":\"k\"},{\"name\":\"gaudcc\"}]},\"poolCapabilities\":{\"recommendedComputeProcessor\":\"AMD\",\"supportedProcessors\":[{\"name\":\"Intel\",\"supportedGenerations\":[{\"computeGeneration\":2045600331,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[{\"type\":\"ComputeModelCapability\"},{\"type\":\"ComputeModelCapability\"}]}]}],\"supportedFeatures\":[{\"name\":\"j\"},{\"name\":\"kryhtnapczwlokj\"}]}}")
+            "{\"provisioningState\":\"Succeeded\",\"clusterCapabilities\":{\"recommendedPostgreSqlVersion\":\"17\",\"supportedPostgreSqlVersions\":[{\"name\":\"18\",\"supportedVersionsToUpgrade\":[\"17\",\"17\"]}],\"supportedFeatures\":[{\"name\":\"k\"},{\"name\":\"gaudcc\"}]},\"poolCapabilities\":{\"recommendedComputeProcessor\":\"AMD\",\"supportedProcessors\":[{\"name\":\"Intel\",\"supportedGenerations\":[{\"computeGeneration\":2045600331,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[{\"type\":\"ComputeModelCapability\"},{\"type\":\"ComputeModelCapability\"}]}]}],\"supportedFeatures\":[{\"name\":\"j\"},{\"name\":\"kryhtnapczwlokj\"}]}}")
             .toObject(CapabilityProperties.class);
     }
 }

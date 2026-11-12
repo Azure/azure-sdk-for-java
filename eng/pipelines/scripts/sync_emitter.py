@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
         type=parse_boolean,
         required=False,
         default=True,
-        help="whether to update designated TypeSpec libraries from their configured sources. "
+        help="whether to update designated TypeSpec libraries, except OpenAI, from their configured sources. "
         "Defaults to true.",
     )
     return parser.parse_args()
@@ -104,7 +104,6 @@ TYPESPEC_DEPENDENCY_PREFIXES = ("@azure-tools/", "@typespec/")
 # libraries, so their specs-pinned version does not have to move in lockstep with the emitter's
 # other dependencies.
 DESIGNATED_LIBRARIES_FROM_SPECS = [
-    OPENAI_TYPESPEC_PACKAGE_NAME,
     "@azure-tools/typespec-liftr-base",
 ]
 
@@ -122,7 +121,9 @@ DESIGNATED_LIBRARIES_FROM_NPM_LATEST = [
 
 # All designated libraries, used to exclude them from resolve_dependency_versions_to_latest (they
 # are versioned separately by add_designated_libraries).
-DESIGNATED_LIBRARIES = DESIGNATED_LIBRARIES_FROM_SPECS + DESIGNATED_LIBRARIES_FROM_NPM_LATEST
+DESIGNATED_LIBRARIES = (
+    [OPENAI_TYPESPEC_PACKAGE_NAME] + DESIGNATED_LIBRARIES_FROM_SPECS + DESIGNATED_LIBRARIES_FROM_NPM_LATEST
+)
 
 # Read the specs manifest and pnpm catalogs at the same commit.
 SPECS_REPO_API_URL = "https://api.github.com/repos/Azure/azure-rest-api-specs"
@@ -298,7 +299,7 @@ def add_designated_libraries(upgrade_designated_libraries: bool, cached_versions
     #     specs repo may not have updated yet), fall back to its latest published npm version.
     #   - DESIGNATED_LIBRARIES_FROM_NPM_LATEST: pinned to the latest published npm version.
     # When upgrades are disabled, restore every designated library to the version cached before
-    # generate-config-files seeded the emitter dependencies.
+    # generate-config-files seeded the emitter dependencies. Always preserve the OpenAI pin.
     package_json = load_emitter_package_json()
     dev_dependencies = package_json.setdefault("devDependencies", {})
 
@@ -315,6 +316,12 @@ def add_designated_libraries(upgrade_designated_libraries: bool, cached_versions
             dev_dependencies[library] = version
         save_emitter_package_json(package_json)
         return
+
+    if OPENAI_TYPESPEC_PACKAGE_NAME not in cached_versions:
+        raise ValueError(f"Cannot preserve {OPENAI_TYPESPEC_PACKAGE_NAME}: missing from eng/emitter-package.json.")
+    openai_version = cached_versions[OPENAI_TYPESPEC_PACKAGE_NAME]
+    logging.info(f"Restore designated library {OPENAI_TYPESPEC_PACKAGE_NAME}@{openai_version}")
+    dev_dependencies[OPENAI_TYPESPEC_PACKAGE_NAME] = openai_version
 
     specs_dev_dependencies = fetch_specs_dev_dependencies()
     for library in DESIGNATED_LIBRARIES_FROM_SPECS:
