@@ -24,6 +24,7 @@ public class Sample_Advanced_AnalysisDiagnosticsTest extends ContentUnderstandin
             "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf");
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Collections.singletonList(input));
+        setPlaybackSyncPollerPollInterval(poller);
         LongRunningOperationStatus status = poller.waitForCompletion().getStatus();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status);
 
