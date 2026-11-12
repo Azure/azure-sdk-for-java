@@ -5,36 +5,7 @@ Library containing tests for azure-cosmos and azure-cosmos-test libraries. Only 
 n/a
 
 ## Key concepts
-
-### Gateway V2 compound session tokens
-
-`ThinClientStoreModel` prepares compound session tokens after the normal Gateway
-session eligibility checks and before serialization. It resolves the partition from
-the collection routing map, reusing an existing range when it belongs to that map.
-The dedicated `SessionTokenHelper.scopeCompoundSessionToken` method merges progress
-for the target partition and its parents.
-
-The prepared token is stored in the request's existing native session-token context.
-Serialization uses a request copy carrying only that scoped token, or no token for an
-intentional omission. The caller's compound header is not mutated: no separate original
-token field or header restoration is needed, and a retry or clone can select against its
-current topology. An omitted wire token cannot activate ambient session resolution.
-Transport selection, document-client preparation, and partition failover helpers remain unchanged.
-
-If the target cannot be resolved, no token segment matches, or the topology does not account
-for every supplied range ID, the SDK refreshes once using the rejected routing map. It then
-resolves the target again and scopes from the original token. Unknown child IDs trigger this
-refresh even if a lower parent token matches the stale topology.
-
-If refreshed metadata still cannot establish a safe scope, the request proceeds without a
-session token and caller progress is not enforced. The existing
-`SessionTokenHelper` diagnostics and logging report the unmatched progress; warning logging
-follows the helper's existing configuration. Metadata, parsing, and merge errors propagate;
-there is no refresh loop or token-driven transport fallback. Missing pinned physical ranges
-retain range-gone handling. Malformed tokens still fail.
-The regular and real-split live regression classes run together under the
-`thinclient-endpoint-probe` Maven profile. The split regression also verifies that unattainable
-child progress still fails with session-not-available after refreshing a genuinely stale map.
+n/a
 
 ## Examples
 n/a
@@ -72,3 +43,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
+
