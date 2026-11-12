@@ -109,7 +109,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         String connection = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1,
             SANITIZED_CONNECTION_1);
         String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
-        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
+        AgentsClient agents = getAgentsSyncClient(httpClient, serviceVersion);
         VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String agentName = testResourceNamer.randomName("tel-bind-", 21);
         boolean agentCreated = false;
@@ -162,7 +162,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
         String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", null, SANITIZED_NUMBER_2);
 
-        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
+        AgentsClient agents = getAgentsSyncClient(httpClient, serviceVersion);
         VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String suffix = testResourceNamer.randomName("", 12);
         String inboundAgent = "tel-in-" + suffix;
