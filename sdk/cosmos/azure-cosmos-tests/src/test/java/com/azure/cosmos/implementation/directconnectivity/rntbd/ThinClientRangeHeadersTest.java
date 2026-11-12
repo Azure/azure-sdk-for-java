@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
@@ -14,12 +15,18 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import io.netty.buffer.ByteBuf;
@@ -27,10 +34,12 @@ import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,7 +132,90 @@ public class ThinClientRangeHeadersTest {
             RntbdRequestHeader.EndEpkHash.id(), RntbdRequestHeader.EffectivePartitionKey.id());
     }
 
+    @DataProvider
+    public Object[][] compoundSessionTokenTopologies() {
+        return new Object[][] {
+            {true, false},
+            {false, true},
+            {false, false}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "compoundSessionTokenTopologies")
+    public void scopesCompoundSessionTokenWithAtMostOneRefresh(boolean cachedMatch, boolean refreshedMatch)
+        throws Exception {
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.when(httpClient.send(Mockito.any(), Mockito.any())).thenReturn(Mono.empty());
+        ThinClientStoreModel model = createModel(httpClient);
+        RxDocumentServiceRequest request = createRequest(OperationType.Read, "", "FF");
+        String originalToken = "0:1#10#1=10,1:1#20#1=20";
+        request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, originalToken);
+        request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("0"));
+        request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(Collections.singletonList("testPk"), true));
+        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
+        request.requestContext.sessionToken = SessionTokenHelper.parse("1#99#1=99");
+
+        PartitionKeyDefinition definition = new PartitionKeyDefinition();
+        definition.setPaths(Collections.singletonList("/partitionKey"));
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId("ccZ1ANCszwk=");
+        collection.setPartitionKey(definition);
+        RxClientCollectionCache collectionCache = Mockito.mock(RxClientCollectionCache.class);
+        Mockito.when(collectionCache.resolveCollectionAsync(Mockito.any(), Mockito.eq(request)))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        model.setCollectionCache(collectionCache);
+
+        CollectionRoutingMap cached = Mockito.mock(CollectionRoutingMap.class);
+        CollectionRoutingMap refreshed = Mockito.mock(CollectionRoutingMap.class);
+        PartitionKeyRange target = new PartitionKeyRange("0", "", "80");
+        PartitionKeyRange other = new PartitionKeyRange("1", "80", "FF");
+        if (cachedMatch) {
+            Mockito.when(cached.getRangeByPartitionKeyRangeId("0")).thenReturn(target);
+            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId("0")).thenReturn(target);
+            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId("1")).thenReturn(other);
+        }
+        if (refreshedMatch) {
+            Mockito.when(refreshed.getRangeByPartitionKeyRangeId("0")).thenReturn(target);
+            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId("0")).thenReturn(target);
+            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId("1")).thenReturn(other);
+        }
+        RxPartitionKeyRangeCache rangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
+        Mockito.when(rangeCache.tryLookupAsync(
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(cached)));
+        Mockito.when(rangeCache.tryLookupAsync(
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(refreshed)));
+        model.setPartitionKeyRangeCache(rangeCache);
+
+        model.performRequestInternal(request, new URI("https://localhost:10250")).block();
+
+        Mockito.verify(httpClient).send(Mockito.any(), Mockito.any());
+        Mockito.verify(rangeCache, Mockito.times(cachedMatch ? 0 : 1)).tryLookupAsync(
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.any());
+        Mockito.verify(rangeCache).tryLookupAsync(
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.any());
+        Mockito.verifyNoMoreInteractions(rangeCache);
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
+        if (cachedMatch || refreshedMatch) {
+            assertThat(request.requestContext.resolvedPartitionKeyRange).isSameAs(target);
+            assertThat(request.requestContext.sessionToken).isEqualTo(SessionTokenHelper.parse("1#10#1=10"));
+            assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
+            assertThat(serialize(model, request).get(RntbdRequestHeader.SessionToken.id()))
+                .containsExactly("0:1#10#1=10".getBytes(StandardCharsets.UTF_8));
+        } else {
+            assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
+            assertThat(request.requestContext.sessionToken).isNull();
+            assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
+            assertThat(serialize(model, request)).doesNotContainKey(RntbdRequestHeader.SessionToken.id());
+        }
+    }
+
     private static ThinClientStoreModel createModel() {
+        return createModel(Mockito.mock(HttpClient.class));
+    }
+
+    private static ThinClientStoreModel createModel(HttpClient httpClient) {
         DiagnosticsClientContext context = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.when(context.getConfig()).thenReturn(new DiagnosticsClientContext.DiagnosticsClientConfig());
         DatabaseAccount account = Mockito.mock(DatabaseAccount.class);
@@ -131,7 +223,7 @@ public class ThinClientRangeHeadersTest {
         GlobalEndpointManager endpoints = Mockito.mock(GlobalEndpointManager.class);
         Mockito.when(endpoints.getLatestDatabaseAccount()).thenReturn(account);
         return new ThinClientStoreModel(context, Mockito.mock(ISessionContainer.class), ConsistencyLevel.SESSION,
-            new UserAgentContainer(), endpoints, Mockito.mock(HttpClient.class), null);
+            new UserAgentContainer(), endpoints, httpClient, null);
     }
 
     private static RxDocumentServiceRequest createRequest(OperationType operation, String min, String max) {

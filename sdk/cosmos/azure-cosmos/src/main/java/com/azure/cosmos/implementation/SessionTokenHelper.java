@@ -27,7 +27,7 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
-    static boolean isCompoundSessionToken(String sessionToken) {
+    public static boolean isCompoundSessionToken(String sessionToken) {
         return sessionToken != null && sessionToken.indexOf(',') >= 0;
     }
 
@@ -92,7 +92,7 @@ public class SessionTokenHelper {
         return sessionToken;
     }
 
-    static void recordUnmatchedSessionToken(
+    public static void recordUnmatchedSessionToken(
         RxDocumentServiceRequest request, String globalSessionToken, String partitionKeyRangeId) {
 
         String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
@@ -106,7 +106,7 @@ public class SessionTokenHelper {
     }
 
     // Returns null when topology cannot safely scope the caller's progress. Never reads ambient state.
-    static ISessionToken scopeCompoundSessionToken(
+    public static ISessionToken scopeCompoundSessionToken(
         String originalToken, PartitionKeyRange target, CollectionRoutingMap routingMap) {
 
         ISessionToken selected = selectPartitionLocalSessionToken(
