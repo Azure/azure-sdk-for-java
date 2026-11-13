@@ -27,19 +27,19 @@ public final class ClusterInner extends Resource {
     private ClusterProperties innerProperties;
 
     /*
-     * Resource tags.
+     * Properties of the cluster SKU.
      */
-    private Map<String, String> tags;
+    private ClusterSku sku;
 
     /*
-     * The geo-location where the resource lives
+     * Resource location.
      */
     private String location;
 
     /*
-     * Properties of the cluster SKU.
+     * Resource tags.
      */
-    private ClusterSku sku;
+    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -77,46 +77,6 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     *
-     * @param location the location value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
      * Get the sku property: Properties of the cluster SKU.
      *
      * @return the sku value.
@@ -133,6 +93,46 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withSku(ClusterSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Resource location.
+     *
+     * @param location the location value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -268,6 +268,29 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the zoneRedundant property: A value that indicates whether the cluster is zone redundant.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: A value that indicates whether the cluster is zone redundant.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -288,9 +311,9 @@ public final class ClusterInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -317,13 +340,13 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedClusterInner.sku = ClusterSku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedClusterInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedClusterInner.location = reader.getString();
-                } else if ("sku".equals(fieldName)) {
-                    deserializedClusterInner.sku = ClusterSku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedClusterInner.systemData = SystemData.fromJson(reader);
                 } else {
