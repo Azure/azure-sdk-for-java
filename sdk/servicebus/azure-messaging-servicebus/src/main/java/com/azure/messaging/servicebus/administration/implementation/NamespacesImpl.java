@@ -51,7 +51,7 @@ public final class NamespacesImpl {
      * The interface defining all the services for ServiceBusManagementClientNamespaces to be used by the proxy service
      * to perform REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "ServiceBusManagementClientNamespaces")
     public interface NamespacesService {
         @Get("/$namespaceinfo")
