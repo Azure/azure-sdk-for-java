@@ -35,11 +35,14 @@ import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -130,10 +133,9 @@ public class ReactorReceiverIsolatedTest {
 
         when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
+        final Queue<Runnable> reactorWork = new ConcurrentLinkedQueue<>();
         doAnswer(invocation -> {
-            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
-            final Runnable work = invocation.getArgument(0);
-            work.run();
+            reactorWork.add(invocation.getArgument(0));
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
@@ -148,6 +150,7 @@ public class ReactorReceiverIsolatedTest {
         try {
             StepVerifier
                 .withVirtualTime(() -> reactorReceiver.closeAsync(message, condition), () -> virtualTimeScheduler, 1)
+                .then(() -> reactorWork.remove().run())
                 // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
                 // completion timeout kicks in.
                 .thenAwait(Duration.ofSeconds(100))
@@ -164,6 +167,9 @@ public class ReactorReceiverIsolatedTest {
 
             verify(receiver).setCondition(condition);
             verify(receiver).close();
+            verify(receiver, never()).free();
+            reactorWork.remove().run();
+            verify(receiver).free();
 
             shutdownSignals.assertNoSubscribers();
         } finally {

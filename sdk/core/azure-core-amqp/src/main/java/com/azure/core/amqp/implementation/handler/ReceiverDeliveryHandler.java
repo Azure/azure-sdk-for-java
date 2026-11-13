@@ -336,17 +336,8 @@ final class ReceiverDeliveryHandler {
      */
     private void handleDeliveryDecodeError(RuntimeException decodeError) {
         if (decodeError instanceof IllegalStateException && (isLinkTerminatedWithError.get() || isTerminated.get())) {
-            // As part of ReactorReceiver.close(), it closes ReceiveLinkHandler and frees Receiver.
-            // This ReactorReceiver.close() operation will attempt to schedule ReceiveLinkHandler.close() and
-            // Receiver.free()
-            // in the ProtonJ Reactor thread. If this scheduling fails, then the ReceiveLinkHandler.close() and
-            // Receiver.free() will be called from the thread that invoked ReactorReceiver.close(). Hence, it is
-            // possible
-            // to race where the Delivery ProtonJ Reactor thread trying to decode may get released by Receiver.free(),
-            // causing IllegalStateException on decode.
-            //
-            // We will not rethrow in this case as it will be propagated to the ProtonJ Reactor thread possibly hosting
-            // other healthy Receivers and Senders.
+            // Report decode failures on a terminated link to its message stream. Rethrowing would interrupt the
+            // Proton-J reactor, which can also host other receivers and senders.
             //
             // See the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/27716 and PR linked to it.
             emitError(new IllegalStateException("Cannot decode Delivery when ReactorReceiver instance is closed.",
