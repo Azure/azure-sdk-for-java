@@ -186,12 +186,11 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
         com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getManagedDatabases()
-            .createOrUpdate("Default-SQL-SouthEastAsia", "managedInstance", "managedDatabase",
-                new ManagedDatabaseInner().withLocation("southeastasia")
-                    .withCollation("SQL_Latin1_General_CP1_CI_AS")
-                    .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
-                    .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
-                    .withStorageContainerSasToken("fakeTokenPlaceholder"),
+            .createOrUpdate("Default-SQL-EastAsia", "managedInstance", "managedDatabase", new ManagedDatabaseInner()
+                .withLocation("EastAsia")
+                .withCreateMode(ManagedDatabaseCreateMode.RESTORE_LONG_TERM_RETENTION_BACKUP)
+                .withLongTermRetentionBackupResourceId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-EastAsia/providers/Microsoft.Sql/locations/EastAsia/longTermRetentionManagedInstances/managedInstance/longTermRetentionDatabases/managedDatabase/longTermRetentionManagedInstanceBackups/66349b17-1afa-47af-af39-82d2118bbab8;134269634640000000;Hot"),
                 com.azure.core.util.Context.NONE);
     }
 
