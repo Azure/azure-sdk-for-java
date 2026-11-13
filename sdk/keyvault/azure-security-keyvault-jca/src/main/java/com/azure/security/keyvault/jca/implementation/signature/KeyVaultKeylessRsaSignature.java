@@ -12,7 +12,6 @@ import java.util.Base64;
  * key vault Rsa signature to support key less
  */
 abstract class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignature {
-
     private final String keyVaultDigestName;
 
     /**

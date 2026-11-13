@@ -46,7 +46,7 @@ public final class ScheduledActionUpdateProperties implements JsonSerializable<S
     private ScheduledActionsScheduleUpdate schedule;
 
     /*
-     * Notification settings that apply to the scheduled action.
+     * Notification settings that apply to the recurring bulk action.
      */
     private List<NotificationProperties> notificationSettings;
 
@@ -162,7 +162,7 @@ public final class ScheduledActionUpdateProperties implements JsonSerializable<S
     }
 
     /**
-     * Get the notificationSettings property: Notification settings that apply to the scheduled action.
+     * Get the notificationSettings property: Notification settings that apply to the recurring bulk action.
      * 
      * @return the notificationSettings value.
      */
@@ -171,7 +171,7 @@ public final class ScheduledActionUpdateProperties implements JsonSerializable<S
     }
 
     /**
-     * Set the notificationSettings property: Notification settings that apply to the scheduled action.
+     * Set the notificationSettings property: Notification settings that apply to the recurring bulk action.
      * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduledActionUpdateProperties object itself.

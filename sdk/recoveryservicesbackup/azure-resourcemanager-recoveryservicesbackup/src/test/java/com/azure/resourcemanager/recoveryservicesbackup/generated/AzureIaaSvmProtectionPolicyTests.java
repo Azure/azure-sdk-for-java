@@ -23,47 +23,53 @@ public final class AzureIaaSvmProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureIaasVM\",\"instantRPDetails\":{\"azureBackupRGNamePrefix\":\"ucfotangcf\",\"azureBackupRGNameSuffix\":\"ykzcugswvxwl\"},\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"xmcuqud\":{\"tieringMode\":\"Invalid\",\"duration\":1774034155,\"durationType\":\"Weeks\"}},\"instantRpRetentionRangeInDays\":1061569656,\"timeZone\":\"lxynpdkvgf\",\"policyType\":\"Invalid\",\"snapshotConsistencyType\":\"OnlyCrashConsistent\",\"protectedItemsCount\":1038771362,\"resourceGuardOperationRequests\":[\"zphdugneiknp\",\"oxgjiuqhibt\",\"z\"]}")
+            "{\"backupManagementType\":\"AzureIaasVM\",\"instantRPDetails\":{\"azureBackupRGNamePrefix\":\"hcdpkupnqrmgj\",\"azureBackupRGNameSuffix\":\"pkuwxeoioj\"},\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"bcyaykmmfzs\":{\"tieringMode\":\"TierAfter\",\"duration\":1495529407,\"durationType\":\"Days\"}},\"instantRpRetentionRangeInDays\":1924690078,\"instantAccessSnapshotEnabled\":false,\"instantAccessDurationMinutes\":1740416627,\"timeZone\":\"dew\",\"policyType\":\"Invalid\",\"snapshotConsistencyType\":\"OnlyCrashConsistent\",\"protectedItemsCount\":1848912659,\"resourceGuardOperationRequests\":[\"jazejwwviyoyp\",\"uhbrnnhjxsq\",\"jhqkbiwetpozy\"]}")
             .toObject(AzureIaaSvmProtectionPolicy.class);
-        Assertions.assertEquals(1038771362, model.protectedItemsCount());
-        Assertions.assertEquals("zphdugneiknp", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("ucfotangcf", model.instantRPDetails().azureBackupRGNamePrefix());
-        Assertions.assertEquals("ykzcugswvxwl", model.instantRPDetails().azureBackupRGNameSuffix());
-        Assertions.assertEquals(TieringMode.INVALID, model.tieringPolicy().get("xmcuqud").tieringMode());
-        Assertions.assertEquals(1774034155, model.tieringPolicy().get("xmcuqud").duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.tieringPolicy().get("xmcuqud").durationType());
-        Assertions.assertEquals(1061569656, model.instantRpRetentionRangeInDays());
-        Assertions.assertEquals("lxynpdkvgf", model.timeZone());
+        Assertions.assertEquals(1848912659, model.protectedItemsCount());
+        Assertions.assertEquals("jazejwwviyoyp", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("hcdpkupnqrmgj", model.instantRPDetails().azureBackupRGNamePrefix());
+        Assertions.assertEquals("pkuwxeoioj", model.instantRPDetails().azureBackupRGNameSuffix());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("bcyaykmmfzs").tieringMode());
+        Assertions.assertEquals(1495529407, model.tieringPolicy().get("bcyaykmmfzs").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("bcyaykmmfzs").durationType());
+        Assertions.assertEquals(1924690078, model.instantRpRetentionRangeInDays());
+        Assertions.assertFalse(model.instantAccessSnapshotEnabled());
+        Assertions.assertEquals(1740416627, model.instantAccessDurationMinutes());
+        Assertions.assertEquals("dew", model.timeZone());
         Assertions.assertEquals(IaasvmPolicyType.INVALID, model.policyType());
         Assertions.assertEquals(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT, model.snapshotConsistencyType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureIaaSvmProtectionPolicy model = new AzureIaaSvmProtectionPolicy().withProtectedItemsCount(1038771362)
-            .withResourceGuardOperationRequests(Arrays.asList("zphdugneiknp", "oxgjiuqhibt", "z"))
-            .withInstantRPDetails(new InstantRPAdditionalDetails().withAzureBackupRGNamePrefix("ucfotangcf")
-                .withAzureBackupRGNameSuffix("ykzcugswvxwl"))
+        AzureIaaSvmProtectionPolicy model = new AzureIaaSvmProtectionPolicy().withProtectedItemsCount(1848912659)
+            .withResourceGuardOperationRequests(Arrays.asList("jazejwwviyoyp", "uhbrnnhjxsq", "jhqkbiwetpozy"))
+            .withInstantRPDetails(new InstantRPAdditionalDetails().withAzureBackupRGNamePrefix("hcdpkupnqrmgj")
+                .withAzureBackupRGNameSuffix("pkuwxeoioj"))
             .withSchedulePolicy(new SchedulePolicy())
             .withRetentionPolicy(new RetentionPolicy())
-            .withTieringPolicy(mapOf("xmcuqud",
-                new TieringPolicy().withTieringMode(TieringMode.INVALID)
-                    .withDuration(1774034155)
-                    .withDurationType(RetentionDurationType.WEEKS)))
-            .withInstantRpRetentionRangeInDays(1061569656)
-            .withTimeZone("lxynpdkvgf")
+            .withTieringPolicy(mapOf("bcyaykmmfzs",
+                new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                    .withDuration(1495529407)
+                    .withDurationType(RetentionDurationType.DAYS)))
+            .withInstantRpRetentionRangeInDays(1924690078)
+            .withInstantAccessSnapshotEnabled(false)
+            .withInstantAccessDurationMinutes(1740416627)
+            .withTimeZone("dew")
             .withPolicyType(IaasvmPolicyType.INVALID)
             .withSnapshotConsistencyType(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT);
         model = BinaryData.fromObject(model).toObject(AzureIaaSvmProtectionPolicy.class);
-        Assertions.assertEquals(1038771362, model.protectedItemsCount());
-        Assertions.assertEquals("zphdugneiknp", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("ucfotangcf", model.instantRPDetails().azureBackupRGNamePrefix());
-        Assertions.assertEquals("ykzcugswvxwl", model.instantRPDetails().azureBackupRGNameSuffix());
-        Assertions.assertEquals(TieringMode.INVALID, model.tieringPolicy().get("xmcuqud").tieringMode());
-        Assertions.assertEquals(1774034155, model.tieringPolicy().get("xmcuqud").duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.tieringPolicy().get("xmcuqud").durationType());
-        Assertions.assertEquals(1061569656, model.instantRpRetentionRangeInDays());
-        Assertions.assertEquals("lxynpdkvgf", model.timeZone());
+        Assertions.assertEquals(1848912659, model.protectedItemsCount());
+        Assertions.assertEquals("jazejwwviyoyp", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("hcdpkupnqrmgj", model.instantRPDetails().azureBackupRGNamePrefix());
+        Assertions.assertEquals("pkuwxeoioj", model.instantRPDetails().azureBackupRGNameSuffix());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("bcyaykmmfzs").tieringMode());
+        Assertions.assertEquals(1495529407, model.tieringPolicy().get("bcyaykmmfzs").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("bcyaykmmfzs").durationType());
+        Assertions.assertEquals(1924690078, model.instantRpRetentionRangeInDays());
+        Assertions.assertFalse(model.instantAccessSnapshotEnabled());
+        Assertions.assertEquals(1740416627, model.instantAccessDurationMinutes());
+        Assertions.assertEquals("dew", model.timeZone());
         Assertions.assertEquals(IaasvmPolicyType.INVALID, model.policyType());
         Assertions.assertEquals(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT, model.snapshotConsistencyType());
     }

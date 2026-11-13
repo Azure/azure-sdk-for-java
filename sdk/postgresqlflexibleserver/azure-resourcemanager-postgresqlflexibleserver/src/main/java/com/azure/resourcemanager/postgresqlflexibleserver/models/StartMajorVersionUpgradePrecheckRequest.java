@@ -20,7 +20,7 @@ public final class StartMajorVersionUpgradePrecheckRequest
     /*
      * The target major version to upgrade to.
      */
-    private PostgresMajorVersion targetVersion;
+    private String targetVersion;
 
     /**
      * Creates an instance of StartMajorVersionUpgradePrecheckRequest class.
@@ -33,7 +33,7 @@ public final class StartMajorVersionUpgradePrecheckRequest
      * 
      * @return the targetVersion value.
      */
-    public PostgresMajorVersion targetVersion() {
+    public String targetVersion() {
         return this.targetVersion;
     }
 
@@ -43,7 +43,7 @@ public final class StartMajorVersionUpgradePrecheckRequest
      * @param targetVersion the targetVersion value to set.
      * @return the StartMajorVersionUpgradePrecheckRequest object itself.
      */
-    public StartMajorVersionUpgradePrecheckRequest withTargetVersion(PostgresMajorVersion targetVersion) {
+    public StartMajorVersionUpgradePrecheckRequest withTargetVersion(String targetVersion) {
         this.targetVersion = targetVersion;
         return this;
     }
@@ -54,7 +54,7 @@ public final class StartMajorVersionUpgradePrecheckRequest
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("targetVersion", this.targetVersion == null ? null : this.targetVersion.toString());
+        jsonWriter.writeStringField("targetVersion", this.targetVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,8 +76,7 @@ public final class StartMajorVersionUpgradePrecheckRequest
                 reader.nextToken();
 
                 if ("targetVersion".equals(fieldName)) {
-                    deserializedStartMajorVersionUpgradePrecheckRequest.targetVersion
-                        = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedStartMajorVersionUpgradePrecheckRequest.targetVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

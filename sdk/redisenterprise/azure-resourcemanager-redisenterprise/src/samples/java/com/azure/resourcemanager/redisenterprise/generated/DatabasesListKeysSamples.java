@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class DatabasesListKeysSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesListKeys.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesListKeys.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesListKeys.

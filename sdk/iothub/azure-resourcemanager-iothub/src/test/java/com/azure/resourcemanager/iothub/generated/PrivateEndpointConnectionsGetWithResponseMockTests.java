@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"lyls\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"k\",\"actionsRequired\":\"nsj\"}},\"id\":\"vti\",\"name\":\"gxsds\",\"type\":\"uem\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"agxsdszuemps\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"kfzbeyvpnqicvi\",\"actionsRequired\":\"kjj\"}},\"id\":\"xrbuukzclew\",\"name\":\"hmlwpaztzpo\",\"type\":\"ncckw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("infwjlfltkacjve", "kdlfoa", "ggkfpagaowpul", com.azure.core.util.Context.NONE)
+            .getWithResponse("wpu", "pqblylsyxkqjnsj", "r", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("k", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("nsj", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("kfzbeyvpnqicvi",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("kjj", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

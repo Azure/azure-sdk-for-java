@@ -131,10 +131,25 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
+            "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/certificates/{certificateName}",
+                "resourceGroupName");
+        }
+        this.connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
+            "connectedEnvironmentName");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}",
+            "certificateName");
+        if (this.certificateName == null) {
+            this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/certificates/{certificateName}",
+                "certificateName");
+        }
     }
 
     public Certificate refresh() {

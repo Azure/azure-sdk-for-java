@@ -20,13 +20,12 @@ public class Sample04_CreateAnalyzerGroundingPreviewTest extends ContentUndersta
     public void testExtractGenerateAndClassifyGrounding() throws Exception {
         String analyzerId = testResourceNamer.randomName("grounding_", 50);
         try {
-            contentUnderstandingClient
-                .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true)
-                .getFinalResult();
-            AnalysisResult result = contentUnderstandingClient
-                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf"))
-                .getFinalResult();
+            setPlaybackSyncPollerPollInterval(contentUnderstandingClient.beginCreateAnalyzer(analyzerId,
+                PreviewSampleTestSupport.createGroundingAnalyzer(getModelProfile().getCompletionModel()), true))
+                    .getFinalResult();
+            AnalysisResult result
+                = setPlaybackSyncPollerPollInterval(contentUnderstandingClient.beginAnalyzeBinary(analyzerId,
+                    PreviewSampleTestSupport.readSample("sample_invoice.pdf"))).getFinalResult();
             DocumentContent content = (DocumentContent) result.getContents().get(0);
 
             assertGrounded(content.getFields().get("company_name"));

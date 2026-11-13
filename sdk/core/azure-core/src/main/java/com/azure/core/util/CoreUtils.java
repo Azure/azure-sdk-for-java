@@ -304,14 +304,14 @@ public final class CoreUtils {
     }
 
     /**
-     * Attempts to load an environment configured default timeout.
+     * Attempts to load a configured default timeout, checking explicit configuration before environment settings.
      * <p>
      * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
      * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
      * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
      * that there is no timeout period.
      *
-     * @param configuration The environment configurations.
+     * @param configuration The configuration store.
      * @param timeoutPropertyName The default timeout property name.
      * @param defaultTimeout The fallback timeout to be used.
      * @param logger A {@link ClientLogger} to log exceptions.
@@ -319,7 +319,11 @@ public final class CoreUtils {
      */
     public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
         Duration defaultTimeout, ClientLogger logger) {
-        String environmentTimeout = configuration.get(timeoutPropertyName);
+        String environmentTimeout
+            = configuration.get(ConfigurationPropertyBuilder.ofString(timeoutPropertyName).shared(true).build());
+        if (environmentTimeout == null) {
+            environmentTimeout = configuration.get(timeoutPropertyName);
+        }
 
         // Environment wasn't configured with the timeout property.
         if (CoreUtils.isNullOrEmpty(environmentTimeout)) {

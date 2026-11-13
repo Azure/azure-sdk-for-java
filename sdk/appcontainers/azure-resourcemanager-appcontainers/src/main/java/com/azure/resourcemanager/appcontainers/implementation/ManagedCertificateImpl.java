@@ -136,10 +136,15 @@ public final class ManagedCertificateImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.managedCertificateName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedCertificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "resourceGroupName");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "environmentName");
+        this.managedCertificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}",
+            "managedCertificateName");
     }
 
     public ManagedCertificate refresh() {

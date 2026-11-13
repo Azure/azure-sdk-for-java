@@ -15,30 +15,30 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"oldweyuqdu\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PostToolCall\",\"action\":\"ANNOTATING\"}")
+            "{\"name\":\"krribdeibqi\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"BLOCKING\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("oldweyuqdu", model.name());
+        Assertions.assertEquals("krribdeibqi", model.name());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.severityThreshold());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
         Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.source());
-        Assertions.assertEquals(RaiActionType.ANNOTATING, model.action());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertEquals(RaiActionType.BLOCKING, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("oldweyuqdu")
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("krribdeibqi")
             .withEnabled(false)
-            .withSeverityThreshold(ContentLevel.LOW)
+            .withSeverityThreshold(ContentLevel.HIGH)
             .withBlocking(false)
-            .withSource(RaiPolicyContentSource.POST_TOOL_CALL)
-            .withAction(RaiActionType.ANNOTATING);
+            .withSource(RaiPolicyContentSource.COMPLETION)
+            .withAction(RaiActionType.BLOCKING);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("oldweyuqdu", model.name());
+        Assertions.assertEquals("krribdeibqi", model.name());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.severityThreshold());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
         Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.source());
-        Assertions.assertEquals(RaiActionType.ANNOTATING, model.action());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertEquals(RaiActionType.BLOCKING, model.action());
     }
 }

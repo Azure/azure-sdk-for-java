@@ -1,6 +1,6 @@
 # Release History
 
-## 2.65.0-beta.1 (Unreleased)
+## 2.67.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,90 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.66.0 (2026-11-04)
+
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.
+
+### azure-resourcemanager-storage
+
+#### Dependency Updates
+
+- Package api-version 2026-09-01.
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2026-03-03, ComputeSku: 2021-07-01.
+
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Package api-version 2026-05-15.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Package api-version 2026-08-01.
+
+### azure-resourcemanager-cdn
+
+#### Dependency Updates
+
+- Package api-version 2026-10-01.
+
+### Other Changes
+
+- Updated dependencies from resources.
+
+## 2.65.0 (2026-10-09)
+
+### azure-resourcemanager-resources
+
+#### Breaking Changes
+
+- Removed properties `ancestors`, `complianceReasonCode`, `policyAssignmentDisplayName`, `policyDefinitionDisplayName`,
+  `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
+  `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+- Updated `api-version` of management locks to `2020-05-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed VMSS public IP address get and list operations to use the Compute API version `2018-10-01` instead of the Network API version.
+
+#### Dependency Updates
+
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+### azure-resourcemanager-trafficmanager
+
+#### Dependency Updates
+
+- Package api-version 2026-09-01.
+
+### Other Changes
+
+- Updated dependencies from resources.
 
 ## 2.64.0 (2026-09-20)
 

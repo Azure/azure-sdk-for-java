@@ -14,10 +14,10 @@ public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteProperties model = BinaryData.fromString(
-            "{\"name\":\"uujqgidokgjljyo\",\"source\":\"DeviceMessages\",\"condition\":\"cltbgsncghkjesz\",\"endpointNames\":[\"bijhtxfvgxbf\",\"mxnehmp\",\"ec\"],\"isEnabled\":true}")
+            "{\"name\":\"uujqgidokgjljyo\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"cltbgsncghkjesz\",\"endpointNames\":[\"bijhtxfvgxbf\",\"mxnehmp\",\"ec\"],\"isEnabled\":true}")
             .toObject(RouteProperties.class);
         Assertions.assertEquals("uujqgidokgjljyo", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
         Assertions.assertEquals("cltbgsncghkjesz", model.condition());
         Assertions.assertEquals("bijhtxfvgxbf", model.endpointNames().get(0));
         Assertions.assertTrue(model.isEnabled());
@@ -26,13 +26,13 @@ public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteProperties model = new RouteProperties().withName("uujqgidokgjljyo")
-            .withSource(RoutingSource.DEVICE_MESSAGES)
+            .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
             .withCondition("cltbgsncghkjesz")
             .withEndpointNames(Arrays.asList("bijhtxfvgxbf", "mxnehmp", "ec"))
             .withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
         Assertions.assertEquals("uujqgidokgjljyo", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
         Assertions.assertEquals("cltbgsncghkjesz", model.condition());
         Assertions.assertEquals("bijhtxfvgxbf", model.endpointNames().get(0));
         Assertions.assertTrue(model.isEnabled());

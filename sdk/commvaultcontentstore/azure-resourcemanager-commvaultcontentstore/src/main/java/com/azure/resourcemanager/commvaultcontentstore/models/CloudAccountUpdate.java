@@ -18,11 +18,6 @@ import java.util.Map;
 @Fluent
 public final class CloudAccountUpdate implements JsonSerializable<CloudAccountUpdate> {
     /*
-     * The managed service identities assigned to this resource.
-     */
-    private ManagedServiceIdentity identity;
-
-    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -32,30 +27,15 @@ public final class CloudAccountUpdate implements JsonSerializable<CloudAccountUp
      */
     private CloudAccountUpdateProperties properties;
 
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private CloudAccountIdentityUpdate identity;
+
     /**
      * Creates an instance of CloudAccountUpdate class.
      */
     public CloudAccountUpdate() {
-    }
-
-    /**
-     * Get the identity property: The managed service identities assigned to this resource.
-     * 
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The managed service identities assigned to this resource.
-     * 
-     * @param identity the identity value to set.
-     * @return the CloudAccountUpdate object itself.
-     */
-    public CloudAccountUpdate withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
@@ -99,14 +79,34 @@ public final class CloudAccountUpdate implements JsonSerializable<CloudAccountUp
     }
 
     /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public CloudAccountIdentityUpdate identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the CloudAccountUpdate object itself.
+     */
+    public CloudAccountUpdate withIdentity(CloudAccountIdentityUpdate identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,13 +125,13 @@ public final class CloudAccountUpdate implements JsonSerializable<CloudAccountUp
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("identity".equals(fieldName)) {
-                    deserializedCloudAccountUpdate.identity = ManagedServiceIdentity.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
+                if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCloudAccountUpdate.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedCloudAccountUpdate.properties = CloudAccountUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCloudAccountUpdate.identity = CloudAccountIdentityUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

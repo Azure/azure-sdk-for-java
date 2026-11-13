@@ -12,10 +12,10 @@ public final class AgentReferenceResourceArmPaginatedResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentReferenceResourceArmPaginatedResultInner model = BinaryData.fromString(
-            "{\"nextLink\":\"yzeyuubeid\",\"value\":[{\"properties\":{\"agentId\":\"ytoithgygvfl\",\"agentName\":\"vdihoynkrx\"},\"id\":\"twk\",\"name\":\"rcyrucpcunnu\",\"type\":\"dqumoenodnai\"}]}")
+            "{\"nextLink\":\"vlxhrpqhvmblc\",\"value\":[{\"properties\":{\"agentId\":\"hbh\",\"agentName\":\"dsz\"},\"id\":\"yr\",\"name\":\"ndo\",\"type\":\"pmbltoormkfql\"},{\"properties\":{\"agentId\":\"ldykalsygaolnjp\",\"agentName\":\"bmjk\"},\"id\":\"bjgsjjxxahmrn\",\"name\":\"dzyqe\",\"type\":\"xyivpinbm\"},{\"properties\":{\"agentId\":\"bjijkgqxnh\",\"agentName\":\"keznjaujvaa\"},\"id\":\"ggiycwkdtaawxwf\",\"name\":\"ka\",\"type\":\"mrrqmbzmqkratb\"}]}")
             .toObject(AgentReferenceResourceArmPaginatedResultInner.class);
-        Assertions.assertEquals("yzeyuubeid", model.nextLink());
-        Assertions.assertEquals("ytoithgygvfl", model.value().get(0).properties().agentId());
-        Assertions.assertEquals("vdihoynkrx", model.value().get(0).properties().agentName());
+        Assertions.assertEquals("vlxhrpqhvmblc", model.nextLink());
+        Assertions.assertEquals("hbh", model.value().get(0).properties().agentId());
+        Assertions.assertEquals("dsz", model.value().get(0).properties().agentName());
     }
 }

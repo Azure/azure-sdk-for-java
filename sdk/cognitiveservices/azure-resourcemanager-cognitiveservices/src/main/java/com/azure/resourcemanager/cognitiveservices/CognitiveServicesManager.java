@@ -30,20 +30,15 @@ import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnect
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentApplicationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentDeploymentsImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.ArcDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlansImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.ComputeOperationsImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.ComputesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DefenderForAISettingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.EncryptionScopesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.LocationBasedModelCapacitiesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeCapacitiesImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeDeploymentsImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeUsagesOperationGroupsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedNetworkProvisionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedNetworkSettingsOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ModelCapacitiesImpl;
@@ -71,25 +66,19 @@ import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusIm
 import com.azure.resourcemanager.cognitiveservices.implementation.SubscriptionRaiPoliciesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.TestRaiExternalSafetyProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
-import com.azure.resourcemanager.cognitiveservices.implementation.WorkbenchesImpl;
 import com.azure.resourcemanager.cognitiveservices.models.AccountCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.AgentApplications;
 import com.azure.resourcemanager.cognitiveservices.models.AgentDeployments;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
-import com.azure.resourcemanager.cognitiveservices.models.ComputeOperations;
-import com.azure.resourcemanager.cognitiveservices.models.Computes;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
 import com.azure.resourcemanager.cognitiveservices.models.EncryptionScopes;
 import com.azure.resourcemanager.cognitiveservices.models.LocationBasedModelCapacities;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeCapacities;
-import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeployments;
-import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeUsagesOperationGroups;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkProvisions;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkSettingsOperations;
 import com.azure.resourcemanager.cognitiveservices.models.ModelCapacities;
@@ -117,7 +106,6 @@ import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
 import com.azure.resourcemanager.cognitiveservices.models.SubscriptionRaiPolicies;
 import com.azure.resourcemanager.cognitiveservices.models.TestRaiExternalSafetyProviders;
 import com.azure.resourcemanager.cognitiveservices.models.Usages;
-import com.azure.resourcemanager.cognitiveservices.models.Workbenches;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -173,19 +161,7 @@ public final class CognitiveServicesManager {
 
     private QuotaTiers quotaTiers;
 
-    private ArcDeployments arcDeployments;
-
     private AgentApplications agentApplications;
-
-    private ManagedComputeDeployments managedComputeDeployments;
-
-    private ComputeOperations computeOperations;
-
-    private ManagedComputeUsagesOperationGroups managedComputeUsagesOperationGroups;
-
-    private Computes computes;
-
-    private Workbenches workbenches;
 
     private ManagedComputeCapacities managedComputeCapacities;
 
@@ -695,18 +671,6 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of ArcDeployments. It manages ArcDeployment.
-     * 
-     * @return Resource collection API of ArcDeployments.
-     */
-    public ArcDeployments arcDeployments() {
-        if (this.arcDeployments == null) {
-            this.arcDeployments = new ArcDeploymentsImpl(clientObject.getArcDeployments(), this);
-        }
-        return arcDeployments;
-    }
-
-    /**
      * Gets the resource collection API of AgentApplications. It manages AgentApplication.
      * 
      * @return Resource collection API of AgentApplications.
@@ -716,68 +680,6 @@ public final class CognitiveServicesManager {
             this.agentApplications = new AgentApplicationsImpl(clientObject.getAgentApplications(), this);
         }
         return agentApplications;
-    }
-
-    /**
-     * Gets the resource collection API of ManagedComputeDeployments. It manages ManagedComputeDeployment.
-     * 
-     * @return Resource collection API of ManagedComputeDeployments.
-     */
-    public ManagedComputeDeployments managedComputeDeployments() {
-        if (this.managedComputeDeployments == null) {
-            this.managedComputeDeployments
-                = new ManagedComputeDeploymentsImpl(clientObject.getManagedComputeDeployments(), this);
-        }
-        return managedComputeDeployments;
-    }
-
-    /**
-     * Gets the resource collection API of ComputeOperations.
-     * 
-     * @return Resource collection API of ComputeOperations.
-     */
-    public ComputeOperations computeOperations() {
-        if (this.computeOperations == null) {
-            this.computeOperations = new ComputeOperationsImpl(clientObject.getComputeOperations(), this);
-        }
-        return computeOperations;
-    }
-
-    /**
-     * Gets the resource collection API of ManagedComputeUsagesOperationGroups.
-     * 
-     * @return Resource collection API of ManagedComputeUsagesOperationGroups.
-     */
-    public ManagedComputeUsagesOperationGroups managedComputeUsagesOperationGroups() {
-        if (this.managedComputeUsagesOperationGroups == null) {
-            this.managedComputeUsagesOperationGroups = new ManagedComputeUsagesOperationGroupsImpl(
-                clientObject.getManagedComputeUsagesOperationGroups(), this);
-        }
-        return managedComputeUsagesOperationGroups;
-    }
-
-    /**
-     * Gets the resource collection API of Computes. It manages Compute.
-     * 
-     * @return Resource collection API of Computes.
-     */
-    public Computes computes() {
-        if (this.computes == null) {
-            this.computes = new ComputesImpl(clientObject.getComputes(), this);
-        }
-        return computes;
-    }
-
-    /**
-     * Gets the resource collection API of Workbenches. It manages Workbench.
-     * 
-     * @return Resource collection API of Workbenches.
-     */
-    public Workbenches workbenches() {
-        if (this.workbenches == null) {
-            this.workbenches = new WorkbenchesImpl(clientObject.getWorkbenches(), this);
-        }
-        return workbenches;
     }
 
     /**

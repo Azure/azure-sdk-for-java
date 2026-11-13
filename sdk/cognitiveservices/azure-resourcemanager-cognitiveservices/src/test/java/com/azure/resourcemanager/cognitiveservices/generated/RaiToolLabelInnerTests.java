@@ -18,36 +18,35 @@ public final class RaiToolLabelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiToolLabelInner model = BinaryData.fromString(
-            "{\"properties\":{\"toolConnectionName\":\"bpmzzn\",\"accountScope\":{\"labelValues\":{\"eufuqyrxpdlcgql\":\"yaqitmhheioqaqhv\",\"iosrsjuivfcdis\":\"ismjqfrddgamqu\"}},\"projectScopes\":[{\"project\":\"nxzhcze\",\"labelValues\":{\"vk\":\"xzbujrtrhqvwr\",\"zonzlrpiqywnc\":\"gnl\"}},{\"project\":\"jtszcof\",\"labelValues\":{\"tdhgbjkvrelj\":\"e\",\"shcxlpmjerbdk\":\"amurvzmlovuan\"}}]},\"etag\":\"vidizozsdb\",\"tags\":{\"n\":\"jmonfdgn\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\"},\"id\":\"yhbxcudchxgs\",\"name\":\"boldforobwj\",\"type\":\"vizbfhfo\"}")
+            "{\"properties\":{\"toolConnectionName\":\"pryu\",\"accountScope\":{\"labelValues\":{\"dflgzuri\":\"tpzdmovzvfvaawzq\"}},\"projectScopes\":[{\"project\":\"ecxn\",\"labelValues\":{\"mlqtmldgxob\":\"icokpv\"}},{\"project\":\"irclnpk\",\"labelValues\":{\"khyawfvjlboxqv\":\"ayzri\"}},{\"project\":\"jlmxhomdynhd\",\"labelValues\":{\"bnraauzzptjazysd\":\"igu\",\"uvvfonkp\":\"hezwwvaiq\"}}]},\"etag\":\"qyikvy\",\"tags\":{\"jfybvpoekrsgsgb\":\"yavluwmncstt\"},\"id\":\"uzqgnjdgkynsc\",\"name\":\"i\",\"type\":\"hzvhxnkomtkubo\"}")
             .toObject(RaiToolLabelInner.class);
-        Assertions.assertEquals("bpmzzn", model.properties().toolConnectionName());
-        Assertions.assertEquals("yaqitmhheioqaqhv",
-            model.properties().accountScope().labelValues().get("eufuqyrxpdlcgql"));
-        Assertions.assertEquals("nxzhcze", model.properties().projectScopes().get(0).project());
-        Assertions.assertEquals("xzbujrtrhqvwr", model.properties().projectScopes().get(0).labelValues().get("vk"));
-        Assertions.assertEquals("jmonfdgn", model.tags().get("n"));
+        Assertions.assertEquals("pryu", model.properties().toolConnectionName());
+        Assertions.assertEquals("tpzdmovzvfvaawzq", model.properties().accountScope().labelValues().get("dflgzuri"));
+        Assertions.assertEquals("ecxn", model.properties().projectScopes().get(0).project());
+        Assertions.assertEquals("icokpv", model.properties().projectScopes().get(0).labelValues().get("mlqtmldgxob"));
+        Assertions.assertEquals("yavluwmncstt", model.tags().get("jfybvpoekrsgsgb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelInner model
-            = new RaiToolLabelInner()
-                .withProperties(new RaiToolLabelProperties().withToolConnectionName("bpmzzn")
-                    .withAccountScope(new RaiToolLabelPropertiesAccountScope().withLabelValues(
-                        mapOf("eufuqyrxpdlcgql", "yaqitmhheioqaqhv", "iosrsjuivfcdis", "ismjqfrddgamqu")))
-                    .withProjectScopes(Arrays.asList(
-                        new RaiToolLabelPropertiesProjectScopesItem().withProject("nxzhcze")
-                            .withLabelValues(mapOf("vk", "xzbujrtrhqvwr", "zonzlrpiqywnc", "gnl")),
-                        new RaiToolLabelPropertiesProjectScopesItem().withProject("jtszcof")
-                            .withLabelValues(mapOf("tdhgbjkvrelj", "e", "shcxlpmjerbdk", "amurvzmlovuan")))))
-                .withTags(mapOf("n", "jmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze"));
+        RaiToolLabelInner model = new RaiToolLabelInner()
+            .withProperties(new RaiToolLabelProperties().withToolConnectionName("pryu")
+                .withAccountScope(
+                    new RaiToolLabelPropertiesAccountScope().withLabelValues(mapOf("dflgzuri", "tpzdmovzvfvaawzq")))
+                .withProjectScopes(Arrays.asList(
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("ecxn")
+                        .withLabelValues(mapOf("mlqtmldgxob", "icokpv")),
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("irclnpk")
+                        .withLabelValues(mapOf("khyawfvjlboxqv", "ayzri")),
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("jlmxhomdynhd")
+                        .withLabelValues(mapOf("bnraauzzptjazysd", "igu", "uvvfonkp", "hezwwvaiq")))))
+            .withTags(mapOf("jfybvpoekrsgsgb", "yavluwmncstt"));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelInner.class);
-        Assertions.assertEquals("bpmzzn", model.properties().toolConnectionName());
-        Assertions.assertEquals("yaqitmhheioqaqhv",
-            model.properties().accountScope().labelValues().get("eufuqyrxpdlcgql"));
-        Assertions.assertEquals("nxzhcze", model.properties().projectScopes().get(0).project());
-        Assertions.assertEquals("xzbujrtrhqvwr", model.properties().projectScopes().get(0).labelValues().get("vk"));
-        Assertions.assertEquals("jmonfdgn", model.tags().get("n"));
+        Assertions.assertEquals("pryu", model.properties().toolConnectionName());
+        Assertions.assertEquals("tpzdmovzvfvaawzq", model.properties().accountScope().labelValues().get("dflgzuri"));
+        Assertions.assertEquals("ecxn", model.properties().projectScopes().get(0).project());
+        Assertions.assertEquals("icokpv", model.properties().projectScopes().get(0).labelValues().get("mlqtmldgxob"));
+        Assertions.assertEquals("yavluwmncstt", model.tags().get("jfybvpoekrsgsgb"));
     }
 
     // Use "Map.of" if available

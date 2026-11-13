@@ -3,16 +3,21 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings. - See [PR 50888](https://github.com/Azure/azure-sdk-for-java/pull/50888), [PR 50991](https://github.com/Azure/azure-sdk-for-java/pull/50991)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed direct connectivity retries for `PartitionKeyRangeGoneException` thrown during address resolution so stale partition key ranges trigger routing-map refresh and exhausted retries surface as 503 with partition-key-range-gone retry-limit substatus. - See [Issue 49381](https://github.com/Azure/azure-sdk-for-java/issues/49381).
+* Fixed concurrent response parsing throwing decoder state exceptions when fallback UTF-8 decoding is enabled. - See [Issue 51084](https://github.com/Azure/azure-sdk-for-java/issues/51084) and [PR 51151](https://github.com/Azure/azure-sdk-for-java/pull/51151)
+* Fixed hybrid search reciprocal rank fusion (RRF) results being ranked incorrectly when component scores are tied. Each result now receives a unique ordinal rank, with deterministic tie-breaking based on the decoded document ID portion of `_rid`. - See [PR 50940](https://github.com/Azure/azure-sdk-for-java/pull/50940)
+* Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes
+
+* Updated Netty to `4.2.19.Final`, Reactor Netty to `1.3.7`, and Reactor Core to `3.8.7`. Migrated direct TCP event loops to the Netty 4.2 I/O handler API while preserving pooled buffers and explicit TLS validation settings.
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
-* Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ### 4.83.0 (2026-09-22)
 

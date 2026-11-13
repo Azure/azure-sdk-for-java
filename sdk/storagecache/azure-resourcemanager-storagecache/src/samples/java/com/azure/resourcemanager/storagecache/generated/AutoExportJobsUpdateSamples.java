@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AutoExportJobsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/autoExportJobs_Update.json
+     * x-ms-original-file: 2026-08-01/autoExportJobs_Update.json
      */
     /**
      * Sample code: autoExportJobs_Update.

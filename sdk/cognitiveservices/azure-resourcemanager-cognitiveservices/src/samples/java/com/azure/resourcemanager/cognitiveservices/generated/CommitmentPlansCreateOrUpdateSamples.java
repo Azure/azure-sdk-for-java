@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
  */
 public final class CommitmentPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutCommitmentPlan.json
+     * x-ms-original-file: 2026-11-01/PutCommitmentPlan.json
      */
     /**
      * Sample code: PutCommitmentPlan.

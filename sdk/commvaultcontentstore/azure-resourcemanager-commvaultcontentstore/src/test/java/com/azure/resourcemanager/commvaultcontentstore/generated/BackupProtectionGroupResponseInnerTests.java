@@ -12,7 +12,7 @@ public final class BackupProtectionGroupResponseInnerTests {
     public void testDeserialize() throws Exception {
         BackupProtectionGroupResponseInner model = BinaryData
             .fromString(
-                "{\"taskId\":1836889631,\"jobIds\":[\"qxn\",\"lkzgxhuriplbp\",\"dxunkbebxmubyyn\",\"wlrbqtkoievseo\"]}")
+                "{\"taskId\":842537299,\"jobIds\":[\"mnubexkpzksmond\",\"mquxvypo\",\"gkopkwhojvpajqgx\",\"smocmbq\"]}")
             .toObject(BackupProtectionGroupResponseInner.class);
     }
 }

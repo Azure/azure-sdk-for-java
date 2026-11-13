@@ -21,7 +21,7 @@ public final class ManagedComputeCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"ffmwt\",\"availableAccelerators\":343799142,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":949275917,\"totalAvailableCapacity\":282917917,\"largestDeploymentCapacity\":837947153}]},\"id\":\"iefwlnm\",\"name\":\"kffcnuestbsl\",\"type\":\"e\"}]}";
+            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"fohuriwhjdfr\",\"offerScope\":\"sshrmnkcclpc\",\"scopeId\":\"ogkscxj\",\"availableAccelerators\":1059915933,\"totalAvailableAccelerators\":1333148724,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":460280916,\"totalAvailableCapacity\":658562010,\"largestDeploymentCapacity\":316855546},{\"modelInstanceAcceleratorCount\":914430149,\"totalAvailableCapacity\":412727853,\"largestDeploymentCapacity\":856483612},{\"modelInstanceAcceleratorCount\":1302792233,\"totalAvailableCapacity\":513858134,\"largestDeploymentCapacity\":1344761987}]},\"id\":\"fbqhsujkaf\",\"name\":\"zpnxqpwni\",\"type\":\"xkcajgrbrc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ManagedComputeCapacitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeCapacity> response = manager.managedComputeCapacities()
-            .list("lxswtdapsm", "rmnrijefmrtwxc", "vdsp", com.azure.core.util.Context.NONE);
+            .list("kmwzrdqyoy", "mrnotocjnzdaiovr", "hrpqphkvyyzadcrx", "laypdtyzv", com.azure.core.util.Context.NONE);
 
     }
 }

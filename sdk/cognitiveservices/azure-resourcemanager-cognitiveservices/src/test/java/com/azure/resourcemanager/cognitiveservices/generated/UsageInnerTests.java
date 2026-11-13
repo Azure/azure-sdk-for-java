@@ -15,17 +15,17 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"unit\":\"Bytes\",\"name\":{\"value\":\"wzjuqk\",\"localizedValue\":\"sa\"},\"quotaPeriod\":\"wkuofoskghsauu\",\"limit\":35.506862744771716,\"currentValue\":77.80758609860673,\"nextResetTime\":\"duugidyjr\",\"status\":\"Included\",\"scopeType\":\"Regional\",\"scopeId\":\"svexcsonpclhoco\"}")
+            "{\"id\":\"ase\",\"type\":\"heoflokeyyienjbd\",\"unit\":\"Bytes\",\"name\":{\"value\":\"hpdjpjumasxa\",\"localizedValue\":\"pqyegualhbxxh\"},\"quotaPeriod\":\"jzzvdud\",\"limit\":64.46507340849638,\"currentValue\":26.195251792612762,\"nextResetTime\":\"twmcynpwlb\",\"status\":\"Unknown\",\"scopeType\":\"Global\",\"scopeId\":\"ftadehxnltyfs\"}")
             .toObject(UsageInner.class);
         Assertions.assertEquals(UnitType.BYTES, model.unit());
-        Assertions.assertEquals("wzjuqk", model.name().value());
-        Assertions.assertEquals("sa", model.name().localizedValue());
-        Assertions.assertEquals("wkuofoskghsauu", model.quotaPeriod());
-        Assertions.assertEquals(35.506862744771716D, model.limit());
-        Assertions.assertEquals(77.80758609860673D, model.currentValue());
-        Assertions.assertEquals("duugidyjr", model.nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
-        Assertions.assertEquals(QuotaScopeType.REGIONAL, model.scopeType());
-        Assertions.assertEquals("svexcsonpclhoco", model.scopeId());
+        Assertions.assertEquals("hpdjpjumasxa", model.name().value());
+        Assertions.assertEquals("pqyegualhbxxh", model.name().localizedValue());
+        Assertions.assertEquals("jzzvdud", model.quotaPeriod());
+        Assertions.assertEquals(64.46507340849638D, model.limit());
+        Assertions.assertEquals(26.195251792612762D, model.currentValue());
+        Assertions.assertEquals("twmcynpwlb", model.nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.status());
+        Assertions.assertEquals(QuotaScopeType.GLOBAL, model.scopeType());
+        Assertions.assertEquals("ftadehxnltyfs", model.scopeId());
     }
 }

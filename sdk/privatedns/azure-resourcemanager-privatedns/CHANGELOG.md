@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.55.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.55.0-beta.1 (2026-11-11)
+
+- Package api-version 2026-06-01-preview.
+
+### Breaking Changes
+
+#### `models.VirtualNetworkLinkListResult` was removed
+
+#### `models.PrivateZoneListResult` was removed
+
+#### `models.RecordSetListResult` was removed
+
+### Features Added
+
+* `models.PrivateDnsResourceReference` was added
+
+* `models.PrivateDnsResourceReferenceRequest` was added
+
+## 2.54.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+
+## 2.53.12 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
 
 ## 2.53.11 (2026-10-06)
 

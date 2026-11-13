@@ -13,27 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class BackgroundTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Background model = BinaryData.fromString(
-            "{\"type\":\"bbcswsrtjri\",\"text\":\"rbpbewtghfgblcg\",\"details\":[{\"name\":\"vlvqhjkbegi\",\"value\":\"t\"},{\"name\":\"mxiebw\",\"value\":\"aloayqcgwrtzju\"},{\"name\":\"gwyzm\",\"value\":\"txon\"},{\"name\":\"mtsavjcbpwxqp\",\"value\":\"rknftguvriuhprwm\"}]}")
+        Background model = BinaryData
+            .fromString(
+                "{\"type\":\"phxepcyvahf\",\"text\":\"jky\",\"details\":[{\"name\":\"vuujq\",\"value\":\"idokgjlj\"}]}")
             .toObject(Background.class);
-        Assertions.assertEquals("bbcswsrtjri", model.type());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.text());
-        Assertions.assertEquals("vlvqhjkbegi", model.details().get(0).name());
-        Assertions.assertEquals("t", model.details().get(0).value());
+        Assertions.assertEquals("phxepcyvahf", model.type());
+        Assertions.assertEquals("jky", model.text());
+        Assertions.assertEquals("vuujq", model.details().get(0).name());
+        Assertions.assertEquals("idokgjlj", model.details().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Background model = new Background().withType("bbcswsrtjri")
-            .withText("rbpbewtghfgblcg")
-            .withDetails(Arrays.asList(new BackgroundDetails().withName("vlvqhjkbegi").withValue("t"),
-                new BackgroundDetails().withName("mxiebw").withValue("aloayqcgwrtzju"),
-                new BackgroundDetails().withName("gwyzm").withValue("txon"),
-                new BackgroundDetails().withName("mtsavjcbpwxqp").withValue("rknftguvriuhprwm")));
+        Background model = new Background().withType("phxepcyvahf")
+            .withText("jky")
+            .withDetails(Arrays.asList(new BackgroundDetails().withName("vuujq").withValue("idokgjlj")));
         model = BinaryData.fromObject(model).toObject(Background.class);
-        Assertions.assertEquals("bbcswsrtjri", model.type());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.text());
-        Assertions.assertEquals("vlvqhjkbegi", model.details().get(0).name());
-        Assertions.assertEquals("t", model.details().get(0).value());
+        Assertions.assertEquals("phxepcyvahf", model.type());
+        Assertions.assertEquals("jky", model.text());
+        Assertions.assertEquals("vuujq", model.details().get(0).name());
+        Assertions.assertEquals("idokgjlj", model.details().get(0).value());
     }
 }

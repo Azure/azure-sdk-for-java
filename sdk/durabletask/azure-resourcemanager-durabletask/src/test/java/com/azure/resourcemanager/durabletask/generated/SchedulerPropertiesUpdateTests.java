@@ -16,23 +16,24 @@ public final class SchedulerPropertiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerPropertiesUpdate model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"endpoint\":\"tduqktapspwgcuer\",\"ipAllowlist\":[\"kdosvqw\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":1497620633,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Enabled\"}")
+            "{\"provisioningState\":\"Accepted\",\"endpoint\":\"nermcl\",\"ipAllowlist\":[\"phoxus\",\"rpabg\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":593857578,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\"}")
             .toObject(SchedulerPropertiesUpdate.class);
-        Assertions.assertEquals("kdosvqw", model.ipAllowlist().get(0));
+        Assertions.assertEquals("phoxus", model.ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
-        Assertions.assertEquals(1497620633, model.sku().capacity());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(593857578, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchedulerPropertiesUpdate model = new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("kdosvqw"))
-            .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(1497620633))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        SchedulerPropertiesUpdate model
+            = new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("phoxus", "rpabg"))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(593857578))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(SchedulerPropertiesUpdate.class);
-        Assertions.assertEquals("kdosvqw", model.ipAllowlist().get(0));
+        Assertions.assertEquals("phoxus", model.ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
-        Assertions.assertEquals(1497620633, model.sku().capacity());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(593857578, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

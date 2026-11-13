@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -15,6 +15,22 @@
 - Removed `models.ZoneListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
 - Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
 - Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
+
+## 2.54.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+
+## 2.53.12 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
 
 ## 2.53.11 (2026-10-06)
 

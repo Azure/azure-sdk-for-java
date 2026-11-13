@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class ConnectedRegistriesCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryCreateManagedIdentity.json
+     * x-ms-original-file: 2026-10-15-preview/ConnectedRegistryCreateManagedIdentity.json
      */
     /**
      * Sample code: ConnectedRegistryCreateManagedIdentity.
@@ -52,7 +52,7 @@ public final class ConnectedRegistriesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryCreate.json
+     * x-ms-original-file: 2026-10-15-preview/ConnectedRegistryCreate.json
      */
     /**
      * Sample code: ConnectedRegistryCreate.

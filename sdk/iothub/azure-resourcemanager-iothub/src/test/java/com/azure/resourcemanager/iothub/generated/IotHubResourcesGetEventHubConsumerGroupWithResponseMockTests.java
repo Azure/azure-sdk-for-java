@@ -20,7 +20,7 @@ public final class IotHubResourcesGetEventHubConsumerGroupWithResponseMockTests 
     @Test
     public void testGetEventHubConsumerGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"qvpsvuoymg\":\"\\\"datafcqdpsq\\\"\",\"rypqlmfeo\":\"\\\"datacelve\\\"\"},\"etag\":\"rqwky\",\"id\":\"ob\",\"name\":\"pg\",\"type\":\"edkowepbqpcrfk\"}";
+            = "{\"properties\":{\"hsxttaugzxnf\":\"\\\"dataoqkag\\\"\",\"uenvrkp\":\"\\\"dataazpxdtnkdmkqjjl\\\"\",\"ibreb\":\"\\\"dataou\\\"\"},\"etag\":\"aysjkixqtnqttez\",\"id\":\"fffiak\",\"name\":\"jpqqmted\",\"type\":\"tmmjihyeozph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class IotHubResourcesGetEventHubConsumerGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EventHubConsumerGroupInfo response = manager.iotHubResources()
-            .getEventHubConsumerGroupWithResponse("ccyajg", "qfhwyg", "lvdnkfx", "semdwzrmu",
-                com.azure.core.util.Context.NONE)
+            .getEventHubConsumerGroupWithResponse("eznoig", "rnjwmw", "pn", "saz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

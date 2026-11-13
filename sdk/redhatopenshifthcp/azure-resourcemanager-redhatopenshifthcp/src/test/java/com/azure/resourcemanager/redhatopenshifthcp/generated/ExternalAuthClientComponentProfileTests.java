@@ -12,18 +12,18 @@ public final class ExternalAuthClientComponentProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalAuthClientComponentProfile model
-            = BinaryData.fromString("{\"name\":\"vmkfssxqu\",\"authClientNamespace\":\"kfplgmgsxnk\"}")
+            = BinaryData.fromString("{\"name\":\"t\",\"authClientNamespace\":\"qnermclfplphoxu\"}")
                 .toObject(ExternalAuthClientComponentProfile.class);
-        Assertions.assertEquals("vmkfssxqu", model.name());
-        Assertions.assertEquals("kfplgmgsxnk", model.authClientNamespace());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("qnermclfplphoxu", model.authClientNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalAuthClientComponentProfile model
-            = new ExternalAuthClientComponentProfile().withName("vmkfssxqu").withAuthClientNamespace("kfplgmgsxnk");
+            = new ExternalAuthClientComponentProfile().withName("t").withAuthClientNamespace("qnermclfplphoxu");
         model = BinaryData.fromObject(model).toObject(ExternalAuthClientComponentProfile.class);
-        Assertions.assertEquals("vmkfssxqu", model.name());
-        Assertions.assertEquals("kfplgmgsxnk", model.authClientNamespace());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("qnermclfplphoxu", model.authClientNamespace());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvi
  */
 public final class TestRaiExternalSafetyProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/TestRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-11-01/TestRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: TestRaiExternalSafetyProvider.

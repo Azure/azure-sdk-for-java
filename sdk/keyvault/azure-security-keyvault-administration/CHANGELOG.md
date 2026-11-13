@@ -1,14 +1,31 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.10.0 (2026-11-13)
 
 ### Features Added
 
+- Added support for service version `2026-04-01`.
+- (From 4.9.0-beta.1) Added `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient` for managing Managed HSM External Key Manager (EKM) connections, exposing `getEkmConnection`, `createEkmConnection`, `updateEkmConnection`, `deleteEkmConnection`, `getEkmCertificate`, and `checkEkmConnection` (and their `WithResponse` variants).
+- (From 4.9.0-beta.1) Added the `KeyVaultEkmConnection`, `KeyVaultEkmProxyClientCertificateInfo`, and `KeyVaultEkmProxyInfo` models supporting the EKM clients.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- These changes do not impact the API of stable versions such as 4.9.1. Only code written against a beta version such as 4.9.0-beta.1 may be affected.
+
+- Removed `KeyVaultAdministrationServiceVersion.V2026_01_01_PREVIEW`; use `V2026_04_01` instead.
 
 ### Other Changes
+
+- The default service version is now `2026-04-01`.
+
+## 4.9.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
 
 ## 4.8.3 (2026-10-06)
 

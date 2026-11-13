@@ -17,8 +17,8 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- * Agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
- * configuration.
+ * Agent optimization job resource — a long-running job that produces candidate changes or versioned skill packages. For
+ * failed or skipped jobs, error explains the outcome; status distinguishes failure from a skip.
  */
 @Fluent
 public final class AgentOptimizationJob implements JsonSerializable<AgentOptimizationJob> {
@@ -42,7 +42,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     private JobStatus status;
 
     /*
-     * Error details — populated only on failure.
+     * Failure or skip reason; status distinguishes the outcomes. Omitted otherwise.
      */
     @Generated
     private ApiError error;
@@ -96,7 +96,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Get the error property: Error details — populated only on failure.
+     * Get the error property: Failure or skip reason; status distinguishes the outcomes. Omitted otherwise.
      *
      * @return the error value.
      */
@@ -228,8 +228,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     private String displayName;
 
     /*
-     * Foundry agent whose configuration is optimized. Omitted when the workflow does not target a registered Foundry
-     * agent.
+     * Foundry agent whose configuration is optimized, or a read-only trace and skill source for skill_optimization.
+     * Agentless skill optimization requires explicit agent_traces telemetry configuration with an exact agent_name.
+     * Skill optimization does not modify the target agent.
      */
     @Generated
     private AgentOptimizationTargetConfiguration targetConfiguration;
@@ -284,8 +285,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Get the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
-     * does not target a registered Foundry agent.
+     * Get the targetConfiguration property: Foundry agent whose configuration is optimized, or a read-only trace and
+     * skill source for skill_optimization. Agentless skill optimization requires explicit agent_traces telemetry
+     * configuration with an exact agent_name. Skill optimization does not modify the target agent.
      *
      * @return the targetConfiguration value.
      */
@@ -295,8 +297,9 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Set the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
-     * does not target a registered Foundry agent.
+     * Set the targetConfiguration property: Foundry agent whose configuration is optimized, or a read-only trace and
+     * skill source for skill_optimization. Agentless skill optimization requires explicit agent_traces telemetry
+     * configuration with an exact agent_name. Skill optimization does not modify the target agent.
      *
      * @param targetConfiguration the targetConfiguration value to set.
      * @return the AgentOptimizationJob object itself.

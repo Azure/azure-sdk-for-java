@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class FailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FailoverInput model
-            = BinaryData.fromString("{\"failoverRegion\":\"hdlxyjrxsagafcn\"}").toObject(FailoverInput.class);
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.failoverRegion());
+        FailoverInput model = BinaryData.fromString("{\"failoverRegion\":\"expbtg\"}").toObject(FailoverInput.class);
+        Assertions.assertEquals("expbtg", model.failoverRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FailoverInput model = new FailoverInput().withFailoverRegion("hdlxyjrxsagafcn");
+        FailoverInput model = new FailoverInput().withFailoverRegion("expbtg");
         model = BinaryData.fromObject(model).toObject(FailoverInput.class);
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.failoverRegion());
+        Assertions.assertEquals("expbtg", model.failoverRegion());
     }
 }

@@ -25,7 +25,7 @@ public final class IssuesAddOrUpdateResourcesWithResponseMockTests {
     @Test
     public void testAddOrUpdateResourcesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"jpr\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"wcfzqljyxgt\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-11-26T00:09:31Z\",\"lastModifiedAt\":\"2021-01-05T03:46:23Z\"},{\"id\":\"ydbsd\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"m\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-07-03T12:17:17Z\",\"lastModifiedAt\":\"2021-02-20T22:28:30Z\"}]}";
+            = "{\"value\":[{\"id\":\"iyhddvi\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"egfnmntfpmvmemfn\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-17T16:14:51Z\",\"lastModifiedAt\":\"2021-04-11T13:12:11Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,13 @@ public final class IssuesAddOrUpdateResourcesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RelatedResources response = manager.issues()
-            .addOrUpdateResourcesWithResponse("v", "novqfzge", "jdftuljltd",
+            .addOrUpdateResourcesWithResponse("ccybvp", "yakk", "dzpxgwjpl",
                 new RelatedResourcesInner()
-                    .withValue(Arrays.asList(new RelatedResource().withId("eamtmcz").withRelevance(Relevance.RELEVANT),
-                        new RelatedResource().withId("w").withRelevance(Relevance.RELEVANT))),
+                    .withValue(Arrays.asList(new RelatedResource().withId("gstcyohpf").withRelevance(Relevance.NONE))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jpr", response.value().get(0).id());
-        Assertions.assertEquals(Relevance.IRRELEVANT, response.value().get(0).relevance());
+        Assertions.assertEquals("iyhddvi", response.value().get(0).id());
+        Assertions.assertEquals(Relevance.NONE, response.value().get(0).relevance());
     }
 }

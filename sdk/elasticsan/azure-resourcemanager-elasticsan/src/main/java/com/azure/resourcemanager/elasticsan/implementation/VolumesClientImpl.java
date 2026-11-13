@@ -1189,7 +1189,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         DeleteType deleteType) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName,

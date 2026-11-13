@@ -24,7 +24,7 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"atwfauj\",\"value\":[{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"r\",\"localizedValue\":\"gddhjkrukizyhgs\"},\"quotaPeriod\":\"nqskt\",\"limit\":52.50280800542966,\"currentValue\":25.39356583900255,\"nextResetTime\":\"gweeiwd\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"bf\"},{\"unit\":\"Seconds\",\"name\":{\"value\":\"tunmlhxd\",\"localizedValue\":\"klciichgjsysm\"},\"quotaPeriod\":\"o\",\"limit\":99.37963130435838,\"currentValue\":53.5735232788603,\"nextResetTime\":\"ifc\",\"status\":\"Unknown\",\"scopeType\":\"Regional\",\"scopeId\":\"gcwx\"},{\"unit\":\"Count\",\"name\":{\"value\":\"wjtrdxriza\",\"localizedValue\":\"bgiark\"},\"quotaPeriod\":\"kpgdqxwabzrwiq\",\"limit\":12.102028897079531,\"currentValue\":55.41303683641783,\"nextResetTime\":\"osqkptjqgk\",\"status\":\"Blocked\",\"scopeType\":\"DataZone\",\"scopeId\":\"nwhedxkpbqwun\"}]}";
+            = "{\"nextLink\":\"ldiuhzzgqlm\",\"value\":[{\"id\":\"z\",\"type\":\"udjpxpqht\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"hkrezsdsuxheqdgc\",\"localizedValue\":\"xsp\"},\"quotaPeriod\":\"ymmqgwokmikp\",\"limit\":52.317344582901995,\"currentValue\":27.11710943236596,\"nextResetTime\":\"vjipfdvhaxdv\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"phth\"},{\"id\":\"lmv\",\"type\":\"atl\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"ixwgiksbbvtooxrp\",\"localizedValue\":\"wp\"},\"quotaPeriod\":\"hgjtnhtukfaci\",\"limit\":75.95053283582567,\"currentValue\":71.1224625320421,\"nextResetTime\":\"eezbx\",\"status\":\"InOverage\",\"scopeType\":\"Classic\",\"scopeId\":\"vwcga\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class AccountsListUsagesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("ewp", "jlfxampqcrzgeuq", "b", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("kx", "pazwug", "yqvnjobfe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("atwfauj", response.nextLink());
+        Assertions.assertEquals("ldiuhzzgqlm", response.nextLink());
         Assertions.assertEquals(UnitType.MILLISECONDS, response.value().get(0).unit());
-        Assertions.assertEquals("r", response.value().get(0).name().value());
-        Assertions.assertEquals("gddhjkrukizyhgs", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("nqskt", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(52.50280800542966D, response.value().get(0).limit());
-        Assertions.assertEquals(25.39356583900255D, response.value().get(0).currentValue());
-        Assertions.assertEquals("gweeiwd", response.value().get(0).nextResetTime());
+        Assertions.assertEquals("hkrezsdsuxheqdgc", response.value().get(0).name().value());
+        Assertions.assertEquals("xsp", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ymmqgwokmikp", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(52.317344582901995D, response.value().get(0).limit());
+        Assertions.assertEquals(27.11710943236596D, response.value().get(0).currentValue());
+        Assertions.assertEquals("vjipfdvhaxdv", response.value().get(0).nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
         Assertions.assertEquals(QuotaScopeType.DATA_ZONE, response.value().get(0).scopeType());
-        Assertions.assertEquals("bf", response.value().get(0).scopeId());
+        Assertions.assertEquals("phth", response.value().get(0).scopeId());
     }
 }

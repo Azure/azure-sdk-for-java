@@ -15,18 +15,18 @@ public final class UsageListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageListResultInner model = BinaryData.fromString(
-            "{\"nextLink\":\"xyqj\",\"value\":[{\"unit\":\"Bytes\",\"name\":{\"value\":\"ngj\",\"localizedValue\":\"cczsq\"},\"quotaPeriod\":\"hvmdajvnysounq\",\"limit\":2.2711891093491476,\"currentValue\":9.069007255985827,\"nextResetTime\":\"pfhyhl\",\"status\":\"Blocked\",\"scopeType\":\"Classic\",\"scopeId\":\"jmcmatuokthfu\"},{\"unit\":\"Count\",\"name\":{\"value\":\"sfcpkvxodpuozm\",\"localizedValue\":\"ydagfuaxbe\"},\"quotaPeriod\":\"iu\",\"limit\":22.413429318671486,\"currentValue\":75.16582098477036,\"nextResetTime\":\"xw\",\"status\":\"Blocked\",\"scopeType\":\"Regional\",\"scopeId\":\"bsureximo\"},{\"unit\":\"Seconds\",\"name\":{\"value\":\"sfksy\",\"localizedValue\":\"dystkiiuxhqyud\"},\"quotaPeriod\":\"rrqnbpoczvyifqrv\",\"limit\":72.90862863466027,\"currentValue\":16.56318783055396,\"nextResetTime\":\"mvvd\",\"status\":\"Blocked\",\"scopeType\":\"Classic\",\"scopeId\":\"n\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"xbczwtruwiqz\",\"localizedValue\":\"j\"},\"quotaPeriod\":\"ovm\",\"limit\":41.58217521612849,\"currentValue\":84.57660128318545,\"nextResetTime\":\"w\",\"status\":\"Unknown\",\"scopeType\":\"DataZone\",\"scopeId\":\"pxjmflbvvnchr\"}]}")
+            "{\"nextLink\":\"gbmqjqabcypmiv\",\"value\":[{\"id\":\"uvcc\",\"type\":\"nfnbacfionlebxe\",\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"xdpnqbqq\",\"localizedValue\":\"rjfeallnwsubisnj\"},\"quotaPeriod\":\"pmng\",\"limit\":25.562655955921976,\"currentValue\":14.24281984629977,\"nextResetTime\":\"ooch\",\"status\":\"Included\",\"scopeType\":\"Classic\",\"scopeId\":\"pkvlrxn\"}]}")
             .toObject(UsageListResultInner.class);
-        Assertions.assertEquals("xyqj", model.nextLink());
-        Assertions.assertEquals(UnitType.BYTES, model.value().get(0).unit());
-        Assertions.assertEquals("ngj", model.value().get(0).name().value());
-        Assertions.assertEquals("cczsq", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("hvmdajvnysounq", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(2.2711891093491476D, model.value().get(0).limit());
-        Assertions.assertEquals(9.069007255985827D, model.value().get(0).currentValue());
-        Assertions.assertEquals("pfhyhl", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
+        Assertions.assertEquals("gbmqjqabcypmiv", model.nextLink());
+        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.value().get(0).unit());
+        Assertions.assertEquals("xdpnqbqq", model.value().get(0).name().value());
+        Assertions.assertEquals("rjfeallnwsubisnj", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("pmng", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(25.562655955921976D, model.value().get(0).limit());
+        Assertions.assertEquals(14.24281984629977D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ooch", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.value().get(0).status());
         Assertions.assertEquals(QuotaScopeType.CLASSIC, model.value().get(0).scopeType());
-        Assertions.assertEquals("jmcmatuokthfu", model.value().get(0).scopeId());
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).scopeId());
     }
 }

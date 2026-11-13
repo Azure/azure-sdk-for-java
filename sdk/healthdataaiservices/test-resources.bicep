@@ -187,7 +187,7 @@ resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-
   scope: storageAccount
 }
 
-resource testDeidService 'microsoft.healthdataaiservices/deidservices@2024-02-28-preview' = {
+resource testDeidService 'microsoft.healthdataaiservices/deidservices@2024-09-20' = {
   name: deidServiceName
   location: deidLocation
   identity: {
@@ -200,6 +200,8 @@ resource storageMIRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-0
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', storageBlobDataContributor)
     principalId: testDeidService.identity.principalId
+    // Avoids PrincipalNotFound when the newly created managed identity hasn't replicated yet
+    principalType: 'ServicePrincipal'
   }
   scope: storageAccount
 }

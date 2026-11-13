@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: 2024-06-01/VirtualNetworkLinkPatch.json
+     * x-ms-original-file: 2026-06-01-preview/VirtualNetworkLinkPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone Virtual Network Link.

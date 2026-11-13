@@ -31,9 +31,9 @@ public final class ManagedComputeCapacitiesImpl implements ManagedComputeCapacit
     }
 
     public PagedIterable<ManagedComputeCapacity> list(String offer, String acceleratorType, String deploymentId,
-        Context context) {
+        String location, Context context) {
         PagedIterable<ManagedComputeCapacityInner> inner
-            = this.serviceClient().list(offer, acceleratorType, deploymentId, context);
+            = this.serviceClient().list(offer, acceleratorType, deploymentId, location, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedComputeCapacityImpl(inner1, this.manager()));
     }
 

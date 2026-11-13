@@ -7,11 +7,14 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitor.workspaces.fluent.models.AzureMonitorWorkspaceResourceInner;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceActions;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceMetrics;
+import com.azure.resourcemanager.monitor.workspaces.models.DefaultActionGroupResource;
 import com.azure.resourcemanager.monitor.workspaces.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitor.workspaces.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitor.workspaces.models.PublicNetworkAccess;
 import com.azure.resourcemanager.monitor.workspaces.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -20,33 +23,38 @@ public final class AzureMonitorWorkspaceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorWorkspaceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountId\":\"jbpzvgnwzsymg\",\"metrics\":{\"prometheusQueryEndpoint\":\"fcyzkohdbihanufh\",\"internalId\":\"bj\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"xqhabi\",\"dataCollectionEndpointResourceId\":\"ikxwc\",\"dataCollectionRuleImmutableId\":\"yscnpqxu\",\"ingestionEndpoints\":{\"metrics\":\"y\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"br\"],\"privateEndpoint\":{\"id\":\"dumjgrtfwvuk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"dcc\",\"actionsRequired\":\"h\"},\"provisioningState\":\"Failed\"},\"id\":\"yejhk\",\"name\":\"yhtnapczwlokjye\",\"type\":\"kkvnipjox\"},{\"properties\":{\"groupIds\":[\"hgejspodma\",\"lzydehojwyahux\",\"npmqnjaqwixjspro\"],\"privateEndpoint\":{\"id\":\"putegjvwmfd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mdvpjhulsu\",\"actionsRequired\":\"mkjozkrwf\"},\"provisioningState\":\"Creating\"},\"id\":\"djpslw\",\"name\":\"jdpvwryo\",\"type\":\"psoacctazakljl\"},{\"properties\":{\"groupIds\":[\"ryffdfdosy\"],\"privateEndpoint\":{\"id\":\"paojakhmsbzjh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"vdphlxaolthqtr\",\"actionsRequired\":\"jbp\"},\"provisioningState\":\"Failed\"},\"id\":\"inzgvfcj\",\"name\":\"wzo\",\"type\":\"xjtfelluwfzit\"},{\"properties\":{\"groupIds\":[\"qfpjk\",\"lxofpdvhpfxxypin\"],\"privateEndpoint\":{\"id\":\"ayhuy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"odepoogin\",\"actionsRequired\":\"amiheognarxz\"},\"provisioningState\":\"Creating\"},\"id\":\"o\",\"name\":\"usivye\",\"type\":\"cciqihnhungbwjz\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"xgispemvtzfkufu\",\"tenantId\":\"jofxqe\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zgcwrw\":{\"principalId\":\"qjhqjbas\",\"clientId\":\"smjqulngsntnbyb\"},\"tnhxbn\":{\"principalId\":\"xxwr\",\"clientId\":\"douskcqvkocrcjdk\"},\"fmppe\":{\"principalId\":\"iksqr\",\"clientId\":\"ssainqpjwnzll\"},\"vndhkrwpdapp\":{\"principalId\":\"vmgxsab\",\"clientId\":\"qduujitcjczdz\"}}},\"etag\":\"bdkvwrwjf\",\"location\":\"snhu\",\"tags\":{\"gjzzdatqxhocdg\":\"ltmrldh\",\"ozwyiftyhxhuro\":\"ablgphuticndvk\",\"wcukjfkgiawxk\":\"ftyxolniw\",\"dhsgcba\":\"ryplwckbasyypn\"},\"id\":\"phejkotynqgoulz\",\"name\":\"dlikwyqkgfgibma\",\"type\":\"gakeqsr\"}")
+            "{\"properties\":{\"accountId\":\"jbpzvgnwzsymg\",\"metrics\":{\"prometheusQueryEndpoint\":\"fcyzkohdbihanufh\",\"internalId\":\"bj\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"xqhabi\",\"dataCollectionEndpointResourceId\":\"ikxwc\",\"dataCollectionRuleImmutableId\":\"yscnpqxu\",\"ingestionEndpoints\":{\"metrics\":\"y\"}},\"endpoints\":{\"query\":\"wby\"},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"umjgrtfwvuk\",\"gaudcc\",\"nhsjcnyej\"],\"privateEndpoint\":{\"id\":\"yhtnapczwlokjye\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ni\",\"actionsRequired\":\"oxzjnchgejspod\"},\"provisioningState\":\"Creating\"},\"id\":\"zyde\",\"name\":\"o\",\"type\":\"wyahuxinpmqnja\"}],\"publicNetworkAccess\":\"Disabled\",\"actions\":{\"defaultActionGroups\":[{\"id\":\"r\"},{\"id\":\"vcputegj\"},{\"id\":\"mfdatscmdvpj\"}]}},\"identity\":{\"principalId\":\"suuv\",\"tenantId\":\"jozkrwfndiod\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"cctazakljlahbc\":{\"principalId\":\"ej\",\"clientId\":\"vwryoqpso\"},\"vdphlxaolthqtr\":{\"principalId\":\"ffdfdosygexpa\",\"clientId\":\"akhmsbzjhcrz\"}}},\"etag\":\"jbp\",\"location\":\"fsinzgvfcjrwzoxx\",\"tags\":{\"eqfpj\":\"elluwfziton\",\"ninmayhuyb\":\"jlxofpdvhpfxxyp\",\"ooginuvamih\":\"kpode\",\"vyevcciqi\":\"ognarxzxtheotus\"},\"id\":\"nhungbw\",\"name\":\"zrnf\",\"type\":\"gxg\"}")
             .toObject(AzureMonitorWorkspaceResourceInner.class);
-        Assertions.assertEquals("snhu", model.location());
-        Assertions.assertEquals("ltmrldh", model.tags().get("gjzzdatqxhocdg"));
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.location());
+        Assertions.assertEquals("elluwfziton", model.tags().get("eqfpj"));
         Assertions.assertFalse(model.properties().metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("r", model.properties().actions().defaultActionGroups().get(0).id());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMonitorWorkspaceResourceInner model = new AzureMonitorWorkspaceResourceInner().withLocation("snhu")
-            .withTags(mapOf("gjzzdatqxhocdg", "ltmrldh", "ozwyiftyhxhuro", "ablgphuticndvk", "wcukjfkgiawxk",
-                "ftyxolniw", "dhsgcba", "ryplwckbasyypn"))
+        AzureMonitorWorkspaceResourceInner model = new AzureMonitorWorkspaceResourceInner()
+            .withLocation("fsinzgvfcjrwzoxx")
+            .withTags(mapOf("eqfpj", "elluwfziton", "ninmayhuyb", "jlxofpdvhpfxxyp", "ooginuvamih", "kpode",
+                "vyevcciqi", "ognarxzxtheotus"))
             .withProperties(new AzureMonitorWorkspace()
                 .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(false))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withActions(new AzureMonitorWorkspaceActions().withDefaultActionGroups(Arrays.asList(
+                    new DefaultActionGroupResource().withId("r"), new DefaultActionGroupResource().withId("vcputegj"),
+                    new DefaultActionGroupResource().withId("mfdatscmdvpj")))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("zgcwrw", new UserAssignedIdentity(), "tnhxbn", new UserAssignedIdentity(), "fmppe",
-                        new UserAssignedIdentity(), "vndhkrwpdapp", new UserAssignedIdentity())));
+                    mapOf("cctazakljlahbc", new UserAssignedIdentity(), "vdphlxaolthqtr", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceResourceInner.class);
-        Assertions.assertEquals("snhu", model.location());
-        Assertions.assertEquals("ltmrldh", model.tags().get("gjzzdatqxhocdg"));
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.location());
+        Assertions.assertEquals("elluwfziton", model.tags().get("eqfpj"));
         Assertions.assertFalse(model.properties().metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("r", model.properties().actions().defaultActionGroups().get(0).id());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

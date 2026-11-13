@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for MetricAggregationType.
+ * Metric aggregation type.
  */
 public final class MetricAggregationType extends ExpandableStringEnum<MetricAggregationType> {
     /**

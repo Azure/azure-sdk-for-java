@@ -8,7 +8,6 @@ import com.azure.resourcemanager.iothub.models.ArmIdentity;
 import com.azure.resourcemanager.iothub.models.Capabilities;
 import com.azure.resourcemanager.iothub.models.CloudToDeviceProperties;
 import com.azure.resourcemanager.iothub.models.DefaultAction;
-import com.azure.resourcemanager.iothub.models.DeviceRegistry;
 import com.azure.resourcemanager.iothub.models.EventHubProperties;
 import com.azure.resourcemanager.iothub.models.EventStreamAuthenticationType;
 import com.azure.resourcemanager.iothub.models.FallbackRouteProperties;
@@ -16,13 +15,12 @@ import com.azure.resourcemanager.iothub.models.FeedbackProperties;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSku;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
-import com.azure.resourcemanager.iothub.models.IpVersion;
 import com.azure.resourcemanager.iothub.models.MessagingEndpointProperties;
 import com.azure.resourcemanager.iothub.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.iothub.models.NetworkRuleSetIpRule;
 import com.azure.resourcemanager.iothub.models.NetworkRuleSetProperties;
 import com.azure.resourcemanager.iothub.models.ResourceIdentityType;
-import com.azure.resourcemanager.iothub.models.RootCertificateProperties;
+import com.azure.resourcemanager.iothub.models.RouteProperties;
 import com.azure.resourcemanager.iothub.models.RoutingEndpoints;
 import com.azure.resourcemanager.iothub.models.RoutingEventStreamProperties;
 import com.azure.resourcemanager.iothub.models.RoutingProperties;
@@ -38,14 +36,14 @@ import java.util.Map;
  */
 public final class IotHubResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_IotHub.json
      */
     /**
-     * Sample code: CreateOrReplace_IoTHub_With_DeviceRegistry.
+     * Sample code: CreateOrReplace_IotHub.
      * 
      * @param manager Entry point to IotHubManager.
      */
-    public static void createOrReplaceIoTHubWithDeviceRegistry(com.azure.resourcemanager.iothub.IotHubManager manager) {
+    public static void createOrReplaceIotHub(com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager.iotHubResources()
             .define("testHub")
             .withRegion("centraluseuap")
@@ -69,9 +67,12 @@ public final class IotHubResourceCreateOrUpdateSamples {
                     .withEndpoints(new RoutingEndpoints().withServiceBusQueues(Arrays.asList())
                         .withServiceBusTopics(Arrays.asList())
                         .withEventHubs(Arrays.asList())
-                        .withStorageContainers(Arrays.asList())
-                        .withEventStreams(Arrays.asList()))
-                    .withRoutes(Arrays.asList())
+                        .withStorageContainers(Arrays.asList()))
+                    .withRoutes(Arrays.asList(new RouteProperties().withName("Routeid")
+                        .withSource(RoutingSource.DEVICE_MESSAGES)
+                        .withCondition("true")
+                        .withEndpointNames(Arrays.asList("events"))
+                        .withIsEnabled(true)))
                     .withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
                         .withSource(RoutingSource.DEVICE_MESSAGES)
                         .withCondition("true")
@@ -92,19 +93,13 @@ public final class IotHubResourceCreateOrUpdateSamples {
                         .withTtlAsIso8601(Duration.parse("PT1H"))
                         .withMaxDeliveryCount(10)))
                 .withFeatures(Capabilities.NONE)
-                .withEnableDataResidency(true)
-                .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true))
-                .withIpVersion(IpVersion.IPV4IPV6)
-                .withDeviceRegistry(new DeviceRegistry().withNamespaceResourceId(
-                    "/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace")
-                    .withIdentityResourceId(
-                        "/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity")))
+                .withEnableDataResidency(true))
             .withEtag("AAAAAAFD6M4=")
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/iothub_createOrUpdate.json
+     * x-ms-original-file: 2026-11-01/iothub_createOrUpdate.json
      */
     /**
      * Sample code: IotHubResource_CreateOrUpdate.
@@ -164,9 +159,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
                         .withTtlAsIso8601(Duration.parse("PT1H"))
                         .withMaxDeliveryCount(10)))
                 .withFeatures(Capabilities.NONE)
-                .withEnableDataResidency(true)
-                .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true))
-                .withIpVersion(IpVersion.IPV4IPV6))
+                .withEnableDataResidency(true))
             .withEtag("AAAAAAFD6M4=")
             .withIdentity(new ArmIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .create();

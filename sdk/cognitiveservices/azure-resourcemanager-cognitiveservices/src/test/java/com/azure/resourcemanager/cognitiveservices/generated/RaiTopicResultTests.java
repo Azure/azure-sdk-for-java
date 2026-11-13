@@ -13,19 +13,19 @@ public final class RaiTopicResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiTopicResult model = BinaryData.fromString(
-            "{\"nextLink\":\"qbw\",\"value\":[{\"properties\":{\"topicId\":\"gsfjac\",\"topicName\":\"lhhxudbxvodhtnsi\",\"description\":\"dhzmmesckdlp\",\"sampleBlobUrl\":\"zrcxfailcfxwmdbo\",\"status\":\"fgsftufqob\",\"failedReason\":\"lnacgcc\",\"createdAt\":\"2021-02-22T05:42:06Z\",\"lastModifiedAt\":\"2021-08-14T20:34:23Z\"},\"etag\":\"izvy\",\"tags\":{\"aaeranokqgukk\":\"zvulj\",\"oylaxxul\":\"qnvb\"},\"id\":\"isdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"},{\"properties\":{\"topicId\":\"mbtmvpdvjdhttzae\",\"topicName\":\"dxihc\",\"description\":\"phkmcrjdqnsdfz\",\"sampleBlobUrl\":\"gtgkylkdghr\",\"status\":\"uutlwxezwzhok\",\"failedReason\":\"wnhhtqlgehgppip\",\"createdAt\":\"2021-04-06T03:44:21Z\",\"lastModifiedAt\":\"2021-01-02T20:54:57Z\"},\"etag\":\"oajvgcxtxjcs\",\"tags\":{\"resmkssjhoiftxfk\":\"fidltug\",\"tillucbiqtg\":\"wegprh\",\"hm\":\"q\"},\"id\":\"sldrizetpwbral\",\"name\":\"libph\",\"type\":\"qzmiza\"},{\"properties\":{\"topicId\":\"ankjpdnjzh\",\"topicName\":\"oylhjlmuoyxprimr\",\"description\":\"pteecjme\",\"sampleBlobUrl\":\"ls\",\"status\":\"asylwx\",\"failedReason\":\"aumweoohguufu\",\"createdAt\":\"2021-04-09T11:15:41Z\",\"lastModifiedAt\":\"2021-04-18T14:21:46Z\"},\"etag\":\"thwtzol\",\"tags\":{\"lxveabfqx\":\"mwmdxmebwjscjpa\",\"ijddtvqc\":\"mwmqtibx\",\"jaeukmrsieekpn\":\"tad\"},\"id\":\"aapm\",\"name\":\"dqmeqwigpibudq\",\"type\":\"yxeb\"}]}")
+            "{\"nextLink\":\"iykzkdncjdx\",\"value\":[{\"properties\":{\"topicId\":\"ggcula\",\"topicName\":\"wyrpgogtqxepnyl\",\"description\":\"uajlyj\",\"sampleBlobUrl\":\"vofqzhvfc\",\"status\":\"yfm\",\"failedReason\":\"uxrkjp\",\"createdAt\":\"2021-02-25T18:54:33Z\",\"lastModifiedAt\":\"2021-07-02T02:53:51Z\"},\"etag\":\"wiivwzjbhyzsx\",\"tags\":{\"vuqeqvldspast\":\"ambtrnegvm\",\"flvestmjlxrrilo\":\"bkkd\",\"kuziycsle\":\"apeewchpxlkt\",\"dcgzul\":\"ufuztcktyhjtq\"},\"id\":\"mrqzzrrjvpgl\",\"name\":\"dzgkr\",\"type\":\"qeevt\"}]}")
             .toObject(RaiTopicResult.class);
-        Assertions.assertEquals("qbw", model.nextLink());
-        Assertions.assertEquals("gsfjac", model.value().get(0).properties().topicId());
-        Assertions.assertEquals("lhhxudbxvodhtnsi", model.value().get(0).properties().topicName());
-        Assertions.assertEquals("dhzmmesckdlp", model.value().get(0).properties().description());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.value().get(0).properties().sampleBlobUrl());
-        Assertions.assertEquals("fgsftufqob", model.value().get(0).properties().status());
-        Assertions.assertEquals("lnacgcc", model.value().get(0).properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T05:42:06Z"),
+        Assertions.assertEquals("iykzkdncjdx", model.nextLink());
+        Assertions.assertEquals("ggcula", model.value().get(0).properties().topicId());
+        Assertions.assertEquals("wyrpgogtqxepnyl", model.value().get(0).properties().topicName());
+        Assertions.assertEquals("uajlyj", model.value().get(0).properties().description());
+        Assertions.assertEquals("vofqzhvfc", model.value().get(0).properties().sampleBlobUrl());
+        Assertions.assertEquals("yfm", model.value().get(0).properties().status());
+        Assertions.assertEquals("uxrkjp", model.value().get(0).properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T18:54:33Z"),
             model.value().get(0).properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T20:34:23Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T02:53:51Z"),
             model.value().get(0).properties().lastModifiedAt());
-        Assertions.assertEquals("zvulj", model.value().get(0).tags().get("aaeranokqgukk"));
+        Assertions.assertEquals("ambtrnegvm", model.value().get(0).tags().get("vuqeqvldspast"));
     }
 }

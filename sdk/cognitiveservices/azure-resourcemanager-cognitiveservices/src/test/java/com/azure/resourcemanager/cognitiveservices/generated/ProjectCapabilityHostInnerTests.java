@@ -14,28 +14,25 @@ public final class ProjectCapabilityHostInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectCapabilityHostInner model = BinaryData.fromString(
-            "{\"properties\":{\"aiServicesConnections\":[\"juscvsfx\",\"gctmgxuupbezq\",\"cydrtceukdqkk\",\"ihztgeqmgqzgwldo\"],\"vectorStoreConnections\":[\"illcecfehu\",\"aoaguhicqlli\"],\"storageConnections\":[\"ac\"],\"threadStorageConnections\":[\"hrweftkw\",\"ejpmvssehaepwa\",\"cxtczhupeukn\",\"jduyyespydjfb\"],\"provisioningState\":\"Updating\"},\"id\":\"hhulrtywikdm\",\"name\":\"lakuflgbhgauacd\",\"type\":\"xmxufrsryjqgdk\"}")
+            "{\"properties\":{\"aiServicesConnections\":[\"oewbid\",\"vteo\",\"xvgpiude\"],\"vectorStoreConnections\":[\"sxze\",\"paxwkufyk\"],\"storageConnections\":[\"hxepmrutzna\",\"aobn\"],\"threadStorageConnections\":[\"jdjltymkmvgui\",\"ywart\",\"pphkixkykxds\"],\"provisioningState\":\"Creating\"},\"id\":\"mmuc\",\"name\":\"xhikkflrmymyin\",\"type\":\"qlhris\"}")
             .toObject(ProjectCapabilityHostInner.class);
-        Assertions.assertEquals("juscvsfx", model.properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("illcecfehu", model.properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("ac", model.properties().storageConnections().get(0));
-        Assertions.assertEquals("hrweftkw", model.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("oewbid", model.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("sxze", model.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("hxepmrutzna", model.properties().storageConnections().get(0));
+        Assertions.assertEquals("jdjltymkmvgui", model.properties().threadStorageConnections().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectCapabilityHostInner model
-            = new ProjectCapabilityHostInner().withProperties(new ProjectCapabilityHostProperties()
-                .withAiServicesConnections(
-                    Arrays.asList("juscvsfx", "gctmgxuupbezq", "cydrtceukdqkk", "ihztgeqmgqzgwldo"))
-                .withVectorStoreConnections(Arrays.asList("illcecfehu", "aoaguhicqlli"))
-                .withStorageConnections(Arrays.asList("ac"))
-                .withThreadStorageConnections(
-                    Arrays.asList("hrweftkw", "ejpmvssehaepwa", "cxtczhupeukn", "jduyyespydjfb")));
+        ProjectCapabilityHostInner model = new ProjectCapabilityHostInner().withProperties(
+            new ProjectCapabilityHostProperties().withAiServicesConnections(Arrays.asList("oewbid", "vteo", "xvgpiude"))
+                .withVectorStoreConnections(Arrays.asList("sxze", "paxwkufyk"))
+                .withStorageConnections(Arrays.asList("hxepmrutzna", "aobn"))
+                .withThreadStorageConnections(Arrays.asList("jdjltymkmvgui", "ywart", "pphkixkykxds")));
         model = BinaryData.fromObject(model).toObject(ProjectCapabilityHostInner.class);
-        Assertions.assertEquals("juscvsfx", model.properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("illcecfehu", model.properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("ac", model.properties().storageConnections().get(0));
-        Assertions.assertEquals("hrweftkw", model.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("oewbid", model.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("sxze", model.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("hxepmrutzna", model.properties().storageConnections().get(0));
+        Assertions.assertEquals("jdjltymkmvgui", model.properties().threadStorageConnections().get(0));
     }
 }

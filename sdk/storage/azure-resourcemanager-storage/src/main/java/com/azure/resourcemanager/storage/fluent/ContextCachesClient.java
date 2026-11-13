@@ -16,7 +16,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.resourcemanager.storage.fluent.models.ContextCacheCheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.storage.fluent.models.ContextCacheInner;
+import com.azure.resourcemanager.storage.models.ContextCacheCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.storage.models.ContextCacheUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -453,4 +455,58 @@ public interface ContextCachesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ContextCacheInner> list(Context context);
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ContextCacheCheckNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(ContextCacheCheckNameAvailabilityParameters body);
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContextCacheCheckNameAvailabilityResultInner>
+        checkNameAvailabilityAsync(ContextCacheCheckNameAvailabilityParameters body);
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ContextCacheCheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(ContextCacheCheckNameAvailabilityParameters body, Context context);
+
+    /**
+     * Check the availability of a context cache resource name.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the context cache name availability check.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContextCacheCheckNameAvailabilityResultInner
+        checkNameAvailability(ContextCacheCheckNameAvailabilityParameters body);
 }

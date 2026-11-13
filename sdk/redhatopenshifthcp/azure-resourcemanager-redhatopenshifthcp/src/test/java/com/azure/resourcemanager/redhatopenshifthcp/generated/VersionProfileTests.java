@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VersionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VersionProfile model
-            = BinaryData.fromString("{\"id\":\"ypl\",\"channelGroup\":\"kbasyypn\"}").toObject(VersionProfile.class);
-        Assertions.assertEquals("ypl", model.id());
-        Assertions.assertEquals("kbasyypn", model.channelGroup());
+        VersionProfile model = BinaryData.fromString("{\"id\":\"ukjfkgiawxklr\",\"channelGroup\":\"lwckbasyypnddhs\"}")
+            .toObject(VersionProfile.class);
+        Assertions.assertEquals("ukjfkgiawxklr", model.id());
+        Assertions.assertEquals("lwckbasyypnddhs", model.channelGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionProfile model = new VersionProfile().withId("ypl").withChannelGroup("kbasyypn");
+        VersionProfile model = new VersionProfile().withId("ukjfkgiawxklr").withChannelGroup("lwckbasyypnddhs");
         model = BinaryData.fromObject(model).toObject(VersionProfile.class);
-        Assertions.assertEquals("ypl", model.id());
-        Assertions.assertEquals("kbasyypn", model.channelGroup());
+        Assertions.assertEquals("ukjfkgiawxklr", model.id());
+        Assertions.assertEquals("lwckbasyypnddhs", model.channelGroup());
     }
 }

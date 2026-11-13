@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ExpressRouteCircuitsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ExpressRouteCircuitUpdateTags.json
+     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitUpdateTags.json
      */
     /**
      * Sample code: Update Express Route Circuit Tags.

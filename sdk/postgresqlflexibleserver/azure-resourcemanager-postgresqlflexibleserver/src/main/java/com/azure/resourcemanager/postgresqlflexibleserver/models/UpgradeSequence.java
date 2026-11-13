@@ -19,12 +19,12 @@ public final class UpgradeSequence implements JsonSerializable<UpgradeSequence> 
     /*
      * The source PostgreSQL version.
      */
-    private PostgresMajorVersion sourceVersion;
+    private String sourceVersion;
 
     /*
      * The target PostgreSQL version.
      */
-    private PostgresMajorVersion targetVersion;
+    private String targetVersion;
 
     /**
      * Creates an instance of UpgradeSequence class.
@@ -37,7 +37,7 @@ public final class UpgradeSequence implements JsonSerializable<UpgradeSequence> 
      * 
      * @return the sourceVersion value.
      */
-    public PostgresMajorVersion sourceVersion() {
+    public String sourceVersion() {
         return this.sourceVersion;
     }
 
@@ -46,7 +46,7 @@ public final class UpgradeSequence implements JsonSerializable<UpgradeSequence> 
      * 
      * @return the targetVersion value.
      */
-    public PostgresMajorVersion targetVersion() {
+    public String targetVersion() {
         return this.targetVersion;
     }
 
@@ -56,8 +56,8 @@ public final class UpgradeSequence implements JsonSerializable<UpgradeSequence> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sourceVersion", this.sourceVersion == null ? null : this.sourceVersion.toString());
-        jsonWriter.writeStringField("targetVersion", this.targetVersion == null ? null : this.targetVersion.toString());
+        jsonWriter.writeStringField("sourceVersion", this.sourceVersion);
+        jsonWriter.writeStringField("targetVersion", this.targetVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,9 +77,9 @@ public final class UpgradeSequence implements JsonSerializable<UpgradeSequence> 
                 reader.nextToken();
 
                 if ("sourceVersion".equals(fieldName)) {
-                    deserializedUpgradeSequence.sourceVersion = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedUpgradeSequence.sourceVersion = reader.getString();
                 } else if ("targetVersion".equals(fieldName)) {
-                    deserializedUpgradeSequence.targetVersion = PostgresMajorVersion.fromString(reader.getString());
+                    deserializedUpgradeSequence.targetVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

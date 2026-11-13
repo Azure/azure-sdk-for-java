@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ActionSupportedTargetTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActionSupportedTargetType model = BinaryData
-            .fromString("{\"targetType\":\"dyg\",\"requiredPermissions\":[\"kkqfqjbvle\",\"rfmluiqtq\",\"fa\"]}")
+        ActionSupportedTargetType model = BinaryData.fromString(
+            "{\"targetType\":\"dl\",\"requiredPermissions\":[\"hfwpracstwit\",\"khevxccedc\",\"nmdyodnwzxl\",\"jc\"]}")
             .toObject(ActionSupportedTargetType.class);
-        Assertions.assertEquals("dyg", model.targetType());
-        Assertions.assertEquals("kkqfqjbvle", model.requiredPermissions().get(0));
+        Assertions.assertEquals("dl", model.targetType());
+        Assertions.assertEquals("hfwpracstwit", model.requiredPermissions().get(0));
     }
 }

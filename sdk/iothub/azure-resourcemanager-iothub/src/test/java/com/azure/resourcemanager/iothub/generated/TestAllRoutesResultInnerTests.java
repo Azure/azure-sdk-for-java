@@ -13,12 +13,13 @@ public final class TestAllRoutesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesResultInner model = BinaryData.fromString(
-            "{\"routes\":[{\"properties\":{\"name\":\"bnxknalaulppg\",\"source\":\"MqttBrokerMessages\",\"condition\":\"pnapnyiropuh\",\"endpointNames\":[\"gvpgy\",\"gqgitxmedjvcsl\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"wwncwzzhxgk\",\"source\":\"DeviceLifecycleEvents\",\"condition\":\"gucnapkte\",\"endpointNames\":[\"llwptfdy\",\"pfqbuaceopzf\",\"rhhuaopppcqeqx\"],\"isEnabled\":true}}]}")
+            "{\"routes\":[{\"properties\":{\"name\":\"pwo\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"kfpbs\",\"endpointNames\":[\"ofd\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"us\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"ouwaboekqvkeln\",\"endpointNames\":[\"vbxwyjsflhh\"],\"isEnabled\":false}}]}")
             .toObject(TestAllRoutesResultInner.class);
-        Assertions.assertEquals("bnxknalaulppg", model.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routes().get(0).properties().source());
-        Assertions.assertEquals("pnapnyiropuh", model.routes().get(0).properties().condition());
-        Assertions.assertEquals("gvpgy", model.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals("pwo", model.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS,
+            model.routes().get(0).properties().source());
+        Assertions.assertEquals("kfpbs", model.routes().get(0).properties().condition());
+        Assertions.assertEquals("ofd", model.routes().get(0).properties().endpointNames().get(0));
         Assertions.assertFalse(model.routes().get(0).properties().isEnabled());
     }
 }

@@ -12,8 +12,8 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"mefgvqcpdwjgqux\",\"value\":[{\"kind\":\"landkdcdjhunhgh\",\"skuName\":\"awnrrnquoxsotir\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"eobfsxstcyilbvzm\",\"tier\":\"cjzlquzexokjxebj\",\"maxCount\":1964355203,\"quota\":{\"quantity\":8319276055113449087,\"unit\":\"wmvogljsv\"},\"cost\":{\"commitmentMeterId\":\"idnwceha\",\"overageMeterId\":\"do\"}}]}")
+            "{\"nextLink\":\"tkbtnqlrngl\",\"value\":[{\"kind\":\"ips\",\"skuName\":\"w\",\"hostingModel\":\"Web\",\"planType\":\"znxhhllxr\",\"tier\":\"ctkwmuqqoajxeiyg\",\"maxCount\":1510565301,\"quota\":{\"quantity\":5699448195331997003,\"unit\":\"xhdctrceqnk\"},\"cost\":{\"commitmentMeterId\":\"pobe\",\"overageMeterId\":\"mljzacv\"}},{\"kind\":\"epj\",\"skuName\":\"ibnzp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"ifexleqirccjcly\",\"tier\":\"gxvrpjl\",\"maxCount\":116232980,\"quota\":{\"quantity\":2051377810964752658,\"unit\":\"punettepdjxq\"},\"cost\":{\"commitmentMeterId\":\"oy\",\"overageMeterId\":\"iylpck\"}},{\"kind\":\"wsedvesk\",\"skuName\":\"egqphrgfnzhctm\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"hp\",\"tier\":\"bcpzarpzeqacdldt\",\"maxCount\":1434487132,\"quota\":{\"quantity\":624782222094468396,\"unit\":\"pc\"},\"cost\":{\"commitmentMeterId\":\"nuqndaizupf\",\"overageMeterId\":\"uytuszxhmtvtv\"}},{\"kind\":\"w\",\"skuName\":\"ukvzwydwttha\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"skjivbsshajqfuk\",\"tier\":\"expgeumilhwu\",\"maxCount\":1760373406,\"quota\":{\"quantity\":3789448413619598454,\"unit\":\"onofninbdbzsxcw\"},\"cost\":{\"commitmentMeterId\":\"smpcbbp\",\"overageMeterId\":\"ugavbzbcyksivmf\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("mefgvqcpdwjgqux", model.nextLink());
+        Assertions.assertEquals("tkbtnqlrngl", model.nextLink());
     }
 }

@@ -23,7 +23,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -316,7 +315,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 // Act & Assert
                 final Response<DataFeed> dataFeedResponse
                     = client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE);
-                assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                assertEquals(200, dataFeedResponse.getStatusCode());
                 validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
             }, SQL_SERVER_DB);
         } finally {
@@ -706,8 +705,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         creatDataFeedRunner(dataFeed -> {
             final DataFeed createdDataFeed = client.createDataFeed(dataFeed);
 
-            assertEquals(HttpResponseStatus.NO_CONTENT.code(),
-                client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
+            assertEquals(204, client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
             MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class,

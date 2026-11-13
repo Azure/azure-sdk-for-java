@@ -16,40 +16,40 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalResource
  */
 public interface GoalResourcesClient {
     /**
-     * Get a GoalResource.
+     * Gets a goal resource.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
+     * @param goalResourceName The name of the goal resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource along with {@link Response}.
+     * @return a goal resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GoalResourceInner> getWithResponse(String serviceGroupName, String goalAssignmentName,
         String goalResourceName, Context context);
 
     /**
-     * Get a GoalResource.
+     * Gets a goal resource.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
+     * @param goalResourceName The name of the goal resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource.
+     * @return a goal resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GoalResourceInner get(String serviceGroupName, String goalAssignmentName, String goalResourceName);
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -59,10 +59,10 @@ public interface GoalResourcesClient {
     PagedIterable<GoalResourceInner> list(String serviceGroupName, String goalAssignmentName);
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @param context The context to associate with this operation.

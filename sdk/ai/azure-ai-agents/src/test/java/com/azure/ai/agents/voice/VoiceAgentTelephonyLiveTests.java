@@ -5,23 +5,21 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
+import com.azure.ai.agents.VoiceAgentsTelephonyClient;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
-import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
-import com.azure.ai.agents.models.PstnTelephonyTransferDestination;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
 import com.azure.ai.agents.models.TelephonyCallJobSchedule;
 import com.azure.ai.agents.models.TelephonyCallRecord;
 import com.azure.ai.agents.models.TelephonyCallJob;
+import com.azure.ai.agents.models.TelephonyCallJobCreate;
 import com.azure.ai.agents.models.TelephonyCallSummary;
-import com.azure.ai.agents.models.TelephonyOutboundDestination;
-import com.azure.ai.agents.models.TelephonyOutboundDestinationType;
+import com.azure.ai.agents.models.TelephonyPhoneNumber;
 import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyTransferTarget;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
+import com.azure.ai.agents.models.TwilioTelephonyBinding;
 import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
 import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
@@ -52,22 +50,21 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Record/playback Twilio validation for voice-agent telephony. Recording this test places a real PSTN call and may
- * incur provider charges. Record and live modes require FOUNDRY_VOICE_MODEL_NAME. FOUNDRY_TELEPHONY_CONNECTION_1,
- * FOUNDRY_TELEPHONY_CONNECTION_2, FOUNDRY_TELEPHONY_NUMBER_1, and FOUNDRY_TELEPHONY_NUMBER_2 can override the test
- * project defaults. Playback does not contact Twilio.
+ * incur provider charges. Record and live modes require FOUNDRY_VOICE_MODEL_NAME, FOUNDRY_TELEPHONY_NUMBER_1, and
+ * FOUNDRY_TELEPHONY_NUMBER_2. FOUNDRY_TELEPHONY_CONNECTION_1 and FOUNDRY_TELEPHONY_CONNECTION_2 can override the
+ * test project defaults. Playback uses sanitized phone numbers and does not contact Twilio.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String DEFAULT_CONNECTION_1 = "twilio-sdk-testing-1";
     private static final String DEFAULT_CONNECTION_2 = "twilio-sdk-testing-2";
-    private static final String DEFAULT_NUMBER_1 = "+13853864628";
-    private static final String DEFAULT_NUMBER_2 = "+18509702029";
     private static final String SANITIZED_CONNECTION_1 = "sanitized-connection-1";
     private static final String SANITIZED_CONNECTION_2 = "sanitized-connection-2";
     private static final String SANITIZED_NUMBER_1 = "+15555550101";
@@ -87,12 +84,12 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
      */
     @Override
     protected List<String> getAdditionalTestProxyExcludedHeaders() {
-        return Collections.singletonList("If-Match");
+        return Arrays.asList("If-Match", "Foundry-Features");
     }
 
     /**
-     * Removes the common {@code $..source} sanitizer so the telephony-specific sanitizer can preserve a valid E.164
-     * placeholder for request matching and response assertions during playback.
+     * Removes the common {@code $..source} sanitizer so the telephony-specific sanitizer can preserve the source
+     * address object and a valid E.164 placeholder for request matching and response assertions during playback.
      */
     @Override
     protected List<String> getAdditionalTestProxySanitizersToRemove() {
@@ -111,9 +108,9 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live telephony testing.");
         String connection = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1,
             SANITIZED_CONNECTION_1);
-        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
-        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
-        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
+        AgentsClient agents = getAgentsSyncClient(httpClient, serviceVersion);
+        VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String agentName = testResourceNamer.randomName("tel-bind-", 21);
         boolean agentCreated = false;
         String bindingId = null;
@@ -122,7 +119,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
                 new CreateAgentVersionInput(definition(model, "Greet the caller briefly, then say goodbye.")));
             agentCreated = true;
             TelephonyBinding binding = telephony.createTelephonyBinding(agentName,
-                new CreateTwilioTelephonyBindingInput(connection, number).setLabel("Java SDK live test"));
+                new TwilioTelephonyBinding(connection, number).setLabel("Java SDK live test"));
             bindingId = binding.getId();
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
             assertNotNull(listedBinding.getETag());
@@ -162,11 +159,11 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             SANITIZED_CONNECTION_1);
         String connection2 = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_2", DEFAULT_CONNECTION_2,
             SANITIZED_CONNECTION_2);
-        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
-        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", DEFAULT_NUMBER_2, SANITIZED_NUMBER_2);
+        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", null, SANITIZED_NUMBER_1);
+        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", null, SANITIZED_NUMBER_2);
 
-        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
-        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        AgentsClient agents = getAgentsSyncClient(httpClient, serviceVersion);
+        VoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
         String suffix = testResourceNamer.randomName("", 12);
         String inboundAgent = "tel-in-" + suffix;
         String outboundAgent = "tel-out-" + suffix;
@@ -185,7 +182,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             outboundAgentCreated = true;
 
             TelephonyBinding binding = telephony.createTelephonyBinding(inboundAgent,
-                new CreateTwilioTelephonyBindingInput(connection1, number1).setLabel("Java SDK live test"));
+                new TwilioTelephonyBinding(connection1, number1).setLabel("Java SDK live test"));
             inboundBindingId = binding.getId();
             assertNotNull(binding.getId());
             assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
@@ -197,22 +194,21 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
                 = initialTargetsResponse.getValue().toObject(TelephonyTransferTargets.class);
             assertTrue(initialTargets.getTransferTargets().isEmpty());
             TelephonyTransferTarget transferTarget = new TelephonyTransferTarget("test_number_2",
-                "Java SDK live test target", new PstnTelephonyTransferDestination(number2));
+                "Java SDK live test target", new TelephonyPhoneNumber(number2));
             TelephonyTransferTargets replacedTargets = telephony.replaceTelephonyTransferTargets(inboundAgent,
                 requireEtag(initialTargetsResponse, "telephony transfer targets"),
                 Collections.singletonList(transferTarget));
             assertEquals(1, replacedTargets.getTransferTargets().size());
 
-            CreateTelephonyCallJobInput request = new CreateTelephonyCallJobInput(
-                new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
-                number2).setPurpose("Java SDK live telephony validation");
+            TelephonyCallJobCreate request = new TelephonyCallJobCreate(new TelephonyPhoneNumber(number1), connection2,
+                new TelephonyPhoneNumber(number2)).setPurpose("Java SDK live telephony validation");
             TelephonyCallJob job
                 = telephony.createTelephonyCallJob(outboundAgent, testResourceNamer.randomUuid(), request);
             callJobId = job.getId();
             assertNotNull(callJobId);
             assertEquals(outboundAgent, job.getAgentName());
             assertEquals(connection2, job.getConnectionName());
-            assertEquals(number2, job.getSource());
+            assertEquals(number2, assertInstanceOf(TelephonyPhoneNumber.class, job.getSource()).getValue());
 
             TelephonyCallSummary inboundCall = waitForInboundCall(telephony, inboundAgent);
             inboundCallId = inboundCall.getId();
@@ -231,9 +227,8 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             waitForDispatchedCallJob(telephony, outboundAgent, callJobId);
 
             OffsetDateTime notBefore = testResourceNamer.now().plusMinutes(10);
-            CreateTelephonyCallJobInput scheduledRequest = new CreateTelephonyCallJobInput(
-                new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
-                number2).setPurpose("Java SDK live cancellation validation")
+            TelephonyCallJobCreate scheduledRequest = new TelephonyCallJobCreate(new TelephonyPhoneNumber(number1),
+                connection2, new TelephonyPhoneNumber(number2)).setPurpose("Java SDK live cancellation validation")
                     .setSchedule(
                         new TelephonyCallJobSchedule().setNotBefore(notBefore).setExpiresAt(notBefore.plusMinutes(10)));
             TelephonyCallJob scheduledJob
@@ -284,7 +279,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         }
     }
 
-    private TelephonyCallSummary waitForInboundCall(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
+    private TelephonyCallSummary waitForInboundCall(VoiceAgentsTelephonyClient telephony, String agentName) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             for (TelephonyCallSummary call : telephony.listTelephonyCalls(agentName)) {
@@ -295,8 +290,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         throw new AssertionError("No inbound Twilio call arrived within " + CALL_TIMEOUT + ".");
     }
 
-    private void waitForDispatchedCallJob(BetaVoiceAgentsTelephonyClient telephony, String agentName,
-        String callJobId) {
+    private void waitForDispatchedCallJob(VoiceAgentsTelephonyClient telephony, String agentName, String callJobId) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             TelephonyCallJob callJob = telephony.getTelephonyCallJob(agentName, callJobId);
@@ -320,8 +314,9 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
 
     private String e164(Configuration configuration, String name, String defaultValue, String sanitizedValue) {
         String value = getTelephonyConfig(configuration, name, defaultValue, sanitizedValue);
-        assertNotNull(value, name + " is required for live telephony testing.");
+        assertNotNull(value, name + " is required for live and record telephony testing.");
         value = value.trim();
+        assertTrue(!value.isEmpty(), name + " is required for live and record telephony testing.");
         assertTrue(value.matches("^\\+[1-9]\\d{7,14}$"), name + " must be an E.164 number such as +14255550123.");
         if (getTestMode() == TestMode.RECORD) {
             addPhoneSanitizers(value, sanitizedValue);
@@ -335,7 +330,6 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("$..phone_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..identifier", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..source", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..caller_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..provider_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..value", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
@@ -388,7 +382,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             .replace("|", "\\|");
     }
 
-    private static TelephonyBindingListItem findBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName,
+    private static TelephonyBindingListItem findBinding(VoiceAgentsTelephonyClient telephony, String agentName,
         String bindingId) {
         return telephony.listTelephonyBindings(agentName)
             .stream()
@@ -397,7 +391,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             .orElseThrow(() -> new AssertionError("Created binding was not listed."));
     }
 
-    private static void deleteBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
+    private static void deleteBinding(VoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
         telephony.listTelephonyBindings(agentName)
             .stream()
             .filter(item -> bindingId.equals(item.getId()))
@@ -410,7 +404,7 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
         return bindingId.replace("+", "%2B");
     }
 
-    private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
+    private static String getTransferTargetsEtag(VoiceAgentsTelephonyClient telephony, String agentName) {
         return requireEtag(telephony.getTelephonyTransferTargetsWithResponse(agentName, new RequestOptions()),
             "telephony transfer targets");
     }

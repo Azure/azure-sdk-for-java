@@ -12,15 +12,15 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
      */
     /**
-     * Sample code: 01 - Cancel operations in a recurring scheduled action occurrence.
+     * Sample code: 03 - Response with partial results when canceling resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceCancelSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -34,12 +34,12 @@ public final class OccurrencesCancelSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_EntireOccurrenceSuccess.json
      */
     /**
-     * Sample code: 02 - Cancel all operations in a recurring scheduled action occurrence.
+     * Sample code: 02 - Cancel all operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -47,16 +47,15 @@ public final class OccurrencesCancelSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
      */
     /**
-     * Sample code: 03 - Response with partial results when canceling resources in a recurring scheduled action
-     * occurrence.
+     * Sample code: 01 - Cancel operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceCancelSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",

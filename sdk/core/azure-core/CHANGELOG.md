@@ -1,14 +1,57 @@
 # Release History
 
-## 1.61.0-beta.1 (Unreleased)
+## 1.62.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
+- Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
+  configuration. An unset or cleared maximum preserves the selected transport's existing default.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
+  `InterruptedException`, which caused callers to silently lose the interruption signal.
+- Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
+  consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
+  times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
+  read.
+
 ### Other Changes
+
+- Added an internal `Context` key, `azure-stream-response-body`, that lets a client library opt in to the
+  asynchronous `RestProxy` streaming a `BinaryData` response body as it's consumed instead of buffering it, matching
+  the synchronous `RestProxy`. For such calls, the HTTP tracing span ends when the body has been consumed, fails, or
+  is cancelled. Default behavior is unchanged.
+
+## 1.61.0 (2026-10-27)
+
+### Bugs Fixed
+
+- Fixed concurrent or cancelled `PollerFlux` subscriptions busy-waiting for activation. Pending activation is now
+  shared without blocking, and successful activation is reused even when its first subscriber cancels.
+- Fixed asynchronous channel and file writes blocking producer threads. Writes now use completion handlers,
+  preserve partial writes, copy producer-owned buffers before returning from `onNext`, and stop requesting source
+  data when cancelled.
+- Fixed HTTP timeout resolution, including `HttpClientOptions`, to prefer explicit values, then builder-specific
+  configuration, then global configuration, and finally SDK defaults. Global timeouts are resolved when needed rather
+  than cached at class initialization, and nonpositive timeout values disable the timeout. Global timeout settings
+  continue to apply when using older HTTP transport versions.
+- Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
+  refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
+  the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
+- Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
+  complete.
+- Fixed virtual-thread carrier starvation during synchronous paging, which could deadlock token acquisition on Java 21
+  when authentication uses the shared executor.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.60.0 (2026-09-29)
 
@@ -26,6 +69,8 @@
   that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
+
+#### Dependency Updates
 
 - Upgraded Jackson from `2.18.9` to `2.18.11`.
 

@@ -4,10 +4,19 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
+import com.azure.resourcemanager.chaos.models.ActionDependency;
+import com.azure.resourcemanager.chaos.models.ActionDependencyType;
+import com.azure.resourcemanager.chaos.models.ActionLifecycle;
 import com.azure.resourcemanager.chaos.models.ExternalResource;
+import com.azure.resourcemanager.chaos.models.FailureBehavior;
 import com.azure.resourcemanager.chaos.models.KeyValuePair;
 import com.azure.resourcemanager.chaos.models.ParameterType;
+import com.azure.resourcemanager.chaos.models.RunAfter;
+import com.azure.resourcemanager.chaos.models.RunAfterBehavior;
+import com.azure.resourcemanager.chaos.models.Scenario;
 import com.azure.resourcemanager.chaos.models.ScenarioAction;
+import com.azure.resourcemanager.chaos.models.ScenarioActionSelector;
+import com.azure.resourcemanager.chaos.models.ScenarioActionSelectorName;
 import com.azure.resourcemanager.chaos.models.ScenarioParameter;
 import com.azure.resourcemanager.chaos.models.ScenarioProperties;
 import java.util.Arrays;
@@ -17,7 +26,42 @@ import java.util.Arrays;
  */
 public final class ScenariosCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/Scenarios_CreateOrUpdate_With_Failure_Behavior.json
+     */
+    /**
+     * Sample code: Create or update a scenario that continues past suppressed action failures.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createOrUpdateAScenarioThatContinuesPastSuppressedActionFailures(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.scenarios()
+            .define("bestEffortProbeScenario")
+            .withExistingWorkspace("exampleRG", "exampleWorkspace")
+            .withProperties(new ScenarioProperties()
+                .withDescription(
+                    "Probes dependencies best-effort, then runs a critical shutdown whose failure must stop the run.")
+                .withActions(Arrays.asList(new ScenarioAction().withName("dependencyProbe")
+                    .withActionId("urn:csci:microsoft:agent:networkDisconnect/1.0.0")
+                    .withDescription(
+                        "Best-effort dependency probe. Inherits the scenario-level Continue behavior, so a failure here does not fail the run.")
+                    .withDuration("PT5M"),
+                    new ScenarioAction().withName("criticalShutdown")
+                        .withActionId("urn:csci:microsoft:compute:shutdown/1.0.0")
+                        .withDescription(
+                            "Critical shutdown. Overrides the scenario default so that a failure stops the run.")
+                        .withDuration("PT10M")
+                        .withRunAfter(new RunAfter().withBehavior(RunAfterBehavior.ALL)
+                            .withItems(Arrays.asList(new ActionDependency().withType(ActionDependencyType.ACTION)
+                                .withName("dependencyProbe")
+                                .withOnActionLifecycle(ActionLifecycle.ANY_TERMINAL))))
+                        .withFailureBehavior(FailureBehavior.STOP)))
+                .withFailureBehavior(FailureBehavior.CONTINUE))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Scenarios_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario.
@@ -31,6 +75,15 @@ public final class ScenariosCreateOrUpdateSamples {
             .withProperties(new ScenarioProperties().withDescription(
                 "Induces an outage of all discovered VM and VMSS instances in the target zone with an option to invoke custom scripted actions using Automation Runbooks. Additionally, it forces failover of discovered Redis instances to simulate backend zonal outage.")
                 .withParameters(Arrays.asList(
+                    new ScenarioParameter().withName("logicalZone")
+                        .withType(ParameterType.STRING)
+                        .withRequired(true)
+                        .withDescription(
+                            "Logical availability-zone label to test in each target subscription, for example 1."),
+                    new ScenarioParameter().withName("location")
+                        .withType(ParameterType.STRING)
+                        .withRequired(true)
+                        .withDescription("Azure location name in which to test the logical zone, for example eastus."),
                     new ScenarioParameter().withName("duration")
                         .withType(ParameterType.STRING)
                         .withDefaultProperty("PT15M")
@@ -46,38 +99,112 @@ public final class ScenariosCreateOrUpdateSamples {
                         .withDefaultProperty("{}")
                         .withRequired(false)
                         .withDescription("Optional custom runbook 1 parameters in JSON format.")))
-                .withActions(
-                    Arrays
-                        .asList(
-                            new ScenarioAction().withName("vmssZoneDown")
-                                .withActionId("urn:csci:microsoft:compute:shutdown/1.0.0")
-                                .withDescription("Force shutdown VMSS instances in target zone")
-                                .withDuration("%%{parameters.duration}%%")
-                                .withParameters(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder")
-                                    .withValue("%%{filters.zones}%%"))),
-                            new ScenarioAction().withName("vmZoneDown")
-                                .withActionId("urn:csci:microsoft:compute:shutdown/1.0.0")
-                                .withDescription("Force shutdown VM instances in target zone")
-                                .withDuration("%%{parameters.duration}%%")
-                                .withParameters(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder")
-                                    .withValue("%%{filters.zones}%%"))),
-                            new ScenarioAction()
-                                .withName("redisFailover")
-                                .withActionId("urn:csci:microsoft:azureClusteredCacheForRedis:Reboot/1.0.0")
-                                .withDescription("Force failover of Redis instances to simulate backend zonal outage")
-                                .withDuration("PT5M")
-                                .withParameters(
-                                    Arrays.asList(
-                                        new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("PrimaryNode"))),
-                            new ScenarioAction().withName("custom-runbook-1")
-                                .withActionId("urn:csci:microsoft:Automation:StartRunbook/1.0.0")
-                                .withDescription("Custom Runbook 1")
-                                .withDuration("PT30M")
-                                .withParameters(Arrays.asList(new KeyValuePair()
-                                    .withKey("fakeTokenPlaceholder")
-                                    .withValue("%%{parameters.customRunbook1ParametersJson}%%")))
-                                .withExternalResource(new ExternalResource().withResourceId(
-                                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Automation/automationAccounts/exampleAutomationAccount/runbooks/exampleRunbook")))))
+                .withActions(Arrays.asList(
+                    new ScenarioAction().withName("vmssZoneDown")
+                        .withActionId("microsoft-compute-shutdown/2.0")
+                        .withDescription("Force shutdown VMSS instances in target zone")
+                        .withDuration("%%{parameters.duration}%%")
+                        .withParameters(Arrays.asList())
+                        .withSelectors(Arrays.asList(
+                            new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOGICAL_ZONE)
+                                .withValue("%%{parameters.logicalZone}%%"),
+                            new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOCATION)
+                                .withValue("%%{parameters.location}%%"))),
+                    new ScenarioAction().withName("vmZoneDown")
+                        .withActionId("microsoft-compute-shutdown/2.0")
+                        .withDescription("Force shutdown VM instances in target zone")
+                        .withDuration("%%{parameters.duration}%%")
+                        .withParameters(Arrays.asList())
+                        .withSelectors(Arrays.asList(
+                            new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOGICAL_ZONE)
+                                .withValue("%%{parameters.logicalZone}%%"),
+                            new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOCATION)
+                                .withValue("%%{parameters.location}%%"))),
+                    new ScenarioAction().withName("redisFailover")
+                        .withActionId("urn:csci:microsoft:azureClusteredCacheForRedis:Reboot/1.0.0")
+                        .withDescription("Force failover of Redis instances to simulate backend zonal outage")
+                        .withDuration("PT5M")
+                        .withParameters(
+                            Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("PrimaryNode"))),
+                    new ScenarioAction().withName("custom-runbook-1")
+                        .withActionId("urn:csci:microsoft:Automation:StartRunbook/1.0.0")
+                        .withDescription("Custom Runbook 1")
+                        .withDuration("PT30M")
+                        .withParameters(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder")
+                            .withValue("%%{parameters.customRunbook1ParametersJson}%%")))
+                        .withExternalResource(new ExternalResource().withResourceId(
+                            "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Automation/automationAccounts/exampleAutomationAccount/runbooks/exampleRunbook")))))
             .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Scenarios_CreateOrUpdate_CreateOnly.json
+     */
+    /**
+     * Sample code: Create a scenario only when absent, or return 412 when it already exists.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createAScenarioOnlyWhenAbsentOrReturn412WhenItAlreadyExists(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.scenarios()
+            .define("exampleScenario")
+            .withExistingWorkspace("exampleRG", "exampleWorkspace")
+            .withProperties(new ScenarioProperties().withParameters(Arrays.asList())
+                .withActions(Arrays.asList(new ScenarioAction().withName("restart")
+                    .withActionId("microsoft-compute-shutdown/2.0")
+                    .withDuration("PT5M")
+                    .withSelectors(Arrays.asList(
+                        new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOGICAL_ZONE).withValue("1"),
+                        new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOCATION)
+                            .withValue("eastus"))))))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Scenarios_CreateOrUpdate_From_Template.json
+     */
+    /**
+     * Sample code: Create a scenario from a built-in scenario template version.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        createAScenarioFromABuiltInScenarioTemplateVersion(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.scenarios()
+            .define("computeZoneDownScenario")
+            .withExistingWorkspace("exampleRG", "exampleWorkspace")
+            .withProperties(new ScenarioProperties()
+                .withCreatedFrom("/providers/Microsoft.Chaos/scenarioTemplates/ComputeZoneDown/versions/1.2")
+                .withDescription(
+                    "Simulates a datacenter/availability zone failure by shutting down VMSS instances and standalone VMs in the target zone. Zone failures account for ~25% of all cloud incidents — this scenario validates your application's cross-zone resilience."))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Scenarios_CreateOrUpdate_UpdateOnly.json
+     */
+    /**
+     * Sample code: Update a scenario only when present, or return 412 when it does not exist.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateAScenarioOnlyWhenPresentOrReturn412WhenItDoesNotExist(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        Scenario resource = manager.scenarios()
+            .getWithResponse("exampleRG", "exampleWorkspace", "exampleScenario", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ScenarioProperties().withParameters(Arrays.asList())
+                .withActions(Arrays.asList(new ScenarioAction().withName("restart")
+                    .withActionId("microsoft-compute-shutdown/2.0")
+                    .withDuration("PT5M")
+                    .withSelectors(Arrays.asList(
+                        new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOGICAL_ZONE).withValue("1"),
+                        new ScenarioActionSelector().withName(ScenarioActionSelectorName.LOCATION)
+                            .withValue("eastus"))))))
+            .withIfMatch("*")
+            .apply();
     }
 }

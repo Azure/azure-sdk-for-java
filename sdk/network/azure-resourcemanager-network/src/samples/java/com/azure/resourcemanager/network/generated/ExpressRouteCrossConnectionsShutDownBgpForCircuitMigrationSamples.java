@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteCrossConnectionsShutDownBgpForCircuitMigrationSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
+     * x-ms-original-file: 2026-03-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
      */
     /**
      * Sample code: ShutDownBgpForExpressRouteCircuitMigration.

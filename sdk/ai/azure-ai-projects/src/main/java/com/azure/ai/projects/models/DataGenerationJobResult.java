@@ -70,6 +70,7 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
         jsonWriter.writeIntField("generated_samples", this.generatedSampleCount);
         jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("token_usage", this.tokenUsage);
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -88,6 +89,7 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
             int generatedSampleCount = 0;
             List<DataGenerationJobOutput> outputs = null;
             DataGenerationTokenUsage tokenUsage = null;
+            List<DataGenerationWarning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -97,6 +99,8 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
                     outputs = reader.readArray(reader1 -> DataGenerationJobOutput.fromJson(reader1));
                 } else if ("token_usage".equals(fieldName)) {
                     tokenUsage = DataGenerationTokenUsage.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> DataGenerationWarning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -105,6 +109,7 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
                 = new DataGenerationJobResult(generatedSampleCount);
             deserializedDataGenerationJobResult.outputs = outputs;
             deserializedDataGenerationJobResult.tokenUsage = tokenUsage;
+            deserializedDataGenerationJobResult.warnings = warnings;
             return deserializedDataGenerationJobResult;
         });
     }
@@ -123,5 +128,25 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Generated
     public int getGeneratedSampleCount() {
         return this.generatedSampleCount;
+    }
+
+    /*
+     * Nonfatal warnings associated with otherwise usable output. `test_case_description_generation_incomplete`
+     * indicates that conversation rows were produced but one or more optional descriptions failed. Warning messages do
+     * not expose raw provider or model error bodies.
+     */
+    @Generated
+    private List<DataGenerationWarning> warnings;
+
+    /**
+     * Get the warnings property: Nonfatal warnings associated with otherwise usable output.
+     * `test_case_description_generation_incomplete` indicates that conversation rows were produced but one or more
+     * optional descriptions failed. Warning messages do not expose raw provider or model error bodies.
+     *
+     * @return the warnings value.
+     */
+    @Generated
+    public List<DataGenerationWarning> getWarnings() {
+        return this.warnings;
     }
 }

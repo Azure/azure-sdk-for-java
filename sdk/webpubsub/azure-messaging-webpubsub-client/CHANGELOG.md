@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,13 +8,37 @@
 
 ### Bugs Fixed
 
-- Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
+### Other Changes
+
+## 1.3.0 (2026-11-04)
+
+### Bugs Fixed
+
+- Fixed secure WebSocket connections accepting untrusted certificates or certificates for a different hostname. Connections now validate certificates against the JDK's default trust store and verify the hostname.
+- Fixed a race condition where send operations could miss fast acknowledgment responses.
+- Fixed JSON payloads sent to groups or server events being encoded as strings instead of JSON values.
+- Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
+- Fixed incomplete fragmented messages being decoded when a WebSocket connection closes or its handler is removed.
+- Fixed WebSocket connection attempts hanging when the peer does not complete the handshake, disconnects, or the handshake request cannot be sent. Opening handshakes now time out after 10 seconds.
+- Fixed WebSocket event loop resources leaking after connection failures and remote disconnects.
+- Fixed exceptions in open and close callbacks leaving operations incomplete or leaking received close frames.
+- Fixed WebSocket close operations hanging when the peer does not respond or the close frame cannot be sent. Closing handshakes now force the transport closed after a 10-second timeout.
+- Fixed interrupted WebSocket close operations losing the thread interrupt flag and skipping resource cleanup.
+- Fixed unexpected WebSocket disconnects being reported as normal closures. Disconnects without a received close frame now report abnormal-closure status 1006.
+
+### Other Changes
+
+- Verbose WebSocket send logs now record the payload length in bytes instead of message contents.
+- Updated WebSocket event loops and compression handling to use Netty 4.2 APIs.
+
+## 1.2.1 (2026-11-02)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `netty-codec-http` from `4.1.137.Final` to version `4.1.138.Final`.
+- Upgraded `netty-codec-http` from `4.1.138.Final` to version `4.2.19.Final`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
 
 ## 1.1.11 (2026-10-06)
 

@@ -24,7 +24,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWind
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateNetworkStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
@@ -94,7 +93,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().administratorLoginPassword();
     }
 
-    public PostgresMajorVersion version() {
+    public String version() {
         return this.innerModel().version();
     }
 
@@ -259,8 +258,12 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}",
+            "serverName");
     }
 
     public Server refresh() {
@@ -371,7 +374,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withVersion(PostgresMajorVersion version) {
+    public ServerImpl withVersion(String version) {
         if (isInCreateMode()) {
             this.innerModel().withVersion(version);
             return this;

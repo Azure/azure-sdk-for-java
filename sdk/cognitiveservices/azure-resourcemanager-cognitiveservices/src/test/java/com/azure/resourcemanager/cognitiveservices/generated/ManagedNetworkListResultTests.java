@@ -16,14 +16,14 @@ public final class ManagedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNetworkListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"nbau\",\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"Disabled\",\"Disabled\"],\"isolationMode\":\"AllowInternetOutbound\",\"networkId\":\"xbzrpejplssanb\",\"outboundRules\":{\"kgsuxunrswgk\":{\"type\":\"OutboundRule\"},\"jhboyikebhuhks\":{\"type\":\"OutboundRule\"},\"gwl\":{\"type\":\"OutboundRule\"},\"kh\":{\"type\":\"OutboundRule\"}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"ypzqzufgsyfej\",\"provisioningState\":\"Failed\"},\"provisioningState\":\"Deferred\"},\"id\":\"xptpqaya\",\"name\":\"k\",\"type\":\"cf\"}]}")
+            "{\"nextLink\":\"wmowegmmute\",\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"AllowInternetOutbound\",\"AllowOnlyApprovedOutbound\",\"Disabled\"],\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"ns\",\"outboundRules\":{\"zdesygr\":{\"type\":\"OutboundRule\"}},\"status\":{\"status\":\"Inactive\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"raybfueqfr\",\"provisioningState\":\"Deleted\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rhydkygywez\",\"name\":\"kiecafygzm\",\"type\":\"ieqvds\"},{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"AllowOnlyApprovedOutbound\",\"AllowInternetOutbound\",\"Disabled\"],\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"xalybxawoijpo\",\"outboundRules\":{\"lxp\":{\"type\":\"OutboundRule\"},\"kwjdjodqhy\":{\"type\":\"OutboundRule\"},\"incnr\":{\"type\":\"OutboundRule\"},\"mehllizhceu\":{\"type\":\"OutboundRule\"}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V2\",\"firewallPublicIpAddress\":\"pyi\",\"provisioningState\":\"Failed\"},\"provisioningState\":\"Deleting\"},\"id\":\"d\",\"name\":\"wrxwhydtl\",\"type\":\"vvadswzs\"}]}")
             .toObject(ManagedNetworkListResult.class);
-        Assertions.assertEquals("nbau", model.nextLink());
-        Assertions.assertEquals(IsolationMode.ALLOW_INTERNET_OUTBOUND,
+        Assertions.assertEquals("wmowegmmute", model.nextLink());
+        Assertions.assertEquals(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND,
             model.value().get(0).properties().managedNetwork().isolationMode());
-        Assertions.assertEquals(ManagedNetworkStatus.ACTIVE,
+        Assertions.assertEquals(ManagedNetworkStatus.INACTIVE,
             model.value().get(0).properties().managedNetwork().status().status());
-        Assertions.assertEquals(FirewallSku.BASIC, model.value().get(0).properties().managedNetwork().firewallSku());
+        Assertions.assertEquals(FirewallSku.STANDARD, model.value().get(0).properties().managedNetwork().firewallSku());
         Assertions.assertEquals(ManagedNetworkKind.V1,
             model.value().get(0).properties().managedNetwork().managedNetworkKind());
     }

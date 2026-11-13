@@ -9,6 +9,11 @@ package com.azure.ai.agents.implementation.models;
  */
 public enum AgentDefinitionOptInKeys {
     /**
+     * Enum value A2AAgents=V1Preview.
+     */
+    A2A_AGENTS_V1_PREVIEW("A2AAgents=V1Preview"),
+
+    /**
      * Enum value WorkflowAgents=V1Preview.
      */
     WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),
@@ -41,7 +46,12 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value Skills=V1Preview.
      */
-    SKILLS_V1_PREVIEW("Skills=V1Preview");
+    SKILLS_V1_PREVIEW("Skills=V1Preview"),
+
+    /**
+     * The Microsoft Copilot V1 preview feature opt-in.
+     */
+    MICROSOFT_COPILOT_V1_PREVIEW("MicrosoftCopilot=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

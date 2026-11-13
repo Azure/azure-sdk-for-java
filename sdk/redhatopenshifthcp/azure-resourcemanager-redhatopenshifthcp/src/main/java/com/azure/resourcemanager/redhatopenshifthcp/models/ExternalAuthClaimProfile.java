@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class ExternalAuthClaimProfile implements JsonSerializable<ExternalAuthClaimProfile> {
     /*
-     * The claim mappings
+     * The claim mappings.
      */
     private TokenClaimMappingsProfile mappings;
 
     /*
-     * The claim validation rules
+     * The claim validation rules.
      */
     private List<TokenClaimValidationRule> validationRules;
 

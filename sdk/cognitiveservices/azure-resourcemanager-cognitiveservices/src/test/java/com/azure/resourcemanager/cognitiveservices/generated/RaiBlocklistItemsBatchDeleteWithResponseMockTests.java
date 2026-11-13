@@ -29,8 +29,8 @@ public final class RaiBlocklistItemsBatchDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.raiBlocklistItems()
-            .batchDeleteWithResponse("gkensckhbmcarmo", "fxxkwykuqdndxl", "kh", Arrays.asList("gapvdgtfpeerscdx"),
-                com.azure.core.util.Context.NONE);
+            .batchDeleteWithResponse("loggdusxursu", "v", "xcjkcoqwczsy",
+                Arrays.asList("rizfwihvaang", "tnhjrfdmfd", "bbaex"), com.azure.core.util.Context.NONE);
 
     }
 }
