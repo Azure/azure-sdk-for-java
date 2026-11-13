@@ -446,7 +446,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trunkedNetworkName,
@@ -813,7 +813,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

@@ -11,7 +11,7 @@ public final class LogFilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogFileProperties model = BinaryData.fromString(
-            "{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-01-21T16:10:27Z\",\"lastModifiedAtUtc\":\"2021-10-26T21:17:13Z\",\"retentionExpiresAtUtc\":\"2021-06-04T22:03:42Z\",\"isMutable\":true,\"sizeInKilobytes\":6381082417075979554,\"pool\":\"digrjguufzdmsyqt\",\"node\":\"ihwhbotzingamvpp\",\"role\":\"ReadWrite\"}")
+            "{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-04-20T02:01Z\",\"lastModifiedAtUtc\":\"2021-11-29T17:47:16Z\",\"retentionExpiresAtUtc\":\"2021-08-19T22:18Z\",\"isMutable\":true,\"sizeInKilobytes\":2866985325528678483,\"pool\":\"hhavgrvkffovjz\",\"node\":\"pjbi\",\"role\":\"ReadWrite\"}")
             .toObject(LogFileProperties.class);
     }
 }

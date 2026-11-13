@@ -523,9 +523,9 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of the Prepared Image Specification resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner> beginCreateOrUpdate(
-        String resourceGroupName, String preparedImageSpecificationName, PreparedImageSpecificationInner resource,
-        String ifMatch, String ifNoneMatch) {
+    private SyncPoller<PollResult<PreparedImageSpecificationInner>, PreparedImageSpecificationInner>
+        beginCreateOrUpdate(String resourceGroupName, String preparedImageSpecificationName,
+            PreparedImageSpecificationInner resource, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, preparedImageSpecificationName,
             resource, ifMatch, ifNoneMatch);
         return this.client.<PreparedImageSpecificationInner, PreparedImageSpecificationInner>getLroResult(response,
@@ -866,7 +866,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String preparedImageSpecificationName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, preparedImageSpecificationName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1100,7 +1100,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteVersion(String resourceGroupName,
         String preparedImageSpecificationName, String version, String ifMatch) {
         Response<BinaryData> response
             = deleteVersionWithResponse(resourceGroupName, preparedImageSpecificationName, version, ifMatch);

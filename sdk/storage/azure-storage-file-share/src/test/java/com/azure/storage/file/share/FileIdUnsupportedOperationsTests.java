@@ -224,10 +224,10 @@ class FileIdUnsupportedOperationsTests {
         StepVerifier.create(fileClient.deleteIfExists()).verifyError(IllegalStateException.class);
         StepVerifier.create(fileClient.deleteIfExistsWithResponse(null)).verifyError(IllegalStateException.class);
         String sourceUrl = FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/source";
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> fileClient.beginCopy(sourceUrl, Collections.emptyMap(), null));
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> fileClient.beginCopy(sourceUrl, new ShareFileCopyOptions(), null));
+        StepVerifier.create(fileClient.beginCopy(sourceUrl, Collections.emptyMap(), null))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.beginCopy(sourceUrl, new ShareFileCopyOptions(), null))
+            .verifyError(IllegalStateException.class);
         StepVerifier.create(fileClient.abortCopy("copy-id")).verifyError(IllegalStateException.class);
         StepVerifier.create(fileClient.abortCopyWithResponse("copy-id", null)).verifyError(IllegalStateException.class);
         StepVerifier.create(fileClient.setProperties(1024, null, null, null)).verifyError(IllegalStateException.class);

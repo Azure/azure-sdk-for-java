@@ -407,8 +407,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of nginx Configuration Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationRequest body) {
+    private SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
+        beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName,
+            NginxConfigurationRequest body) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, deploymentName, configurationName, body);
         return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(response,

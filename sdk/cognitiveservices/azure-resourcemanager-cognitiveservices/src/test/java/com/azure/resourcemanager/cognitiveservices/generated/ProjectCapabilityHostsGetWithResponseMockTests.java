@@ -21,7 +21,7 @@ public final class ProjectCapabilityHostsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aiServicesConnections\":[\"ykkxa\",\"r\",\"uptiicgvpzgyxcc\",\"pxiema\"],\"vectorStoreConnections\":[\"tjekxsnnb\",\"ysgkt\",\"mocnqbbl\",\"tbofzghfuifw\"],\"storageConnections\":[\"ynohocqxug\",\"xugdcrrfb\",\"lv\",\"mhurosdjlzbdmddg\"],\"threadStorageConnections\":[\"uyaorservpv\",\"sorsbegcl\",\"ex\"],\"provisioningState\":\"Failed\"},\"id\":\"zyhzydyvtuqvi\",\"name\":\"lunssky\",\"type\":\"igtvjxsocsvjekej\"}";
+            = "{\"properties\":{\"aiServicesConnections\":[\"dzfyxcnwawoxcg\"],\"vectorStoreConnections\":[\"jqfbifop\",\"jxdwdrpazqjkr\"],\"storageConnections\":[\"wotfcuu\",\"gtji\",\"pgayiawohfmhnnzm\",\"cjjkmqenh\"],\"threadStorageConnections\":[\"zrpv\",\"gloiovsl\"],\"provisioningState\":\"Canceled\"},\"id\":\"suvw\",\"name\":\"enbg\",\"type\":\"i\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ProjectCapabilityHostsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProjectCapabilityHost response = manager.projectCapabilityHosts()
-            .getWithResponse("xh", "aqoqbvejoysoxovl", "nkleldk", "dlqqhn", com.azure.core.util.Context.NONE)
+            .getWithResponse("wlfxzfw", "geupcknece", "kgrvfpsjd", "ngsy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ykkxa", response.properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("tjekxsnnb", response.properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("ynohocqxug", response.properties().storageConnections().get(0));
-        Assertions.assertEquals("uyaorservpv", response.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("dzfyxcnwawoxcg", response.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("jqfbifop", response.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("wotfcuu", response.properties().storageConnections().get(0));
+        Assertions.assertEquals("zrpv", response.properties().threadStorageConnections().get(0));
     }
 }

@@ -13,9 +13,9 @@ public final class DeviceRegistryIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceRegistryIdentity model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"wxosowzxcug\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"bxu\"}")
                 .toObject(DeviceRegistryIdentity.class);
         Assertions.assertEquals(DeviceRegistryIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("wxosowzxcug", model.userAssignedIdentity());
+        Assertions.assertEquals("bxu", model.userAssignedIdentity());
     }
 }

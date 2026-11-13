@@ -433,7 +433,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
         String volumeName, VolumeInner volumeParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, volumeName, volumeParameters, ifMatch, ifNoneMatch);
@@ -792,7 +792,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String volumeName, String ifMatch,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String volumeName, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, volumeName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

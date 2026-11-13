@@ -69,7 +69,8 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
         Mono<Response<ManagedComputeCapacityListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("offer") String offer, @QueryParam("acceleratorType") String acceleratorType,
-            @QueryParam("deploymentId") String deploymentId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deploymentId") String deploymentId, @QueryParam("location") String location,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/managedComputeCapacities")
@@ -78,7 +79,8 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
         Response<ManagedComputeCapacityListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("offer") String offer, @QueryParam("acceleratorType") String acceleratorType,
-            @QueryParam("deploymentId") String deploymentId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deploymentId") String deploymentId, @QueryParam("location") String location,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -105,6 +107,13 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -113,11 +122,11 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedComputeCapacityInner>> listSinglePageAsync(String offer, String acceleratorType,
-        String deploymentId) {
+        String deploymentId, String location) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), offer, acceleratorType, deploymentId, accept, context))
+                this.client.getSubscriptionId(), offer, acceleratorType, deploymentId, location, accept, context))
             .<PagedResponse<ManagedComputeCapacityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -131,15 +140,22 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed compute capacities for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedComputeCapacityInner> listAsync(String offer, String acceleratorType,
-        String deploymentId) {
-        return new PagedFlux<>(() -> listSinglePageAsync(offer, acceleratorType, deploymentId),
+    private PagedFlux<ManagedComputeCapacityInner> listAsync(String offer, String acceleratorType, String deploymentId,
+        String location) {
+        return new PagedFlux<>(() -> listSinglePageAsync(offer, acceleratorType, deploymentId, location),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -157,7 +173,8 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
     private PagedFlux<ManagedComputeCapacityInner> listAsync(String offer) {
         final String acceleratorType = null;
         final String deploymentId = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(offer, acceleratorType, deploymentId),
+        final String location = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(offer, acceleratorType, deploymentId, location),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -169,6 +186,13 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,11 +200,11 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeCapacityInner> listSinglePage(String offer, String acceleratorType,
-        String deploymentId) {
+        String deploymentId, String location) {
         final String accept = "application/json";
         Response<ManagedComputeCapacityListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                offer, acceleratorType, deploymentId, accept, Context.NONE);
+                offer, acceleratorType, deploymentId, location, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -193,6 +217,13 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,11 +232,11 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeCapacityInner> listSinglePage(String offer, String acceleratorType,
-        String deploymentId, Context context) {
+        String deploymentId, String location, Context context) {
         final String accept = "application/json";
         Response<ManagedComputeCapacityListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                offer, acceleratorType, deploymentId, accept, context);
+                offer, acceleratorType, deploymentId, location, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -224,7 +255,8 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
     public PagedIterable<ManagedComputeCapacityInner> list(String offer) {
         final String acceleratorType = null;
         final String deploymentId = null;
-        return new PagedIterable<>(() -> listSinglePage(offer, acceleratorType, deploymentId),
+        final String location = null;
+        return new PagedIterable<>(() -> listSinglePage(offer, acceleratorType, deploymentId, location),
             nextLink -> listNextSinglePage(nextLink));
     }
 
@@ -236,6 +268,13 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,8 +283,8 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeCapacityInner> list(String offer, String acceleratorType, String deploymentId,
-        Context context) {
-        return new PagedIterable<>(() -> listSinglePage(offer, acceleratorType, deploymentId, context),
+        String location, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(offer, acceleratorType, deploymentId, location, context),
             nextLink -> listNextSinglePage(nextLink, context));
     }
 

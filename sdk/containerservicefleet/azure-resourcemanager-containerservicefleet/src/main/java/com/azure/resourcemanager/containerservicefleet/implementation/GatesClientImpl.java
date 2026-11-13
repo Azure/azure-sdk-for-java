@@ -354,7 +354,7 @@ public final class GatesClientImpl implements GatesClient {
      * @return the {@link SyncPoller} for polling of a Gate controls the progression during a staged rollout, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
         String gateName, GatePatch properties, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch);

@@ -12,10 +12,10 @@ public final class RaiBlockListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ewzjkjexfd\",\"value\":[{\"properties\":{\"description\":\"sylkks\"},\"etag\":\"bffmbmxz\",\"tags\":{\"icgaao\":\"ywwpgjxsnptfuj\",\"wemxswvruunzz\":\"pttaqutd\",\"yinljqe\":\"gehkfkimrtixokff\"},\"id\":\"whixmonstsh\",\"name\":\"yxgvelfcld\",\"type\":\"ccbi\"},{\"properties\":{\"description\":\"vuwcobiegstmnin\"},\"etag\":\"izcil\",\"tags\":{\"xqzv\":\"gshejjtbxqmulux\",\"ycucrwnamikzeb\":\"ers\"},\"id\":\"bsmswziqgf\",\"name\":\"hokzrusw\",\"type\":\"vhczznvfby\"},{\"properties\":{\"description\":\"xjww\"},\"etag\":\"z\",\"tags\":{\"haohdjhhflzokxc\":\"wmxqhndvnoamlds\",\"atftgzpnpbsw\":\"xpelnjetagltsx\",\"loccsrmozihm\":\"e\",\"rytfmpcycil\":\"pgawtxxpkyjcxcjx\"},\"id\":\"caykggnoxuz\",\"name\":\"rksxwpndfc\",\"type\":\"fnznth\"},{\"properties\":{\"description\":\"kjaosrxuzv\"},\"etag\":\"mktcqiosmgbza\",\"tags\":{\"laprlt\":\"qdlyrtl\",\"nnbsoqeqa\":\"katbhjm\",\"febwlnbmhyreeudz\":\"arvlagunbt\",\"pdqmjxlyyzglgouw\":\"av\"},\"id\":\"mjjyuojq\",\"name\":\"obaxkjeytu\",\"type\":\"lbfjkwr\"}]}")
+            "{\"nextLink\":\"gqqqxh\",\"value\":[{\"properties\":{\"description\":\"cpjuisa\"},\"etag\":\"k\",\"tags\":{\"lkatnwxyiopidkqq\":\"fvazivjlfrqttba\",\"igovi\":\"kuvscxkdm\"},\"id\":\"xk\",\"name\":\"mloazuru\",\"type\":\"cbgoor\"}]}")
             .toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("ewzjkjexfd", model.nextLink());
-        Assertions.assertEquals("sylkks", model.value().get(0).properties().description());
-        Assertions.assertEquals("ywwpgjxsnptfuj", model.value().get(0).tags().get("icgaao"));
+        Assertions.assertEquals("gqqqxh", model.nextLink());
+        Assertions.assertEquals("cpjuisa", model.value().get(0).properties().description());
+        Assertions.assertEquals("fvazivjlfrqttba", model.value().get(0).tags().get("lkatnwxyiopidkqq"));
     }
 }

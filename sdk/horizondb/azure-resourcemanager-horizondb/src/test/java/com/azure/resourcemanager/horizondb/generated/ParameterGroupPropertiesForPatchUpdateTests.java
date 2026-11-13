@@ -14,25 +14,24 @@ public final class ParameterGroupPropertiesForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterGroupPropertiesForPatchUpdate model = BinaryData.fromString(
-            "{\"parameters\":[{\"name\":\"rxv\",\"description\":\"u\",\"value\":\"pz\",\"defaultValue\":\"xhdzhlrqjbhckf\",\"valueSource\":\"SystemDefault\",\"dataType\":\"xsbkyvpyca\",\"allowedValues\":\"z\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"kuwbcrnwb\",\"unit\":\"hhseyv\"},{\"name\":\"srtslhspkdeem\",\"description\":\"fm\",\"value\":\"gkvtmelmqkrhah\",\"defaultValue\":\"juahaquhcdhmdual\",\"valueSource\":\"UserOverride\",\"dataType\":\"pvfadmwsrcr\",\"allowedValues\":\"xpvgo\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"sgwbnbbeld\",\"unit\":\"k\"},{\"name\":\"ali\",\"description\":\"rqhakauha\",\"value\":\"sfwxosowzxc\",\"defaultValue\":\"i\",\"valueSource\":\"UserOverride\",\"dataType\":\"xdje\",\"allowedValues\":\"pucwwfvovbvme\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"hzceuojgjrwjue\",\"unit\":\"twm\"},{\"name\":\"ytdxwit\",\"description\":\"rjaw\",\"value\":\"wgxhn\",\"defaultValue\":\"kxfbkpycgklwndn\",\"valueSource\":\"UserOverride\",\"dataType\":\"uwhvylwzbtdhxujz\",\"allowedValues\":\"mpowuwpr\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"alupjm\",\"unit\":\"fxobbcsws\"}],\"description\":\"jriplrbpbewtghf\"}")
+            "{\"parameters\":[{\"name\":\"v\",\"description\":\"jkbegibtnmxiebww\",\"value\":\"oayqc\",\"defaultValue\":\"rtzju\",\"valueSource\":\"UserOverride\",\"dataType\":\"zmh\",\"allowedValues\":\"ongmtsa\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"xqpsrknftguv\",\"unit\":\"uhprwmdyvxqt\"},{\"name\":\"riwwroy\",\"description\":\"exrmcqibycnojvk\",\"value\":\"e\",\"defaultValue\":\"sgzvahapjyzhpv\",\"valueSource\":\"UserOverride\",\"dataType\":\"j\",\"allowedValues\":\"xdjzlmwlxk\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"ovawjvzunlu\",\"unit\":\"nnprn\"},{\"name\":\"peilpjzuaejxdu\",\"description\":\"skzbb\",\"value\":\"zumveekgpwo\",\"defaultValue\":\"hkfpbs\",\"valueSource\":\"SystemDefault\",\"dataType\":\"dxluu\",\"allowedValues\":\"ttouwaboekqvkel\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"wyjsflhhcaalnjix\",\"unit\":\"xyawj\"}],\"description\":\"aq\"}")
             .toObject(ParameterGroupPropertiesForPatchUpdate.class);
-        Assertions.assertEquals("rxv", model.parameters().get(0).name());
-        Assertions.assertEquals("pz", model.parameters().get(0).value());
-        Assertions.assertEquals("jriplrbpbewtghf", model.description());
+        Assertions.assertEquals("v", model.parameters().get(0).name());
+        Assertions.assertEquals("oayqc", model.parameters().get(0).value());
+        Assertions.assertEquals("aq", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParameterGroupPropertiesForPatchUpdate model
             = new ParameterGroupPropertiesForPatchUpdate()
-                .withParameters(Arrays.asList(new ParameterProperties().withName("rxv").withValue("pz"),
-                    new ParameterProperties().withName("srtslhspkdeem").withValue("gkvtmelmqkrhah"),
-                    new ParameterProperties().withName("ali").withValue("sfwxosowzxc"),
-                    new ParameterProperties().withName("ytdxwit").withValue("wgxhn")))
-                .withDescription("jriplrbpbewtghf");
+                .withParameters(Arrays.asList(new ParameterProperties().withName("v").withValue("oayqc"),
+                    new ParameterProperties().withName("riwwroy").withValue("e"),
+                    new ParameterProperties().withName("peilpjzuaejxdu").withValue("zumveekgpwo")))
+                .withDescription("aq");
         model = BinaryData.fromObject(model).toObject(ParameterGroupPropertiesForPatchUpdate.class);
-        Assertions.assertEquals("rxv", model.parameters().get(0).name());
-        Assertions.assertEquals("pz", model.parameters().get(0).value());
-        Assertions.assertEquals("jriplrbpbewtghf", model.description());
+        Assertions.assertEquals("v", model.parameters().get(0).name());
+        Assertions.assertEquals("oayqc", model.parameters().get(0).value());
+        Assertions.assertEquals("aq", model.description());
     }
 }

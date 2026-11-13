@@ -1429,7 +1429,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, deleteOption);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class VirtualNetworkLinksGetSamples {
     /*
-     * x-ms-original-file: 2024-06-01/VirtualNetworkLinkGet.json
+     * x-ms-original-file: 2026-06-01-preview/VirtualNetworkLinkGet.json
      */
     /**
      * Sample code: GET Private DNS Zone Virtual Network Link.

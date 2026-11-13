@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2026-11-12)
 
 ### Features Added
 
@@ -17,15 +27,13 @@
 
 ### Bugs Fixed
 
-- Corrected request and response Javadoc schemas to reflect read-only properties and partial-update optionality, and clarified that topic state is optional on creation.
-- Regenerated with Java emitter 0.48.1 to preserve page-size overrides on typed asynchronous collections, including continuation requests.
+- Fixed typed asynchronous collections to preserve page-size overrides, including continuation requests.
 
 ### Other Changes
 
-- Renamed request body parameters from `resource` to `role`, `room`, `member`, `user`, `topic`, or `message` to match their operations.
-- Clarified message-ID-based descending pagination, text versus binary message content, and client access token generation.
-- Verified all existing and new operations end to end with `2026-08-01-preview` in Central US EUAP; removed the temporary server routing workaround and restored the complete live/playback suite.
-- Enabled all typed asynchronous page-size regression cases and removed the temporary protocol paging workaround from tests and samples.
+- Upgraded `azure-core` from `1.59.1` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.7` to version `1.17.0`.
+- Upgraded `nimbus-jose-jwt` from `9.37.3` to version `9.37.4`.
 
 ## 1.0.0-beta.1 (2026-09-15)
 

@@ -12,8 +12,8 @@ public final class IotHubQuotaMetricInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubQuotaMetricInfoListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"cq\",\"currentValue\":466406566618256898,\"maxValue\":309749547712385990},{\"name\":\"hzxct\",\"currentValue\":3142076316898715241,\"maxValue\":2327041908752862566},{\"name\":\"izpost\",\"currentValue\":8282413341093346919,\"maxValue\":2840352336595508598}],\"nextLink\":\"rmfqjhhkxbpvj\"}")
+            "{\"value\":[{\"name\":\"krh\",\"currentValue\":4758332856472261291,\"maxValue\":4311555676641493549},{\"name\":\"aquhcdhm\",\"currentValue\":9171481587703972041,\"maxValue\":2559158309988957100},{\"name\":\"pvfadmwsrcr\",\"currentValue\":5411587900664634399,\"maxValue\":3807328350452563665},{\"name\":\"zlfmisgwbnbbeld\",\"currentValue\":547140611004295932,\"maxValue\":2514005563573922649}],\"nextLink\":\"ourqhakau\"}")
             .toObject(IotHubQuotaMetricInfoListResult.class);
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.nextLink());
+        Assertions.assertEquals("ourqhakau", model.nextLink());
     }
 }

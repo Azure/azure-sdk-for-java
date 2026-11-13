@@ -215,7 +215,7 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
+    private SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String accountName, String managedNetworkName,
             ManagedNetworkProvisionOptions body) {
         Response<BinaryData> response

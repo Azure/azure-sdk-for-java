@@ -38,6 +38,9 @@ stages:
       - template: /eng/pipelines/templates/variables/image.yml
       - name: AutoReleaseArtifactsJson
         value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseArtifactsJson'] ]
+      # The SDK PR that triggered this auto-release, so completion updates the release plan linked to it.
+      - name: AutoReleaseSdkPullRequestUrl
+        value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseSdkPullRequestUrl'] ]
     jobs:
       - job: PrepareAutoReleasePackages
         displayName: Prepare auto-release packages
@@ -355,6 +358,17 @@ stages:
             parameters:
               SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
+          # Log whether this is an auto-release or a manual release, and the auto-release SDK PR.
+          - pwsh: |
+              $type = if ($env:BUILD_REASON -eq 'IndividualCI') { 'auto-release' } else { 'manual release' }
+              $pr = if ($env:AUTO_RELEASE_SDK_PR) { $env:AUTO_RELEASE_SDK_PR } else { 'none' }
+              Write-Host "Release type: $type"
+              Write-Host "Auto-release SDK PR: $pr"
+            displayName: Show release type and auto-release SDK PR
+            env:
+              BUILD_REASON: $(Build.Reason)
+              AUTO_RELEASE_SDK_PR: $(AutoReleaseSdkPullRequestUrl)
+
           - task: AzureCLI@2
             displayName: Mark auto-release packages as released
             continueOnError: true
@@ -368,7 +382,8 @@ stages:
                 foreach ($artifact in $artifacts) {
                   $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1 `
                     -PackageInfoFilePath "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($artifact.name).json" `
-                    -AzsdkExePath '$(AZSDK)'
+                    -AzsdkExePath '$(AZSDK)' `
+                    -SdkPullRequest '$(AutoReleaseSdkPullRequestUrl)'
                 }
               workingDirectory: $(Pipeline.Workspace)
 

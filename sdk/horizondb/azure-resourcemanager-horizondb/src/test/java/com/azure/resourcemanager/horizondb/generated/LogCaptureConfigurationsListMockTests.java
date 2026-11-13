@@ -23,7 +23,7 @@ public final class LogCaptureConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"retentionDays\":351115849,\"provisioningState\":\"InProgress\"},\"id\":\"mpizru\",\"name\":\"n\",\"type\":\"qxpxiwfcngjsaa\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"retentionDays\":1676113185,\"provisioningState\":\"Canceled\"},\"id\":\"zies\",\"name\":\"uughtuqfecjxeyg\",\"type\":\"uhxu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class LogCaptureConfigurationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogCaptureConfiguration> response
-            = manager.logCaptureConfigurations().list("wey", "rdhlis", com.azure.core.util.Context.NONE);
+            = manager.logCaptureConfigurations().list("tjvidt", "gepuslvyjtc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(LogCaptureState.ENABLED, response.iterator().next().properties().state());
-        Assertions.assertEquals(351115849, response.iterator().next().properties().retentionDays());
+        Assertions.assertEquals(LogCaptureState.DISABLED, response.iterator().next().properties().state());
+        Assertions.assertEquals(1676113185, response.iterator().next().properties().retentionDays());
     }
 }

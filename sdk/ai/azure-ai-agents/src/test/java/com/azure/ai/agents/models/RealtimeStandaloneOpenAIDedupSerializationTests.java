@@ -7,19 +7,20 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.AudioTranscription.Delay;
+import com.openai.models.realtime.ConversationItemInputAudioTranscriptionCompletedEvent.Usage;
 import com.openai.models.realtime.RateLimitsUpdatedEvent.RateLimit;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection.SemanticVad.Eagerness;
 import com.openai.models.realtime.RealtimeResponse;
 import com.openai.models.realtime.RealtimeResponseCreateParams.Conversation;
-import com.openai.models.realtime.RealtimeSessionCreateRequest.Model;
-import com.openai.models.realtime.RealtimeSessionCreateRequest.OutputModality;
-import com.openai.models.realtime.RealtimeTruncationRetentionRatio;
 import com.openai.models.realtime.ResponseContentPartAddedEvent.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,81 +32,100 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RealtimeStandaloneOpenAIDedupSerializationTests {
 
     @Test
-    public void testPcmRateRoundTripPolymorphically() throws IOException {
-        com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate rate
-            = com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate._24000;
-        RealtimePcmAudioFormat original = new RealtimePcmAudioFormat().setRate(rate);
-        RealtimePcmAudioFormat result = assertInstanceOf(RealtimePcmAudioFormat.class,
-            deserialize(serialize(original), RealtimeAudioFormat::fromJson));
+    public void testAudioFormatsAcrossFoundryContainers() throws IOException {
+        for (String formatJson : Arrays.asList("{\"type\":\"audio/pcm\",\"rate\":24000}", "{\"type\":\"audio/pcma\"}",
+            "{\"type\":\"audio/pcmu\"}", "{\"type\":\"future_audio\",\"setting\":true}")) {
+            String json = "{\"format\":" + formatJson + "}";
+            VoiceAgentAudioInputConfiguration input = deserialize(json, VoiceAgentAudioInputConfiguration::fromJson);
+            VoiceAgentAudioOutputConfiguration output
+                = deserialize("{\"voice\":\"en-US-AvaNeural\",\"format\":" + formatJson + "}",
+                    VoiceAgentAudioOutputConfiguration::fromJson);
+            VoiceResponseAudioOutput response = deserialize(json, VoiceResponseAudioOutput::fromJson);
+            RealtimeResponseContentPart part = deserialize(json, RealtimeResponseContentPart::fromJson);
 
-        assertEquals(rate, result.getRate());
-        assertEquals(serialize(original), serialize(result));
+            assertJsonFieldEquals(formatJson, input, "format");
+            assertJsonFieldEquals(formatJson, output, "format");
+            assertJsonFieldEquals(formatJson, response, "format");
+            assertJsonFieldEquals(formatJson, part, "format");
+            assertEquals("en-US-AvaNeural", output.getVoice());
+            assertStable(input, VoiceAgentAudioInputConfiguration::fromJson);
+            assertStable(output, VoiceAgentAudioOutputConfiguration::fromJson);
+            assertStable(response, VoiceResponseAudioOutput::fromJson);
+            assertStable(part, RealtimeResponseContentPart::fromJson);
+            assertEquals(input.getFormat(), response.getFormat());
+            assertEquals(input.getFormat(), part.getFormat());
+            assertEquals(input.getFormat(), output.getFormat());
+        }
+
+        RealtimeAudioFormats pcm = RealtimeAudioFormats.ofAudioPcm(RealtimeAudioFormats.AudioPcm.builder()
+            .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+            .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
+            .build());
+        assertTrue(serialize(new VoiceAgentAudioInputConfiguration().setFormat(pcm)).contains("\"rate\":24000"));
+        assertTrue(serialize(new VoiceAgentAudioOutputConfiguration().setFormat(pcm)).contains("\"rate\":24000"));
+        VoiceAgentAudioInputConfiguration roundTripped
+            = deserialize(serialize(new VoiceAgentAudioInputConfiguration().setFormat(pcm)),
+                VoiceAgentAudioInputConfiguration::fromJson);
+        assertTrue(roundTripped.getFormat().isAudioPcm());
     }
 
     @Test
-    public void testSessionModelAndOutputModalityValuesRoundTrip() throws IOException {
-        String[] modelValues = {
-            "gpt-realtime",
-            "gpt-realtime-1.5",
-            "gpt-realtime-2",
-            "gpt-realtime-2.1",
-            "gpt-realtime-2.1-mini",
-            "gpt-realtime-2025-08-28",
-            "gpt-4o-realtime-preview",
-            "gpt-4o-realtime-preview-2024-10-01",
-            "gpt-4o-realtime-preview-2024-12-17",
-            "gpt-4o-realtime-preview-2025-06-03",
-            "gpt-4o-mini-realtime-preview",
-            "gpt-4o-mini-realtime-preview-2024-12-17",
-            "gpt-realtime-mini",
-            "gpt-realtime-mini-2025-10-06",
-            "gpt-realtime-mini-2025-12-15",
-            "gpt-audio-1.5",
-            "gpt-audio-mini",
-            "gpt-audio-mini-2025-10-06",
-            "gpt-audio-mini-2025-12-15",
-            "future-realtime-model" };
-
-        for (String modelValue : modelValues) {
-            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setModel(Model.of(modelValue))
-                .setOutputModalities(Arrays.asList(OutputModality.TEXT, OutputModality.AUDIO));
-            String json = serialize(original);
-            RealtimeSessionConfiguration result = deserialize(json, RealtimeSessionConfiguration::fromJson);
-
-            assertEquals(modelValue, result.getModel().asString());
-            assertEquals(OutputModality.TEXT, result.getOutputModalities().get(0));
-            assertEquals(OutputModality.AUDIO, result.getOutputModalities().get(1));
-            assertEquals(json, serialize(result));
+    public void testNullAndAbsentAudioFormatsAreOmitted() throws IOException {
+        for (String json : Arrays.asList("{}", "{\"format\":null}")) {
+            VoiceAgentAudioInputConfiguration input = deserialize(json, VoiceAgentAudioInputConfiguration::fromJson);
+            VoiceAgentAudioOutputConfiguration output = deserialize(json, VoiceAgentAudioOutputConfiguration::fromJson);
+            VoiceResponseAudioOutput response = deserialize(json, VoiceResponseAudioOutput::fromJson);
+            RealtimeResponseContentPart part = deserialize(json, RealtimeResponseContentPart::fromJson);
+            assertNull(input.getFormat());
+            assertNull(output.getFormat());
+            assertNull(response.getFormat());
+            assertNull(part.getFormat());
+            assertFalse(serialize(input).contains("\"format\""));
+            assertFalse(serialize(output).contains("\"format\""));
+            assertFalse(serialize(response).contains("\"format\""));
+            assertFalse(serialize(part).contains("\"format\""));
         }
     }
 
     @Test
-    public void testTruncationAndTracingUnionsRoundTrip() throws IOException {
-        RealtimeTruncationRetentionRatio retentionRatio = RealtimeTruncationRetentionRatio.builder()
-            .retentionRatio(0.8)
-            .tokenLimits(RealtimeTruncationRetentionRatio.TokenLimits.builder().postInstructions(1024).build())
-            .build();
-        for (String strategy : Arrays.asList("auto", "disabled")) {
-            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setTruncation(strategy);
-            RealtimeSessionConfiguration result
-                = deserialize(serialize(original), RealtimeSessionConfiguration::fromJson);
-            assertEquals(strategy, result.getTruncationAsString());
-            assertStable(original, RealtimeSessionConfiguration::fromJson);
+    public void testMcpErrorVariantsRoundTripThroughConversationHierarchy() throws IOException {
+        for (String errorJson : Arrays.asList(
+            "{\"type\":\"protocol_error\",\"code\":-32600,\"message\":\"bad request\"}",
+            "{\"type\":\"http_error\",\"code\":503,\"message\":\"unavailable\"}",
+            "{\"type\":\"tool_execution_error\",\"message\":\"failed\"}",
+            "{\"type\":\"future_error\",\"detail\":\"preserved\"}")) {
+            String json = "{\"type\":\"mcp_call\",\"id\":\"item-1\",\"server_label\":\"server\",\"name\":\"lookup\","
+                + "\"arguments\":\"{}\",\"created_at\":123,\"response_id\":\"resp-1\",\"error\":" + errorJson + "}";
+            RealtimeMcpToolCall call
+                = assertInstanceOf(RealtimeMcpToolCall.class, deserialize(json, RealtimeConversationItem::fromJson));
+            if (errorJson.contains("\"protocol_error\"")) {
+                assertTrue(call.getError().isProtocol());
+            } else if (errorJson.contains("\"http_error\"")) {
+                assertTrue(call.getError().isHttp());
+            } else if (errorJson.contains("\"tool_execution_error\"")) {
+                assertTrue(call.getError().isToolExecution());
+            }
+            assertEquals(OffsetDateTime.parse("1970-01-01T00:02:03Z"), call.getCreatedAt());
+            assertEquals("resp-1", call.getResponseId());
+            String serialized = serialize(call);
+            assertJsonFieldEquals(errorJson, call, "error");
+            assertFalse(serialized.contains("\"created_at\""));
+            assertFalse(serialized.contains("\"response_id\""));
+            RealtimeMcpToolCall result = assertInstanceOf(RealtimeMcpToolCall.class,
+                deserialize(serialized, RealtimeConversationItem::fromJson));
+            assertEquals(call.getError(), result.getError());
+            assertEquals(serialized,
+                serialize(new RealtimeMcpToolCall("item-1", "server", "lookup", "{}").setError(call.getError())));
         }
-        RealtimeSessionConfiguration retained = new RealtimeSessionConfiguration().setTruncation(retentionRatio);
-        RealtimeSessionConfiguration retainedResult
-            = deserialize(serialize(retained), RealtimeSessionConfiguration::fromJson);
-        assertEquals(0.8, retainedResult.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
-        assertStable(retained, RealtimeSessionConfiguration::fromJson);
+    }
 
-        RealtimeSessionTracingConfiguration tracing
-            = new RealtimeSessionTracingConfiguration().setWorkflowName("voice").setGroupId("group-1");
-        RealtimeSessionConfiguration traced = new RealtimeSessionConfiguration().setTracing(tracing);
-        RealtimeSessionConfiguration tracedResult
-            = deserialize(serialize(traced), RealtimeSessionConfiguration::fromJson);
-        assertEquals("voice", tracedResult.getTracingAsRealtimeSessionTracingConfiguration().getWorkflowName());
-        assertStable(new RealtimeSessionConfiguration().setTracing("auto"), RealtimeSessionConfiguration::fromJson);
-        assertFalse(serialize(new RealtimeSessionConfiguration().setTracing((String) null)).contains("tracing"));
+    @Test
+    public void testNullAndAbsentMcpErrorsAreOmitted() throws IOException {
+        for (String json : Arrays.asList("{}", "{\"error\":null}")) {
+            RealtimeMcpToolCall call = deserialize(json, RealtimeMcpToolCall::fromJson);
+            assertNull(call.getError());
+            assertFalse(serialize(call).contains("\"error\""));
+        }
     }
 
     @Test
@@ -288,8 +308,6 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     public void testDelayConversationAndEagernessValuesRoundTrip() throws IOException {
         Delay[] delays = { Delay.MINIMAL, Delay.LOW, Delay.MEDIUM, Delay.HIGH, Delay.XHIGH };
         for (Delay delay : delays) {
-            AudioTranscription transcription = new AudioTranscription().setDelay(delay);
-            assertEquals(delay, deserialize(serialize(transcription), AudioTranscription::fromJson).getDelay());
             VoiceAgentInputTranscription voiceTranscription
                 = new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.GPT_REALTIME_WHISPER)
                     .setDelay(delay);
@@ -309,9 +327,6 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             Eagerness.MEDIUM,
             Eagerness.HIGH,
             Eagerness.AUTO }) {
-            RealtimeSemanticVadTurnDetection realtime = new RealtimeSemanticVadTurnDetection().setEagerness(eagerness);
-            assertEquals(eagerness,
-                deserialize(serialize(realtime), RealtimeSemanticVadTurnDetection::fromJson).getEagerness());
             VoiceAgentSemanticVadTurnDetection voice = new VoiceAgentSemanticVadTurnDetection().setEagerness(eagerness);
             assertEquals(eagerness,
                 deserialize(serialize(voice), VoiceAgentSemanticVadTurnDetection::fromJson).getEagerness());
@@ -322,16 +337,101 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     public void testTranscriptionTokenDetailsRoundTripPolymorphically() throws IOException {
         String json = "{\"type\":\"tokens\",\"input_tokens\":10,\"output_tokens\":5,\"total_tokens\":15,"
             + "\"input_token_details\":{\"audio_tokens\":7,\"text_tokens\":3}}";
-        TranscriptTextUsageTokens usage
-            = assertInstanceOf(TranscriptTextUsageTokens.class, deserialize(json, TranscriptTextUsage::fromJson));
-        TranscriptTextInputTokenDetails details = usage.getInputTokenDetails();
-        assertEquals(7L, details.getAudioTokens());
-        assertEquals(3L, details.getTextTokens());
-        assertStable(usage, TranscriptTextUsage::fromJson);
+        RealtimeConversationItemInputAudioTranscriptionCompletedEvent event = deserialize("{\"usage\":" + json + "}",
+            RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
+        Usage.TranscriptTextUsageTokens usage = event.getUsage().asTranscriptTextUsageTokens();
+        Usage.TranscriptTextUsageTokens.InputTokenDetails details = usage.inputTokenDetails().get();
+        assertEquals(7L, details.audioTokens().get().longValue());
+        assertEquals(3L, details.textTokens().get().longValue());
+        assertStable(event, RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
     }
 
     @Test
-    public void testRealtimeResponseEnumsAndAbsentValues() throws IOException {
+    public void testTranscriptionLanguagesRoundTripWithExistingPayloads() throws IOException {
+        String languages = "[{\"code\":\"en\",\"confidence\":0.9},null,{\"code\":\"fr\"}]";
+        String usage = "{\"type\":\"duration\",\"seconds\":1.5}";
+        String logprobs = "[{\"token\":\"hello\",\"logprob\":-0.25,\"bytes\":[104]}]";
+        RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
+            = assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionCompletedEvent.class,
+                deserialize("{\"type\":\"conversation.item.input_audio_transcription.completed\","
+                    + "\"event_id\":\"event-1\",\"item_id\":\"item-1\",\"content_index\":0,\"transcript\":\"hello\","
+                    + "\"languages\":" + languages + ",\"usage\":" + usage + ",\"logprobs\":" + logprobs
+                    + ",\"phrases\":[]}", RealtimeServerEvent::fromJson));
+
+        assertEquals("en", event.getLanguages().get(0).code());
+        assertNull(event.getLanguages().get(1));
+        assertEquals("fr", event.getLanguages().get(2).code());
+        assertJsonFieldEquals(languages, event, "languages");
+        assertJsonFieldEquals(usage, event, "usage");
+        assertJsonFieldEquals(logprobs, event, "logprobs");
+        assertEquals("hello", event.getLogProbs().get(0).token());
+        assertJsonFieldEquals("[]", event, "phrases");
+        assertStable(event, RealtimeServerEvent::fromJson);
+    }
+
+    @Test
+    public void testMcpListedToolsPreserveSchemaAndAnnotations() throws IOException {
+        String toolJson = "{\"name\":\"search\",\"description\":\"Search records\","
+            + "\"input_schema\":{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\"}},"
+            + "\"required\":[\"query\"],\"additionalProperties\":false},"
+            + "\"annotations\":{\"readOnlyHint\":true,\"provider\":{\"limits\":[1,2]}},\"future_setting\":true}";
+        RealtimeMcpListTools item = assertInstanceOf(RealtimeMcpListTools.class,
+            deserialize("{\"type\":\"mcp_list_tools\",\"server_label\":\"server\",\"id\":\"item-1\"," + "\"tools\":["
+                + toolJson + ",null],\"created_at\":123,\"response_id\":\"response-1\"}",
+                RealtimeConversationItem::fromJson));
+
+        com.openai.models.realtime.RealtimeMcpListTools.Tool tool = item.getTools().get(0);
+        assertEquals("search", tool.name());
+        assertEquals("Search records", tool.description().get());
+        assertNull(item.getTools().get(1));
+        assertJsonFieldEquals("[" + toolJson + ",null]", item, "tools");
+        assertEquals(OffsetDateTime.parse("1970-01-01T00:02:03Z"), item.getCreatedAt());
+        assertEquals("response-1", item.getResponseId());
+        assertFalse(serialize(item).contains("\"created_at\""));
+        assertFalse(serialize(item).contains("\"response_id\""));
+        assertStable(item, RealtimeConversationItem::fromJson);
+
+        RealtimeMcpListTools constructed
+            = new RealtimeMcpListTools("server", Arrays.asList(tool.toBuilder().build(), null));
+        assertJsonFieldEquals("[" + toolJson + ",null]", constructed, "tools");
+        assertStable(constructed, RealtimeConversationItem::fromJson);
+    }
+
+    @Test
+    public void testNullAbsentAndEmptyLanguageAndToolLists() throws IOException {
+        for (String json : Arrays.asList("{}", "{\"languages\":null,\"tools\":null}",
+            "{\"languages\":[],\"tools\":[]}")) {
+            RealtimeConversationItemInputAudioTranscriptionCompletedEvent event
+                = deserialize(json, RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
+            RealtimeMcpListTools item = deserialize(json, RealtimeMcpListTools::fromJson);
+            if (json.contains("[]")) {
+                assertTrue(event.getLanguages().isEmpty());
+                assertTrue(item.getTools().isEmpty());
+                assertJsonFieldEquals("[]", event, "languages");
+                assertJsonFieldEquals("[]", item, "tools");
+            } else {
+                assertNull(event.getLanguages());
+                assertNull(item.getTools());
+                assertFalse(serialize(event).contains("\"languages\""));
+                assertFalse(serialize(item).contains("\"tools\""));
+            }
+        }
+    }
+
+    @Test
+    public void testMcpListedToolReplacementPreservesAgentToolHierarchy() throws IOException {
+        FunctionTool original = new FunctionTool("lookup", Collections.emptyMap(), false);
+        String json = serialize(original);
+        FunctionTool result = assertInstanceOf(FunctionTool.class, deserialize(json, Tool::fromJson));
+        assertEquals("lookup", result.getName());
+        assertEquals(ToolType.FUNCTION, result.getType());
+        assertFalse(json.contains("\"input_schema\""));
+        assertFalse(json.contains("\"annotations\""));
+        assertEquals(json, serialize(result));
+    }
+
+    @Test
+    public void testRealtimeResponseEnums() throws IOException {
         RealtimeResponse.Status[] statuses = {
             RealtimeResponse.Status.COMPLETED,
             RealtimeResponse.Status.CANCELLED,
@@ -353,15 +453,12 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             }
         }
 
-        String emptyAudio = serialize(new AudioTranscription());
-        assertFalse(emptyAudio.contains("delay"));
-        assertNull(deserialize(emptyAudio, AudioTranscription::fromJson).getDelay());
-        String emptySession = serialize(new RealtimeSessionConfiguration());
-        assertFalse(emptySession.contains("tracing"));
-        assertFalse(emptySession.contains("truncation"));
-        assertNull(deserialize(emptySession, RealtimeSessionConfiguration::fromJson)
-            .getTracingAsRealtimeSessionTracingConfiguration());
-        assertTrue(emptySession.contains("\"type\":\"realtime\""));
+    }
+
+    private static void assertJsonFieldEquals(String expected, JsonSerializable<?> value, String field)
+        throws IOException {
+        assertEquals(deserialize(expected, JsonReader::readUntyped),
+            deserialize(serialize(value), reader -> reader.readMap(JsonReader::readUntyped)).get(field));
     }
 
     private static <T extends JsonSerializable<?>> void assertStable(T value, Deserializer<? extends T> deserializer)

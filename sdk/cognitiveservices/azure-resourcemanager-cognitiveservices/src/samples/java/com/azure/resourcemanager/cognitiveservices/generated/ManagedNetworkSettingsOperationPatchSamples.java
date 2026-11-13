@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class ManagedNetworkSettingsOperationPatchSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/patchManagedNetworkV2.json
+     * x-ms-original-file: 2026-11-01/ManagedNetwork/patchManagedNetworkV2.json
      */
     /**
      * Sample code: Patch ManagedNetworkSettings.

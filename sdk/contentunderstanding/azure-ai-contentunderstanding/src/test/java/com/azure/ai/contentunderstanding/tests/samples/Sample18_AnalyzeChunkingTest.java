@@ -30,6 +30,7 @@ public class Sample18_AnalyzeChunkingTest extends ContentUnderstandingPreviewCli
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = contentUnderstandingClient.beginCreateAnalyzer(analyzerId,
                     PreviewSampleTestSupport.createChunkingAnalyzer(getModelProfile().getCompletionModel()), true);
+            setPlaybackSyncPollerPollInterval(createPoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createPoller.waitForCompletion().getStatus());
             assertNotNull(createPoller.getFinalResult());
@@ -44,6 +45,7 @@ public class Sample18_AnalyzeChunkingTest extends ContentUnderstandingPreviewCli
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
                 = contentUnderstandingClient.beginAnalyzeBinary(analyzerId,
                     PreviewSampleTestSupport.readSample("sample_invoice.pdf"));
+            setPlaybackSyncPollerPollInterval(analyzePoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 analyzePoller.waitForCompletion().getStatus());
             AnalysisResult result = analyzePoller.getFinalResult();

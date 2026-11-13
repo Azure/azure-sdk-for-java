@@ -1849,7 +1849,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
      * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public
+    private
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForReprotect(String serviceGroupName, String operationId, String recoveryPlanName,
             ReprotectRequest body) {
@@ -2665,7 +2665,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
      * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
+    private SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginReprotect(String serviceGroupName, String operationId, String recoveryPlanName, ReprotectRequest body) {
         Response<BinaryData> response = reprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
         return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(

@@ -54,4 +54,10 @@ public final class EvaluationRuleEventType extends ExpandableStringEnum<Evaluati
     public static Collection<EvaluationRuleEventType> values() {
         return values(EvaluationRuleEventType.class);
     }
+
+    /**
+     * Run the rule's action on its schedule.
+     */
+    @Generated
+    public static final EvaluationRuleEventType TIMER_TRIGGER = fromString("timerTrigger");
 }

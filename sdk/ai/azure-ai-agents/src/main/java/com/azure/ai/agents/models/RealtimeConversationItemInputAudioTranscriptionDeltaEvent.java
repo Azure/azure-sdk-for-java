@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -20,7 +19,6 @@ import java.util.List;
  * results.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeConversationItemInputAudioTranscriptionDeltaEvent extends RealtimeServerEvent {
 
     /*
@@ -52,12 +50,6 @@ public final class RealtimeConversationItemInputAudioTranscriptionDeltaEvent ext
      */
     @Generated
     private String delta;
-
-    /*
-     * The logprobs property.
-     */
-    @Generated
-    private List<LogProbProperties> logprobs;
 
     /**
      * Creates an instance of RealtimeConversationItemInputAudioTranscriptionDeltaEvent class.
@@ -123,16 +115,6 @@ public final class RealtimeConversationItemInputAudioTranscriptionDeltaEvent ext
     }
 
     /**
-     * Get the logprobs property: The logprobs property.
-     *
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<LogProbProperties> getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -144,7 +126,7 @@ public final class RealtimeConversationItemInputAudioTranscriptionDeltaEvent ext
         jsonWriter.writeNumberField("content_index", this.contentIndex);
         jsonWriter.writeStringField("delta", this.delta);
         // AI Tooling: openai-java de-dup
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> {
+        jsonWriter.writeArrayField("logprobs", this.logProbs, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -202,8 +184,24 @@ public final class RealtimeConversationItemInputAudioTranscriptionDeltaEvent ext
             deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent.type = type;
             deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent.contentIndex = contentIndex;
             deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent.delta = delta;
-            deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent.logprobs = logprobs;
+            deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent.logProbs = logprobs;
             return deserializedRealtimeConversationItemInputAudioTranscriptionDeltaEvent;
         });
+    }
+
+    /*
+     * The logprobs property.
+     */
+    @Generated
+    private List<LogProbProperties> logProbs;
+
+    /**
+     * Get the logProbs property: The logprobs property.
+     *
+     * @return the logProbs value.
+     */
+    @Generated
+    public List<LogProbProperties> getLogProbs() {
+        return this.logProbs;
     }
 }
