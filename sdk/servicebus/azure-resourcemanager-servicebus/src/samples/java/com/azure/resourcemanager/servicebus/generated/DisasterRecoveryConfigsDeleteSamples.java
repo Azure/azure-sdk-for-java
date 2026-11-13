@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class DisasterRecoveryConfigsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasDelete.json
+     * x-ms-original-file: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasDelete.json
      */
     /**
      * Sample code: SBAliasDelete.

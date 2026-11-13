@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
  */
 public final class DisasterRecoveryConfigsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasCheckNameAvailability.json
+     * x-ms-original-file: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasCheckNameAvailability.json
      */
     /**
      * Sample code: AliasNameAvailability.
