@@ -21,7 +21,7 @@ public final class SchemaVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"jkpdxphlkksnm\",\"description\":\"vyfijdkzuqnw\",\"schemaContent\":\"it\",\"hash\":\"q\",\"provisioningState\":\"Canceled\"},\"id\":\"hluqwquls\",\"name\":\"trjbhxykfhyq\",\"type\":\"zvqqugdrftbcvexr\"}";
+            = "{\"properties\":{\"uuid\":\"dmvxadq\",\"description\":\"frgnawbabgfbktyj\",\"schemaContent\":\"fczlfsyqkfrbzgow\",\"hash\":\"qmje\",\"provisioningState\":\"Failed\"},\"id\":\"nyq\",\"name\":\"xhlusrvxis\",\"type\":\"mjceagbjqvls\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SchemaVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .getWithResponse("ccrmmk", "upijubyqjfkakfq", "rke", "yildudxjascow", com.azure.core.util.Context.NONE)
+            .getWithResponse("ywfcfxzi", "zzihvwy", "usuv", "slczwciidjsllf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vyfijdkzuqnw", response.properties().description());
-        Assertions.assertEquals("it", response.properties().schemaContent());
+        Assertions.assertEquals("frgnawbabgfbktyj", response.properties().description());
+        Assertions.assertEquals("fczlfsyqkfrbzgow", response.properties().schemaContent());
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceAssetInner;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAsset;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetExecuteActionRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssets;
 
 public final class NamespaceAssetsImpl implements NamespaceAssets {
@@ -52,17 +53,27 @@ public final class NamespaceAssetsImpl implements NamespaceAssets {
         this.serviceClient().delete(resourceGroupName, namespaceName, assetName, context);
     }
 
-    public PagedIterable<NamespaceAsset> listByResourceGroup(String resourceGroupName, String namespaceName) {
+    public PagedIterable<NamespaceAsset> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<NamespaceAssetInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceAssetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NamespaceAsset> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceAsset> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
         PagedIterable<NamespaceAssetInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName, context);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceAssetImpl(inner1, this.manager()));
+    }
+
+    public void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body) {
+        this.serviceClient().executeAction(resourceGroupName, namespaceName, assetName, body);
+    }
+
+    public void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body, Context context) {
+        this.serviceClient().executeAction(resourceGroupName, namespaceName, assetName, body, context);
     }
 
     public NamespaceAsset getById(String id) {

@@ -61,6 +61,13 @@ public interface DeviceRegistryManagementClient {
     OperationStatusClient getOperationStatus();
 
     /**
+     * Gets the AsyncOperationStatusClient object to access its operations.
+     * 
+     * @return the AsyncOperationStatusClient object.
+     */
+    AsyncOperationStatusClient getAsyncOperationStatus();
+
+    /**
      * Gets the AssetsClient object to access its operations.
      * 
      * @return the AssetsClient object.
@@ -87,20 +94,6 @@ public interface DeviceRegistryManagementClient {
      * @return the NamespacesClient object.
      */
     NamespacesClient getNamespaces();
-
-    /**
-     * Gets the CredentialsClient object to access its operations.
-     * 
-     * @return the CredentialsClient object.
-     */
-    CredentialsClient getCredentials();
-
-    /**
-     * Gets the PoliciesClient object to access its operations.
-     * 
-     * @return the PoliciesClient object.
-     */
-    PoliciesClient getPolicies();
 
     /**
      * Gets the NamespaceAssetsClient object to access its operations.
@@ -150,4 +143,25 @@ public interface DeviceRegistryManagementClient {
      * @return the SchemaVersionsClient object.
      */
     SchemaVersionsClient getSchemaVersions();
+
+    /**
+     * Gets the CertificateAuthoritiesClient object to access its operations.
+     * 
+     * @return the CertificateAuthoritiesClient object.
+     */
+    CertificateAuthoritiesClient getCertificateAuthorities();
+
+    /**
+     * Gets the CertificatePoliciesClient object to access its operations.
+     * 
+     * @return the CertificatePoliciesClient object.
+     */
+    CertificatePoliciesClient getCertificatePolicies();
+
+    /**
+     * Gets the RegistryDevicesClient object to access its operations.
+     * 
+     * @return the RegistryDevicesClient object.
+     */
+    RegistryDevicesClient getRegistryDevices();
 }

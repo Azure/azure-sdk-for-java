@@ -254,7 +254,7 @@ public interface NamespaceDiscoveredAssetsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName);
+    PagedIterable<NamespaceDiscoveredAssetInner> listByNamespace(String resourceGroupName, String namespaceName);
 
     /**
      * List NamespaceDiscoveredAsset resources by Namespace.
@@ -269,6 +269,6 @@ public interface NamespaceDiscoveredAssetsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName,
+    PagedIterable<NamespaceDiscoveredAssetInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context);
 }

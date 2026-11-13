@@ -15,27 +15,30 @@ public final class OutboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEndpoints model = BinaryData.fromString(
-            "{\"assigned\":{\"wmszkk\":{\"endpointType\":\"mfnjh\",\"address\":\"j\"}},\"unassigned\":{\"a\":{\"endpointType\":\"eyfkzikfja\",\"address\":\"n\"},\"lddxbjhwua\":{\"endpointType\":\"xwczelpcire\",\"address\":\"sfeaenwabfat\"}}}")
+            "{\"assigned\":{\"dtmhrkwofyyvoqa\":{\"endpointType\":\"sdqrhzoymibmrq\",\"address\":\"ibahwflus\"},\"kcnqxwbpo\":{\"endpointType\":\"iexpbtgiwbwo\",\"address\":\"nwashrtd\"},\"pqwcciuqgbdbutau\":{\"endpointType\":\"lpiujwaa\",\"address\":\"ipqiiobyuqerpq\"},\"koymkcd\":{\"endpointType\":\"btkuwhh\",\"address\":\"hykojoxafnndlpic\"}},\"unassigned\":{\"syrsndsytgadgvra\":{\"endpointType\":\"kkpwdreqnovvq\",\"address\":\"ovljxywsu\"},\"uu\":{\"endpointType\":\"en\",\"address\":\"qnzarrwl\"},\"iipfpubj\":{\"endpointType\":\"fqka\",\"address\":\"e\"}}}")
             .toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("mfnjh", model.assigned().get("wmszkk").endpointType());
-        Assertions.assertEquals("j", model.assigned().get("wmszkk").address());
-        Assertions.assertEquals("eyfkzikfja", model.unassigned().get("a").endpointType());
-        Assertions.assertEquals("n", model.unassigned().get("a").address());
+        Assertions.assertEquals("sdqrhzoymibmrq", model.assigned().get("dtmhrkwofyyvoqa").endpointType());
+        Assertions.assertEquals("ibahwflus", model.assigned().get("dtmhrkwofyyvoqa").address());
+        Assertions.assertEquals("kkpwdreqnovvq", model.unassigned().get("syrsndsytgadgvra").endpointType());
+        Assertions.assertEquals("ovljxywsu", model.unassigned().get("syrsndsytgadgvra").address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEndpoints model
-            = new OutboundEndpoints()
-                .withAssigned(mapOf("wmszkk", new DeviceMessagingEndpoint().withEndpointType("mfnjh").withAddress("j")))
-                .withUnassigned(mapOf("a",
-                    new DeviceMessagingEndpoint().withEndpointType("eyfkzikfja").withAddress("n"), "lddxbjhwua",
-                    new DeviceMessagingEndpoint().withEndpointType("xwczelpcire").withAddress("sfeaenwabfat")));
+        OutboundEndpoints model = new OutboundEndpoints().withAssigned(mapOf("dtmhrkwofyyvoqa",
+            new DeviceMessagingEndpoint().withEndpointType("sdqrhzoymibmrq").withAddress("ibahwflus"), "kcnqxwbpo",
+            new DeviceMessagingEndpoint().withEndpointType("iexpbtgiwbwo").withAddress("nwashrtd"), "pqwcciuqgbdbutau",
+            new DeviceMessagingEndpoint().withEndpointType("lpiujwaa").withAddress("ipqiiobyuqerpq"), "koymkcd",
+            new DeviceMessagingEndpoint().withEndpointType("btkuwhh").withAddress("hykojoxafnndlpic")))
+            .withUnassigned(mapOf("syrsndsytgadgvra",
+                new DeviceMessagingEndpoint().withEndpointType("kkpwdreqnovvq").withAddress("ovljxywsu"), "uu",
+                new DeviceMessagingEndpoint().withEndpointType("en").withAddress("qnzarrwl"), "iipfpubj",
+                new DeviceMessagingEndpoint().withEndpointType("fqka").withAddress("e")));
         model = BinaryData.fromObject(model).toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("mfnjh", model.assigned().get("wmszkk").endpointType());
-        Assertions.assertEquals("j", model.assigned().get("wmszkk").address());
-        Assertions.assertEquals("eyfkzikfja", model.unassigned().get("a").endpointType());
-        Assertions.assertEquals("n", model.unassigned().get("a").address());
+        Assertions.assertEquals("sdqrhzoymibmrq", model.assigned().get("dtmhrkwofyyvoqa").endpointType());
+        Assertions.assertEquals("ibahwflus", model.assigned().get("dtmhrkwofyyvoqa").address());
+        Assertions.assertEquals("kkpwdreqnovvq", model.unassigned().get("syrsndsytgadgvra").endpointType());
+        Assertions.assertEquals("ovljxywsu", model.unassigned().get("syrsndsytgadgvra").address());
     }
 
     // Use "Map.of" if available
