@@ -27,18 +27,26 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnectionsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AccountCostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AdapterDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentApplicationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentDeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ArcDeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AttachedAksClustersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlansImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ComputeOperationsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ComputesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DefenderForAISettingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.EncryptionScopesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.LocationBasedModelCapacitiesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeCapacitiesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeDeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ManagedComputeUsagesOperationGroupsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedNetworkProvisionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ManagedNetworkSettingsOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ModelCapacitiesImpl;
@@ -51,14 +59,17 @@ import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpoin
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectConnectionsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.QuotaTiersImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiBindingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistItemsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiContentFiltersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiExternalSafetyProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiExternalSafetyProvidersOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiPoliciesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiRegosImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiToolLabelsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiTopicsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
@@ -66,19 +77,28 @@ import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusIm
 import com.azure.resourcemanager.cognitiveservices.implementation.SubscriptionRaiPoliciesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.TestRaiExternalSafetyProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.WorkbenchesImpl;
 import com.azure.resourcemanager.cognitiveservices.models.AccountCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
+import com.azure.resourcemanager.cognitiveservices.models.AccountCostControls;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
+import com.azure.resourcemanager.cognitiveservices.models.AdapterDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.AgentApplications;
 import com.azure.resourcemanager.cognitiveservices.models.AgentDeployments;
+import com.azure.resourcemanager.cognitiveservices.models.ArcDeployments;
+import com.azure.resourcemanager.cognitiveservices.models.AttachedAksClusters;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
+import com.azure.resourcemanager.cognitiveservices.models.ComputeOperations;
+import com.azure.resourcemanager.cognitiveservices.models.Computes;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
 import com.azure.resourcemanager.cognitiveservices.models.EncryptionScopes;
 import com.azure.resourcemanager.cognitiveservices.models.LocationBasedModelCapacities;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeCapacities;
+import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeployments;
+import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeUsagesOperationGroups;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkProvisions;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkSettingsOperations;
 import com.azure.resourcemanager.cognitiveservices.models.ModelCapacities;
@@ -91,14 +111,17 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnect
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectConnections;
+import com.azure.resourcemanager.cognitiveservices.models.ProjectCostControls;
 import com.azure.resourcemanager.cognitiveservices.models.Projects;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaTiers;
+import com.azure.resourcemanager.cognitiveservices.models.RaiBindings;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItems;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklists;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilters;
 import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProviders;
 import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvidersOperations;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
+import com.azure.resourcemanager.cognitiveservices.models.RaiRegos;
 import com.azure.resourcemanager.cognitiveservices.models.RaiToolLabels;
 import com.azure.resourcemanager.cognitiveservices.models.RaiTopics;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
@@ -106,6 +129,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
 import com.azure.resourcemanager.cognitiveservices.models.SubscriptionRaiPolicies;
 import com.azure.resourcemanager.cognitiveservices.models.TestRaiExternalSafetyProviders;
 import com.azure.resourcemanager.cognitiveservices.models.Usages;
+import com.azure.resourcemanager.cognitiveservices.models.Workbenches;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -127,6 +151,8 @@ public final class CognitiveServicesManager {
 
     private DeletedAccounts deletedAccounts;
 
+    private AttachedAksClusters attachedAksClusters;
+
     private PrivateEndpointConnections privateEndpointConnections;
 
     private Deployments deployments;
@@ -138,6 +164,10 @@ public final class CognitiveServicesManager {
     private RaiPolicies raiPolicies;
 
     private SubscriptionRaiPolicies subscriptionRaiPolicies;
+
+    private RaiRegos raiRegos;
+
+    private RaiBindings raiBindings;
 
     private RaiBlocklistItems raiBlocklistItems;
 
@@ -161,9 +191,27 @@ public final class CognitiveServicesManager {
 
     private QuotaTiers quotaTiers;
 
+    private ArcDeployments arcDeployments;
+
     private AgentApplications agentApplications;
 
+    private ManagedComputeDeployments managedComputeDeployments;
+
+    private AdapterDeployments adapterDeployments;
+
+    private ComputeOperations computeOperations;
+
+    private ManagedComputeUsagesOperationGroups managedComputeUsagesOperationGroups;
+
+    private Computes computes;
+
+    private Workbenches workbenches;
+
     private ManagedComputeCapacities managedComputeCapacities;
+
+    private AccountCostControls accountCostControls;
+
+    private ProjectCostControls projectCostControls;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -463,6 +511,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of AttachedAksClusters. It manages AttachedAksCluster.
+     * 
+     * @return Resource collection API of AttachedAksClusters.
+     */
+    public AttachedAksClusters attachedAksClusters() {
+        if (this.attachedAksClusters == null) {
+            this.attachedAksClusters = new AttachedAksClustersImpl(clientObject.getAttachedAksClusters(), this);
+        }
+        return attachedAksClusters;
+    }
+
+    /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
      * 
      * @return Resource collection API of PrivateEndpointConnections.
@@ -534,6 +594,30 @@ public final class CognitiveServicesManager {
                 = new SubscriptionRaiPoliciesImpl(clientObject.getSubscriptionRaiPolicies(), this);
         }
         return subscriptionRaiPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of RaiRegos. It manages RaiRego.
+     * 
+     * @return Resource collection API of RaiRegos.
+     */
+    public RaiRegos raiRegos() {
+        if (this.raiRegos == null) {
+            this.raiRegos = new RaiRegosImpl(clientObject.getRaiRegos(), this);
+        }
+        return raiRegos;
+    }
+
+    /**
+     * Gets the resource collection API of RaiBindings. It manages RaiBinding.
+     * 
+     * @return Resource collection API of RaiBindings.
+     */
+    public RaiBindings raiBindings() {
+        if (this.raiBindings == null) {
+            this.raiBindings = new RaiBindingsImpl(clientObject.getRaiBindings(), this);
+        }
+        return raiBindings;
     }
 
     /**
@@ -671,6 +755,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of ArcDeployments. It manages ArcDeployment.
+     * 
+     * @return Resource collection API of ArcDeployments.
+     */
+    public ArcDeployments arcDeployments() {
+        if (this.arcDeployments == null) {
+            this.arcDeployments = new ArcDeploymentsImpl(clientObject.getArcDeployments(), this);
+        }
+        return arcDeployments;
+    }
+
+    /**
      * Gets the resource collection API of AgentApplications. It manages AgentApplication.
      * 
      * @return Resource collection API of AgentApplications.
@@ -680,6 +776,80 @@ public final class CognitiveServicesManager {
             this.agentApplications = new AgentApplicationsImpl(clientObject.getAgentApplications(), this);
         }
         return agentApplications;
+    }
+
+    /**
+     * Gets the resource collection API of ManagedComputeDeployments. It manages ManagedComputeDeployment.
+     * 
+     * @return Resource collection API of ManagedComputeDeployments.
+     */
+    public ManagedComputeDeployments managedComputeDeployments() {
+        if (this.managedComputeDeployments == null) {
+            this.managedComputeDeployments
+                = new ManagedComputeDeploymentsImpl(clientObject.getManagedComputeDeployments(), this);
+        }
+        return managedComputeDeployments;
+    }
+
+    /**
+     * Gets the resource collection API of AdapterDeployments. It manages AdapterDeployment.
+     * 
+     * @return Resource collection API of AdapterDeployments.
+     */
+    public AdapterDeployments adapterDeployments() {
+        if (this.adapterDeployments == null) {
+            this.adapterDeployments = new AdapterDeploymentsImpl(clientObject.getAdapterDeployments(), this);
+        }
+        return adapterDeployments;
+    }
+
+    /**
+     * Gets the resource collection API of ComputeOperations.
+     * 
+     * @return Resource collection API of ComputeOperations.
+     */
+    public ComputeOperations computeOperations() {
+        if (this.computeOperations == null) {
+            this.computeOperations = new ComputeOperationsImpl(clientObject.getComputeOperations(), this);
+        }
+        return computeOperations;
+    }
+
+    /**
+     * Gets the resource collection API of ManagedComputeUsagesOperationGroups.
+     * 
+     * @return Resource collection API of ManagedComputeUsagesOperationGroups.
+     */
+    public ManagedComputeUsagesOperationGroups managedComputeUsagesOperationGroups() {
+        if (this.managedComputeUsagesOperationGroups == null) {
+            this.managedComputeUsagesOperationGroups = new ManagedComputeUsagesOperationGroupsImpl(
+                clientObject.getManagedComputeUsagesOperationGroups(), this);
+        }
+        return managedComputeUsagesOperationGroups;
+    }
+
+    /**
+     * Gets the resource collection API of Computes. It manages Compute.
+     * 
+     * @return Resource collection API of Computes.
+     */
+    public Computes computes() {
+        if (this.computes == null) {
+            this.computes = new ComputesImpl(clientObject.getComputes(), this);
+        }
+        return computes;
+    }
+
+    /**
+     * Gets the resource collection API of Workbenches. It manages Workbench.
+     * 
+     * @return Resource collection API of Workbenches.
+     */
+    public Workbenches workbenches() {
+        if (this.workbenches == null) {
+            this.workbenches = new WorkbenchesImpl(clientObject.getWorkbenches(), this);
+        }
+        return workbenches;
     }
 
     /**
@@ -693,6 +863,30 @@ public final class CognitiveServicesManager {
                 = new ManagedComputeCapacitiesImpl(clientObject.getManagedComputeCapacities(), this);
         }
         return managedComputeCapacities;
+    }
+
+    /**
+     * Gets the resource collection API of AccountCostControls. It manages AccountCostControl.
+     * 
+     * @return Resource collection API of AccountCostControls.
+     */
+    public AccountCostControls accountCostControls() {
+        if (this.accountCostControls == null) {
+            this.accountCostControls = new AccountCostControlsImpl(clientObject.getAccountCostControls(), this);
+        }
+        return accountCostControls;
+    }
+
+    /**
+     * Gets the resource collection API of ProjectCostControls. It manages ProjectCostControl.
+     * 
+     * @return Resource collection API of ProjectCostControls.
+     */
+    public ProjectCostControls projectCostControls() {
+        if (this.projectCostControls == null) {
+            this.projectCostControls = new ProjectCostControlsImpl(clientObject.getProjectCostControls(), this);
+        }
+        return projectCostControls;
     }
 
     /**

@@ -24,7 +24,7 @@ public final class OutboundRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Active\",\"errorInformation\":\"jyzufl\",\"parentRuleNames\":[\"nivlutggmaacx\",\"uhvcgzxhkls\",\"xt\"]},\"id\":\"yygktsrjyxxoxwf\",\"name\":\"bkvecnxfxphsowbe\",\"type\":\"snbwutlvuwm\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Active\",\"errorInformation\":\"qciqawhkdk\",\"parentRuleNames\":[\"spbdscotidik\",\"mtmjkfmrjngrjsq\"]},\"id\":\"rhabhhp\",\"name\":\"vsdyjmbydrgxvnmt\",\"type\":\"muxrdmudwruogmth\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class OutboundRulesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OutboundRuleBasicResource> response
-            = manager.outboundRules().list("sgc", "megdzd", "y", com.azure.core.util.Context.NONE);
+            = manager.outboundRules().list("bge", "wxj", "krppm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RuleCategory.REQUIRED, response.iterator().next().properties().category());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, response.iterator().next().properties().category());
         Assertions.assertEquals(RuleStatus.ACTIVE, response.iterator().next().properties().status());
     }
 }

@@ -13,10 +13,10 @@ public final class DefenderForAISettingResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingResult model = BinaryData.fromString(
-            "{\"nextLink\":\"buiyji\",\"value\":[{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"gneik\",\"tags\":{\"z\":\"oxgjiuqhibt\"},\"id\":\"qw\",\"name\":\"edmurrxxge\",\"type\":\"pkt\"},{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"mqpzoyhlfbcgw\",\"tags\":{\"jipnwj\":\"oxoebqi\",\"zpofoiyjwpfilk\":\"ujqlafcbahh\",\"ogphuartvtiu\":\"kkholvdndvia\"},\"id\":\"efchn\",\"name\":\"n\",\"type\":\"hmnxhkxjqi\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"ooxf\",\"tags\":{\"rsnewmozqvbubqma\":\"hx\",\"taboidvmf\":\"hsycxhxzgaz\"},\"id\":\"ppu\",\"name\":\"owsepdfgkmtdhern\",\"type\":\"btcjuah\"}]}")
+            "{\"nextLink\":\"jyg\",\"value\":[{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"hammgmqfmefgv\",\"tags\":{\"quxweyslandkd\":\"dwj\"},\"id\":\"jhunhghcg\",\"name\":\"wnrrnquoxso\",\"type\":\"ireimseobf\"}]}")
             .toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("buiyji", model.nextLink());
-        Assertions.assertEquals("oxgjiuqhibt", model.value().get(0).tags().get("z"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.value().get(0).state());
+        Assertions.assertEquals("jyg", model.nextLink());
+        Assertions.assertEquals("dwj", model.value().get(0).tags().get("quxweyslandkd"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.value().get(0).state());
     }
 }

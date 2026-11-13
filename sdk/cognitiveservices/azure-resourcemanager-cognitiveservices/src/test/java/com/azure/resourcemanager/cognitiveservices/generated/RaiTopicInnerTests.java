@@ -16,41 +16,41 @@ public final class RaiTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"topicId\":\"oybfhjxakvvj\",\"topicName\":\"lordilmywwtkgkxn\",\"description\":\"dabg\",\"sampleBlobUrl\":\"udtjuewbc\",\"status\":\"xuuwhcj\",\"failedReason\":\"ccybvp\",\"createdAt\":\"2021-09-20T03:02:08Z\",\"lastModifiedAt\":\"2021-11-06T02:11:56Z\"},\"etag\":\"dzpxgwjpl\",\"tags\":{\"iogsjkmnwq\":\"stcyohpfkyrkdbd\",\"m\":\"nobaiyhddviacegf\",\"vbalxlllc\":\"tfpmvmemfnczdw\"},\"id\":\"odbzevwrdnhf\",\"name\":\"kuvsjcswsm\",\"type\":\"stul\"}")
+            "{\"properties\":{\"topicId\":\"ril\",\"topicName\":\"bnrqq\",\"description\":\"ztpb\",\"sampleBlobUrl\":\"nqtxjtomalswbnf\",\"status\":\"epl\",\"failedReason\":\"qjn\",\"createdAt\":\"2021-09-30T19:59:55Z\",\"lastModifiedAt\":\"2021-07-22T22:20:06Z\"},\"etag\":\"eexahvmywhsbrc\",\"tags\":{\"zptdmkrrbh\":\"csjjzyvoaqajuve\"},\"id\":\"fulubef\",\"name\":\"ybpmf\",\"type\":\"fununmpzk\"}")
             .toObject(RaiTopicInner.class);
-        Assertions.assertEquals("oybfhjxakvvj", model.properties().topicId());
-        Assertions.assertEquals("lordilmywwtkgkxn", model.properties().topicName());
-        Assertions.assertEquals("dabg", model.properties().description());
-        Assertions.assertEquals("udtjuewbc", model.properties().sampleBlobUrl());
-        Assertions.assertEquals("xuuwhcj", model.properties().status());
-        Assertions.assertEquals("ccybvp", model.properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T03:02:08Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T02:11:56Z"), model.properties().lastModifiedAt());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.tags().get("iogsjkmnwq"));
+        Assertions.assertEquals("ril", model.properties().topicId());
+        Assertions.assertEquals("bnrqq", model.properties().topicName());
+        Assertions.assertEquals("ztpb", model.properties().description());
+        Assertions.assertEquals("nqtxjtomalswbnf", model.properties().sampleBlobUrl());
+        Assertions.assertEquals("epl", model.properties().status());
+        Assertions.assertEquals("qjn", model.properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T19:59:55Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T22:20:06Z"), model.properties().lastModifiedAt());
+        Assertions.assertEquals("csjjzyvoaqajuve", model.tags().get("zptdmkrrbh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiTopicInner model = new RaiTopicInner()
-            .withProperties(new RaiTopicProperties().withTopicId("oybfhjxakvvj")
-                .withTopicName("lordilmywwtkgkxn")
-                .withDescription("dabg")
-                .withSampleBlobUrl("udtjuewbc")
-                .withStatus("xuuwhcj")
-                .withFailedReason("ccybvp")
-                .withCreatedAt(OffsetDateTime.parse("2021-09-20T03:02:08Z"))
-                .withLastModifiedAt(OffsetDateTime.parse("2021-11-06T02:11:56Z")))
-            .withTags(mapOf("iogsjkmnwq", "stcyohpfkyrkdbd", "m", "nobaiyhddviacegf", "vbalxlllc", "tfpmvmemfnczdw"));
+            .withProperties(new RaiTopicProperties().withTopicId("ril")
+                .withTopicName("bnrqq")
+                .withDescription("ztpb")
+                .withSampleBlobUrl("nqtxjtomalswbnf")
+                .withStatus("epl")
+                .withFailedReason("qjn")
+                .withCreatedAt(OffsetDateTime.parse("2021-09-30T19:59:55Z"))
+                .withLastModifiedAt(OffsetDateTime.parse("2021-07-22T22:20:06Z")))
+            .withTags(mapOf("zptdmkrrbh", "csjjzyvoaqajuve"));
         model = BinaryData.fromObject(model).toObject(RaiTopicInner.class);
-        Assertions.assertEquals("oybfhjxakvvj", model.properties().topicId());
-        Assertions.assertEquals("lordilmywwtkgkxn", model.properties().topicName());
-        Assertions.assertEquals("dabg", model.properties().description());
-        Assertions.assertEquals("udtjuewbc", model.properties().sampleBlobUrl());
-        Assertions.assertEquals("xuuwhcj", model.properties().status());
-        Assertions.assertEquals("ccybvp", model.properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T03:02:08Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T02:11:56Z"), model.properties().lastModifiedAt());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.tags().get("iogsjkmnwq"));
+        Assertions.assertEquals("ril", model.properties().topicId());
+        Assertions.assertEquals("bnrqq", model.properties().topicName());
+        Assertions.assertEquals("ztpb", model.properties().description());
+        Assertions.assertEquals("nqtxjtomalswbnf", model.properties().sampleBlobUrl());
+        Assertions.assertEquals("epl", model.properties().status());
+        Assertions.assertEquals("qjn", model.properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T19:59:55Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T22:20:06Z"), model.properties().lastModifiedAt());
+        Assertions.assertEquals("csjjzyvoaqajuve", model.tags().get("zptdmkrrbh"));
     }
 
     // Use "Map.of" if available

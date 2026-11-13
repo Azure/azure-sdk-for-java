@@ -23,7 +23,7 @@ public final class QuotaTiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"currentTierName\":\"tzl\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-08-29T14:04:09Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"gwn\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-01-29T15:35:17Z\",\"upgradeUnavailabilityReason\":\"vlghfrbzakpjtcqr\"}},\"id\":\"pojpsucmximcw\",\"name\":\"xyn\",\"type\":\"jgsatky\"}]}";
+            = "{\"value\":[{\"properties\":{\"currentTierName\":\"xjiraupirvdonkaq\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-07-06T10:54:52Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"wwuusjjhtcy\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-11-17T23:40:11Z\",\"upgradeUnavailabilityReason\":\"hnx\"}},\"id\":\"mfrnktsv\",\"name\":\"qdarjteqluj\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class QuotaTiersListMockTests {
 
         PagedIterable<QuotaTier> response = manager.quotaTiers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE,
+        Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE,
             response.iterator().next().properties().tierUpgradePolicy());
     }
 }

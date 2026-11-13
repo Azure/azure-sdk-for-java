@@ -21,7 +21,7 @@ public final class ManagedComputeCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"fohuriwhjdfr\",\"offerScope\":\"sshrmnkcclpc\",\"scopeId\":\"ogkscxj\",\"availableAccelerators\":1059915933,\"totalAvailableAccelerators\":1333148724,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":460280916,\"totalAvailableCapacity\":658562010,\"largestDeploymentCapacity\":316855546},{\"modelInstanceAcceleratorCount\":914430149,\"totalAvailableCapacity\":412727853,\"largestDeploymentCapacity\":856483612},{\"modelInstanceAcceleratorCount\":1302792233,\"totalAvailableCapacity\":513858134,\"largestDeploymentCapacity\":1344761987}]},\"id\":\"fbqhsujkaf\",\"name\":\"zpnxqpwni\",\"type\":\"xkcajgrbrc\"}]}";
+            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"scctw\",\"offerScope\":\"stnt\",\"scopeId\":\"teufgdgbzftsbpe\",\"availableAccelerators\":257025583,\"totalAvailableAccelerators\":555153629,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":1870763392,\"totalAvailableCapacity\":1852251002,\"largestDeploymentCapacity\":1060554616},{\"modelInstanceAcceleratorCount\":1799607358,\"totalAvailableCapacity\":493340061,\"largestDeploymentCapacity\":765592505}]},\"id\":\"og\",\"name\":\"bwefoxlzrijp\",\"type\":\"brvmzu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ManagedComputeCapacitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeCapacity> response = manager.managedComputeCapacities()
-            .list("kmwzrdqyoy", "mrnotocjnzdaiovr", "hrpqphkvyyzadcrx", "laypdtyzv", com.azure.core.util.Context.NONE);
+            .list("klbjlnbxouc", "ddplgjfhvia", "oke", "cmadyoctmd", com.azure.core.util.Context.NONE);
 
     }
 }

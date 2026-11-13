@@ -90,7 +90,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @PathParam("projectName") String projectName, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -99,7 +99,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ProjectInner project, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-11-01/GetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-15-preview/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.

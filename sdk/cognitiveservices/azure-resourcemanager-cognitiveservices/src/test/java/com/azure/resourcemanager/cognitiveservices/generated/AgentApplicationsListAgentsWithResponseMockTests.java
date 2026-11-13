@@ -21,7 +21,7 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
     @Test
     public void testListAgentsWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"qip\",\"value\":[{\"properties\":{\"agentId\":\"lfrsbzrnmuv\",\"agentName\":\"pu\"},\"id\":\"ddtbfmekjcnginxd\",\"name\":\"maoyqxfv\",\"type\":\"yxzmx\"},{\"properties\":{\"agentId\":\"ofxlttxo\",\"agentName\":\"tdnzujsjirkrpskc\"},\"id\":\"mmofbnivdqtkyk\",\"name\":\"axnlsfgnysca\",\"type\":\"cptbzetxygxxicee\"}]}";
+            = "{\"nextLink\":\"nwhld\",\"value\":[{\"properties\":{\"agentId\":\"chuqmdy\",\"agentName\":\"tnlcvl\"},\"id\":\"vhedrbz\",\"name\":\"bhy\",\"type\":\"gwxwc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentReferenceResourceArmPaginatedResult response = manager.agentApplications()
-            .listAgentsWithResponse("glkvbgukbsv", "wyo", "ygnbknhjgclxaxwc", "faspsdzkucszghd",
-                com.azure.core.util.Context.NONE)
+            .listAgentsWithResponse("zeowi", "vje", "zxkflz", "wkxxboauvkkco", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qip", response.nextLink());
-        Assertions.assertEquals("lfrsbzrnmuv", response.value().get(0).properties().agentId());
-        Assertions.assertEquals("pu", response.value().get(0).properties().agentName());
+        Assertions.assertEquals("nwhld", response.nextLink());
+        Assertions.assertEquals("chuqmdy", response.value().get(0).properties().agentId());
+        Assertions.assertEquals("tnlcvl", response.value().get(0).properties().agentName());
     }
 }

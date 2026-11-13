@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiBlocklistsGetSamples {
     /*
-     * x-ms-original-file: 2026-11-01/GetRaiBlocklist.json
+     * x-ms-original-file: 2026-11-15-preview/GetRaiBlocklist.json
      */
     /**
      * Sample code: GetRaiBlocklist.

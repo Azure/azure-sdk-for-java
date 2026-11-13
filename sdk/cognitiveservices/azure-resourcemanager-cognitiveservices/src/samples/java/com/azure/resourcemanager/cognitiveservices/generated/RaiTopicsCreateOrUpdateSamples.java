@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiTopicProperties;
  */
 public final class RaiTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/PutRaiTopic.json
+     * x-ms-original-file: 2026-11-15-preview/PutRaiTopic.json
      */
     /**
      * Sample code: PutRaiTopic.

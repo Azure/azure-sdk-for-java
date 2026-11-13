@@ -6,13 +6,31 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.Project;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControls;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
 
 /**
  * Samples for Projects Update.
  */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/UpdateProjects.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateProjectClearToolControls.json
+     */
+    /**
+     * Sample code: Clear a Foundry project's tool controls with explicit null.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void clearAFoundryProjectSToolControlsWithExplicitNull(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Project resource = manager.projects()
+            .getWithResponse("myResourceGroup", "myAccount", "myProject", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withProperties(new ProjectProperties()).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-15-preview/UpdateProjects.json
      */
     /**
      * Sample code: Update Project.
@@ -24,5 +42,24 @@ public final class ProjectsUpdateSamples {
             .getWithResponse("bvttest", "bingSearch", "projectName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withProperties(new ProjectProperties().withDescription("new description.")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-15-preview/UpdateProjectWithToolControls.json
+     */
+    /**
+     * Sample code: Update a Foundry project with no explicitly allowed tools.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateAFoundryProjectWithNoExplicitlyAllowedTools(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Project resource = manager.projects()
+            .getWithResponse("myResourceGroup", "myAccount", "myProject", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ProjectProperties()
+                .withToolControls(new ToolControls().withDefaultAction(ToolControlsDefaultAction.DENY)))
+            .apply();
     }
 }

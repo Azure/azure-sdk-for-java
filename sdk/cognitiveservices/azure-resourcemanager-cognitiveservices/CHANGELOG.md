@@ -1,14 +1,568 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (2026-11-13)
 
-### Features Added
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-11-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RaiPolicies` was modified
 
-### Other Changes
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.ManagedComputeDeployment$Update` was added
+
+* `models.RaiAcsAnnotatorType` was added
+
+* `models.AttachedAksCluster$DefinitionStages` was added
+
+* `models.Compute$DefinitionStages` was added
+
+* `models.AccountCostControls` was added
+
+* `models.CostControlPatchProperties` was added
+
+* `models.AttachedAksCluster$Update` was added
+
+* `models.ProjectCostControlsCreateOrUpdateResponse` was added
+
+* `models.VmPriority` was added
+
+* `models.RaiAcsAgentStartupInterventionPoint` was added
+
+* `models.RaiAcsInterventionPoint` was added
+
+* `models.Workbench$DefinitionStages` was added
+
+* `models.ComputeType` was added
+
+* `models.ComputeOperationStatusProperties` was added
+
+* `models.RaiBinding$UpdateStages` was added
+
+* `models.Workbench$Definition` was added
+
+* `models.RaiAcsPolicyTarget` was added
+
+* `models.ToolControlType` was added
+
+* `models.AttachedAksClusterExtensionProfile` was added
+
+* `models.RaiBindings` was added
+
+* `models.ArcDeployment` was added
+
+* `models.AccountCostControlsUpdateHeaders` was added
+
+* `models.CostControlPatch` was added
+
+* `models.EvaluateDeploymentPoliciesResponse` was added
+
+* `models.ManagedComputeDeployment$UpdateStages` was added
+
+* `models.CostControlThresholdType` was added
+
+* `models.RaiPoliciesCreateOrUpdateResponse` was added
+
+* `models.ProjectCostControlsUpdateResponse` was added
+
+* `models.WorkbenchProvisioningState` was added
+
+* `models.RaiRegos` was added
+
+* `models.Workbench$Update` was added
+
+* `models.RaiAcsManifest` was added
+
+* `models.EvaluateDeploymentPoliciesRequest` was added
+
+* `models.AttachedAksClusterProjectBindingStage` was added
+
+* `models.CostControlFilter` was added
+
+* `models.CostControlGrouping` was added
+
+* `models.ProjectCostControl$Update` was added
+
+* `models.CostControlTimePeriodPatch` was added
+
+* `models.RaiRegosGetHeaders` was added
+
+* `models.RaiAcsPostModelCallInterventionPoint` was added
+
+* `models.RaiAcsPreModelCallInterventionPoint` was added
+
+* `models.ArcDeploymentProvisioningDetails` was added
+
+* `models.RaiAcsPolicyDefinitionType` was added
+
+* `models.Computes` was added
+
+* `models.RaiBindingsCreateOrUpdateHeaders` was added
+
+* `models.AdapterDeployment$Update` was added
+
+* `models.AdapterDeployment$DefinitionStages` was added
+
+* `models.DeleteRequestClusterDisposition` was added
+
+* `models.ConnectivityEndpoints` was added
+
+* `models.SshSettings` was added
+
+* `models.CostControlConnections` was added
+
+* `models.ProjectCostControl$Definition` was added
+
+* `models.RaiBinding` was added
+
+* `models.AttachedAksClusterProvisioningStage` was added
+
+* `models.Compute$Update` was added
+
+* `models.RaiBindingProperties` was added
+
+* `models.RaiAcsInterventionPoints` was added
+
+* `models.ArcDeploymentUpdateProperties` was added
+
+* `models.ComputeOperationStatusType` was added
+
+* `models.ProjectCostControl$DefinitionStages` was added
+
+* `models.RaiRegosCreateOrUpdateResponse` was added
+
+* `models.CostControlFilterName` was added
+
+* `models.AdapterDeploymentsGetHeaders` was added
+
+* `models.RaiRegoReference` was added
+
+* `models.CapabilitySettings` was added
+
+* `models.AdapterDeployment` was added
+
+* `models.AccountCostControlsCreateOrUpdateResponse` was added
+
+* `models.AccountCostControlsGetResponse` was added
+
+* `models.ProjectCostControlsCreateOrUpdateHeaders` was added
+
+* `models.AttachedAksClusterListItem` was added
+
+* `models.WorkbenchUpdateProperties` was added
+
+* `models.ManagedComputeDeployment$DefinitionStages` was added
+
+* `models.CostControlTimeGrain` was added
+
+* `models.RaiBindingsGetResponse` was added
+
+* `models.WorkbenchProperties` was added
+
+* `models.RaiRego$UpdateStages` was added
+
+* `models.RaiAcsToolInterventionPoint` was added
+
+* `models.AttachedAksClusterIntegrationResourceStatus` was added
+
+* `models.ToolControlsDefaultAction` was added
+
+* `models.RaiAcsAnnotatorDefinition` was added
+
+* `models.ContainerInstanceComputeProperties` was added
+
+* `models.RaiAcsToolDefinition` was added
+
+* `models.AttachedAksClusterExtensionInstallationMode` was added
+
+* `models.ArcDeployments` was added
+
+* `models.AttachedAksClusterProperties` was added
+
+* `models.AttachedAksClusterStatus` was added
+
+* `models.ArcDeploymentComputeType` was added
+
+* `models.ProjectCostControl` was added
+
+* `models.RaiAcsAnnotationBinding` was added
+
+* `models.AdapterDeploymentLastOperation` was added
+
+* `models.AdapterDeployment$UpdateStages` was added
+
+* `models.ManagedComputeDeployment$Definition` was added
+
+* `models.CostControlProviderProperties` was added
+
+* `models.AttachedAksClusterCapability` was added
+
+* `models.ArcDeploymentModel` was added
+
+* `models.CostControlNotificationPatch` was added
+
+* `models.ProjectCostControl$UpdateStages` was added
+
+* `models.PolicyEvaluationOutcome` was added
+
+* `models.DeploymentSpeculativeDecoding` was added
+
+* `models.AgentHostingConfiguration` was added
+
+* `models.RaiPolicyFormat` was added
+
+* `models.ClusterComputeProperties` was added
+
+* `models.ComputeOperations` was added
+
+* `models.AttachedAksClusters` was added
+
+* `models.RaiBindingsGetHeaders` was added
+
+* `models.RaiRegosGetResponse` was added
+
+* `models.RaiAcsModerationSubjectFormat` was added
+
+* `models.ProjectCostControlsCheckExistenceResponse` was added
+
+* `models.RaiAcsPolicyTargetKind` was added
+
+* `models.AccountCostControl$Definition` was added
+
+* `models.ProjectCostControls` was added
+
+* `models.AttachedAksClusterListProperties` was added
+
+* `models.AdapterDeploymentOperationType` was added
+
+* `models.ArcDeploymentSku` was added
+
+* `models.ManagedComputeDeploymentRoutes` was added
+
+* `models.CostControlAdditionalInfoFilter` was added
+
+* `models.ArcDeploymentResourceRequirements` was added
+
+* `models.AttachedAksClusterHealthState` was added
+
+* `models.AttachedAksClusterRoleAssignmentStatus` was added
+
+* `models.ProjectCostControlsCheckExistenceHeaders` was added
+
+* `models.AttachedAksClusterCapabilityStatus` was added
+
+* `models.ArcDeployment$UpdateStages` was added
+
+* `models.RaiBinding$Definition` was added
+
+* `models.RaiBinding$Update` was added
+
+* `models.AdapterDeploymentOperationState` was added
+
+* `models.ArcDeploymentRuntime` was added
+
+* `models.ManagedComputeDeploymentInfo` was added
+
+* `models.Compute$UpdateStages` was added
+
+* `models.RaiRegoEncoding` was added
+
+* `models.RaiBindingsCreateOrUpdateResponse` was added
+
+* `models.AttachedAksClusterConnectorRegistration` was added
+
+* `models.ManagedComputeDeployments` was added
+
+* `models.RaiAcsToolNameSelector` was added
+
+* `models.ArcDeployment$Definition` was added
+
+* `models.ArcDeployment$DefinitionStages` was added
+
+* `models.AttachedAksClusterExtensionConfiguration` was added
+
+* `models.RaiAcsAgentShutdownInterventionPoint` was added
+
+* `models.RaiPoliciesGetHeaders` was added
+
+* `models.ArcDeploymentUpdate` was added
+
+* `models.CostControlProperties` was added
+
+* `models.AgentHostingType` was added
+
+* `models.ToolControlEntry` was added
+
+* `models.Compute$Definition` was added
+
+* `models.AttachedAksClusterHealthComponent` was added
+
+* `models.CostControlNotification` was added
+
+* `models.ArcDeploymentPatchKubernetesResources` was added
+
+* `models.RaiRego` was added
+
+* `models.WorkbenchUpdate` was added
+
+* `models.ComputeProperties` was added
+
+* `models.FoundryAutoUpgradeMode` was added
+
+* `models.AttachedAksCluster$UpdateStages` was added
+
+* `models.EvaluateDeploymentPoliciesDeploymentProperties` was added
+
+* `models.ManagedComputeDeployment` was added
+
+* `models.CostControlTimePeriod` was added
+
+* `models.RaiRego$Definition` was added
+
+* `models.ComputeOperationStatus` was added
+
+* `models.RaiAcsPolicyBinding` was added
+
+* `models.RaiAcsHarmConfiguration` was added
+
+* `models.ProjectCostControlsGetResponse` was added
+
+* `models.CostControlProviderPropertiesPatch` was added
+
+* `models.AdapterDeployment$Definition` was added
+
+* `models.AdapterDeploymentProperties` was added
+
+* `models.ArcDeploymentVllmParameters` was added
+
+* `models.AdapterDeploymentsGetResponse` was added
+
+* `models.ArcDeploymentSkuName` was added
+
+* `models.AttachedAksClusterProjectBinding` was added
+
+* `models.WorkbenchStatus` was added
+
+* `models.PolicyExpressionEvaluationDetails` was added
+
+* `models.RaiPolicyCustomExternalSafetyProviderReference` was added
+
+* `models.AccountCostControlsCreateOrUpdateHeaders` was added
+
+* `models.Pool` was added
+
+* `models.ManagedComputeUsage` was added
+
+* `models.AccountCostControlsCheckExistenceResponse` was added
+
+* `models.ArcDeploymentKubernetesResources` was added
+
+* `models.ListParameterProviderNamespace` was added
+
+* `models.ManagedComputeUsagesOperationGroups` was added
+
+* `models.AccountCostControl$UpdateStages` was added
+
+* `models.AccountCostControl$Update` was added
+
+* `models.AccountCostControl` was added
+
+* `models.ArcDeploymentCpuMemoryResourceRequirements` was added
+
+* `models.CostControlActionPatch` was added
+
+* `models.CostControlAction` was added
+
+* `models.CostControlGroupingName` was added
+
+* `models.RaiPoliciesGetResponse` was added
+
+* `models.AccountCostControl$DefinitionStages` was added
+
+* `models.DeploymentPolicyEvaluationResult` was added
+
+* `models.RaiBinding$DefinitionStages` was added
+
+* `models.ManagedComputeDeploymentProvisioningDetails` was added
+
+* `models.AttachedAksClusterAccountIdentityStatus` was added
+
+* `models.FoundryAutoUpgrade` was added
+
+* `models.ManagedComputeDeploymentProperties` was added
+
+* `models.ProjectCostControlsGetHeaders` was added
+
+* `models.ArcDeployment$Update` was added
+
+* `models.CostControlActionType1` was added
+
+* `models.RaiRegoProperties` was added
+
+* `models.PatchResourceSku` was added
+
+* `models.CostControlCategory` was added
+
+* `models.AttachedAksCluster$Definition` was added
+
+* `models.RaiAcsModerationBindingExtension` was added
+
+* `models.GatedModelAccessProperties` was added
+
+* `models.CostControlNotificationOperator3` was added
+
+* `models.CostControlNotificationOperator2` was added
+
+* `models.ToolControls` was added
+
+* `models.RaiAcsRegoPolicyDefinition` was added
+
+* `models.RaiRego$DefinitionStages` was added
+
+* `models.Workbench$UpdateStages` was added
+
+* `models.RaiPoliciesCreateOrUpdateHeaders` was added
+
+* `models.AttachedAksCluster` was added
+
+* `models.AttachedAksClusterIdentityStatus` was added
+
+* `models.ListParameterProviderNamespace1` was added
+
+* `models.Compute` was added
+
+* `models.AccountCostControlsCheckExistenceHeaders` was added
+
+* `models.Workbenches` was added
+
+* `models.RaiRego$Update` was added
+
+* `models.AccountCostControlsGetHeaders` was added
+
+* `models.RaiRegosCreateOrUpdateHeaders` was added
+
+* `models.ArcDeploymentProperties` was added
+
+* `models.ComputeProvisioningState` was added
+
+* `models.PolicyAssignmentEvaluationDetails` was added
+
+* `models.ArcDeploymentPatchCpuMemoryResourceRequirements` was added
+
+* `models.AttachedAksClusterAiManagerStatus` was added
+
+* `models.AttachedAksClusterHealthReason` was added
+
+* `models.EvaluateDeploymentPoliciesDeployment` was added
+
+* `models.ManagedClusterAgentHostingConfiguration` was added
+
+* `models.RaiAcsHarmCategory` was added
+
+* `models.AttachedAksClusterHealthStatus` was added
+
+* `models.AccountCostControlsUpdateResponse` was added
+
+* `models.AttachedAksClusterReadinessStatus` was added
+
+* `models.ProjectCostControlsUpdateHeaders` was added
+
+* `models.Workbench` was added
+
+* `models.AdapterDeployments` was added
+
+#### `models.Accounts` was modified
+
+* `evaluateDeploymentPoliciesWithResponse(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+* `evaluateDeploymentPolicies(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest)` was added
+
+#### `models.RaiPolicy$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `computes()` was added
+* `adapterDeployments()` was added
+* `raiBindings()` was added
+* `raiRegos()` was added
+* `managedComputeUsagesOperationGroups()` was added
+* `computeOperations()` was added
+* `accountCostControls()` was added
+* `arcDeployments()` was added
+* `projectCostControls()` was added
+* `attachedAksClusters()` was added
+* `workbenches()` was added
+* `managedComputeDeployments()` was added
+
+#### `models.ProjectProperties` was modified
+
+* `toolControls()` was added
+* `capabilitySettings()` was added
+* `withToolControls(models.ToolControls)` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+
+#### `models.ProvisioningState` was modified
+
+* `EXTENSION_UNREACHABLE` was added
+
+#### `models.Account` was modified
+
+* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
+* `evaluateDeploymentPoliciesWithResponse(models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+
+#### `models.AccountProperties` was modified
+
+* `agentHostingConfigurations()` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `costControlConnections()` was added
+* `withFoundryAutoUpgrade(models.FoundryAutoUpgrade)` was added
+* `foundryAutoUpgrade()` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
+* `capabilitySettings()` was added
+* `withCostControlConnections(models.CostControlConnections)` was added
+
+#### `models.ConnectionCategory` was modified
+
+* `OPEN_API` was added
+
+#### `models.RaiPolicyContentSource` was modified
+
+* `POST_MODEL_CALL` was added
+* `AGENT_SHUTDOWN` was added
+* `PRE_MODEL_CALL` was added
+* `AGENT_STARTUP` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `withFormat(models.RaiPolicyFormat)` was added
+* `withCustomExternalSafetyProviders(java.util.List)` was added
+* `acs()` was added
+* `customExternalSafetyProviders()` was added
+* `format()` was added
+* `acsRegos()` was added
+* `withAcs(models.RaiAcsManifest)` was added
+* `withAcsRegos(java.util.List)` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withSpeculativeDecoding(models.DeploymentSpeculativeDecoding)` was added
+* `speculativeDecoding()` was added
+
+#### `models.RaiPolicies` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.RaiPolicy$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
 
 ## 1.5.0 (2026-11-11)
 
