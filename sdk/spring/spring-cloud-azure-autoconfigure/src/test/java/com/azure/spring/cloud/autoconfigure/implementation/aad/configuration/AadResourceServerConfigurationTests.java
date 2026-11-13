@@ -27,6 +27,9 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,6 +41,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -339,6 +343,23 @@ class AadResourceServerConfigurationTests {
                                .stream()
                                .filter(filter -> filter.getClass().equals(BearerTokenAuthenticationFilter.class))
                                .count());
+            });
+    }
+
+    @Test
+    void defaultResourceServerFilterChainRejectsUnauthenticatedRequest() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                FilterChainProxy securityFilterChain = context.getBean(FilterChainProxy.class);
+                MockHttpServletRequest request = new MockHttpServletRequest("GET", "/resource");
+                MockHttpServletResponse response = new MockHttpServletResponse();
+                MockFilterChain applicationFilterChain = new MockFilterChain();
+
+                securityFilterChain.doFilter(request, response, applicationFilterChain);
+
+                assertThat(response.getStatus()).isEqualTo(401);
+                assertThat(applicationFilterChain.getRequest()).isNull();
             });
     }
 

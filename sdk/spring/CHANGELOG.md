@@ -15,6 +15,7 @@ Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies 
 
 #### Bugs Fixed
 
+- Fixed the default Microsoft Entra ID resource server filter chain to require authentication for every request. ([#51191](https://github.com/Azure/azure-sdk-for-java/issues/51191))
 - Fixed Spring Boot 4.1.2 compatibility test compilation for the default Microsoft Entra ID security configuration. ([#51106](https://github.com/Azure/azure-sdk-for-java/pull/51106))
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 - Fixed missing user flow validation in Azure AD B2C resource servers by checking `tfp` or fallback `acr` against configured names. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
