@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Prevented the default client pipeline from reapplying credentials when following HTTP redirects.
+
 ### Other Changes
 
 ## 1.8.1 (2026-11-02)

@@ -467,12 +467,13 @@ public final class CallAutomationClientBuilder
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
         policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
-        policyList.add(new RedirectPolicy());
         try {
             policyList.addAll(createHttpPipelineAuthPolicies(isCustomEndpointUsed));
         } catch (Exception e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid ACS Endpoint exception: " + e));
         }
+        // Authenticate before redirect handling so redirected requests aren't signed again.
+        policyList.add(new RedirectPolicy());
 
         policyList.add(new CookiePolicy());
 

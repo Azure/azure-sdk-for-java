@@ -18,6 +18,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import java.util.Objects;
  * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
  *
  * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
- * requests are sent over HTTPS to prevent the token from being leaked.</p>
+ * requests are sent over HTTPS to prevent the token from being leaked. For each pipeline call, bearer authorization
+ * and authentication challenges are limited to the host and port of the initial authorization request.</p>
  *
  * <p><strong>Code sample:</strong></p>
  *
@@ -53,6 +55,7 @@ import java.util.Objects;
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
+    private static final String AUTHORIZED_URL_CONTEXT_KEY = "azure-core-bearer-token-authorized-url";
 
     private final String[] scopes;
     private final AccessTokenCache cache;
@@ -141,14 +144,20 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        URL requestUrl = context.getHttpRequest().getUrl();
+        if (!"https".equals(requestUrl.getProtocol())) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        }
+        if (shouldSkipAuthorization(context, requestUrl)) {
+            return next.process();
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
         return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
             String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-            if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+            if (httpResponse.getStatusCode() == 401
+                && authHeader != null
+                && canAuthorizeChallenge(context, requestUrl, httpResponse)) {
                 return authorizeRequestOnChallenge(context, httpResponse).flatMap(authorized -> {
                     if (authorized) {
                         // body needs to be closed or read to the end to release the connection
@@ -165,16 +174,22 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        URL requestUrl = context.getHttpRequest().getUrl();
+        if (!"https".equals(requestUrl.getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        }
+        if (shouldSkipAuthorization(context, requestUrl)) {
+            return next.processSync();
         }
         HttpPipelineNextSyncPolicy nextPolicy = next.clone();
 
         authorizeRequestSync(context);
         HttpResponse httpResponse = next.processSync();
         String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+        if (httpResponse.getStatusCode() == 401
+            && authHeader != null
+            && canAuthorizeChallenge(context, requestUrl, httpResponse)) {
             if (authorizeRequestOnChallengeSync(context, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
                 httpResponse.close();
@@ -184,6 +199,36 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
             }
         }
         return httpResponse;
+    }
+
+    private static boolean shouldSkipAuthorization(HttpPipelineCallContext context, URL requestUrl) {
+        URL authorizedUrl = (URL) context.getData(AUTHORIZED_URL_CONTEXT_KEY).orElse(null);
+        if (authorizedUrl == null) {
+            context.setData(AUTHORIZED_URL_CONTEXT_KEY, requestUrl);
+        } else if (!isSameOrigin(authorizedUrl, requestUrl)) {
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean canAuthorizeChallenge(HttpPipelineCallContext context, URL requestUrl,
+        HttpResponse response) {
+        // A downstream redirect can change the request before returning a challenge to this policy.
+        return response.getRequest() != null
+            && isSameOrigin(requestUrl, response.getRequest().getUrl())
+            && isSameOrigin(requestUrl, context.getHttpRequest().getUrl());
+    }
+
+    private static boolean isSameOrigin(URL first, URL second) {
+        // Compare hosts directly because URL equality can resolve host names.
+        return first.getProtocol().equalsIgnoreCase(second.getProtocol())
+            && first.getHost().equalsIgnoreCase(second.getHost())
+            && effectivePort(first) == effectivePort(second);
+    }
+
+    private static int effectivePort(URL url) {
+        return url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
     }
 
     /**
