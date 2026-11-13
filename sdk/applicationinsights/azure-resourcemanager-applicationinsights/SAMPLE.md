@@ -138,9 +138,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnalyticsItemDelete.json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemDelete.json
      */
     /**
      * Sample code: AnalyticsItemDelete.
@@ -166,9 +164,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemGet
-     * .json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemGet.json
      */
     /**
      * Sample code: AnalyticsItemGet.
@@ -194,9 +190,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnalyticsItemList.json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemList.json
      */
     /**
      * Sample code: AnalyticsItemList.
@@ -225,9 +219,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemType;
  */
 public final class AnalyticsItemsPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemPut
-     * .json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemPut.json
      */
     /**
      * Sample code: AnalyticsItemPut.
@@ -259,9 +251,7 @@ import java.time.OffsetDateTime;
  */
 public final class AnnotationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnnotationsCreate.json
+     * x-ms-original-file: 2015-05-01/AnnotationsCreate.json
      */
     /**
      * Sample code: AnnotationsCreate.
@@ -290,9 +280,7 @@ public final class AnnotationsCreateSamples {
  */
 public final class AnnotationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnnotationsDelete.json
+     * x-ms-original-file: 2015-05-01/AnnotationsDelete.json
      */
     /**
      * Sample code: AnnotationsDelete.
@@ -316,9 +304,7 @@ public final class AnnotationsDeleteSamples {
  */
 public final class AnnotationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsGet.
-     * json
+     * x-ms-original-file: 2015-05-01/AnnotationsGet.json
      */
     /**
      * Sample code: AnnotationsGet.
@@ -342,9 +328,7 @@ public final class AnnotationsGetSamples {
  */
 public final class AnnotationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsList.
-     * json
+     * x-ms-original-file: 2015-05-01/AnnotationsList.json
      */
     /**
      * Sample code: AnnotationsList.
@@ -371,9 +355,7 @@ import java.util.Arrays;
  */
 public final class ApiKeysCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysCreate.
-     * json
+     * x-ms-original-file: 2015-05-01/APIKeysCreate.json
      */
     /**
      * Sample code: APIKeyCreate.
@@ -401,9 +383,7 @@ public final class ApiKeysCreateSamples {
  */
 public final class ApiKeysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysDelete.
-     * json
+     * x-ms-original-file: 2015-05-01/APIKeysDelete.json
      */
     /**
      * Sample code: APIKeyDelete.
@@ -426,8 +406,7 @@ public final class ApiKeysDeleteSamples {
  */
 public final class ApiKeysGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysGet.json
+     * x-ms-original-file: 2015-05-01/APIKeysGet.json
      */
     /**
      * Sample code: APIKeysGet.
@@ -450,8 +429,7 @@ public final class ApiKeysGetSamples {
  */
 public final class ApiKeysListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysList.json
+     * x-ms-original-file: 2015-05-01/APIKeysList.json
      */
     /**
      * Sample code: APIKeysList.
@@ -472,9 +450,7 @@ public final class ApiKeysListSamples {
  */
 public final class ComponentAvailableFeaturesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AvailableBillingFeaturesGet.json
+     * x-ms-original-file: 2015-05-01/AvailableBillingFeaturesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -497,9 +473,7 @@ public final class ComponentAvailableFeaturesGetSamples {
  */
 public final class ComponentCurrentBillingFeaturesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * CurrentBillingFeaturesGet.json
+     * x-ms-original-file: 2015-05-01/CurrentBillingFeaturesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -526,9 +500,7 @@ import java.util.Arrays;
  */
 public final class ComponentCurrentBillingFeaturesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * CurrentBillingFeaturesUpdate.json
+     * x-ms-original-file: 2015-05-01/CurrentBillingFeaturesUpdate.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesUpdate.
@@ -556,9 +528,7 @@ public final class ComponentCurrentBillingFeaturesUpdateSamples {
  */
 public final class ComponentFeatureCapabilitiesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * FeatureCapabilitiesGet.json
+     * x-ms-original-file: 2015-05-01/FeatureCapabilitiesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -583,9 +553,7 @@ import com.azure.resourcemanager.applicationinsights.models.StorageType;
  */
 public final class ComponentLinkedStorageAccountsOperationCreateAndUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsCreateAndUpdate.json
+     * x-ms-original-file: 2020-03-01-preview/ComponentLinkedStorageAccountsCreateAndUpdate.json
      */
     /**
      * Sample code: ComponentLinkedStorageAccountsCreateAndUpdate.
@@ -614,9 +582,7 @@ import com.azure.resourcemanager.applicationinsights.models.StorageType;
  */
 public final class ComponentLinkedStorageAccountsOperationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsDelete.json
+     * x-ms-original-file: 2020-03-01-preview/ComponentLinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: ComponentLinkedStorageAccountsDelete.
@@ -642,9 +608,7 @@ import com.azure.resourcemanager.applicationinsights.models.StorageType;
  */
 public final class ComponentLinkedStorageAccountsOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsGet.json
+     * x-ms-original-file: 2020-03-01-preview/ComponentLinkedStorageAccountsGet.json
      */
     /**
      * Sample code: ComponentLinkedStorageAccountsGet.
@@ -671,9 +635,7 @@ import com.azure.resourcemanager.applicationinsights.models.StorageType;
  */
 public final class ComponentLinkedStorageAccountsOperationUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsUpdate.json
+     * x-ms-original-file: 2020-03-01-preview/ComponentLinkedStorageAccountsUpdate.json
      */
     /**
      * Sample code: ComponentLinkedStorageAccountsUpdate.
@@ -702,9 +664,7 @@ public final class ComponentLinkedStorageAccountsOperationUpdateSamples {
  */
 public final class ComponentQuotaStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/QuotaStatusGet.
-     * json
+     * x-ms-original-file: 2015-05-01/QuotaStatusGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -723,6 +683,7 @@ public final class ComponentQuotaStatusGetSamples {
 
 ```java
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
+import com.azure.resourcemanager.applicationinsights.models.AzureMonitorWorkspaceIngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.FlowType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
 import java.util.HashMap;
@@ -733,9 +694,29 @@ import java.util.Map;
  */
 public final class ComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsCreate
-     * .json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsCreateWithManagedWorkspaces.json
+     */
+    /**
+     * Sample code: ComponentCreateWithManagedWorkspaces.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void componentCreateWithManagedWorkspaces(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.components()
+            .define("my-component")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("my-resource-group")
+            .withKind("web")
+            .withApplicationType(ApplicationType.WEB)
+            .withFlowType(FlowType.BLUEFIELD)
+            .withRequestSource(RequestSource.REST)
+            .withAzureMonitorWorkspaceIngestionMode(AzureMonitorWorkspaceIngestionMode.ENABLED)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-01-23-preview/ComponentsCreate.json
      */
     /**
      * Sample code: ComponentCreate.
@@ -754,13 +735,38 @@ public final class ComponentsCreateOrUpdateSamples {
             .withRequestSource(RequestSource.REST)
             .withWorkspaceResourceId(
                 "/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace")
+            .withAzureMonitorWorkspaceResourceId(
+                "/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace")
+            .withAzureMonitorWorkspaceIngestionMode(AzureMonitorWorkspaceIngestionMode.ENABLED)
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsUpdate
-     * .json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsCreateWithoutOtlp.json
+     */
+    /**
+     * Sample code: ComponentCreateWithoutOtlp.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void
+        componentCreateWithoutOtlp(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.components()
+            .define("my-component")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("my-resource-group")
+            .withKind("web")
+            .withApplicationType(ApplicationType.WEB)
+            .withFlowType(FlowType.BLUEFIELD)
+            .withRequestSource(RequestSource.REST)
+            .withWorkspaceResourceId(
+                "/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace")
+            .withAzureMonitorWorkspaceIngestionMode(AzureMonitorWorkspaceIngestionMode.NOT_OPTED_IN)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-01-23-preview/ComponentsUpdate.json
      */
     /**
      * Sample code: ComponentUpdate.
@@ -800,9 +806,7 @@ public final class ComponentsCreateOrUpdateSamples {
  */
 public final class ComponentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsDelete
-     * .json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsDelete.json
      */
     /**
      * Sample code: ComponentsDelete.
@@ -825,9 +829,7 @@ public final class ComponentsDeleteSamples {
  */
 public final class ComponentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.
-     * json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsGet.json
      */
     /**
      * Sample code: ComponentGet.
@@ -835,6 +837,20 @@ public final class ComponentsGetByResourceGroupSamples {
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void componentGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.components()
+            .getByResourceGroupWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-01-23-preview/ComponentsGetWithoutOtlp.json
+     */
+    /**
+     * Sample code: ComponentGetWithoutOtlp.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void
+        componentGetWithoutOtlp(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager.components()
             .getByResourceGroupWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
@@ -849,9 +865,7 @@ public final class ComponentsGetByResourceGroupSamples {
  */
 public final class ComponentsGetPurgeStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsPurgeStatus.json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsPurgeStatus.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -875,9 +889,7 @@ public final class ComponentsGetPurgeStatusSamples {
  */
 public final class ComponentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsList.
-     * json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsList.json
      */
     /**
      * Sample code: ComponentsList.json.
@@ -899,9 +911,7 @@ public final class ComponentsListSamples {
  */
 public final class ComponentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsListByResourceGroup.json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsListByResourceGroup.json
      */
     /**
      * Sample code: ComponentListByResourceGroup.
@@ -927,9 +937,7 @@ import java.util.Arrays;
  */
 public final class ComponentsPurgeSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsPurge.
-     * json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsPurge.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -961,9 +969,7 @@ import java.util.Map;
  */
 public final class ComponentsUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsUpdateTagsOnly.json
+     * x-ms-original-file: 2025-01-23-preview/ComponentsUpdateTagsOnly.json
      */
     /**
      * Sample code: ComponentUpdateTagsOnly.
@@ -1004,9 +1010,7 @@ public final class ComponentsUpdateTagsSamples {
  */
 public final class DeletedWorkbooksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2024-02-01-preview/examples/
-     * DeletedWorkbooksList.json
+     * x-ms-original-file: 2024-02-01-preview/DeletedWorkbooksList.json
      */
     /**
      * Sample code: WorkbooksListSub.
@@ -1030,9 +1034,7 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
  */
 public final class ExportConfigurationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationsPost.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationsPost.json
      */
     /**
      * Sample code: ExportConfigurationPost.
@@ -1068,9 +1070,7 @@ public final class ExportConfigurationsCreateSamples {
  */
 public final class ExportConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationDelete.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationDelete.json
      */
     /**
      * Sample code: ExportConfigurationDelete.
@@ -1094,9 +1094,7 @@ public final class ExportConfigurationsDeleteSamples {
  */
 public final class ExportConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationGet.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationGet.json
      */
     /**
      * Sample code: ExportConfigurationGet.
@@ -1120,9 +1118,7 @@ public final class ExportConfigurationsGetSamples {
  */
 public final class ExportConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationsList.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationsList.json
      */
     /**
      * Sample code: ExportConfigurationsList.
@@ -1147,9 +1143,7 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
  */
 public final class ExportConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationUpdate.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationUpdate.json
      */
     /**
      * Sample code: ExportConfigurationUpdate.
@@ -1189,8 +1183,7 @@ import java.util.Arrays;
  */
 public final class FavoritesAddSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteAdd.json
+     * x-ms-original-file: 2015-05-01/FavoriteAdd.json
      */
     /**
      * Sample code: FavoriteAdd.
@@ -1220,9 +1213,7 @@ public final class FavoritesAddSamples {
  */
 public final class FavoritesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteDelete.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoriteDelete.json
      */
     /**
      * Sample code: FavoriteList.
@@ -1245,8 +1236,7 @@ public final class FavoritesDeleteSamples {
  */
 public final class FavoritesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteGet.json
+     * x-ms-original-file: 2015-05-01/FavoriteGet.json
      */
     /**
      * Sample code: FavoriteGet.
@@ -1270,9 +1260,7 @@ public final class FavoritesGetSamples {
  */
 public final class FavoritesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoritesList.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoritesList.json
      */
     /**
      * Sample code: FavoritesList.
@@ -1299,9 +1287,7 @@ import java.util.Arrays;
  */
 public final class FavoritesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteUpdate.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoriteUpdate.json
      */
     /**
      * Sample code: FavoriteList.
@@ -1331,9 +1317,7 @@ public final class FavoritesUpdateSamples {
  */
 public final class LiveTokenGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-10-14/examples/LiveTokenGet.
-     * json
+     * x-ms-original-file: 2021-10-14/LiveTokenGet.json
      */
     /**
      * Sample code: Get live token for resource.
@@ -1358,9 +1342,7 @@ public final class LiveTokenGetSamples {
  */
 public final class ProactiveDetectionConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationGet.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationGet.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationGet.
@@ -1383,9 +1365,7 @@ public final class ProactiveDetectionConfigurationsGetSamples {
  */
 public final class ProactiveDetectionConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationsList.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationsList.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationsList.
@@ -1412,9 +1392,7 @@ import java.util.Arrays;
  */
 public final class ProactiveDetectionConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationUpdate.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationUpdate.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationUpdate.
@@ -1453,9 +1431,7 @@ public final class ProactiveDetectionConfigurationsUpdateSamples {
  */
 public final class WebTestLocationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WebTestLocationsList.json
+     * x-ms-original-file: 2015-05-01/WebTestLocationsList.json
      */
     /**
      * Sample code: WebTestLocationsList.
@@ -1485,9 +1461,7 @@ import java.util.Arrays;
  */
 public final class WebTestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreate.
-     * json
+     * x-ms-original-file: 2022-06-15/WebTestCreate.json
      */
     /**
      * Sample code: webTestCreate.
@@ -1515,9 +1489,7 @@ public final class WebTestsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestCreateStandard.json
+     * x-ms-original-file: 2022-06-15/WebTestCreateStandard.json
      */
     /**
      * Sample code: webTestCreateStandard.
@@ -1551,9 +1523,7 @@ public final class WebTestsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdate.
-     * json
+     * x-ms-original-file: 2022-06-15/WebTestUpdate.json
      */
     /**
      * Sample code: webTestUpdate.
@@ -1588,9 +1558,7 @@ public final class WebTestsCreateOrUpdateSamples {
  */
 public final class WebTestsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestDelete.
-     * json
+     * x-ms-original-file: 2022-06-15/WebTestDelete.json
      */
     /**
      * Sample code: webTestDelete.
@@ -1613,8 +1581,7 @@ public final class WebTestsDeleteSamples {
  */
 public final class WebTestsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestGet.json
+     * x-ms-original-file: 2022-06-15/WebTestGet.json
      */
     /**
      * Sample code: webTestGet.
@@ -1637,8 +1604,7 @@ public final class WebTestsGetByResourceGroupSamples {
  */
 public final class WebTestsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestList.json
+     * x-ms-original-file: 2022-06-15/WebTestList.json
      */
     /**
      * Sample code: webTestList.
@@ -1659,9 +1625,7 @@ public final class WebTestsListSamples {
  */
 public final class WebTestsListByComponentSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestListByComponent.json
+     * x-ms-original-file: 2022-06-15/WebTestListByComponent.json
      */
     /**
      * Sample code: webTestListByComponent.
@@ -1683,9 +1647,7 @@ public final class WebTestsListByComponentSamples {
  */
 public final class WebTestsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestListByResourceGroup.json
+     * x-ms-original-file: 2022-06-15/WebTestListByResourceGroup.json
      */
     /**
      * Sample code: webTestListByResourceGroup.
@@ -1711,9 +1673,7 @@ import java.util.Map;
  */
 public final class WebTestsUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestUpdateTagsOnly.json
+     * x-ms-original-file: 2022-06-15/WebTestUpdateTagsOnly.json
      */
     /**
      * Sample code: webTestUpdateTags.
@@ -1759,9 +1719,7 @@ import java.util.Map;
  */
 public final class WorkItemConfigurationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigCreate.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigCreate.json
      */
     /**
      * Sample code: WorkItemConfigurationsCreate.
@@ -1776,7 +1734,8 @@ public final class WorkItemConfigurationsCreateSamples {
                 .withConnectorDataConfiguration(
                     "{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}")
                 .withValidateOnly(true)
-                .withWorkItemProperties(mapOf()), com.azure.core.util.Context.NONE);
+                .withWorkItemProperties(mapOf("name", "Title", "value", "Validate Only Title")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -1801,9 +1760,7 @@ public final class WorkItemConfigurationsCreateSamples {
  */
 public final class WorkItemConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigDelete.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigDelete.json
      */
     /**
      * Sample code: WorkItemConfigurationDelete.
@@ -1827,9 +1784,7 @@ public final class WorkItemConfigurationsDeleteSamples {
  */
 public final class WorkItemConfigurationsGetDefaultSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigDefaultGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigDefaultGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsGetDefault.
@@ -1852,9 +1807,7 @@ public final class WorkItemConfigurationsGetDefaultSamples {
  */
 public final class WorkItemConfigurationsGetItemSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsGetDefault.
@@ -1878,9 +1831,7 @@ public final class WorkItemConfigurationsGetItemSamples {
  */
 public final class WorkItemConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigsGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigsGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsList.
@@ -1906,9 +1857,7 @@ import java.util.Map;
  */
 public final class WorkItemConfigurationsUpdateItemSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigUpdate.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigUpdate.json
      */
     /**
      * Sample code: WorkItemConfigurationsCreate.
@@ -1923,7 +1872,7 @@ public final class WorkItemConfigurationsUpdateItemSamples {
                     .withConnectorDataConfiguration(
                         "{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}")
                     .withValidateOnly(true)
-                    .withWorkItemProperties(mapOf()),
+                    .withWorkItemProperties(mapOf("name", "Title", "value", "Validate Only Title")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1955,9 +1904,7 @@ import java.util.Arrays;
  */
 public final class WorkbookTemplatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateAdd.json
+     * x-ms-original-file: 2020-11-20/WorkbookTemplateAdd.json
      */
     /**
      * Sample code: WorkbookTemplateAdd.
@@ -1994,9 +1941,7 @@ public final class WorkbookTemplatesCreateOrUpdateSamples {
  */
 public final class WorkbookTemplatesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateDelete.json
+     * x-ms-original-file: 2020-11-20/WorkbookTemplateDelete.json
      */
     /**
      * Sample code: WorkbookTemplateDelete.
@@ -2020,9 +1965,7 @@ public final class WorkbookTemplatesDeleteSamples {
  */
 public final class WorkbookTemplatesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateGet.json
+     * x-ms-original-file: 2020-11-20/WorkbookTemplateGet.json
      */
     /**
      * Sample code: WorkbookTemplateGet.
@@ -2045,9 +1988,7 @@ public final class WorkbookTemplatesGetByResourceGroupSamples {
  */
 public final class WorkbookTemplatesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplatesList.json
+     * x-ms-original-file: 2020-11-20/WorkbookTemplatesList.json
      */
     /**
      * Sample code: WorkbookTemplatesList.
@@ -2071,9 +2012,7 @@ import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
  */
 public final class WorkbookTemplatesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateUpdate.json
+     * x-ms-original-file: 2020-11-20/WorkbookTemplateUpdate.json
      */
     /**
      * Sample code: WorkbookTemplateUpdate.
@@ -2106,9 +2045,7 @@ import java.util.Map;
  */
 public final class WorkbooksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedAdd.json
+     * x-ms-original-file: 2023-06-01/WorkbookManagedAdd.json
      */
     /**
      * Sample code: WorkbookManagedAdd.
@@ -2140,8 +2077,7 @@ public final class WorkbooksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookAdd.json
+     * x-ms-original-file: 2023-06-01/WorkbookAdd.json
      */
     /**
      * Sample code: WorkbookAdd.
@@ -2187,9 +2123,7 @@ public final class WorkbooksCreateOrUpdateSamples {
  */
 public final class WorkbooksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookDelete.
-     * json
+     * x-ms-original-file: 2023-06-01/WorkbookDelete.json
      */
     /**
      * Sample code: WorkbookDelete.
@@ -2213,9 +2147,7 @@ public final class WorkbooksDeleteSamples {
  */
 public final class WorkbooksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet1.
-     * json
+     * x-ms-original-file: 2023-06-01/WorkbookGet1.json
      */
     /**
      * Sample code: WorkbookGet1.
@@ -2229,9 +2161,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedGet.json
+     * x-ms-original-file: 2023-06-01/WorkbookManagedGet.json
      */
     /**
      * Sample code: WorkbookManagedGet.
@@ -2246,8 +2176,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet.json
+     * x-ms-original-file: 2023-06-01/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.
@@ -2272,9 +2201,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
  */
 public final class WorkbooksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksListSub
-     * .json
+     * x-ms-original-file: 2023-06-01/WorkbooksListSub.json
      */
     /**
      * Sample code: WorkbooksListSub.
@@ -2287,9 +2214,7 @@ public final class WorkbooksListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList2.
-     * json
+     * x-ms-original-file: 2023-06-01/WorkbooksList2.json
      */
     /**
      * Sample code: WorkbooksList2.
@@ -2313,9 +2238,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
  */
 public final class WorkbooksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbooksManagedList.json
+     * x-ms-original-file: 2023-06-01/WorkbooksManagedList.json
      */
     /**
      * Sample code: WorkbooksManagedList.
@@ -2326,14 +2249,12 @@ public final class WorkbooksListByResourceGroupSamples {
         workbooksManagedList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager.workbooks()
             .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null,
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
                 null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList.
-     * json
+     * x-ms-original-file: 2023-06-01/WorkbooksList.json
      */
     /**
      * Sample code: WorkbooksList.
@@ -2357,9 +2278,7 @@ public final class WorkbooksListByResourceGroupSamples {
  */
 public final class WorkbooksRevisionGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookRevisionGet.json
+     * x-ms-original-file: 2023-06-01/WorkbookRevisionGet.json
      */
     /**
      * Sample code: WorkbookRevisionGet.
@@ -2383,9 +2302,7 @@ public final class WorkbooksRevisionGetSamples {
  */
 public final class WorkbooksRevisionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookRevisionsList.json
+     * x-ms-original-file: 2023-06-01/WorkbookRevisionsList.json
      */
     /**
      * Sample code: WorkbookRevisionsList.
@@ -2411,9 +2328,7 @@ import com.azure.resourcemanager.applicationinsights.models.Workbook;
  */
 public final class WorkbooksUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookUpdate.
-     * json
+     * x-ms-original-file: 2023-06-01/WorkbookUpdate.json
      */
     /**
      * Sample code: WorkbookUpdate.
@@ -2433,9 +2348,7 @@ public final class WorkbooksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedUpdate.json
+     * x-ms-original-file: 2023-06-01/WorkbookManagedUpdate.json
      */
     /**
      * Sample code: WorkbookManagedUpdate.
