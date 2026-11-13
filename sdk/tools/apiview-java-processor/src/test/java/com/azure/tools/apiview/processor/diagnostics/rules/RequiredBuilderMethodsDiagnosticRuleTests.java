@@ -13,8 +13,45 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.azure.tools.apiview.processor.diagnostics.rules.utils.MiscUtils.checkMethodParameterTypeSuffix;
 
 public class RequiredBuilderMethodsDiagnosticRuleTests {
+    @ParameterizedTest
+    @CsvSource(
+        value = {
+            "endpoint||1",
+            "endpoint|int value|1",
+            "endpoint|String[] values|1",
+            "endpoint|String value|0",
+            "serviceVersion|int value|1",
+            "serviceVersion|TestServiceVersion[] values|1",
+            "serviceVersion|TestServiceVersion value|0" },
+        delimiter = '|')
+    public void handlesBuilderParameterShapesWithoutAbortingReview(String methodName, String parameters,
+        int diagnosticCount) {
+        RequiredBuilderMethodsDiagnosticRule rule = new RequiredBuilderMethodsDiagnosticRule(null);
+        if ("endpoint".equals(methodName)) {
+            rule.addMethod(methodName, new RequiredBuilderMethodsDiagnosticRule.ExactTypeNameCheckFunction("String"));
+        } else {
+            rule.addMethod(methodName, method -> checkMethodParameterTypeSuffix(method, "ServiceVersion"));
+        }
+        ApiListing listing = new ApiListing();
+
+        rule.scanIndividual(
+            StaticJavaParser.parse("package com.azure.test; @ServiceClientBuilder(serviceClients = TestClient.class)"
+                + "public class TestClientBuilder { public TestClientBuilder " + methodName + "("
+                + (parameters == null ? "" : parameters) + ") { return this; } }"),
+            listing);
+
+        assertEquals(diagnosticCount, listing.getDiagnostics().size());
+        if (diagnosticCount > 0) {
+            assertTrue(listing.getDiagnostics()
+                .get(0)
+                .getText()
+                .contains(parameters == null ? "Incorrect number" : "Incorrect type"));
+        }
+    }
+
     @ParameterizedTest
     @CsvSource(
         value = {

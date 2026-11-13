@@ -137,13 +137,22 @@ public class RequiredBuilderMethodsDiagnosticRule implements DiagnosticRule {
 
         @Override
         public Optional<Diagnostic> apply(final MethodDeclaration methodDeclaration) {
+            int parameterCount = methodDeclaration.getParameters().size();
+            if (parameterCount < expectedTypes.length) {
+                return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
+                    "Incorrect number of parameters for this builder method. Expected at least " + expectedTypes.length
+                        + " but was " + parameterCount + "."));
+            }
+
             for (int i = 0; i < expectedTypes.length; i++) {
                 ParameterAllowedTypes expectedType = expectedTypes[i];
                 Type actualType = methodDeclaration.getParameter(i).getType();
 
-                String actualTypeName = ((ClassOrInterfaceType) actualType).getNameAsString();
+                String actualTypeName = actualType.isClassOrInterfaceType()
+                    ? actualType.asClassOrInterfaceType().getNameAsString()
+                    : actualType.asString();
 
-                if (!expectedType.supports(actualTypeName)) {
+                if (!actualType.isClassOrInterfaceType() || !expectedType.supports(actualTypeName)) {
                     return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
                         "Incorrect type being supplied to this builder method. Expected " + expectedType + ", but was "
                             + actualTypeName + "."));
