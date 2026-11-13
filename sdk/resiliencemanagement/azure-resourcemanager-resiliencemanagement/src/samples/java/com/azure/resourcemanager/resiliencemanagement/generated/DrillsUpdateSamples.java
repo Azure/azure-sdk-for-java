@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class DrillsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/Drills_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-30-preview/Drills_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Update_MaximumSet.

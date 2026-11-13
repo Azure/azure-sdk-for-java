@@ -39,6 +39,11 @@ public final class LastRunProperties implements JsonSerializable<LastRunProperti
      */
     private DrillAttestation lastRunAttestation;
 
+    /*
+     * Actual recovery time of the last run of this Drill.
+     */
+    private Duration lastRunRecoveryTimeActual;
+
     /**
      * Creates an instance of LastRunProperties class.
      */
@@ -82,6 +87,15 @@ public final class LastRunProperties implements JsonSerializable<LastRunProperti
     }
 
     /**
+     * Get the lastRunRecoveryTimeActual property: Actual recovery time of the last run of this Drill.
+     * 
+     * @return the lastRunRecoveryTimeActual value.
+     */
+    public Duration lastRunRecoveryTimeActual() {
+        return this.lastRunRecoveryTimeActual;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -115,6 +129,9 @@ public final class LastRunProperties implements JsonSerializable<LastRunProperti
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("lastRunAttestation".equals(fieldName)) {
                     deserializedLastRunProperties.lastRunAttestation = DrillAttestation.fromString(reader.getString());
+                } else if ("lastRunRecoveryTimeActual".equals(fieldName)) {
+                    deserializedLastRunProperties.lastRunRecoveryTimeActual
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -13,16 +13,16 @@ public final class SliSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliSelection model
-            = BinaryData.fromString("{\"sliId\":\"ojgcyzt\",\"type\":\"Availability\"}").toObject(SliSelection.class);
-        Assertions.assertEquals("ojgcyzt", model.sliId());
+            = BinaryData.fromString("{\"sliId\":\"fcq\",\"type\":\"Availability\"}").toObject(SliSelection.class);
+        Assertions.assertEquals("fcq", model.sliId());
         Assertions.assertEquals(SliType.AVAILABILITY, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliSelection model = new SliSelection().withSliId("ojgcyzt").withType(SliType.AVAILABILITY);
+        SliSelection model = new SliSelection().withSliId("fcq").withType(SliType.AVAILABILITY);
         model = BinaryData.fromObject(model).toObject(SliSelection.class);
-        Assertions.assertEquals("ojgcyzt", model.sliId());
+        Assertions.assertEquals("fcq", model.sliId());
         Assertions.assertEquals(SliType.AVAILABILITY, model.type());
     }
 }

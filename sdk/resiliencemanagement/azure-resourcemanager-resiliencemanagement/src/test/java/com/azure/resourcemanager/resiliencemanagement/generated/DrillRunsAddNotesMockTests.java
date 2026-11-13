@@ -29,7 +29,7 @@ public final class DrillRunsAddNotesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .addNotes("ugiqjtiogqg", "minict", "eajohiyg", "pnbonhpcz", new DrillRunAddNotesRequest().withNotes("mktp"),
+            .addNotes("gazlsvbz", "cpuo", "e", "wjcciklhsy", new DrillRunAddNotesRequest().withNotes("rdrenxo"),
                 com.azure.core.util.Context.NONE);
 
     }

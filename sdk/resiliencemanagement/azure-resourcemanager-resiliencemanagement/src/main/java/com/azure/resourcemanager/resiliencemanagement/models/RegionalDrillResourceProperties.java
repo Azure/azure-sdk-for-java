@@ -21,6 +21,26 @@ public final class RegionalDrillResourceProperties extends DrillResourceProperti
      */
     private DrillType drillType = DrillType.REGIONAL;
 
+    /*
+     * Regional resiliency status reported by the selected regional protection solution.
+     * Resilient corresponds to an available true posture value; NotResilient corresponds to an available false value.
+     * Omitted when the posture is unknown or unavailable; unavailable data is not reported as NotResilient.
+     */
+    private RegionalResiliencyStatus regionalResiliencyStatus;
+
+    /*
+     * Replication mode of the selected regional protection solution.
+     * Omitted when no applicable mode is available.
+     */
+    private ReplicationMode replicationMode;
+
+    /*
+     * Azure resource ID of the matching regional Advisor recommendation instance.
+     * The recommendation type is identified separately by advisorRecommendationTypeId.
+     * Omitted when no matching recommendation exists.
+     */
+    private String advisorRegionalRecommendationId;
+
     /**
      * Creates an instance of RegionalDrillResourceProperties class.
      */
@@ -36,6 +56,40 @@ public final class RegionalDrillResourceProperties extends DrillResourceProperti
     @Override
     public DrillType drillType() {
         return this.drillType;
+    }
+
+    /**
+     * Get the regionalResiliencyStatus property: Regional resiliency status reported by the selected regional
+     * protection solution.
+     * Resilient corresponds to an available true posture value; NotResilient corresponds to an available false value.
+     * Omitted when the posture is unknown or unavailable; unavailable data is not reported as NotResilient.
+     * 
+     * @return the regionalResiliencyStatus value.
+     */
+    public RegionalResiliencyStatus regionalResiliencyStatus() {
+        return this.regionalResiliencyStatus;
+    }
+
+    /**
+     * Get the replicationMode property: Replication mode of the selected regional protection solution.
+     * Omitted when no applicable mode is available.
+     * 
+     * @return the replicationMode value.
+     */
+    public ReplicationMode replicationMode() {
+        return this.replicationMode;
+    }
+
+    /**
+     * Get the advisorRegionalRecommendationId property: Azure resource ID of the matching regional Advisor
+     * recommendation instance.
+     * The recommendation type is identified separately by advisorRecommendationTypeId.
+     * Omitted when no matching recommendation exists.
+     * 
+     * @return the advisorRegionalRecommendationId value.
+     */
+    public String advisorRegionalRecommendationId() {
+        return this.advisorRegionalRecommendationId;
     }
 
     /**
@@ -114,8 +168,22 @@ public final class RegionalDrillResourceProperties extends DrillResourceProperti
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRegionalDrillResourceProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("faultEligibility".equals(fieldName)) {
+                    deserializedRegionalDrillResourceProperties
+                        .withFaultEligibility(FaultEligibility.fromString(reader.getString()));
+                } else if ("faultIneligibleReason".equals(fieldName)) {
+                    deserializedRegionalDrillResourceProperties
+                        .withFaultIneligibleReason(FaultIneligibleReason.fromString(reader.getString()));
                 } else if ("drillType".equals(fieldName)) {
                     deserializedRegionalDrillResourceProperties.drillType = DrillType.fromString(reader.getString());
+                } else if ("regionalResiliencyStatus".equals(fieldName)) {
+                    deserializedRegionalDrillResourceProperties.regionalResiliencyStatus
+                        = RegionalResiliencyStatus.fromString(reader.getString());
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedRegionalDrillResourceProperties.replicationMode
+                        = ReplicationMode.fromString(reader.getString());
+                } else if ("advisorRegionalRecommendationId".equals(fieldName)) {
+                    deserializedRegionalDrillResourceProperties.advisorRegionalRecommendationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

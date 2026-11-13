@@ -14,19 +14,19 @@ public final class RecoveryPlanPropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanPropertiesOfDrill model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"wdvzyy\"},\"recoveryPlanId\":\"cnunvjsr\",\"recoveryPlanResourceExcludedCount\":76797312}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"qikfxcv\"},\"recoveryPlanId\":\"fsphuagrttikt\",\"recoveryPlanResourceExcludedCount\":1528858569}")
             .toObject(RecoveryPlanPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("wdvzyy", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qikfxcv", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanPropertiesOfDrill model = new RecoveryPlanPropertiesOfDrill()
-            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentity("wdvzyy"));
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("qikfxcv"));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("wdvzyy", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qikfxcv", model.identity().userAssignedIdentity());
     }
 }

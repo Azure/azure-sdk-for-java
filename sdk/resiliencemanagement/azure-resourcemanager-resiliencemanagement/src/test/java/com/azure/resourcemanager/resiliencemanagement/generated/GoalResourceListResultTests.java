@@ -16,17 +16,25 @@ public final class GoalResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoalResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceArmId\":\"vwrwj\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"}]},\"provisioningState\":\"Failed\"},\"id\":\"zdatqxhocdg\",\"name\":\"ablgphuticndvk\",\"type\":\"ozwyiftyhxhuro\"},{\"properties\":{\"resourceArmId\":\"tyxolniwpwc\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"}]},\"provisioningState\":\"NeedsAttention\"},\"id\":\"ckbasyypndd\",\"name\":\"sgcbac\",\"type\":\"hejkotynqgou\"},{\"properties\":{\"resourceArmId\":\"ndlik\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"}]},\"provisioningState\":\"Failed\"},\"id\":\"bzqqedqytbciq\",\"name\":\"ouf\",\"type\":\"mmnkzsmodmgl\"}],\"nextLink\":\"gpbkwtmut\"}")
+            "{\"value\":[{\"properties\":{\"resourceArmId\":\"bciqfouflm\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UserSelectedExclusion\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\"}]},\"regionalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"}]},\"provisioningState\":\"Deleting\"},\"id\":\"pwgcuertu\",\"name\":\"kdosvqw\",\"type\":\"bmdg\"}],\"nextLink\":\"jfddgmbmbe\"}")
             .toObject(GoalResourceListResult.class);
-        Assertions.assertEquals("vwrwj", model.value().get(0).properties().resourceArmId());
+        Assertions.assertEquals("bciqfouflm", model.value().get(0).properties().resourceArmId());
         Assertions.assertEquals(ExclusionState.EXCLUDED,
             model.value().get(0).properties().zonalResiliency().goalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
+        Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
             model.value().get(0).properties().zonalResiliency().attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
             model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
             model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
-        Assertions.assertEquals("gpbkwtmut", model.nextLink());
+        Assertions.assertEquals(ExclusionState.INCLUDED,
+            model.value().get(0).properties().regionalResiliency().goalParticipation());
+        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
+            model.value().get(0).properties().regionalResiliency().attestationStatus());
+        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
+            model.value().get(0).properties().regionalResiliency().userConfirmation().get(0).solutionDisplayName());
+        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
+            model.value().get(0).properties().regionalResiliency().userConfirmation().get(0).confirmationStatus());
+        Assertions.assertEquals("jfddgmbmbe", model.nextLink());
     }
 }
