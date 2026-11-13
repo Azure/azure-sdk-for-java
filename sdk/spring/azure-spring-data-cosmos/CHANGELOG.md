@@ -11,6 +11,8 @@
 * Fixed a `NullPointerException` when a bulk operation fails without an item response. Bulk insert and delete operations
   now fail fast when an item response contains an exception, is missing, or has an unsuccessful status code
   ([50148](https://github.com/Azure/azure-sdk-for-java/issues/50148)).
+* Fixed concurrent sorted queries using another query's alias in `ORDER BY`
+  ([51250](https://github.com/Azure/azure-sdk-for-java/issues/51250)).
 
 #### Other Changes
 
