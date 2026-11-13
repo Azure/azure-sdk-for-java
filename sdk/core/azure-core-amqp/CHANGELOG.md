@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed a race during receive link shutdown that could throw `IllegalStateException` while Proton-J processed a detach. ([#51246](https://github.com/Azure/azure-sdk-for-java/issues/51246))
+- Fixed a race during receive link shutdown that could throw `IllegalStateException` while Proton-J processed a detach. ([#51253](https://github.com/Azure/azure-sdk-for-java/pull/51253))
 
 ### Other Changes
 
