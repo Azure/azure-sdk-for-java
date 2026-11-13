@@ -190,16 +190,30 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 180000)
-    public void crossPartitionQueryScopesEachTransportRequestToOneOfTwoPhysicalRanges() throws Exception {
+    @DataProvider
+    public Object[][] crossPartitionTokenScopes() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, dataProvider = "crossPartitionTokenScopes", timeOut = 180000)
+    public void crossPartitionQueryScopesEachTransportRequestToOneOfTwoPhysicalRanges(boolean duplicateTarget)
+        throws Exception {
+
         assertThat(tokens).as("The fixture must contain progress from exactly two physical partitions").hasSize(2);
+        Map<String, ISessionToken> expectedProgress = new LinkedHashMap<>(tokens);
+        String originalToken = compoundToken;
+        if (duplicateTarget) {
+            Map.Entry<String, ISessionToken> target = tokens.entrySet().iterator().next();
+            originalToken += "," + target.getKey() + ":" + target.getValue().convertToString();
+            expectedProgress.put(target.getKey(), null);
+        }
         try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
             awaitThinClientProbe(reader);
             CosmosAsyncContainer container = reader.getDatabase(databaseId).getContainer("items");
-            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setSessionToken(compoundToken)
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setSessionToken(originalToken)
                 .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
 
-            assertQueryTransportScopes(reader, container, tokens, options,
+            assertQueryTransportScopes(reader, container, expectedProgress, options,
                 items.stream().map(item -> item.get("id").asText()).collect(Collectors.toList()), 2);
         }
     }
@@ -259,11 +273,14 @@ public class ThinClientSessionTokenE2ETest {
             List<FeedResponse<ObjectNode>> pages = container.queryItems("SELECT * FROM c", options, ObjectNode.class)
                 .byPage(2).collectList().block(WAIT);
             List<String> actualIds = new ArrayList<>();
+            boolean sawFallback = false;
             for (FeedResponse<ObjectNode> page : pages) {
                 TestSuiteBase.assertThinClientEndpointUsed(page.getCosmosDiagnostics());
-                assertThat(page.getCosmosDiagnostics().toString()).doesNotContain("could not be evaluated");
+                sawFallback |= page.getCosmosDiagnostics().toString().contains("could not be evaluated");
                 page.getResults().forEach(item -> actualIds.add(item.get("id").asText()));
             }
+            assertThat(sawFallback).as("Only an intentionally unscopable range should report fallback")
+                .isEqualTo(progress.containsValue(null));
             assertThat(actualIds).containsExactlyInAnyOrderElementsOf(expectedIds);
             assertThat(recorder.rangeIds).as("Distinct physical targets entering ThinClientStoreModel")
                 .hasSize(expectedRangeCount);
@@ -468,8 +485,13 @@ public class ThinClientSessionTokenE2ETest {
                 String rangeId = request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId();
                 assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).isEqualTo(rangeId);
                 assertThat(progress).containsKey(rangeId);
-                assertThat(request.requestContext.sessionToken).isEqualTo(progress.get(rangeId));
-                String expectedToken = rangeId + ":" + progress.get(rangeId).convertToString();
+                ISessionToken expectedProgress = progress.get(rangeId);
+                assertThat(request.requestContext.sessionToken).isEqualTo(expectedProgress);
+                if (expectedProgress == null) {
+                    assertThat(request.requestContext.getSessionTokenEvaluationResults())
+                        .anySatisfy(result -> assertThat(result).contains(originalToken, "pkRangeId : " + rangeId));
+                }
+                String expectedToken = expectedProgress == null ? "" : rangeId + ":" + expectedProgress.convertToString();
                 return wireRequest.withBody(wireRequest.body().doOnNext(body -> {
                     ByteBuf buffer = Unpooled.wrappedBuffer(body);
                     try {
