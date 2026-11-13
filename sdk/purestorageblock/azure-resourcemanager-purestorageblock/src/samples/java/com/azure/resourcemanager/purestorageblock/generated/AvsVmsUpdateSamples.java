@@ -13,7 +13,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Update.

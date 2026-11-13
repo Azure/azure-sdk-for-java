@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeGroupOverwriteReq
  */
 public final class VolumeGroupsOverwriteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Overwrite_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Overwrite_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Overwrite.
