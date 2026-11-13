@@ -47,6 +47,11 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     private Protocol protocol;
 
     /*
+     * The scale mode selected when the file share is created.
+     */
+    private ScaleMode scaleMode;
+
+    /*
      * The provisioned storage size of the share in GiB (1 GiB is 1024^3 bytes or 1073741824 bytes). A component of the
      * file share's bill is the provisioned storage, regardless of the amount of used storage.
      */
@@ -113,6 +118,16 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      * The list of associated private endpoint connections.
      */
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The current migration state of the file share.
+     */
+    private MigrationState migrationState;
+
+    /*
+     * Encryption settings for the file share.
+     */
+    private FileShareEncryption encryption;
 
     /**
      * Creates an instance of FileShareProperties class.
@@ -208,6 +223,26 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      */
     public FileShareProperties withProtocol(Protocol protocol) {
         this.protocol = protocol;
+        return this;
+    }
+
+    /**
+     * Get the scaleMode property: The scale mode selected when the file share is created.
+     * 
+     * @return the scaleMode value.
+     */
+    public ScaleMode scaleMode() {
+        return this.scaleMode;
+    }
+
+    /**
+     * Set the scaleMode property: The scale mode selected when the file share is created.
+     * 
+     * @param scaleMode the scaleMode value to set.
+     * @return the FileShareProperties object itself.
+     */
+    public FileShareProperties withScaleMode(ScaleMode scaleMode) {
+        this.scaleMode = scaleMode;
         return this;
     }
 
@@ -406,6 +441,35 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     }
 
     /**
+     * Get the migrationState property: The current migration state of the file share.
+     * 
+     * @return the migrationState value.
+     */
+    public MigrationState migrationState() {
+        return this.migrationState;
+    }
+
+    /**
+     * Get the encryption property: Encryption settings for the file share.
+     * 
+     * @return the encryption value.
+     */
+    public FileShareEncryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption settings for the file share.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the FileShareProperties object itself.
+     */
+    public FileShareProperties withEncryption(FileShareEncryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -415,6 +479,7 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
         jsonWriter.writeStringField("mediaTier", this.mediaTier == null ? null : this.mediaTier.toString());
         jsonWriter.writeStringField("redundancy", this.redundancy == null ? null : this.redundancy.toString());
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("scaleMode", this.scaleMode == null ? null : this.scaleMode.toString());
         jsonWriter.writeNumberField("provisionedStorageGiB", this.provisionedStorageGiB);
         jsonWriter.writeNumberField("provisionedIOPerSec", this.provisionedIOPerSec);
         jsonWriter.writeNumberField("provisionedThroughputMiBPerSec", this.provisionedThroughputMiBPerSec);
@@ -422,6 +487,7 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
         jsonWriter.writeJsonField("publicAccessProperties", this.publicAccessProperties);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -450,6 +516,8 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
                     deserializedFileShareProperties.redundancy = Redundancy.fromString(reader.getString());
                 } else if ("protocol".equals(fieldName)) {
                     deserializedFileShareProperties.protocol = Protocol.fromString(reader.getString());
+                } else if ("scaleMode".equals(fieldName)) {
+                    deserializedFileShareProperties.scaleMode = ScaleMode.fromString(reader.getString());
                 } else if ("provisionedStorageGiB".equals(fieldName)) {
                     deserializedFileShareProperties.provisionedStorageGiB = reader.getNullable(JsonReader::getInt);
                 } else if ("provisionedStorageNextAllowedDowngrade".equals(fieldName)) {
@@ -484,6 +552,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
                     deserializedFileShareProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedFileShareProperties.migrationState = MigrationState.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedFileShareProperties.encryption = FileShareEncryption.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

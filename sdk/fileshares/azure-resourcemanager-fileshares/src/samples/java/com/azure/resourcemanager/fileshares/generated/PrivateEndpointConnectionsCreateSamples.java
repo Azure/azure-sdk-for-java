@@ -13,7 +13,7 @@ import com.azure.resourcemanager.fileshares.models.PrivateLinkServiceConnectionS
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_Create.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_Create.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create.

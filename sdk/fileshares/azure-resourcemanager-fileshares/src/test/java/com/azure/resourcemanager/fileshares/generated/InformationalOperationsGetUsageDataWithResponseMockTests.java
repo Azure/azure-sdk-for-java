@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class InformationalOperationsGetUsageDataWithResponseMockTests {
     @Test
     public void testGetUsageDataWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"liveShares\":{\"fileShareCount\":2005026599}}}";
+        String responseStr = "{\"properties\":{\"liveShares\":{\"fileShareCount\":1819295736}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class InformationalOperationsGetUsageDataWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileShareUsageDataResponse response = manager.informationalOperations()
-            .getUsageDataWithResponse("nedgfbc", com.azure.core.util.Context.NONE)
+            .getUsageDataWithResponse("unkbebx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(2005026599, response.properties().liveShares().fileShareCount());
+        Assertions.assertEquals(1819295736, response.properties().liveShares().fileShareCount());
     }
 }

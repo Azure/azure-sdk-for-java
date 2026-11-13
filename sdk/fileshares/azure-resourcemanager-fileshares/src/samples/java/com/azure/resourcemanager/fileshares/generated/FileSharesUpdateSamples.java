@@ -4,13 +4,21 @@
 
 package com.azure.resourcemanager.fileshares.generated;
 
+import com.azure.resourcemanager.fileshares.models.CustomerManagedKeyEncryption;
 import com.azure.resourcemanager.fileshares.models.EncryptionInTransitRequired;
 import com.azure.resourcemanager.fileshares.models.FileShare;
+import com.azure.resourcemanager.fileshares.models.FileShareEncryption;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdateProperties;
+import com.azure.resourcemanager.fileshares.models.InfrastructureEncryption;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentityType;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.fileshares.models.NfsProtocolProperties;
 import com.azure.resourcemanager.fileshares.models.PublicAccessProperties;
 import com.azure.resourcemanager.fileshares.models.PublicNetworkAccess;
 import com.azure.resourcemanager.fileshares.models.ShareRootSquash;
+import com.azure.resourcemanager.fileshares.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +28,7 @@ import java.util.Map;
  */
 public final class FileSharesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_Update_MaximumSet.
@@ -33,6 +41,11 @@ public final class FileSharesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key173", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
             .withProperties(new FileShareUpdateProperties().withProvisionedStorageGiB(7)
                 .withProvisionedIOPerSec(1)
                 .withProvisionedThroughputMiBPerSec(29)
@@ -40,7 +53,14 @@ public final class FileSharesUpdateSamples {
                     .withEncryptionInTransitRequired(EncryptionInTransitRequired.ENABLED))
                 .withPublicAccessProperties(new PublicAccessProperties().withAllowedSubnets(Arrays.asList(
                     "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withEncryption(new FileShareEncryption().withInfrastructureEncryption(InfrastructureEncryption.ENABLED)
+                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
             .apply();
     }
 

@@ -13,8 +13,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.fileshares.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareInner;
+import com.azure.resourcemanager.fileshares.fluent.models.RedundancyConversionStatusResponseInner;
 import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdate;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in FileSharesClient.
@@ -309,4 +311,68 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckNameAvailabilityResponseInner checkNameAvailability(String location, CheckNameAvailabilityRequest body);
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> startRedundancyConversionWithResponse(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body, Context context);
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startRedundancyConversion(String resourceGroupName, String resourceName,
+        StartRedundancyConversionRequest body);
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RedundancyConversionStatusResponseInner>
+        getRedundancyConversionStatusWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
+     * Manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedundancyConversionStatusResponseInner getRedundancyConversionStatus(String resourceGroupName,
+        String resourceName);
 }

@@ -38,13 +38,15 @@ public interface InformationalOperations {
      * Get file shares limits.
      * 
      * @param location The name of the Azure region.
+     * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return file shares limits along with {@link Response}.
      */
-    Response<FileShareLimitsResponse> getLimitsWithResponse(String location, Context context);
+    Response<FileShareLimitsResponse> getLimitsWithResponse(String location, FileShareLimitsRequest body,
+        Context context);
 
     /**
      * Get file shares limits.
