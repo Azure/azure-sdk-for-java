@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,30 +104,11 @@ public class SessionTokenHelper {
         }
     }
 
-    // Returns null when topology cannot safely scope the caller's progress. Never reads ambient state.
-    public static ISessionToken scopeCompoundSessionToken(
-        String originalToken, PartitionKeyRange target, CollectionRoutingMap routingMap) {
+    // Selects target/parent progress without consulting ambient state or unrelated ranges.
+    public static ISessionToken scopeCompoundSessionToken(String originalToken, PartitionKeyRange target) {
 
-        ISessionToken selected = selectPartitionLocalSessionToken(
+        return selectPartitionLocalSessionToken(
             originalToken, target != null ? target.getId() : "", target != null ? target.getParents() : null);
-        return selected != null && areSessionTokenRangesKnown(originalToken, routingMap, target) ? selected : null;
-    }
-
-    private static boolean areSessionTokenRangesKnown(
-        String originalToken, CollectionRoutingMap routingMap, PartitionKeyRange target) {
-
-        if (target == null) {
-            return false;
-        }
-        List<String> parents = target.getParents();
-        for (String segment : StringUtils.split(originalToken, ",")) {
-            String[] parts = StringUtils.split(segment, ":");
-            if (parts.length != 2 || (routingMap.tryGetRangeByPartitionKeyRangeId(parts[0]) == null
-                && (parents == null || !parents.contains(parts[0])))) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private static ISessionToken selectPartitionLocalSessionToken(

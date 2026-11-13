@@ -262,30 +262,38 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 String collectionRid = collection.v.getResourceId();
                 PartitionKeyDefinition definition = collection.v.getPartitionKey();
                 request.setPartitionKeyDefinition(definition);
-                Utils.ValueHolder<CollectionRoutingMap> previous = new Utils.ValueHolder<>(null);
-                return Mono.defer(() -> getPartitionKeyRangeCache().tryLookupAsync(
-                    diagnostics, collectionRid, previous.v, request.properties))
-                    .map(current -> {
-                        if (current.v == null) {
-                            throw new CollectionRoutingMapNotFoundException(
-                                "No collection routing map found for collection rid " + collectionRid);
+                return getPartitionKeyRangeCache().tryLookupAsync(diagnostics, collectionRid, null, request.properties)
+                    .flatMap(cached -> {
+                        if (cached.v == null) {
+                            return Mono.error(new CollectionRoutingMapNotFoundException(
+                                "No collection routing map found for collection rid " + collectionRid));
                         }
-                        previous.v = current.v;
-                        PartitionKeyRange target = resolveCompoundSessionTokenRange(request, definition, current.v);
-                        return new Utils.ValueHolder<>(
-                            SessionTokenHelper.scopeCompoundSessionToken(originalToken, target, current.v));
-                    })
-                    .repeat(1)
-                    .takeUntil(selected -> selected.v != null)
-                    .takeLast(1)
-                    .doOnNext(selected -> {
-                        request.requestContext.sessionToken = selected.v;
-                        if (selected.v == null) {
-                            PartitionKeyRange target = request.requestContext.resolvedPartitionKeyRange;
-                            SessionTokenHelper.recordUnmatchedSessionToken(
-                                request, originalToken, target != null ? target.getId() : "");
+                        PartitionKeyRange target = resolveCompoundSessionTokenRange(request, definition, cached.v);
+                        ISessionToken token = SessionTokenHelper.scopeCompoundSessionToken(originalToken, target);
+                        if (token != null) {
+                            request.requestContext.sessionToken = token;
+                            return Mono.empty();
                         }
-                    }).then();
+
+                        // Passing the previous map forces refresh unless a newer map is already cached.
+                        return getPartitionKeyRangeCache().tryLookupAsync(
+                            diagnostics, collectionRid, cached.v, request.properties)
+                            .doOnNext(refreshed -> {
+                                if (refreshed.v == null) {
+                                    throw new CollectionRoutingMapNotFoundException(
+                                        "No collection routing map found for collection rid " + collectionRid);
+                                }
+                                PartitionKeyRange refreshedTarget = resolveCompoundSessionTokenRange(
+                                    request, definition, refreshed.v);
+                                ISessionToken refreshedToken = SessionTokenHelper.scopeCompoundSessionToken(
+                                    originalToken, refreshedTarget);
+                                request.requestContext.sessionToken = refreshedToken;
+                                if (refreshedToken == null) {
+                                    SessionTokenHelper.recordUnmatchedSessionToken(
+                                        request, originalToken, refreshedTarget != null ? refreshedTarget.getId() : "");
+                                }
+                            }).then();
+                    });
             });
     }
 

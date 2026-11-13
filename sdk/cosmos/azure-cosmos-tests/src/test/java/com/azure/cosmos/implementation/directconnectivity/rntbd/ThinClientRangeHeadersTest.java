@@ -135,22 +135,26 @@ public class ThinClientRangeHeadersTest {
     @DataProvider
     public Object[][] compoundSessionTokenTopologies() {
         return new Object[][] {
-            {true, false},
-            {false, true},
-            {false, false}
+            {true, false, "0:1#10#1=10,1:1#20#1=20", "0", null},
+            {true, false, "0:1#10#1=10,9:1#20#1=20", "0", null},
+            {true, false, "0:1#10#1=10,9:1#20#1=20", "1", "0"},
+            {false, true, "1:1#10#1=10,2:1#20#1=20", "1", "0"},
+            {false, false, "0:1#10#1=10,1:1#20#1=20", "0", null}
         };
     }
 
     @Test(groups = "unit", dataProvider = "compoundSessionTokenTopologies")
-    public void scopesCompoundSessionTokenWithAtMostOneRefresh(boolean cachedMatch, boolean refreshedMatch)
+    public void scopesCompoundSessionTokenWithAtMostOneRefresh(
+        boolean cachedMatch, boolean refreshedMatch, String originalToken, String targetId, String parentId)
         throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.when(httpClient.send(Mockito.any(), Mockito.any())).thenReturn(Mono.empty());
         ThinClientStoreModel model = createModel(httpClient);
         RxDocumentServiceRequest request = createRequest(OperationType.Read, "", "FF");
-        String originalToken = "0:1#10#1=10,1:1#20#1=20";
         request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, originalToken);
-        request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("0"));
+        if (!refreshedMatch) {
+            request.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(targetId));
+        }
         request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(Collections.singletonList("testPk"), true));
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
         request.requestContext.sessionToken = SessionTokenHelper.parse("1#99#1=99");
@@ -167,17 +171,18 @@ public class ThinClientRangeHeadersTest {
 
         CollectionRoutingMap cached = Mockito.mock(CollectionRoutingMap.class);
         CollectionRoutingMap refreshed = Mockito.mock(CollectionRoutingMap.class);
-        PartitionKeyRange target = new PartitionKeyRange("0", "", "80");
-        PartitionKeyRange other = new PartitionKeyRange("1", "80", "FF");
+        PartitionKeyRange target = new PartitionKeyRange(
+            targetId, "", "FF", parentId == null ? null : Collections.singletonList(parentId));
         if (cachedMatch) {
-            Mockito.when(cached.getRangeByPartitionKeyRangeId("0")).thenReturn(target);
-            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId("0")).thenReturn(target);
-            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId("1")).thenReturn(other);
+            Mockito.when(cached.getRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
+            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
         }
         if (refreshedMatch) {
-            Mockito.when(refreshed.getRangeByPartitionKeyRangeId("0")).thenReturn(target);
-            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId("0")).thenReturn(target);
-            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId("1")).thenReturn(other);
+            PartitionKeyRange staleParent = new PartitionKeyRange(parentId, "", "FF");
+            Mockito.when(cached.getRangeByEffectivePartitionKey(Mockito.anyString())).thenReturn(staleParent);
+            Mockito.when(cached.tryGetRangeByPartitionKeyRangeId(parentId)).thenReturn(staleParent);
+            Mockito.when(refreshed.getRangeByEffectivePartitionKey(Mockito.anyString())).thenReturn(target);
+            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
         }
         RxPartitionKeyRangeCache rangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
         Mockito.when(rangeCache.tryLookupAsync(
@@ -202,7 +207,7 @@ public class ThinClientRangeHeadersTest {
             assertThat(request.requestContext.sessionToken).isEqualTo(SessionTokenHelper.parse("1#10#1=10"));
             assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
             assertThat(serialize(model, request).get(RntbdRequestHeader.SessionToken.id()))
-                .containsExactly("0:1#10#1=10".getBytes(StandardCharsets.UTF_8));
+                .containsExactly((targetId + ":1#10#1=10").getBytes(StandardCharsets.UTF_8));
         } else {
             assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
             assertThat(request.requestContext.sessionToken).isNull();
