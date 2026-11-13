@@ -1328,9 +1328,14 @@ public class ShareDirectoryAsyncClient {
 
         ShareDirectoryAsyncClient destinationDirectoryClient = getDirectoryAsyncClient(options.getDestinationPath());
 
-        String renameSource = this.getDirectoryUrl();
-
-        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+        // getDirectoryUrl() is a raw concatenation and the service percent-decodes x-ms-file-rename-source,
+        // so encode the stored raw share name and directory path exactly once here.
+        String renameSource = azureFileStorageClient.getUrl() + "/" + Utility.urlEncode(shareName) + "/"
+            + Utility.urlEncode(directoryPath);
+        if (snapshot != null) {
+            renameSource = Utility.appendQueryParameter(renameSource, "sharesnapshot", snapshot);
+        }
+        renameSource = sasToken != null ? renameSource + "?" + sasToken.getSignature() : renameSource;
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories()
             .renameWithResponseAsync(destinationDirectoryClient.getShareName(),

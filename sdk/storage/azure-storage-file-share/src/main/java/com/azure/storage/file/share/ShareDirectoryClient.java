@@ -1306,13 +1306,18 @@ public class ShareDirectoryClient {
 
         ShareDirectoryClient destinationDirectoryClient = getDirectoryClient(options.getDestinationPath());
 
-        String renameSource = this.sasToken != null
-            ? this.getDirectoryUrl() + "?" + this.sasToken.getSignature()
-            : this.getDirectoryUrl();
+        // getDirectoryUrl() is a raw concatenation and the service percent-decodes x-ms-file-rename-source,
+        // so encode the stored raw share name and directory path exactly once here.
+        String renameSource = azureFileStorageClient.getUrl() + "/" + Utility.urlEncode(shareName) + "/"
+            + Utility.urlEncode(directoryPath);
+        if (snapshot != null) {
+            renameSource = Utility.appendQueryParameter(renameSource, "sharesnapshot", snapshot);
+        }
+        String finalRenameSource = sasToken != null ? renameSource + "?" + sasToken.getSignature() : renameSource;
 
         Callable<Response<Void>> operation = () -> destinationDirectoryClient.azureFileStorageClient.getDirectories()
             .renameNoCustomHeadersWithResponse(destinationDirectoryClient.getShareName(),
-                destinationDirectoryClient.getDirectoryPath(), renameSource, null /* timeout */,
+                destinationDirectoryClient.getDirectoryPath(), finalRenameSource, null /* timeout */,
                 options.getReplaceIfExists(), options.isIgnoreReadOnly(), options.getFilePermission(),
                 options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(), sourceConditions,
                 destinationConditions, smbInfo, finalContext);
