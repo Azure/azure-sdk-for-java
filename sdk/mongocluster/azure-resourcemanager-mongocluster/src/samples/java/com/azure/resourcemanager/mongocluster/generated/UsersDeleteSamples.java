@@ -12,12 +12,12 @@ public final class UsersDeleteSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_UserDelete.json
      */
     /**
-     * Sample code: Deletes a user on a Mongo Cluster resource.
+     * Sample code: Deletes a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        deletesAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        deletesAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .delete("TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu",
                 com.azure.core.util.Context.NONE);

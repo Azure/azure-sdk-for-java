@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface ListConnectionStringsResult {
     /**
-     * Gets the connectionStrings property: An array that contains the connection strings for a mongo cluster.
+     * Gets the connectionStrings property: An array that contains the connection strings for a DocumentDB cluster.
      * 
      * @return the connectionStrings value.
      */

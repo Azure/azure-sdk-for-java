@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class MongoClusterRestoreParameters implements JsonSerializable<MongoClusterRestoreParameters> {
     /*
-     * UTC point in time to restore a mongo cluster
+     * UTC point in time to restore a DocumentDB cluster
      */
     private OffsetDateTime pointInTimeUTC;
 
@@ -36,7 +36,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
     }
 
     /**
-     * Get the pointInTimeUTC property: UTC point in time to restore a mongo cluster.
+     * Get the pointInTimeUTC property: UTC point in time to restore a DocumentDB cluster.
      * 
      * @return the pointInTimeUTC value.
      */
@@ -45,7 +45,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
     }
 
     /**
-     * Set the pointInTimeUTC property: UTC point in time to restore a mongo cluster.
+     * Set the pointInTimeUTC property: UTC point in time to restore a DocumentDB cluster.
      * 
      * @param pointInTimeUTC the pointInTimeUTC value to set.
      * @return the MongoClusterRestoreParameters object itself.

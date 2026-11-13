@@ -280,14 +280,15 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about a DocumentDB cluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MongoClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -300,14 +301,14 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster on successful completion of {@link Mono}.
+     * @return information about a DocumentDB cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MongoClusterInner> getByResourceGroupAsync(String resourceGroupName, String mongoClusterName) {
@@ -316,15 +317,15 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response}.
+     * @return information about a DocumentDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String mongoClusterName,
@@ -335,14 +336,14 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster.
+     * @return information about a DocumentDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoClusterInner getByResourceGroup(String resourceGroupName, String mongoClusterName) {
@@ -350,16 +351,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -374,16 +376,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response}.
+     * @return represents a DocumentDB cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -396,17 +398,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response}.
+     * @return represents a DocumentDB cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -419,16 +421,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a mongo cluster resource.
+     * @return the {@link PollerFlux} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MongoClusterInner>, MongoClusterInner>
@@ -440,16 +442,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginCreateOrUpdate(String resourceGroupName,
@@ -460,17 +462,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginCreateOrUpdate(String resourceGroupName,
@@ -482,16 +484,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MongoClusterInner> createOrUpdateAsync(String resourceGroupName, String mongoClusterName,
@@ -501,16 +503,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoClusterInner createOrUpdate(String resourceGroupName, String mongoClusterName,
@@ -519,17 +521,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoClusterInner createOrUpdate(String resourceGroupName, String mongoClusterName,
@@ -538,16 +540,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mongoClusterName,
@@ -562,16 +565,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response}.
+     * @return represents a DocumentDB cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -584,17 +587,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource along with {@link Response}.
+     * @return represents a DocumentDB cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mongoClusterName,
@@ -607,16 +610,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a mongo cluster resource.
+     * @return the {@link PollerFlux} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdateAsync(String resourceGroupName,
@@ -628,16 +631,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
@@ -648,17 +651,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
@@ -669,16 +672,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource on successful completion of {@link Mono}.
+     * @return represents a DocumentDB cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MongoClusterInner> updateAsync(String resourceGroupName, String mongoClusterName,
@@ -688,16 +691,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties) {
@@ -705,17 +708,17 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties,
@@ -724,10 +727,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -743,10 +746,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -759,10 +762,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -777,10 +780,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -794,10 +797,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -810,10 +813,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -828,10 +831,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -844,10 +847,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -858,10 +861,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -873,7 +876,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -894,7 +897,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -909,7 +912,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,7 +930,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -946,7 +949,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -961,7 +964,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -977,7 +980,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -996,7 +999,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1008,7 +1011,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1024,7 +1027,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,7 +1045,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,7 +1057,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1068,16 +1071,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the connection strings for the given DocumentDB cluster along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListConnectionStringsResultInner>>
@@ -1091,15 +1094,15 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster on successful completion of {@link Mono}.
+     * @return the connection strings for the given DocumentDB cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ListConnectionStringsResultInner> listConnectionStringsAsync(String resourceGroupName,
@@ -1109,16 +1112,16 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster along with {@link Response}.
+     * @return the connection strings for the given DocumentDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListConnectionStringsResultInner> listConnectionStringsWithResponse(String resourceGroupName,
@@ -1129,15 +1132,15 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster.
+     * @return the connection strings for the given DocumentDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListConnectionStringsResultInner listConnectionStrings(String resourceGroupName, String mongoClusterName) {
@@ -1145,7 +1148,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -1167,7 +1170,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -1183,7 +1186,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -1203,7 +1206,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -1219,10 +1222,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1240,10 +1243,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1259,10 +1262,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1279,10 +1282,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1298,10 +1301,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1316,10 +1319,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1335,10 +1338,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1352,10 +1355,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1367,10 +1370,10 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

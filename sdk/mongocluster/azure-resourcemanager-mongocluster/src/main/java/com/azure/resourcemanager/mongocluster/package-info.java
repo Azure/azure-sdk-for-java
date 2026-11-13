@@ -4,7 +4,7 @@
 
 /**
  * Package containing the classes for MongoClusterManagementClient.
- * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for
- * MongoDB vCore resources including clusters and firewall rules.
+ * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure DocumentDB
+ * resources including clusters and firewall rules.
  */
 package com.azure.resourcemanager.mongocluster;

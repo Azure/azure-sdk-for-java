@@ -12,11 +12,11 @@ public final class MongoClustersListByResourceGroupSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_ListByResourceGroup.json
      */
     /**
-     * Sample code: Lists the Mongo Cluster resources in a resource group.
+     * Sample code: Lists the DocumentDB cluster resources in a resource group.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsTheMongoClusterResourcesInAResourceGroup(
+    public static void listsTheDocumentDBClusterResourcesInAResourceGroup(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().listByResourceGroup("TestResourceGroup", com.azure.core.util.Context.NONE);
     }

@@ -12,12 +12,12 @@ public final class UsersGetSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_UserGet.json
      */
     /**
-     * Sample code: Gets a user on a Mongo Cluster resource.
+     * Sample code: Gets a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        getsAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        getsAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .getWithResponse("TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu",
                 com.azure.core.util.Context.NONE);

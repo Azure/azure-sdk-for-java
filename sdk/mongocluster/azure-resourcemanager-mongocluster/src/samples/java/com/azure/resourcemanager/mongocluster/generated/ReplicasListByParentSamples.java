@@ -12,11 +12,11 @@ public final class ReplicasListByParentSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_ReplicaList.json
      */
     /**
-     * Sample code: List the replicas linked to a Mongo Cluster resource.
+     * Sample code: List the replicas linked to a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listTheReplicasLinkedToAMongoClusterResource(
+    public static void listTheReplicasLinkedToADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.replicas().listByParent("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }

@@ -20,12 +20,12 @@ public final class UsersCreateOrUpdateSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_UserCreateOrUpdate.json
      */
     /**
-     * Sample code: Creates a user on a Mongo Cluster resource.
+     * Sample code: Creates a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        createsAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        createsAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .define("uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu")
             .withExistingMongoCluster("TestGroup", "myMongoCluster")

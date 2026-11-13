@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
 import java.io.IOException;
 
 /**
- * Represents a mongo cluster replica.
+ * Represents a DocumentDB cluster replica.
  */
 @Immutable
 public final class ReplicaInner extends ProxyResource {

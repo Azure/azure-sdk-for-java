@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Preview features that can be enabled on a mongo cluster.
+ * Preview features that can be enabled on a DocumentDB cluster.
  */
 public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
     /**
