@@ -10,7 +10,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Manage evaluator versions and generate rubrics** using `EvaluatorsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
-* **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
+* **Monitor deployed agents for issues** and review the resulting insights using `AgentInsightMonitorsClient`.
 * **Create and manage skills** using the preview `BetaSkillsClient`.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
@@ -45,7 +45,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.9.0</version>
+    <version>2.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,12 +63,11 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
     .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
-// Beta* clients automatically opt in to their preview service area.
-BetaAgentInsightMonitorsClient agentInsightMonitorsClient
-    = builder.beta().buildBetaAgentInsightMonitorsClient();
+AgentInsightMonitorsClient agentInsightMonitorsClient = builder.buildAgentInsightMonitorsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+// Beta* clients automatically opt in to their preview service area.
 BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
     = builder.beta().buildBetaEvaluationTaxonomiesClient();
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
@@ -156,7 +155,6 @@ Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
 | `BetaInsightsClient` | `Insights=V1Preview` |
@@ -175,11 +173,12 @@ The examples below show common operations for core AI Projects sub-clients. For 
 | Folder | Scenarios |
 | --- | --- |
 | [agents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
+| [agentinsights](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/agentinsights) | Analyze existing agent traces on demand or configure recurring Agent Insights runs. |
 | [connections](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
 | [datageneration](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
 | [datasets](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
 | [deployments](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
-| [evaluations](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
+| [evaluations](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; schedule agent-trace evaluations; manage and generate evaluator versions. |
 | [indexes](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
 | [models](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
 | [routines](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |

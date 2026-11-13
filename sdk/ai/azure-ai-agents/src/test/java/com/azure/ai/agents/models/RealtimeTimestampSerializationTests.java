@@ -10,6 +10,7 @@ import com.azure.json.JsonWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RealtimeTimestampSerializationTests {
@@ -24,6 +26,45 @@ public class RealtimeTimestampSerializationTests {
 
     private static final OffsetDateTime TIMESTAMP
         = OffsetDateTime.ofInstant(Instant.ofEpochSecond(EPOCH_SECONDS), ZoneOffset.UTC);
+
+    @Test
+    public void transcriptionSegmentTimesPreserveFractionalSeconds() throws IOException {
+        String input = "{\"type\":\"conversation.item.input_audio_transcription.segment\","
+            + "\"event_id\":\"event-1\",\"item_id\":\"item-1\",\"content_index\":0,"
+            + "\"text\":\"hello\",\"id\":\"segment-1\",\"speaker\":\"speaker-1\",\"start\":0.125,\"end\":1.875}";
+        RealtimeConversationItemInputAudioTranscriptionSegmentEvent segment
+            = deserialize(input, RealtimeConversationItemInputAudioTranscriptionSegmentEvent::fromJson);
+        assertEquals(Duration.ofMillis(125), segment.getStart());
+        assertEquals(Duration.ofMillis(1875), segment.getEnd());
+
+        String json = serialize(segment);
+        assertTrue(json.contains("\"start\":0.125"));
+        assertTrue(json.contains("\"end\":1.875"));
+        assertFalse(json.contains("\"startTime\""));
+        assertFalse(json.contains("\"endTime\""));
+        RealtimeConversationItemInputAudioTranscriptionSegmentEvent roundTripped
+            = deserialize(json, RealtimeConversationItemInputAudioTranscriptionSegmentEvent::fromJson);
+        assertEquals(segment.getStart(), roundTripped.getStart());
+        assertEquals(segment.getEnd(), roundTripped.getEnd());
+    }
+
+    @Test
+    public void serverVadPrefixPaddingUsesMillisecondsAndPreservesNull() throws IOException {
+        VoiceAgentServerVadTurnDetection vad
+            = new VoiceAgentServerVadTurnDetection().setPrefixPadding(Duration.ofMillis(325));
+        String json = serialize(vad);
+        assertTrue(json.contains("\"prefix_padding_ms\":325"));
+        assertFalse(json.contains("\"prefixPadding\""));
+        VoiceAgentServerVadTurnDetection roundTripped = deserialize(json, VoiceAgentServerVadTurnDetection::fromJson);
+        assertEquals(Duration.ofMillis(325), roundTripped.getPrefixPadding());
+
+        vad.setPrefixPadding(null);
+        assertNull(vad.getPrefixPadding());
+        assertFalse(serialize(vad).contains("\"prefix_padding_ms\""));
+        assertNull(deserialize("{}", VoiceAgentServerVadTurnDetection::fromJson).getPrefixPadding());
+        assertNull(
+            deserialize("{\"prefix_padding_ms\":null}", VoiceAgentServerVadTurnDetection::fromJson).getPrefixPadding());
+    }
 
     @Test
     public void assistantMessageCreatedAtUsesOffsetDateTimeAndUnixSecondsWireFormat() throws IOException {

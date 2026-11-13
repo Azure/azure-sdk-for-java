@@ -79,6 +79,10 @@ public class OptimizationContext implements JsonSerializable<OptimizationContext
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("steering_prompt".equals(discriminatorValue)) {
                     return SteeringPromptOptimizationContext.fromJson(readerToUse.reset());
+                } else if ("skill_references".equals(discriminatorValue)) {
+                    return SkillReferencesOptimizationContext.fromJson(readerToUse.reset());
+                } else if ("agent_traces".equals(discriminatorValue)) {
+                    return AgentTracesOptimizationContext.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
