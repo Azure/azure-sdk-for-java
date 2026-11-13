@@ -15,20 +15,21 @@ public final class DefenderForAISettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"sprkzyaupiac\",\"tags\":{\"urjtumghi\":\"afbwqroohtuovmao\"},\"id\":\"ve\",\"name\":\"mslclblyjxlt\",\"type\":\"sjuscvsfxigctmg\"}")
+            "{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"bakclacjfrnxous\",\"tags\":{\"zvuxm\":\"zlwvsgmwohqfz\",\"mribiat\":\"kjsvthnwpzteko\",\"zcugswvxwlmzqw\":\"gplucfotangcfhny\"},\"id\":\"tx\",\"name\":\"jmxmcuqud\",\"type\":\"cvclxynpdk\"}")
             .toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("afbwqroohtuovmao", model.tags().get("urjtumghi"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+        Assertions.assertEquals("zlwvsgmwohqfz", model.tags().get("zvuxm"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForAISettingInner model
-            = new DefenderForAISettingInner().withTags(mapOf("urjtumghi", "afbwqroohtuovmao"))
-                .withState(DefenderForAISettingState.ENABLED);
+        DefenderForAISettingInner model = new DefenderForAISettingInner()
+            .withTags(
+                mapOf("zvuxm", "zlwvsgmwohqfz", "mribiat", "kjsvthnwpzteko", "zcugswvxwlmzqw", "gplucfotangcfhny"))
+            .withState(DefenderForAISettingState.DISABLED);
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("afbwqroohtuovmao", model.tags().get("urjtumghi"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+        Assertions.assertEquals("zlwvsgmwohqfz", model.tags().get("zvuxm"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     // Use "Map.of" if available

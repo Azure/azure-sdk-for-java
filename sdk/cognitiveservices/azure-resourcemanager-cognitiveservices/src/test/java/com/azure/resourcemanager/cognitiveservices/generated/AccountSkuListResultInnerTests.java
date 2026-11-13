@@ -13,13 +13,13 @@ public final class AccountSkuListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountSkuListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"f\",\"sku\":{\"name\":\"keyyi\",\"tier\":\"Basic\",\"size\":\"dlwtgrhpdj\",\"family\":\"umasxazjpq\",\"capacity\":973371108}}]}")
+            "{\"value\":[{\"resourceType\":\"gnxkrxdqmidtth\",\"sku\":{\"name\":\"vqdra\",\"tier\":\"Enterprise\",\"size\":\"big\",\"family\":\"oqfbowskanyk\",\"capacity\":1440760803}}]}")
             .toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("f", model.value().get(0).resourceType());
-        Assertions.assertEquals("keyyi", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("dlwtgrhpdj", model.value().get(0).sku().size());
-        Assertions.assertEquals("umasxazjpq", model.value().get(0).sku().family());
-        Assertions.assertEquals(973371108, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("gnxkrxdqmidtth", model.value().get(0).resourceType());
+        Assertions.assertEquals("vqdra", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.ENTERPRISE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("big", model.value().get(0).sku().size());
+        Assertions.assertEquals("oqfbowskanyk", model.value().get(0).sku().family());
+        Assertions.assertEquals(1440760803, model.value().get(0).sku().capacity());
     }
 }

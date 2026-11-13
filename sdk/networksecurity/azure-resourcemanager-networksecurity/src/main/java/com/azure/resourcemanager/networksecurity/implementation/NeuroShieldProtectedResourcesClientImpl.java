@@ -447,7 +447,7 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
      * protected resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeuroShieldProtectedResourceInner>, NeuroShieldProtectedResourceInner>
+    private SyncPoller<PollResult<NeuroShieldProtectedResourceInner>, NeuroShieldProtectedResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String neuroShieldName, String protectedResourceName,
             NeuroShieldProtectedResourceInner resource, String ifMatch) {
         Response<BinaryData> response
@@ -733,7 +733,7 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neuroShieldName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, neuroShieldName, protectedResourceName, ifMatch);

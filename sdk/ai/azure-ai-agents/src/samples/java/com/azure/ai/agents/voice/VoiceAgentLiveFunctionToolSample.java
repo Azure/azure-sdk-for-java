@@ -5,8 +5,8 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemType;
@@ -64,7 +64,7 @@ public class VoiceAgentLiveFunctionToolSample {
             .endpoint(endpoint)
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentWebSocketClient realtime = builder.beta().buildBetaVoiceAgentWebSocketClient();
+        VoiceAgentsWebSocketClient realtime = builder.buildVoiceAgentsWebSocketClient();
 
         Map<String, Object> cityProperty = new LinkedHashMap<>();
         cityProperty.put("type", "string");
@@ -89,7 +89,7 @@ public class VoiceAgentLiveFunctionToolSample {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             System.out.println("Created voice agent: " + agentName);
-            try (BetaVoiceAgentWebSocketSessionClient session = realtime.openWebSocketSession(agentName)) {
+            try (VoiceAgentsWebSocketSessionClient session = realtime.openWebSocketSession(agentName)) {
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
                 Future<?> response = receiver.submit(() -> receiveResponse(session));
                 try {
@@ -114,7 +114,7 @@ public class VoiceAgentLiveFunctionToolSample {
         }
     }
 
-    private static void receiveResponse(BetaVoiceAgentWebSocketSessionClient session) {
+    private static void receiveResponse(VoiceAgentsWebSocketSessionClient session) {
         for (RealtimeServerEvent event : session.receiveEvents()) {
             if (event instanceof RealtimeResponseFunctionCallArgumentsDoneEvent) {
                 RealtimeResponseFunctionCallArgumentsDoneEvent call

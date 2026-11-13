@@ -510,7 +510,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @return the {@link SyncPoller} for polling of model that represents the scenario.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ScenarioConfigurationInner>, ScenarioConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName,
         ScenarioConfigurationInner resource, String ifNoneMatch, String ifMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, scenarioName,
@@ -1482,7 +1482,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
+    private SyncPoller<PollResult<PermissionsFix>, PermissionsFix> beginFixResourcePermissions(String resourceGroupName,
         String workspaceName, String scenarioName, String scenarioConfigurationName,
         FixResourcePermissionsRequest body) {
         Response<BinaryData> response = fixResourcePermissionsWithResponse(resourceGroupName, workspaceName,

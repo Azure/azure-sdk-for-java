@@ -872,7 +872,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
         Boolean forceDelete) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, targetName, forceDelete);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

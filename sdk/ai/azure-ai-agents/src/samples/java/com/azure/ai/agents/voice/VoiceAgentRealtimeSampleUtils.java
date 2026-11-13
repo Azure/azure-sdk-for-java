@@ -3,15 +3,21 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsConversationsAsyncClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeErrorEvent;
 import com.azure.ai.agents.models.RealtimeResponseAudioDeltaEvent;
 import com.azure.ai.agents.models.RealtimeResponseAudioTranscriptDoneEvent;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
+import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceConversation;
+import com.azure.ai.agents.models.VoiceModelType;
+import com.azure.ai.agents.models.VoiceOutputModality;
+import com.azure.ai.agents.models.VoiceType;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
@@ -20,6 +26,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +35,19 @@ final class VoiceAgentRealtimeSampleUtils {
     static final int SAMPLE_RATE = 24000;
 
     private VoiceAgentRealtimeSampleUtils() {
+    }
+
+    static VoiceAgentDefinition createDefinition(VoiceModelType modelType, String model, String instructions) {
+        VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration()
+            .setVoice("en-US-AvaNeural")
+            .setVoiceType(VoiceType.AZURE_STANDARD);
+        return new VoiceAgentDefinition()
+            .setModelType(modelType)
+            .setModel(model)
+            .setInstructions(instructions)
+            .setAudio(new VoiceAgentAudioConfiguration().setOutput(output))
+            .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
+            .setStore(true);
     }
 
     static boolean handleResponseEvent(RealtimeServerEvent event, AtomicReference<String> conversationId,
@@ -51,7 +71,7 @@ final class VoiceAgentRealtimeSampleUtils {
         return event instanceof RealtimeResponseDoneEvent;
     }
 
-    static void readConversation(BetaVoiceAgentsConversationsClient conversations, String agentName,
+    static void readConversation(VoiceAgentsConversationsClient conversations, String agentName,
         String conversationId) {
         VoiceConversation conversation = conversations.getAgentConversation(agentName, conversationId);
         System.out.printf("Conversation %s: status=%s, created=%s%n", conversation.getId(),
@@ -62,7 +82,7 @@ final class VoiceAgentRealtimeSampleUtils {
         }
     }
 
-    static Mono<Void> readConversation(BetaVoiceAgentsConversationsAsyncClient conversations, String agentName,
+    static Mono<Void> readConversation(VoiceAgentsConversationsAsyncClient conversations, String agentName,
         String conversationId) {
         return conversations.getAgentConversation(agentName, conversationId)
             .doOnNext(conversation -> System.out.printf("Conversation %s: status=%s, created=%s%n",
@@ -137,6 +157,12 @@ final class VoiceAgentRealtimeSampleUtils {
 
         boolean isEnabled() {
             return line != null;
+        }
+
+        synchronized void drain() {
+            if (line != null) {
+                line.drain();
+            }
         }
 
         @Override

@@ -10,12 +10,12 @@ import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.ExternalAgentDefinition;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Sample demonstrating create, retrieve, list, and delete operations for an external agent using the
@@ -23,9 +23,8 @@ import java.util.Map;
  *
  * <p>External agents are third-party agents hosted outside Foundry (for example, on GCP or AWS).
  * Registration is metadata-only: Foundry records the agent definition to light up observability
- * experiences over customer-emitted OpenTelemetry data. External agents are a preview feature, so
- * {@code allowPreview(true)} is required to add the {@code Foundry-Features: ExternalAgents=V1Preview}
- * header.</p>
+ * experiences over customer-emitted OpenTelemetry data. External agent registration uses the GA
+ * {@link AgentsClient} without preview opt-in.</p>
  *
  * <p>Before running the sample, set the {@code FOUNDRY_PROJECT_ENDPOINT} environment variable.</p>
  */
@@ -36,21 +35,13 @@ public class ExternalAgentSample {
         AgentsClient agentsClient = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .allowPreview(true)
             .buildAgentsClient();
 
-        String agentName = "myExternalAgent1";
-
-        // Clean up any pre-existing agent with the same name.
-        try {
-            agentsClient.deleteAgent(agentName);
-        } catch (ResourceNotFoundException ignored) {
-            // The sample agent does not already exist.
-        }
+        String agentName = "external-sample-" + UUID.randomUUID().toString().substring(0, 8);
 
         // BEGIN:com.azure.ai.agents.agents.ExternalAgentSample.createAgentVersion
         ExternalAgentDefinition agentDefinition = new ExternalAgentDefinition()
-            .setOtelAgentId("sample-external-agent");
+            .setOtelAgentId(agentName);
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("sample", "external_agents_crud");

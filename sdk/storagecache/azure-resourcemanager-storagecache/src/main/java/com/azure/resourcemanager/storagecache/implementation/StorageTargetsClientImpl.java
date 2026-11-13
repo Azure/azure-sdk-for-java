@@ -633,7 +633,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
         String storageTargetName, String force) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, cacheName, storageTargetName, force);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

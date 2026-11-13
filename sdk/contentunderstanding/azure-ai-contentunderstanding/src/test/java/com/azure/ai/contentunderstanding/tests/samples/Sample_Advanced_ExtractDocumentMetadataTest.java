@@ -27,6 +27,7 @@ public class Sample_Advanced_ExtractDocumentMetadataTest extends ContentUndersta
     private void assertMetadata(String fileName, String contentType) throws Exception {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample(fileName));
+        setPlaybackSyncPollerPollInterval(poller);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
 
         AnalysisResult result = poller.getFinalResult();

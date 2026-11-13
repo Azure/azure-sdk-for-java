@@ -20,7 +20,7 @@ public final class IotHubResourcesGetJobWithResponseMockTests {
     @Test
     public void testGetJobWithResponse() throws Exception {
         String responseStr
-            = "{\"jobId\":\"wspughftqsxhqx\",\"startTimeUtc\":\"Thu, 21 Jan 2021 16:10:27 GMT\",\"endTimeUtc\":\"Fri, 04 Jun 2021 22:03:42 GMT\",\"type\":\"backup\",\"status\":\"cancelled\",\"failureReason\":\"grjguufzd\",\"statusMessage\":\"yqtfihwh\",\"parentJobId\":\"tzingamvpph\"}";
+            = "{\"jobId\":\"gytguslfead\",\"startTimeUtc\":\"Mon, 11 Oct 2021 19:56:34 GMT\",\"endTimeUtc\":\"Mon, 01 Mar 2021 03:16:18 GMT\",\"type\":\"import\",\"status\":\"enqueued\",\"failureReason\":\"h\",\"statusMessage\":\"sx\",\"parentJobId\":\"pelol\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IotHubResourcesGetJobWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobResponse response = manager.iotHubResources()
-            .getJobWithResponse("jnalghf", "vtvsexsowueluq", "hahhxvrhmzkwpj", com.azure.core.util.Context.NONE)
+            .getJobWithResponse("ktt", "stvlzywemhzrnc", "dtclusiypb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

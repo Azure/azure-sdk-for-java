@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class SubscriptionRaiPolicyDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteSubscriptionRaiPolicy.json
+     * x-ms-original-file: 2026-11-01/DeleteSubscriptionRaiPolicy.json
      */
     /**
      * Sample code: DeleteRaiPolicy.

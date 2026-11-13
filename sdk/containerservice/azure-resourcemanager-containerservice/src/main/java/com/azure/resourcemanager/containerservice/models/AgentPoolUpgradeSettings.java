@@ -35,16 +35,6 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     private String maxUnavailable;
 
     /*
-     * The maximum number or percentage of extra nodes that are allowed to be blocked in the agent pool during an
-     * upgrade when undrainable node behavior is Cordon. This can either be set to an integer (e.g. '5') or a percentage
-     * (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent pool size at the time of the
-     * upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is maxSurge. This must
-     * always be greater than or equal to maxSurge. For more information, including best practices, see:
-     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
-     */
-    private String maxBlockedNodes;
-
-    /*
      * The drain timeout for a node. The amount of time (in minutes) to wait on eviction of pods and graceful
      * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
      * the upgrade fails. If not specified, the default is 30 minutes.
@@ -63,15 +53,6 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      * per-node drain timeout or pod is still being in a running state, can also cause undrainable nodes.
      */
     private UndrainableNodeBehavior undrainableNodeBehavior;
-
-    /*
-     * Settings for upgrade gating on upgrades of this agent pool. Health signals are `HealthSignal` custom resources
-     * published by monitoring components running in the cluster. When the cluster-level `enabled` is unset or `false`,
-     * this agent pool can opt in independently. When the cluster-level `enabled` is `true`, gating is inherited and
-     * setting this agent pool's `enabled` to `false` is rejected; an omitted value on a newly created agent pool is
-     * defaulted to `true`.
-     */
-    private UpgradeGateSettings upgradeGateSettings;
 
     /**
      * Creates an instance of AgentPoolUpgradeSettings class.
@@ -132,36 +113,6 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      */
     public AgentPoolUpgradeSettings withMaxUnavailable(String maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
-        return this;
-    }
-
-    /**
-     * Get the maxBlockedNodes property: The maximum number or percentage of extra nodes that are allowed to be blocked
-     * in the agent pool during an upgrade when undrainable node behavior is Cordon. This can either be set to an
-     * integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total
-     * agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified,
-     * the default is maxSurge. This must always be greater than or equal to maxSurge. For more information, including
-     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
-     * 
-     * @return the maxBlockedNodes value.
-     */
-    public String maxBlockedNodes() {
-        return this.maxBlockedNodes;
-    }
-
-    /**
-     * Set the maxBlockedNodes property: The maximum number or percentage of extra nodes that are allowed to be blocked
-     * in the agent pool during an upgrade when undrainable node behavior is Cordon. This can either be set to an
-     * integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total
-     * agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified,
-     * the default is maxSurge. This must always be greater than or equal to maxSurge. For more information, including
-     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
-     * 
-     * @param maxBlockedNodes the maxBlockedNodes value to set.
-     * @return the AgentPoolUpgradeSettings object itself.
-     */
-    public AgentPoolUpgradeSettings withMaxBlockedNodes(String maxBlockedNodes) {
-        this.maxBlockedNodes = maxBlockedNodes;
         return this;
     }
 
@@ -240,42 +191,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the upgradeGateSettings property: Settings for upgrade gating on upgrades of this agent pool. Health signals
-     * are `HealthSignal` custom resources published by monitoring components running in the cluster. When the
-     * cluster-level `enabled` is unset or `false`, this agent pool can opt in independently. When the cluster-level
-     * `enabled` is `true`, gating is inherited and setting this agent pool's `enabled` to `false` is rejected; an
-     * omitted value on a newly created agent pool is defaulted to `true`.
-     * 
-     * @return the upgradeGateSettings value.
-     */
-    public UpgradeGateSettings upgradeGateSettings() {
-        return this.upgradeGateSettings;
-    }
-
-    /**
-     * Set the upgradeGateSettings property: Settings for upgrade gating on upgrades of this agent pool. Health signals
-     * are `HealthSignal` custom resources published by monitoring components running in the cluster. When the
-     * cluster-level `enabled` is unset or `false`, this agent pool can opt in independently. When the cluster-level
-     * `enabled` is `true`, gating is inherited and setting this agent pool's `enabled` to `false` is rejected; an
-     * omitted value on a newly created agent pool is defaulted to `true`.
-     * 
-     * @param upgradeGateSettings the upgradeGateSettings value to set.
-     * @return the AgentPoolUpgradeSettings object itself.
-     */
-    public AgentPoolUpgradeSettings withUpgradeGateSettings(UpgradeGateSettings upgradeGateSettings) {
-        this.upgradeGateSettings = upgradeGateSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (upgradeGateSettings() != null) {
-            upgradeGateSettings().validate();
-        }
     }
 
     /**
@@ -286,12 +206,10 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("maxSurge", this.maxSurge);
         jsonWriter.writeStringField("maxUnavailable", this.maxUnavailable);
-        jsonWriter.writeStringField("maxBlockedNodes", this.maxBlockedNodes);
         jsonWriter.writeNumberField("drainTimeoutInMinutes", this.drainTimeoutInMinutes);
         jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
         jsonWriter.writeStringField("undrainableNodeBehavior",
             this.undrainableNodeBehavior == null ? null : this.undrainableNodeBehavior.toString());
-        jsonWriter.writeJsonField("upgradeGateSettings", this.upgradeGateSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -314,8 +232,6 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
                     deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
                 } else if ("maxUnavailable".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.maxUnavailable = reader.getString();
-                } else if ("maxBlockedNodes".equals(fieldName)) {
-                    deserializedAgentPoolUpgradeSettings.maxBlockedNodes = reader.getString();
                 } else if ("drainTimeoutInMinutes".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.drainTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeSoakDurationInMinutes".equals(fieldName)) {
@@ -324,8 +240,6 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
                 } else if ("undrainableNodeBehavior".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.undrainableNodeBehavior
                         = UndrainableNodeBehavior.fromString(reader.getString());
-                } else if ("upgradeGateSettings".equals(fieldName)) {
-                    deserializedAgentPoolUpgradeSettings.upgradeGateSettings = UpgradeGateSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

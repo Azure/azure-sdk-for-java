@@ -14,27 +14,27 @@ public final class ServiceTagOutboundRuleDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRuleDestination model = BinaryData.fromString(
-            "{\"serviceTag\":\"khsusmmorf\",\"protocol\":\"hwilz\",\"portRanges\":\"nijmriprlkdne\",\"action\":\"Deny\",\"addressPrefixes\":[\"cxiv\",\"bkut\",\"umltwjflu\"]}")
+            "{\"serviceTag\":\"uliyslpkcv\",\"protocol\":\"f\",\"portRanges\":\"xxe\",\"action\":\"Allow\",\"addressPrefixes\":[\"ormcqmic\",\"ijqpkzfbojxjmcs\",\"yqwixvcpwnkwywzw\",\"falickduoiqtamty\"]}")
             .toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("khsusmmorf", model.serviceTag());
-        Assertions.assertEquals("hwilz", model.protocol());
-        Assertions.assertEquals("nijmriprlkdne", model.portRanges());
-        Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("cxiv", model.addressPrefixes().get(0));
+        Assertions.assertEquals("uliyslpkcv", model.serviceTag());
+        Assertions.assertEquals("f", model.protocol());
+        Assertions.assertEquals("xxe", model.portRanges());
+        Assertions.assertEquals(RuleAction.ALLOW, model.action());
+        Assertions.assertEquals("ormcqmic", model.addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("khsusmmorf")
-            .withProtocol("hwilz")
-            .withPortRanges("nijmriprlkdne")
-            .withAction(RuleAction.DENY)
-            .withAddressPrefixes(Arrays.asList("cxiv", "bkut", "umltwjflu"));
+        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("uliyslpkcv")
+            .withProtocol("f")
+            .withPortRanges("xxe")
+            .withAction(RuleAction.ALLOW)
+            .withAddressPrefixes(Arrays.asList("ormcqmic", "ijqpkzfbojxjmcs", "yqwixvcpwnkwywzw", "falickduoiqtamty"));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("khsusmmorf", model.serviceTag());
-        Assertions.assertEquals("hwilz", model.protocol());
-        Assertions.assertEquals("nijmriprlkdne", model.portRanges());
-        Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("cxiv", model.addressPrefixes().get(0));
+        Assertions.assertEquals("uliyslpkcv", model.serviceTag());
+        Assertions.assertEquals("f", model.protocol());
+        Assertions.assertEquals("xxe", model.portRanges());
+        Assertions.assertEquals(RuleAction.ALLOW, model.action());
+        Assertions.assertEquals("ormcqmic", model.addressPrefixes().get(0));
     }
 }

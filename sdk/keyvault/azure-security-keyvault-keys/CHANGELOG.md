@@ -1,13 +1,12 @@
 # Release History
 
-## 4.13.0 (2026-11-11)
+## 4.13.0 (2026-11-13)
 
 ### Features Added
 
 - Added support for service version `2026-04-01`.
 - (From 4.12.0-beta.1) Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management).
 - (From 4.12.0-beta.2) Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM, and requires a remote-key client.
-- (From 4.12.0-beta.2) Added the `SECURE_WRAP_KEY` and `SECURE_UNWRAP_KEY` values to `KeyOperation`.
 
 ### Breaking Changes
 

@@ -3,12 +3,22 @@
 
 package com.azure.ai.projects;
 
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.projects.models.AgentInsight;
+import com.azure.ai.projects.models.AgentInsightRun;
+import com.azure.ai.projects.models.AgentInsightRunTrigger;
+import com.azure.ai.projects.models.AgentInsightSeverity;
+import com.azure.ai.projects.models.AgentInsightStatus;
+import com.azure.ai.projects.models.JobStatus;
+import com.azure.ai.projects.models.ListAgentInsightRunsOptions;
+import com.azure.ai.projects.models.ListAgentInsightsOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -17,28 +27,186 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightListOptionsPreserveFiltersAcrossPages(boolean async) throws UnsupportedEncodingException {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::agentInsightListResponse);
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+        ListAgentInsightsOptions options = new ListAgentInsightsOptions("monitor").setAfter("start")
+            .setBefore("end")
+            .setLimit(2)
+            .setOrder(PageOrder.ASC)
+            .setCategories(Arrays.asList("latency", "quality"))
+            .setSeverities(Arrays.asList(AgentInsightSeverity.HIGH, AgentInsightSeverity.MEDIUM))
+            .setStatuses(Arrays.asList(AgentInsightStatus.RESOLVED))
+            .setIncludeDetails(true);
+
+        List<String> ids = async
+            ? builder.buildAgentInsightMonitorsAsyncClient()
+                .listAgentInsights(options)
+                .map(AgentInsight::getId)
+                .collectList()
+                .block()
+            : builder.buildAgentInsightMonitorsClient()
+                .listAgentInsights(options)
+                .stream()
+                .map(AgentInsight::getId)
+                .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("first", "second"), ids);
+        assertAgentInsightListRequests(httpClient, "insights");
+        for (HttpRequest request : httpClient.requests) {
+            String query = URLDecoder.decode(request.getUrl().getQuery(), StandardCharsets.UTF_8.name());
+            assertTrue(query.contains("categories=latency,quality"));
+            assertTrue(query.contains("severities=high,medium"));
+            assertTrue(query.contains("statuses=resolved"));
+            assertTrue(query.contains("include_details=true"));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightRunListOptionsPreserveFiltersAcrossPages(boolean async) {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::agentInsightListResponse);
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+        ListAgentInsightRunsOptions options = new ListAgentInsightRunsOptions("monitor").setAfter("start")
+            .setBefore("end")
+            .setLimit(2)
+            .setOrder(PageOrder.ASC)
+            .setStatus(JobStatus.SUCCEEDED)
+            .setTrigger(AgentInsightRunTrigger.SCHEDULED);
+
+        List<String> ids = async
+            ? builder.buildAgentInsightMonitorsAsyncClient()
+                .listAgentInsightRuns(options)
+                .map(AgentInsightRun::getId)
+                .collectList()
+                .block()
+            : builder.buildAgentInsightMonitorsClient()
+                .listAgentInsightRuns(options)
+                .stream()
+                .map(AgentInsightRun::getId)
+                .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("first", "second"), ids);
+        assertAgentInsightListRequests(httpClient, "runs");
+        for (HttpRequest request : httpClient.requests) {
+            assertEquals("succeeded", UrlBuilder.parse(request.getUrl()).getQuery().get("status"));
+            assertEquals("scheduled", UrlBuilder.parse(request.getUrl()).getQuery().get("trigger"));
+        }
+    }
+
+    private static HttpResponse agentInsightListResponse(HttpRequest request) {
+        boolean first = "start".equals(UrlBuilder.parse(request.getUrl()).getQuery().get("after"));
+        return jsonResponse(request, "{\"data\":[{\"id\":\"" + (first ? "first" : "second")
+            + "\"}],\"last_id\":\"next\",\"has_more\":" + first + "}");
+    }
+
+    private static void assertAgentInsightListRequests(RecordingHttpClient httpClient, String collection) {
+        assertEquals(2, httpClient.requests.size());
+        assertEquals("start", UrlBuilder.parse(httpClient.requests.get(0).getUrl()).getQuery().get("after"));
+        assertEquals("next", UrlBuilder.parse(httpClient.requests.get(1).getUrl()).getQuery().get("after"));
+        for (HttpRequest request : httpClient.requests) {
+            assertEquals(HttpMethod.GET, request.getHttpMethod());
+            assertEquals("/api/projects/project/agent_insight_monitors/monitor/" + collection,
+                request.getUrl().getPath());
+            assertEquals("end", UrlBuilder.parse(request.getUrl()).getQuery().get("before"));
+            assertEquals("2", UrlBuilder.parse(request.getUrl()).getQuery().get("limit"));
+            assertEquals("asc", UrlBuilder.parse(request.getUrl()).getQuery().get("order"));
+            assertNull(request.getHeaders().getValue(FOUNDRY_FEATURES));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void betaSkillDeletesDiscardBodyAndPreserveResponse(boolean version) {
+        RecordingHttpClient httpClient = new RecordingHttpClient(
+            request -> jsonResponse(request, "{\"id\":\"skill-1\",\"name\":\"skill\",\"deleted\":true}"));
+        BetaSkillsClient client = createBuilder(httpClient).beta().buildBetaSkillsClient();
+        RequestOptions options
+            = new RequestOptions().addHeader(HttpHeaderName.fromString("X-Delete-Test"), "preserved");
+
+        Response<Void> response = version
+            ? client.deleteSkillVersionWithResponse("skill", "1", options)
+            : client.deleteSkillWithResponse("skill", options);
+
+        assertNull(response.getValue());
+        assertEquals(200, response.getStatusCode());
+        assertEquals("application/json", response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("preserved", response.getRequest().getHeaders().getValue("X-Delete-Test"));
+        assertEquals(HttpMethod.DELETE, response.getRequest().getHttpMethod());
+        assertEquals("/api/projects/project/skills/skill" + (version ? "/versions/1" : ""),
+            response.getRequest().getUrl().getPath());
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
+
+        if (version) {
+            client.deleteSkillVersion("skill", "1");
+        } else {
+            client.deleteSkill("skill");
+        }
+        assertEquals(2, httpClient.requests.size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void betaSkillAsyncDeletesDiscardBodyAndComplete(boolean version) {
+        RecordingHttpClient httpClient = new RecordingHttpClient(
+            request -> jsonResponse(request, "{\"id\":\"skill-1\",\"name\":\"skill\",\"deleted\":true}"));
+        BetaSkillsAsyncClient client = createBuilder(httpClient).beta().buildBetaSkillsAsyncClient();
+        RequestOptions options
+            = new RequestOptions().addHeader(HttpHeaderName.fromString("X-Delete-Test"), "preserved");
+
+        Mono<Response<Void>> response = version
+            ? client.deleteSkillVersionWithResponse("skill", "1", options)
+            : client.deleteSkillWithResponse("skill", options);
+        StepVerifier.create(response).assertNext(value -> {
+            assertNull(value.getValue());
+            assertEquals(200, value.getStatusCode());
+            assertEquals("application/json", value.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertEquals("preserved", value.getRequest().getHeaders().getValue("X-Delete-Test"));
+            assertEquals(HttpMethod.DELETE, value.getRequest().getHttpMethod());
+            assertEquals("/api/projects/project/skills/skill" + (version ? "/versions/1" : ""),
+                value.getRequest().getUrl().getPath());
+        }).verifyComplete();
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
+
+        StepVerifier.create(version ? client.deleteSkillVersion("skill", "1") : client.deleteSkill("skill"))
+            .verifyComplete();
+        assertEquals(2, httpClient.requests.size());
+    }
 
     @Test
     public void allowPreviewAddsAreaSpecificHeaders() {
@@ -114,10 +282,21 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta()
-            .buildBetaAgentInsightMonitorsClient()
-            .getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
-        assertEquals("AgentInsights=V1Preview", foundryFeatures(httpClient));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void agentInsightClientsDoNotAddPreviewHeaders(boolean allowPreview) {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(allowPreview);
+
+        builder.buildAgentInsightMonitorsClient().getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildAgentInsightMonitorsAsyncClient()
+            .getAgentInsightMonitorWithResponse("monitor", new RequestOptions())
+            .block();
+        assertNull(foundryFeatures(httpClient));
     }
 
     @Test

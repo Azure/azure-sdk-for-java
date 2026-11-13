@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -18,7 +17,6 @@ import java.util.Objects;
  * Use the factory methods to combine different content variants in the same message.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeResponseInputContent implements JsonSerializable<RealtimeResponseInputContent> {
     private static final ClientLogger LOGGER = new ClientLogger(RealtimeResponseInputContent.class);
 
