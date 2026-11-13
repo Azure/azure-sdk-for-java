@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class ResourceGuardsPutSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ResourceGuardCRUD/PutResourceGuard.json
+     * x-ms-original-file: 2026-08-31-preview/ResourceGuardCRUD/PutResourceGuard.json
      */
     /**
      * Sample code: Create ResourceGuard.

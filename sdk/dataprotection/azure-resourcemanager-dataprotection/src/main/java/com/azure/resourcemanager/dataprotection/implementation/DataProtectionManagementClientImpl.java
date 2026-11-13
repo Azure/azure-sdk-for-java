@@ -26,8 +26,13 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstanceFromDppCrossTenantVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstanceOperationResultFromDppCrossTenantVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstanceOperationStatusFromDppCrossTenantVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesExtensionRoutingsClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesFromDppCrossTenantVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupJobsFromDppCrossTenantVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultsClient;
@@ -36,20 +41,28 @@ import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsC
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupInstancesClient;
 import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.DppCrossTenantVaultMappingStatusClient;
+import com.azure.resourcemanager.dataprotection.fluent.DppCrossTenantVaultMappingsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DppResourceGuardProxiesClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.FetchCrossRegionRestoreJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.FetchCrossRegionRestoreJobsOperationsClient;
 import com.azure.resourcemanager.dataprotection.fluent.FetchSecondaryRecoveryPointsClient;
+import com.azure.resourcemanager.dataprotection.fluent.JobFromDppCrossTenantVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusBackupVaultContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusResourceGroupContextsClient;
+import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointFromDppCrossTenantVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointsClient;
+import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointsFromDppCrossTenantVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ResourceGuardsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RestorableTimeRangesClient;
+import com.azure.resourcemanager.dataprotection.fluent.RestorableTimeRangesFromDppCrossTenantVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.RestoresFromDppCrossTenantVaultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.ValidateRestoreFromDppCrossTenantVaultsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -216,6 +229,190 @@ public final class DataProtectionManagementClientImpl implements DataProtectionM
      */
     public ResourceGuardsClient getResourceGuards() {
         return this.resourceGuards;
+    }
+
+    /**
+     * The DppCrossTenantVaultMappingsClient object to access its operations.
+     */
+    private final DppCrossTenantVaultMappingsClient dppCrossTenantVaultMappings;
+
+    /**
+     * Gets the DppCrossTenantVaultMappingsClient object to access its operations.
+     * 
+     * @return the DppCrossTenantVaultMappingsClient object.
+     */
+    public DppCrossTenantVaultMappingsClient getDppCrossTenantVaultMappings() {
+        return this.dppCrossTenantVaultMappings;
+    }
+
+    /**
+     * The DppCrossTenantVaultMappingStatusClient object to access its operations.
+     */
+    private final DppCrossTenantVaultMappingStatusClient dppCrossTenantVaultMappingStatus;
+
+    /**
+     * Gets the DppCrossTenantVaultMappingStatusClient object to access its operations.
+     * 
+     * @return the DppCrossTenantVaultMappingStatusClient object.
+     */
+    public DppCrossTenantVaultMappingStatusClient getDppCrossTenantVaultMappingStatus() {
+        return this.dppCrossTenantVaultMappingStatus;
+    }
+
+    /**
+     * The BackupInstancesFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupInstancesFromDppCrossTenantVaultsClient backupInstancesFromDppCrossTenantVaults;
+
+    /**
+     * Gets the BackupInstancesFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstancesFromDppCrossTenantVaultsClient object.
+     */
+    public BackupInstancesFromDppCrossTenantVaultsClient getBackupInstancesFromDppCrossTenantVaults() {
+        return this.backupInstancesFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The BackupInstanceFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupInstanceFromDppCrossTenantVaultsClient backupInstanceFromDppCrossTenantVaults;
+
+    /**
+     * Gets the BackupInstanceFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceFromDppCrossTenantVaultsClient object.
+     */
+    public BackupInstanceFromDppCrossTenantVaultsClient getBackupInstanceFromDppCrossTenantVaults() {
+        return this.backupInstanceFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The RestoresFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final RestoresFromDppCrossTenantVaultsClient restoresFromDppCrossTenantVaults;
+
+    /**
+     * Gets the RestoresFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestoresFromDppCrossTenantVaultsClient object.
+     */
+    public RestoresFromDppCrossTenantVaultsClient getRestoresFromDppCrossTenantVaults() {
+        return this.restoresFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The ValidateRestoreFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final ValidateRestoreFromDppCrossTenantVaultsClient validateRestoreFromDppCrossTenantVaults;
+
+    /**
+     * Gets the ValidateRestoreFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateRestoreFromDppCrossTenantVaultsClient object.
+     */
+    public ValidateRestoreFromDppCrossTenantVaultsClient getValidateRestoreFromDppCrossTenantVaults() {
+        return this.validateRestoreFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The RestorableTimeRangesFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final RestorableTimeRangesFromDppCrossTenantVaultsClient restorableTimeRangesFromDppCrossTenantVaults;
+
+    /**
+     * Gets the RestorableTimeRangesFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestorableTimeRangesFromDppCrossTenantVaultsClient object.
+     */
+    public RestorableTimeRangesFromDppCrossTenantVaultsClient getRestorableTimeRangesFromDppCrossTenantVaults() {
+        return this.restorableTimeRangesFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The RecoveryPointsFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final RecoveryPointsFromDppCrossTenantVaultsClient recoveryPointsFromDppCrossTenantVaults;
+
+    /**
+     * Gets the RecoveryPointsFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RecoveryPointsFromDppCrossTenantVaultsClient object.
+     */
+    public RecoveryPointsFromDppCrossTenantVaultsClient getRecoveryPointsFromDppCrossTenantVaults() {
+        return this.recoveryPointsFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The RecoveryPointFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final RecoveryPointFromDppCrossTenantVaultsClient recoveryPointFromDppCrossTenantVaults;
+
+    /**
+     * Gets the RecoveryPointFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RecoveryPointFromDppCrossTenantVaultsClient object.
+     */
+    public RecoveryPointFromDppCrossTenantVaultsClient getRecoveryPointFromDppCrossTenantVaults() {
+        return this.recoveryPointFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The BackupJobsFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupJobsFromDppCrossTenantVaultsClient backupJobsFromDppCrossTenantVaults;
+
+    /**
+     * Gets the BackupJobsFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupJobsFromDppCrossTenantVaultsClient object.
+     */
+    public BackupJobsFromDppCrossTenantVaultsClient getBackupJobsFromDppCrossTenantVaults() {
+        return this.backupJobsFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The JobFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final JobFromDppCrossTenantVaultsClient jobFromDppCrossTenantVaults;
+
+    /**
+     * Gets the JobFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the JobFromDppCrossTenantVaultsClient object.
+     */
+    public JobFromDppCrossTenantVaultsClient getJobFromDppCrossTenantVaults() {
+        return this.jobFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The BackupInstanceOperationStatusFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupInstanceOperationStatusFromDppCrossTenantVaultsClient backupInstanceOperationStatusFromDppCrossTenantVaults;
+
+    /**
+     * Gets the BackupInstanceOperationStatusFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceOperationStatusFromDppCrossTenantVaultsClient object.
+     */
+    public BackupInstanceOperationStatusFromDppCrossTenantVaultsClient
+        getBackupInstanceOperationStatusFromDppCrossTenantVaults() {
+        return this.backupInstanceOperationStatusFromDppCrossTenantVaults;
+    }
+
+    /**
+     * The BackupInstanceOperationResultFromDppCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupInstanceOperationResultFromDppCrossTenantVaultsClient backupInstanceOperationResultFromDppCrossTenantVaults;
+
+    /**
+     * Gets the BackupInstanceOperationResultFromDppCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupInstanceOperationResultFromDppCrossTenantVaultsClient object.
+     */
+    public BackupInstanceOperationResultFromDppCrossTenantVaultsClient
+        getBackupInstanceOperationResultFromDppCrossTenantVaults() {
+        return this.backupInstanceOperationResultFromDppCrossTenantVaults;
     }
 
     /**
@@ -487,12 +684,28 @@ public final class DataProtectionManagementClientImpl implements DataProtectionM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2026-08-31-preview";
         this.dataProtectionOperations = new DataProtectionOperationsClientImpl(this);
         this.backupInstances = new BackupInstancesClientImpl(this);
         this.backupVaultOperationResults = new BackupVaultOperationResultsClientImpl(this);
         this.deletedBackupVaults = new DeletedBackupVaultsClientImpl(this);
         this.resourceGuards = new ResourceGuardsClientImpl(this);
+        this.dppCrossTenantVaultMappings = new DppCrossTenantVaultMappingsClientImpl(this);
+        this.dppCrossTenantVaultMappingStatus = new DppCrossTenantVaultMappingStatusClientImpl(this);
+        this.backupInstancesFromDppCrossTenantVaults = new BackupInstancesFromDppCrossTenantVaultsClientImpl(this);
+        this.backupInstanceFromDppCrossTenantVaults = new BackupInstanceFromDppCrossTenantVaultsClientImpl(this);
+        this.restoresFromDppCrossTenantVaults = new RestoresFromDppCrossTenantVaultsClientImpl(this);
+        this.validateRestoreFromDppCrossTenantVaults = new ValidateRestoreFromDppCrossTenantVaultsClientImpl(this);
+        this.restorableTimeRangesFromDppCrossTenantVaults
+            = new RestorableTimeRangesFromDppCrossTenantVaultsClientImpl(this);
+        this.recoveryPointsFromDppCrossTenantVaults = new RecoveryPointsFromDppCrossTenantVaultsClientImpl(this);
+        this.recoveryPointFromDppCrossTenantVaults = new RecoveryPointFromDppCrossTenantVaultsClientImpl(this);
+        this.backupJobsFromDppCrossTenantVaults = new BackupJobsFromDppCrossTenantVaultsClientImpl(this);
+        this.jobFromDppCrossTenantVaults = new JobFromDppCrossTenantVaultsClientImpl(this);
+        this.backupInstanceOperationStatusFromDppCrossTenantVaults
+            = new BackupInstanceOperationStatusFromDppCrossTenantVaultsClientImpl(this);
+        this.backupInstanceOperationResultFromDppCrossTenantVaults
+            = new BackupInstanceOperationResultFromDppCrossTenantVaultsClientImpl(this);
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationStatusBackupVaultContexts = new OperationStatusBackupVaultContextsClientImpl(this);
         this.exportJobs = new ExportJobsClientImpl(this);
