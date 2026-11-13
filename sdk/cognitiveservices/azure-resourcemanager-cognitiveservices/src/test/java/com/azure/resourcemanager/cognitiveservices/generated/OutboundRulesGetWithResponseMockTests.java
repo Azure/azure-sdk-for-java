@@ -23,7 +23,7 @@ public final class OutboundRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Provisioning\",\"errorInformation\":\"yevztnjaw\",\"parentRuleNames\":[\"lemmqmbwppxirxb\"]},\"id\":\"tzm\",\"name\":\"hitaxj\",\"type\":\"cltjl\"}";
+            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"bhjgl\",\"parentRuleNames\":[\"eodgnuoewf\",\"twmmfixt\"]},\"id\":\"vv\",\"name\":\"xjqdj\",\"type\":\"o\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,11 @@ public final class OutboundRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundRuleBasicResource response = manager.outboundRules()
-            .getWithResponse("zzmiemqyft", "pqoswgfqv", "mghpakbqyh", "sornfbmeqagkn", com.azure.core.util.Context.NONE)
+            .getWithResponse("hzlvkmirnvdbza", "mepbmogtfpksk", "syoh", "rlyynkgnychu",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, response.properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, response.properties().status());
+        Assertions.assertEquals(RuleCategory.REQUIRED, response.properties().category());
+        Assertions.assertEquals(RuleStatus.FAILED, response.properties().status());
     }
 }

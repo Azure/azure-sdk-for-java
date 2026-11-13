@@ -13,6 +13,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.Project;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +25,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"ioewyhxes\",\"description\":\"vrkdpsqeq\",\"endpoints\":{\"ses\":\"xm\",\"ib\":\"rujbjpppktlp\"},\"isDefault\":false},\"tags\":{\"lgtkihoni\":\"eatnejrnminzq\"},\"location\":\"srzfffjilz\",\"etag\":\"pntogkensckh\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"moyfxx\",\"principalId\":\"ykuqdnd\",\"userAssignedIdentities\":{\"nrnjrcuf\":{\"principalId\":\"h\",\"clientId\":\"gapvdgtfpeerscdx\"},\"iqmlfvhlqcskkqj\":{\"principalId\":\"gacnrgfdtncmsp\",\"clientId\":\"nmameubk\"}}},\"id\":\"pt\",\"name\":\"eipuugkwdrqmrpa\",\"type\":\"uuonjkkxukguehvv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"ehy\",\"description\":\"zm\",\"endpoints\":{\"cstzuwbgaesmaxd\":\"fbmpszwk\",\"vwsd\":\"xrwqt\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"rlk\",\"vectorStore\":\"homywlypghhuluqy\",\"blobStore\":\"gpqwgiq\"},\"toolControls\":{\"defaultAction\":\"Deny\",\"allowedTools\":[{\"type\":\"bing_custom_search_preview\",\"serverUrl\":\"uihtqfvyqmm\",\"connectorId\":\"uguvlieegjnqwh\"},{\"type\":\"work_iq_preview\",\"serverUrl\":\"xsehjscgqc\",\"connectorId\":\"aucftotedhjxdl\"},{\"type\":\"web_search_preview\",\"serverUrl\":\"f\",\"connectorId\":\"jqvjyqmpmsknaxrh\"},{\"type\":\"bing_custom_search_preview\",\"serverUrl\":\"qufudpypboq\",\"connectorId\":\"fxfpwmaj\"}]}},\"tags\":{\"ddnbwlbq\":\"ijfdjjrvsvhmsmri\"},\"location\":\"dderrxyiwuzpsvcm\",\"etag\":\"fstyyysq\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"fzfjdzkfthsydph\",\"principalId\":\"zzetfg\",\"userAssignedIdentities\":{\"jsryhxfgha\":{\"principalId\":\"v\",\"clientId\":\"dulymk\"}}},\"id\":\"pftkgmbmvxbiubz\",\"name\":\"hpsotbame\",\"type\":\"rbusnaq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +34,25 @@ public final class ProjectsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Project> response = manager.projects().list("bx", "yjisskobq", com.azure.core.util.Context.NONE);
+        PagedIterable<Project> response = manager.projects().list("pj", "silb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ioewyhxes", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("vrkdpsqeq", response.iterator().next().properties().description());
-        Assertions.assertEquals("eatnejrnminzq", response.iterator().next().tags().get("lgtkihoni"));
-        Assertions.assertEquals("srzfffjilz", response.iterator().next().location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ehy", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("zm", response.iterator().next().properties().description());
+        Assertions.assertEquals("rlk", response.iterator().next().properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("homywlypghhuluqy",
+            response.iterator().next().properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("gpqwgiq", response.iterator().next().properties().capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY,
+            response.iterator().next().properties().toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.BING_CUSTOM_SEARCH_PREVIEW,
+            response.iterator().next().properties().toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("uihtqfvyqmm",
+            response.iterator().next().properties().toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("uguvlieegjnqwh",
+            response.iterator().next().properties().toolControls().allowedTools().get(0).connectorId());
+        Assertions.assertEquals("ijfdjjrvsvhmsmri", response.iterator().next().tags().get("ddnbwlbq"));
+        Assertions.assertEquals("dderrxyiwuzpsvcm", response.iterator().next().location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":false,\"reason\":\"ovribq\",\"subdomainName\":\"tokhtvwtaznkcqw\",\"type\":\"wjyofgwhnkbtl\",\"kind\":\"jssmctsnldkpwo\"}";
+            = "{\"isSubdomainAvailable\":true,\"reason\":\"cikswhcamwu\",\"subdomainName\":\"fxkcgsfcmvhad\",\"type\":\"batvyrk\",\"kind\":\"qkqwsyjtvjko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,15 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainAvailability response = manager.resourceProviders()
-            .checkDomainAvailabilityWithResponse(
-                new CheckDomainAvailabilityParameter().withSubdomainName("ecominxojjluxxd")
-                    .withType("ilz")
-                    .withKind("zzqjmu"),
-                com.azure.core.util.Context.NONE)
+            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("cdmwk")
+                .withType("upf")
+                .withKind("ldqdzauiunyevdyz"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.isSubdomainAvailable());
-        Assertions.assertEquals("ovribq", response.reason());
-        Assertions.assertEquals("tokhtvwtaznkcqw", response.subdomainName());
-        Assertions.assertEquals("wjyofgwhnkbtl", response.type());
-        Assertions.assertEquals("jssmctsnldkpwo", response.kind());
+        Assertions.assertTrue(response.isSubdomainAvailable());
+        Assertions.assertEquals("cikswhcamwu", response.reason());
+        Assertions.assertEquals("fxkcgsfcmvhad", response.subdomainName());
+        Assertions.assertEquals("batvyrk", response.type());
+        Assertions.assertEquals("qkqwsyjtvjko", response.kind());
     }
 }

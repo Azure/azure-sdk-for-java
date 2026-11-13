@@ -7,12 +7,17 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.RaiPolicyListResult;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsAnnotatorType;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyDefinitionType;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTarget;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTargetKind;
 import com.azure.resourcemanager.cognitiveservices.models.RaiActionType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressDefaultAction;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressMode;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleActionType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentSource;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyFormat;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyMode;
 import org.junit.jupiter.api.Assertions;
 
@@ -20,38 +25,87 @@ public final class RaiPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"k\",\"value\":[{\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"jayvblmhv\",\"contentFilters\":[{\"name\":\"bxvvyhg\",\"enabled\":true,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"PreRun\",\"action\":\"HITL\"},{\"name\":\"uvwzfbnh\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PostToolCall\",\"action\":\"RETRY\"}],\"customBlocklists\":[{\"source\":\"PostToolCall\",\"blocklistName\":\"rixkwmyijejve\",\"blocking\":true},{\"source\":\"PostRun\",\"blocklistName\":\"aixexccbdreaxh\",\"blocking\":true},{\"source\":\"PostRun\",\"blocklistName\":\"vqahqkghtpwi\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PreToolCall\",\"safetyProviderName\":\"ycxzbfvoo\",\"blocking\":false},{\"source\":\"PostToolCall\",\"safetyProviderName\":\"gjqppy\",\"blocking\":true},{\"source\":\"Completion\",\"safetyProviderName\":\"zm\",\"blocking\":false},{\"source\":\"PostRun\",\"safetyProviderName\":\"nsxkmcwaekrrjr\",\"blocking\":false}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"hjglikk\",\"rules\":[{\"name\":\"lo\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Transform\"}}]}},\"etag\":\"vuzlm\",\"tags\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"id\":\"bsazejjoqka\",\"name\":\"fhsxttaugz\",\"type\":\"nfaazpxdtnkdmkq\"},{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Asynchronous_filter\",\"basePolicyName\":\"vrkpyouaibreb\",\"contentFilters\":[{\"name\":\"sj\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"Completion\",\"action\":\"HITL\"},{\"name\":\"wfff\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"Prompt\",\"action\":\"None\"},{\"name\":\"ltmm\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"None\"},{\"name\":\"uyqncygupkvipmd\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PreRun\",\"action\":\"ANNOTATING\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"xhojuj\",\"blocking\":true},{\"source\":\"PreRun\",\"blocklistName\":\"c\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PostToolCall\",\"safetyProviderName\":\"yfwnylr\",\"blocking\":false},{\"source\":\"PostToolCall\",\"safetyProviderName\":\"tpkiwkkbnujry\",\"blocking\":true},{\"source\":\"PreToolCall\",\"safetyProviderName\":\"fpncurdo\",\"blocking\":false},{\"source\":\"PreToolCall\",\"safetyProviderName\":\"tywubxcbihwq\",\"blocking\":true}],\"egressPolicy\":{\"mode\":\"Enforced\",\"defaultAction\":\"Deny\",\"description\":\"hrdgoihxumwcto\",\"rules\":[{\"name\":\"jl\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Transform\"}}]}},\"etag\":\"dlwggytsbwtovv\",\"tags\":{\"ufxqknpirgnepttw\":\"einqf\",\"mqnrojlpijnkr\":\"msniffc\",\"zronasxift\":\"frddhcrati\"},\"id\":\"qyzhf\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"},{\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"ossxk\",\"contentFilters\":[{\"name\":\"rrghxjbdhqxvcxgf\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PreRun\",\"action\":\"RETRY\"},{\"name\":\"vbuswd\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PostRun\",\"action\":\"None\"}],\"customBlocklists\":[{\"source\":\"PostToolCall\",\"blocklistName\":\"f\",\"blocking\":true},{\"source\":\"PreToolCall\",\"blocklistName\":\"gikyzirtx\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PreToolCall\",\"safetyProviderName\":\"tpsew\",\"blocking\":false},{\"source\":\"PreToolCall\",\"safetyProviderName\":\"ukry\",\"blocking\":false}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"orgguf\",\"rules\":[{\"name\":\"omtbghhavgrvkff\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}},{\"name\":\"zh\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Transform\"}},{\"name\":\"ibgjmfxumvfcl\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}},{\"name\":\"vwxnbkfe\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}}]}},\"etag\":\"cy\",\"tags\":{\"zzbtdcqvpniyujvi\":\"dgirujbzbom\",\"dshf\":\"l\"},\"id\":\"n\",\"name\":\"bgye\",\"type\":\"rymsgaojfmw\"},{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Default\",\"basePolicyName\":\"hirctymoxoftpipi\",\"contentFilters\":[{\"name\":\"uh\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PreRun\",\"action\":\"None\"},{\"name\":\"spskasdvlmfwdgz\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PreToolCall\",\"action\":\"ANNOTATING\"},{\"name\":\"euzvx\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PostRun\",\"action\":\"BLOCKING\"},{\"name\":\"fq\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PreToolCall\",\"action\":\"RETRY\"}],\"customBlocklists\":[{\"source\":\"PreToolCall\",\"blocklistName\":\"trgjupauutpwoqh\",\"blocking\":false},{\"source\":\"PostToolCall\",\"blocklistName\":\"w\",\"blocking\":false},{\"source\":\"PostToolCall\",\"blocklistName\":\"tcypsxjvfoim\",\"blocking\":false},{\"source\":\"Completion\",\"blocklistName\":\"cizjxvydfceacvl\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PreToolCall\",\"safetyProviderName\":\"umrtwnawjsl\",\"blocking\":true},{\"source\":\"PreToolCall\",\"safetyProviderName\":\"gcyztsfmznbae\",\"blocking\":true},{\"source\":\"PreRun\",\"safetyProviderName\":\"nrnrp\",\"blocking\":true}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"gaifmvik\",\"rules\":[{\"name\":\"dvk\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Allow\"}}]}},\"etag\":\"dznx\",\"tags\":{\"v\":\"srhnjivo\",\"jdftuljltd\":\"novqfzge\"},\"id\":\"eamtmcz\",\"name\":\"o\",\"type\":\"ejwcwwqiok\"}]}")
+            "{\"nextLink\":\"rnpnuhzafccnuh\",\"value\":[{\"properties\":{\"format\":\"ContentFilters\",\"acs\":{\"agent_control_specification_version\":\"ui\",\"metadata\":{\"b\":\"\\\"datavatvcrkd\\\"\",\"ov\":\"\\\"databqxvhcsyhzlwxae\\\"\"},\"policies\":{\"ntopa\":{\"type\":\"rego\",\"query\":\"xdndsbdweaderzm\"},\"jiuazjc\":{\"type\":\"rego\",\"query\":\"tmvmmagoaqylkjz\"},\"inzcpdltkrlgj\":{\"type\":\"rego\",\"query\":\"xitp\"}},\"intervention_points\":{\"agent_startup\":{\"policy\":{\"id\":\"bd\"}},\"input\":{\"policy_target\":\"$snap.messages\",\"policy_target_kind\":\"user_input\",\"policy\":{\"id\":\"guefz\"}},\"pre_model_call\":{\"policy\":{\"id\":\"mpheqdur\"}},\"post_model_call\":{\"policy\":{\"id\":\"yujlfyoumpckyecl\"}},\"pre_tool_call\":{\"policy_target\":\"$snap.summary\",\"policy_target_kind\":\"messages\",\"policy\":{\"id\":\"ptajbrzmq\"}},\"post_tool_call\":{\"policy_target\":\"$snap.tool_call.args\",\"policy_target_kind\":\"tool_result\",\"policy\":{\"id\":\"ci\"}},\"output\":{\"policy_target\":\"$snap.response\",\"policy_target_kind\":\"agent_summary\",\"policy\":{\"id\":\"xiutgjcyzyzj\"}},\"agent_shutdown\":{\"policy\":{\"id\":\"r\"}}},\"tools\":{\"txjeaoqaqbzgy\":{},\"fwwvuatbwbqam\":{},\"e\":{},\"liys\":{}},\"annotators\":{\"vmwfauxxep\":{\"type\":\"endpoint\"},\"wbormcqmi\":{\"type\":\"llm\"},\"ijqpkzfbojxjmcs\":{\"type\":\"classifier\"},\"qwixvcpwnk\":{\"type\":\"classifier\"}}},\"acsRegos\":[{\"regoName\":\"zwofalick\"},{\"regoName\":\"uoiqt\"},{\"regoName\":\"mt\"},{\"regoName\":\"vsknxrwzawnv\"}],\"type\":\"SystemManaged\",\"mode\":\"Asynchronous_filter\",\"basePolicyName\":\"agxnvhycvdimw\",\"contentFilters\":[{\"name\":\"gzgy\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Prompt\",\"action\":\"BLOCKING\"},{\"name\":\"kzkdhmeott\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PostModelCall\",\"action\":\"HITL\"},{\"name\":\"jtfvpndpmiljpn\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":false,\"source\":\"AgentShutdown\",\"action\":\"None\"},{\"name\":\"zp\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"PreModelCall\",\"action\":\"None\"}],\"customBlocklists\":[{\"source\":\"PostRun\",\"blocklistName\":\"mezx\",\"blocking\":true},{\"source\":\"AgentStartup\",\"blocklistName\":\"xrfdsajre\",\"blocking\":true},{\"source\":\"PostModelCall\",\"blocklistName\":\"htuwgmev\",\"blocking\":true},{\"source\":\"Completion\",\"blocklistName\":\"yifrkgwltxeqipx\",\"blocking\":false}],\"safetyProviders\":[{\"source\":\"PreRun\",\"safetyProviderName\":\"ayorprav\",\"blocking\":false},{\"source\":\"AgentStartup\",\"safetyProviderName\":\"labnsmjkwynq\",\"blocking\":true},{\"source\":\"PostModelCall\",\"safetyProviderName\":\"ykvwjtqpkevmyltj\",\"blocking\":false}],\"customExternalSafetyProviders\":[{\"externalSafetyProviderName\":\"klurccl\",\"managedIdentityResourceId\":\"xa\",\"source\":\"PostToolCall\",\"blocking\":false},{\"externalSafetyProviderName\":\"ytzpo\",\"managedIdentityResourceId\":\"wxigpxv\",\"source\":\"PreToolCall\",\"blocking\":false},{\"externalSafetyProviderName\":\"upxvpifd\",\"managedIdentityResourceId\":\"ify\",\"source\":\"Completion\",\"blocking\":false},{\"externalSafetyProviderName\":\"yuubeidszlfyto\",\"managedIdentityResourceId\":\"hgygvfltgvd\",\"source\":\"PostModelCall\",\"blocking\":true}],\"egressPolicy\":{\"mode\":\"Enforced\",\"defaultAction\":\"Allow\",\"description\":\"twk\",\"rules\":[{\"name\":\"yrucpcunnuzdq\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Transform\"}}]}},\"etag\":\"nod\",\"tags\":{\"aadl\":\"enhqhskndnelq\",\"anniyopetxivcnr\":\"nwf\",\"aephblkw\":\"yxnu\",\"bqsdtcjbctvi\":\"pat\"},\"id\":\"zqymtuowogtgits\",\"name\":\"hzvb\",\"type\":\"zcdba\"},{\"properties\":{\"format\":\"ACS\",\"acs\":{\"agent_control_specification_version\":\"scxmxeat\",\"metadata\":{\"ibqbnaomhjrm\":\"\\\"datamwnrdj\\\"\",\"maxljalfihcj\":\"\\\"datau\\\"\",\"a\":\"\\\"dataobcancdexxqcw\\\"\"},\"policies\":{\"r\":{\"type\":\"rego\",\"query\":\"vaknokzwjj\"},\"pqsixymmp\":{\"type\":\"rego\",\"query\":\"ixldzyyfy\"},\"oyovwz\":{\"type\":\"rego\",\"query\":\"ivyqlkjuvsmbmsl\"}},\"intervention_points\":{\"agent_startup\":{\"policy\":{\"id\":\"pqvyb\"}},\"input\":{\"policy_target\":\"$snap.response\",\"policy_target_kind\":\"user_input\",\"policy\":{\"id\":\"mx\"}},\"pre_model_call\":{\"policy\":{\"id\":\"kcvtl\"}},\"post_model_call\":{\"policy\":{\"id\":\"seskvcuar\"}},\"pre_tool_call\":{\"policy_target\":\"$snap.tool_result.value\",\"policy_target_kind\":\"tool_result\",\"policy\":{\"id\":\"nlp\"}},\"post_tool_call\":{\"policy_target\":\"$snap.output\",\"policy_target_kind\":\"agent_summary\",\"policy\":{\"id\":\"ycndzf\"}},\"output\":{\"policy_target\":\"$snap.tool_call.args\",\"policy_target_kind\":\"assistant_output\",\"policy\":{\"id\":\"reuykbbmnwagl\"}},\"agent_shutdown\":{\"policy\":{\"id\":\"xoe\"}}},\"tools\":{\"qlnfw\":{},\"y\":{},\"mvqdbpbhfckdvez\":{},\"rcssbzhddubbnq\":{}},\"annotators\":{\"kalehp\":{\"type\":\"classifier\"},\"awugiqjti\":{\"type\":\"classifier\"},\"qgdm\":{\"type\":\"llm\"},\"i\":{\"type\":\"llm\"}}},\"acsRegos\":[{\"regoName\":\"eajohiyg\"},{\"regoName\":\"pnbonhpcz\"},{\"regoName\":\"kmktpvwxqcseh\"}],\"type\":\"SystemManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"mpqu\",\"contentFilters\":[{\"name\":\"gy\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"PreToolCall\",\"action\":\"BLOCKING\"},{\"name\":\"n\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PreModelCall\",\"action\":\"HITL\"}],\"customBlocklists\":[{\"source\":\"PostToolCall\",\"blocklistName\":\"qjcli\",\"blocking\":false}],\"safetyProviders\":[{\"source\":\"PreRun\",\"safetyProviderName\":\"ufwbeqrku\",\"blocking\":true}],\"customExternalSafetyProviders\":[{\"externalSafetyProviderName\":\"sruqnmdvha\",\"managedIdentityResourceId\":\"vjytiqswbq\",\"source\":\"Prompt\",\"blocking\":false},{\"externalSafetyProviderName\":\"xiytxtdgukvl\",\"managedIdentityResourceId\":\"ktg\",\"source\":\"Completion\",\"blocking\":true},{\"externalSafetyProviderName\":\"ouambewre\",\"managedIdentityResourceId\":\"moweg\",\"source\":\"PreToolCall\",\"blocking\":true},{\"externalSafetyProviderName\":\"eyxeyguqigi\",\"managedIdentityResourceId\":\"itnspxlzde\",\"source\":\"PostModelCall\",\"blocking\":false}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"fanraybfu\",\"rules\":[{\"name\":\"rojsydg\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}},{\"name\":\"dkygywezski\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}},{\"name\":\"f\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Rewrite\"}}]}},\"etag\":\"xieqv\",\"tags\":{\"lixqcah\":\"a\",\"jpodtbl\":\"hxalybxawo\"},\"id\":\"kkwjdjodq\",\"name\":\"ykincnremehl\",\"type\":\"izhceumoqodkadp\"}]}")
             .toObject(RaiPolicyListResult.class);
-        Assertions.assertEquals("k", model.nextLink());
-        Assertions.assertEquals(RaiPolicyMode.BLOCKING, model.value().get(0).properties().mode());
-        Assertions.assertEquals("jayvblmhv", model.value().get(0).properties().basePolicyName());
-        Assertions.assertEquals("bxvvyhg", model.value().get(0).properties().contentFilters().get(0).name());
+        Assertions.assertEquals("rnpnuhzafccnuh", model.nextLink());
+        Assertions.assertEquals(RaiPolicyFormat.CONTENT_FILTERS, model.value().get(0).properties().format());
+        Assertions.assertEquals("ui", model.value().get(0).properties().acs().agentControlSpecificationVersion());
+        Assertions.assertEquals(RaiAcsPolicyDefinitionType.REGO,
+            model.value().get(0).properties().acs().policies().get("ntopa").type());
+        Assertions.assertEquals("xdndsbdweaderzm",
+            model.value().get(0).properties().acs().policies().get("ntopa").query());
+        Assertions.assertEquals("bd",
+            model.value().get(0).properties().acs().interventionPoints().agentStartup().policy().id());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_MESSAGES,
+            model.value().get(0).properties().acs().interventionPoints().input().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.USER_INPUT,
+            model.value().get(0).properties().acs().interventionPoints().input().policyTargetKind());
+        Assertions.assertEquals("guefz",
+            model.value().get(0).properties().acs().interventionPoints().input().policy().id());
+        Assertions.assertEquals("mpheqdur",
+            model.value().get(0).properties().acs().interventionPoints().preModelCall().policy().id());
+        Assertions.assertEquals("yujlfyoumpckyecl",
+            model.value().get(0).properties().acs().interventionPoints().postModelCall().policy().id());
+        Assertions.assertEquals(RaiAcsPolicyTarget.AGENT_SUMMARY,
+            model.value().get(0).properties().acs().interventionPoints().preToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES,
+            model.value().get(0).properties().acs().interventionPoints().preToolCall().policyTargetKind());
+        Assertions.assertEquals("ptajbrzmq",
+            model.value().get(0).properties().acs().interventionPoints().preToolCall().policy().id());
+        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_ARGUMENTS,
+            model.value().get(0).properties().acs().interventionPoints().postToolCall().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.TOOL_RESULT,
+            model.value().get(0).properties().acs().interventionPoints().postToolCall().policyTargetKind());
+        Assertions.assertEquals("ci",
+            model.value().get(0).properties().acs().interventionPoints().postToolCall().policy().id());
+        Assertions.assertEquals(RaiAcsPolicyTarget.MODEL_RESPONSE,
+            model.value().get(0).properties().acs().interventionPoints().output().policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.AGENT_SUMMARY,
+            model.value().get(0).properties().acs().interventionPoints().output().policyTargetKind());
+        Assertions.assertEquals("xiutgjcyzyzj",
+            model.value().get(0).properties().acs().interventionPoints().output().policy().id());
+        Assertions.assertEquals("r",
+            model.value().get(0).properties().acs().interventionPoints().agentShutdown().policy().id());
+        Assertions.assertEquals(RaiAcsAnnotatorType.ENDPOINT,
+            model.value().get(0).properties().acs().annotators().get("vmwfauxxep").type());
+        Assertions.assertEquals("zwofalick", model.value().get(0).properties().acsRegos().get(0).regoName());
+        Assertions.assertEquals(RaiPolicyMode.ASYNCHRONOUS_FILTER, model.value().get(0).properties().mode());
+        Assertions.assertEquals("agxnvhycvdimw", model.value().get(0).properties().basePolicyName());
+        Assertions.assertEquals("gzgy", model.value().get(0).properties().contentFilters().get(0).name());
         Assertions.assertTrue(model.value().get(0).properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.HIGH,
+        Assertions.assertEquals(ContentLevel.LOW,
             model.value().get(0).properties().contentFilters().get(0).severityThreshold());
         Assertions.assertTrue(model.value().get(0).properties().contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN,
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT,
             model.value().get(0).properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiActionType.HITL, model.value().get(0).properties().contentFilters().get(0).action());
-        Assertions.assertEquals("rixkwmyijejve",
-            model.value().get(0).properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(RaiActionType.BLOCKING,
+            model.value().get(0).properties().contentFilters().get(0).action());
+        Assertions.assertEquals("mezx", model.value().get(0).properties().customBlocklists().get(0).blocklistName());
         Assertions.assertTrue(model.value().get(0).properties().customBlocklists().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL,
+        Assertions.assertEquals(RaiPolicyContentSource.POST_RUN,
             model.value().get(0).properties().customBlocklists().get(0).source());
-        Assertions.assertEquals("ycxzbfvoo",
+        Assertions.assertEquals("ayorprav",
             model.value().get(0).properties().safetyProviders().get(0).safetyProviderName());
         Assertions.assertFalse(model.value().get(0).properties().safetyProviders().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL,
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN,
             model.value().get(0).properties().safetyProviders().get(0).source());
-        Assertions.assertEquals(RaiEgressMode.AUDIT, model.value().get(0).properties().egressPolicy().mode());
+        Assertions.assertEquals("klurccl",
+            model.value().get(0).properties().customExternalSafetyProviders().get(0).externalSafetyProviderName());
+        Assertions.assertEquals("xa",
+            model.value().get(0).properties().customExternalSafetyProviders().get(0).managedIdentityResourceId());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL,
+            model.value().get(0).properties().customExternalSafetyProviders().get(0).source());
+        Assertions.assertFalse(model.value().get(0).properties().customExternalSafetyProviders().get(0).blocking());
+        Assertions.assertEquals(RaiEgressMode.ENFORCED, model.value().get(0).properties().egressPolicy().mode());
         Assertions.assertEquals(RaiEgressDefaultAction.ALLOW,
             model.value().get(0).properties().egressPolicy().defaultAction());
-        Assertions.assertEquals("hjglikk", model.value().get(0).properties().egressPolicy().description());
-        Assertions.assertEquals("lo", model.value().get(0).properties().egressPolicy().rules().get(0).name());
+        Assertions.assertEquals("twk", model.value().get(0).properties().egressPolicy().description());
+        Assertions.assertEquals("yrucpcunnuzdq",
+            model.value().get(0).properties().egressPolicy().rules().get(0).name());
         Assertions.assertEquals(RaiEgressRuleType.FQDN,
             model.value().get(0).properties().egressPolicy().rules().get(0).ruleType());
         Assertions.assertEquals(RaiEgressRuleActionType.TRANSFORM,
             model.value().get(0).properties().egressPolicy().rules().get(0).action().actionType());
-        Assertions.assertEquals("lfktgplcrpwjxe", model.value().get(0).tags().get("noigbrnjwmwk"));
+        Assertions.assertEquals("enhqhskndnelq", model.value().get(0).tags().get("aadl"));
     }
 }

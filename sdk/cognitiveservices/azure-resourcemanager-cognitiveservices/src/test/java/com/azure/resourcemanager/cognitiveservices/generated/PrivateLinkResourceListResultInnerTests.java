@@ -12,8 +12,8 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"apx\",\"requiredMembers\":[\"fjjkbajb\"],\"requiredZoneNames\":[\"gd\",\"u\"],\"displayName\":\"oycblevpmc\"},\"id\":\"jy\",\"name\":\"kyxl\",\"type\":\"gsjgkzzlta\"},{\"properties\":{\"groupId\":\"zffovwmbjl\",\"requiredMembers\":[\"czpgvdwnapfdq\",\"owftptnuwjtks\",\"h\",\"cgqyhleseyq\"],\"requiredZoneNames\":[\"y\",\"ldotjvdkwisws\"],\"displayName\":\"kjtasb\"},\"id\":\"ispkxkdtx\",\"name\":\"kndlqvtwknvg\",\"type\":\"mb\"},{\"properties\":{\"groupId\":\"yw\",\"requiredMembers\":[\"qaqkuea\",\"groeshoyg\",\"cbyfqxkf\",\"oytehqpuvjm\"],\"requiredZoneNames\":[\"tdwckygr\",\"ejnndljdju\"],\"displayName\":\"br\"},\"id\":\"qyn\",\"name\":\"ceysfaqeg\",\"type\":\"lwryshwddkvbxgkq\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"tnicpp\",\"requiredMembers\":[\"clefyrletndq\"],\"requiredZoneNames\":[\"dggnbbuypwovvvs\",\"leev\",\"oqayrehjuqwv\"],\"displayName\":\"xrlzhpziha\"},\"id\":\"nqqz\",\"name\":\"xnq\",\"type\":\"ubfonfdbgmkf\"},{\"properties\":{\"groupId\":\"cwtewfhxwyrkb\",\"requiredMembers\":[\"zl\",\"ynjpchamkaepl\",\"ajubo\",\"uywevtjrieikmwl\"],\"requiredZoneNames\":[\"lfnisyxg\",\"cbmtredscnnst\",\"cyyuvtzrxzhclec\",\"wtzqzcloyhy\"],\"displayName\":\"gi\"},\"id\":\"zgyresgzsdt\",\"name\":\"wbyorjplbchych\",\"type\":\"kvy\"}]}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("gd", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("dggnbbuypwovvvs", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

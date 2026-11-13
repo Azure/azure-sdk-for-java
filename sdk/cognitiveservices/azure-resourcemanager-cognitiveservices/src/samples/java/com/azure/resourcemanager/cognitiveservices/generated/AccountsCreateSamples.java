@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.CertificateBundleReference;
 import com.azure.resourcemanager.cognitiveservices.models.Encryption;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.KeySource;
 import com.azure.resourcemanager.cognitiveservices.models.KeyVaultProperties;
+import com.azure.resourcemanager.cognitiveservices.models.ManagedClusterAgentHostingConfiguration;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.TrustedCertificateSource;
@@ -25,7 +27,7 @@ import java.util.Map;
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/CreateAccountMin.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -45,7 +47,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/CreateAccount.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -63,7 +65,13 @@ public final class AccountsCreateSamples {
                         .withKeyVersion("fakeTokenPlaceholder")
                         .withKeyVaultUri("fakeTokenPlaceholder")).withKeySource(KeySource.MICROSOFT_KEY_VAULT))
                 .withUserOwnedStorage(Arrays.asList(new UserOwnedStorage().withResourceId(
-                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"))))
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")))
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myCosmosAccount")
+                    .withVectorStore(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/mySearchService")
+                    .withBlobStore(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")))
             .withKind("Emotion")
             .withSku(new Sku().withName("S0"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
@@ -71,7 +79,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/CreateAccountWithAgentHostingConfiguration.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountWithAgentHostingConfiguration.json
      */
     /**
      * Sample code: Create a Foundry account with customer-owned AKS hosting.
@@ -84,7 +92,16 @@ public final class AccountsCreateSamples {
             .define("foundryByocAccount")
             .withExistingResourceGroup("myResourceGroup")
             .withRegion("West US")
-            .withProperties(new AccountProperties())
+            .withProperties(new AccountProperties().withAgentHostingConfigurations(
+                Arrays.asList(new ManagedClusterAgentHostingConfiguration().withName("default")
+                    .withHostingManagementIdentityResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane")
+                    .withWorkloadIdentityResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks-workload")
+                    .withClusterResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/cluster1")
+                    .withStorageAccountResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/storage1"))))
             .withKind("AIServices")
             .withSku(new Sku().withName("S0"))
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
@@ -95,7 +112,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/CreateAccountWithTrustedCertificateSources.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountWithTrustedCertificateSources.json
      */
     /**
      * Sample code: Create an account with private CA trust.

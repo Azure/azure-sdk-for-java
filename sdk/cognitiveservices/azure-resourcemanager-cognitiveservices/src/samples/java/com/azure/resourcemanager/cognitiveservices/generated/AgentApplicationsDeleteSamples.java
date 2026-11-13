@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-11-01/AgentApplication/delete.json
+     * x-ms-original-file: 2026-11-15-preview/AgentApplication/delete.json
      */
     /**
      * Sample code: Delete Account Agent Application.

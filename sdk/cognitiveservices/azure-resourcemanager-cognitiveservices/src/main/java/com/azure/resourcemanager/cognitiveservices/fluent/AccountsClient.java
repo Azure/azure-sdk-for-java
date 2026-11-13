@@ -15,7 +15,9 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.EvaluateDeploymentPoliciesResponseInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesRequest;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 
 /**
@@ -430,4 +432,35 @@ public interface AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AccountModelInner> listModels(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EvaluateDeploymentPoliciesResponseInner> evaluateDeploymentPoliciesWithResponse(String resourceGroupName,
+        String accountName, EvaluateDeploymentPoliciesRequest body, Context context);
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EvaluateDeploymentPoliciesResponseInner evaluateDeploymentPolicies(String resourceGroupName, String accountName,
+        EvaluateDeploymentPoliciesRequest body);
 }

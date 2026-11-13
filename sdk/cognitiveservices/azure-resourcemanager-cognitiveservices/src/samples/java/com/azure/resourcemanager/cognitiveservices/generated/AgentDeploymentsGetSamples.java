@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-11-01/AgentDeployment/get.json
+     * x-ms-original-file: 2026-11-15-preview/AgentDeployment/get.json
      */
     /**
      * Sample code: Get Agent Deployment.

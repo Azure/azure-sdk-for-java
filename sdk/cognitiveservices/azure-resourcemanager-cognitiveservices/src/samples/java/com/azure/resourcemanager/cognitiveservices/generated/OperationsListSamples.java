@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-11-01/GetOperations.json
+     * x-ms-original-file: 2026-11-15-preview/GetOperations.json
      */
     /**
      * Sample code: Get Operations.

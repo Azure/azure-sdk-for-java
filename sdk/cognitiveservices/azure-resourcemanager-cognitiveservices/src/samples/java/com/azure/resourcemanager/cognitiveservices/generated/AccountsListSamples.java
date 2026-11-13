@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2026-11-01/ListAccountsBySubscription.json
+     * x-ms-original-file: 2026-11-15-preview/ListAccountsBySubscription.json
      */
     /**
      * Sample code: List Accounts by Subscription.

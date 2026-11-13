@@ -39,9 +39,11 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.EvaluateDeploymentPoliciesResponseInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.AccountListResult;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.AccountModelListResult;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesRequest;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -273,6 +275,26 @@ public final class AccountsClientImpl implements AccountsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/evaluateDeploymentPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EvaluateDeploymentPoliciesResponseInner>> evaluateDeploymentPolicies(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EvaluateDeploymentPoliciesRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/evaluateDeploymentPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EvaluateDeploymentPoliciesResponseInner> evaluateDeploymentPoliciesSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EvaluateDeploymentPoliciesRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1522,6 +1544,86 @@ public final class AccountsClientImpl implements AccountsClient {
     public PagedIterable<AccountModelInner> listModels(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listModelsSinglePage(resourceGroupName, accountName, context),
             nextLink -> listModelsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EvaluateDeploymentPoliciesResponseInner>> evaluateDeploymentPoliciesWithResponseAsync(
+        String resourceGroupName, String accountName, EvaluateDeploymentPoliciesRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.evaluateDeploymentPolicies(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EvaluateDeploymentPoliciesResponseInner> evaluateDeploymentPoliciesAsync(String resourceGroupName,
+        String accountName, EvaluateDeploymentPoliciesRequest body) {
+        return evaluateDeploymentPoliciesWithResponseAsync(resourceGroupName, accountName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EvaluateDeploymentPoliciesResponseInner> evaluateDeploymentPoliciesWithResponse(
+        String resourceGroupName, String accountName, EvaluateDeploymentPoliciesRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.evaluateDeploymentPoliciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, accept, body, context);
+    }
+
+    /**
+     * Evaluate Azure Policy compliance for a set of hypothetical deployments without creating them.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for the evaluateDeploymentPolicies action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EvaluateDeploymentPoliciesResponseInner evaluateDeploymentPolicies(String resourceGroupName,
+        String accountName, EvaluateDeploymentPoliciesRequest body) {
+        return evaluateDeploymentPoliciesWithResponse(resourceGroupName, accountName, body, Context.NONE).getValue();
     }
 
     /**

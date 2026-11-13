@@ -12,6 +12,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.Project;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +24,7 @@ public final class ProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Moving\",\"displayName\":\"gjfcycrsvloyyh\",\"description\":\"qkzjuqwqaj\",\"endpoints\":{\"ixhyoipnfdbgso\":\"x\",\"fkbpjn\":\"cienezfvbenn\"},\"isDefault\":true},\"tags\":{\"iurztv\":\"wnthropmduds\"},\"location\":\"jhf\",\"etag\":\"cqkoqyouerg\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"zxkpyehhfdyld\",\"principalId\":\"yedzfzq\",\"userAssignedIdentities\":{\"zwhpjlwyxedz\":{\"principalId\":\"htdereun\",\"clientId\":\"a\"},\"fopxf\":{\"principalId\":\"xrfomcke\",\"clientId\":\"my\"},\"ygv\":{\"principalId\":\"tpdyzoutxfptof\",\"clientId\":\"nuywe\"}}},\"id\":\"gaaqw\",\"name\":\"kgjpytpmpvdnoge\",\"type\":\"lufbortb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"tptf\",\"description\":\"apmfwxmcxhwkgihi\",\"endpoints\":{\"owweylszrtngiqc\":\"ocmgadhmqyufp\",\"bmayhdt\":\"pmonfcorcnhfycig\"},\"isDefault\":false,\"capabilitySettings\":{\"documentStore\":\"na\",\"vectorStore\":\"djqzbrwrfrmhouf\",\"blobStore\":\"rb\"},\"toolControls\":{\"defaultAction\":\"Deny\",\"allowedTools\":[{\"type\":\"sharepoint_grounding_preview\",\"serverUrl\":\"rsnqunniklyxde\",\"connectorId\":\"nzadqmvpehp\"},{\"type\":\"bing_custom_search_preview\",\"serverUrl\":\"kyqhrpl\",\"connectorId\":\"q\"}]}},\"tags\":{\"qs\":\"jsrgclxnsvbkhh\",\"wdpuowlc\":\"tuecmguk\"},\"location\":\"krp\",\"etag\":\"qzq\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"jcmtcidcab\",\"principalId\":\"xhcxct\",\"userAssignedIdentities\":{\"ymtupyjtrxxzwdsn\":{\"principalId\":\"eftforylxakn\",\"clientId\":\"jzvqp\"}}},\"id\":\"yefnakdmtpjksdlu\",\"name\":\"ytjxhxwtitt\",\"type\":\"nvukvupu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +34,23 @@ public final class ProjectsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .getWithResponse("uiyxfwkztsmsfb", "vy", "lznfhkqytkztado", com.azure.core.util.Context.NONE)
+            .getWithResponse("kdg", "seuqkrbyyakrjgb", "wgokrllbecannvxo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gjfcycrsvloyyh", response.properties().displayName());
-        Assertions.assertEquals("qkzjuqwqaj", response.properties().description());
-        Assertions.assertEquals("wnthropmduds", response.tags().get("iurztv"));
-        Assertions.assertEquals("jhf", response.location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("tptf", response.properties().displayName());
+        Assertions.assertEquals("apmfwxmcxhwkgihi", response.properties().description());
+        Assertions.assertEquals("na", response.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("djqzbrwrfrmhouf", response.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("rb", response.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, response.properties().toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.SHAREPOINT_GROUNDING_PREVIEW,
+            response.properties().toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("rsnqunniklyxde",
+            response.properties().toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("nzadqmvpehp",
+            response.properties().toolControls().allowedTools().get(0).connectorId());
+        Assertions.assertEquals("jsrgclxnsvbkhh", response.tags().get("qs"));
+        Assertions.assertEquals("krp", response.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }

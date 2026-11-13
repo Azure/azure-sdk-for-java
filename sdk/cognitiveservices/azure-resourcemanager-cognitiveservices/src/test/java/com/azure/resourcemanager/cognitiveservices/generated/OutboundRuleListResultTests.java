@@ -14,10 +14,10 @@ public final class OutboundRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"kn\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Active\",\"errorInformation\":\"sbc\",\"parentRuleNames\":[\"agxnvhycvdimw\",\"zregzgyufutrwpw\",\"ryekzkd\"]},\"id\":\"eotta\",\"name\":\"jyosxwwh\",\"type\":\"h\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Deleting\",\"errorInformation\":\"dpmiljpn\",\"parentRuleNames\":[\"udqll\",\"sauzpjlx\"]},\"id\":\"huxiqhzlraymez\",\"name\":\"lskihmxrfdsajred\",\"type\":\"wyyshtuwgm\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Inactive\",\"errorInformation\":\"wzyif\",\"parentRuleNames\":[\"wltxeqipxgzdyims\",\"ayorprav\",\"jogeslabnsmjkwyn\"]},\"id\":\"aekqsykvwj\",\"name\":\"qpkevmyltjc\",\"type\":\"spxklu\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Active\",\"errorInformation\":\"xa\",\"parentRuleNames\":[\"oytzpose\",\"xigpxvkqmaupxvpi\",\"dfaifyzyzeyuube\",\"ds\"]},\"id\":\"fytoi\",\"name\":\"hgygvfltgvd\",\"type\":\"hoynk\"}]}")
+            "{\"nextLink\":\"zffzjwztsmp\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Inactive\",\"errorInformation\":\"gfyatig\",\"parentRuleNames\":[\"rrkdknczgor\",\"wnvojtvmdev\",\"lhqvbk\",\"rbpyhssrl\"]},\"id\":\"pkpkocm\",\"name\":\"ccebxxopyicyvspe\",\"type\":\"lhwyykgvrccpumd\"}]}")
             .toObject(OutboundRuleListResult.class);
-        Assertions.assertEquals("kn", model.nextLink());
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, model.value().get(0).properties().category());
-        Assertions.assertEquals(RuleStatus.ACTIVE, model.value().get(0).properties().status());
+        Assertions.assertEquals("zffzjwztsmp", model.nextLink());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.value().get(0).properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.value().get(0).properties().status());
     }
 }

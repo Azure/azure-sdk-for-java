@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ManagedComputeCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacities.json
+     * x-ms-original-file: 2026-11-15-preview/ListManagedComputeCapacities.json
      */
     /**
      * Sample code: List Managed Compute Capacities.
@@ -22,7 +22,7 @@ public final class ManagedComputeCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithDeployment.json
+     * x-ms-original-file: 2026-11-15-preview/ListManagedComputeCapacitiesWithDeployment.json
      */
     /**
      * Sample code: List Managed Compute Capacities For Deployment With Matching Account Location.
@@ -38,7 +38,7 @@ public final class ManagedComputeCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithLocation.json
+     * x-ms-original-file: 2026-11-15-preview/ListManagedComputeCapacitiesWithLocation.json
      */
     /**
      * Sample code: List Managed Compute Capacities With Location.
@@ -51,7 +51,7 @@ public final class ManagedComputeCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithUnsupportedLocation.json
+     * x-ms-original-file: 2026-11-15-preview/ListManagedComputeCapacitiesWithUnsupportedLocation.json
      */
     /**
      * Sample code: List Managed Compute Capacities With Unsupported DataZone Location.

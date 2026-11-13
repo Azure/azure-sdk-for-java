@@ -5,24 +5,58 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlEntry;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControls;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"displayName\":\"zjqatucoig\",\"description\":\"xncnwfe\",\"endpoints\":{\"gcgbjb\":\"wgfmx\",\"flq\":\"dlfgtdysnaq\",\"zeqyjleziun\":\"ctqhamzjrwdk\",\"eg\":\"xdfzantkw\"},\"isDefault\":false}")
+            "{\"provisioningState\":\"ResolvingDNS\",\"displayName\":\"qtdiswxspvckoj\",\"description\":\"bbg\",\"endpoints\":{\"dylytcovq\":\"tesubzpvp\"},\"isDefault\":false,\"capabilitySettings\":{\"documentStore\":\"fjb\",\"vectorStore\":\"zfxnxmlbmuos\",\"blobStore\":\"jmdihdcyyyzlw\"},\"toolControls\":{\"defaultAction\":\"Deny\",\"allowedTools\":[{\"type\":\"browser_automation_preview\",\"serverUrl\":\"zrfgmdqgnnbzrt\",\"connectorId\":\"edzuub\"},{\"type\":\"a2a_preview\",\"serverUrl\":\"gjsxmty\",\"connectorId\":\"vavdp\"}]}}")
             .toObject(ProjectProperties.class);
-        Assertions.assertEquals("zjqatucoig", model.displayName());
-        Assertions.assertEquals("xncnwfe", model.description());
+        Assertions.assertEquals("qtdiswxspvckoj", model.displayName());
+        Assertions.assertEquals("bbg", model.description());
+        Assertions.assertEquals("fjb", model.capabilitySettings().documentStore());
+        Assertions.assertEquals("zfxnxmlbmuos", model.capabilitySettings().vectorStore());
+        Assertions.assertEquals("jmdihdcyyyzlw", model.capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, model.toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.BROWSER_AUTOMATION_PREVIEW,
+            model.toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("zrfgmdqgnnbzrt", model.toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("edzuub", model.toolControls().allowedTools().get(0).connectorId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDisplayName("zjqatucoig").withDescription("xncnwfe");
+        ProjectProperties model = new ProjectProperties().withDisplayName("qtdiswxspvckoj")
+            .withDescription("bbg")
+            .withCapabilitySettings(new CapabilitySettings().withDocumentStore("fjb")
+                .withVectorStore("zfxnxmlbmuos")
+                .withBlobStore("jmdihdcyyyzlw"))
+            .withToolControls(new ToolControls().withDefaultAction(ToolControlsDefaultAction.DENY)
+                .withAllowedTools(Arrays.asList(
+                    new ToolControlEntry().withType(ToolControlType.BROWSER_AUTOMATION_PREVIEW)
+                        .withServerUrl("zrfgmdqgnnbzrt")
+                        .withConnectorId("edzuub"),
+                    new ToolControlEntry().withType(ToolControlType.A2A_PREVIEW)
+                        .withServerUrl("gjsxmty")
+                        .withConnectorId("vavdp"))));
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("zjqatucoig", model.displayName());
-        Assertions.assertEquals("xncnwfe", model.description());
+        Assertions.assertEquals("qtdiswxspvckoj", model.displayName());
+        Assertions.assertEquals("bbg", model.description());
+        Assertions.assertEquals("fjb", model.capabilitySettings().documentStore());
+        Assertions.assertEquals("zfxnxmlbmuos", model.capabilitySettings().vectorStore());
+        Assertions.assertEquals("jmdihdcyyyzlw", model.capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, model.toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.BROWSER_AUTOMATION_PREVIEW,
+            model.toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("zrfgmdqgnnbzrt", model.toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("edzuub", model.toolControls().allowedTools().get(0).connectorId());
     }
 }
