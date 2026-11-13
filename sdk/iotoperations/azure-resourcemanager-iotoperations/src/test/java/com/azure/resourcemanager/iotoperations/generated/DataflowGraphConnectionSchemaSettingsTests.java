@@ -13,19 +13,19 @@ public final class DataflowGraphConnectionSchemaSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionSchemaSettings model
-            = BinaryData.fromString("{\"serializationFormat\":\"Json\",\"schemaRef\":\"tvcof\"}")
+            = BinaryData.fromString("{\"serializationFormat\":\"Delta\",\"schemaRef\":\"ed\"}")
                 .toObject(DataflowGraphConnectionSchemaSettings.class);
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("tvcof", model.schemaRef());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA, model.serializationFormat());
+        Assertions.assertEquals("ed", model.schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowGraphConnectionSchemaSettings model = new DataflowGraphConnectionSchemaSettings()
-            .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.JSON)
-            .withSchemaRef("tvcof");
+            .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.DELTA)
+            .withSchemaRef("ed");
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionSchemaSettings.class);
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("tvcof", model.schemaRef());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA, model.serializationFormat());
+        Assertions.assertEquals("ed", model.schemaRef());
     }
 }

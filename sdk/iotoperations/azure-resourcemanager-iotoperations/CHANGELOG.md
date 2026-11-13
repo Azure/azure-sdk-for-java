@@ -1,14 +1,31 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-10-02)
+
+- Azure Resource Manager IoT Operations client library for Java. This package contains Microsoft Azure SDK for IoT Operations Management SDK. Microsoft.IoTOperations Resource Provider management API. Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.DataflowGraphDestinationSchemaSerializationFormat` was added
 
-### Bugs Fixed
+* `models.InstanceSku` was added
 
-### Other Changes
+* `models.DataflowGraphDestinationSchemaSettings` was added
+
+* `models.InstanceSkuName` was added
+
+#### `models.InstanceResource` was modified
+
+* `sku()` was added
+
+#### `models.InstanceResource$Definition` was modified
+
+* `withSku(models.InstanceSku)` was added
+
+#### `models.DataflowGraphDestinationNodeSettings` was modified
+
+* `outputSchemaSettings()` was added
+* `withOutputSchemaSettings(models.DataflowGraphDestinationSchemaSettings)` was added
 
 ## 1.2.0 (2026-07-28)
 

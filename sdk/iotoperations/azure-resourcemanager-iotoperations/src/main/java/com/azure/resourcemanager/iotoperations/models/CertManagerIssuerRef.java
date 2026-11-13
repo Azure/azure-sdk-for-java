@@ -103,9 +103,9 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("group", this.group);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("group", this.group);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,12 +125,12 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("group".equals(fieldName)) {
-                    deserializedCertManagerIssuerRef.group = reader.getString();
-                } else if ("kind".equals(fieldName)) {
+                if ("kind".equals(fieldName)) {
                     deserializedCertManagerIssuerRef.kind = CertManagerIssuerKind.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedCertManagerIssuerRef.name = reader.getString();
+                } else if ("group".equals(fieldName)) {
+                    deserializedCertManagerIssuerRef.group = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
