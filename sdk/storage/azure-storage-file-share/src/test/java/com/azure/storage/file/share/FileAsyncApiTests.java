@@ -142,7 +142,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        if (testInfo.getTags().contains("file-id-mock")) {
+        if (testInfo.getTags().contains("file-id-mock") || testInfo.getTags().contains("rename-mock")) {
             return;
         }
 
@@ -2144,6 +2144,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(0, it.getFailedHandles());
             })
             .verifyComplete();
+    }
+
+    @Test
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void asyncFileRenameReturnsClientForDestinationPath() {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareFileAsyncClient source = helper.createBuilder().resourcePath("source.txt").buildFileAsyncClient();
+
+        ShareFileAsyncClient destination
+            = source.renameWithResponse(new ShareFileRenameOptions(RenameDestinationTestHelper.DESTINATION))
+                .block()
+                .getValue();
+        destination.delete().block();
+        String actualUrl = helper.lastRequestUrl();
+
+        assertEquals(helper.expectedFileDeleteUrl(), actualUrl);
+        assertEquals(RenameDestinationTestHelper.DESTINATION, destination.getFilePath());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")

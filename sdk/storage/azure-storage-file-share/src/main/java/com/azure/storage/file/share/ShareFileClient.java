@@ -3171,8 +3171,9 @@ public class ShareFileClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
-        return new ShareFileClient(shareFileAsyncClient, this.azureFileStorageClient, getShareName(), destinationPath,
-            null, this.getAccountName(), this.getServiceVersion(), this.getSasToken());
+        return new ShareFileClient(shareFileAsyncClient.getFileAsyncClient(destinationPath),
+            this.azureFileStorageClient, getShareName(), destinationPath, null, this.getAccountName(),
+            this.getServiceVersion(), this.getSasToken());
     }
 
     /**

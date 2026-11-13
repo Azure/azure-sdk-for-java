@@ -96,7 +96,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        if (testInfo.getTags().contains("file-id-mock")) {
+        if (testInfo.getTags().contains("file-id-mock") || testInfo.getTags().contains("rename-mock")) {
             return;
         }
 
@@ -1326,6 +1326,21 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void renameMin() {
         primaryDirectoryClient.create();
         assertDoesNotThrow(() -> primaryDirectoryClient.rename(generatePathName()));
+    }
+
+    @Test
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void syncDirectoryRenameReturnsClientForDestinationPath() {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareDirectoryClient source = helper.createBuilder().resourcePath("source").buildDirectoryClient();
+
+        ShareDirectoryClient destination = source.rename(RenameDestinationTestHelper.DESTINATION);
+        destination.delete();
+        String actualUrl = helper.lastRequestUrl();
+
+        assertEquals(helper.expectedDirectoryDeleteUrl(), actualUrl);
+        assertEquals(RenameDestinationTestHelper.DESTINATION, destination.getDirectoryPath());
     }
 
     @Test

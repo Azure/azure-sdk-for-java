@@ -85,7 +85,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        if (testInfo.getTags().contains("file-id-mock")) {
+        if (testInfo.getTags().contains("file-id-mock") || testInfo.getTags().contains("rename-mock")) {
             return;
         }
 
@@ -1170,6 +1170,24 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareDirectoryAsyncClient shareSnapshotClient
             = directoryBuilderHelper(shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient();
         assertEquals(snapshot, shareSnapshotClient.getShareSnapshotId());
+    }
+
+    @Test
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void asyncDirectoryRenameReturnsClientForDestinationPath() {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareDirectoryAsyncClient source = helper.createBuilder().resourcePath("source").buildDirectoryAsyncClient();
+
+        ShareDirectoryAsyncClient destination
+            = source.renameWithResponse(new ShareFileRenameOptions(RenameDestinationTestHelper.DESTINATION))
+                .block()
+                .getValue();
+        destination.delete().block();
+        String actualUrl = helper.lastRequestUrl();
+
+        assertEquals(helper.expectedDirectoryDeleteUrl(), actualUrl);
+        assertEquals(RenameDestinationTestHelper.DESTINATION, destination.getDirectoryPath());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
