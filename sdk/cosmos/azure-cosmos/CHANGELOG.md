@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed direct connectivity retries for `PartitionKeyRangeGoneException` thrown during address resolution so stale partition key ranges trigger routing-map refresh and exhausted retries surface as 503 with partition-key-range-gone retry-limit substatus. - See [PR 49613](https://github.com/Azure/azure-sdk-for-java/pull/49613).
 * Fixed concurrent response parsing throwing decoder state exceptions when fallback UTF-8 decoding is enabled. - See [Issue 51084](https://github.com/Azure/azure-sdk-for-java/issues/51084) and [PR 51151](https://github.com/Azure/azure-sdk-for-java/pull/51151)
 * Fixed hybrid search reciprocal rank fusion (RRF) results being ranked incorrectly when component scores are tied. Each result now receives a unique ordinal rank, with deterministic tie-breaking based on the decoded document ID portion of `_rid`. - See [PR 50940](https://github.com/Azure/azure-sdk-for-java/pull/50940)
 * Fixed queries scoped to an effective partition key sub-range returning items outside the requested range during fan-out or partition splits, including `ORDER BY` queries and continuation resumption. - See [PR 50943](https://github.com/Azure/azure-sdk-for-java/pull/50943)
