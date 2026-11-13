@@ -21,7 +21,7 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
     @Test
     public void testListAgentsWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"bunso\",\"value\":[{\"properties\":{\"agentId\":\"zshqykebmpshaezc\",\"agentName\":\"kckrnovqdmh\"},\"id\":\"jstfs\",\"name\":\"a\",\"type\":\"jakgk\"},{\"properties\":{\"agentId\":\"xqdsoqz\",\"agentName\":\"wdjox\"},\"id\":\"bdhsobv\",\"name\":\"nsbioe\",\"type\":\"nlfhnfzxtfzqyu\"},{\"properties\":{\"agentId\":\"k\",\"agentName\":\"cwdyt\"},\"id\":\"rlcmwbejyw\",\"name\":\"wvnhwwkrmqev\",\"type\":\"hha\"},{\"properties\":{\"agentId\":\"fudfyziru\",\"agentName\":\"gnjxiakgyjm\"},\"id\":\"mxg\",\"name\":\"kyluyug\",\"type\":\"brdcvoloxtvqcb\"}]}";
+            = "{\"nextLink\":\"qip\",\"value\":[{\"properties\":{\"agentId\":\"lfrsbzrnmuv\",\"agentName\":\"pu\"},\"id\":\"ddtbfmekjcnginxd\",\"name\":\"maoyqxfv\",\"type\":\"yxzmx\"},{\"properties\":{\"agentId\":\"ofxlttxo\",\"agentName\":\"tdnzujsjirkrpskc\"},\"id\":\"mmofbnivdqtkyk\",\"name\":\"axnlsfgnysca\",\"type\":\"cptbzetxygxxicee\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentReferenceResourceArmPaginatedResult response = manager.agentApplications()
-            .listAgentsWithResponse("nx", "mfv", "wunrtcsra", "whyxfshmbydmv", com.azure.core.util.Context.NONE)
+            .listAgentsWithResponse("glkvbgukbsv", "wyo", "ygnbknhjgclxaxwc", "faspsdzkucszghd",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bunso", response.nextLink());
-        Assertions.assertEquals("zshqykebmpshaezc", response.value().get(0).properties().agentId());
-        Assertions.assertEquals("kckrnovqdmh", response.value().get(0).properties().agentName());
+        Assertions.assertEquals("qip", response.nextLink());
+        Assertions.assertEquals("lfrsbzrnmuv", response.value().get(0).properties().agentId());
+        Assertions.assertEquals("pu", response.value().get(0).properties().agentName());
     }
 }

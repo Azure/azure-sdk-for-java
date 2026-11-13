@@ -47,7 +47,6 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
-import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
@@ -713,6 +712,16 @@ public class ShareFileAsyncClient {
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
+        try {
+            return beginCopyInternal(sourceUrl, options, pollInterval);
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(LOGGER.logExceptionAsError(ex));
+        }
+    }
+
+    private PollerFlux<ShareFileCopyInfo, Void> beginCopyInternal(String sourceUrl, ShareFileCopyOptions options,
+        Duration pollInterval) {
+        StorageImplUtils.assertNotNull("options", options);
         ShareErrors.validatePathOperation(fileId, "beginCopy");
 
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
@@ -724,65 +733,8 @@ public class ShareFileAsyncClient {
         FileSmbProperties tempSmbProperties
             = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
-        String filePermissionKey = tempSmbProperties.getFilePermissionKey();
-
-        if (options.getFilePermission() == null
-            || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
-            if ((options.getFilePermission() != null || filePermissionKey != null)
-                && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
-                return PollerFlux.error(LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "File permission and file permission key can not be set when PermissionCopyModeType is source or "
-                        + "null")));
-            }
-        } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
-            // Checks that file permission and file permission key are valid
-            try {
-                ModelHelper.validateFilePermissionAndKey(options.getFilePermission(),
-                    tempSmbProperties.getFilePermissionKey());
-            } catch (RuntimeException ex) {
-                return PollerFlux.error(LOGGER.logExceptionAsError(ex));
-            }
-        }
-
-        // check if only copy flag or smb properties are set (not both)
-        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy() == null
-            ? new CopyableFileSmbPropertiesList()
-            : options.getSmbPropertiesToCopy();
-        if (list.isFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
-        }
-        if (list.isCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Both CopyableFileSmbPropertiesList.isSetCreatedOn and smbProperties.fileCreationTime cannot be set."));
-        }
-        if (list.isLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Both CopyableFileSmbPropertiesList.isSetLastWrittenOn and smbProperties.fileLastWriteTime cannot be set."));
-        }
-        if (list.isChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
-        }
-
-        String fileAttributes
-            = list.isFileAttributes() ? null : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime
-            = list.isCreatedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-        String fileLastWriteTime = list.isLastWrittenOn()
-            ? null
-            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        String fileChangedOnTime
-            = list.isChangedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-
-        final CopyFileSmbInfo copyFileSmbInfo
-            = new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
-                .setFileAttributes(fileAttributes)
-                .setFileCreationTime(fileCreationTime)
-                .setFileLastWriteTime(fileLastWriteTime)
-                .setFileChangeTime(fileChangedOnTime)
-                .setIgnoreReadOnly(options.isIgnoreReadOnly())
-                .setSetArchiveAttribute(options.isArchiveAttributeSet());
+        ModelHelper.validateCopyOptions(options, tempSmbProperties);
+        final CopyFileSmbInfo copyFileSmbInfo = ModelHelper.createCopyFileSmbInfo(options, tempSmbProperties);
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 

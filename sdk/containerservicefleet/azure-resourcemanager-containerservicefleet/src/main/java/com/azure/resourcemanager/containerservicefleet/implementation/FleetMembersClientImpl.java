@@ -402,7 +402,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName,
+    private SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName,
         String fleetName, String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createWithResponse(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch);
@@ -673,7 +673,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsync(String resourceGroupName,
+    private SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdateAsync(String resourceGroupName,
         String fleetName, String fleetMemberName, FleetMemberUpdate properties, String ifMatch) {
         Response<BinaryData> response
             = updateAsyncWithResponse(resourceGroupName, fleetName, fleetMemberName, properties, ifMatch);
@@ -921,7 +921,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String fleetMemberName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, fleetMemberName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

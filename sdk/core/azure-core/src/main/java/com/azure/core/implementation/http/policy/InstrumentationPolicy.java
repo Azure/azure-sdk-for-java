@@ -12,6 +12,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlSanitizer;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -87,7 +90,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return Mono.using(() -> startSpan(context), span -> next.process().map(response -> {
             onResponseCode(response, span);
             // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-            return TraceableResponse.create(response, tracer, span);
+            return TraceableResponse.create(response, tracer, span, isStreamResponseBody(context));
         })
             .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
             .doOnError(exception -> tracer.end(null, exception, span)), __ -> {
@@ -106,7 +109,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             HttpResponse response = next.processSync();
             onResponseCode(response, span);
             // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-            return TraceableResponse.create(response, tracer, span);
+            return TraceableResponse.create(response, tracer, span, isStreamResponseBody(context));
         } catch (RuntimeException ex) {
             tracer.end(null, ex, span);
             throw ex;
@@ -166,6 +169,10 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
+    private static boolean isStreamResponseBody(HttpPipelineCallContext context) {
+        return Boolean.TRUE.equals(context.getData(HttpUtils.AZURE_STREAM_RESPONSE_BODY).orElse(null));
+    }
+
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
         return tracer != null && tracer.isEnabled() && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
@@ -174,20 +181,23 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final HttpResponse response;
         private final Context span;
         private final Tracer tracer;
+        private final boolean streamResponseBody;
         private volatile int ended = 0;
         private static final AtomicIntegerFieldUpdater<TraceableResponse> ENDED_UPDATER
             = AtomicIntegerFieldUpdater.newUpdater(TraceableResponse.class, "ended");
 
-        private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
+        private TraceableResponse(HttpResponse response, Tracer tracer, Context span, boolean streamResponseBody) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
             this.tracer = tracer;
+            this.streamResponseBody = streamResponseBody;
         }
 
-        public static HttpResponse create(HttpResponse response, Tracer tracer, Context span) {
+        public static HttpResponse create(HttpResponse response, Tracer tracer, Context span,
+            boolean streamResponseBody) {
             if (tracer.isRecording(span)) {
-                return new TraceableResponse(response, tracer, span);
+                return new TraceableResponse(response, tracer, span, streamResponseBody);
             }
 
             // OTel does not need to end sampled-out spans, but let's do it just in case
@@ -237,14 +247,27 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public BinaryData getBodyAsBinaryData() {
+            BinaryData body;
             try {
-                return response.getBodyAsBinaryData();
-            } catch (Exception e) {
+                body = response.getBodyAsBinaryData();
+            } catch (RuntimeException e) {
                 onError(null, e);
                 throw e;
-            } finally {
-                endNoError();
             }
+
+            if (!streamResponseBody || body == null || body.isReplayable()) {
+                endNoError();
+                return body;
+            }
+
+            // The caller opted in to streaming (HttpUtils.AZURE_STREAM_RESPONSE_BODY), so the non-replayable body is
+            // read after this returns. End the span when it's consumed, as getBody does.
+            Flux<ByteBuffer> tracedBody = Flux.using(() -> span,
+                s -> body.toFluxByteBuffer()
+                    .doOnError(e -> onError(null, e))
+                    .doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
+                s -> endNoError());
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(tracedBody, body.getLength(), false));
         }
 
         @Override

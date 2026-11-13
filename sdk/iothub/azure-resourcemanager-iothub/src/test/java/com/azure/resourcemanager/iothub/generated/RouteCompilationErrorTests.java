@@ -13,13 +13,13 @@ public final class RouteCompilationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteCompilationError model = BinaryData.fromString(
-            "{\"message\":\"vqtmnub\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":1254452597,\"column\":1550438212},\"end\":{\"line\":848558030,\"column\":1007666972}}}")
+            "{\"message\":\"l\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":1611377785,\"column\":1427716289},\"end\":{\"line\":2047683473,\"column\":924939472}}}")
             .toObject(RouteCompilationError.class);
-        Assertions.assertEquals("vqtmnub", model.message());
+        Assertions.assertEquals("l", model.message());
         Assertions.assertEquals(RouteErrorSeverity.WARNING, model.severity());
-        Assertions.assertEquals(1254452597, model.location().start().line());
-        Assertions.assertEquals(1550438212, model.location().start().column());
-        Assertions.assertEquals(848558030, model.location().end().line());
-        Assertions.assertEquals(1007666972, model.location().end().column());
+        Assertions.assertEquals(1611377785, model.location().start().line());
+        Assertions.assertEquals(1427716289, model.location().start().column());
+        Assertions.assertEquals(2047683473, model.location().end().line());
+        Assertions.assertEquals(924939472, model.location().end().column());
     }
 }

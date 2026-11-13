@@ -432,7 +432,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @return the {@link SyncPoller} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
         BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
@@ -744,7 +744,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @return the {@link SyncPoller} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
+    private SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
         String ifNoneMatch, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName,
@@ -1037,7 +1037,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch);

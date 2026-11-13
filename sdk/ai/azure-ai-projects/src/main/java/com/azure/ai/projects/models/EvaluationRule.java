@@ -6,6 +6,7 @@ package com.azure.ai.projects.models;
 import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -212,6 +213,7 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("filter", this.filter);
+        jsonWriter.writeJsonField("schedule", this.schedule);
         return jsonWriter.writeEndObject();
     }
 
@@ -235,6 +237,9 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
             String displayName = null;
             String description = null;
             EvaluationRuleFilter filter = null;
+            Trigger schedule = null;
+            ScheduleProvisioningStatus provisioningStatus = null;
+            ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -254,6 +259,12 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
                     description = reader.getString();
                 } else if ("filter".equals(fieldName)) {
                     filter = EvaluationRuleFilter.fromJson(reader);
+                } else if ("schedule".equals(fieldName)) {
+                    schedule = Trigger.fromJson(reader);
+                } else if ("provisioningStatus".equals(fieldName)) {
+                    provisioningStatus = ScheduleProvisioningStatus.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -264,7 +275,73 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
             deserializedEvaluationRule.displayName = displayName;
             deserializedEvaluationRule.description = description;
             deserializedEvaluationRule.filter = filter;
+            deserializedEvaluationRule.schedule = schedule;
+            deserializedEvaluationRule.provisioningStatus = provisioningStatus;
+            deserializedEvaluationRule.error = error;
             return deserializedEvaluationRule;
         });
+    }
+
+    /*
+     * Timing for timerTrigger rules. Required for timerTrigger and not allowed for other event types.
+     */
+    @Generated
+    private Trigger schedule;
+
+    /*
+     * Provisioning state of the rule's schedule. Returned for timerTrigger rules only.
+     */
+    @Generated
+    private ScheduleProvisioningStatus provisioningStatus;
+
+    /*
+     * Error that caused the rule to be disabled, if any.
+     */
+    @Generated
+    private ResponseError error;
+
+    /**
+     * Get the schedule property: Timing for timerTrigger rules. Required for timerTrigger and not allowed for other
+     * event types.
+     *
+     * @return the schedule value.
+     */
+    @Generated
+    public Trigger getSchedule() {
+        return this.schedule;
+    }
+
+    /**
+     * Set the schedule property: Timing for timerTrigger rules. Required for timerTrigger and not allowed for other
+     * event types.
+     *
+     * @param schedule the schedule value to set.
+     * @return the EvaluationRule object itself.
+     */
+    @Generated
+    public EvaluationRule setSchedule(Trigger schedule) {
+        this.schedule = schedule;
+        return this;
+    }
+
+    /**
+     * Get the provisioningStatus property: Provisioning state of the rule's schedule. Returned for timerTrigger rules
+     * only.
+     *
+     * @return the provisioningStatus value.
+     */
+    @Generated
+    public ScheduleProvisioningStatus getProvisioningStatus() {
+        return this.provisioningStatus;
+    }
+
+    /**
+     * Get the error property: Error that caused the rule to be disabled, if any.
+     *
+     * @return the error value.
+     */
+    @Generated
+    public ResponseError getError() {
+        return this.error;
     }
 }

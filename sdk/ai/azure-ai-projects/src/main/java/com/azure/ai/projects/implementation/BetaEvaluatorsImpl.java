@@ -6,6 +6,7 @@ package com.azure.ai.projects.implementation;
 import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -20,12 +21,20 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -70,6 +79,26 @@ public final class BetaEvaluatorsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AIProjectClientBetaEvaluators")
     public interface BetaEvaluatorsService {
+
+        @Get("/evaluators/{name}/diagnostics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listEvaluatorDiagnostics(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/evaluators/{name}/diagnostics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEvaluatorDiagnosticsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -118,6 +147,331 @@ public final class BetaEvaluatorsImpl {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
             Context context);
+    }
+
+    /**
+     * List evaluator diagnostics
+     *
+     * Returns immutable publication lineage for the specified evaluator.
+     *
+     * Time, evaluator-version, dimension, and type filters are intersected.
+     * Returns recorded changes from completed evaluator version writes.
+     * Historical backfill and diagnostic calculation jobs are not included.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of lineage entries to return, between 1 and
+     * 100. The default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort completed diagnostics by `occurred_at`, then diagnostic
+     * identifier. The default is `desc`. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>start_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive lower bound for the diagnostic occurrence
+     * time, expressed as Unix seconds.</td></tr>
+     * <tr><td>end_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive upper bound for the diagnostic occurrence
+     * time, expressed as Unix seconds. Includes all entries occurring within that second.</td></tr>
+     * <tr><td>evaluator_version</td><td>String</td><td>No</td><td>Filter lineage diagnostics by the exact published
+     * evaluator version.</td></tr>
+     * <tr><td>dimension_id</td><td>String</td><td>No</td><td>Filter completed diagnostics for one public rubric
+     * dimension identifier.</td></tr>
+     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter by one or more completed diagnostic types by
+     * repeating the query parameter. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(version_created/dimension_added/dimension_updated/dimension_removed/definition_updated/health_computed) (Required)
+     *     id: String (Required)
+     *     evaluator_version: String (Required)
+     *     occurred_at: long (Required)
+     *     change_type: String(human_created/human_added/human_edited/human_removed/generated/regenerated/not_present_in_generated_rubric/generation_completed) (Required)
+     *     explanation: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The evaluator name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a flat page of recorded evaluator changes and computed health snapshots along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listEvaluatorDiagnosticsSinglePageAsync(String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listEvaluatorDiagnostics(this.client.getEndpoint(), name,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
+    }
+
+    /**
+     * List evaluator diagnostics
+     *
+     * Returns immutable publication lineage for the specified evaluator.
+     *
+     * Time, evaluator-version, dimension, and type filters are intersected.
+     * Returns recorded changes from completed evaluator version writes.
+     * Historical backfill and diagnostic calculation jobs are not included.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of lineage entries to return, between 1 and
+     * 100. The default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort completed diagnostics by `occurred_at`, then diagnostic
+     * identifier. The default is `desc`. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>start_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive lower bound for the diagnostic occurrence
+     * time, expressed as Unix seconds.</td></tr>
+     * <tr><td>end_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive upper bound for the diagnostic occurrence
+     * time, expressed as Unix seconds. Includes all entries occurring within that second.</td></tr>
+     * <tr><td>evaluator_version</td><td>String</td><td>No</td><td>Filter lineage diagnostics by the exact published
+     * evaluator version.</td></tr>
+     * <tr><td>dimension_id</td><td>String</td><td>No</td><td>Filter completed diagnostics for one public rubric
+     * dimension identifier.</td></tr>
+     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter by one or more completed diagnostic types by
+     * repeating the query parameter. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(version_created/dimension_added/dimension_updated/dimension_removed/definition_updated/health_computed) (Required)
+     *     id: String (Required)
+     *     evaluator_version: String (Required)
+     *     occurred_at: long (Required)
+     *     change_type: String(human_created/human_added/human_edited/human_removed/generated/regenerated/not_present_in_generated_rubric/generation_completed) (Required)
+     *     explanation: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The evaluator name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a flat page of recorded evaluator changes and computed health snapshots as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listEvaluatorDiagnosticsAsync(String name, RequestOptions requestOptions) {
+        return listEvaluatorDiagnosticsAsync(null, name, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listEvaluatorDiagnosticsAsync(String initialContinuationToken, String name,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listEvaluatorDiagnosticsSinglePageAsync(name, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listEvaluatorDiagnosticsSinglePageAsync(name, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List evaluator diagnostics
+     *
+     * Returns immutable publication lineage for the specified evaluator.
+     *
+     * Time, evaluator-version, dimension, and type filters are intersected.
+     * Returns recorded changes from completed evaluator version writes.
+     * Historical backfill and diagnostic calculation jobs are not included.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of lineage entries to return, between 1 and
+     * 100. The default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort completed diagnostics by `occurred_at`, then diagnostic
+     * identifier. The default is `desc`. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>start_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive lower bound for the diagnostic occurrence
+     * time, expressed as Unix seconds.</td></tr>
+     * <tr><td>end_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive upper bound for the diagnostic occurrence
+     * time, expressed as Unix seconds. Includes all entries occurring within that second.</td></tr>
+     * <tr><td>evaluator_version</td><td>String</td><td>No</td><td>Filter lineage diagnostics by the exact published
+     * evaluator version.</td></tr>
+     * <tr><td>dimension_id</td><td>String</td><td>No</td><td>Filter completed diagnostics for one public rubric
+     * dimension identifier.</td></tr>
+     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter by one or more completed diagnostic types by
+     * repeating the query parameter. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(version_created/dimension_added/dimension_updated/dimension_removed/definition_updated/health_computed) (Required)
+     *     id: String (Required)
+     *     evaluator_version: String (Required)
+     *     occurred_at: long (Required)
+     *     change_type: String(human_created/human_added/human_edited/human_removed/generated/regenerated/not_present_in_generated_rubric/generation_completed) (Required)
+     *     explanation: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The evaluator name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a flat page of recorded evaluator changes and computed health snapshots along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEvaluatorDiagnosticsSinglePage(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listEvaluatorDiagnosticsSync(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
+    }
+
+    /**
+     * List evaluator diagnostics
+     *
+     * Returns immutable publication lineage for the specified evaluator.
+     *
+     * Time, evaluator-version, dimension, and type filters are intersected.
+     * Returns recorded changes from completed evaluator version writes.
+     * Historical backfill and diagnostic calculation jobs are not included.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of lineage entries to return, between 1 and
+     * 100. The default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort completed diagnostics by `occurred_at`, then diagnostic
+     * identifier. The default is `desc`. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>start_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive lower bound for the diagnostic occurrence
+     * time, expressed as Unix seconds.</td></tr>
+     * <tr><td>end_time</td><td>OffsetDateTime</td><td>No</td><td>Inclusive upper bound for the diagnostic occurrence
+     * time, expressed as Unix seconds. Includes all entries occurring within that second.</td></tr>
+     * <tr><td>evaluator_version</td><td>String</td><td>No</td><td>Filter lineage diagnostics by the exact published
+     * evaluator version.</td></tr>
+     * <tr><td>dimension_id</td><td>String</td><td>No</td><td>Filter completed diagnostics for one public rubric
+     * dimension identifier.</td></tr>
+     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter by one or more completed diagnostic types by
+     * repeating the query parameter. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(version_created/dimension_added/dimension_updated/dimension_removed/definition_updated/health_computed) (Required)
+     *     id: String (Required)
+     *     evaluator_version: String (Required)
+     *     occurred_at: long (Required)
+     *     change_type: String(human_created/human_added/human_edited/human_removed/generated/regenerated/not_present_in_generated_rubric/generation_completed) (Required)
+     *     explanation: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The evaluator name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a flat page of recorded evaluator changes and computed health snapshots as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listEvaluatorDiagnostics(String name, RequestOptions requestOptions) {
+        return listEvaluatorDiagnostics(null, name, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listEvaluatorDiagnostics(String initialContinuationToken, String name,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listEvaluatorDiagnosticsSinglePage(name, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listEvaluatorDiagnosticsSinglePage(name, requestOptionsLocal);
+        });
     }
 
     /**
@@ -339,5 +693,33 @@ public final class BetaEvaluatorsImpl {
         return service.getCredentialsSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), contentType, accept, credentialRequest, requestOptions,
             Context.NONE);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
+        try {
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String... path) {
+        try {
+            Object value = binaryData.toObject(Map.class);
+            if (Boolean.FALSE.equals(((Map<?, ?>) value).get("has_more"))) {
+                return null;
+            }
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

@@ -99,6 +99,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -659,15 +660,7 @@ public abstract class HttpClientTests {
             .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
-            () -> "Received the following progress updates: "
-                + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
+        assertProgressReported(progress, expectedResponseBody.length);
     }
 
     private static void canSendBinaryDataSyncWithProgressReporter(URL requestUrl, BinaryData requestBody,
@@ -682,15 +675,35 @@ public abstract class HttpClientTests {
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
             byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
-                () -> "Received the following progress updates: "
-                    + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
+            assertProgressReported(progress, expectedResponseBody.length);
         }
+    }
+
+    private static void assertProgressReported(BlockingQueue<Long> progress, int expectedBytes) {
+        List<Long> updates = new ArrayList<>();
+        long maximum = 0;
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        try {
+            while (maximum < expectedBytes) {
+                long remaining = deadline - System.nanoTime();
+                if (remaining <= 0) {
+                    break;
+                }
+                Long update = progress.poll(remaining, TimeUnit.NANOSECONDS);
+                if (update == null) {
+                    break;
+                }
+                updates.add(update);
+                maximum = Math.max(maximum, update);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AssertionError("Interrupted while waiting for upload progress.", e);
+        }
+        progress.drainTo(updates);
+        assertEquals(expectedBytes, updates.stream().mapToLong(Long::longValue).max().orElse(0L),
+            () -> "Received the following progress updates: "
+                + Arrays.toString(updates.stream().mapToLong(Long::longValue).toArray()));
     }
 
     private static Stream<byte[]> getChunks() {

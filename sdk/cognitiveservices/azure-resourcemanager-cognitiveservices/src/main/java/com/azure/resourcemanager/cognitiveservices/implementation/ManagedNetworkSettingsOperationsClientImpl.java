@@ -617,7 +617,7 @@ public final class ManagedNetworkSettingsOperationsClientImpl implements Managed
      * using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public
+    private
         SyncPoller<PollResult<ManagedNetworkSettingsPropertiesBasicResourceInner>, ManagedNetworkSettingsPropertiesBasicResourceInner>
         beginPatch(String resourceGroupName, String accountName, String managedNetworkName,
             ManagedNetworkSettingsPropertiesBasicResourceInner body) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class WebhooksListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/WebhookList.json
+     * x-ms-original-file: 2026-10-15-preview/WebhookList.json
      */
     /**
      * Sample code: WebhookList.
