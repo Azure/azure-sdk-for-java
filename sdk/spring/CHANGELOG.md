@@ -10,6 +10,7 @@
 
 #### Bugs Fixed
 
+- Fixed the default Microsoft Entra ID resource server filter chain to require authentication for every request. ([#51191](https://github.com/Azure/azure-sdk-for-java/issues/51191))
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 
 ## 6.5.0 (2026-07-29)
