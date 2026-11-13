@@ -21,8 +21,9 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /*
      * Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain
-     * and maxBatchInstancePercent to determine the batch size. This field is able to be set to true or false only when
-     * using NodePlacementConfiguration as Zonal.
+     * and maxBatchInstancePercent to determine the batch size. This field can be set to true or false only when
+     * nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is Auto. Auto placement is supported
+     * starting with API version 2026-10-01.
      */
     @Generated
     private Boolean enableCrossZoneUpgrade;
@@ -84,8 +85,9 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /**
      * Get the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
-     * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. This field is
-     * able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+     * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. This field can
+     * be set to true or false only when nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is
+     * Auto. Auto placement is supported starting with API version 2026-10-01.
      *
      * @return the enableCrossZoneUpgrade value.
      */
@@ -96,8 +98,9 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /**
      * Set the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
-     * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. This field is
-     * able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+     * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. This field can
+     * be set to true or false only when nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is
+     * Auto. Auto placement is supported starting with API version 2026-10-01.
      *
      * @param enableCrossZoneUpgrade the enableCrossZoneUpgrade value to set.
      * @return the RollingUpgradePolicy object itself.

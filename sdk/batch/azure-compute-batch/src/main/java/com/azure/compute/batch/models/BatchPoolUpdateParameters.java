@@ -477,6 +477,7 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeJsonField("vmSkuProfile", this.vmSkuProfile);
         jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
         jsonWriter.writeJsonField("taskSchedulingPolicy", this.taskSchedulingPolicy);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
@@ -521,6 +522,8 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.virtualMachineConfiguration
                         = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("vmSkuProfile".equals(fieldName)) {
+                    deserializedBatchPoolUpdateParameters.vmSkuProfile = VirtualMachineSkuProfile.fromJson(reader);
                 } else if ("taskSlotsPerNode".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.taskSlotsPerNode = reader.getNullable(JsonReader::getInt);
                 } else if ("taskSchedulingPolicy".equals(fieldName)) {
@@ -543,5 +546,38 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
             }
             return deserializedBatchPoolUpdateParameters;
         });
+    }
+
+    /*
+     * Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance Mix
+     * Pool. When specified, vmSize must be 'Mix'.<br /><br />This field can be updated only when the pool is empty.
+     */
+    @Generated
+    private VirtualMachineSkuProfile vmSkuProfile;
+
+    /**
+     * Get the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * Compute Nodes for an Instance Mix Pool. When specified, vmSize must be 'Mix'.&lt;br /&gt;&lt;br /&gt;This field
+     * can be updated only when the pool is empty.
+     *
+     * @return the vmSkuProfile value.
+     */
+    @Generated
+    public VirtualMachineSkuProfile getVmSkuProfile() {
+        return this.vmSkuProfile;
+    }
+
+    /**
+     * Set the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * Compute Nodes for an Instance Mix Pool. When specified, vmSize must be 'Mix'.&lt;br /&gt;&lt;br /&gt;This field
+     * can be updated only when the pool is empty.
+     *
+     * @param vmSkuProfile the vmSkuProfile value to set.
+     * @return the BatchPoolUpdateParameters object itself.
+     */
+    @Generated
+    public BatchPoolUpdateParameters setVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile) {
+        this.vmSkuProfile = vmSkuProfile;
+        return this;
     }
 }
