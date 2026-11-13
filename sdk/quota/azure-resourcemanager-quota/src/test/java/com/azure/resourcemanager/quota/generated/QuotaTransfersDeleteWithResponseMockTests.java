@@ -27,7 +27,8 @@ public final class QuotaTransfersDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.quotaTransfers().deleteWithResponse("tdooaoj", "niodkooeb", "nuj", com.azure.core.util.Context.NONE);
+        manager.quotaTransfers()
+            .deleteWithResponse("ccjzkzivgvv", "nayrhyrnxxmueedn", "rdvstkwqqtch", com.azure.core.util.Context.NONE);
 
     }
 }

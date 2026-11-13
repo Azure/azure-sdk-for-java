@@ -12,11 +12,11 @@ public final class ResourceUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"qbzvddntwnd\",\"localizedValue\":\"cbtwnpzaoqvuh\"},\"limit\":2446371757978717753,\"usages\":4808758286738610936,\"unit\":\"dglmjthjqkwp\"},\"id\":\"icxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"},{\"properties\":{\"name\":{\"value\":\"e\",\"localizedValue\":\"a\"},\"limit\":199478075825684377,\"usages\":1064952201771132395,\"unit\":\"vvtpgvdfgio\"},\"id\":\"ftutqxlngxlefgu\",\"name\":\"nxkrx\",\"type\":\"qmi\"},{\"properties\":{\"name\":{\"value\":\"zrvqdr\",\"localizedValue\":\"hjybigehoqfbo\"},\"limit\":5938581958460041100,\"usages\":4187351799054769848,\"unit\":\"zlcuiywgqywgndrv\"},\"id\":\"hzgpphrcgyncocpe\",\"name\":\"fvm\",\"type\":\"coofsxlzev\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"uosvmkfssxqukk\",\"localizedValue\":\"l\"},\"limit\":5850785611921356044,\"usages\":6280051526633281163,\"unit\":\"zkd\"},\"id\":\"lpvlopw\",\"name\":\"yighxpk\",\"type\":\"wzbaiue\"}],\"nextLink\":\"a\"}")
             .toObject(ResourceUsageList.class);
-        Assertions.assertEquals(2446371757978717753L, model.value().get(0).properties().limit());
-        Assertions.assertEquals(4808758286738610936L, model.value().get(0).properties().usages());
-        Assertions.assertEquals("qbzvddntwnd", model.value().get(0).properties().value());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals(5850785611921356044L, model.value().get(0).properties().limit());
+        Assertions.assertEquals(6280051526633281163L, model.value().get(0).properties().usages());
+        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).properties().value());
+        Assertions.assertEquals("a", model.nextLink());
     }
 }

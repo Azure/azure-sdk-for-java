@@ -22,7 +22,7 @@ public final class GroupQuotaUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"name\":{\"value\":\"gx\",\"localizedValue\":\"rslpmutwuoeg\"},\"limit\":5722379398974283920,\"usages\":3859577697194270181,\"unit\":\"yqsluic\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"name\":{\"value\":\"x\",\"localizedValue\":\"npirgnepttw\"},\"limit\":5822820636618661461,\"usages\":3359600727774110658,\"unit\":\"dmqnrojlpij\"},\"id\":\"rxfrddhc\",\"name\":\"atiz\",\"type\":\"ronasxift\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class GroupQuotaUsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ResourceUsages> response = manager.groupQuotaUsages()
-            .list("cvqvpkeqdcv", "rhvoods", "tbobz", "opcjwvnhd", com.azure.core.util.Context.NONE);
+        PagedIterable<ResourceUsages> response
+            = manager.groupQuotaUsages().list("uu", "fdlwg", "ytsbwtovv", "gseinq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(5722379398974283920L, response.iterator().next().properties().limit());
-        Assertions.assertEquals(3859577697194270181L, response.iterator().next().properties().usages());
-        Assertions.assertEquals("gx", response.iterator().next().properties().value());
+        Assertions.assertEquals(5822820636618661461L, response.iterator().next().properties().limit());
+        Assertions.assertEquals(3359600727774110658L, response.iterator().next().properties().usages());
+        Assertions.assertEquals("x", response.iterator().next().properties().value());
     }
 }
