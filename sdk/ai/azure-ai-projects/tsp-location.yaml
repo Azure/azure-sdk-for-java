@@ -1,5 +1,5 @@
 directory: specification/ai-foundry/data-plane/Foundry/src/sdk-java-azure-ai-projects
-commit: 44126c23b0688c84786d0ccb09e3d305d0c9616e
+commit: 8a59a2f8099e988c8c574fe0866efed451229e0d
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
     - specification/ai-foundry/data-plane/Foundry/src/sdk-common
