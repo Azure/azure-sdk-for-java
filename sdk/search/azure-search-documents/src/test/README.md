@@ -88,6 +88,5 @@ Use the repository's
 to review, sanitize and publish recordings, then update `assets.json`. Do not re-record to hide an SDK or test failure.
 
 Passing playback verifies the SDK against recorded responses, not current backend behavior or every preview feature.
-See the
-[preview feature coverage matrix](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/preview-feature-coverage.md)
-for the remaining service-validation gaps.
+Track feature-specific live results, prerequisite skips, and backend failures in the feature's PR or release work item.
+Offline contract tests and successful compilation are not substitutes for live validation.

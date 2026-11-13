@@ -36,6 +36,7 @@
 
 ### Other Changes
 
+- Restored the opt-in Content Understanding skillset sample and index statistics pagination and indexer-runtime examples.
 - Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
 
 #### Dependency Updates

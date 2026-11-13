@@ -25,6 +25,12 @@ import java.util.List;
  * Contains customizations for Azure AI Search code generation.
  */
 public class SearchCustomizations extends Customization {
+    /**
+     * Creates the Azure AI Search code generation customizations.
+     */
+    public SearchCustomizations() {
+    }
+
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization documents = libraryCustomization.getPackage("com.azure.search.documents");
@@ -468,65 +474,34 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addStreamModels(LibraryCustomization customization) {
-        customization.getRawEditor().addFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
+        customization.getRawEditor().replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
                     "retrieval.started", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseActivityStartedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseActivityStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseActivityStartedStreamEvent", "KnowledgeBaseActivityStartedEvent",
                     "activity.started", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseActivityCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseActivityCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseActivityCompletedStreamEvent", "KnowledgeBaseActivityRecord",
                     "activity.completed", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseAnswerCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseAnswerCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseAnswerCompletedStreamEvent", "KnowledgeBaseAnswerCompletedEvent",
                     "answer.completed", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseReferencesCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseReferencesCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseReferencesCompletedStreamEvent", "KnowledgeBaseReference",
                     "references.completed", false, true));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseErrorStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseErrorStreamEvent.java",
                 wrapperSource("KnowledgeBaseErrorStreamEvent", "KnowledgeBaseStreamErrorEvent", "error", true, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
                     "response.completed", true, false));
-        replaceStreamModel(customization, "KnowledgeBaseRetrievalStreamEvent", baseEventSource());
-        replaceStreamModel(customization, "KnowledgeBaseRetrievalStartedStreamEvent",
-            wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
-                "retrieval.started", false, false));
-        replaceStreamModel(customization, "KnowledgeBaseActivityStartedStreamEvent",
-            wrapperSource("KnowledgeBaseActivityStartedStreamEvent", "KnowledgeBaseActivityStartedEvent",
-                "activity.started", false, false));
-        replaceStreamModel(customization, "KnowledgeBaseActivityCompletedStreamEvent",
-            wrapperSource("KnowledgeBaseActivityCompletedStreamEvent", "KnowledgeBaseActivityRecord",
-                "activity.completed", false, false));
-        replaceStreamModel(customization, "KnowledgeBaseAnswerCompletedStreamEvent",
-            wrapperSource("KnowledgeBaseAnswerCompletedStreamEvent", "KnowledgeBaseAnswerCompletedEvent",
-                "answer.completed", false, false));
-        replaceStreamModel(customization, "KnowledgeBaseReferencesCompletedStreamEvent",
-            wrapperSource("KnowledgeBaseReferencesCompletedStreamEvent", "KnowledgeBaseReference",
-                "references.completed", false, true));
-        replaceStreamModel(customization, "KnowledgeBaseErrorStreamEvent",
-            wrapperSource("KnowledgeBaseErrorStreamEvent", "KnowledgeBaseStreamErrorEvent", "error", true, false));
-        replaceStreamModel(customization, "KnowledgeBaseResponseCompletedStreamEvent",
-            wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
-                "response.completed", true, false));
-    }
-
-    private static void replaceStreamModel(LibraryCustomization customization, String className, String source) {
-        customization.getPackage("com.azure.search.documents.knowledgebases.models")
-            .getClass(className)
-            .customizeAst(ast -> {
-                com.github.javaparser.ast.CompilationUnit replacement = StaticJavaParser.parse(source);
-                ast.setImports(replacement.getImports());
-                ast.setTypes(replacement.getTypes());
-            });
     }
 
     private static void customizeKnowledgeSourceStatusDurationParsing(ClassCustomization customization) {
@@ -949,7 +924,7 @@ public class SearchCustomizations extends Customization {
     }
 
     private static String baseEventSource() {
-        return header("com.azure.search.documents.knowledgebases.models")
+        return header("com.azure.search.documents.knowledgebases.models", true)
             + "import com.azure.core.annotation.Generated;\n"
             + "import com.azure.search.documents.knowledgebases.implementation."
             + "KnowledgeBaseRetrievalStreamEventConverter;\n" + "import java.util.List;\n\n" + "/**\n"
@@ -1019,7 +994,7 @@ public class SearchCustomizations extends Customization {
                 + "        return true;\n" + "    }\n"
             : "";
 
-        return header("com.azure.search.documents.knowledgebases.models")
+        return header("com.azure.search.documents.knowledgebases.models", true)
             + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
             + listImports + "\n" + "/**\n" + " * Represents the {@code " + eventName
             + "} knowledge base retrieval stream event.\n" + " * Access the typed payload with {@link #getValue()}.\n"
@@ -1035,8 +1010,14 @@ public class SearchCustomizations extends Customization {
 
 
     private static String header(String packageName) {
+        return header(packageName, false);
+    }
+
+    private static String header(String packageName, boolean generated) {
         return "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-            + "// Licensed under the MIT License.\n\n" + "package " + packageName + ";\n\n";
+            + "// Licensed under the MIT License.\n"
+            + (generated ? "// Code generated by Microsoft (R) TypeSpec Code Generator.\n" : "\n")
+            + "package " + packageName + ";\n\n";
     }
 
 
