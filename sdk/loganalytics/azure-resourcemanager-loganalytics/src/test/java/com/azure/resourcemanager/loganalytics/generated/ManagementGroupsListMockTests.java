@@ -22,7 +22,7 @@ public final class ManagementGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serverCount\":1660876742,\"isGateway\":true,\"name\":\"kgjiiytssikizbc\",\"id\":\"q\",\"created\":\"2021-10-15T11:52:21Z\",\"dataReceived\":\"2021-05-19T11:42:55Z\",\"version\":\"gmqsorhcekxg\",\"sku\":\"ykmxcpwzvm\"}}]}";
+            = "{\"value\":[{\"properties\":{\"serverCount\":1867542229,\"isGateway\":true,\"name\":\"hztgeqmgqzgwld\",\"id\":\"chillcecf\",\"created\":\"2021-03-31T05:12:31Z\",\"dataReceived\":\"2021-12-02T11:22:12Z\",\"version\":\"a\",\"sku\":\"h\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class ManagementGroupsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagementGroup> response
-            = manager.managementGroups().list("rclsso", "jomevtfycnlb", com.azure.core.util.Context.NONE);
+            = manager.managementGroups().list("xu", "pbezqccydrtceu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1660876742, response.iterator().next().serverCount());
+        Assertions.assertEquals(1867542229, response.iterator().next().serverCount());
         Assertions.assertTrue(response.iterator().next().isGateway());
-        Assertions.assertEquals("kgjiiytssikizbc", response.iterator().next().name());
-        Assertions.assertEquals("q", response.iterator().next().id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T11:52:21Z"), response.iterator().next().created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T11:42:55Z"),
+        Assertions.assertEquals("hztgeqmgqzgwld", response.iterator().next().name());
+        Assertions.assertEquals("chillcecf", response.iterator().next().id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T05:12:31Z"), response.iterator().next().created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T11:22:12Z"),
             response.iterator().next().dataReceived());
-        Assertions.assertEquals("gmqsorhcekxg", response.iterator().next().version());
-        Assertions.assertEquals("ykmxcpwzvm", response.iterator().next().sku());
+        Assertions.assertEquals("a", response.iterator().next().version());
+        Assertions.assertEquals("h", response.iterator().next().sku());
     }
 }

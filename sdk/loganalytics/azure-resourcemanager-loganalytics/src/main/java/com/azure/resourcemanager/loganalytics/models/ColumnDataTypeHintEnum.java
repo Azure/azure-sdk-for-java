@@ -34,6 +34,11 @@ public final class ColumnDataTypeHintEnum extends ExpandableStringEnum<ColumnDat
     public static final ColumnDataTypeHintEnum IP = fromString("ip");
 
     /**
+     * A vector of single-precision floating-point values used for semantic / similarity search.
+     */
+    public static final ColumnDataTypeHintEnum VECTOR16 = fromString("vector16");
+
+    /**
      * Creates a new instance of ColumnDataTypeHintEnum value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

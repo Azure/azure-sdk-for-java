@@ -22,7 +22,7 @@ public final class QueryPacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"queryPackId\":\"dkcprg\",\"timeCreated\":\"2020-12-23T10:33:06Z\",\"timeModified\":\"2021-11-18T03:49:15Z\",\"provisioningState\":\"io\"},\"location\":\"lutixmq\",\"tags\":{\"nmfbc\":\"jizcbfzmcrunfhiu\",\"dkyzbfvxov\":\"aqktkrumzu\"},\"id\":\"kxiuxqggvqr\",\"name\":\"hyhlwcjsqg\",\"type\":\"jhffbxrqrkij\"}]}";
+            = "{\"value\":[{\"properties\":{\"queryPackId\":\"lraymezxlskih\",\"timeCreated\":\"2021-02-13T06:22:59Z\",\"timeModified\":\"2020-12-30T21:28:45Z\",\"provisioningState\":\"ajrednwyyshtuw\"},\"location\":\"evuafpwzyifrk\",\"tags\":{\"xgzdyimsfayorp\":\"txeqi\",\"sl\":\"avkjog\"},\"id\":\"bnsmjkwynqxaek\",\"name\":\"sykvwjtqpke\",\"type\":\"myltj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class QueryPacksListMockTests {
 
         PagedIterable<LogAnalyticsQueryPack> response = manager.queryPacks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lutixmq", response.iterator().next().location());
-        Assertions.assertEquals("jizcbfzmcrunfhiu", response.iterator().next().tags().get("nmfbc"));
+        Assertions.assertEquals("evuafpwzyifrk", response.iterator().next().location());
+        Assertions.assertEquals("txeqi", response.iterator().next().tags().get("xgzdyimsfayorp"));
     }
 }

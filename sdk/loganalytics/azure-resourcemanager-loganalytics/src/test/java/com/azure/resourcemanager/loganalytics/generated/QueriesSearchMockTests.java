@@ -27,7 +27,7 @@ public final class QueriesSearchMockTests {
     @Test
     public void testSearch() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"id\":\"xc\",\"displayName\":\"qhtkbt\",\"timeCreated\":\"2021-08-19T16:52:48Z\",\"timeModified\":\"2021-08-17T05:38:07Z\",\"author\":\"ld\",\"description\":\"iipsnawwlqkz\",\"body\":\"xhhllxricct\",\"related\":{\"categories\":[\"qqoajxeiyglesrw\",\"aexhdctrceqnk\"],\"resourceTypes\":[\"pobe\",\"dmljzacvumepjp\",\"ibnzp\"],\"solutions\":[\"pife\",\"leqirccjclykcgxv\",\"pjlvczuoda\",\"punettepdjxq\"]},\"tags\":{\"ylpckaewsedv\":[\"ynu\"],\"fn\":[\"kwxe\",\"qphr\"],\"daizupf\":[\"ctmjtsghpbcbc\",\"zarpzeqacdldt\",\"mpypefcpczshnuq\"],\"iukvzwydwt\":[\"uytuszxhmtvtv\",\"gw\"]},\"properties\":\"\\\"dataaokgkskjivbsshaj\\\"\"},\"id\":\"u\",\"name\":\"peexpgeumilhwuit\",\"type\":\"dexyionofninbdb\"}]}";
+            = "{\"value\":[{\"properties\":{\"id\":\"fsetz\",\"displayName\":\"e\",\"timeCreated\":\"2021-03-07T03:10:17Z\",\"timeModified\":\"2021-03-29T02:20:49Z\",\"author\":\"dynojpziuwfb\",\"description\":\"kdtnhqsyclj\",\"body\":\"elpkpbafvafhlbyl\",\"related\":{\"categories\":[\"vxrh\",\"zdfwrsofpltdbm\"],\"resourceTypes\":[\"rhvhfnracwnpqigt\",\"ujwouhdawsi\",\"rb\",\"bxsjybvitvqkj\"],\"solutions\":[\"nu\",\"tggmuwdchozfnkfe\",\"lv\",\"noakiz\"]},\"tags\":{\"xzcwxhmpejt\":[\"knaqlnuwig\",\"yxl\",\"kwph\"]},\"properties\":\"\\\"dataexaonwivkcq\\\"\"},\"id\":\"xhxknlc\",\"name\":\"rmmkyupiju\",\"type\":\"yqjf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,25 +36,25 @@ public final class QueriesSearchMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<LogAnalyticsQueryPackQuery> response
-            = manager.queries()
-                .search("wmseharxifvqn", "x", new LogAnalyticsQueryPackQuerySearchProperties()
+        PagedIterable<LogAnalyticsQueryPackQuery> response = manager.queries()
+            .search("ljnhvlqj", "ek",
+                new LogAnalyticsQueryPackQuerySearchProperties()
                     .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                        .withCategories(Arrays.asList("jptnvwjhrsidqpx", "btpakftngatw"))
-                        .withResourceTypes(Arrays.asList("yutrymd", "mfjhpycvjqdvdwkq", "ldrlefgnaavua", "n"))
-                        .withSolutions(Arrays.asList("aou", "n", "dc")))
-                    .withTags(
-                        mapOf("thhllnmwyne", Arrays.asList("pfe", "y", "hduyeuyldph", "tybkcgs"), "mdskjhhxdlajfoxc",
-                            Arrays.asList("exlfciatxtjrrl"), "jmkxettcslojf", Arrays.asList("cvslxlhuavkrmukm"))),
-                    3241690957213566836L, true, "nqtoqx", com.azure.core.util.Context.NONE);
+                        .withCategories(Arrays.asList("snbksdqhj", "yklxe", "lkhhu"))
+                        .withResourceTypes(Arrays.asList("poq"))
+                        .withSolutions(Arrays.asList("nwqjwgokn", "ejjjkxybwfdb")))
+                    .withTags(mapOf("fiz", Arrays.asList("tensvkzykj", "jknsxfwu", "hcdpkupnqrmgj", "bpkuwxeoio"), "fz",
+                        Arrays.asList("vkjzwfbcyaykm"), "rsxkr", Arrays.asList("fwxrzxmdew"), "jxsqwjhqkbiwetp",
+                        Arrays.asList("bjazejwwviy", "y", "suhbrnn"))),
+                1381470462297048795L, false, "yqiq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qhtkbt", response.iterator().next().displayName());
-        Assertions.assertEquals("iipsnawwlqkz", response.iterator().next().description());
-        Assertions.assertEquals("xhhllxricct", response.iterator().next().body());
-        Assertions.assertEquals("qqoajxeiyglesrw", response.iterator().next().related().categories().get(0));
-        Assertions.assertEquals("pobe", response.iterator().next().related().resourceTypes().get(0));
-        Assertions.assertEquals("pife", response.iterator().next().related().solutions().get(0));
-        Assertions.assertEquals("ynu", response.iterator().next().tags().get("ylpckaewsedv").get(0));
+        Assertions.assertEquals("e", response.iterator().next().displayName());
+        Assertions.assertEquals("kdtnhqsyclj", response.iterator().next().description());
+        Assertions.assertEquals("elpkpbafvafhlbyl", response.iterator().next().body());
+        Assertions.assertEquals("vxrh", response.iterator().next().related().categories().get(0));
+        Assertions.assertEquals("rhvhfnracwnpqigt", response.iterator().next().related().resourceTypes().get(0));
+        Assertions.assertEquals("nu", response.iterator().next().related().solutions().get(0));
+        Assertions.assertEquals("knaqlnuwig", response.iterator().next().tags().get("xzcwxhmpejt").get(0));
     }
 
     // Use "Map.of" if available

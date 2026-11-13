@@ -21,7 +21,7 @@ public final class QueriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"czjnc\",\"displayName\":\"uiyqvldaswvppi\",\"timeCreated\":\"2021-10-18T19:32Z\",\"timeModified\":\"2021-09-21T18:41:29Z\",\"author\":\"cndhzxrrfcfs\",\"description\":\"khgsnxuwwkpphefs\",\"body\":\"zxlb\",\"related\":{\"categories\":[\"eikjclwza\",\"nmwpf\"],\"resourceTypes\":[\"t\",\"azyqbxyxoyfp\",\"qqi\"],\"solutions\":[\"xlhdj\",\"qdcadwvps\",\"zjiihjr\",\"ybmrzoepnxwd\"]},\"tags\":{\"ibtyibuyvpirfqjp\":[\"kgvfnmxaursqf\"],\"znfaj\":[\"noow\",\"bedenrexkx\",\"hxvucnu\",\"gmnhjevd\"],\"mgnlqxsjxtel\":[\"kskmqozzkivyhjrl\",\"izjixlq\",\"hefkwabsolronqq\"]},\"properties\":\"\\\"datahvuqbo\\\"\"},\"id\":\"o\",\"name\":\"zqocarku\",\"type\":\"lbcnndt\"}";
+            = "{\"properties\":{\"id\":\"bxiwkgfbqljn\",\"displayName\":\"khychocokulehur\",\"timeCreated\":\"2021-08-13T07:45:29Z\",\"timeModified\":\"2021-11-17T04:12:58Z\",\"author\":\"aweyur\",\"description\":\"hy\",\"body\":\"dxravj\",\"related\":{\"categories\":[\"rxmrgchbapx\",\"iyfjjkbajbuscg\"],\"resourceTypes\":[\"sioycblevpmcl\"],\"solutions\":[\"xkyxlzgs\",\"gkzz\"]},\"tags\":{\"chgcgqyh\":[\"hbzffovwmbjlzqs\",\"zpgvdwnapfd\",\"wow\",\"tptnuwjtk\"],\"vwisp\":[\"seyqrhvyeldotjv\",\"kwiswskukjtas\"]},\"properties\":\"\\\"datakdtxfkndlqvtwkn\\\"\"},\"id\":\"mmbugtywatmqaq\",\"name\":\"ueatgroe\",\"type\":\"hoygzcbyfq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,15 +30,16 @@ public final class QueriesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        LogAnalyticsQueryPackQuery response
-            = manager.queries().getWithResponse("qjm", "g", "syparybjufp", com.azure.core.util.Context.NONE).getValue();
+        LogAnalyticsQueryPackQuery response = manager.queries()
+            .getWithResponse("s", "liuhqawmoaiancz", "vodrrslblxydkxr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("uiyqvldaswvppi", response.displayName());
-        Assertions.assertEquals("khgsnxuwwkpphefs", response.description());
-        Assertions.assertEquals("zxlb", response.body());
-        Assertions.assertEquals("eikjclwza", response.related().categories().get(0));
-        Assertions.assertEquals("t", response.related().resourceTypes().get(0));
-        Assertions.assertEquals("xlhdj", response.related().solutions().get(0));
-        Assertions.assertEquals("kgvfnmxaursqf", response.tags().get("ibtyibuyvpirfqjp").get(0));
+        Assertions.assertEquals("khychocokulehur", response.displayName());
+        Assertions.assertEquals("hy", response.description());
+        Assertions.assertEquals("dxravj", response.body());
+        Assertions.assertEquals("rxmrgchbapx", response.related().categories().get(0));
+        Assertions.assertEquals("sioycblevpmcl", response.related().resourceTypes().get(0));
+        Assertions.assertEquals("xkyxlzgs", response.related().solutions().get(0));
+        Assertions.assertEquals("hbzffovwmbjlzqs", response.tags().get("chgcgqyh").get(0));
     }
 }
