@@ -26,6 +26,10 @@ public class SessionTokenHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
+    public static boolean isCompoundSessionToken(String sessionToken) {
+        return sessionToken != null && sessionToken.indexOf(',') >= 0;
+    }
+
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {
         if (request == null) {
             throw new IllegalArgumentException("request is null");
@@ -133,6 +137,43 @@ public class SessionTokenHelper {
         }
 
         return highestSessionToken;
+    }
+
+    public static void recordUnmatchedSessionToken(
+        RxDocumentServiceRequest request, String globalSessionToken, String partitionKeyRangeId) {
+
+        String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
+            " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+            "the request will fallback " +
+            "to eventual consistency.";
+        request.requestContext.getSessionTokenEvaluationResults().add(evaluationResult);
+        if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+            logger.warn(evaluationResult);
+        }
+    }
+
+    // Selects a unique exact-range token. Missing or duplicate matches cannot be scoped.
+    public static ISessionToken scopeCompoundSessionToken(String originalToken, PartitionKeyRange target) {
+        ISessionToken selected = null;
+        boolean duplicateMatch = false;
+        for (String segment : StringUtils.split(originalToken, ",")) {
+            String[] items = StringUtils.split(segment, ":");
+            if (items.length != 2) {
+                throw new BadRequestException(String.format(
+                    RMResources.InvalidSessionToken, target != null ? target.getId() : ""));
+            }
+
+            ISessionToken parsed = SessionTokenHelper.parse(items[1]);
+            if (target != null && items[0].equals(target.getId())) {
+                if (selected == null) {
+                    selected = parsed;
+                } else {
+                    duplicateMatch = true;
+                }
+            }
+        }
+
+        return duplicateMatch ? null : selected;
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
