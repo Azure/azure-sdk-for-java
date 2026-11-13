@@ -16,6 +16,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,12 +26,15 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -189,6 +194,85 @@ public class BinaryDataIOTests {
         assertEquals(-1, input.read());
         assertEquals(0, input.available());
         assertBufferState(buffers);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "heap", "direct", "readOnly" })
+    public void bulkReadsPreserveOrderAndBufferStateForFragmentedBuffers(String kind) throws IOException {
+        // Thousands of tiny and empty buffers, which bulk reads mostly coalesce, between buffers around 1 KiB and 8 KiB.
+        List<Integer> sizes = new ArrayList<>();
+        for (int size : new int[] { 1025, 1023, 1024, 8191, 8192, 8193, 20000 }) {
+            sizes.add(size);
+            for (int i = 0; i < 3000; i++) {
+                sizes.add(i % 4);
+            }
+        }
+        byte[] expected = new byte[sizes.stream().mapToInt(Integer::intValue).sum()];
+        for (int i = 0; i < expected.length; i++) {
+            // Unlike payload(), this doesn't repeat every 256 bytes, so misordered content can't go unnoticed.
+            expected[i] = (byte) (i ^ (i >>> 8) ^ (i >>> 16));
+        }
+        List<ByteBuffer> buffers = new ArrayList<>(sizes.size());
+        int offset = 0;
+        for (int size : sizes) {
+            buffers.add(buffer(expected, offset, size, kind));
+            offset += size;
+        }
+        InputStream input = InputStreamUtils.createInputStream(buffers);
+
+        assertEquals(expected[0] & 0xff, input.read());
+        byte[] prefix = new byte[1100];
+        assertEquals(prefix.length, input.read(prefix));
+        assertArrayEquals(Arrays.copyOfRange(expected, 1, 1101), prefix);
+        assertArrayEquals(Arrays.copyOfRange(expected, 1101, expected.length),
+            InputStreamUtils.readAllBytes(input, null));
+        assertEquals(-1, input.read());
+        assertBufferState(buffers);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void pipedFileInputStreamsAreReadCompletely(boolean writeTo, @TempDir Path directory) throws Exception {
+        // A child JVM's standard input is a pipe on every platform. Before JDK 24, file bulk reads and file-to-file
+        // transfers fail for non-seekable files, and Windows file-to-file transfers can stop early or fail for pipes.
+        byte[] expected = payload(1024 * 1024 + 17);
+        Path actual = directory.resolve("actual.bin");
+        Path log = directory.resolve("child.log");
+        String classPath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
+        // Surefire separates production classes and dependencies onto the module path on Java 9+.
+        String modulePath = System.getProperty("jdk.module.path");
+        if (modulePath != null && !modulePath.isEmpty()) {
+            classPath += File.pathSeparator + modulePath;
+        }
+        Process process = new ProcessBuilder(Paths.get(System.getProperty("java.home"), "bin", "java").toString(),
+            "-Xmx64m", "-cp", classPath, PipeReader.class.getName(), String.valueOf(writeTo), actual.toString())
+                .redirectErrorStream(true)
+                .redirectOutput(log.toFile())
+                .start();
+        Thread writer = new Thread(() -> {
+            try (OutputStream childInput = process.getOutputStream()) {
+                childInput.write(expected);
+            } catch (IOException ignored) {
+                // The child's exit status and log explain why it stopped reading.
+            }
+        });
+        writer.setDaemon(true);
+        writer.start();
+
+        boolean completed;
+        try {
+            completed = process.waitFor(60, TimeUnit.SECONDS);
+        } finally {
+            if (process.isAlive()) {
+                process.destroyForcibly();
+                assertTrue(process.waitFor(10, TimeUnit.SECONDS), "The child JVM did not terminate.");
+            }
+        }
+
+        String diagnostics = new String(Files.readAllBytes(log), StandardCharsets.UTF_8);
+        assertTrue(completed, "The child JVM did not complete.\n" + diagnostics);
+        assertEquals(0, process.exitValue(), diagnostics);
+        assertArrayEquals(expected, Files.readAllBytes(actual));
     }
 
     @ParameterizedTest
@@ -375,6 +459,23 @@ public class BinaryDataIOTests {
             assertEquals(buffer.capacity(), buffer.limit());
             buffer.reset();
             assertEquals(position, buffer.position());
+        }
+    }
+
+    /**
+     * Reads standard input through {@link BinaryData} and writes the content to the file named by the second argument.
+     */
+    public static final class PipeReader {
+        public static void main(String[] args) throws IOException {
+            try (InputStream input = new FileInputStream(FileDescriptor.in);
+                OutputStream output = new FileOutputStream(args[1])) {
+                BinaryData data = BinaryData.fromStream(input);
+                if (Boolean.parseBoolean(args[0])) {
+                    data.writeTo(output);
+                } else {
+                    output.write(data.toBytes());
+                }
+            }
         }
     }
 

@@ -13,7 +13,7 @@ the Java 17 hexadecimal formatter alongside the Java 11 stream implementation an
 | Layer | Libraries | Added implementation | Performance effect | Evidence |
 |---|---|---|---|---|
 | Java 11 | Both | Specialized stream operations through [core][core-streams] and [clientcore][client-streams] `InputStreamUtils`. | Uses bulk JDK reads for byte-array, file, and SDK buffer streams. Retains portable generic-read buffering where JDK defaults allocated more. | Measured for byte-array and generic streams; file streams were not measured. |
-| Java 11 | Both | Buffer-backed `readAllBytes()` and `transferTo()` in [core][core-buffer-stream] and [clientcore][client-buffer-stream]. | Materializes buffers into one result array. Transfers sufficiently large array-backed buffers directly to the output, avoiding a scratch copy. | Measured for heap and direct buffers. |
+| Java 11 | Both | Buffer-backed `readAllBytes()` and `transferTo()` in [core][core-buffer-stream] and [clientcore][client-buffer-stream]. | Materializes buffers into one result array, coalescing excess tiny buffers to bound retained memory. Transfers sufficiently large array-backed buffers directly to the output, avoiding a scratch copy. | Measured for heap and direct buffers. |
 | Java 13 | Both | Absolute bulk `ByteBuffer.get(...)` in [core][core-buffer-copy] and [clientcore][client-buffer-copy]. | Copies without modifying the source position or allocating a duplicate view in source code. | Measured; little allocation benefit on JDK 25. |
 | Java 17 | Both; span IDs in clientcore | `HexFormat` in [core][core-hex] and [clientcore][client-hex], plus fixed-width [span ID formatting][client-span]. | Enables compact-string-friendly formatting without an intermediate character array. Clientcore authentication also shares the portable formatter instead of creating a string for every byte. | Not benchmarked. |
 | Java 11 | Both; semantic versions in azure-core | Range-based decimal parsing in [core][core-long-parser], [clientcore][client-long-parser], and the [semantic-version integer parser][core-integer-parser]. | Avoids temporary numeric substrings while preserving existing trimming, overflow, and invalid-input behavior. | Not benchmarked. |
@@ -31,11 +31,21 @@ here.
 - Bulk reads consume the remaining content; a supplied content-length hint does not truncate the stream.
 - Bulk reads use JDK byte-array and file specializations only for exact `ByteArrayInputStream` and `FileInputStream`
   instances. Subclasses retain portable reads so overridden `read` methods are honored.
+- File specializations also require a seekable stream. Before JDK 24 ([JDK-8341666][jdk-8341666]),
+  `FileInputStream.readAllBytes()` and `transferTo(FileOutputStream)` seek unconditionally and fail for pipes, FIFOs,
+  sockets, and terminals, so those streams use portable operations. File transfers also stay portable on Windows,
+  where `FileInputStream.transferTo(FileOutputStream)` treats pipes as regular files on Java 18 and later and can
+  stop at the content buffered in the pipe or fail.
 - Specialized transfers are restricted to exact `FileInputStream` instances and the SDK's final buffer-backed stream.
   `FileOutputStream` subclasses and all other inputs, including `BufferedInputStream`, `PushbackInputStream`, and
   `SequenceInputStream`, use bounded portable copies. This prevents nested bulk operations from bypassing read/write
   overrides or issuing large buffered writes.
 - Caching, replayability, stream ownership, and source-buffer positions and marks are preserved.
+- Buffer-backed `readAllBytes()` retains views of buffers with at least 1 KiB remaining and of up to 128 smaller
+  buffers. Further small buffers are copied into fully used 8 KiB chunks, so memory held before the single exact-size
+  result allocation is proportional to the content rather than the number of buffers. The cumulative size is still
+  checked before anything beyond the maximum array size is copied or allocated. On JDK 25 with a 48 MiB heap,
+  1,000,000 one-byte buffers previously exhausted the heap while retaining a view per buffer; they now complete.
 - `ByteArrayInputStream.transferTo()` is deliberately avoided during output writes because it holds the input
   monitor while writing to the destination. The implementation uses bounded buffering instead.
 - Buffer-backed transfers write consecutive leading array-backed ranges directly in chunks of at most 8 KiB when each
@@ -57,6 +67,11 @@ a 1 MiB single-heap-buffer transfer pair for each library. The [metadata][revali
 hashes, the source commit plus uncommitted changes, and hashes of the measured stream sources. The retained JMH
 harnesses were reused only after verifying that all six benchmark classes per library were byte-identical to the
 current compilation.
+
+These results predate small-buffer coalescing in buffer-backed `readAllBytes()` and the seekable-file requirement.
+Their 128-buffer cases (32-byte buffers for 4 KiB payloads and 8 KiB buffers for 1 MiB payloads) stay within the
+view limits, so they take the same retained-view path, but they were not re-measured. File streams were not
+measured.
 
 The main run uses the same Microsoft OpenJDK 25.0.5.0.2 runtime and JMH 1.37 settings as the original capture:
 two forks, three warmup and five measurement iterations of 500 ms, one worker, a fixed 256 MiB G1 heap with 4 MiB
@@ -122,9 +137,9 @@ representing every row as a new independent measurement. The October snapshot be
 ## Measured IO Performance
 
 The CSV and tables are an intentionally retained historical snapshot from October 30, 2026, not a periodically
-refreshed benchmark dashboard. They describe the recorded artifacts and predate the stream-dispatch safeguards and
-8 KiB limit for direct heap-buffer writes. New comparisons should record their own source revisions and environment
-rather than overwrite this snapshot.
+refreshed benchmark dashboard. They describe the recorded artifacts and predate the stream-dispatch safeguards,
+the 8 KiB limit for direct heap-buffer writes, and small-buffer coalescing in buffer-backed `readAllBytes()`. New
+comparisons should record their own source revisions and environment rather than overwrite this snapshot.
 
 The following tables show **1 MiB payloads**. Buffer-backed and list-copy cases use **128 heap buffers**. Values are
 rounded from the [complete 40-case CSV][results]; throughput is operations per second, allocation is bytes per
@@ -302,6 +317,7 @@ The available data also does not establish performance on Java 8, 11, or 17, oth
 workloads, real HTTP transports, cold startup, or end-to-end service operations.
 
 [mr-spec]: https://openjdk.org/jeps/238#Description
+[jdk-8341666]: https://bugs.openjdk.org/browse/JDK-8341666
 [results]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.csv
 [metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25.metadata.json
 [revalidation-results]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-data/core-multi-release-jdk25-20261110.csv

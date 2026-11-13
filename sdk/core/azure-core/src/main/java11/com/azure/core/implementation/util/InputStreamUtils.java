@@ -16,6 +16,10 @@ import java.util.Objects;
  * Stream operations with implementations selected by the Java runtime.
  */
 public final class InputStreamUtils {
+    // On Java 18 and later, FileInputStream.transferTo(FileOutputStream) treats Windows pipes as regular files, so it can
+    // stop at the content buffered in the pipe or fail.
+    private static final boolean WINDOWS = System.getProperty("os.name", "").startsWith("Windows");
+
     private InputStreamUtils() {
     }
 
@@ -33,8 +37,8 @@ public final class InputStreamUtils {
         // JDK byte-array and file bulk reads can bypass read overrides in subclasses.
         // Keep generic buffering: newer JDK defaults can allocate larger temporary buffers for small streams.
         return inputStream.getClass() == ByteArrayInputStream.class
-            || inputStream.getClass() == FileInputStream.class
             || inputStream instanceof ByteBufferInputStream
+            || isSeekableFileInputStream(inputStream)
                 ? inputStream.readAllBytes()
                 : StreamUtil.readAllBytes(inputStream, length);
     }
@@ -55,7 +59,7 @@ public final class InputStreamUtils {
             = (inputStream instanceof FileInputStream && inputStream.getClass() != FileInputStream.class)
                 || (outputStream instanceof FileOutputStream && outputStream.getClass() != FileOutputStream.class);
         if (!fileStreamSubclass
-            && (inputStream instanceof FileInputStream || inputStream instanceof ByteBufferInputStream)) {
+            && (inputStream instanceof ByteBufferInputStream || (!WINDOWS && isSeekableFileInputStream(inputStream)))) {
             inputStream.transferTo(outputStream);
         } else {
             // Wrappers can delegate bulk transfers to streams that bypass read overrides or bounded writes.
@@ -72,5 +76,19 @@ public final class InputStreamUtils {
      */
     public static InputStream createInputStream(Iterable<ByteBuffer> buffers) {
         return new ByteBufferInputStream(buffers);
+    }
+
+    // FileInputStream.readAllBytes() and transferTo(FileOutputStream) seek unconditionally before JDK 24
+    // (JDK-8341666), failing for pipes, FIFOs, sockets, and terminals. On those versions skip(0) performs the same seek
+    // without consuming data or opening an interruptible FileChannel.
+    private static boolean isSeekableFileInputStream(InputStream inputStream) {
+        if (inputStream.getClass() != FileInputStream.class) {
+            return false;
+        }
+        try {
+            return inputStream.skip(0) == 0;
+        } catch (IOException ignored) {
+            return false;
+        }
     }
 }

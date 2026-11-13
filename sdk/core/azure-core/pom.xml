@@ -257,9 +257,6 @@
             <sourceDirectory>${project.basedir}/src/main/java13</sourceDirectory>
             <sourceDirectory>${project.basedir}/src/main/java17</sourceDirectory>
           </sourceDirectories>
-          <testSourceDirectories>
-            <testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
-          </testSourceDirectories>
         </configuration>
       </plugin>
 

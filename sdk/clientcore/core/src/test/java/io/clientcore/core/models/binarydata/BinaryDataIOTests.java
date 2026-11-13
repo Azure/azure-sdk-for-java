@@ -7,6 +7,9 @@ import io.clientcore.core.implementation.utils.ByteBufferUtils;
 import io.clientcore.core.implementation.utils.InputStreamUtils;
 import io.clientcore.core.models.MockFile;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -30,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -188,6 +192,77 @@ public class BinaryDataIOTests {
         assertEquals(-1, input.read());
         assertEquals(0, input.available());
         assertBufferState(buffers);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "heap", "direct", "readOnly" })
+    public void bulkReadsPreserveOrderAndBufferStateForFragmentedBuffers(String kind) throws IOException {
+        // Thousands of tiny and empty buffers, which bulk reads mostly coalesce, between buffers around 1 KiB and 8 KiB.
+        List<Integer> sizes = new ArrayList<>();
+        for (int size : new int[] { 1025, 1023, 1024, 8191, 8192, 8193, 20000 }) {
+            sizes.add(size);
+            for (int i = 0; i < 3000; i++) {
+                sizes.add(i % 4);
+            }
+        }
+        byte[] expected = new byte[sizes.stream().mapToInt(Integer::intValue).sum()];
+        for (int i = 0; i < expected.length; i++) {
+            // Unlike payload(), this doesn't repeat every 256 bytes, so misordered content can't go unnoticed.
+            expected[i] = (byte) (i ^ (i >>> 8) ^ (i >>> 16));
+        }
+        List<ByteBuffer> buffers = new ArrayList<>(sizes.size());
+        int offset = 0;
+        for (int size : sizes) {
+            buffers.add(buffer(expected, offset, size, kind));
+            offset += size;
+        }
+        InputStream input = InputStreamUtils.createInputStream(buffers);
+
+        assertEquals(expected[0] & 0xff, input.read());
+        byte[] prefix = new byte[1100];
+        assertEquals(prefix.length, input.read(prefix));
+        assertArrayEquals(Arrays.copyOfRange(expected, 1, 1101), prefix);
+        assertArrayEquals(Arrays.copyOfRange(expected, 1101, expected.length), InputStreamUtils.readAllBytes(input));
+        assertEquals(-1, input.read());
+        assertBufferState(buffers);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    @EnabledOnOs({ OS.LINUX, OS.MAC })
+    @Timeout(value = 60, unit = TimeUnit.SECONDS, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    public void fifoFileInputStreamsAreReadCompletely(boolean writeTo, @TempDir Path directory) throws Exception {
+        // Before JDK 24, FileInputStream bulk reads and file-to-file transfers fail for non-seekable files.
+        Process mkfifo = new ProcessBuilder("mkfifo", "fifo").directory(directory.toFile()).start();
+        assertTrue(mkfifo.waitFor(30, TimeUnit.SECONDS), "mkfifo did not complete.");
+        assertEquals(0, mkfifo.exitValue(), "mkfifo failed.");
+        Path fifo = directory.resolve("fifo");
+        byte[] expected = payload(1024 * 1024 + 17);
+        // Opening either end of a FIFO blocks until the other end is opened.
+        Thread writer = new Thread(() -> {
+            try (OutputStream output = new FileOutputStream(fifo.toFile())) {
+                output.write(expected);
+            } catch (IOException ignored) {
+                // The reader's assertions report failures that stop it from reading.
+            }
+        });
+        writer.setDaemon(true);
+        writer.start();
+
+        byte[] actual;
+        try (InputStream input = new FileInputStream(fifo.toFile())) {
+            BinaryData data = BinaryData.fromStream(input);
+            if (writeTo) {
+                Path destination = directory.resolve("destination.bin");
+                try (OutputStream output = new FileOutputStream(destination.toFile())) {
+                    data.writeTo(output);
+                }
+                actual = Files.readAllBytes(destination);
+            } else {
+                actual = data.toBytes();
+            }
+        }
+        assertArrayEquals(expected, actual);
     }
 
     @ParameterizedTest
