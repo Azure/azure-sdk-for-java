@@ -21,7 +21,7 @@ public final class IotHubResourcesListJobsMockTests {
     @Test
     public void testListJobs() throws Exception {
         String responseStr
-            = "{\"value\":[{\"jobId\":\"bt\",\"startTimeUtc\":\"Tue, 02 Mar 2021 06:04:37 GMT\",\"endTimeUtc\":\"Sat, 08 May 2021 01:38:39 GMT\",\"type\":\"export\",\"status\":\"completed\",\"failureReason\":\"zfjvfbgofe\",\"statusMessage\":\"a\",\"parentJobId\":\"qmqhldvriii\"}]}";
+            = "{\"value\":[{\"jobId\":\"ivwitqscywugg\",\"startTimeUtc\":\"Sun, 03 Jan 2021 10:04:48 GMT\",\"endTimeUtc\":\"Mon, 28 Jun 2021 10:10:54 GMT\",\"type\":\"import\",\"status\":\"cancelled\",\"failureReason\":\"mhairsbrgzdwmsw\",\"statusMessage\":\"pqwd\",\"parentJobId\":\"gicccnxqhuex\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class IotHubResourcesListJobsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JobResponse> response
-            = manager.iotHubResources().listJobs("lazszrn", "oiindfpwpjy", com.azure.core.util.Context.NONE);
+            = manager.iotHubResources().listJobs("nswhcc", "ph", com.azure.core.util.Context.NONE);
 
     }
 }
