@@ -11,7 +11,7 @@ public final class StorageApplianceSkuSlotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageApplianceSkuSlot model = BinaryData.fromString(
-            "{\"properties\":{\"capacityGB\":1263575326732953156,\"model\":\"tcmwqkchc\"},\"rackSlot\":4460871614096839788}")
+            "{\"properties\":{\"capacityGB\":1625057321063814645,\"model\":\"ofizehtdhgbj\"},\"rackSlot\":1095901462766576455}")
             .toObject(StorageApplianceSkuSlot.class);
     }
 }

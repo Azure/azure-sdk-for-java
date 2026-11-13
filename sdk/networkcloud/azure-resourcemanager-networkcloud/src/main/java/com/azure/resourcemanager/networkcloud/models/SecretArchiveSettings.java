@@ -23,6 +23,22 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     private IdentitySelector associatedIdentity;
 
     /*
+     * The public key used to encrypt secrets before they are written to the secret archive. Expected encoding is a
+     * PEM-encoded RSA public key with a minimum key size of 3072 bits. Additional key formats or sizes may be supported
+     * in future versions.
+     */
+    private String encryptionPublicKey;
+
+    /*
+     * The configuration indicating the use of self-supplied secret archive software. Specification of a provider
+     * configuration indicates that the provided configuration will be used. Exclusion of any providerConfiguration
+     * indicates the use of Azure Key Vault. If providerConfiguration is included in a PATCH, the body must be a
+     * complete, valid configuration for the chosen provider, including all fields required for that provider; omit
+     * providerConfiguration from PATCH bodies that do not change it.
+     */
+    private SecretArchiveProviderConfiguration providerConfiguration;
+
+    /*
      * The URI of the secret archive endpoint. The URI must use the `https://` scheme.
      */
     private String vaultUri;
@@ -56,6 +72,58 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     }
 
     /**
+     * Get the encryptionPublicKey property: The public key used to encrypt secrets before they are written to the
+     * secret archive. Expected encoding is a PEM-encoded RSA public key with a minimum key size of 3072 bits.
+     * Additional key formats or sizes may be supported in future versions.
+     * 
+     * @return the encryptionPublicKey value.
+     */
+    public String encryptionPublicKey() {
+        return this.encryptionPublicKey;
+    }
+
+    /**
+     * Set the encryptionPublicKey property: The public key used to encrypt secrets before they are written to the
+     * secret archive. Expected encoding is a PEM-encoded RSA public key with a minimum key size of 3072 bits.
+     * Additional key formats or sizes may be supported in future versions.
+     * 
+     * @param encryptionPublicKey the encryptionPublicKey value to set.
+     * @return the SecretArchiveSettings object itself.
+     */
+    public SecretArchiveSettings withEncryptionPublicKey(String encryptionPublicKey) {
+        this.encryptionPublicKey = encryptionPublicKey;
+        return this;
+    }
+
+    /**
+     * Get the providerConfiguration property: The configuration indicating the use of self-supplied secret archive
+     * software. Specification of a provider configuration indicates that the provided configuration will be used.
+     * Exclusion of any providerConfiguration indicates the use of Azure Key Vault. If providerConfiguration is included
+     * in a PATCH, the body must be a complete, valid configuration for the chosen provider, including all fields
+     * required for that provider; omit providerConfiguration from PATCH bodies that do not change it.
+     * 
+     * @return the providerConfiguration value.
+     */
+    public SecretArchiveProviderConfiguration providerConfiguration() {
+        return this.providerConfiguration;
+    }
+
+    /**
+     * Set the providerConfiguration property: The configuration indicating the use of self-supplied secret archive
+     * software. Specification of a provider configuration indicates that the provided configuration will be used.
+     * Exclusion of any providerConfiguration indicates the use of Azure Key Vault. If providerConfiguration is included
+     * in a PATCH, the body must be a complete, valid configuration for the chosen provider, including all fields
+     * required for that provider; omit providerConfiguration from PATCH bodies that do not change it.
+     * 
+     * @param providerConfiguration the providerConfiguration value to set.
+     * @return the SecretArchiveSettings object itself.
+     */
+    public SecretArchiveSettings withProviderConfiguration(SecretArchiveProviderConfiguration providerConfiguration) {
+        this.providerConfiguration = providerConfiguration;
+        return this;
+    }
+
+    /**
      * Get the vaultUri property: The URI of the secret archive endpoint. The URI must use the `https://` scheme.
      * 
      * @return the vaultUri value.
@@ -82,6 +150,8 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("associatedIdentity", this.associatedIdentity);
+        jsonWriter.writeStringField("encryptionPublicKey", this.encryptionPublicKey);
+        jsonWriter.writeJsonField("providerConfiguration", this.providerConfiguration);
         jsonWriter.writeStringField("vaultUri", this.vaultUri);
         return jsonWriter.writeEndObject();
     }
@@ -103,6 +173,11 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
 
                 if ("associatedIdentity".equals(fieldName)) {
                     deserializedSecretArchiveSettings.associatedIdentity = IdentitySelector.fromJson(reader);
+                } else if ("encryptionPublicKey".equals(fieldName)) {
+                    deserializedSecretArchiveSettings.encryptionPublicKey = reader.getString();
+                } else if ("providerConfiguration".equals(fieldName)) {
+                    deserializedSecretArchiveSettings.providerConfiguration
+                        = SecretArchiveProviderConfiguration.fromJson(reader);
                 } else if ("vaultUri".equals(fieldName)) {
                     deserializedSecretArchiveSettings.vaultUri = reader.getString();
                 } else {

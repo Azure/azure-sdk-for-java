@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The mode of operation for runtime protection.
+ * The strategy for updating the cluster.
  */
 public final class ClusterUpdateStrategyType extends ExpandableStringEnum<ClusterUpdateStrategyType> {
     /**
