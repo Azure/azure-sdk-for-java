@@ -72,17 +72,14 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
-                .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
-                .onErrorResume(throwable -> {
-                    logger.error("Create lease failed", throwable);
-                    return Mono.empty();
-                });
+        return this.getPartitionKeyRanges()
+            .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
+            .doOnError(throwable -> logger.error("Create lease failed", throwable));
     }
 
     @Override
     public Mono<Void> createMissingLeases(List<Lease> pkRangeIdVersionLeases) {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+        return this.getPartitionKeyRanges()
             .flatMap(pkRangeList -> {
                 if (logger.isInfoEnabled()) {
                     StringBuilder sb = new StringBuilder();
@@ -103,6 +100,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 logger.error("Create missing leases from pkRangeIdVersion leases failed", throwable);
                 return Mono.error(throwable);
             });
+    }
+
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRanges() {
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+            .filter(ranges -> !ranges.isEmpty())
+            .switchIfEmpty(Mono.error(new IllegalStateException("No partition key ranges found for change feed initialization")));
     }
 
     @Override
@@ -155,35 +158,46 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             //  when initializing, all leases will return empty list.
             .collectList()
             .flatMapMany(leaseList -> {
+                List<Range<String>> leaseRanges = leaseList.stream()
+                    .map(lease -> ((FeedRangeEpkImpl) lease.getFeedRange()).getRange())
+                    .sorted(MIN_RANGE_COMPARATOR)
+                    .collect(Collectors.toList());
+
                 return Flux.fromIterable(partitionKeyRanges)
-                           .flatMap(pkRange -> {
-                               // check if there are epk based leases for the partitionKeyRange
-                               // If there is at least one, then we assume there are others
-                               // that cover the rest of the full partition range
-                               // based on the fact that the lease store was always
-                               // initialized for the full collection
-                               // TODO:(kuthapar) what if some epkRange did not create successfully?
-                               boolean anyMatch = leaseList.stream().anyMatch(lease -> {
-                                   Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-                                   //  We are creating the lease for the whole pkRange, so even if we find at least one, we should be good.
-                                   //  This lease exists, no need to create one for this pkRange
-                                   return epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive());
-                               });
-                               //   If there is no match, it means leases don't exist for these pkranges.
-                               if (!anyMatch) {
-                                   return Mono.just(pkRange);
-                               }
-                               return Mono.empty();
-                           }).flatMap(pkRange -> {
-                                FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-                                logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
-                                //  We are creating the lease for the whole pkRange.
-                                return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
-                                    .doOnSuccess((lease) -> {
-                                        logger.info("Added new lease document for feed range {}", lease.getLeaseToken());
-                                    });
-                                }, this.degreeOfParallelism);
+                    .concatMapIterable(pkRange -> getUncoveredRanges(pkRange, leaseRanges))
+                    .flatMap(range -> {
+                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(range);
+                        logger.debug("Adding a new lease document for feed range {}", feedRangeEpk);
+                        return leaseManager.createLeaseIfNotExist(feedRangeEpk, null)
+                            .doOnNext(lease -> logger.info("Added new lease document for feed range {}", lease.getLeaseToken()));
+                    }, this.degreeOfParallelism);
             });
+    }
+
+    private static List<Range<String>> getUncoveredRanges(
+        PartitionKeyRange partition, List<Range<String>> sortedLeaseRanges) {
+
+        List<Range<String>> uncoveredRanges = new ArrayList<>();
+        String cursor = partition.getMinInclusive();
+        String partitionEnd = partition.getMaxExclusive();
+        for (Range<String> leaseRange : sortedLeaseRanges) {
+            if (leaseRange.getMin().compareTo(partitionEnd) >= 0) {
+                break;
+            }
+            if (leaseRange.getMin().compareTo(cursor) > 0) {
+                uncoveredRanges.add(new Range<>(cursor, leaseRange.getMin(), true, false));
+            }
+            if (leaseRange.getMax().compareTo(cursor) > 0) {
+                cursor = leaseRange.getMax();
+                if (cursor.compareTo(partitionEnd) >= 0) {
+                    return uncoveredRanges;
+                }
+            }
+        }
+        if (cursor.compareTo(partitionEnd) < 0) {
+            uncoveredRanges.add(new Range<>(cursor, partitionEnd, true, false));
+        }
+        return uncoveredRanges;
     }
 
     /***
