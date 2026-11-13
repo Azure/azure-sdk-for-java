@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed client-side encryption and decryption of mixed-type arrays in item and patch serialization.
 
 #### Other Changes
 
