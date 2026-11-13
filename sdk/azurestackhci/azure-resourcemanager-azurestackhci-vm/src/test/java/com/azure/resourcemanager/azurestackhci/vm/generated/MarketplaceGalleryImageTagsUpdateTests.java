@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceGalleryImageTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceGalleryImageTagsUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"yegu\":\"pdjpjumasxazjp\",\"wdslfhotwmcy\":\"lhbxxhejjzzvdud\",\"cftadeh\":\"pwlbjnpg\"}}")
+        MarketplaceGalleryImageTagsUpdate model = BinaryData
+            .fromString(
+                "{\"tags\":{\"uxh\":\"i\",\"czvyifq\":\"yudxorrqnbp\",\"jsllrmv\":\"vkd\",\"watkpnpulexxb\":\"d\"}}")
             .toObject(MarketplaceGalleryImageTagsUpdate.class);
-        Assertions.assertEquals("pdjpjumasxazjp", model.tags().get("yegu"));
+        Assertions.assertEquals("i", model.tags().get("uxh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MarketplaceGalleryImageTagsUpdate model = new MarketplaceGalleryImageTagsUpdate()
-            .withTags(mapOf("yegu", "pdjpjumasxazjp", "wdslfhotwmcy", "lhbxxhejjzzvdud", "cftadeh", "pwlbjnpg"));
+            .withTags(mapOf("uxh", "i", "czvyifq", "yudxorrqnbp", "jsllrmv", "vkd", "watkpnpulexxb", "d"));
         model = BinaryData.fromObject(model).toObject(MarketplaceGalleryImageTagsUpdate.class);
-        Assertions.assertEquals("pdjpjumasxazjp", model.tags().get("yegu"));
+        Assertions.assertEquals("i", model.tags().get("uxh"));
     }
 
     // Use "Map.of" if available

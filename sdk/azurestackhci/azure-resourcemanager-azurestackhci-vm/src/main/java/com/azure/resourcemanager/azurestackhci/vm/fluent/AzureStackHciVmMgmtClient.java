@@ -89,6 +89,13 @@ public interface AzureStackHciVmMgmtClient {
     SecurityRulesClient getSecurityRules();
 
     /**
+     * Gets the SnapshotsClient object to access its operations.
+     * 
+     * @return the SnapshotsClient object.
+     */
+    SnapshotsClient getSnapshots();
+
+    /**
      * Gets the StorageContainersClient object to access its operations.
      * 
      * @return the StorageContainersClient object.
@@ -129,4 +136,53 @@ public interface AzureStackHciVmMgmtClient {
      * @return the GuestAgentsClient object.
      */
     GuestAgentsClient getGuestAgents();
+
+    /**
+     * Gets the VirtualNetworksClient object to access its operations.
+     * 
+     * @return the VirtualNetworksClient object.
+     */
+    VirtualNetworksClient getVirtualNetworks();
+
+    /**
+     * Gets the VirtualNetworkSubnetsClient object to access its operations.
+     * 
+     * @return the VirtualNetworkSubnetsClient object.
+     */
+    VirtualNetworkSubnetsClient getVirtualNetworkSubnets();
+
+    /**
+     * Gets the PublicIPAddressesClient object to access its operations.
+     * 
+     * @return the PublicIPAddressesClient object.
+     */
+    PublicIPAddressesClient getPublicIPAddresses();
+
+    /**
+     * Gets the NatGatewaysClient object to access its operations.
+     * 
+     * @return the NatGatewaysClient object.
+     */
+    NatGatewaysClient getNatGateways();
+
+    /**
+     * Gets the InboundRulesClient object to access its operations.
+     * 
+     * @return the InboundRulesClient object.
+     */
+    InboundRulesClient getInboundRules();
+
+    /**
+     * Gets the LoadBalancersClient object to access its operations.
+     * 
+     * @return the LoadBalancersClient object.
+     */
+    LoadBalancersClient getLoadBalancers();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
 }

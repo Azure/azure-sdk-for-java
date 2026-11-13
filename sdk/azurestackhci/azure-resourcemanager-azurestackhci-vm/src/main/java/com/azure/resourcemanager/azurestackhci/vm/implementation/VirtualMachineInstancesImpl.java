@@ -10,7 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualMachineInstancesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.models.VirtualMachineInstanceInner;
+import com.azure.resourcemanager.azurestackhci.vm.models.OperationStatusResult;
+import com.azure.resourcemanager.azurestackhci.vm.models.PowerOffVirtualMachineOptions;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstance;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateRequest;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstances;
@@ -137,6 +140,24 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
 
     public void save(String resourceUri, Context context) {
         this.serviceClient().save(resourceUri, context);
+    }
+
+    public OperationStatusResult powerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
+        OperationStatusResultInner inner = this.serviceClient().powerOff(resourceUri, body);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult powerOff(String resourceUri, PowerOffVirtualMachineOptions body, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().powerOff(resourceUri, body, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private VirtualMachineInstancesClient serviceClient() {

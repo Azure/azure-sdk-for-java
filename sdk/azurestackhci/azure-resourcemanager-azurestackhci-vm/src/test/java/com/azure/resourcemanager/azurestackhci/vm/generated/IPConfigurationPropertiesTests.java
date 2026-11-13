@@ -13,18 +13,18 @@ public final class IPConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IPConfigurationProperties model = BinaryData.fromString(
-            "{\"gateway\":\"uwiqzb\",\"prefixLength\":\"vsovmyokac\",\"privateIPAddress\":\"kwlhzdo\",\"subnet\":{\"id\":\"jmflbvvnch\"}}")
+            "{\"gateway\":\"dhibnuq\",\"prefixLength\":\"pikad\",\"privateIPAddress\":\"vtq\",\"subnet\":{\"id\":\"buynhijggm\"}}")
             .toObject(IPConfigurationProperties.class);
-        Assertions.assertEquals("kwlhzdo", model.privateIPAddress());
-        Assertions.assertEquals("jmflbvvnch", model.subnet().id());
+        Assertions.assertEquals("vtq", model.privateIPAddress());
+        Assertions.assertEquals("buynhijggm", model.subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IPConfigurationProperties model = new IPConfigurationProperties().withPrivateIPAddress("kwlhzdo")
-            .withSubnet(new LogicalNetworkArmReference().withId("jmflbvvnch"));
+        IPConfigurationProperties model = new IPConfigurationProperties().withPrivateIPAddress("vtq")
+            .withSubnet(new LogicalNetworkArmReference().withId("buynhijggm"));
         model = BinaryData.fromObject(model).toObject(IPConfigurationProperties.class);
-        Assertions.assertEquals("kwlhzdo", model.privateIPAddress());
-        Assertions.assertEquals("jmflbvvnch", model.subnet().id());
+        Assertions.assertEquals("vtq", model.privateIPAddress());
+        Assertions.assertEquals("buynhijggm", model.subnet().id());
     }
 }

@@ -21,61 +21,58 @@ public final class SubnetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubnetProperties model = BinaryData.fromString(
-            "{\"addressPrefix\":\"mnkzsmod\",\"addressPrefixes\":[\"ougpbkwt\",\"utduqktapspwgcu\"],\"ipAllocationMethod\":\"Static\",\"ipConfigurationReferences\":[{\"ID\":\"dosvqwhbmdgbbjf\"}],\"networkSecurityGroup\":{\"id\":\"mbmbexppbh\"},\"routeTable\":{\"etag\":\"rolfpfp\",\"name\":\"lgbquxig\",\"type\":\"jgzjaoyfhrtx\",\"properties\":{\"routes\":[{\"properties\":{\"addressPrefix\":\"ujysvle\",\"nextHopIpAddress\":\"vfqawrlyxwjkcpr\"},\"name\":\"wbxgjvt\"},{\"properties\":{\"addressPrefix\":\"ysszdnrujqguh\",\"nextHopIpAddress\":\"ouqfprwz\"},\"name\":\"nguitnwuizgazxu\"}]}},\"ipPools\":[{\"name\":\"ckyfih\",\"ipPoolType\":\"vm\",\"start\":\"fvzwdzuhty\",\"end\":\"isdkfthwxmnteiw\",\"info\":{\"used\":\"vkmijcmmxdcuf\",\"available\":\"srp\"}},{\"name\":\"zidnsezcxtbzsgfy\",\"ipPoolType\":\"vm\",\"start\":\"ewmdw\",\"end\":\"eiachboosflnr\",\"info\":{\"used\":\"qpteeh\",\"available\":\"vypyqrimzinpv\"}}],\"vlan\":694156912}")
+            "{\"addressPrefix\":\"hurzafblj\",\"addressPrefixes\":[\"btoqcjmkljavbqid\",\"qajzyulpkudjkr\",\"khbzhfepgzg\"],\"ipAllocationMethod\":\"Static\",\"ipConfigurationReferences\":[{\"ID\":\"c\"}],\"networkSecurityGroup\":{\"id\":\"paierh\"},\"routeTable\":{\"etag\":\"sglumma\",\"name\":\"j\",\"type\":\"dxob\",\"properties\":{\"routes\":[{\"properties\":{\"addressPrefix\":\"pxokajionp\",\"nextHopIpAddress\":\"ex\"},\"name\":\"txgcpodgmaajr\"},{\"properties\":{\"addressPrefix\":\"jwzrl\",\"nextHopIpAddress\":\"mcl\"},\"name\":\"ijcoejctb\"}]}},\"ipPools\":[{\"name\":\"qsycbkbfkgu\",\"ipPoolType\":\"vm\",\"start\":\"xxppofm\",\"end\":\"x\",\"info\":{\"used\":\"pg\",\"available\":\"toc\"}},{\"name\":\"xhvpmoue\",\"ipPoolType\":\"vippool\",\"start\":\"xibqeojnx\",\"end\":\"zvddntwndeicbtwn\",\"info\":{\"used\":\"oqvuhr\",\"available\":\"f\"}}],\"vlan\":331700984,\"provisioningState\":\"Failed\"}")
             .toObject(SubnetProperties.class);
-        Assertions.assertEquals("mnkzsmod", model.addressPrefix());
-        Assertions.assertEquals("ougpbkwt", model.addressPrefixes().get(0));
+        Assertions.assertEquals("hurzafblj", model.addressPrefix());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.addressPrefixes().get(0));
         Assertions.assertEquals(IpAllocationMethodEnum.STATIC, model.ipAllocationMethod());
-        Assertions.assertEquals("dosvqwhbmdgbbjf", model.ipConfigurationReferences().get(0).id());
-        Assertions.assertEquals("mbmbexppbh", model.networkSecurityGroup().id());
-        Assertions.assertEquals("wbxgjvt", model.routeTable().routes().get(0).name());
-        Assertions.assertEquals("ujysvle", model.routeTable().routes().get(0).addressPrefix());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.routeTable().routes().get(0).nextHopIpAddress());
-        Assertions.assertEquals("ckyfih", model.ipPools().get(0).name());
+        Assertions.assertEquals("c", model.ipConfigurationReferences().get(0).id());
+        Assertions.assertEquals("paierh", model.networkSecurityGroup().id());
+        Assertions.assertEquals("txgcpodgmaajr", model.routeTable().routes().get(0).name());
+        Assertions.assertEquals("pxokajionp", model.routeTable().routes().get(0).addressPrefix());
+        Assertions.assertEquals("ex", model.routeTable().routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("qsycbkbfkgu", model.ipPools().get(0).name());
         Assertions.assertEquals(IPPoolTypeEnum.VM, model.ipPools().get(0).ipPoolType());
-        Assertions.assertEquals("fvzwdzuhty", model.ipPools().get(0).start());
-        Assertions.assertEquals("isdkfthwxmnteiw", model.ipPools().get(0).end());
-        Assertions.assertEquals(694156912, model.vlan());
+        Assertions.assertEquals("xxppofm", model.ipPools().get(0).start());
+        Assertions.assertEquals("x", model.ipPools().get(0).end());
+        Assertions.assertEquals(331700984, model.vlan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetProperties model = new SubnetProperties().withAddressPrefix("mnkzsmod")
-            .withAddressPrefixes(Arrays.asList("ougpbkwt", "utduqktapspwgcu"))
+        SubnetProperties model = new SubnetProperties().withAddressPrefix("hurzafblj")
+            .withAddressPrefixes(Arrays.asList("btoqcjmkljavbqid", "qajzyulpkudjkr", "khbzhfepgzg"))
             .withIpAllocationMethod(IpAllocationMethodEnum.STATIC)
-            .withIpConfigurationReferences(
-                Arrays.asList(new SubnetIpConfigurationReference().withId("dosvqwhbmdgbbjf")))
-            .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("mbmbexppbh"))
+            .withIpConfigurationReferences(Arrays.asList(new SubnetIpConfigurationReference().withId("c")))
+            .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("paierh"))
             .withRouteTable(new RouteTable().withRoutes(Arrays.asList(
-                new Route().withName("wbxgjvt").withAddressPrefix("ujysvle").withNextHopIpAddress("vfqawrlyxwjkcpr"),
-                new Route().withName("nguitnwuizgazxu")
-                    .withAddressPrefix("ysszdnrujqguh")
-                    .withNextHopIpAddress("ouqfprwz"))))
+                new Route().withName("txgcpodgmaajr").withAddressPrefix("pxokajionp").withNextHopIpAddress("ex"),
+                new Route().withName("ijcoejctb").withAddressPrefix("jwzrl").withNextHopIpAddress("mcl"))))
             .withIpPools(Arrays.asList(
-                new IPPool().withName("ckyfih")
+                new IPPool().withName("qsycbkbfkgu")
                     .withIpPoolType(IPPoolTypeEnum.VM)
-                    .withStart("fvzwdzuhty")
-                    .withEnd("isdkfthwxmnteiw")
+                    .withStart("xxppofm")
+                    .withEnd("x")
                     .withInfo(new IPPoolInfo()),
-                new IPPool().withName("zidnsezcxtbzsgfy")
-                    .withIpPoolType(IPPoolTypeEnum.VM)
-                    .withStart("ewmdw")
-                    .withEnd("eiachboosflnr")
+                new IPPool().withName("xhvpmoue")
+                    .withIpPoolType(IPPoolTypeEnum.VIPPOOL)
+                    .withStart("xibqeojnx")
+                    .withEnd("zvddntwndeicbtwn")
                     .withInfo(new IPPoolInfo())))
-            .withVlan(694156912);
+            .withVlan(331700984);
         model = BinaryData.fromObject(model).toObject(SubnetProperties.class);
-        Assertions.assertEquals("mnkzsmod", model.addressPrefix());
-        Assertions.assertEquals("ougpbkwt", model.addressPrefixes().get(0));
+        Assertions.assertEquals("hurzafblj", model.addressPrefix());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.addressPrefixes().get(0));
         Assertions.assertEquals(IpAllocationMethodEnum.STATIC, model.ipAllocationMethod());
-        Assertions.assertEquals("dosvqwhbmdgbbjf", model.ipConfigurationReferences().get(0).id());
-        Assertions.assertEquals("mbmbexppbh", model.networkSecurityGroup().id());
-        Assertions.assertEquals("wbxgjvt", model.routeTable().routes().get(0).name());
-        Assertions.assertEquals("ujysvle", model.routeTable().routes().get(0).addressPrefix());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.routeTable().routes().get(0).nextHopIpAddress());
-        Assertions.assertEquals("ckyfih", model.ipPools().get(0).name());
+        Assertions.assertEquals("c", model.ipConfigurationReferences().get(0).id());
+        Assertions.assertEquals("paierh", model.networkSecurityGroup().id());
+        Assertions.assertEquals("txgcpodgmaajr", model.routeTable().routes().get(0).name());
+        Assertions.assertEquals("pxokajionp", model.routeTable().routes().get(0).addressPrefix());
+        Assertions.assertEquals("ex", model.routeTable().routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("qsycbkbfkgu", model.ipPools().get(0).name());
         Assertions.assertEquals(IPPoolTypeEnum.VM, model.ipPools().get(0).ipPoolType());
-        Assertions.assertEquals("fvzwdzuhty", model.ipPools().get(0).start());
-        Assertions.assertEquals("isdkfthwxmnteiw", model.ipPools().get(0).end());
-        Assertions.assertEquals(694156912, model.vlan());
+        Assertions.assertEquals("xxppofm", model.ipPools().get(0).start());
+        Assertions.assertEquals("x", model.ipPools().get(0).end());
+        Assertions.assertEquals(331700984, model.vlan());
     }
 }

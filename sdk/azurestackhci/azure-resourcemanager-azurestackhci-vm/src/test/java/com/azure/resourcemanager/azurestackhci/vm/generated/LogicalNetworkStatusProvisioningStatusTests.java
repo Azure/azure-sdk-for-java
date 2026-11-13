@@ -13,9 +13,9 @@ public final class LogicalNetworkStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogicalNetworkStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"yd\",\"status\":\"Succeeded\"}")
+            = BinaryData.fromString("{\"operationId\":\"seiphe\",\"status\":\"Succeeded\"}")
                 .toObject(LogicalNetworkStatusProvisioningStatus.class);
-        Assertions.assertEquals("yd", model.operationId());
+        Assertions.assertEquals("seiphe", model.operationId());
         Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

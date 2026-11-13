@@ -17,55 +17,50 @@ public final class VirtualMachineInstancePropertiesHardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesHardwareProfile model = BinaryData.fromString(
-            "{\"vmSize\":\"Standard_D16s_v3\",\"processors\":1486337456,\"memoryMB\":6144174767385086572,\"dynamicMemoryConfig\":{\"maximumMemoryMB\":4014214152987643703,\"minimumMemoryMB\":6160997583833316786,\"targetMemoryBuffer\":841332893},\"virtualMachineGPUs\":[{\"assignmentType\":\"GpuDDA\",\"partitionSizeMB\":2641489064592308886,\"gpuName\":\"apj\"},{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":7368048825846520103,\"gpuName\":\"qzcjrvxdj\"},{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":6071942572000377997,\"gpuName\":\"kvugfhzovawjvzun\"},{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":5088500223485653746,\"gpuName\":\"prnxipeil\"}]}")
+            "{\"vmSize\":\"Standard_A2_v2\",\"processors\":1202114760,\"memoryMB\":7495067102833571715,\"dynamicMemoryConfig\":{\"maximumMemoryMB\":1500551340218626756,\"minimumMemoryMB\":5159577402687239135,\"targetMemoryBuffer\":938827927,\"enabled\":true},\"virtualMachineGPUs\":[{\"assignmentType\":\"GpuP\",\"partitionSizeMB\":98342047801553484,\"gpuName\":\"ft\"},{\"assignmentType\":\"GpuDDA\",\"partitionSizeMB\":4246550492793008168,\"gpuName\":\"iyzvqtmnub\"}]}")
             .toObject(VirtualMachineInstancePropertiesHardwareProfile.class);
-        Assertions.assertEquals(VmSizeEnum.STANDARD_D16S_V3, model.vmSize());
-        Assertions.assertEquals(1486337456, model.processors());
-        Assertions.assertEquals(6144174767385086572L, model.memoryMB());
-        Assertions.assertEquals(4014214152987643703L, model.dynamicMemoryConfig().maximumMemoryMB());
-        Assertions.assertEquals(6160997583833316786L, model.dynamicMemoryConfig().minimumMemoryMB());
-        Assertions.assertEquals(841332893, model.dynamicMemoryConfig().targetMemoryBuffer());
-        Assertions.assertEquals(GpuAssignmentTypeEnum.GPU_DDA, model.virtualMachineGPUs().get(0).assignmentType());
-        Assertions.assertEquals(2641489064592308886L, model.virtualMachineGPUs().get(0).partitionSizeMB());
-        Assertions.assertEquals("apj", model.virtualMachineGPUs().get(0).gpuName());
+        Assertions.assertEquals(VmSizeEnum.STANDARD_A2_V2, model.vmSize());
+        Assertions.assertEquals(1202114760, model.processors());
+        Assertions.assertEquals(7495067102833571715L, model.memoryMB());
+        Assertions.assertEquals(1500551340218626756L, model.dynamicMemoryConfig().maximumMemoryMB());
+        Assertions.assertEquals(5159577402687239135L, model.dynamicMemoryConfig().minimumMemoryMB());
+        Assertions.assertEquals(938827927, model.dynamicMemoryConfig().targetMemoryBuffer());
+        Assertions.assertTrue(model.dynamicMemoryConfig().enabled());
+        Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP, model.virtualMachineGPUs().get(0).assignmentType());
+        Assertions.assertEquals(98342047801553484L, model.virtualMachineGPUs().get(0).partitionSizeMB());
+        Assertions.assertEquals("ft", model.virtualMachineGPUs().get(0).gpuName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesHardwareProfile model
-            = new VirtualMachineInstancePropertiesHardwareProfile().withVmSize(VmSizeEnum.STANDARD_D16S_V3)
-                .withProcessors(1486337456)
-                .withMemoryMB(6144174767385086572L)
+            = new VirtualMachineInstancePropertiesHardwareProfile().withVmSize(VmSizeEnum.STANDARD_A2_V2)
+                .withProcessors(1202114760)
+                .withMemoryMB(7495067102833571715L)
                 .withDynamicMemoryConfig(new VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig()
-                    .withMaximumMemoryMB(4014214152987643703L)
-                    .withMinimumMemoryMB(6160997583833316786L)
-                    .withTargetMemoryBuffer(841332893))
+                    .withMaximumMemoryMB(1500551340218626756L)
+                    .withMinimumMemoryMB(5159577402687239135L)
+                    .withTargetMemoryBuffer(938827927)
+                    .withEnabled(true))
                 .withVirtualMachineGPUs(Arrays.asList(
                     new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
+                        .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
+                        .withPartitionSizeMB(98342047801553484L)
+                        .withGpuName("ft"),
+                    new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
                         .withAssignmentType(GpuAssignmentTypeEnum.GPU_DDA)
-                        .withPartitionSizeMB(2641489064592308886L)
-                        .withGpuName("apj"),
-                    new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
-                        .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                        .withPartitionSizeMB(7368048825846520103L)
-                        .withGpuName("qzcjrvxdj"),
-                    new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
-                        .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                        .withPartitionSizeMB(6071942572000377997L)
-                        .withGpuName("kvugfhzovawjvzun"),
-                    new VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU()
-                        .withAssignmentType(GpuAssignmentTypeEnum.GPUP)
-                        .withPartitionSizeMB(5088500223485653746L)
-                        .withGpuName("prnxipeil")));
+                        .withPartitionSizeMB(4246550492793008168L)
+                        .withGpuName("iyzvqtmnub")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesHardwareProfile.class);
-        Assertions.assertEquals(VmSizeEnum.STANDARD_D16S_V3, model.vmSize());
-        Assertions.assertEquals(1486337456, model.processors());
-        Assertions.assertEquals(6144174767385086572L, model.memoryMB());
-        Assertions.assertEquals(4014214152987643703L, model.dynamicMemoryConfig().maximumMemoryMB());
-        Assertions.assertEquals(6160997583833316786L, model.dynamicMemoryConfig().minimumMemoryMB());
-        Assertions.assertEquals(841332893, model.dynamicMemoryConfig().targetMemoryBuffer());
-        Assertions.assertEquals(GpuAssignmentTypeEnum.GPU_DDA, model.virtualMachineGPUs().get(0).assignmentType());
-        Assertions.assertEquals(2641489064592308886L, model.virtualMachineGPUs().get(0).partitionSizeMB());
-        Assertions.assertEquals("apj", model.virtualMachineGPUs().get(0).gpuName());
+        Assertions.assertEquals(VmSizeEnum.STANDARD_A2_V2, model.vmSize());
+        Assertions.assertEquals(1202114760, model.processors());
+        Assertions.assertEquals(7495067102833571715L, model.memoryMB());
+        Assertions.assertEquals(1500551340218626756L, model.dynamicMemoryConfig().maximumMemoryMB());
+        Assertions.assertEquals(5159577402687239135L, model.dynamicMemoryConfig().minimumMemoryMB());
+        Assertions.assertEquals(938827927, model.dynamicMemoryConfig().targetMemoryBuffer());
+        Assertions.assertTrue(model.dynamicMemoryConfig().enabled());
+        Assertions.assertEquals(GpuAssignmentTypeEnum.GPUP, model.virtualMachineGPUs().get(0).assignmentType());
+        Assertions.assertEquals(98342047801553484L, model.virtualMachineGPUs().get(0).partitionSizeMB());
+        Assertions.assertEquals("ft", model.virtualMachineGPUs().get(0).gpuName());
     }
 }

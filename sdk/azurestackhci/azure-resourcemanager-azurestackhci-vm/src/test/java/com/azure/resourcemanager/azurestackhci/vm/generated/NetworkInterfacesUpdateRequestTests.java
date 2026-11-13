@@ -18,24 +18,29 @@ public final class NetworkInterfacesUpdateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfacesUpdateRequest model = BinaryData.fromString(
-            "{\"tags\":{\"byao\":\"xieduugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"properties\":{\"networkSecurityGroup\":{\"id\":\"zfbuhf\"},\"dnsSettings\":{\"dnsServers\":[\"x\",\"ffeii\"]}}}")
+            "{\"tags\":{\"lqidyby\":\"tkcxywnytnrsy\",\"haaxdbabphl\":\"czfc\",\"yazttbtwwrqpue\":\"rqlfktsthsucocmn\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\"},\"properties\":{\"networkSecurityGroup\":{\"id\":\"xaepdkzjancuxr\"},\"dnsSettings\":{\"dnsServers\":[\"avxbniwdjswztsdb\",\"gnxytxhpzxbz\",\"fzab\",\"lcuhxwtctyqiklb\"]},\"bypassSdnPolicies\":false}}")
             .toObject(NetworkInterfacesUpdateRequest.class);
-        Assertions.assertEquals("xieduugidyjrr", model.tags().get("byao"));
-        Assertions.assertEquals("zfbuhf", model.properties().networkSecurityGroup().id());
-        Assertions.assertEquals("x", model.properties().dnsSettings().dnsServers().get(0));
+        Assertions.assertEquals("tkcxywnytnrsy", model.tags().get("lqidyby"));
+        Assertions.assertEquals("xaepdkzjancuxr", model.properties().networkSecurityGroup().id());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.properties().dnsSettings().dnsServers().get(0));
+        Assertions.assertFalse(model.properties().bypassSdnPolicies());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfacesUpdateRequest model = new NetworkInterfacesUpdateRequest()
-            .withTags(mapOf("byao", "xieduugidyjrr", "xc", "v", "hocohslkev", "onpc"))
+            .withTags(mapOf("lqidyby", "tkcxywnytnrsy", "haaxdbabphl", "czfc", "yazttbtwwrqpue", "rqlfktsthsucocmn",
+                "xibxujwbhqwalm", "ckzywbiexzfeyue"))
             .withProperties(new NetworkInterfacesUpdateProperties()
-                .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("zfbuhf"))
-                .withDnsSettings(new InterfaceDNSSettings().withDnsServers(Arrays.asList("x", "ffeii"))));
+                .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("xaepdkzjancuxr"))
+                .withDnsSettings(new InterfaceDNSSettings()
+                    .withDnsServers(Arrays.asList("avxbniwdjswztsdb", "gnxytxhpzxbz", "fzab", "lcuhxwtctyqiklb")))
+                .withBypassSdnPolicies(false));
         model = BinaryData.fromObject(model).toObject(NetworkInterfacesUpdateRequest.class);
-        Assertions.assertEquals("xieduugidyjrr", model.tags().get("byao"));
-        Assertions.assertEquals("zfbuhf", model.properties().networkSecurityGroup().id());
-        Assertions.assertEquals("x", model.properties().dnsSettings().dnsServers().get(0));
+        Assertions.assertEquals("tkcxywnytnrsy", model.tags().get("lqidyby"));
+        Assertions.assertEquals("xaepdkzjancuxr", model.properties().networkSecurityGroup().id());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.properties().dnsSettings().dnsServers().get(0));
+        Assertions.assertFalse(model.properties().bypassSdnPolicies());
     }
 
     // Use "Map.of" if available

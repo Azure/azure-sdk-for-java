@@ -15,20 +15,23 @@ public final class NetworkInterfacesUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfacesUpdateProperties model = BinaryData.fromString(
-            "{\"networkSecurityGroup\":{\"id\":\"vmezy\"},\"dnsSettings\":{\"dnsServers\":[\"mzsb\",\"zoggigrxwburvjxx\",\"nspydptkoenkoukn\"]}}")
+            "{\"networkSecurityGroup\":{\"id\":\"wzbhvgyugu\"},\"dnsSettings\":{\"dnsServers\":[\"kfssxqukkf\",\"l\",\"mg\",\"xnkjzkdesl\"]},\"bypassSdnPolicies\":false}")
             .toObject(NetworkInterfacesUpdateProperties.class);
-        Assertions.assertEquals("vmezy", model.networkSecurityGroup().id());
-        Assertions.assertEquals("mzsb", model.dnsSettings().dnsServers().get(0));
+        Assertions.assertEquals("wzbhvgyugu", model.networkSecurityGroup().id());
+        Assertions.assertEquals("kfssxqukkf", model.dnsSettings().dnsServers().get(0));
+        Assertions.assertFalse(model.bypassSdnPolicies());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfacesUpdateProperties model = new NetworkInterfacesUpdateProperties()
-            .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("vmezy"))
-            .withDnsSettings(new InterfaceDNSSettings()
-                .withDnsServers(Arrays.asList("mzsb", "zoggigrxwburvjxx", "nspydptkoenkoukn")));
+            .withNetworkSecurityGroup(new NetworkSecurityGroupArmReference().withId("wzbhvgyugu"))
+            .withDnsSettings(
+                new InterfaceDNSSettings().withDnsServers(Arrays.asList("kfssxqukkf", "l", "mg", "xnkjzkdesl")))
+            .withBypassSdnPolicies(false);
         model = BinaryData.fromObject(model).toObject(NetworkInterfacesUpdateProperties.class);
-        Assertions.assertEquals("vmezy", model.networkSecurityGroup().id());
-        Assertions.assertEquals("mzsb", model.dnsSettings().dnsServers().get(0));
+        Assertions.assertEquals("wzbhvgyugu", model.networkSecurityGroup().id());
+        Assertions.assertEquals("kfssxqukkf", model.dnsSettings().dnsServers().get(0));
+        Assertions.assertFalse(model.bypassSdnPolicies());
     }
 }

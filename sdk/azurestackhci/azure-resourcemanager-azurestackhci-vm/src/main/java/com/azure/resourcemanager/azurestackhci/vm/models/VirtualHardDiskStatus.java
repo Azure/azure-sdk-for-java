@@ -43,7 +43,7 @@ public final class VirtualHardDiskStatus implements JsonSerializable<VirtualHard
     private VirtualHardDiskUploadStatus uploadStatus;
 
     /*
-     * ARM IDs of the VMs that are consuming the VHD.
+     * Azure Resource IDs of the VMs that are consuming the VHD.
      */
     private List<String> managedBy;
 
@@ -104,7 +104,7 @@ public final class VirtualHardDiskStatus implements JsonSerializable<VirtualHard
     }
 
     /**
-     * Get the managedBy property: ARM IDs of the VMs that are consuming the VHD.
+     * Get the managedBy property: Azure Resource IDs of the VMs that are consuming the VHD.
      * 
      * @return the managedBy value.
      */

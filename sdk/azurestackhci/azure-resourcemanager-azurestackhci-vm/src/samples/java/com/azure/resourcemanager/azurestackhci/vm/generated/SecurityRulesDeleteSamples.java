@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class SecurityRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/SecurityRules_Delete.json
+     * x-ms-original-file: 2026-07-01-preview/SecurityRules_Delete.json
      */
     /**
      * Sample code: SecurityRulesDelete.

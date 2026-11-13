@@ -12,19 +12,19 @@ public final class VirtualMachineInstancePropertiesPlacementProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesPlacementProfile model
-            = BinaryData.fromString("{\"zone\":\"wozuhkf\",\"strictPlacementPolicy\":false}")
+            = BinaryData.fromString("{\"zone\":\"pajqgxysm\",\"strictPlacementPolicy\":false}")
                 .toObject(VirtualMachineInstancePropertiesPlacementProfile.class);
-        Assertions.assertEquals("wozuhkf", model.zone());
+        Assertions.assertEquals("pajqgxysm", model.zone());
         Assertions.assertFalse(model.strictPlacementPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesPlacementProfile model
-            = new VirtualMachineInstancePropertiesPlacementProfile().withZone("wozuhkf")
+            = new VirtualMachineInstancePropertiesPlacementProfile().withZone("pajqgxysm")
                 .withStrictPlacementPolicy(false);
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesPlacementProfile.class);
-        Assertions.assertEquals("wozuhkf", model.zone());
+        Assertions.assertEquals("pajqgxysm", model.zone());
         Assertions.assertFalse(model.strictPlacementPolicy());
     }
 }

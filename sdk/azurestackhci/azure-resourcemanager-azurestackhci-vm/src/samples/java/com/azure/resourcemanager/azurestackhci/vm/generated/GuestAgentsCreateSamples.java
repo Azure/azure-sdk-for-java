@@ -14,7 +14,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.ProvisioningAction;
  */
 public final class GuestAgentsCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/GuestAgents_Create.json
+     * x-ms-original-file: 2026-07-01-preview/GuestAgents_Create.json
      */
     /**
      * Sample code: CreateGuestAgent.

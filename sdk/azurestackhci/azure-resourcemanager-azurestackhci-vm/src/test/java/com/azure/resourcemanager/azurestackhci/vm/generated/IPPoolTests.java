@@ -14,25 +14,25 @@ public final class IPPoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IPPool model = BinaryData.fromString(
-            "{\"name\":\"kbfkg\",\"ipPoolType\":\"vippool\",\"start\":\"exxppofmxaxcfjp\",\"end\":\"dtocj\",\"info\":{\"used\":\"vpmouexhdzxib\",\"available\":\"ojnxqbzvdd\"}}")
+            "{\"name\":\"mivkwlzuvcc\",\"ipPoolType\":\"vippool\",\"start\":\"nbacfi\",\"end\":\"l\",\"info\":{\"used\":\"etqgtzxdpnq\",\"available\":\"qwxrjfeallnw\"}}")
             .toObject(IPPool.class);
-        Assertions.assertEquals("kbfkg", model.name());
+        Assertions.assertEquals("mivkwlzuvcc", model.name());
         Assertions.assertEquals(IPPoolTypeEnum.VIPPOOL, model.ipPoolType());
-        Assertions.assertEquals("exxppofmxaxcfjp", model.start());
-        Assertions.assertEquals("dtocj", model.end());
+        Assertions.assertEquals("nbacfi", model.start());
+        Assertions.assertEquals("l", model.end());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IPPool model = new IPPool().withName("kbfkg")
+        IPPool model = new IPPool().withName("mivkwlzuvcc")
             .withIpPoolType(IPPoolTypeEnum.VIPPOOL)
-            .withStart("exxppofmxaxcfjp")
-            .withEnd("dtocj")
+            .withStart("nbacfi")
+            .withEnd("l")
             .withInfo(new IPPoolInfo());
         model = BinaryData.fromObject(model).toObject(IPPool.class);
-        Assertions.assertEquals("kbfkg", model.name());
+        Assertions.assertEquals("mivkwlzuvcc", model.name());
         Assertions.assertEquals(IPPoolTypeEnum.VIPPOOL, model.ipPoolType());
-        Assertions.assertEquals("exxppofmxaxcfjp", model.start());
-        Assertions.assertEquals("dtocj", model.end());
+        Assertions.assertEquals("nbacfi", model.start());
+        Assertions.assertEquals("l", model.end());
     }
 }

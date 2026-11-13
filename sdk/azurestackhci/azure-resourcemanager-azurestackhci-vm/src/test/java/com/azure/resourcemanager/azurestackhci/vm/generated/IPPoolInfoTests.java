@@ -11,7 +11,7 @@ public final class IPPoolInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IPPoolInfo model
-            = BinaryData.fromString("{\"used\":\"wndeicbtwnp\",\"available\":\"oqvuhr\"}").toObject(IPPoolInfo.class);
+            = BinaryData.fromString("{\"used\":\"bisnja\",\"available\":\"mngnzscxaqw\"}").toObject(IPPoolInfo.class);
     }
 
     @org.junit.jupiter.api.Test

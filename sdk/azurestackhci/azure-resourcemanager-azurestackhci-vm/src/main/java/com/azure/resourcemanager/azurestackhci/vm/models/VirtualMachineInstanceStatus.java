@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The observed state of virtual machine instances.
@@ -35,6 +36,12 @@ public final class VirtualMachineInstanceStatus implements JsonSerializable<Virt
      * Provisioning status of the virtual machine instance
      */
     private VirtualMachineInstanceStatusProvisioningStatus provisioningStatus;
+
+    /*
+     * Ordered steps of the current operation on the virtual machine instance. Steps are replaced when a new operation
+     * begins and are omitted when no step details are available.
+     */
+    private List<OperationStepResult> operationDetails;
 
     /**
      * Creates an instance of VirtualMachineInstanceStatus class.
@@ -79,6 +86,16 @@ public final class VirtualMachineInstanceStatus implements JsonSerializable<Virt
     }
 
     /**
+     * Get the operationDetails property: Ordered steps of the current operation on the virtual machine instance. Steps
+     * are replaced when a new operation begins and are omitted when no step details are available.
+     * 
+     * @return the operationDetails value.
+     */
+    public List<OperationStepResult> operationDetails() {
+        return this.operationDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -115,6 +132,10 @@ public final class VirtualMachineInstanceStatus implements JsonSerializable<Virt
                 } else if ("provisioningStatus".equals(fieldName)) {
                     deserializedVirtualMachineInstanceStatus.provisioningStatus
                         = VirtualMachineInstanceStatusProvisioningStatus.fromJson(reader);
+                } else if ("operationDetails".equals(fieldName)) {
+                    List<OperationStepResult> operationDetails
+                        = reader.readArray(reader1 -> OperationStepResult.fromJson(reader1));
+                    deserializedVirtualMachineInstanceStatus.operationDetails = operationDetails;
                 } else {
                     reader.skipChildren();
                 }

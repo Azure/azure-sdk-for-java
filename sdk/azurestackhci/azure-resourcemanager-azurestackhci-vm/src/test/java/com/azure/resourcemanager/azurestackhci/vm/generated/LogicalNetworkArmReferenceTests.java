@@ -12,14 +12,14 @@ public final class LogicalNetworkArmReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogicalNetworkArmReference model
-            = BinaryData.fromString("{\"id\":\"cciw\"}").toObject(LogicalNetworkArmReference.class);
-        Assertions.assertEquals("cciw", model.id());
+            = BinaryData.fromString("{\"id\":\"fsiarbutr\"}").toObject(LogicalNetworkArmReference.class);
+        Assertions.assertEquals("fsiarbutr", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkArmReference model = new LogicalNetworkArmReference().withId("cciw");
+        LogicalNetworkArmReference model = new LogicalNetworkArmReference().withId("fsiarbutr");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkArmReference.class);
-        Assertions.assertEquals("cciw", model.id());
+        Assertions.assertEquals("fsiarbutr", model.id());
     }
 }

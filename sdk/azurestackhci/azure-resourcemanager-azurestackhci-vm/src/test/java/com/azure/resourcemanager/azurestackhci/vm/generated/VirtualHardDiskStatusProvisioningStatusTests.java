@@ -13,9 +13,9 @@ public final class VirtualHardDiskStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualHardDiskStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"rnwb\",\"status\":\"Failed\"}")
+            = BinaryData.fromString("{\"operationId\":\"wtmwerio\",\"status\":\"Succeeded\"}")
                 .toObject(VirtualHardDiskStatusProvisioningStatus.class);
-        Assertions.assertEquals("rnwb", model.operationId());
-        Assertions.assertEquals(Status.FAILED, model.status());
+        Assertions.assertEquals("wtmwerio", model.operationId());
+        Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

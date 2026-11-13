@@ -18,7 +18,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.OperatingSystemTypes;
  */
 public final class MarketplaceGalleryImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/MarketplaceGalleryImages_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/MarketplaceGalleryImages_CreateOrUpdate.json
      */
     /**
      * Sample code: PutMarketplaceGalleryImage.

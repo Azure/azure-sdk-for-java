@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GalleryImageStatusDownloadStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GalleryImageStatusDownloadStatus model = BinaryData.fromString("{\"downloadSizeInMB\":6031739459541658820}")
+        GalleryImageStatusDownloadStatus model = BinaryData.fromString("{\"downloadSizeInMB\":5604417483302342339}")
             .toObject(GalleryImageStatusDownloadStatus.class);
-        Assertions.assertEquals(6031739459541658820L, model.downloadSizeInMB());
+        Assertions.assertEquals(5604417483302342339L, model.downloadSizeInMB());
     }
 }

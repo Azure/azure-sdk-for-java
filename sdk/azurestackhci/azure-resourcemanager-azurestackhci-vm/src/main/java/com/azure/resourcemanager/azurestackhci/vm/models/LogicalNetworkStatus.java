@@ -31,6 +31,11 @@ public final class LogicalNetworkStatus implements JsonSerializable<LogicalNetwo
      */
     private LogicalNetworkStatusProvisioningStatus provisioningStatus;
 
+    /*
+     * Enhanced fabric integration status with detailed health monitoring and connectivity state.
+     */
+    private FabricIntegrationStatus fabricIntegration;
+
     /**
      * Creates an instance of LogicalNetworkStatus class.
      */
@@ -65,6 +70,16 @@ public final class LogicalNetworkStatus implements JsonSerializable<LogicalNetwo
     }
 
     /**
+     * Get the fabricIntegration property: Enhanced fabric integration status with detailed health monitoring and
+     * connectivity state.
+     * 
+     * @return the fabricIntegration value.
+     */
+    public FabricIntegrationStatus fabricIntegration() {
+        return this.fabricIntegration;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -73,6 +88,7 @@ public final class LogicalNetworkStatus implements JsonSerializable<LogicalNetwo
         jsonWriter.writeStringField("errorCode", this.errorCode);
         jsonWriter.writeStringField("errorMessage", this.errorMessage);
         jsonWriter.writeJsonField("provisioningStatus", this.provisioningStatus);
+        jsonWriter.writeJsonField("fabricIntegration", this.fabricIntegration);
         return jsonWriter.writeEndObject();
     }
 
@@ -98,6 +114,8 @@ public final class LogicalNetworkStatus implements JsonSerializable<LogicalNetwo
                 } else if ("provisioningStatus".equals(fieldName)) {
                     deserializedLogicalNetworkStatus.provisioningStatus
                         = LogicalNetworkStatusProvisioningStatus.fromJson(reader);
+                } else if ("fabricIntegration".equals(fieldName)) {
+                    deserializedLogicalNetworkStatus.fabricIntegration = FabricIntegrationStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

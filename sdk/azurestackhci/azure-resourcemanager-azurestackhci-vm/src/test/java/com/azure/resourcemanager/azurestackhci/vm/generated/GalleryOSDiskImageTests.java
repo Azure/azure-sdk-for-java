@@ -11,7 +11,7 @@ public final class GalleryOSDiskImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryOSDiskImage model
-            = BinaryData.fromString("{\"sizeInMB\":6098942127121377639}").toObject(GalleryOSDiskImage.class);
+            = BinaryData.fromString("{\"sizeInMB\":8523359422088474782}").toObject(GalleryOSDiskImage.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class LogicalNetworksUpdateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogicalNetworksUpdateRequest model
-            = BinaryData.fromString("{\"tags\":{\"jqkwpyeicx\":\"t\",\"pbobjo\":\"qciwqvhkhixuigdt\",\"w\":\"hm\"}}")
-                .toObject(LogicalNetworksUpdateRequest.class);
-        Assertions.assertEquals("t", model.tags().get("jqkwpyeicx"));
+        LogicalNetworksUpdateRequest model = BinaryData.fromString("{\"tags\":{\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"}}")
+            .toObject(LogicalNetworksUpdateRequest.class);
+        Assertions.assertEquals("ualhbxxhejj", model.tags().get("zvdudgwdslfhotwm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworksUpdateRequest model = new LogicalNetworksUpdateRequest()
-            .withTags(mapOf("jqkwpyeicx", "t", "pbobjo", "qciwqvhkhixuigdt", "w", "hm"));
+        LogicalNetworksUpdateRequest model
+            = new LogicalNetworksUpdateRequest().withTags(mapOf("zvdudgwdslfhotwm", "ualhbxxhejj"));
         model = BinaryData.fromObject(model).toObject(LogicalNetworksUpdateRequest.class);
-        Assertions.assertEquals("t", model.tags().get("jqkwpyeicx"));
+        Assertions.assertEquals("ualhbxxhejj", model.tags().get("zvdudgwdslfhotwm"));
     }
 
     // Use "Map.of" if available
