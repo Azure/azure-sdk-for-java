@@ -9,19 +9,19 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapVirtualInstanceInner;
+import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapDatabaseInstanceInner;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The response of a SAPVirtualInstance list operation.
+ * The response of a SAPDatabaseInstance list operation.
  */
 @Immutable
-public final class SAPVirtualInstanceListResult implements JsonSerializable<SAPVirtualInstanceListResult> {
+public final class SapDatabaseInstanceListResult implements JsonSerializable<SapDatabaseInstanceListResult> {
     /*
-     * The SAPVirtualInstance items on this page
+     * The SAPDatabaseInstance items on this page
      */
-    private List<SapVirtualInstanceInner> value;
+    private List<SapDatabaseInstanceInner> value;
 
     /*
      * The link to the next page of items
@@ -29,17 +29,17 @@ public final class SAPVirtualInstanceListResult implements JsonSerializable<SAPV
     private String nextLink;
 
     /**
-     * Creates an instance of SAPVirtualInstanceListResult class.
+     * Creates an instance of SapDatabaseInstanceListResult class.
      */
-    private SAPVirtualInstanceListResult() {
+    private SapDatabaseInstanceListResult() {
     }
 
     /**
-     * Get the value property: The SAPVirtualInstance items on this page.
+     * Get the value property: The SAPDatabaseInstance items on this page.
      * 
      * @return the value value.
      */
-    public List<SapVirtualInstanceInner> value() {
+    public List<SapDatabaseInstanceInner> value() {
         return this.value;
     }
 
@@ -64,33 +64,34 @@ public final class SAPVirtualInstanceListResult implements JsonSerializable<SAPV
     }
 
     /**
-     * Reads an instance of SAPVirtualInstanceListResult from the JsonReader.
+     * Reads an instance of SapDatabaseInstanceListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SAPVirtualInstanceListResult if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of SapDatabaseInstanceListResult if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SAPVirtualInstanceListResult.
+     * @throws IOException If an error occurs while reading the SapDatabaseInstanceListResult.
      */
-    public static SAPVirtualInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static SapDatabaseInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SAPVirtualInstanceListResult deserializedSAPVirtualInstanceListResult = new SAPVirtualInstanceListResult();
+            SapDatabaseInstanceListResult deserializedSapDatabaseInstanceListResult
+                = new SapDatabaseInstanceListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<SapVirtualInstanceInner> value
-                        = reader.readArray(reader1 -> SapVirtualInstanceInner.fromJson(reader1));
-                    deserializedSAPVirtualInstanceListResult.value = value;
+                    List<SapDatabaseInstanceInner> value
+                        = reader.readArray(reader1 -> SapDatabaseInstanceInner.fromJson(reader1));
+                    deserializedSapDatabaseInstanceListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedSAPVirtualInstanceListResult.nextLink = reader.getString();
+                    deserializedSapDatabaseInstanceListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSAPVirtualInstanceListResult;
+            return deserializedSapDatabaseInstanceListResult;
         });
     }
 }

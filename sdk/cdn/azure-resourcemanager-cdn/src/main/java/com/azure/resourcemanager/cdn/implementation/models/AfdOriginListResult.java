@@ -18,7 +18,7 @@ import java.util.List;
  * The response of a AFDOrigin list operation.
  */
 @Immutable
-public final class AFDOriginListResult implements JsonSerializable<AFDOriginListResult> {
+public final class AfdOriginListResult implements JsonSerializable<AfdOriginListResult> {
     /*
      * The AFDOrigin items on this page
      */
@@ -30,9 +30,9 @@ public final class AFDOriginListResult implements JsonSerializable<AFDOriginList
     private String nextLink;
 
     /**
-     * Creates an instance of AFDOriginListResult class.
+     * Creates an instance of AfdOriginListResult class.
      */
-    private AFDOriginListResult() {
+    private AfdOriginListResult() {
     }
 
     /**
@@ -61,13 +61,13 @@ public final class AFDOriginListResult implements JsonSerializable<AFDOriginList
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property value in model AFDOriginListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model AfdOriginListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AFDOriginListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AfdOriginListResult.class);
 
     /**
      * {@inheritDoc}
@@ -81,32 +81,32 @@ public final class AFDOriginListResult implements JsonSerializable<AFDOriginList
     }
 
     /**
-     * Reads an instance of AFDOriginListResult from the JsonReader.
+     * Reads an instance of AfdOriginListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AFDOriginListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AfdOriginListResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AFDOriginListResult.
+     * @throws IOException If an error occurs while reading the AfdOriginListResult.
      */
-    public static AFDOriginListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static AfdOriginListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AFDOriginListResult deserializedAFDOriginListResult = new AFDOriginListResult();
+            AfdOriginListResult deserializedAfdOriginListResult = new AfdOriginListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
                     List<AfdOriginInner> value = reader.readArray(reader1 -> AfdOriginInner.fromJson(reader1));
-                    deserializedAFDOriginListResult.value = value;
+                    deserializedAfdOriginListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedAFDOriginListResult.nextLink = reader.getString();
+                    deserializedAfdOriginListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAFDOriginListResult;
+            return deserializedAfdOriginListResult;
         });
     }
 }

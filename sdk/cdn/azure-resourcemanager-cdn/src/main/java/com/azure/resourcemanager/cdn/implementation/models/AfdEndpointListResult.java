@@ -18,7 +18,7 @@ import java.util.List;
  * The response of a AFDEndpoint list operation.
  */
 @Immutable
-public final class AFDEndpointListResult implements JsonSerializable<AFDEndpointListResult> {
+public final class AfdEndpointListResult implements JsonSerializable<AfdEndpointListResult> {
     /*
      * The AFDEndpoint items on this page
      */
@@ -30,9 +30,9 @@ public final class AFDEndpointListResult implements JsonSerializable<AFDEndpoint
     private String nextLink;
 
     /**
-     * Creates an instance of AFDEndpointListResult class.
+     * Creates an instance of AfdEndpointListResult class.
      */
-    private AFDEndpointListResult() {
+    private AfdEndpointListResult() {
     }
 
     /**
@@ -61,13 +61,13 @@ public final class AFDEndpointListResult implements JsonSerializable<AFDEndpoint
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property value in model AFDEndpointListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model AfdEndpointListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AFDEndpointListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AfdEndpointListResult.class);
 
     /**
      * {@inheritDoc}
@@ -81,32 +81,32 @@ public final class AFDEndpointListResult implements JsonSerializable<AFDEndpoint
     }
 
     /**
-     * Reads an instance of AFDEndpointListResult from the JsonReader.
+     * Reads an instance of AfdEndpointListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AFDEndpointListResult if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AfdEndpointListResult if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AFDEndpointListResult.
+     * @throws IOException If an error occurs while reading the AfdEndpointListResult.
      */
-    public static AFDEndpointListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static AfdEndpointListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AFDEndpointListResult deserializedAFDEndpointListResult = new AFDEndpointListResult();
+            AfdEndpointListResult deserializedAfdEndpointListResult = new AfdEndpointListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
                     List<AfdEndpointInner> value = reader.readArray(reader1 -> AfdEndpointInner.fromJson(reader1));
-                    deserializedAFDEndpointListResult.value = value;
+                    deserializedAfdEndpointListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedAFDEndpointListResult.nextLink = reader.getString();
+                    deserializedAfdEndpointListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAFDEndpointListResult;
+            return deserializedAfdEndpointListResult;
         });
     }
 }

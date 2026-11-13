@@ -26,7 +26,8 @@ public interface ClusterVersions {
      * 
      * Gets information about an available Service Fabric cluster code version along with {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> getWithResponse(String location, String clusterVersion, Context context);
+    Response<ClusterCodeVersionsResultListResult> getWithResponse(String location, String clusterVersion,
+        Context context);
 
     /**
      * Gets information about a Service Fabric cluster code version available in the specified location.
@@ -42,7 +43,7 @@ public interface ClusterVersions {
      * 
      * Gets information about an available Service Fabric cluster code version.
      */
-    ClusterCodeVersionsListResult get(String location, String clusterVersion);
+    ClusterCodeVersionsResultListResult get(String location, String clusterVersion);
 
     /**
      * Gets information about a Service Fabric cluster code version available for the specified environment.
@@ -61,7 +62,7 @@ public interface ClusterVersions {
      * Gets information about an available Service Fabric cluster code version by environment along with
      * {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> getByEnvironmentWithResponse(String location,
+    Response<ClusterCodeVersionsResultListResult> getByEnvironmentWithResponse(String location,
         ClusterVersionsEnvironment environment, String clusterVersion, Context context);
 
     /**
@@ -79,7 +80,7 @@ public interface ClusterVersions {
      * 
      * Gets information about an available Service Fabric cluster code version by environment.
      */
-    ClusterCodeVersionsListResult getByEnvironment(String location, ClusterVersionsEnvironment environment,
+    ClusterCodeVersionsResultListResult getByEnvironment(String location, ClusterVersionsEnvironment environment,
         String clusterVersion);
 
     /**
@@ -96,7 +97,7 @@ public interface ClusterVersions {
      * 
      * Gets all available code versions for Service Fabric cluster resources by location along with {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> listWithResponse(String location, Context context);
+    Response<ClusterCodeVersionsResultListResult> listWithResponse(String location, Context context);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified location.
@@ -111,7 +112,7 @@ public interface ClusterVersions {
      * 
      * Gets all available code versions for Service Fabric cluster resources by location.
      */
-    ClusterCodeVersionsListResult list(String location);
+    ClusterCodeVersionsResultListResult list(String location);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified environment.
@@ -128,7 +129,7 @@ public interface ClusterVersions {
      * 
      * Gets all available code versions for Service Fabric cluster resources by environment along with {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> listByEnvironmentWithResponse(String location,
+    Response<ClusterCodeVersionsResultListResult> listByEnvironmentWithResponse(String location,
         ClusterVersionsEnvironment environment, Context context);
 
     /**
@@ -145,5 +146,5 @@ public interface ClusterVersions {
      * 
      * Gets all available code versions for Service Fabric cluster resources by environment.
      */
-    ClusterCodeVersionsListResult listByEnvironment(String location, ClusterVersionsEnvironment environment);
+    ClusterCodeVersionsResultListResult listByEnvironment(String location, ClusterVersionsEnvironment environment);
 }

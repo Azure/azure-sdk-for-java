@@ -35,7 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.AfdCustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.models.AfdDomainInner;
-import com.azure.resourcemanager.cdn.implementation.models.AFDDomainListResult;
+import com.azure.resourcemanager.cdn.implementation.models.AfdDomainListResult;
 import com.azure.resourcemanager.cdn.models.AfdDomainUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -116,7 +116,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDDomainListResult>> listByProfile(@HostParam("endpoint") String endpoint,
+        Mono<Response<AfdDomainListResult>> listByProfile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
             @HeaderParam("Accept") String accept, Context context);
@@ -134,7 +134,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDDomainListResult>> listByProfileNext(
+        Mono<Response<AfdDomainListResult>> listByProfileNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

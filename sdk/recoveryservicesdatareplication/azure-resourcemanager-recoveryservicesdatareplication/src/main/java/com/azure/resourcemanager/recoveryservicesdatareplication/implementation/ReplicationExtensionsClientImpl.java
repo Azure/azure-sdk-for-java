@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ReplicationExtensionsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.ReplicationExtensionInner;
-import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.models.RepExtModelListResult;
+import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.models.ReplicationExtensionListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -133,7 +133,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RepExtModelListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ReplicationExtensionListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept, Context context);
@@ -142,7 +142,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<RepExtModelListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<ReplicationExtensionListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept, Context context);
@@ -151,15 +151,17 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RepExtModelListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ReplicationExtensionListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<RepExtModelListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Response<ReplicationExtensionListResult> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -645,8 +647,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listSinglePage(String resourceGroupName, String vaultName) {
         final String accept = "application/json";
-        Response<RepExtModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, Context.NONE);
+        Response<ReplicationExtensionListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -666,8 +669,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     private PagedResponse<ReplicationExtensionInner> listSinglePage(String resourceGroupName, String vaultName,
         Context context) {
         final String accept = "application/json";
-        Response<RepExtModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context);
+        Response<ReplicationExtensionListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -736,7 +740,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<RepExtModelListResult> res
+        Response<ReplicationExtensionListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -755,7 +759,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<RepExtModelListResult> res
+        Response<ReplicationExtensionListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

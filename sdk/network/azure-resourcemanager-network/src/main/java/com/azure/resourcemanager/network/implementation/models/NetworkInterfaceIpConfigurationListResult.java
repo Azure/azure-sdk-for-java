@@ -18,8 +18,8 @@ import java.util.List;
  * The response of a NetworkInterfaceIPConfiguration list operation.
  */
 @Immutable
-public final class NetworkInterfaceIPConfigurationListResult
-    implements JsonSerializable<NetworkInterfaceIPConfigurationListResult> {
+public final class NetworkInterfaceIpConfigurationListResult
+    implements JsonSerializable<NetworkInterfaceIpConfigurationListResult> {
     /*
      * The NetworkInterfaceIPConfiguration items on this page
      */
@@ -31,9 +31,9 @@ public final class NetworkInterfaceIPConfigurationListResult
     private String nextLink;
 
     /**
-     * Creates an instance of NetworkInterfaceIPConfigurationListResult class.
+     * Creates an instance of NetworkInterfaceIpConfigurationListResult class.
      */
-    private NetworkInterfaceIPConfigurationListResult() {
+    private NetworkInterfaceIpConfigurationListResult() {
     }
 
     /**
@@ -63,13 +63,13 @@ public final class NetworkInterfaceIPConfigurationListResult
         if (value() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property value in model NetworkInterfaceIPConfigurationListResult"));
+                    "Missing required property value in model NetworkInterfaceIpConfigurationListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceIPConfigurationListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceIpConfigurationListResult.class);
 
     /**
      * {@inheritDoc}
@@ -83,18 +83,18 @@ public final class NetworkInterfaceIPConfigurationListResult
     }
 
     /**
-     * Reads an instance of NetworkInterfaceIPConfigurationListResult from the JsonReader.
+     * Reads an instance of NetworkInterfaceIpConfigurationListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NetworkInterfaceIPConfigurationListResult if the JsonReader was pointing to an instance of
+     * @return An instance of NetworkInterfaceIpConfigurationListResult if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the NetworkInterfaceIPConfigurationListResult.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceIpConfigurationListResult.
      */
-    public static NetworkInterfaceIPConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static NetworkInterfaceIpConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NetworkInterfaceIPConfigurationListResult deserializedNetworkInterfaceIPConfigurationListResult
-                = new NetworkInterfaceIPConfigurationListResult();
+            NetworkInterfaceIpConfigurationListResult deserializedNetworkInterfaceIpConfigurationListResult
+                = new NetworkInterfaceIpConfigurationListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -102,15 +102,15 @@ public final class NetworkInterfaceIPConfigurationListResult
                 if ("value".equals(fieldName)) {
                     List<NetworkInterfaceIpConfigurationInner> value
                         = reader.readArray(reader1 -> NetworkInterfaceIpConfigurationInner.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationListResult.value = value;
+                    deserializedNetworkInterfaceIpConfigurationListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationListResult.nextLink = reader.getString();
+                    deserializedNetworkInterfaceIpConfigurationListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNetworkInterfaceIPConfigurationListResult;
+            return deserializedNetworkInterfaceIpConfigurationListResult;
         });
     }
 }

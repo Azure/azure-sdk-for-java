@@ -41,7 +41,7 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapDi
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapSizingRecommendationResultInner;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapSupportedResourceSkusResultInner;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapVirtualInstanceInner;
-import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.models.SAPVirtualInstanceListResult;
+import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.models.SapVirtualInstanceListResult;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapAvailabilityZoneDetailsRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDiskConfigurationsRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSizingRecommendationRequest;
@@ -167,7 +167,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPVirtualInstanceListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<SapVirtualInstanceListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -176,7 +176,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPVirtualInstanceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<SapVirtualInstanceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -185,7 +185,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/sapVirtualInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPVirtualInstanceListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<SapVirtualInstanceListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -193,7 +193,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/sapVirtualInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPVirtualInstanceListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<SapVirtualInstanceListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -313,7 +313,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPVirtualInstanceListResult>> listByResourceGroupNext(
+        Mono<Response<SapVirtualInstanceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -321,7 +321,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPVirtualInstanceListResult> listByResourceGroupNextSync(
+        Response<SapVirtualInstanceListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -329,7 +329,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPVirtualInstanceListResult>> listBySubscriptionNext(
+        Mono<Response<SapVirtualInstanceListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -337,7 +337,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPVirtualInstanceListResult> listBySubscriptionNextSync(
+        Response<SapVirtualInstanceListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -985,7 +985,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupSinglePage(String resourceGroupName) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<SapVirtualInstanceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1005,7 +1005,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<SapVirtualInstanceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1087,7 +1087,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listSinglePage() {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res = service.listSync(this.client.getEndpoint(),
+        Response<SapVirtualInstanceListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1105,7 +1105,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listSinglePage(Context context) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res = service.listSync(this.client.getEndpoint(),
+        Response<SapVirtualInstanceListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1929,7 +1929,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res
+        Response<SapVirtualInstanceListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1948,7 +1948,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res
+        Response<SapVirtualInstanceListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1987,7 +1987,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res
+        Response<SapVirtualInstanceListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -2006,7 +2006,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<SAPVirtualInstanceListResult> res
+        Response<SapVirtualInstanceListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

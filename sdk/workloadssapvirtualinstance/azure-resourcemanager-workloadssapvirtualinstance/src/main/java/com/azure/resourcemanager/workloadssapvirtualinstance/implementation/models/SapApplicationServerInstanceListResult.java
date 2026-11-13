@@ -17,8 +17,8 @@ import java.util.List;
  * The response of a SAPApplicationServerInstance list operation.
  */
 @Immutable
-public final class SAPApplicationServerInstanceListResult
-    implements JsonSerializable<SAPApplicationServerInstanceListResult> {
+public final class SapApplicationServerInstanceListResult
+    implements JsonSerializable<SapApplicationServerInstanceListResult> {
     /*
      * The SAPApplicationServerInstance items on this page
      */
@@ -30,9 +30,9 @@ public final class SAPApplicationServerInstanceListResult
     private String nextLink;
 
     /**
-     * Creates an instance of SAPApplicationServerInstanceListResult class.
+     * Creates an instance of SapApplicationServerInstanceListResult class.
      */
-    private SAPApplicationServerInstanceListResult() {
+    private SapApplicationServerInstanceListResult() {
     }
 
     /**
@@ -65,18 +65,18 @@ public final class SAPApplicationServerInstanceListResult
     }
 
     /**
-     * Reads an instance of SAPApplicationServerInstanceListResult from the JsonReader.
+     * Reads an instance of SapApplicationServerInstanceListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SAPApplicationServerInstanceListResult if the JsonReader was pointing to an instance of
+     * @return An instance of SapApplicationServerInstanceListResult if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SAPApplicationServerInstanceListResult.
+     * @throws IOException If an error occurs while reading the SapApplicationServerInstanceListResult.
      */
-    public static SAPApplicationServerInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static SapApplicationServerInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SAPApplicationServerInstanceListResult deserializedSAPApplicationServerInstanceListResult
-                = new SAPApplicationServerInstanceListResult();
+            SapApplicationServerInstanceListResult deserializedSapApplicationServerInstanceListResult
+                = new SapApplicationServerInstanceListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -84,15 +84,15 @@ public final class SAPApplicationServerInstanceListResult
                 if ("value".equals(fieldName)) {
                     List<SapApplicationServerInstanceInner> value
                         = reader.readArray(reader1 -> SapApplicationServerInstanceInner.fromJson(reader1));
-                    deserializedSAPApplicationServerInstanceListResult.value = value;
+                    deserializedSapApplicationServerInstanceListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedSAPApplicationServerInstanceListResult.nextLink = reader.getString();
+                    deserializedSapApplicationServerInstanceListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSAPApplicationServerInstanceListResult;
+            return deserializedSapApplicationServerInstanceListResult;
         });
     }
 }

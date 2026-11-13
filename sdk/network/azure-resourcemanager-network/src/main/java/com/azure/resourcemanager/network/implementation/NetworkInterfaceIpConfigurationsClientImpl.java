@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceIPConfigurationListResult;
+import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceIpConfigurationListResult;
 import reactor.core.publisher.Mono;
 
 /**
@@ -77,7 +77,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/ipConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIPConfigurationListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkInterfaceName") String networkInterfaceName, @HeaderParam("Accept") String accept,
@@ -87,7 +87,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIPConfigurationListResult>> listNext(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

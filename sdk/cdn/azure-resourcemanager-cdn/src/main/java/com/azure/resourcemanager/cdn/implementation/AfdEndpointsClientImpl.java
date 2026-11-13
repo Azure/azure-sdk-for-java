@@ -37,7 +37,7 @@ import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
 import com.azure.resourcemanager.cdn.fluent.models.AfdEndpointInner;
 import com.azure.resourcemanager.cdn.fluent.models.UsageInner;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateCustomDomainOutputInner;
-import com.azure.resourcemanager.cdn.implementation.models.AFDEndpointListResult;
+import com.azure.resourcemanager.cdn.implementation.models.AfdEndpointListResult;
 import com.azure.resourcemanager.cdn.implementation.models.UsagesListResult;
 import com.azure.resourcemanager.cdn.models.AfdEndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.AfdPurgeParameters;
@@ -120,7 +120,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDEndpointListResult>> listByProfile(@HostParam("endpoint") String endpoint,
+        Mono<Response<AfdEndpointListResult>> listByProfile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
             @HeaderParam("Accept") String accept, Context context);
@@ -158,7 +158,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDEndpointListResult>> listByProfileNext(
+        Mono<Response<AfdEndpointListResult>> listByProfileNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 

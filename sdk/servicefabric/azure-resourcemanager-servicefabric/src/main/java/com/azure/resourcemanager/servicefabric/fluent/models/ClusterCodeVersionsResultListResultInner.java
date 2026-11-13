@@ -17,7 +17,8 @@ import java.util.List;
  * The response of a ClusterCodeVersions list operation.
  */
 @Immutable
-public final class ClusterCodeVersionsListResultInner implements JsonSerializable<ClusterCodeVersionsListResultInner> {
+public final class ClusterCodeVersionsResultListResultInner
+    implements JsonSerializable<ClusterCodeVersionsResultListResultInner> {
     /*
      * The ClusterCodeVersions items on this page
      */
@@ -29,9 +30,9 @@ public final class ClusterCodeVersionsListResultInner implements JsonSerializabl
     private String nextLink;
 
     /**
-     * Creates an instance of ClusterCodeVersionsListResultInner class.
+     * Creates an instance of ClusterCodeVersionsResultListResultInner class.
      */
-    private ClusterCodeVersionsListResultInner() {
+    private ClusterCodeVersionsResultListResultInner() {
     }
 
     /**
@@ -64,18 +65,18 @@ public final class ClusterCodeVersionsListResultInner implements JsonSerializabl
     }
 
     /**
-     * Reads an instance of ClusterCodeVersionsListResultInner from the JsonReader.
+     * Reads an instance of ClusterCodeVersionsResultListResultInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClusterCodeVersionsListResultInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of ClusterCodeVersionsResultListResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ClusterCodeVersionsListResultInner.
+     * @throws IOException If an error occurs while reading the ClusterCodeVersionsResultListResultInner.
      */
-    public static ClusterCodeVersionsListResultInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ClusterCodeVersionsResultListResultInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClusterCodeVersionsListResultInner deserializedClusterCodeVersionsListResultInner
-                = new ClusterCodeVersionsListResultInner();
+            ClusterCodeVersionsResultListResultInner deserializedClusterCodeVersionsResultListResultInner
+                = new ClusterCodeVersionsResultListResultInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -83,15 +84,15 @@ public final class ClusterCodeVersionsListResultInner implements JsonSerializabl
                 if ("value".equals(fieldName)) {
                     List<ClusterCodeVersionsResult> value
                         = reader.readArray(reader1 -> ClusterCodeVersionsResult.fromJson(reader1));
-                    deserializedClusterCodeVersionsListResultInner.value = value;
+                    deserializedClusterCodeVersionsResultListResultInner.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedClusterCodeVersionsListResultInner.nextLink = reader.getString();
+                    deserializedClusterCodeVersionsResultListResultInner.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClusterCodeVersionsListResultInner;
+            return deserializedClusterCodeVersionsResultListResultInner;
         });
     }
 }

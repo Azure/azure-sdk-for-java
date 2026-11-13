@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsResultListResultInner;
 import java.util.List;
 
 /**
- * An immutable client-side representation of ClusterCodeVersionsListResult.
+ * An immutable client-side representation of ClusterCodeVersionsResultListResult.
  */
-public interface ClusterCodeVersionsListResult {
+public interface ClusterCodeVersionsResultListResult {
     /**
      * Gets the value property: The ClusterCodeVersions items on this page.
      * 
@@ -26,9 +26,10 @@ public interface ClusterCodeVersionsListResult {
     String nextLink();
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner object.
+     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsResultListResultInner
+     * object.
      * 
      * @return the inner object.
      */
-    ClusterCodeVersionsListResultInner innerModel();
+    ClusterCodeVersionsResultListResultInner innerModel();
 }

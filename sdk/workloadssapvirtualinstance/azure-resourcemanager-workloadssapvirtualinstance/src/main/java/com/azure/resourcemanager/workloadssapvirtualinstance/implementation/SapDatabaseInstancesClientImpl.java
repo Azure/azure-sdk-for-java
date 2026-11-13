@@ -37,7 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapDatabaseInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapDatabaseInstanceInner;
-import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.models.SAPDatabaseInstanceListResult;
+import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.models.SapDatabaseInstanceListResult;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapDatabaseInstanceRequest;
@@ -167,7 +167,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPDatabaseInstanceListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<SapDatabaseInstanceListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, @HeaderParam("Accept") String accept,
@@ -177,7 +177,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPDatabaseInstanceListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<SapDatabaseInstanceListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, @HeaderParam("Accept") String accept,
@@ -231,7 +231,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SAPDatabaseInstanceListResult>> listNext(
+        Mono<Response<SapDatabaseInstanceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -239,7 +239,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SAPDatabaseInstanceListResult> listNextSync(
+        Response<SapDatabaseInstanceListResult> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -883,7 +883,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     private PagedResponse<SapDatabaseInstanceInner> listSinglePage(String resourceGroupName,
         String sapVirtualInstanceName) {
         final String accept = "application/json";
-        Response<SAPDatabaseInstanceListResult> res
+        Response<SapDatabaseInstanceListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, sapVirtualInstanceName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -905,7 +905,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     private PagedResponse<SapDatabaseInstanceInner> listSinglePage(String resourceGroupName,
         String sapVirtualInstanceName, Context context) {
         final String accept = "application/json";
-        Response<SAPDatabaseInstanceListResult> res
+        Response<SapDatabaseInstanceListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, sapVirtualInstanceName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1503,7 +1503,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapDatabaseInstanceInner> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<SAPDatabaseInstanceListResult> res
+        Response<SapDatabaseInstanceListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1522,7 +1522,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapDatabaseInstanceInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<SAPDatabaseInstanceListResult> res
+        Response<SapDatabaseInstanceListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

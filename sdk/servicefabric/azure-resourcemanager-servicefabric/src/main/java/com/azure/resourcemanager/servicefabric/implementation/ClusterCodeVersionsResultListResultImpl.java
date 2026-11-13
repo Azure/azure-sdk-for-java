@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.servicefabric.implementation;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner;
-import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsListResult;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsResultListResultInner;
 import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsResult;
+import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsResultListResult;
 import java.util.Collections;
 import java.util.List;
 
-public final class ClusterCodeVersionsListResultImpl implements ClusterCodeVersionsListResult {
-    private ClusterCodeVersionsListResultInner innerObject;
+public final class ClusterCodeVersionsResultListResultImpl implements ClusterCodeVersionsResultListResult {
+    private ClusterCodeVersionsResultListResultInner innerObject;
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    ClusterCodeVersionsListResultImpl(ClusterCodeVersionsListResultInner innerObject,
+    ClusterCodeVersionsResultListResultImpl(ClusterCodeVersionsResultListResultInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -34,7 +34,7 @@ public final class ClusterCodeVersionsListResultImpl implements ClusterCodeVersi
         return this.innerModel().nextLink();
     }
 
-    public ClusterCodeVersionsListResultInner innerModel() {
+    public ClusterCodeVersionsResultListResultInner innerModel() {
         return this.innerObject;
     }
 

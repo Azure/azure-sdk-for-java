@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpDdosProtectionStatusResultInner;
-import com.azure.resourcemanager.network.implementation.models.PublicIPAddressListResult;
+import com.azure.resourcemanager.network.implementation.models.PublicIpAddressListResult;
 import com.azure.resourcemanager.network.models.DisassociateCloudServicePublicIpRequest;
 import com.azure.resourcemanager.network.models.ReserveCloudServicePublicIpAddressRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -98,7 +98,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listCloudServiceRoleInstancePublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -127,7 +127,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -180,7 +180,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<PublicIpAddressListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -189,7 +189,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<PublicIpAddressListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -228,7 +228,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listCloudServicePublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -239,7 +239,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetPublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -250,7 +250,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listCloudServiceRoleInstancePublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -258,7 +258,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -266,7 +266,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listNext(
+        Mono<Response<PublicIpAddressListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -274,7 +274,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listAllNext(
+        Mono<Response<PublicIpAddressListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -282,7 +282,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listCloudServicePublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -290,7 +290,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

@@ -51,7 +51,7 @@ import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkDnsZon
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkGatewayList;
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkList;
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPortMirroringList;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPublicIPsList;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPublicIpsList;
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkSegmentsList;
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVMGroupsList;
 import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVirtualMachinesList;
@@ -581,7 +581,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIPsList>> listPublicIPs(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkPublicIpsList>> listPublicIPs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -591,7 +591,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<WorkloadNetworkPublicIPsList> listPublicIPsSync(@HostParam("endpoint") String endpoint,
+        Response<WorkloadNetworkPublicIpsList> listPublicIPsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -993,7 +993,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIPsList>> listPublicIPsNext(
+        Mono<Response<WorkloadNetworkPublicIpsList>> listPublicIPsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -1001,7 +1001,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<WorkloadNetworkPublicIPsList> listPublicIPsNextSync(
+        Response<WorkloadNetworkPublicIpsList> listPublicIPsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -5976,7 +5976,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
+        Response<WorkloadNetworkPublicIpsList> res
             = service.listPublicIPsSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -6016,7 +6016,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
+        Response<WorkloadNetworkPublicIpsList> res
             = service.listPublicIPsSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -9639,7 +9639,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
+        Response<WorkloadNetworkPublicIpsList> res
             = service.listPublicIPsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -9667,7 +9667,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<WorkloadNetworkPublicIPsList> res
+        Response<WorkloadNetworkPublicIpsList> res
             = service.listPublicIPsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

@@ -8,7 +8,7 @@
     "@azure-tools/typespec-azure-core": "0.74.0",
     "@azure-tools/typespec-azure-resource-manager": "0.74.0",
     "@azure-tools/typespec-azure-rulesets": "0.74.0",
-    "@azure-tools/typespec-client-generator-core": "0.74.0",
+    "@azure-tools/typespec-client-generator-core": "https://pkg.pr.new/@azure-tools/typespec-client-generator-core@267ed002645d055e479e042372dc951fdb34eb87",
     "@typespec/compiler": "1.18.0",
     "@typespec/http": "1.18.0",
     "@typespec/openapi": "1.18.0",

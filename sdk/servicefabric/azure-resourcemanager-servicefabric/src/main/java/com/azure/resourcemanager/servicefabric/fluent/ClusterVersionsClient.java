@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsResultListResultInner;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
 
 /**
@@ -31,7 +31,7 @@ public interface ClusterVersionsClient {
      * Gets information about an available Service Fabric cluster code version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterCodeVersionsListResultInner> getWithResponse(String location, String clusterVersion,
+    Response<ClusterCodeVersionsResultListResultInner> getWithResponse(String location, String clusterVersion,
         Context context);
 
     /**
@@ -49,7 +49,7 @@ public interface ClusterVersionsClient {
      * Gets information about an available Service Fabric cluster code version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterCodeVersionsListResultInner get(String location, String clusterVersion);
+    ClusterCodeVersionsResultListResultInner get(String location, String clusterVersion);
 
     /**
      * Gets information about a Service Fabric cluster code version available for the specified environment.
@@ -69,7 +69,7 @@ public interface ClusterVersionsClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterCodeVersionsListResultInner> getByEnvironmentWithResponse(String location,
+    Response<ClusterCodeVersionsResultListResultInner> getByEnvironmentWithResponse(String location,
         ClusterVersionsEnvironment environment, String clusterVersion, Context context);
 
     /**
@@ -88,7 +88,7 @@ public interface ClusterVersionsClient {
      * Gets information about an available Service Fabric cluster code version by environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterCodeVersionsListResultInner getByEnvironment(String location, ClusterVersionsEnvironment environment,
+    ClusterCodeVersionsResultListResultInner getByEnvironment(String location, ClusterVersionsEnvironment environment,
         String clusterVersion);
 
     /**
@@ -106,7 +106,7 @@ public interface ClusterVersionsClient {
      * Gets all available code versions for Service Fabric cluster resources by location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterCodeVersionsListResultInner> listWithResponse(String location, Context context);
+    Response<ClusterCodeVersionsResultListResultInner> listWithResponse(String location, Context context);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified location.
@@ -122,7 +122,7 @@ public interface ClusterVersionsClient {
      * Gets all available code versions for Service Fabric cluster resources by location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterCodeVersionsListResultInner list(String location);
+    ClusterCodeVersionsResultListResultInner list(String location);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified environment.
@@ -140,7 +140,7 @@ public interface ClusterVersionsClient {
      * Gets all available code versions for Service Fabric cluster resources by environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterCodeVersionsListResultInner> listByEnvironmentWithResponse(String location,
+    Response<ClusterCodeVersionsResultListResultInner> listByEnvironmentWithResponse(String location,
         ClusterVersionsEnvironment environment, Context context);
 
     /**
@@ -158,5 +158,5 @@ public interface ClusterVersionsClient {
      * Gets all available code versions for Service Fabric cluster resources by environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterCodeVersionsListResultInner listByEnvironment(String location, ClusterVersionsEnvironment environment);
+    ClusterCodeVersionsResultListResultInner listByEnvironment(String location, ClusterVersionsEnvironment environment);
 }

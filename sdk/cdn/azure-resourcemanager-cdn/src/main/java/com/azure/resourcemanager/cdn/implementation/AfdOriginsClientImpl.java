@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginInner;
-import com.azure.resourcemanager.cdn.implementation.models.AFDOriginListResult;
+import com.azure.resourcemanager.cdn.implementation.models.AfdOriginListResult;
 import com.azure.resourcemanager.cdn.models.AfdOriginUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -116,7 +116,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDOriginListResult>> listByOriginGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<AfdOriginListResult>> listByOriginGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
             @PathParam("originGroupName") String originGroupName, @HeaderParam("Accept") String accept,
@@ -126,7 +126,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AFDOriginListResult>> listByOriginGroupNext(
+        Mono<Response<AfdOriginListResult>> listByOriginGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

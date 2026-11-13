@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
-import com.azure.resourcemanager.network.implementation.models.PublicIPPrefixListResult;
+import com.azure.resourcemanager.network.implementation.models.PublicIpPrefixListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -119,7 +119,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPPrefixListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<PublicIpPrefixListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -128,7 +128,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPPrefixes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPPrefixListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<PublicIpPrefixListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -136,7 +136,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPPrefixListResult>> listNext(
+        Mono<Response<PublicIpPrefixListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -144,7 +144,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPPrefixListResult>> listAllNext(
+        Mono<Response<PublicIpPrefixListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

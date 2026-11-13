@@ -18,7 +18,7 @@ import java.util.List;
  * The response of a PublicIPPrefix list operation.
  */
 @Immutable
-public final class PublicIPPrefixListResult implements JsonSerializable<PublicIPPrefixListResult> {
+public final class PublicIpPrefixListResult implements JsonSerializable<PublicIpPrefixListResult> {
     /*
      * The PublicIPPrefix items on this page
      */
@@ -30,9 +30,9 @@ public final class PublicIPPrefixListResult implements JsonSerializable<PublicIP
     private String nextLink;
 
     /**
-     * Creates an instance of PublicIPPrefixListResult class.
+     * Creates an instance of PublicIpPrefixListResult class.
      */
-    private PublicIPPrefixListResult() {
+    private PublicIpPrefixListResult() {
     }
 
     /**
@@ -61,13 +61,13 @@ public final class PublicIPPrefixListResult implements JsonSerializable<PublicIP
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property value in model PublicIPPrefixListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model PublicIpPrefixListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(PublicIPPrefixListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PublicIpPrefixListResult.class);
 
     /**
      * {@inheritDoc}
@@ -81,17 +81,17 @@ public final class PublicIPPrefixListResult implements JsonSerializable<PublicIP
     }
 
     /**
-     * Reads an instance of PublicIPPrefixListResult from the JsonReader.
+     * Reads an instance of PublicIpPrefixListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PublicIPPrefixListResult if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of PublicIpPrefixListResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PublicIPPrefixListResult.
+     * @throws IOException If an error occurs while reading the PublicIpPrefixListResult.
      */
-    public static PublicIPPrefixListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static PublicIpPrefixListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PublicIPPrefixListResult deserializedPublicIPPrefixListResult = new PublicIPPrefixListResult();
+            PublicIpPrefixListResult deserializedPublicIpPrefixListResult = new PublicIpPrefixListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -99,15 +99,15 @@ public final class PublicIPPrefixListResult implements JsonSerializable<PublicIP
                 if ("value".equals(fieldName)) {
                     List<PublicIpPrefixInner> value
                         = reader.readArray(reader1 -> PublicIpPrefixInner.fromJson(reader1));
-                    deserializedPublicIPPrefixListResult.value = value;
+                    deserializedPublicIpPrefixListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedPublicIPPrefixListResult.nextLink = reader.getString();
+                    deserializedPublicIpPrefixListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPublicIPPrefixListResult;
+            return deserializedPublicIpPrefixListResult;
         });
     }
 }

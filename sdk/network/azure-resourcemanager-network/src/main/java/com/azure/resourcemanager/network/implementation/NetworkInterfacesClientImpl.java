@@ -38,7 +38,7 @@ import com.azure.resourcemanager.network.fluent.models.EffectiveNetworkSecurityG
 import com.azure.resourcemanager.network.fluent.models.EffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceIPConfigurationListResult;
+import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceIpConfigurationListResult;
 import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -246,7 +246,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIPConfigurationListResult>> listVirtualMachineScaleSetIpConfigurations(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listVirtualMachineScaleSetIpConfigurations(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -307,7 +307,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIPConfigurationListResult>> listVirtualMachineScaleSetIpConfigurationsNext(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listVirtualMachineScaleSetIpConfigurationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
