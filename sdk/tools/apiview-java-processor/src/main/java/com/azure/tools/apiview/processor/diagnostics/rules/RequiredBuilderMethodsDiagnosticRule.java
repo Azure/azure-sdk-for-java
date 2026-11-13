@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.apiview.processor.diagnostics.rules;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;

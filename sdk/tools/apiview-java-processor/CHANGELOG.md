@@ -1,3 +1,6 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+
 # Release History
 
 ## 1.34.0 (Unreleased)
@@ -14,7 +17,9 @@
 - Recognize explicit builder protocols and check required methods independently for each builder.
 - Finish and close compressed JSON output so it can be decompressed successfully.
 - Detect prohibited packages in fully qualified public API types.
+- Skip unrelated validation and source rewriting when building API review artifacts.
 
 ### Other Changes
 
 - Migrated the Java APIView processor and its tests from Azure/azure-sdk-tools#16809.
+- Added source license headers and enforce them with Spotless.

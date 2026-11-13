@@ -84,7 +84,9 @@ if (-not $PSCmdlet.ShouldProcess($OutputDirectory, 'Generate api.md and api.meta
 
 $buildOptions = @(
     '--batch-mode', '--no-transfer-progress',
-    '-Dmaven.javadoc.skip=true', '-Dgpg.skip', '-Dmaven.test.skip=true', '-Djacoco.skip', '-Drevapi.skip'
+    '-Dmaven.javadoc.skip=true', '-Dgpg.skip', '-Dmaven.test.skip=true', '-DskipTestCompile=true',
+    '-Djacoco.skip=true', '-Drevapi.skip=true', '-Dcheckstyle.skip=true', '-Dspotbugs.skip=true',
+    '-Dspotless.skip=true', '-Dcodesnippet.skip=true', '-Danimal.sniffer.skip=true'
 )
 $previousBundle = @{}
 foreach ($fileName in @('api.md', 'api.metadata.yml')) {

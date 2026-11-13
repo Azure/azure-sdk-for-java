@@ -90,6 +90,33 @@ Describe 'Generate-ApiMarkdown' {
         Get-Content -LiteralPath $script:Metadata | Should -Contain "packageVersion: '1.0.0'"
     }
 
+    It 'skips unrelated build work when reusing sources is <ReuseSources>' -ForEach @(
+        @{ ReuseSources = $true; BuildCount = 1 }
+        @{ ReuseSources = $false; BuildCount = 2 }
+    ) {
+        $parameters = @{ PackagePath = $script:Package }
+        if ($ReuseSources) {
+            $parameters.SourcesJar = $script:Sources
+        }
+
+        & $script:Command @parameters
+
+        Should -Invoke mvn -Times $BuildCount -Exactly
+        Should -Invoke mvn -Times $BuildCount -Exactly -ParameterFilter {
+            $args -contains '-Dmaven.javadoc.skip=true' -and
+            $args -contains '-Dgpg.skip' -and
+            $args -contains '-Dmaven.test.skip=true' -and
+            $args -contains '-DskipTestCompile=true' -and
+            $args -contains '-Djacoco.skip=true' -and
+            $args -contains '-Drevapi.skip=true' -and
+            $args -contains '-Dcheckstyle.skip=true' -and
+            $args -contains '-Dspotbugs.skip=true' -and
+            $args -contains '-Dspotless.skip=true' -and
+            $args -contains '-Dcodesnippet.skip=true' -and
+            $args -contains '-Danimal.sniffer.skip=true'
+        }
+    }
+
     It 'rejects a missing or unresolved package version before building' -ForEach @(
         @{ Version = '' }
         @{ Version = '${revision}' }
