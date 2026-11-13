@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties for a CVE analysis summary.
+ * Properties for a CVE (Common Vulnerabilities and Exposures) analysis summary (deprecated).
  */
 @Immutable
 public final class CveSummary extends SummaryResourceProperties {
