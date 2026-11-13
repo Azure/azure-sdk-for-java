@@ -1,6 +1,22 @@
 # Code snippets and samples
 
 
+## AdvisorScores
+
+- [Get](#advisorscores_get)
+- [List](#advisorscores_list)
+
+## AssessmentTypes
+
+- [List](#assessmenttypes_list)
+
+## Assessments
+
+- [Delete](#assessments_delete)
+- [Get](#assessments_get)
+- [List](#assessments_list)
+- [Put](#assessments_put)
+
 ## Configurations
 
 - [CreateInResourceGroup](#configurations_createinresourcegroup)
@@ -21,8 +37,22 @@
 
 - [Generate](#recommendations_generate)
 - [Get](#recommendations_get)
+- [GetByServiceGroup](#recommendations_getbyservicegroup)
 - [GetGenerateStatus](#recommendations_getgeneratestatus)
 - [List](#recommendations_list)
+- [ListByServiceGroup](#recommendations_listbyservicegroup)
+- [ListByTenant](#recommendations_listbytenant)
+- [Update](#recommendations_update)
+- [UpdateByServiceGroup](#recommendations_updatebyservicegroup)
+
+## ResiliencyReviews
+
+- [Get](#resiliencyreviews_get)
+- [List](#resiliencyreviews_list)
+
+## ResourceProvider
+
+- [Predict](#resourceprovider_predict)
 
 ## Suppressions
 
@@ -30,6 +60,162 @@
 - [Delete](#suppressions_delete)
 - [Get](#suppressions_get)
 - [List](#suppressions_list)
+
+## Workloads
+
+- [List](#workloads_list)
+### AdvisorScores_Get
+
+```java
+/**
+ * Samples for AdvisorScores Get.
+ */
+public final class AdvisorScoresGetSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/GetAdvisorScoreDetail.json
+     */
+    /**
+     * Sample code: GetAdvisorScoreDetail.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getAdvisorScoreDetail(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.advisorScores().getWithResponse("Cost", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AdvisorScores_List
+
+```java
+/**
+ * Samples for AdvisorScores List.
+ */
+public final class AdvisorScoresListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListAdvisorScore.json
+     */
+    /**
+     * Sample code: ListAdvisorScore.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void listAdvisorScore(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.advisorScores().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AssessmentTypes_List
+
+```java
+/**
+ * Samples for AssessmentTypes List.
+ */
+public final class AssessmentTypesListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListAssessmentTypes.json
+     */
+    /**
+     * Sample code: GetAssessmentTypes.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getAssessmentTypes(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.assessmentTypes().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assessments_Delete
+
+```java
+/**
+ * Samples for Assessments Delete.
+ */
+public final class AssessmentsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/DeleteAssessment.json
+     */
+    /**
+     * Sample code: DeleteAssessment.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void deleteAssessment(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.assessments().deleteWithResponse("assessment1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assessments_Get
+
+```java
+/**
+ * Samples for Assessments Get.
+ */
+public final class AssessmentsGetSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/GetAssessment.json
+     */
+    /**
+     * Sample code: GetAssessment.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getAssessment(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.assessments().getWithResponse("assessment1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assessments_List
+
+```java
+/**
+ * Samples for Assessments List.
+ */
+public final class AssessmentsListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListAssessments.json
+     */
+    /**
+     * Sample code: ListAssessments.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void listAssessments(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.assessments().list(null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assessments_Put
+
+```java
+/**
+ * Samples for Assessments Put.
+ */
+public final class AssessmentsPutSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/PutAssessment.json
+     */
+    /**
+     * Sample code: PutAssessment.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void putAssessment(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.assessments()
+            .define("assessment1")
+            .withWorkloadId("f72b7134-800f-4f1b-a5bd-691e2140c7d5")
+            .withTypeId("23513bdb-e8a2-4f0b-8b6b-191ee1f52d34")
+            .withLocale("en-us")
+            .create();
+    }
+}
+```
+
 ### Configurations_CreateInResourceGroup
 
 ```java
@@ -38,6 +224,7 @@ import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
 import com.azure.resourcemanager.advisor.models.DigestConfig;
 import com.azure.resourcemanager.advisor.models.DigestConfigState;
+import com.azure.resourcemanager.advisor.models.DurationModel;
 import java.util.Arrays;
 
 /**
@@ -45,8 +232,7 @@ import java.util.Arrays;
  */
 public final class ConfigurationsCreateInResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
+     * x-ms-original-file: 2026-08-01-preview/CreateConfiguration.json
      */
     /**
      * Sample code: PutConfigurations.
@@ -59,9 +245,10 @@ public final class ConfigurationsCreateInResourceGroupSamples {
             .withExistingResourceGroup("resourceGroup")
             .withExclude(true)
             .withLowCpuThreshold(CpuThreshold.FIVE)
+            .withDuration(DurationModel.SEVEN)
             .withDigests(Arrays.asList(new DigestConfig().withName("digestConfigName")
                 .withActionGroupResourceId(
-                    "/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
+                    "/subscriptions/58c3f667-7a62-4bfd-a658-846493e9a493/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
                 .withFrequency(30)
                 .withCategories(Arrays.asList(Category.HIGH_AVAILABILITY, Category.SECURITY, Category.PERFORMANCE,
                     Category.COST, Category.OPERATIONAL_EXCELLENCE))
@@ -81,6 +268,7 @@ import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
 import com.azure.resourcemanager.advisor.models.DigestConfig;
 import com.azure.resourcemanager.advisor.models.DigestConfigState;
+import com.azure.resourcemanager.advisor.models.DurationModel;
 import java.util.Arrays;
 
 /**
@@ -88,8 +276,7 @@ import java.util.Arrays;
  */
 public final class ConfigurationsCreateInSubscriptionSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
+     * x-ms-original-file: 2026-08-01-preview/CreateConfiguration_CreateInSubscription.json
      */
     /**
      * Sample code: PutConfigurations.
@@ -100,9 +287,10 @@ public final class ConfigurationsCreateInSubscriptionSamples {
         manager.configurations()
             .createInSubscriptionWithResponse(ConfigurationName.DEFAULT, new ConfigDataInner().withExclude(true)
                 .withLowCpuThreshold(CpuThreshold.FIVE)
+                .withDuration(DurationModel.SEVEN)
                 .withDigests(Arrays.asList(new DigestConfig().withName("digestConfigName")
                     .withActionGroupResourceId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
+                        "/subscriptions/58c3f667-7a62-4bfd-a658-846493e9a493/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
                     .withFrequency(30)
                     .withCategories(Arrays.asList(Category.HIGH_AVAILABILITY, Category.SECURITY, Category.PERFORMANCE,
                         Category.COST, Category.OPERATIONAL_EXCELLENCE))
@@ -121,8 +309,7 @@ public final class ConfigurationsCreateInSubscriptionSamples {
  */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
+     * x-ms-original-file: 2026-08-01-preview/ListConfigurations_ListBySubscription.json
      */
     /**
      * Sample code: GetConfigurations.
@@ -143,8 +330,7 @@ public final class ConfigurationsListSamples {
  */
 public final class ConfigurationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
+     * x-ms-original-file: 2026-08-01-preview/ListConfigurations.json
      */
     /**
      * Sample code: GetConfigurations.
@@ -165,15 +351,14 @@ public final class ConfigurationsListByResourceGroupSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListOperations.json
+     * x-ms-original-file: 2026-08-01-preview/OperationsList.json
      */
     /**
-     * Sample code: ListRecommendations.
+     * Sample code: OperationsList.
      * 
      * @param manager Entry point to AdvisorManager.
      */
-    public static void listRecommendations(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+    public static void operationsList(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -187,8 +372,7 @@ public final class OperationsListSamples {
  */
 public final class RecommendationMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/
-     * GetRecommendationMetadataEntity.json
+     * x-ms-original-file: 2026-08-01-preview/GetRecommendationMetadataEntity.json
      */
     /**
      * Sample code: GetMetadata.
@@ -209,9 +393,7 @@ public final class RecommendationMetadataGetSamples {
  */
 public final class RecommendationMetadataListSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListRecommendationMetadata.
-     * json
+     * x-ms-original-file: 2026-08-01-preview/ListRecommendationMetadata.json
      */
     /**
      * Sample code: GetMetadata.
@@ -219,7 +401,7 @@ public final class RecommendationMetadataListSamples {
      * @param manager Entry point to AdvisorManager.
      */
     public static void getMetadata(com.azure.resourcemanager.advisor.AdvisorManager manager) {
-        manager.recommendationMetadatas().list(com.azure.core.util.Context.NONE);
+        manager.recommendationMetadatas().list(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -232,8 +414,7 @@ public final class RecommendationMetadataListSamples {
  */
 public final class RecommendationsGenerateSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GenerateRecommendations.json
+     * x-ms-original-file: 2026-08-01-preview/GenerateRecommendations.json
      */
     /**
      * Sample code: GenerateRecommendations.
@@ -254,16 +435,57 @@ public final class RecommendationsGenerateSamples {
  */
 public final class RecommendationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GetRecommendationDetail.json
+     * x-ms-original-file: 2026-08-01-preview/GetRecommendationDetailServiceGroupResourceUri.json
      */
     /**
-     * Sample code: GetRecommendationDetail.
+     * Sample code: GetRecommendationDetailServiceGroupResourceUri.
      * 
      * @param manager Entry point to AdvisorManager.
      */
-    public static void getRecommendationDetail(com.azure.resourcemanager.advisor.AdvisorManager manager) {
-        manager.recommendations().getWithResponse("resourceUri", "recommendationId", com.azure.core.util.Context.NONE);
+    public static void
+        getRecommendationDetailServiceGroupResourceUri(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .getWithResponse("providers/microsoft.management/serviceGroup/serviceGroupXYZ",
+                "37c93209-4bfb-4f3b-8874-ccc718f7a467", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-01-preview/GetRecommendationDetailSubscriptionResourceUri.json
+     */
+    /**
+     * Sample code: GetRecommendationDetailSubscriptionResourceUri.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void
+        getRecommendationDetailSubscriptionResourceUri(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .getWithResponse(
+                "subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset",
+                "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Recommendations_GetByServiceGroup
+
+```java
+/**
+ * Samples for Recommendations GetByServiceGroup.
+ */
+public final class RecommendationsGetByServiceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/GetRecommendationDetailByServiceGroup.json
+     */
+    /**
+     * Sample code: GetRecommendationDetailByServiceGroup.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getRecommendationDetailByServiceGroup(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .getByServiceGroupWithResponse("serviceGroupXYZ", "37c93209-4bfb-4f3b-8874-ccc718f7a467",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -271,15 +493,12 @@ public final class RecommendationsGetSamples {
 ### Recommendations_GetGenerateStatus
 
 ```java
-import java.util.UUID;
-
 /**
  * Samples for Recommendations GetGenerateStatus.
  */
 public final class RecommendationsGetGenerateStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/EmptyResponse.json
+     * x-ms-original-file: 2026-08-01-preview/EmptyResponse.json
      */
     /**
      * Sample code: GetGenerateStatus.
@@ -288,8 +507,7 @@ public final class RecommendationsGetGenerateStatusSamples {
      */
     public static void getGenerateStatus(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.recommendations()
-            .getGenerateStatusWithResponse(UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                com.azure.core.util.Context.NONE);
+            .getGenerateStatusWithResponse("123e4567-e89b-12d3-a456-426614174000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -297,21 +515,214 @@ public final class RecommendationsGetGenerateStatusSamples {
 ### Recommendations_List
 
 ```java
+import com.azure.resourcemanager.advisor.models.RecommendationListMode;
+
 /**
  * Samples for Recommendations List.
  */
 public final class RecommendationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListRecommendations.json
+     * x-ms-original-file: 2026-08-01-preview/ListRecommendationsSubscriptionResourceUri.json
      */
     /**
-     * Sample code: ListRecommendations.
+     * Sample code: ListRecommendationsSubscriptionResourceUri.
      * 
      * @param manager Entry point to AdvisorManager.
      */
-    public static void listRecommendations(com.azure.resourcemanager.advisor.AdvisorManager manager) {
-        manager.recommendations().list(null, 10, null, com.azure.core.util.Context.NONE);
+    public static void
+        listRecommendationsSubscriptionResourceUri(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations().list(null, RecommendationListMode.ALL, 10, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Recommendations_ListByServiceGroup
+
+```java
+import com.azure.resourcemanager.advisor.models.RecommendationListMode;
+
+/**
+ * Samples for Recommendations ListByServiceGroup.
+ */
+public final class RecommendationsListByServiceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListRecommendationsByServiceGroup.json
+     */
+    /**
+     * Sample code: ListRecommendationsByServiceGroup.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void listRecommendationsByServiceGroup(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .listByServiceGroup("serviceGroupXYZ", null, RecommendationListMode.ALL, 10, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Recommendations_ListByTenant
+
+```java
+/**
+ * Samples for Recommendations ListByTenant.
+ */
+public final class RecommendationsListByTenantSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListRecommendationsServiceGroupResourceUri.json
+     */
+    /**
+     * Sample code: ListRecommendationsServiceGroupResourceUri.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void
+        listRecommendationsServiceGroupResourceUri(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .listByTenant("providers/microsoft.management/serviceGroups/serviceGroupXYZ", null, 10, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Recommendations_Update
+
+```java
+import com.azure.resourcemanager.advisor.models.RecommendationDismissReason;
+import com.azure.resourcemanager.advisor.models.RecommendationPatchPayload;
+import com.azure.resourcemanager.advisor.models.RecommendationStatePropertiesPayload;
+import com.azure.resourcemanager.advisor.models.RecommendationStatus;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for Recommendations Update.
+ */
+public final class RecommendationsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/PatchRecommendationStateProperties.json
+     */
+    /**
+     * Sample code: PatchRecommendationStateProperties.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void patchRecommendationStateProperties(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .updateWithResponse("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45",
+                new RecommendationPatchPayload().withProperties(
+                    new RecommendationStatePropertiesPayload().withRecommendationStatus(RecommendationStatus.POSTPONED)
+                        .withRecommendationDismissReason(RecommendationDismissReason.fromString("NotRelevant"))
+                        .withPostponedUntilDateTime(OffsetDateTime.parse("2024-09-01T00:00:00Z"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Recommendations_UpdateByServiceGroup
+
+```java
+import com.azure.resourcemanager.advisor.models.RecommendationDismissReason;
+import com.azure.resourcemanager.advisor.models.RecommendationPatchPayload;
+import com.azure.resourcemanager.advisor.models.RecommendationStatePropertiesPayload;
+import com.azure.resourcemanager.advisor.models.RecommendationStatus;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for Recommendations UpdateByServiceGroup.
+ */
+public final class RecommendationsUpdateByServiceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/PatchRecommendationStatePropertiesByServiceGroup.json
+     */
+    /**
+     * Sample code: PatchRecommendationStatePropertiesByServiceGroup.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void
+        patchRecommendationStatePropertiesByServiceGroup(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.recommendations()
+            .updateByServiceGroupWithResponse("serviceGroupXYZ",
+                "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45",
+                new RecommendationPatchPayload().withProperties(
+                    new RecommendationStatePropertiesPayload().withRecommendationStatus(RecommendationStatus.POSTPONED)
+                        .withRecommendationDismissReason(RecommendationDismissReason.fromString("NotRelevant"))
+                        .withPostponedUntilDateTime(OffsetDateTime.parse("2024-09-01T00:00:00Z"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResiliencyReviews_Get
+
+```java
+/**
+ * Samples for ResiliencyReviews Get.
+ */
+public final class ResiliencyReviewsGetSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ResiliencyReviewsGet.json
+     */
+    /**
+     * Sample code: GetResiliencyReview.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getResiliencyReview(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.resiliencyReviews()
+            .getWithResponse("11111111-1111-2222-3333-444444444444", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResiliencyReviews_List
+
+```java
+/**
+ * Samples for ResiliencyReviews List.
+ */
+public final class ResiliencyReviewsListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ResiliencyReviewsList.json
+     */
+    /**
+     * Sample code: ListResiliencyReviews.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void listResiliencyReviews(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.resiliencyReviews().list(null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_Predict
+
+```java
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.advisor.models.PredictionRequest;
+import com.azure.resourcemanager.advisor.models.PredictionType;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * Samples for ResourceProvider Predict.
+ */
+public final class ResourceProviderPredictSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Predict.json
+     */
+    /**
+     * Sample code: Predict.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void predict(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.resourceProviders()
+            .predictWithResponse(new PredictionRequest().withPredictionType(PredictionType.PREDICTIVE_RIGHTSIZING)
+                .withExtendedProperties(BinaryData.fromBytes(
+                    "{region=CentralUS, deploymentType=Linux_IaaS_Software_Store, sku=Standard_Dv4, type=iaas, numberOfInstances=10}"
+                        .getBytes(StandardCharsets.UTF_8))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -324,8 +735,7 @@ public final class RecommendationsListSamples {
  */
 public final class SuppressionsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateSuppression.json
+     * x-ms-original-file: 2026-08-01-preview/CreateSuppression.json
      */
     /**
      * Sample code: CreateSuppression.
@@ -334,8 +744,9 @@ public final class SuppressionsCreateSamples {
      */
     public static void createSuppression(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.suppressions()
-            .define("suppressionName1")
-            .withExistingRecommendation("resourceUri", "recommendationId")
+            .define("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45")
+            .withExistingRecommendation("resourceUri",
+                "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b36")
             .withTtl("07:00:00:00")
             .create();
     }
@@ -350,8 +761,7 @@ public final class SuppressionsCreateSamples {
  */
 public final class SuppressionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/DeleteSuppression.json
+     * x-ms-original-file: 2026-08-01-preview/DeleteSuppression.json
      */
     /**
      * Sample code: DeleteSuppression.
@@ -360,7 +770,7 @@ public final class SuppressionsDeleteSamples {
      */
     public static void deleteSuppression(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.suppressions()
-            .deleteWithResponse("resourceUri", "recommendationId", "suppressionName1",
+            .deleteWithResponse("resourceUri", "recommendationId", "HardcodedSuppressionName",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -374,8 +784,7 @@ public final class SuppressionsDeleteSamples {
  */
 public final class SuppressionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GetSuppressionDetail.json
+     * x-ms-original-file: 2026-08-01-preview/GetSuppressionDetail.json
      */
     /**
      * Sample code: GetSuppressionDetail.
@@ -384,7 +793,8 @@ public final class SuppressionsGetSamples {
      */
     public static void getSuppressionDetail(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.suppressions()
-            .getWithResponse("resourceUri", "recommendationId", "suppressionName1", com.azure.core.util.Context.NONE);
+            .getWithResponse("resourceUri", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45",
+                "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -397,8 +807,7 @@ public final class SuppressionsGetSamples {
  */
 public final class SuppressionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListSuppressions.json
+     * x-ms-original-file: 2026-08-01-preview/ListSuppressions.json
      */
     /**
      * Sample code: ListSuppressions.
@@ -407,6 +816,27 @@ public final class SuppressionsListSamples {
      */
     public static void listSuppressions(com.azure.resourcemanager.advisor.AdvisorManager manager) {
         manager.suppressions().list(null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workloads_List
+
+```java
+/**
+ * Samples for Workloads List.
+ */
+public final class WorkloadsListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListWorkloads.json
+     */
+    /**
+     * Sample code: GetWorkloads.
+     * 
+     * @param manager Entry point to AdvisorManager.
+     */
+    public static void getWorkloads(com.azure.resourcemanager.advisor.AdvisorManager manager) {
+        manager.workloads().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
