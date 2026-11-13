@@ -13,12 +13,13 @@ public final class PlaywrightWorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"inpm\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"ixjsprozvcputeg\",\"reporting\":\"Disabled\",\"storageUri\":\"fdatsc\"}")
+            "{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"inpm\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"ixjsprozvcputeg\",\"reporting\":\"Disabled\",\"storageUri\":\"fdatsc\",\"subnetId\":\"vpjhulsuuv\"}")
             .toObject(PlaywrightWorkspaceProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
         Assertions.assertEquals("fdatsc", model.storageUri());
+        Assertions.assertEquals("vpjhulsuuv", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +28,13 @@ public final class PlaywrightWorkspacePropertiesTests {
             = new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.DISABLED)
                 .withLocalAuth(EnablementStatus.DISABLED)
                 .withReporting(EnablementStatus.DISABLED)
-                .withStorageUri("fdatsc");
+                .withStorageUri("fdatsc")
+                .withSubnetId("vpjhulsuuv");
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
         Assertions.assertEquals("fdatsc", model.storageUri());
+        Assertions.assertEquals("vpjhulsuuv", model.subnetId());
     }
 }
