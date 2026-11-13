@@ -98,6 +98,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -128,6 +129,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.concurrent.atomic.AtomicReference;
@@ -163,7 +165,7 @@ class FileApiTests extends FileShareTestBase {
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        if (testInfo.getTags().contains("file-id-mock")) {
+        if (testInfo.getTags().contains("file-id-mock") || testInfo.getTags().contains("rename-mock")) {
             return;
         }
 
@@ -3073,6 +3075,114 @@ class FileApiTests extends FileShareTestBase {
     public void renameMin() {
         primaryFileClient.create(512);
         assertNotNull(primaryFileClient.rename(generatePathName()));
+    }
+
+    @Test
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void syncFileRenameReturnsClientForDestinationPath() {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareFileClient source = helper.createBuilder().resourcePath("source.txt").buildFileClient();
+
+        ShareFileClient destination = source.rename(RenameDestinationTestHelper.DESTINATION);
+        destination.delete();
+        String actualUrl = helper.lastRequestUrl();
+
+        assertEquals(helper.expectedFileDeleteUrl(), actualUrl);
+        assertEquals(RenameDestinationTestHelper.DESTINATION, destination.getFilePath());
+    }
+
+    /**
+     * The sync file client delegates transfers (download, upload, streams) to an internal async client. The client
+     * returned by rename must route those operations to the destination, exactly as a directly built client does. A
+     * stale delegate sends them to the source path instead, so a write can land on an unrelated file that now lives
+     * there.
+     */
+    @ParameterizedTest
+    @EnumSource(FileOperation.class)
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void syncFileRenameReturnsClientWhoseOperationsTargetTheDestination(FileOperation operation,
+        @TempDir Path tempDir) throws Exception {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareFileClient renamed = helper.createBuilder()
+            .resourcePath("source.txt")
+            .buildFileClient()
+            .rename(RenameDestinationTestHelper.DESTINATION);
+
+        int renamedStart = helper.requestCount();
+        operation.run(renamed, tempDir);
+        List<String> actual = helper.requestLines(renamedStart);
+
+        int directStart = helper.requestCount();
+        operation.run(helper.createBuilder().resourcePath(RenameDestinationTestHelper.DESTINATION).buildFileClient(),
+            tempDir);
+        List<String> expected = helper.requestLines(directStart);
+
+        assertFalse(expected.isEmpty());
+        assertEquals(expected, actual);
+    }
+
+    enum FileOperation {
+        GET_PROPERTIES {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.getProperties();
+            }
+        },
+        DELETE {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.delete();
+            }
+        },
+        OPEN_INPUT_STREAM {
+            @Override
+            void run(ShareFileClient client, Path dir) throws Exception {
+                client.openInputStream().close();
+            }
+        },
+        GET_FILE_OUTPUT_STREAM {
+            @Override
+            void run(ShareFileClient client, Path dir) throws Exception {
+                try (StorageFileOutputStream out = client.getFileOutputStream()) {
+                    out.write(1);
+                }
+            }
+        },
+        DOWNLOAD {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.download(new ByteArrayOutputStream());
+            }
+        },
+        DOWNLOAD_TO_FILE {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.downloadToFile(dir.resolve(UUID.randomUUID().toString()).toString());
+            }
+        },
+        UPLOAD {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.upload(new ByteArrayInputStream(new byte[3]), 3);
+            }
+        },
+        UPLOAD_RANGE {
+            @Override
+            void run(ShareFileClient client, Path dir) {
+                client.uploadRange(new ByteArrayInputStream(new byte[3]), 3);
+            }
+        },
+        UPLOAD_FROM_FILE {
+            @Override
+            void run(ShareFileClient client, Path dir) throws Exception {
+                Path source = Files.write(dir.resolve(UUID.randomUUID().toString()), new byte[] { 1, 2, 3 });
+                client.uploadFromFile(source.toString());
+            }
+        };
+
+        abstract void run(ShareFileClient client, Path dir) throws Exception;
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
