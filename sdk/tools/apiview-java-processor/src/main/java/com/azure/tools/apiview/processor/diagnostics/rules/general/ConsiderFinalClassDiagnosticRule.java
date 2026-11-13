@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -18,21 +18,28 @@ import java.util.TreeSet;
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.INFO;
 
+/**
+ * Checks consider final class conventions.
+ */
 public class ConsiderFinalClassDiagnosticRule implements DiagnosticRule {
     private final List<TypeDeclaration<?>> nonFinalTypes = new ArrayList<>();
     private final Set<String> knownParentClasses = new TreeSet<>(String::compareTo);
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         cu.getTypes().forEach(type -> {
-            if (type.isEnumDeclaration())
+            if (type.isEnumDeclaration()) {
                 return;
-            if (type.hasModifier(Modifier.Keyword.ABSTRACT))
+            }
+            if (type.hasModifier(Modifier.Keyword.ABSTRACT)) {
                 return;
-            if (type.isClassOrInterfaceDeclaration() && type.asClassOrInterfaceDeclaration().isInterface())
+            }
+            if (type.isClassOrInterfaceDeclaration() && type.asClassOrInterfaceDeclaration().isInterface()) {
                 return;
-            if (type.isAnnotationDeclaration())
+            }
+            if (type.isAnnotationDeclaration()) {
                 return;
+            }
 
             // if we are here we are looking at a type we are interested in tracking.
             // for the type we are looking at, we check to see if it is a final type...
@@ -49,7 +56,7 @@ public class ConsiderFinalClassDiagnosticRule implements DiagnosticRule {
     }
 
     @Override
-    public void scanFinal(final APIListing listing) {
+    public void scanFinal(final ApiListing listing) {
         for (final TypeDeclaration<?> type : nonFinalTypes) {
             final String name = type.getNameAsString();
             if (!knownParentClasses.contains(name)) {

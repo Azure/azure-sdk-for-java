@@ -13,10 +13,17 @@ import java.util.Optional;
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
 
+/**
+ * Shared parameter validation helpers for diagnostic rules.
+ */
 public class MiscUtils {
 
     /**
      * Checks that a given method declaration accepts a type whose name ends with the given suffix.
+     *
+     * @param methodDeclaration the method declaration
+     * @param suffix the suffix
+     * @return a diagnostic if the parameter is missing or has the wrong type
      */
     public static Optional<Diagnostic> checkMethodParameterTypeSuffix(MethodDeclaration methodDeclaration,
         String suffix) {
@@ -25,6 +32,11 @@ public class MiscUtils {
 
     /**
      * Checks that a given method declaration accepts a type whose name ends with the given suffix.
+     *
+     * @param methodDeclaration the method declaration
+     * @param paramIndex the param index
+     * @param suffix the suffix
+     * @return a diagnostic if the parameter is missing or has the wrong type
      */
     public static Optional<Diagnostic> checkMethodParameterTypeSuffix(MethodDeclaration methodDeclaration,
         int paramIndex, String suffix) {

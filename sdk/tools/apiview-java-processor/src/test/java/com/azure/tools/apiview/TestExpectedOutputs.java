@@ -24,8 +24,8 @@ public class TestExpectedOutputs {
     // having to rename.
     private static final boolean ADD_DELETE_PREFIX_FOR_MISSING_EXPECTED_OUTPUTS = true;
 
-    private static final String root = "src/test/resources/";
-    private static final File tempDir = new File(root + "temp");
+    private static final String ROOT = "src/test/resources/";
+    private static final File TEMP_DIR = new File(ROOT + "temp");
 
     private static Stream<String> provideFileNames() {
         // This is a stream of local files or URLs to download the file from (or a combination of both). For each value,
@@ -47,7 +47,7 @@ public class TestExpectedOutputs {
 
     @BeforeAll
     public static void setup() {
-        tempDir.mkdirs();
+        TEMP_DIR.mkdirs();
     }
 
     @ParameterizedTest
@@ -83,7 +83,7 @@ public class TestExpectedOutputs {
             filename = filenameOrUrl.substring(filenameOrUrl.lastIndexOf('/') + 1);
 
             // download the file and save it to the temp directory
-            String destinationFile = tempDir + "/" + filename;
+            String destinationFile = TEMP_DIR + "/" + filename;
             downloadFile(filenameOrUrl, destinationFile);
 
             // strip off the file extension
@@ -92,13 +92,13 @@ public class TestExpectedOutputs {
         } else {
             // the file is local, so we can go straight to it
             filename = filenameOrUrl;
-            inputFile = Paths.get(root + "inputs/" + filename + ".jar");
+            inputFile = Paths.get(ROOT + "inputs/" + filename + ".jar");
         }
 
-        final Path expectedOutputFile = Paths.get(root + "expected-outputs/" + filename + ".json");
+        final Path expectedOutputFile = Paths.get(ROOT + "expected-outputs/" + filename + ".json");
 
         // Run the processor, receiving the name of the JSON file that was generated (we ignore the gzipped value in index 1)
-        final Path actualOutputFile = Main.run(inputFile.toFile(), tempDir)[0].toPath();
+        final Path actualOutputFile = Main.run(inputFile.toFile(), TEMP_DIR)[0].toPath();
 
         if (expectedOutputFile.toFile().exists()) {
             try {
@@ -110,7 +110,7 @@ public class TestExpectedOutputs {
         } else {
             // the test was never going to pass as we don't have an expected file to compare against.
             try {
-                final String outputFile = root + "expected-outputs/" + filename
+                final String outputFile = ROOT + "expected-outputs/" + filename
                     + (ADD_DELETE_PREFIX_FOR_MISSING_EXPECTED_OUTPUTS ? "-DELETE" : "") + ".json";
                 final Path suggestedOutputFile = Paths.get(outputFile);
 
@@ -137,12 +137,12 @@ public class TestExpectedOutputs {
     @AfterAll
     public static void tearDown() throws IOException {
         // Delete the temporary file
-        if (tempDir.exists()) {
-            // delete everything in tempDir and then delete the directory
-            Files.walk(tempDir.toPath()).map(Path::toFile).forEach(File::delete);
+        if (TEMP_DIR.exists()) {
+            // delete everything in TEMP_DIR and then delete the directory
+            Files.walk(TEMP_DIR.toPath()).map(Path::toFile).forEach(File::delete);
 
             try {
-                Files.delete(tempDir.toPath());
+                Files.delete(TEMP_DIR.toPath());
             } catch (NoSuchFileException e) {
                 // ignore
             }

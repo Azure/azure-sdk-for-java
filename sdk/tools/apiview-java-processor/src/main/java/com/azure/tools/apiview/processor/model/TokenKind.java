@@ -6,6 +6,9 @@ package com.azure.tools.apiview.processor.model;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * Token categories and their APIView protocol identifiers.
+ */
 public enum TokenKind {
     TEXT(StructuredTokenKind.TEXT),
     //    NEW_LINE(LINE_BREAK),
@@ -86,18 +89,38 @@ public enum TokenKind {
         this.renderClasses = EnumSet.of(renderClass);
     }
 
+    /**
+     * Returns the structured token kind.
+     *
+     * @return the structured token kind
+     */
     public StructuredTokenKind getStructuredTokenKind() {
         return structuredTokenKind;
     }
 
+    /**
+     * Returns the token kind id.
+     *
+     * @return the token kind id
+     */
     public int getTokenKindId() {
         return structuredTokenKind.getId();
     }
 
+    /**
+     * Returns the render classes.
+     *
+     * @return the render classes
+     */
     public Set<RenderClass> getRenderClasses() {
         return renderClasses;
     }
 
+    /**
+     * Returns the type declaration string.
+     *
+     * @return the type declaration string
+     */
     public String getTypeDeclarationString() {
         return typeDeclarationString;
     }

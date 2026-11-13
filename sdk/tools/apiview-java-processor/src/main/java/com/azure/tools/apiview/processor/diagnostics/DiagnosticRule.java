@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.diagnostics;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.github.javaparser.ast.CompilationUnit;
 
 /**
@@ -16,12 +16,12 @@ public interface DiagnosticRule {
      * Scans the compilation unit for issues and reports them to the API listing. Note that the state of the API listing
      * is representative of the current progress of the scan, so it is possible that the listing may not contain all
      * contextual information. If you want to report issues that require a full scan of the API listing, you should
-     * implement the {@link #scanFinal(APIListing)} method instead.
+     * implement the {@link #scanFinal(ApiListing)} method instead.
      *
      * @param cu the compilation unit to scan.
      * @param listing the API listing to report issues to.
      */
-    void scanIndividual(CompilationUnit cu, APIListing listing);
+    void scanIndividual(CompilationUnit cu, ApiListing listing);
 
     /**
      * Scans the API listing for issues that require a full scan of the listing. This method is called after all
@@ -29,7 +29,7 @@ public interface DiagnosticRule {
      *
      * @param listing the API listing to report issues to.
      */
-    default void scanFinal(APIListing listing) {
+    default void scanFinal(ApiListing listing) {
         // no-op (not all diagnostics care about doing a final scan)
     }
 }

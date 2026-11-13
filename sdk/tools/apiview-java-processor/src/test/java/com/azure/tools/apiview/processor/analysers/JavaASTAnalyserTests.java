@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.analysers;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.MarkdownRenderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -28,7 +28,7 @@ public class JavaASTAnalyserTests {
                     "    public static TestServiceVersion getLatest() {", "        return V1;", "    }", "}")
                 .getBytes(StandardCharsets.UTF_8));
 
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         listing.setPackageName("io.clientcore:test");
         new JavaASTAnalyser(listing).analyse(Collections.singletonList(sourceFile));
         String markdown = MarkdownRenderer.render(listing);

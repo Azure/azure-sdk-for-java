@@ -7,8 +7,6 @@ import com.azure.tools.apiview.processor.analysers.JavaASTAnalyser;
 import com.azure.tools.apiview.processor.analysers.models.Constants;
 import com.azure.tools.apiview.processor.analysers.util.ASTUtils;
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.*;
-import com.azure.tools.apiview.processor.model.traits.Parent;
 import com.github.javaparser.ast.CompilationUnit;
 
 import java.util.Comparator;
@@ -17,8 +15,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.azure.tools.apiview.processor.analysers.JavaASTAnalyser.MODULE_INFO_KEY;
-import static com.azure.tools.apiview.processor.analysers.models.Constants.*;
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
+import com.azure.tools.apiview.processor.model.ApiListing;
+import com.azure.tools.apiview.processor.model.Diagnostic;
+import com.azure.tools.apiview.processor.model.DiagnosticKind;
+import com.azure.tools.apiview.processor.model.ReviewLine;
+import static com.azure.tools.apiview.processor.analysers.models.Constants.PROPERTY_MODULE_NAME;
 
 /**
  * This diagnostic rule checks that the module has `module-info.java` and also validates that the
@@ -28,12 +30,12 @@ public class ModuleInfoDiagnosticRule implements DiagnosticRule {
     private final Set<String> packages = new HashSet<>();
 
     @Override
-    public void scanIndividual(CompilationUnit cu, APIListing listing) {
+    public void scanIndividual(CompilationUnit cu, ApiListing listing) {
         packages.add(cu.getPackageDeclaration().get().getNameAsString());
     }
 
     @Override
-    public void scanFinal(APIListing listing) {
+    public void scanFinal(ApiListing listing) {
         // In this method, we first look for the presence of module-info.java.
         // If not present, add a warning message at the base package level
         // If present, validate that the module name is the same as the base package name
@@ -61,7 +63,7 @@ public class ModuleInfoDiagnosticRule implements DiagnosticRule {
         if (moduleName != null) {
             // special casing azure-core as the base package doesn't have any classes and hence not included in the
             // list of packages
-            if (!moduleName.equals(basePackageName) && !moduleName.equals("com.azure.core")) {
+            if (!moduleName.equals(basePackageName) && !"com.azure.core".equals(moduleName)) {
                 // add warning message if the module name does not match the base package name
                 listing.addDiagnostic(new Diagnostic(DiagnosticKind.WARNING, makeId(MODULE_INFO_KEY),
                     "Module name should be the same as base package " + "name: " + basePackageName));

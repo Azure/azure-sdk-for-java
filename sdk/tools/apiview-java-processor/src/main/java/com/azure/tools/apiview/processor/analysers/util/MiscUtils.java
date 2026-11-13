@@ -20,16 +20,26 @@ public final class MiscUtils {
         .compile("https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
 
     /**
-     * Tokenizes a key-value pair.
+     * Adds a Maven key-value pair as a child review line.
      *
      * @param key The key.
      * @param value The value.
      * @return A token representing the key-value pair.
+     * @param parentLine the parent line
      */
     public static ReviewLine tokeniseMavenKeyValue(ReviewLine parentLine, String key, Object value) {
         return tokeniseMavenKeyValue(parentLine, key, value, false);
     }
 
+    /**
+     * Adds a Maven key-value pair as a child review line.
+     *
+     * @param parentLine the parent line
+     * @param key the key
+     * @param value the value
+     * @param skipDiff the skip diff
+     * @return the added child line
+     */
     public static ReviewLine tokeniseMavenKeyValue(ReviewLine parentLine, String key, Object value, boolean skipDiff) {
         ReviewToken valueToken = new ReviewToken(MAVEN_VALUE, value == null ? "<default value>" : value.toString());
 
@@ -45,6 +55,9 @@ public final class MiscUtils {
 
     /**
      * Makes all characters in the string lowercase, other than the first character.
+     *
+     * @param s the s
+     * @return the string with the selected character uppercase and all others lowercase
      */
     public static String upperCase(String s) {
         return upperCase(s, 0);
@@ -52,6 +65,10 @@ public final class MiscUtils {
 
     /**
      * Makes all characters in the string lowercase, other than the given index.
+     *
+     * @param s the s
+     * @param index the index
+     * @return the string with the selected character uppercase and all others lowercase
      */
     public static String upperCase(String s, int index) {
         return s.substring(0, index).toLowerCase() + Character.toUpperCase(s.charAt(index))

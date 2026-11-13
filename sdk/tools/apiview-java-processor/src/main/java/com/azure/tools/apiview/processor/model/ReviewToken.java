@@ -7,10 +7,17 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
-import java.util.*;
 
-import static com.azure.tools.apiview.processor.analysers.models.Constants.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_NAME_KIND;
+import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_NAME_RENDER_CLASSES;
+import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_NAME_VALUE;
 
+/**
+ * A display token with navigation, spacing, and diff metadata.
+ */
 public class ReviewToken implements JsonSerializable<ReviewToken> {
 
     // The token value which will be displayed.
@@ -52,10 +59,24 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
     // for you classes. e.g csKeyword , jsModule, pyModule
     private final Set<RenderClass> renderClasses;
 
+    /**
+     * Creates a review token.
+     *
+     * @param tokenKind the token kind
+     * @param value the value
+     */
     public ReviewToken(TokenKind tokenKind, String value) {
         this(tokenKind, value, null);
     }
 
+    /**
+     * Creates a review token.
+     *
+     * @param tokenKind the token kind
+     * @param value the value
+     * @param navigateToId the navigate to id
+     * @throws NullPointerException if the operation cannot be completed
+     */
     public ReviewToken(TokenKind tokenKind, String value, String navigateToId) {
         this.value = value;
         this.navigateToId = navigateToId;
@@ -68,21 +89,45 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
         this.renderClasses = new LinkedHashSet<>(tokenKind.getRenderClasses());
     }
 
+    /**
+     * Adds render class.
+     *
+     * @param renderClass the render class
+     * @return this instance
+     */
     public ReviewToken addRenderClass(RenderClass renderClass) {
         renderClasses.add(Objects.requireNonNull(renderClass));
         return this;
     }
 
+    /**
+     * Sets the navigation display name.
+     *
+     * @param navigationDisplayName the navigation display name
+     * @return this instance
+     */
     public ReviewToken setNavigationDisplayName(String navigationDisplayName) {
         this.navigationDisplayName = navigationDisplayName;
         return this;
     }
 
+    /**
+     * Excludes this token from API diffs.
+     *
+     * @return this instance
+     */
     public ReviewToken setSkipDiff() {
         this.skipDiff = true;
         return this;
     }
 
+    /**
+     * Sets the spacing.
+     *
+     * @param spacing the spacing
+     * @return this instance
+     * @throws IllegalArgumentException if the operation cannot be completed
+     */
     public ReviewToken setSpacing(Spacing spacing) {
         switch (spacing) {
             case DEFAULT:
@@ -115,38 +160,79 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
         return this;
     }
 
+    /**
+     * Sets the navigation target for this token.
+     *
+     * @param navigateToId the navigate to id
+     * @return this instance
+     */
     public ReviewToken setNavigateToId(String navigateToId) {
         this.navigateToId = navigateToId;
         return this;
     }
 
+    /**
+     * Marks this token as documentation.
+     *
+     * @return this instance
+     */
     public ReviewToken setDocumentation() {
         this.isDocumentation = true;
         return this;
     }
 
+    /**
+     * Marks this token as deprecated.
+     *
+     * @return this instance
+     */
     public ReviewToken setDeprecated() {
         this.isDeprecated = true;
         addRenderClass(RenderClass.DEPRECATED);
         return this;
     }
 
+    /**
+     * Returns the token kind.
+     *
+     * @return the token kind
+     */
     public TokenKind getTokenKind() {
         return tokenKind;
     }
 
+    /**
+     * Returns the value.
+     *
+     * @return the value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Checks whether prefix space is present.
+     *
+     * @return true if present
+     */
     public boolean hasPrefixSpace() {
         return hasPrefixSpace;
     }
 
+    /**
+     * Checks whether suffix space is present.
+     *
+     * @return true if present
+     */
     public boolean hasSuffixSpace() {
         return hasSuffixSpace;
     }
 
+    /**
+     * Returns whether this token represents documentation.
+     *
+     * @return true if enabled
+     */
     public boolean isDocumentation() {
         return isDocumentation;
     }
@@ -191,7 +277,7 @@ public class ReviewToken implements JsonSerializable<ReviewToken> {
             jsonWriter.writeBooleanField("IsDocumentation", isDocumentation);
         }
 
-        // FIXME tidy up
+        // TODO (apiview): tidy up
         if (renderClasses != null && !renderClasses.isEmpty()) {
             jsonWriter.writeArrayField(JSON_NAME_RENDER_CLASSES, renderClasses, (jw, rc) -> {
                 for (String str : rc.getValues()) {

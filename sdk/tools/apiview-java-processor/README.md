@@ -18,7 +18,7 @@ mvn -f sdk/tools/apiview-java-processor/pom.xml clean verify
 
 Artifacts are written to `sdk/tools/apiview-java-processor/target`.
 No processor publication is required.
-Verification checks source license headers and formatting with Spotless.
+Verification runs tests, Spotless formatting checks, and shared SDK Checkstyle rules, including license headers.
 
 ## Generate an API review bundle
 

@@ -3,18 +3,27 @@
 
 package com.azure.tools.apiview.processor.analysers.util;
 
-import com.azure.tools.apiview.processor.model.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.azure.tools.apiview.processor.model.ApiListing;
+import com.azure.tools.apiview.processor.model.ReviewLine;
+import com.azure.tools.apiview.processor.model.ReviewToken;
 
-public class APIListingValidator {
-    private APIListingValidator() {
+/**
+ * Validation helpers for generated API listings.
+ */
+public final class ApiListingValidator {
+    private ApiListingValidator() {
     }
 
-    public static void validate(APIListing apiListing) {
-        // FIXME reintroduce on other side of port
+    /**
+     * Validates the generated API listing.
+     *
+     * @param apiListing the api listing
+     */
+    public static void validate(ApiListing apiListing) {
+        // TODO (apiview): reintroduce on other side of port
         // Create a set to store the IDs
         Set<String> ids = new HashSet<>();
 
@@ -53,7 +62,7 @@ public class APIListingValidator {
     }
 
     private static void validateToken(ReviewToken token, Set<String> ids) {
-        //        // FIXME reintroduce on other side of port
+        //        // TODO (apiview): reintroduce on other side of port
         //        if (token.getKind() == null) {
         //            throw new IllegalStateException("Token kind cannot be null");
         //        }

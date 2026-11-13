@@ -3,8 +3,7 @@
 
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
-import com.azure.tools.apiview.processor.diagnostics.rules.general.NoLocalesInJavadocUrlDiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.JavadocComment;
@@ -26,7 +25,7 @@ public class NoLocalesInJavadocUrlDiagnosticRuleTests {
 
         NoLocalesInJavadocUrlDiagnosticRule rule = new NoLocalesInJavadocUrlDiagnosticRule();
         NodeWithJavadoc<?> javadocNode = createJavadocNode(javadoc);
-        APIListing apiListing = new APIListing();
+        ApiListing apiListing = new ApiListing();
 
         rule.checkJavaDoc(javadocNode, "matchesSingleLocaleInJavadocLine", apiListing);
 
@@ -40,7 +39,7 @@ public class NoLocalesInJavadocUrlDiagnosticRuleTests {
 
         NoLocalesInJavadocUrlDiagnosticRule rule = new NoLocalesInJavadocUrlDiagnosticRule();
         NodeWithJavadoc<?> javadocNode = createJavadocNode(javadoc);
-        APIListing apiListing = new APIListing();
+        ApiListing apiListing = new ApiListing();
 
         rule.checkJavaDoc(javadocNode, "matchesAllLocalesInJavadocLine", apiListing);
 
@@ -55,7 +54,7 @@ public class NoLocalesInJavadocUrlDiagnosticRuleTests {
 
         NoLocalesInJavadocUrlDiagnosticRule rule = new NoLocalesInJavadocUrlDiagnosticRule();
         NodeWithJavadoc<?> javadocNode = createJavadocNode(javadoc);
-        APIListing apiListing = new APIListing();
+        ApiListing apiListing = new ApiListing();
 
         rule.checkJavaDoc(javadocNode, "doesNotMatchLocaleNotInUrl", apiListing);
 

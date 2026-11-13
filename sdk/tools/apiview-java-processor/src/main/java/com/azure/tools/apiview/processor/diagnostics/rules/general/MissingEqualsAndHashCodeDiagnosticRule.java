@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
@@ -26,12 +26,17 @@ public class MissingEqualsAndHashCodeDiagnosticRule implements DiagnosticRule {
 
     private final Pattern packageRegex;
 
+    /**
+     * Creates a missing equals and hash code diagnostic rule.
+     *
+     * @param packageRegex the package regex
+     */
     public MissingEqualsAndHashCodeDiagnosticRule(String packageRegex) {
         this.packageRegex = Pattern.compile(packageRegex);
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getClasses(cu).filter(type -> packageRegex.matcher(getPackageName(type)).matches()).forEach(typeDeclaration -> {
             boolean hasEquals = hasValidEqualsMethod(typeDeclaration);
             boolean hasHashCode = hasValidHashCodeMethod(typeDeclaration);

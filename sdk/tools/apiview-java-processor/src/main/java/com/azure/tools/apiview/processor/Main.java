@@ -6,7 +6,7 @@ package com.azure.tools.apiview.processor;
 import com.azure.tools.apiview.processor.analysers.Analyser;
 import com.azure.tools.apiview.processor.analysers.JavaASTAnalyser;
 import com.azure.tools.apiview.processor.analysers.models.Constants;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.ApiViewProperties;
 import com.azure.tools.apiview.processor.model.Language;
 import com.azure.tools.apiview.processor.model.LanguageVariant;
@@ -35,9 +35,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * Command-line entry point for Java API review generation.
+ */
 public class Main {
     // expected argument order:
-    // [--renderer=json|markdown] [inputFiles] <outputDirectory>
+    /**
+     * Generates API review files from the command-line arguments.
+     *
+     * @param args the args
+     */
     public static void main(String[] args) {
         final CommandLineOptions options;
         try {
@@ -67,8 +74,12 @@ public class Main {
 
     /**
      * Runs APIView parser and returns the output file path as an array. The first value in the array is the
-     * JSON file. If there are multiple outputs (i.e. gzipping is enabled), the second value in the array is the
-     * gzipped file.
+     *     JSON file. If there are multiple outputs (i.e. gzipping is enabled), the second value in the array is the
+     *     gzipped file.
+     *
+     * @param jarFile the jar file
+     * @param outputDir the output dir
+     * @return the JSON output file, followed by the compressed file when enabled
      */
     public static File[] run(File jarFile, File outputDir) {
         return run(jarFile, outputDir, OutputRenderer.JSON);
@@ -90,7 +101,7 @@ public class Main {
         }
 
         final String outputFileNameBase = jarFile.getName().substring(0, jarFile.getName().length() - 4);
-        final Optional<APIListing> apiListing = processFile(jarFile);
+        final Optional<ApiListing> apiListing = processFile(jarFile);
 
         if (apiListing.isPresent()) {
             switch (renderer) {
@@ -108,7 +119,7 @@ public class Main {
         return new File[] { };
     }
 
-    private static File[] renderJson(APIListing apiListing, File outputDir, String outputFileNameBase) {
+    private static File[] renderJson(ApiListing apiListing, File outputDir, String outputFileNameBase) {
         File[] files = new File[Constants.GZIP_OUTPUT ? 2 : 1];
         files[0] = new File(outputDir, outputFileNameBase + ".json");
         apiListing.toFile(files[0], false);
@@ -160,15 +171,15 @@ public class Main {
         return files;
     }
 
-    private static File[] renderMarkdown(APIListing apiListing, File outputDir, String outputFileNameBase) {
+    private static File[] renderMarkdown(ApiListing apiListing, File outputDir, String outputFileNameBase) {
         File outputFile = new File(outputDir, outputFileNameBase + ".md");
         MarkdownRenderer.write(apiListing, outputFile);
         System.out.println("  Output written to file: " + outputFile);
         return new File[] { outputFile };
     }
 
-    private static Optional<APIListing> processFile(final File inputFile) {
-        final APIListing apiListing = new APIListing();
+    private static Optional<ApiListing> processFile(final File inputFile) {
+        final ApiListing apiListing = new ApiListing();
 
         if (inputFile.getName().endsWith("-sources.jar")) {
             processJavaSourcesJar(inputFile, apiListing);
@@ -178,7 +189,7 @@ public class Main {
         return Optional.empty();
     }
 
-    private static void processJavaSourcesJar(File inputFile, APIListing apiListing) {
+    private static void processJavaSourcesJar(File inputFile, ApiListing apiListing) {
         final Pom mavenPom = Pom.fromSourcesJarFile(inputFile);
         final String groupId = mavenPom.getGroupId();
         final String artifactId = mavenPom.getArtifactId();

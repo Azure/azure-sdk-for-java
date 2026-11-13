@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.CallableDeclaration;
@@ -15,27 +15,35 @@ import com.github.javaparser.ast.type.Type;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.*;
-import static com.azure.tools.apiview.processor.model.DiagnosticKind.*;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedConstructors;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedMethods;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
+import static com.azure.tools.apiview.processor.model.DiagnosticKind.ERROR;
 
 /**
  * A diagnostic rule that ensures our public API does not return or accept as a parameter into it something that has a
  * fully-qualified type that includes one of the illegal package names passed in as a constructor argument to this class
  */
-public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
+public class IllegalPackageApiExportsDiagnosticRule implements DiagnosticRule {
 
     private final List<String> illegalPackages;
 
-    public IllegalPackageAPIExportsDiagnosticRule(String... packageNames) {
+    /**
+     * Creates an illegal package api exports diagnostic rule.
+     *
+     * @param packageNames the package names
+     * @throws IllegalArgumentException if the operation cannot be completed
+     */
+    public IllegalPackageApiExportsDiagnosticRule(String... packageNames) {
         if (packageNames == null || packageNames.length == 0) {
             throw new IllegalArgumentException(
-                "IllegalPackageAPIExportsDiagnosticRule created with no illegal package names");
+                "IllegalPackageApiExportsDiagnosticRule created with no illegal package names");
         }
         this.illegalPackages = Arrays.asList(packageNames);
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getPublicOrProtectedConstructors(cu)
             .forEach(methodDecl -> validateParameters(methodDecl, makeId(methodDecl), listing));
 
@@ -51,7 +59,7 @@ public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
         });
     }
 
-    private void validateType(String methodName, ClassOrInterfaceType type, final APIListing listing) {
+    private void validateType(String methodName, ClassOrInterfaceType type, final ApiListing listing) {
         String typeAsString = type.getNameWithScope();
 
         if (typeAsString.contains(".")) {
@@ -61,8 +69,6 @@ public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
         } else if (listing.getTypeToPackageNameMap().containsKey(typeAsString)) {
             // we know the type based on our previous scans
             validatePackageName(methodName, listing.getTypeToPackageNameMap().get(typeAsString), listing);
-        } else {
-            // we don't know the type. This is usually because it is a Java class library type, or a generic T type
         }
 
         // we must also inspect the generic types
@@ -74,7 +80,7 @@ public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
         });
     }
 
-    private void validateParameters(CallableDeclaration<?> methodDecl, String methodId, APIListing listing) {
+    private void validateParameters(CallableDeclaration<?> methodDecl, String methodId, ApiListing listing) {
         methodDecl.getParameters()
             .stream()
             .map(Parameter::getType)
@@ -83,7 +89,7 @@ public class IllegalPackageAPIExportsDiagnosticRule implements DiagnosticRule {
             .forEach(parameter -> validateType(methodId, parameter, listing));
     }
 
-    private void validatePackageName(String methodId, String packageName, APIListing listing) {
+    private void validatePackageName(String methodId, String packageName, ApiListing listing) {
         for (String illegalPackage : illegalPackages) {
             if (packageName.contains(illegalPackage)) {
                 listing.addDiagnostic(new Diagnostic(ERROR, methodId,

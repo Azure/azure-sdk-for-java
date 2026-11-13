@@ -165,12 +165,6 @@
         <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
         <configuration>
           <java>
-            <licenseHeader>
-              <content xml:space="preserve">// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-</content>
-            </licenseHeader>
             <eclipse>
               <version>4.21.0</version>
               <file>${project.basedir}/../../../.vscode/eclipse-format-azure-sdk-for-java.xml</file>
@@ -187,6 +181,45 @@
           </execution>
           <execution>
             <id>spotless-check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.basedir}/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/java.header</headerLocation>
+          <propertyExpansion>samedir=${project.basedir}</propertyExpansion>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <consoleOutput>true</consoleOutput>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
             <phase>verify</phase>
             <goals>
               <goal>check</goal>

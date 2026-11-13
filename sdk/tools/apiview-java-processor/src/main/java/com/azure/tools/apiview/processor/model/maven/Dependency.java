@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.model.maven;
 
+/**
+ * Maven dependency coordinates and scope.
+ */
 public class Dependency extends Gav {
     private final String scope; // default scope is compile-time scope
 
@@ -11,6 +14,11 @@ public class Dependency extends Gav {
         this.scope = scope == null || scope.isEmpty() ? "compile" : scope;
     }
 
+    /**
+     * Returns the scope.
+     *
+     * @return the scope
+     */
     public String getScope() {
         return scope;
     }

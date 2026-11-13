@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class MarkdownRendererTests {
     @Test
     public void rendersNestedApiWithoutDocumentation() {
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         ReviewLine module = listing.addChildLine()
             .addToken(TokenKind.KEYWORD, "module")
             .addToken(TokenKind.MODULE_NAME, "com.azure.widgets")
@@ -39,7 +39,7 @@ public class MarkdownRendererTests {
 
     @Test
     public void removesDocumentationTokensFromMixedLines() {
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         listing.addChildLine()
             .addToken(new ReviewToken(TokenKind.JAVADOC, "documentation").setDocumentation())
             .addToken(TokenKind.KEYWORD, "public")
@@ -51,7 +51,7 @@ public class MarkdownRendererTests {
 
     @Test
     public void preservesStandaloneAndInlineComments() {
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         listing.addChildLine().addToken(TokenKind.COMMENT, "// Service Methods:");
         listing.addChildLine()
             .addToken(TokenKind.KEYWORD, "public")
@@ -69,7 +69,7 @@ public class MarkdownRendererTests {
 
     @Test
     public void normalizesWhitespaceAtTokenBoundaries() {
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         listing.addChildLine()
             .addToken(TokenKind.ANNOTATION_NAME, "@Example", Spacing.NO_SPACE)
             .addToken(TokenKind.PUNCTUATION, "(", Spacing.NO_SPACE)

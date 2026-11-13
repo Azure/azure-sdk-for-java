@@ -6,7 +6,7 @@ package com.azure.tools.apiview.processor.diagnostics.rules.azure;
 import com.azure.tools.apiview.processor.analysers.models.Constants;
 import com.azure.tools.apiview.processor.analysers.util.ASTUtils;
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.azure.tools.apiview.processor.model.DiagnosticKind;
 import com.azure.tools.apiview.processor.model.ReviewLine;
@@ -74,19 +74,17 @@ public final class MavenPackageAndDescriptionDiagnosticRule implements Diagnosti
     }
 
     @Override
-    public void scanIndividual(CompilationUnit cu, APIListing listing) {
+    public void scanIndividual(CompilationUnit cu, ApiListing listing) {
         // no-op, package rule only needs to be run once at the end.
     }
 
     @Override
-    public void scanFinal(APIListing listing) {
+    public void scanFinal(ApiListing listing) {
         Pom pom = listing.getMavenPom();
 
         // it's possible there was no real maven POM in the uploaded file, in which case we should warn the user
         // of this so that they can investigate if their build is configured correctly to include this file.
-        if (!pom.isPomFileReal()) {
-            // TODO
-        } else {
+        if (pom.isPomFileReal()) {
             // Maven name
             final String mavenName = pom.getName();
             if (mavenName == null || !mavenNamePattern.matcher(pom.getName()).matches()) {

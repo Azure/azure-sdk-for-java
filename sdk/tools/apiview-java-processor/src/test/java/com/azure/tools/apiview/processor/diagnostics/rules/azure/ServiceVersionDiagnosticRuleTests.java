@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.diagnostics.rules.azure;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +26,7 @@ public class ServiceVersionDiagnosticRuleTests {
         delimiter = '|')
     public void checksMissingServiceVersionForHttpBuilders(String annotationProtocol, int diagnosticCount) {
         ServiceVersionDiagnosticRule rule = new ServiceVersionDiagnosticRule();
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         String protocol = annotationProtocol == null ? "" : ", protocol = " + annotationProtocol;
         CompilationUnit builder = StaticJavaParser
             .parse("package com.azure.test;" + "@ServiceClientBuilder(serviceClients = TestClient.class" + protocol

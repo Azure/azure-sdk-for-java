@@ -4,20 +4,25 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.utils;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 
-import java.util.*;
-
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.isTypeImplementingInterface;
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.ERROR;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+/**
+ * Checks that builder methods implement the corresponding SDK traits.
+ */
 public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
     private static final String ANNOTATION_SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
 
@@ -28,7 +33,7 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         // If the CU has a @ServiceClientBuilder annotation:
         //   Look for methods with names of methods we know should belong to the trait:
         //     Ensure the matching trait is stated as being implemented. If the method exists but the trait interface is
@@ -40,8 +45,9 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
             Optional<AnnotationExpr> serviceClientBuilderAnnotation
                 = type.getAnnotationByName(ANNOTATION_SERVICE_CLIENT_BUILDER);
 
-            if (!serviceClientBuilderAnnotation.isPresent())
+            if (!serviceClientBuilderAnnotation.isPresent()) {
                 return;
+            }
 
             // iterate through trait-by-trait
             for (Map.Entry<String, TraitClass> trait : traits.entrySet()) {
@@ -59,7 +65,7 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                         builderProtocol = annotationExpr.asNormalAnnotationExpr()
                             .getPairs()
                             .stream()
-                            .filter(mvp -> mvp.getNameAsString().equals("protocol"))
+                            .filter(mvp -> "protocol".equals(mvp.getNameAsString()))
                             .map(mvp -> mvp.getValue().toString())
                             .findFirst()
                             .orElse(TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE);
@@ -119,6 +125,9 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
         });
     }
 
+    /**
+     * A builder trait and the protocols to which it applies.
+     */
     public static class TraitClass {
         public static final String BUILDER_PROTOCOL_NOT_APPLICABLE = "N/A";
         public static final String BUILDER_PROTOCOL_HTTP = "ServiceClientProtocol.HTTP";
@@ -127,20 +136,40 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
         private final String builderProtocol;
         private final List<TraitMethod> methods;
 
+        /**
+         * Creates a trait class.
+         *
+         * @param methods the methods
+         */
         public TraitClass(TraitMethod... methods) {
             this(BUILDER_PROTOCOL_NOT_APPLICABLE, methods);
         }
 
+        /**
+         * Creates a trait class.
+         *
+         * @param builderProtocol the builder protocol
+         * @param methods the methods
+         */
         public TraitClass(String builderProtocol, TraitMethod... methods) {
             this.builderProtocol = builderProtocol;
             this.methods = Arrays.asList(methods);
         }
     }
 
+    /**
+     * A method signature required by a builder trait.
+     */
     public static class TraitMethod {
         private final String methodName;
         private final String[] methodParamTypes;
 
+        /**
+         * Creates a trait method.
+         *
+         * @param methodName the method name
+         * @param methodParamTypes the method param types
+         */
         public TraitMethod(String methodName, String... methodParamTypes) {
             this.methodName = methodName;
             this.methodParamTypes = methodParamTypes;

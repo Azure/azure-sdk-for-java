@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 
@@ -26,7 +26,7 @@ public class MissingJavadocCodeSnippetsRule implements DiagnosticRule {
         = Pattern.compile("(\\s*)\\*?\\s*<!--\\s+src_embed\\s+([a-zA-Z0-9.#\\-_]+)\\s*-->");
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getClasses(cu).forEach(typeDeclaration -> {
             String className = typeDeclaration.getNameAsString();
 

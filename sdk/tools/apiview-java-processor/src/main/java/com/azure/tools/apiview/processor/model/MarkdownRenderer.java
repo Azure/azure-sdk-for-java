@@ -25,8 +25,9 @@ public final class MarkdownRenderer {
      *
      * @param apiListing The API listing to render.
      * @param outputFile The destination Markdown file.
+     * @throws UncheckedIOException if the operation cannot be completed
      */
-    public static void write(APIListing apiListing, File outputFile) {
+    public static void write(ApiListing apiListing, File outputFile) {
         try {
             Files.write(outputFile.toPath(), render(apiListing).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
@@ -40,7 +41,7 @@ public final class MarkdownRenderer {
      * @param apiListing The API listing to render.
      * @return The rendered Markdown.
      */
-    public static String render(APIListing apiListing) {
+    public static String render(ApiListing apiListing) {
         List<String> lines = new ArrayList<>();
         lines.add("```java");
         renderLines(apiListing.getChildren(), 0, lines);

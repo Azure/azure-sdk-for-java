@@ -5,7 +5,7 @@ package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.analysers.util.ASTUtils;
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 
@@ -13,13 +13,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getClassName;
+import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
 
-import static com.azure.tools.apiview.processor.model.DiagnosticKind.*;
-
+/**
+ * Checks imports conventions.
+ */
 public class ImportsDiagnosticRule implements DiagnosticRule {
 
     private final List<String> illegalPackages;
 
+    /**
+     * Creates an imports diagnostic rule.
+     *
+     * @param packageNames the package names
+     * @throws IllegalArgumentException if the operation cannot be completed
+     */
     public ImportsDiagnosticRule(String... packageNames) {
         if (packageNames == null || packageNames.length == 0) {
             throw new IllegalArgumentException("ImportsDiagnosticRule created with no illegal package names");
@@ -28,7 +36,7 @@ public class ImportsDiagnosticRule implements DiagnosticRule {
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         // we need to map the issue to the class id, because import text isn't printed in the APIView output
         getClassName(cu).map(listing.getKnownTypes()::get)
             .ifPresent(typeId -> ASTUtils.getImports(cu).forEach(importStr -> {

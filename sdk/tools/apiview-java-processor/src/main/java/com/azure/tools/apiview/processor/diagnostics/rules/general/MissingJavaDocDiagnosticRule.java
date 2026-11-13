@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
@@ -19,11 +19,14 @@ import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPubli
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
 
+/**
+ * Checks missing java doc conventions.
+ */
 public class MissingJavaDocDiagnosticRule implements DiagnosticRule {
     private static final boolean IGNORE_OVERRIDES = true;
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getClasses(cu).forEach(typeDeclaration -> {
             if (!attemptToFindJavadocComment(typeDeclaration).isPresent()) {
                 // the type is missing JavaDoc
@@ -34,18 +37,14 @@ public class MissingJavaDocDiagnosticRule implements DiagnosticRule {
             getPublicOrProtectedFields(typeDeclaration).forEach(n -> checkJavaDoc(n, () -> makeId(n), listing));
 
             getPublicOrProtectedMethods(typeDeclaration).forEach(n -> {
-                if (IGNORE_OVERRIDES && n.isAnnotationPresent("Override")) {
-                    // no-op - we don't check for Javadoc on methods that are overrides - we assume that the parent
-                    // class from which this method is specified already has sufficiently detailed JavaDoc and we have
-                    // validated that elsewhere.
-                } else {
+                if (!IGNORE_OVERRIDES || !n.isAnnotationPresent("Override")) {
                     checkJavaDoc(n, () -> makeId(n), listing);
                 }
             });
         });
     }
 
-    private void checkJavaDoc(BodyDeclaration<?> n, Supplier<String> idSupplier, APIListing listing) {
+    private void checkJavaDoc(BodyDeclaration<?> n, Supplier<String> idSupplier, ApiListing listing) {
         if (!attemptToFindJavadocComment(n).isPresent()) {
             listing.addDiagnostic(new Diagnostic(WARNING, idSupplier.get(), "This API is missing JavaDoc."));
         }

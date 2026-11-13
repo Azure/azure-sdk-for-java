@@ -4,16 +4,20 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
 
-import java.util.*;
-
-import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.*;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
+import java.util.Arrays;
+import java.util.List;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getClasses;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedConstructors;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedFields;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedMethods;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 
 /**
  * Reviews annotations used throughout the source code to ensure that they do not come from our list of known
@@ -23,12 +27,17 @@ public class BadAnnotationDiagnosticRule implements DiagnosticRule {
 
     private final List<BadAnnotation> badAnnotations;
 
+    /**
+     * Creates a bad annotation diagnostic rule.
+     *
+     * @param badAnnotations the bad annotations
+     */
     public BadAnnotationDiagnosticRule(BadAnnotation... badAnnotations) {
         this.badAnnotations = Arrays.asList(badAnnotations);
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getClasses(cu).forEach(typeDeclaration -> {
             // check annotations on the type itself
             typeDeclaration.getAnnotations()
@@ -48,7 +57,7 @@ public class BadAnnotationDiagnosticRule implements DiagnosticRule {
         });
     }
 
-    private void checkForBadAnnotations(APIListing listing, NodeWithAnnotations<?> nodeWithAnnotations,
+    private void checkForBadAnnotations(ApiListing listing, NodeWithAnnotations<?> nodeWithAnnotations,
         AnnotationExpr annotation) {
         badAnnotations.forEach(badAnnotation -> {
             // check if the badAnnotation is the same as the found annotation
@@ -60,10 +69,19 @@ public class BadAnnotationDiagnosticRule implements DiagnosticRule {
         });
     }
 
+    /**
+     * An annotation name and the reason it is discouraged.
+     */
     public static class BadAnnotation {
         private final String annotation;
         private final String errorMessage;
 
+        /**
+         * Creates a bad annotation.
+         *
+         * @param annotation the annotation
+         * @param errorMessage the error message
+         */
         public BadAnnotation(String annotation, String errorMessage) {
             this.annotation = annotation;
             this.errorMessage = errorMessage;

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 public class APIListingTests {
     @Test
     public void compressedOutputRoundTripsToRawJson(@TempDir Path directory) throws IOException {
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         listing.setLanguage(Language.JAVA);
         listing.setLanguageVariant(LanguageVariant.DEFAULT);
         listing.setPackageName("com.azure:azure-test");

@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.azure;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.azure.tools.apiview.processor.model.DiagnosticKind;
 import com.github.javaparser.ast.CompilationUnit;
@@ -25,7 +25,7 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
     private boolean isHttpService;
 
     @Override
-    public void scanIndividual(CompilationUnit cu, APIListing listing) {
+    public void scanIndividual(CompilationUnit cu, ApiListing listing) {
         if (cu.getPrimaryTypeName().get().endsWith("ClientBuilder")) {
             serviceClientPackage = cu.getPackageDeclaration().get().getNameAsString();
             cu.getTypes().forEach(typeDeclaration -> {
@@ -38,7 +38,7 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
                         .get()
                         .getPairs()
                         .stream()
-                        .filter(pair -> pair.getNameAsString().equals("protocol"))
+                        .filter(pair -> "protocol".equals(pair.getNameAsString()))
                         .findFirst();
                     this.isHttpService = protocol.map(MemberValuePair::getValue)
                         .map(Object::toString)
@@ -61,7 +61,7 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
                 boolean implementsServiceVersion = typeDeclaration.asEnumDeclaration()
                     .getImplementedTypes()
                     .stream()
-                    .anyMatch(type -> type.getNameAsString().equals("ServiceVersion"));
+                    .anyMatch(type -> "ServiceVersion".equals(type.getNameAsString()));
                 if (!implementsServiceVersion) {
                     listing.addDiagnostic(new Diagnostic(WARNING, makeId(typeDeclaration),
                         "This type " + "should implement 'ServiceVersion' interface."));
@@ -71,7 +71,7 @@ public class ServiceVersionDiagnosticRule implements DiagnosticRule {
     }
 
     @Override
-    public void scanFinal(APIListing listing) {
+    public void scanFinal(ApiListing listing) {
         // If ServiceVersion type is not found and the module contains a client
         // show a diagnostic warning about missing service version type.
         if (!foundServiceVersion && serviceClientPackage != null && isHttpService) {

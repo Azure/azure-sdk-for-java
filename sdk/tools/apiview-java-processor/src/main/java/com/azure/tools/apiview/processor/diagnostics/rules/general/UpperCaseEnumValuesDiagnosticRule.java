@@ -4,13 +4,14 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
-import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.*;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getClasses;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
 
 /**
  * This diagnostic encourages developers to use upper case enum values, with underscores between words.
@@ -18,7 +19,7 @@ import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
 public class UpperCaseEnumValuesDiagnosticRule implements DiagnosticRule {
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         // if the CompilationUnit is an enum, check that all of the enum values are upper case, adding a diagnostic
         // if they are not.
         getClasses(cu).filter(TypeDeclaration::isEnumDeclaration)

@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.model;
 
+/**
+ * Whitespace to render before and after a token.
+ */
 public enum Spacing {
     /** Adds space after the token (suffix is true), but no space before the token (prefix is false). */
     DEFAULT,

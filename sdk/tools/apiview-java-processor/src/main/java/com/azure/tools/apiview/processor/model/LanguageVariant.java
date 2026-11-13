@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.model;
 
+/**
+ * Java library variants recognized by APIView.
+ */
 public enum LanguageVariant {
     DEFAULT("None"), SPRING("Spring"), ANDROID("Android");
 
@@ -17,6 +20,12 @@ public enum LanguageVariant {
         return this.variantName;
     }
 
+    /**
+     * Finds the Java library variant by its serialized name.
+     *
+     * @param name the name
+     * @return the matching variant, or null if the name is unknown
+     */
     public static LanguageVariant fromString(String name) {
         for (LanguageVariant variant : LanguageVariant.values()) {
             if (variant.toString().equals(name)) {

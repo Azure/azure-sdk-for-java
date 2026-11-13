@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.analysers.models;
 
+/**
+ * Shared rendering constants and APIView JSON field names.
+ */
 public class Constants {
 
     public static final String APIVIEW_JSON_SCHEMA

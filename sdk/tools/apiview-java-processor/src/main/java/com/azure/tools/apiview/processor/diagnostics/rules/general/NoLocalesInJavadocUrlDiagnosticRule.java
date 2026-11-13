@@ -4,7 +4,7 @@
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
 import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
@@ -41,7 +41,7 @@ public class NoLocalesInJavadocUrlDiagnosticRule implements DiagnosticRule {
     }
 
     @Override
-    public void scanIndividual(final CompilationUnit cu, final APIListing listing) {
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getClasses(cu).forEach(typeDeclaration -> {
             // Javadoc on the type itself
             checkJavaDoc(typeDeclaration, makeId(typeDeclaration), listing);
@@ -53,7 +53,7 @@ public class NoLocalesInJavadocUrlDiagnosticRule implements DiagnosticRule {
         });
     }
 
-    void checkJavaDoc(NodeWithJavadoc<?> n, String id, APIListing listing) {
+    void checkJavaDoc(NodeWithJavadoc<?> n, String id, ApiListing listing) {
         n.getJavadocComment().ifPresent(javadoc -> {
             final String javadocString = javadoc.getContent();
 

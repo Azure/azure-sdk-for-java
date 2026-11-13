@@ -19,11 +19,15 @@ import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This represents an entire Maven POM file, consisting of the GAV, parent GAV, dependencies, and other metadata.
@@ -53,13 +57,19 @@ public class Pom {
     // These are the dependencies specifies in the maven-enforcer that are allowed
     private final List<String> allowedDependencies;
 
+    /**
+     * Reads Maven metadata embedded in a sources JAR.
+     *
+     * @param sourcesJarFile the sources jar file
+     * @return the Maven metadata, using the JAR filename if no POM can be read
+     */
     public static Pom fromSourcesJarFile(File sourcesJarFile) {
         Pom pom = null;
         final String filename = sourcesJarFile.getName();
         Map<String, String> filenameParts = parseFilename(filename);
 
         // we will firstly try to get the artifact ID from the maven file inside the jar file...if it exists
-        try (final JarFile jarFile = new JarFile(sourcesJarFile)) {
+        try (JarFile jarFile = new JarFile(sourcesJarFile)) {
             final Enumeration<JarEntry> enumOfJar = jarFile.entries();
             while (enumOfJar.hasMoreElements()) {
                 final JarEntry entry = enumOfJar.nextElement();
@@ -112,7 +122,7 @@ public class Pom {
         this.checkstyleExcludes = null;
     }
 
-    private Pom(InputStream pomFileStream) throws IOException {
+    Pom(InputStream pomFileStream) throws IOException {
         this.dependencies = new ArrayList<>();
         this.allowedDependencies = new ArrayList<>();
         this.fileExists = true;
@@ -180,56 +190,113 @@ public class Pom {
                 this.allowedDependencies.add(dependenciesNodeList.item(i).getTextContent().trim());
             }
         } catch (ParserConfigurationException | SAXException | XPathExpressionException e) {
-            throw new IOException("Cannot parse given file as a Maven POM");
+            throw new IOException("Cannot parse given file as a Maven POM", e);
         }
     }
 
+    /**
+     * Returns the group id.
+     *
+     * @return the group id
+     */
     public String getGroupId() {
         return gav.getGroupId() != null ? gav.getGroupId() : parent.getGroupId();
     }
 
+    /**
+     * Returns the artifact id.
+     *
+     * @return the artifact id
+     */
     public String getArtifactId() {
         return gav.getArtifactId();
     }
 
+    /**
+     * Returns the version.
+     *
+     * @return the version
+     */
     public String getVersion() {
         return gav.getVersion() != null ? gav.getVersion() : parent.getVersion();
     }
 
+    /**
+     * Returns the parent.
+     *
+     * @return the parent
+     */
     public Gav getParent() {
         return parent;
     }
 
+    /**
+     * Returns the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the dependencies.
+     *
+     * @return the dependencies
+     */
     public List<Dependency> getDependencies() {
         return dependencies;
     }
 
+    /**
+     * Returns the jacoco min line coverage.
+     *
+     * @return the jacoco min line coverage
+     */
     public Float getJacocoMinLineCoverage() {
         return jacocoMinLineCoverage;
     }
 
+    /**
+     * Returns the jacoco min branch coverage.
+     *
+     * @return the jacoco min branch coverage
+     */
     public Float getJacocoMinBranchCoverage() {
         return jacocoMinBranchCoverage;
     }
 
+    /**
+     * Returns the checkstyle excludes.
+     *
+     * @return the checkstyle excludes
+     */
     public String getCheckstyleExcludes() {
         return checkstyleExcludes;
     }
 
+    /**
+     * Returns the allowed dependencies.
+     *
+     * @return the allowed dependencies
+     */
     public List<String> getAllowedDependencies() {
         return allowedDependencies;
     }
 
     /**
      * Sometimes we can't find a pom file, so we fake it with the info we do have.
+     *
+     * @return true if metadata was read from a POM rather than inferred from the filename
      */
     public boolean isPomFileReal() {
         return fileExists;

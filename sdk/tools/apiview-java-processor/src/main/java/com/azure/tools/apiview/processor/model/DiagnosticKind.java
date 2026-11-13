@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.model;
 
+/**
+ * Diagnostic severity levels supported by APIView.
+ */
 public enum DiagnosticKind {
     FATAL(4),       // block release!
     ERROR(3),       // red
@@ -15,6 +18,12 @@ public enum DiagnosticKind {
         this.level = level;
     }
 
+    /**
+     * Finds the diagnostic severity for its APIView numeric level.
+     *
+     * @param level the level
+     * @return the matching severity, or null if the level is unknown
+     */
     public static DiagnosticKind fromInt(int level) {
         switch (level) {
             case 4:
@@ -34,6 +43,11 @@ public enum DiagnosticKind {
         }
     }
 
+    /**
+     * Returns the level.
+     *
+     * @return the level
+     */
     public int getLevel() {
         return level;
     }

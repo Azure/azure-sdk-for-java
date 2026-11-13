@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.diagnostics.rules;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.github.javaparser.StaticJavaParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -32,7 +32,7 @@ public class RequiredBuilderMethodsDiagnosticRuleTests {
         RequiredBuilderMethodsDiagnosticRule rule = new RequiredBuilderMethodsDiagnosticRule(ruleProtocol)
             .addMethod("configured", new RequiredBuilderMethodsDiagnosticRule.ExactTypeNameCheckFunction("Expected"))
             .addMethod("required", method -> Optional.empty());
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         String protocol = annotationProtocol == null ? "" : ", protocol = " + annotationProtocol;
 
         rule.scanIndividual(
@@ -52,7 +52,7 @@ public class RequiredBuilderMethodsDiagnosticRuleTests {
     public void checksMissingMethodsIndependentlyForEachBuilder(boolean sameCompilationUnit) {
         RequiredBuilderMethodsDiagnosticRule rule
             = new RequiredBuilderMethodsDiagnosticRule(null).addMethod("required", method -> Optional.empty());
-        APIListing listing = new APIListing();
+        ApiListing listing = new ApiListing();
         String first = "@ServiceClientBuilder(serviceClients = FirstClient.class)"
             + "public class FirstClientBuilder { public void required() {} }";
         String second

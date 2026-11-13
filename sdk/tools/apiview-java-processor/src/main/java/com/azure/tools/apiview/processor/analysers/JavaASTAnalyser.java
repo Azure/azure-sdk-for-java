@@ -5,10 +5,10 @@ package com.azure.tools.apiview.processor.analysers;
 
 import com.azure.tools.apiview.processor.analysers.models.AnnotationRendererModel;
 import com.azure.tools.apiview.processor.analysers.models.AnnotationRule;
-import com.azure.tools.apiview.processor.analysers.util.APIListingValidator;
+import com.azure.tools.apiview.processor.analysers.util.ApiListingValidator;
 import com.azure.tools.apiview.processor.analysers.util.MiscUtils;
 import com.azure.tools.apiview.processor.diagnostics.Diagnostics;
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.ReviewLine;
 import com.azure.tools.apiview.processor.model.ReviewToken;
 import com.azure.tools.apiview.processor.model.Spacing;
@@ -128,6 +128,9 @@ import static com.azure.tools.apiview.processor.model.TokenKind.STRING_LITERAL;
 import static com.azure.tools.apiview.processor.model.TokenKind.TEXT;
 import static com.azure.tools.apiview.processor.model.TokenKind.TYPE_NAME;
 
+/**
+ * Builds an API listing from Java source syntax trees.
+ */
 public class JavaASTAnalyser implements Analyser {
 
     /************************************************************************************************
@@ -176,14 +179,14 @@ public class JavaASTAnalyser implements Analyser {
      *
      **********************************************************************************************/
 
-    // This is the model that we build up as the AST of all files are analysed. The APIListing is then output as
+    // This is the model that we build up as the AST of all files are analysed. The ApiListing is then output as
     // JSON that can be understood by APIView.
-    private final APIListing apiListing;
+    private final ApiListing apiListing;
     private final Diagnostics diagnostic;
 
     private final Map<String, String> shortClassNameToFullyQualifiedNameMap = new HashMap<>();
 
-    private int JAVADOC_LINE_COUNT = 0;
+    private int javadocLineCount = 0;
 
     /************************************************************************************************
      *
@@ -191,7 +194,12 @@ public class JavaASTAnalyser implements Analyser {
      *
      **********************************************************************************************/
 
-    public JavaASTAnalyser(APIListing apiListing) {
+    /**
+     * Creates a Java syntax-tree analyser.
+     *
+     * @param apiListing the api listing
+     */
+    public JavaASTAnalyser(ApiListing apiListing) {
         this.apiListing = apiListing;
         this.diagnostic = new Diagnostics(apiListing);
     }
@@ -241,7 +249,7 @@ public class JavaASTAnalyser implements Analyser {
         diagnostic.scanFinal(apiListing);
 
         // validate the model
-        APIListingValidator.validate(apiListing);
+        ApiListingValidator.validate(apiListing);
     }
 
     /************************************************************************************************
@@ -260,7 +268,7 @@ public class JavaASTAnalyser implements Analyser {
         final ScanElementType elementType;
         final String packageName;
 
-        public ScanElement(Path path, CompilationUnit compilationUnit, ScanElementType elementType) {
+        ScanElement(Path path, CompilationUnit compilationUnit, ScanElementType elementType) {
             this.path = path;
             this.compilationUnit = compilationUnit;
             this.elementType = elementType;
@@ -281,7 +289,7 @@ public class JavaASTAnalyser implements Analyser {
         final String primaryTypeName;
         final String fullyQualifiedName;
 
-        public ScanClass(Path path, CompilationUnit compilationUnit) {
+        ScanClass(Path path, CompilationUnit compilationUnit) {
             super(path, compilationUnit, ScanElementType.CLASS);
             this.primaryTypeName = compilationUnit != null ? compilationUnit.getPrimaryTypeName().orElse("") : "";
             this.fullyQualifiedName = getNodeFullyQualifiedName(compilationUnit);
@@ -739,7 +747,7 @@ public class JavaASTAnalyser implements Analyser {
                 return;
             }
 
-            // FIXME getKnownTypes is...icky
+            // TODO (apiview): getKnownTypes is...icky
             id = makeId(typeDeclaration);
             name = typeDeclaration.getNameAsString();
             apiListing.getKnownTypes().put(typeDeclaration.getFullyQualifiedName().orElse(""), id);
@@ -863,8 +871,6 @@ public class JavaASTAnalyser implements Analyser {
                 // add default constructor if there is no constructor at all, except interface and enum
                 if (!isInterfaceDeclaration && !d.isEnumDeclaration() && !d.isAnnotationDeclaration()) {
                     addDefaultConstructor(d, definitionLine);
-                } else {
-                    // skip and do nothing if there is no constructor in the interface.
                 }
             } else {
                 visitConstructorsOrMethods(d, isInterfaceDeclaration, true, constructors, definitionLine);
@@ -995,9 +1001,7 @@ public class JavaASTAnalyser implements Analyser {
 
         for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
             // By default , interface has public abstract methods if there is no access specifier declared
-            if (isInterfaceDeclaration) {
-                // no-op - we take all methods in the method
-            } else if (isPrivateOrPackagePrivate(fieldDeclaration.getAccessSpecifier())) {
+            if (!isInterfaceDeclaration && isPrivateOrPackagePrivate(fieldDeclaration.getAccessSpecifier())) {
                 // Skip if not public API
                 continue;
             }
@@ -1080,13 +1084,13 @@ public class JavaASTAnalyser implements Analyser {
 
     /**
      * Checks if a method is a serialization method based on interface implementation and method name.
-     * A method is considered a serialization method if:
-     * <ul>
-     * <li>The class implements JsonSerializable and method name is toJson or fromJson</li>
-     * <li>The class implements XmlSerializable and method name is toXml or fromXml</li>
-     * </ul>
+     *     A method is considered a serialization method if:
+     *     <ul>
+     *     <li>The class implements JsonSerializable and method name is toJson or fromJson</li>
+     *     <li>The class implements XmlSerializable and method name is toXml or fromXml</li>
+     *     </ul>
      *
-     * @param typeDeclaration     The type declaration to check interface implementations
+     * @param typeDeclaration The type declaration to check interface implementations
      * @param callableDeclaration The method declaration to check the name
      * @return true if the method is a serialization method, false otherwise
      */
@@ -1104,11 +1108,11 @@ public class JavaASTAnalyser implements Analyser {
         return classOrInterfaceDeclaration.getImplementedTypes().stream().anyMatch(implementedType -> {
             String interfaceName = implementedType.getNameAsString();
             boolean isJsonSerializationMethod
-                = (interfaceName.equals("JsonSerializable") || interfaceName.equals("com.azure.json.JsonSerializable"))
-                    && (methodName.equals("toJson") || methodName.equals("fromJson"));
+                = ("JsonSerializable".equals(interfaceName) || "com.azure.json.JsonSerializable".equals(interfaceName))
+                    && ("toJson".equals(methodName) || "fromJson".equals(methodName));
             boolean isXmlSerializationMethod
-                = (interfaceName.equals("XmlSerializable") || interfaceName.equals("com.azure.xml.XmlSerializable"))
-                    && (methodName.equals("toXml") || methodName.equals("fromXml"));
+                = ("XmlSerializable".equals(interfaceName) || "com.azure.xml.XmlSerializable".equals(interfaceName))
+                    && ("toXml".equals(methodName) || "fromXml".equals(methodName));
 
             return isJsonSerializationMethod || isXmlSerializationMethod;
         });
@@ -1168,9 +1172,7 @@ public class JavaASTAnalyser implements Analyser {
             if (variableDeclaratorOption.isPresent()) {
                 Expression e = variableDeclaratorOption.get();
 
-                if (e.isObjectCreationExpr() && e.asObjectCreationExpr().getAnonymousClassBody().isPresent()) {
-                    // no-op because we don't want to include all of the anonymous inner class details
-                } else {
+                if (!e.isObjectCreationExpr() || !e.asObjectCreationExpr().getAnonymousClassBody().isPresent()) {
                     // we want to make string constants look like strings, so we need to look for them within the
                     // variable declarator
                     definitionLine.addToken(PUNCTUATION, "=");
@@ -1219,7 +1221,7 @@ public class JavaASTAnalyser implements Analyser {
                 if (n instanceof Expression) {
                     visitExpression((Expression) n, definitionLine, condensed);
                 } else {
-                    definitionLine.addToken(TEXT, arrayInitializerExpr.toString()); // FIXME This was ANNOTATION_PARAMETER_VALUE
+                    definitionLine.addToken(TEXT, arrayInitializerExpr.toString()); // TODO (apiview): This was ANNOTATION_PARAMETER_VALUE
                 }
 
                 if (i < arrayInitializerExpr.getChildNodes().size() - 1) {
@@ -1251,7 +1253,7 @@ public class JavaASTAnalyser implements Analyser {
             // lookup to see if the type is known about, if so, make it a link, otherwise leave it as text
             String typeName = expression.asClassExpr().getChildNodes().get(0).toString();
             //            if (apiListing.getKnownTypes().containsKey(typeName)) {
-            definitionLine.addToken(TYPE_NAME, typeName, null, Spacing.NO_SPACE); // FIXME add ID
+            definitionLine.addToken(TYPE_NAME, typeName, null, Spacing.NO_SPACE); // TODO (apiview): add ID
             return;
             //            }
             //        } else {
@@ -1385,7 +1387,7 @@ public class JavaASTAnalyser implements Analyser {
                 definitionLine.addToken(PARAMETER_NAME, parameter.getNameAsString(), Spacing.NO_SPACE);
 
                 if (i < max - 1) {
-                    definitionLine.addToken(PUNCTUATION, ",");//.addToken(TokenKind.PARAMETER_SEPARATOR, " ");
+                    definitionLine.addToken(PUNCTUATION, ",");
                 }
             }
         }
@@ -1393,20 +1395,20 @@ public class JavaASTAnalyser implements Analyser {
         // close declaration
         definitionLine.addToken(PUNCTUATION, ")");
 
-        // FIXME this is a bit hacky - it would be nice to have 'MethodRule' like we do for Annotations.
+        // TODO (apiview): this is a bit hacky - it would be nice to have 'MethodRule' like we do for Annotations.
         // we want to special-case here for methods called `getLatest()` which are within a class that implements the
         // `ServiceVersion` interface. We want to add a comment to the method to indicate that it is a special method
         // that is used to get the latest version of a service.
         Node parentNode = callableDeclaration.getParentNode().orElse(null);
         if (callableDeclaration instanceof MethodDeclaration) {
             MethodDeclaration m = (MethodDeclaration) callableDeclaration;
-            if (callableDeclaration.getNameAsString().equals("getLatest")) {
+            if ("getLatest".equals(callableDeclaration.getNameAsString())) {
                 if (parentNode instanceof EnumDeclaration) {
                     EnumDeclaration d = (EnumDeclaration) parentNode;
                     if (d.getImplementedTypes()
                         .stream()
                         .anyMatch(
-                            implementedType -> implementedType.getName().getIdentifier().equals("ServiceVersion"))) {
+                            implementedType -> "ServiceVersion".equals(implementedType.getName().getIdentifier()))) {
                         m.getBody()
                             .flatMap(blockStmt -> blockStmt.getStatements()
                                 .stream()
@@ -1479,12 +1481,10 @@ public class JavaASTAnalyser implements Analyser {
             visitClassType(((FieldDeclaration) type).getElementType(), reviewLine, kind);
         } else if (type instanceof ClassOrInterfaceType) {
             visitClassType(((ClassOrInterfaceType) type), reviewLine, kind);
-        } else if (type instanceof AnnotationDeclaration
-            || type instanceof ConstructorDeclaration
-            || type instanceof ClassOrInterfaceDeclaration
-            || type instanceof EnumDeclaration) {
-            // no-op
-        } else {
+        } else if (!(type instanceof AnnotationDeclaration)
+            && !(type instanceof ConstructorDeclaration)
+            && !(type instanceof ClassOrInterfaceDeclaration)
+            && !(type instanceof EnumDeclaration)) {
             System.err.println("Unknown type " + type + " of type " + type.getClass());
         }
     }
@@ -1506,13 +1506,7 @@ public class JavaASTAnalyser implements Analyser {
             });
             // Class or Interface type
             type.ifClassOrInterfaceType(t -> visitTypeDFS(t, reviewLine, kind));
-        } else if (type.isWildcardType()) {
-            // TODO: add wild card type implementation, #756
-        } else if (type.isUnionType()) {
-            // TODO: add union type implementation, #756
-        } else if (type.isIntersectionType()) {
-            // TODO: add intersection type implementation, #756
-        } else {
+        } else if (!type.isWildcardType() && !type.isUnionType() && !type.isIntersectionType()) {
             System.err.println("Unknown type");
         }
         spacingState = spacingBefore;
@@ -1645,7 +1639,7 @@ public class JavaASTAnalyser implements Analyser {
         String[] lines = str.split("\n");
 
         // Manually add the leading '/**'
-        parent.addChildLine("JAVADOC_LINE_" + JAVADOC_LINE_COUNT++)
+        parent.addChildLine("JAVADOC_LINE_" + javadocLineCount++)
             .setRelatedToLine(targetLineId)
             .addToken(new ReviewToken(JAVADOC, "/**").setDocumentation().setSkipDiff());
 
@@ -1663,7 +1657,7 @@ public class JavaASTAnalyser implements Analyser {
 
             // we add a line id here so that each line of the javadoc can be commented on
             final ReviewLine reviewLine
-                = parent.addChildLine("JAVADOC_LINE_" + JAVADOC_LINE_COUNT++).setRelatedToLine(targetLineId);
+                = parent.addChildLine("JAVADOC_LINE_" + javadocLineCount++).setRelatedToLine(targetLineId);
 
             if (line.contains("&")) {
                 line = HtmlEscape.unescapeHtml(line);
@@ -1680,12 +1674,12 @@ public class JavaASTAnalyser implements Analyser {
                     // if the current search index != start of match, there was text between two hyperlinks
                     if (currentIndex != start) {
                         String betweenValue = line.substring(currentIndex, start);
-                        // FIXME
+                        // TODO (apiview):
                         //                        parentNode.addTopToken(new ReviewToken(JAVADOC, betweenValue).addTag(TAG_SKIP_DIFF));
                     }
 
                     String matchedValue = line.substring(start, end);
-                    // FIXME
+                    // TODO (apiview):
                     //                    parentNode.addTopToken(new ReviewToken(URL, matchedValue)
                     //                            .addProperty(PROPERTY_URL_LINK_TEXT, matchedValue)
                     //                            .addTag(TAG_SKIP_DIFF));
@@ -1702,7 +1696,7 @@ public class JavaASTAnalyser implements Analyser {
         }
 
         // Manually add the trailing '*/'
-        parent.addChildLine("JAVADOC_LINE_" + JAVADOC_LINE_COUNT++)
+        parent.addChildLine("JAVADOC_LINE_" + javadocLineCount++)
             .setRelatedToLine(targetLineId)
             .addToken(new ReviewToken(JAVADOC, " */").setDocumentation().setSkipDiff());
     }

@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.diagnostics.rules.general;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.jupiter.api.Test;
@@ -27,9 +27,9 @@ public class IllegalPackageAPIExportsDiagnosticRuleTests {
             "private io.netty.buffer.ByteBuf getBuffer() { return null; }|0" },
         delimiter = '|')
     public void checksExportedTypes(String member, int diagnosticCount) {
-        IllegalPackageAPIExportsDiagnosticRule rule
-            = new IllegalPackageAPIExportsDiagnosticRule("implementation", "netty");
-        APIListing listing = new APIListing();
+        IllegalPackageApiExportsDiagnosticRule rule
+            = new IllegalPackageApiExportsDiagnosticRule("implementation", "netty");
+        ApiListing listing = new ApiListing();
         CompilationUnit compilationUnit
             = StaticJavaParser.parse("package com.azure.test; public class TestClient {" + member + "}");
         compilationUnit.setStorage(Paths.get("TestClient.java"));
@@ -41,8 +41,8 @@ public class IllegalPackageAPIExportsDiagnosticRuleTests {
 
     @Test
     public void checksImportedTypes() {
-        IllegalPackageAPIExportsDiagnosticRule rule = new IllegalPackageAPIExportsDiagnosticRule("netty");
-        APIListing listing = new APIListing();
+        IllegalPackageApiExportsDiagnosticRule rule = new IllegalPackageApiExportsDiagnosticRule("netty");
+        ApiListing listing = new ApiListing();
         listing.getTypeToPackageNameMap().put("ByteBuf", "io.netty.buffer");
         CompilationUnit compilationUnit = StaticJavaParser.parse("package com.azure.test;"
             + "import io.netty.buffer.ByteBuf; public class TestClient { public ByteBuf getBuffer() { return null; } }");

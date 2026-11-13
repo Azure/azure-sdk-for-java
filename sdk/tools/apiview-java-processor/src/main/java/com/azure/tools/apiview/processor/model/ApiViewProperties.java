@@ -3,7 +3,6 @@
 
 package com.azure.tools.apiview.processor.model;
 
-import com.azure.json.*;
 import com.azure.tools.apiview.processor.model.maven.Pom;
 
 import java.io.IOException;
@@ -14,6 +13,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
  * Sometimes libraries carry additional metadata with them that can make the output from APIView more useful. This
@@ -32,6 +36,8 @@ public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
      * Attempts to process the {@code [artifactId]_metadata.json} file in the jar file, if it exists.
      *
      * @param fs the {@link FileSystem} representing the jar file
+     * @param pom the pom
+     * @return the metadata when present and readable
      */
     public static Optional<ApiViewProperties> fromSourcesJarFile(FileSystem fs, Pom pom) {
         // the filename is <artifactId>_metadata.json
@@ -65,8 +71,11 @@ public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
 
     /**
      * Cross Languages Definition ID is used to map from a model name or a method name to a TypeSpec definition ID. This
-     * is used to enable cross-language linking, to make review time quicker as reviewers can jump between languages to
-     * see how the API is implemented in each language.
+     *     is used to enable cross-language linking, to make review time quicker as reviewers can jump between languages to
+     *     see how the API is implemented in each language.
+     *
+     * @param fullyQualifiedName the fully qualified name
+     * @return the cross language definition id
      */
     public Optional<String> getCrossLanguageDefinitionId(String fullyQualifiedName) {
         return Optional.ofNullable(crossLanguageDefinitions.get(fullyQualifiedName));
@@ -74,11 +83,18 @@ public class ApiViewProperties implements JsonSerializable<ApiViewProperties> {
 
     /**
      * Returns an unmodifiable map of all the cross-language definition IDs.
+     *
+     * @return the cross language definitions
      */
     public Map<String, String> getCrossLanguageDefinitions() {
         return Collections.unmodifiableMap(crossLanguageDefinitions);
     }
 
+    /**
+     * Returns the flavor.
+     *
+     * @return the flavor
+     */
     public Flavor getFlavor() {
         return flavor;
     }

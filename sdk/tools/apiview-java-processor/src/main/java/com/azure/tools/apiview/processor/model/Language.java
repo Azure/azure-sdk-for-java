@@ -3,6 +3,9 @@
 
 package com.azure.tools.apiview.processor.model;
 
+/**
+ * Source languages supported by the APIView token format.
+ */
 public enum Language {
     JAVA("Java"), KOTLIN("Kotlin");
 

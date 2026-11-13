@@ -28,8 +28,11 @@ import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_
 import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_NAME_PARSER_VERSION;
 import static com.azure.tools.apiview.processor.analysers.models.Constants.JSON_NAME_REVIEW_LINES;
 
-public class APIListing implements Parent, JsonSerializable<APIListing> {
-    private static final String parserVersion = "29";
+/**
+ * API review lines, diagnostics, and package metadata.
+ */
+public class ApiListing implements Parent, JsonSerializable<ApiListing> {
+    private static final String PARSER_VERSION = "29";
 
     private Language language;
     private LanguageVariant languageVariant;
@@ -44,7 +47,10 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
     private Pom mavenPom;
     private ApiViewProperties apiViewProperties;
 
-    public APIListing() {
+    /**
+     * Creates an API listing.
+     */
+    public ApiListing() {
         this.diagnostics = new ArrayList<>();
         this.knownTypes = new HashMap<>();
         this.typeToPackageNameMap = new HashMap<>();
@@ -77,74 +83,157 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
     //        return Collections.unmodifiableList(apiForest);
     //    }
 
+    /**
+     * Adds diagnostic.
+     *
+     * @param diagnostic the diagnostic
+     */
     public void addDiagnostic(Diagnostic diagnostic) {
         this.diagnostics.add(diagnostic);
     }
 
+    /**
+     * Returns the diagnostics.
+     *
+     * @return the diagnostics
+     */
     public List<Diagnostic> getDiagnostics() {
         return Collections.unmodifiableList(diagnostics);
     }
 
+    /**
+     * Returns the language.
+     *
+     * @return the language
+     */
     public Language getLanguage() {
         return language;
     }
 
+    /**
+     * Sets the language.
+     *
+     * @param language the language
+     */
     public void setLanguage(final Language language) {
         this.language = language;
     }
 
+    /**
+     * Returns the language variant.
+     *
+     * @return the language variant
+     */
     public LanguageVariant getLanguageVariant() {
         return languageVariant;
     }
 
+    /**
+     * Sets the language variant.
+     *
+     * @param variant the variant
+     */
     public void setLanguageVariant(final LanguageVariant variant) {
         this.languageVariant = variant;
     }
 
+    /**
+     * Returns the package name.
+     *
+     * @return the package name
+     */
     public String getPackageName() {
         return packageName;
     }
 
+    /**
+     * Sets the package name.
+     *
+     * @param packageName the package name
+     */
     public void setPackageName(final String packageName) {
         this.packageName = packageName;
     }
 
+    /**
+     * Returns the package version.
+     *
+     * @return the package version
+     */
     public String getPackageVersion() {
         return packageVersion;
     }
 
+    /**
+     * Sets the package version.
+     *
+     * @param packageVersion the package version
+     */
     public void setPackageVersion(final String packageVersion) {
         this.packageVersion = packageVersion;
     }
 
     /**
      * Returns a map of type name to unique identifier, used for navigation.
+     *
+     * @return the known types
      */
     public Map<String, String> getKnownTypes() {
         return knownTypes;
     }
 
+    /**
+     * Adds package type mapping.
+     *
+     * @param packageName the package name
+     * @param typeName the type name
+     */
     public void addPackageTypeMapping(String packageName, String typeName) {
         //        packageNamesToTypesMap.computeIfAbsent(packageName, name -> new ArrayList<>()).add(typeName);
         typeToPackageNameMap.put(typeName, packageName);
     }
 
+    /**
+     * Returns the type to package name map.
+     *
+     * @return the type to package name map
+     */
     public Map<String, String> getTypeToPackageNameMap() {
         return typeToPackageNameMap;
     }
 
+    /**
+     * Sets the Maven POM.
+     *
+     * @param mavenPom the Maven POM
+     */
     public void setMavenPom(Pom mavenPom) {
         this.mavenPom = mavenPom;
     }
 
+    /**
+     * Returns the Maven POM.
+     *
+     * @return the Maven POM
+     */
     public Pom getMavenPom() {
         return mavenPom;
     }
 
+    /**
+     * Sets the APIView properties.
+     *
+     * @param properties the properties
+     */
     public void setApiViewProperties(ApiViewProperties properties) {
         this.apiViewProperties = properties;
     }
 
+    /**
+     * Returns the APIView properties.
+     *
+     * @return the APIView properties
+     */
     public ApiViewProperties getApiViewProperties() {
         return apiViewProperties;
     }
@@ -154,7 +243,7 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
         return jsonWriter.writeStartObject()
             .writeStringField("$schema", APIVIEW_JSON_SCHEMA)
             // Version?
-            .writeStringField(JSON_NAME_PARSER_VERSION, parserVersion)
+            .writeStringField(JSON_NAME_PARSER_VERSION, PARSER_VERSION)
             .writeStringField(JSON_NAME_LANGUAGE, language.toString())
             .writeStringField(JSON_NAME_LANGUAGE_VARIANT, languageVariant.toString())
             .writeStringField(JSON_NAME_PACKAGE_NAME, packageName)
@@ -167,11 +256,12 @@ public class APIListing implements Parent, JsonSerializable<APIListing> {
     }
 
     /**
-     * Writes the {@link APIListing} to the {@code outputFile} and returns the raw JSON.
+     * Writes the {@link ApiListing} to the {@code outputFile} and returns the raw JSON.
      *
      * @param outputFile The file to write.
      * @param gzipOutput Whether the output needs to be GZIP'd.
      * @return The raw JSON bytes for other final checks.
+     * @throws UncheckedIOException if the operation cannot be completed
      */
     public byte[] toFile(File outputFile, boolean gzipOutput) {
         try {

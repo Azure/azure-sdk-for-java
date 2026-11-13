@@ -5,6 +5,9 @@ package com.azure.tools.apiview.processor.model;
 
 import com.azure.tools.apiview.processor.model.maven.Dependency;
 
+/**
+ * The SDK library family used to select diagnostic rules.
+ */
 public enum Flavor {
     AZURE("com.azure", "azure"), GENERIC("io.clientcore", "generic"), UNKNOWN(null, "unknown");
 
@@ -16,14 +19,30 @@ public enum Flavor {
         this.serializationValue = serializationValue;
     }
 
+    /**
+     * Returns the package prefix.
+     *
+     * @return the package prefix
+     */
     public String getPackagePrefix() {
         return packagePrefix;
     }
 
+    /**
+     * Returns the serialization value.
+     *
+     * @return the serialization value
+     */
     public String getSerializationValue() {
         return serializationValue;
     }
 
+    /**
+     * Finds the SDK library family by its serialized name.
+     *
+     * @param serializationValue the serialization value
+     * @return the matching flavor, or UNKNOWN if unrecognized
+     */
     public static Flavor fromSerializationValue(String serializationValue) {
         for (Flavor flavor : values()) {
             if (flavor.getSerializationValue().equals(serializationValue)) {
@@ -33,7 +52,13 @@ public enum Flavor {
         return UNKNOWN;
     }
 
-    public static Flavor getFlavor(APIListing apiListing) {
+    /**
+     * Returns the flavor.
+     *
+     * @param apiListing the api listing
+     * @return the flavor
+     */
+    public static Flavor getFlavor(ApiListing apiListing) {
         Flavor flavor = apiListing.getApiViewProperties().getFlavor();
         if (flavor != null) {
             return flavor;
@@ -56,13 +81,13 @@ public enum Flavor {
         for (Dependency dependency : apiListing.getMavenPom().getDependencies()) {
             if (dependency.getGroupId().equals(AZURE.getPackagePrefix())) {
                 // if we have azure-core, then we are an azure library and we bail
-                if (dependency.getArtifactId().equals("azure-core")) {
+                if ("azure-core".equals(dependency.getArtifactId())) {
                     return AZURE;
                 }
                 azureCount++;
             } else if (dependency.getGroupId().equals(GENERIC.getPackagePrefix())) {
                 // if we have 'core', then we are a clientcore library and we bail
-                if (dependency.getArtifactId().equals("core")) {
+                if ("core".equals(dependency.getArtifactId())) {
                     return GENERIC;
                 }
                 genericCount++;

@@ -3,7 +3,7 @@
 
 package com.azure.tools.apiview.processor.analysers.util;
 
-import com.azure.tools.apiview.processor.model.APIListing;
+import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.ReviewLine;
 import com.azure.tools.apiview.processor.model.traits.Parent;
 import com.github.javaparser.Range;
@@ -202,10 +202,22 @@ public final class ASTUtils {
         return (accessSpecifier == AccessSpecifier.PRIVATE) || (accessSpecifier == AccessSpecifier.NONE);
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param cu the cu
+     * @return the navigation identifier
+     */
     public static String makeId(CompilationUnit cu) {
         return makeId(cu.getPrimaryType().get());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param node the node
+     * @return the navigation identifier
+     */
     public static String makeId(Node node) {
         // switch based on known subtypes
         if (node instanceof TypeDeclaration<?>) {
@@ -223,34 +235,76 @@ public final class ASTUtils {
         }
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param typeDeclaration the type declaration
+     * @return the navigation identifier
+     */
     public static String makeId(TypeDeclaration<?> typeDeclaration) {
         return makeId(typeDeclaration.getFullyQualifiedName().get());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param annotationMemberDeclaration the annotation member declaration
+     * @return the navigation identifier
+     */
     public static String makeId(AnnotationMemberDeclaration annotationMemberDeclaration) {
         return makeId(getNodeFullyQualifiedName(annotationMemberDeclaration.getParentNode()) + "."
             + annotationMemberDeclaration.getName());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param variableDeclarator the variable declarator
+     * @return the navigation identifier
+     */
     public static String makeId(VariableDeclarator variableDeclarator) {
         return makeId(
             getNodeFullyQualifiedName(variableDeclarator.getParentNode()) + "." + variableDeclarator.getNameAsString());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param callableDeclaration the callable declaration
+     * @return the navigation identifier
+     */
     public static String makeId(CallableDeclaration<?> callableDeclaration) {
         return makeId(getNodeFullyQualifiedName(callableDeclaration.getParentNode()) + "."
             + callableDeclaration.getDeclarationAsString());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param fieldDeclaration the field declaration
+     * @return the navigation identifier
+     */
     public static String makeId(FieldDeclaration fieldDeclaration) {
         return makeId(fieldDeclaration.getVariables().get(0));
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param enumDeclaration the enum declaration
+     * @return the navigation identifier
+     */
     public static String makeId(EnumConstantDeclaration enumDeclaration) {
         return makeId(
             getNodeFullyQualifiedName(enumDeclaration.getParentNode()) + "." + enumDeclaration.getNameAsString());
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param fullPath the full path
+     * @return the navigation identifier
+     */
     public static String makeId(String fullPath) {
         // Previously, this used a regex to replace '"' and ' ' with '-', that wasn't necessary. The replacement pattern
         // is simple and can be replaced with a simple loop. This is a performance optimization.
@@ -292,6 +346,13 @@ public final class ASTUtils {
         return sb.toString();
     }
 
+    /**
+     * Builds a stable navigation identifier for the declaration.
+     *
+     * @param annotation the annotation
+     * @param nodeWithAnnotations the node with annotations
+     * @return the navigation identifier
+     */
     public static String makeId(AnnotationExpr annotation, NodeWithAnnotations<?> nodeWithAnnotations) {
         String annotationContext = getAnnotationContext(nodeWithAnnotations);
 
@@ -396,7 +457,10 @@ public final class ASTUtils {
     }
 
     /**
-     * Returns true if the type is a public interface.
+     * Checks whether the declaration is an interface.
+     *
+     * @param type the type
+     * @return true if the declaration is an interface
      */
     public static boolean isInterfaceType(TypeDeclaration<?> type) {
         if (type.isClassOrInterfaceDeclaration()) {
@@ -405,6 +469,13 @@ public final class ASTUtils {
         return false;
     }
 
+    /**
+     * Checks whether a type directly implements the named interface.
+     *
+     * @param type the type
+     * @param interfaceName the interface name
+     * @return true if the type directly implements the named interface
+     */
     public static boolean isTypeImplementingInterface(TypeDeclaration<?> type, String interfaceName) {
         return type.asClassOrInterfaceDeclaration()
             .getImplementedTypes()
@@ -412,6 +483,14 @@ public final class ASTUtils {
             .anyMatch(_interface -> _interface.getNameAsString().equals(interfaceName));
     }
 
+    /**
+     * Returns the node fully qualified name.
+     *
+     * @param node the node
+     * @return the node fully qualified name
+     * @throws NullPointerException if the operation cannot be completed
+     * @throws IllegalArgumentException if the operation cannot be completed
+     */
     public static String getNodeFullyQualifiedName(Node node) {
         if (node == null) {
             throw new NullPointerException("node cannot be null");
@@ -532,7 +611,14 @@ public final class ASTUtils {
             .findFirst();
     }
 
-    public static Optional<ReviewLine> findReviewLine(APIListing listing, Function<ReviewLine, Boolean> f) {
+    /**
+     * Finds the first review line matching the predicate.
+     *
+     * @param listing the listing
+     * @param f the f
+     * @return the matching line, or an empty optional if none matches
+     */
+    public static Optional<ReviewLine> findReviewLine(ApiListing listing, Function<ReviewLine, Boolean> f) {
         return findReviewLine((Parent) listing, f);
     }
 

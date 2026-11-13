@@ -22,4 +22,4 @@
 ### Other Changes
 
 - Migrated the Java APIView processor and its tests from Azure/azure-sdk-tools#16809.
-- Added source license headers and enforce them with Spotless.
+- Added source license headers and Checkstyle validation alongside Spotless formatting.
