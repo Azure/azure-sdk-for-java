@@ -1,0 +1,77 @@
+{
+  "captured_on": "2026-10-30",
+  "results_file": "core-multi-release-jdk25.csv",
+  "measurement_scope": "IO optimizations only. The measured updated JARs were intermediate builds that did not contain the subsequently added hexadecimal, numeric-parser, or direct Cleaner optimizations, stream-dispatch safeguards, or bounded direct heap-buffer writes.",
+  "maintenance": "Historical snapshot; no scheduled refresh. Record new comparisons separately.",
+  "repository_references": {
+    "pre_change_revision": "df2d7d416eb47e1be684c02ae1507d1b4a3f5657",
+    "full_feature_revision": "1acff7a5adcf61ade21bcc69b9f2367546b3d122",
+    "note": "The full feature revision is a source reference for new comparisons, not the exact source snapshot of the measured intermediate IO-only JARs."
+  },
+  "runtime": {
+    "vendor": "Microsoft",
+    "java_version": "25.0.5.0.2",
+    "vm_version": "25.0.5.0.2+1-LTS",
+    "vm_name": "OpenJDK 64-Bit Server VM"
+  },
+  "machine": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13800H",
+    "cores": 14,
+    "logical_processors": 20,
+    "os": "Microsoft Windows 11 Enterprise",
+    "os_version": "10.0.26300",
+    "visible_memory_kib": 33198800,
+    "shared_workstation": true
+  },
+  "jmh": {
+    "version": "1.37",
+    "mode": "Throughput",
+    "throughput_unit": "ops/s",
+    "allocation_profiler": "gc",
+    "allocation_metric": "gc.alloc.rate.norm",
+    "allocation_unit": "B/op",
+    "worker_threads": 1,
+    "forks": 2,
+    "warmup_iterations_per_fork": 3,
+    "measurement_iterations_per_fork": 5,
+    "iteration_milliseconds": 500,
+    "paired_cases": 40,
+    "variant_results": 80,
+    "measured_iteration_samples": 800,
+    "error_columns": "JMH scoreError: reported 99.9% confidence-interval half-widths for throughput.",
+    "ordering": "Baseline and updated artifacts adjacent per case, alternating which ran first.",
+    "output_sink": "Blackhole; no network or file throughput measured.",
+    "affinity_mask": "0x5",
+    "logical_processor_affinity": [0, 2],
+    "fork_jvm_arguments": [
+      "-Xms256m",
+      "-Xmx256m",
+      "-XX:+UseG1GC",
+      "-XX:G1HeapRegionSize=4m",
+      "-XX:ReservedCodeCacheSize=64m",
+      "-XX:ActiveProcessorCount=2"
+    ]
+  },
+  "parameter_matrix": {
+    "payload_bytes": [4096, 1048576],
+    "stream_methods": ["streamToBytes", "streamToOutput"],
+    "stream_types": ["byteArray", "generic"],
+    "buffer_methods": ["bufferedReadAllBytes", "bufferedTransferTo", "listToBytes"],
+    "buffer_types": ["heap", "direct"],
+    "buffer_count": 128,
+    "paired_cases_per_library": 20,
+    "not_measured": ["readOnly buffers", "single-buffer shape", "file streams"]
+  },
+  "artifacts": {
+    "azure-core": {
+      "run": "jdk25-final-safe",
+      "baseline_sha256": "7E4087D2C3C1CB680CB4568E699B795AECC9A1008CF5A3A959067861DA0790D4",
+      "updated_sha256": "21966B6C6C4B36C82304F9A4A45C5355F17C8515AEF0F6B05B5681DEF7DE75A3"
+    },
+    "clientcore": {
+      "run": "jdk25-final-simple",
+      "baseline_sha256": "ECFA045FD5D226DB36BD18ECCAD2FC571843D2FA5900B815D153D45B0B51D721",
+      "updated_sha256": "A1A6A011AC8C31884513F9FDDFEB351E72833B85127959C5B4CFB34F5F2F5A2A"
+    }
+  }
+}

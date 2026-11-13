@@ -65,12 +65,41 @@ public class SemanticVersionTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "nonsense", "a.b.c", "1.2", "1.2-c", "c.1.2.3", "1.2.3?beta", "" })
+    @ValueSource(
+        strings = {
+            "nonsense",
+            "a.b.c",
+            "1.2",
+            "1.2-c",
+            "c.1.2.3",
+            "1.2.3?beta",
+            "",
+            "2147483648.1.1",
+            "1.2147483648.1",
+            "1.1.2147483648",
+            "1..2",
+            ".1.2",
+            "1.2.",
+            "1.2.+build" })
     public void malformedVersion(String versionStr) {
         SemanticVersion malformed = SemanticVersion.parse(versionStr);
         assertFalse(malformed.isValid());
         assertEquals(versionStr, malformed.getVersionString());
         assertEquals(-1, malformed.getMajorVersion());
+    }
+
+    @Test
+    public void numericBoundariesAndLeadingZeros() {
+        SemanticVersion maximum = SemanticVersion.parse("2147483647.2147483647.2147483647+build");
+        assertTrue(maximum.isValid());
+        assertEquals(Integer.MAX_VALUE, maximum.getMajorVersion());
+        assertEquals(0, maximum.compareTo(new SemanticVersion(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
+            null, "2147483647.2147483647.2147483647+build")));
+
+        SemanticVersion leadingZeros = SemanticVersion.parse("001.002.003-beta");
+        assertTrue(leadingZeros.isValid());
+        assertEquals(1, leadingZeros.getMajorVersion());
+        assertEquals(0, leadingZeros.compareTo(new SemanticVersion(1, 2, 3, "beta", "001.002.003-beta")));
     }
 
     @Test

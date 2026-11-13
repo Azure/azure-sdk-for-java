@@ -1,0 +1,162 @@
+{
+  "captured_on": "2026-11-10",
+  "results_file": "core-multi-release-jdk25-20261110.csv",
+  "single_buffer_reference_file": "core-multi-release-jdk25-20261110-single-buffer-reference.csv",
+  "small_heap_confirmation_file": "core-multi-release-jdk25-20261110-small-heap-confirmation.csv",
+  "measurement_scope": "IO benchmarks of the corrected full-feature JARs, including stream dispatch safeguards and bounded direct heap-buffer writes. Hexadecimal formatting, numeric parsing, and Cleaner registration were not isolated or benchmarked.",
+  "maintenance": "Dated validation snapshot; record future comparisons separately.",
+  "source": {
+    "baseline_revision": "df2d7d416eb47e1be684c02ae1507d1b4a3f5657",
+    "corrected_build_head": "93fb389463f0ce1bba5f98219cb08b9d23bda540",
+    "corrected_build_has_uncommitted_changes": true,
+    "corrected_worktree_patch_sha256": "79FA38F30F901D2082E5AC1D0E9D173BF24E68F9CBBADF5C1FAEEE554125AB74",
+    "corrected_stream_source_sha256": {
+      "sdk\\core\\azure-core\\src\\main\\java11\\com\\azure\\core\\implementation\\util\\InputStreamUtils.java": "5C7FFEEE31DA926529B4F3BE9CC6C73CDD6F5999FC44EA707173160B778A5838",
+      "sdk\\core\\azure-core\\src\\main\\java11\\com\\azure\\core\\implementation\\util\\ByteBufferInputStream.java": "38867106F807E1083A558DE78D26A5091871315BF8052761340FF605AD74F5B6",
+      "sdk\\clientcore\\core\\src\\main\\java11\\io\\clientcore\\core\\implementation\\utils\\InputStreamUtils.java": "A51D0AA53101345B6C5E99B74D625E6A29321D95944050AFAF646FF4EE3BED2B",
+      "sdk\\clientcore\\core\\src\\main\\java11\\io\\clientcore\\core\\implementation\\utils\\ByteBufferInputStream.java": "73B8D0D9FC70355A160035FE7D3FD929E62B50A09AF2CA545864A0FC59A26A58"
+    },
+    "harness_verification": "All six benchmark classes per library are byte-identical between retained JMH harnesses and the current compilation.",
+    "pre_fix_reference": "The original IO-only MR artifacts identified in core-multi-release-jdk25.metadata.json, freshly remeasured for the single-buffer transfer cases."
+  },
+  "runtime": {
+    "vendor": "Microsoft",
+    "java_version": "25.0.5.0.2",
+    "vm_version": "25.0.5.0.2+1-LTS",
+    "vm_name": "OpenJDK 64-Bit Server VM"
+  },
+  "machine": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13800H",
+    "cores": 14,
+    "logical_processors": 20,
+    "os": "Microsoft Windows 11 Enterprise",
+    "os_version": "10.0.26300",
+    "shared_workstation": true
+  },
+  "jmh": {
+    "version": "1.37",
+    "mode": "Throughput",
+    "throughput_unit": "ops/s",
+    "allocation_metric": "gc.alloc.rate.norm",
+    "allocation_unit": "B/op",
+    "forks": 2,
+    "warmup_iterations_per_fork": 3,
+    "measurement_iterations_per_fork": 5,
+    "iteration_milliseconds": 500,
+    "worker_threads": 1,
+    "main_paired_cases": 42,
+    "original_matrix_paired_cases": 40,
+    "extra_single_buffer_paired_cases": 2,
+    "additional_pre_fix_reference_results": 2,
+    "measured_variant_results": 86,
+    "measured_iteration_samples": 860,
+    "additional_confirmation_variant_results": 3,
+    "additional_confirmation_measured_iteration_samples": 60,
+    "total_measured_variant_results": 89,
+    "total_measured_iteration_samples": 920,
+    "reference_csv_reuses_corrected_main_results": true,
+    "error_columns": "JMH 99.9% confidence-interval half-widths for throughput.",
+    "output_sink": "Blackhole; no network or file throughput measured.",
+    "affinity_mask": "0x5",
+    "logical_processor_affinity": [
+      0,
+      2
+    ],
+    "fork_jvm_arguments_as_recorded": [
+      "-Xms32m",
+      "-Xmx128m",
+      "-XX:ReservedCodeCacheSize=32m",
+      "-XX:ActiveProcessorCount=2",
+      "-Xms256m",
+      "-Xmx256m",
+      "-XX:+UseG1GC",
+      "-XX:G1HeapRegionSize=4m",
+      "-XX:ReservedCodeCacheSize=64m",
+      "-XX:ActiveProcessorCount=2"
+    ],
+    "effective_heap": "256 MiB fixed",
+    "effective_code_cache": "64 MiB",
+    "ordering": [
+      "Baseline and updated measured adjacently per case, alternating which is first.",
+      "Single-buffer order: baseline/updated/reference for core; reference/updated/baseline for clientcore."
+    ]
+  },
+  "parameter_matrix": {
+    "payload_bytes": [
+      4096,
+      1048576
+    ],
+    "stream_methods": [
+      "streamToBytes",
+      "streamToOutput"
+    ],
+    "stream_types": [
+      "byteArray",
+      "generic"
+    ],
+    "buffer_methods": [
+      "bufferedReadAllBytes",
+      "bufferedTransferTo",
+      "listToBytes"
+    ],
+    "buffer_types": [
+      "heap",
+      "direct"
+    ],
+    "original_buffer_count": 128,
+    "extra_case": {
+      "method": "bufferedTransferTo",
+      "payload_bytes": 1048576,
+      "buffer_type": "heap",
+      "buffer_count": 1
+    }
+  },
+  "artifact_sha256": {
+    "azure-core-baseline": "7E4087D2C3C1CB680CB4568E699B795AECC9A1008CF5A3A959067861DA0790D4",
+    "azure-core-updated": "AA95C1EBAFB30916BADF6F2062DFC7D98409FD24CB8400A46746905B464FD2F8",
+    "azure-core-reference": "21966B6C6C4B36C82304F9A4A45C5355F17C8515AEF0F6B05B5681DEF7DE75A3",
+    "azure-core-benchmarks": "7FB08EDF28883E1EFAE5B34B99FE006DBCB930F089E3809C8FB5A57CFC638A5C",
+    "clientcore-baseline": "ECFA045FD5D226DB36BD18ECCAD2FC571843D2FA5900B815D153D45B0B51D721",
+    "clientcore-updated": "3F91C62C37A1F870D1B3B571B8984BD770328E6A44BD467E84D0AD393368E558",
+    "clientcore-reference": "A1A6A011AC8C31884513F9FDDFEB351E72833B85127959C5B4CFB34F5F2F5A2A",
+    "clientcore-benchmarks": "56C92D357925C9E956DDBCA7451E6AD514AABA5E688AAE369D2E7A228FBADA3B"
+  },
+  "raw_aggregate_sha256": {
+    "azure-core-baseline.json": "D3E8774721B9DDA306AB3C85AD3FF033201E7F01B07963101F4B03BC2957B66C",
+    "azure-core-updated.json": "CA3902566D05D37722BD223FB0D57E27494FCCAD5A1C4ADD996350D62F547573",
+    "azure-core-reference.json": "9BDBB182BD72CBA932AFE8631DA2E04A0C815679258D55FAE124225B1D3C7825",
+    "clientcore-baseline.json": "EC1FA1D1A1B83EE708B2B1550ED1E03A1CADB94659BF7833D537AAE8A980AE17",
+    "clientcore-updated.json": "69109FD833D28BAEDB1EE3C85F09E70B884BA2483A61E4E14FA09C43DDB03261",
+    "clientcore-reference.json": "2E07F022C605A9ED38FA2B50EE76A3841E205260F92A3CFBC8CEDD62F978FE5F",
+    "targeted-confirmation.json": "BAFEF7F89DE53AC05DF15F2E459F45177949ACB4F8386EE82D4C0EC421E405A2"
+  },
+  "targeted_confirmation": {
+    "reason": "The original short-run clientcore 4 KiB heap-buffer transfer had a 0.75x point estimate and nonoverlapping throughput intervals. Repeated with more forks and longer iterations without replacing the original result.",
+    "library": "clientcore",
+    "method": "bufferedTransferTo",
+    "payload_bytes": 4096,
+    "buffer_type": "heap",
+    "buffer_count": 128,
+    "forks": 4,
+    "warmup_iterations_per_fork": 3,
+    "measurement_iterations_per_fork": 5,
+    "iteration_milliseconds": 1000,
+    "affinity_mask": "0x5",
+    "ordering": [
+      "baseline",
+      "updated",
+      "reference"
+    ],
+    "started_utc": "2026-11-10T15:11:09.0411335Z",
+    "completed_utc": "2026-11-10T15:12:52.9191912Z",
+    "original_short_run_is_preserved": true,
+    "corrected_result_is_reused_for_both_confirmation_comparisons": true
+  },
+  "result_sha256": {
+    "core-multi-release-jdk25-20261110.csv": "6DB72B1DD89765E596922379C0EE425A8DC229D0BADB93C480C1BD134EBC1BF5",
+    "core-multi-release-jdk25-20261110-single-buffer-reference.csv": "12250B2DAC606079B67FAE53BB12539C0BE976D42D57FB06DD821FA8579928AB",
+    "core-multi-release-jdk25-20261110-small-heap-confirmation.csv": "EAF305CBC4D9A91F69D7932E4B7AD8FC9BE9CAB30FA3638BB24D16A4DDE19DF7"
+  },
+  "started_utc": "2026-11-10T14:55:11.1534479Z",
+  "completed_utc": "2026-11-10T15:08:38.2140400Z"
+}

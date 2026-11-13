@@ -1,0 +1,3 @@
+library,run,benchmark,size,stream_type,buffer_type,buffer_count,baseline_ops_per_second,updated_ops_per_second,speedup,baseline_error_99_9,updated_error_99_9,baseline_bytes_per_operation,updated_bytes_per_operation,allocation_reduction_percent,baseline_variant
+clientcore,jdk25-revalidated-20261110,bufferedTransferTo,4096,,heap,128,389239.9081567797,434521.1478306366,1.116332469320228,40594.25291047412,33828.402577839515,23624.018270449484,23624.016287316143,8.3945640327876e-06,pre-mr
+clientcore,jdk25-revalidated-20261110,bufferedTransferTo,4096,,heap,128,425952.9954985261,434521.1478306366,1.020115253144499,47021.2886246016,33828.402577839515,23624.016763417043,23624.016287316143,2.01532578403274e-06,pre-fix-io-only-mr

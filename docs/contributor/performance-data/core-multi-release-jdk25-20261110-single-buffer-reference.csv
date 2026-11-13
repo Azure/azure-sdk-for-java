@@ -1,0 +1,3 @@
+library,run,benchmark,size,stream_type,buffer_type,buffer_count,baseline_ops_per_second,updated_ops_per_second,speedup,baseline_error_99_9,updated_error_99_9,baseline_bytes_per_operation,updated_bytes_per_operation,allocation_reduction_percent,baseline_variant
+azure-core,jdk25-revalidated-20261110,bufferedTransferTo,1048576,,heap,1,31644729.47767163,5247713.493652691,0.16583214899515739,197072.54499384176,95404.42116786337,112.00044137941059,112.00266569664764,-0.001985989706509983,pre-fix-io-only-mr
+clientcore,jdk25-revalidated-20261110,bufferedTransferTo,1048576,,heap,1,28791415.039935507,5222965.319037246,0.18140703788933832,5310724.798319556,238054.12946336897,112.00049358219442,112.00268689290849,-0.0019583045073323646,pre-fix-io-only-mr
