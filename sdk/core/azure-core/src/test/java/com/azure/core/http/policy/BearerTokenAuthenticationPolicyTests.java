@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -28,9 +30,97 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BearerTokenAuthenticationPolicyTests {
+
+    @SyncAsyncTest
+    public void crossOriginRedirectSkipsBearerAuthentication() {
+        for (String redirectUrl : new String[] { "https://otherhost/final", "https://localhost:8443/final" }) {
+            assertRedirectAuthentication(redirectUrl, true, false);
+            assertRedirectAuthentication(redirectUrl, false, false);
+        }
+    }
+
+    @SyncAsyncTest
+    public void sameOriginRedirectKeepsDownstreamBearerAuthentication() {
+        assertRedirectAuthentication("https://LOCALHOST:443/final", true, true);
+    }
+
+    @SyncAsyncTest
+    public void configuredSecondaryHostRetryAuthenticates() {
+        String secondaryUrl = "https://secondary.example.com/resource";
+        AtomicInteger credentialCalls = new AtomicInteger();
+        AtomicInteger requests = new AtomicInteger();
+        TokenCredential credential = getCaeTokenCredential(new AtomicReference<>(), credentialCalls);
+        HttpPipelinePolicy secondaryRetry = (context, next) -> {
+            HttpRequest originalRequest = context.getHttpRequest().copy();
+            return next.clone().process().flatMap(response -> {
+                if (response.getStatusCode() != 503) {
+                    return Mono.just(response);
+                }
+                response.close();
+                context.setHttpRequest(originalRequest.setUrl(secondaryUrl));
+                return next.process();
+            });
+        };
+        HttpClient client = request -> {
+            assertEquals("Bearer token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            if (requests.incrementAndGet() == 1) {
+                return Mono.just(new MockHttpResponse(request, 503));
+            }
+            assertEquals(secondaryUrl, request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
+            .policies(secondaryRetry, new BearerTokenAuthenticationPolicy(credential, "scope"))
+            .build();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://primary.example.com/resource");
+        try (HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+            () -> pipeline.send(request))) {
+            assertEquals(200, response.getStatusCode());
+        }
+        assertEquals(2, requests.get());
+        assertEquals(1, credentialCalls.get());
+    }
+
+    private static void assertRedirectAuthentication(String redirectUrl, boolean authAfterRedirect,
+        boolean expectAuthorization) {
+        AtomicInteger credentialCalls = new AtomicInteger();
+        AtomicInteger requests = new AtomicInteger();
+        TokenCredential credential = getCaeTokenCredential(new AtomicReference<>(), credentialCalls);
+        HttpClient client = request -> {
+            String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (requests.incrementAndGet() == 1) {
+                assertEquals("Bearer token", authorization);
+                return Mono.just(
+                    new MockHttpResponse(request, 302, new HttpHeaders().set(HttpHeaderName.LOCATION, redirectUrl)));
+            }
+            assertEquals(redirectUrl, request.getUrl().toString());
+            if (expectAuthorization) {
+                assertEquals("Bearer token", authorization);
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+            assertNull(authorization);
+            return Mono.just(new MockHttpResponse(request, 401, new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
+                "Bearer error=\"insufficient_claims\", claims=\"ew==\"")));
+        };
+
+        RedirectPolicy redirect = new RedirectPolicy();
+        BearerTokenAuthenticationPolicy auth = new BearerTokenAuthenticationPolicy(credential, "scope");
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
+            .policies(new RetryPolicy(), authAfterRedirect ? redirect : auth, authAfterRedirect ? auth : redirect)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/start");
+        try (HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+            () -> pipeline.send(request))) {
+            assertEquals(expectAuthorization ? 200 : 401, response.getStatusCode());
+        }
+        assertEquals(2, requests.get());
+        assertEquals(1, credentialCalls.get());
+    }
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")

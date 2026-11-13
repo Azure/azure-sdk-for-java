@@ -4,7 +4,10 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -12,12 +15,20 @@ import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallAutomationClientBuilderUnitTests {
@@ -173,6 +184,67 @@ public class CallAutomationClientBuilderUnitTests {
             .buildAsyncClient();
 
         assertNotNull(callAutomationAsyncClient);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void defaultPipelineDoesNotReapplyCredentialsAfterRedirect(boolean useTokenCredential) {
+        String redirectUrl = "https://redirect.example.com/calls/redirected";
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient httpClient = request -> {
+            String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (requests.incrementAndGet() == 1) {
+                assertNotNull(authorization);
+                return Mono.just(
+                    new MockHttpResponse(request, 302, new HttpHeaders().set(HttpHeaderName.LOCATION, redirectUrl)));
+            }
+            assertEquals(redirectUrl, request.getUrl().toString());
+            assertNull(authorization);
+            return Mono.just(new MockHttpResponse(request, 200,
+                new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                "{\"targets\":[],\"callConnectionState\":\"connected\"}".getBytes(StandardCharsets.UTF_8)));
+        };
+        builder.endpoint(MOCK_URL).httpClient(httpClient);
+        if (useTokenCredential) {
+            builder.credential(new MockTokenCredential());
+        } else {
+            builder.credential(new AzureKeyCredential(MOCK_ACCESS_KEY));
+        }
+
+        assertNotNull(
+            builder.buildAsyncClient().getCallConnectionAsync("callConnectionId").getCallProperties().block());
+        assertEquals(2, requests.get());
+    }
+
+    @Test
+    public void defaultPipelineIgnoresBearerChallengeAfterCrossOriginRedirect() {
+        String redirectUrl = "https://redirect.example.com/calls/redirected";
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient httpClient = request -> {
+            String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (requests.incrementAndGet() == 1) {
+                assertNotNull(authorization);
+                return Mono.just(
+                    new MockHttpResponse(request, 302, new HttpHeaders().set(HttpHeaderName.LOCATION, redirectUrl)));
+            }
+            assertEquals(redirectUrl, request.getUrl().toString());
+            assertNull(authorization);
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json")
+                .set(HttpHeaderName.WWW_AUTHENTICATE, "Bearer error=\"insufficient_claims\", claims=\"ew==\"");
+            return Mono.just(new MockHttpResponse(request, 401, headers,
+                "{\"error\":{\"code\":\"Unauthorized\",\"message\":\"Unauthorized\"}}"
+                    .getBytes(StandardCharsets.UTF_8)));
+        };
+        CallConnectionAsync callConnection = builder.endpoint(MOCK_URL)
+            .credential(new MockTokenCredential())
+            .httpClient(httpClient)
+            .buildAsyncClient()
+            .getCallConnectionAsync("callConnectionId");
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> callConnection.getCallProperties().block());
+        assertEquals(401, exception.getResponse().getStatusCode());
+        assertEquals(2, requests.get());
     }
 
     @Test
