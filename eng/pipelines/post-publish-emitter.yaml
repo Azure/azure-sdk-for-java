@@ -151,6 +151,8 @@ jobs:
       python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json --upgrade-designated-libraries='${{ parameters.UpgradeDesignatedLibraries }}'
     displayName: 'Generate SDK'
     workingDirectory: $(Build.SourcesDirectory)
+    env:
+      NPM_CONFIG_FORCE: 'true'
 
   - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
     parameters:
@@ -161,6 +163,6 @@ jobs:
       PROwner: Azure
       BaseBranchName: 'refs/heads/main'
       PRBranchName: typespec-java-generation-$(Build.BuildId)
-      CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
-      PRTitle: '[skip ci] [Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
+      CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix) (TCGC PR 6069 preview)'
+      PRTitle: '[skip ci] [Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix) (TCGC PR 6069 preview)'
       OpenAsDraft: 'true'
