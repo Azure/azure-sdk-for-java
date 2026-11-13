@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetUpdateStrategiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-11-01/UpdateStrategies_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_Delete.json
      */
     /**
      * Sample code: Delete a FleetUpdateStrategy resource.

@@ -28,6 +28,17 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     private String name;
 
     /*
+     * The total member upgrade failures within the stage.
+     */
+    private Integer failureCount;
+
+    /*
+     * The max number of member upgrade failures allowed within this stage, resolved from the
+     * UpdateStrategy.UpdateStage.maxAllowedFailures value.
+     */
+    private Integer maxAllowedFailures;
+
+    /*
      * The max number of upgrades that can run concurrently across all groups in this stage, resolved from the
      * UpdateStrategy.UpdateStage.maxConcurrency value.
      */
@@ -75,6 +86,25 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the failureCount property: The total member upgrade failures within the stage.
+     * 
+     * @return the failureCount value.
+     */
+    public Integer failureCount() {
+        return this.failureCount;
+    }
+
+    /**
+     * Get the maxAllowedFailures property: The max number of member upgrade failures allowed within this stage,
+     * resolved from the UpdateStrategy.UpdateStage.maxAllowedFailures value.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public Integer maxAllowedFailures() {
+        return this.maxAllowedFailures;
     }
 
     /**
@@ -151,6 +181,10 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
                     deserializedUpdateStageStatus.status = UpdateStatus.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedUpdateStageStatus.name = reader.getString();
+                } else if ("failureCount".equals(fieldName)) {
+                    deserializedUpdateStageStatus.failureCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateStageStatus.maxAllowedFailures = reader.getNullable(JsonReader::getInt);
                 } else if ("maxConcurrency".equals(fieldName)) {
                     deserializedUpdateStageStatus.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else if ("groups".equals(fieldName)) {
