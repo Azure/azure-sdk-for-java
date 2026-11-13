@@ -89,6 +89,7 @@ public class ReactorConnection implements AmqpConnection {
     private final Composite subscriptions;
 
     private ReactorExecutor reactorExecutor;
+    private boolean connectionCloseStarted;
 
     private volatile ClaimsBasedSecurityChannel cbsChannel;
     private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
@@ -612,8 +613,24 @@ public class ReactorConnection implements AmqpConnection {
             .then(isClosedMono.asMono());
     }
 
-    private synchronized void closeConnectionWork() {
-        if (connection == null) {
+    private void closeConnectionWork() {
+        final boolean hasConnection;
+        final ReactorExecutor executor;
+        synchronized (this) {
+            // A dispatcher failure can leave the work queued and also trigger the fallback.
+            if (connectionCloseStarted) {
+                return;
+            }
+            connectionCloseStarted = true;
+
+            hasConnection = connection != null;
+            executor = reactorExecutor;
+            if (hasConnection) {
+                connection.close();
+            }
+        }
+
+        if (!hasConnection) {
             isClosedMono.emitEmpty((signalType, emitResult) -> {
                 addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Unable to complete closeMono.");
 
@@ -623,7 +640,7 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
-        connection.close();
+        // Endpoint state callbacks can reenter getOrCreateConnection.
         handler.close();
 
         final Mono<Void> awaitSessionsClose;
@@ -639,10 +656,10 @@ public class ReactorConnection implements AmqpConnection {
 
         // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
         // remaining work after OperationTimeout has elapsed and closes afterwards.
-        final Mono<Void> closedExecutor = reactorExecutor != null ? Mono.defer(() -> {
+        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> {
             synchronized (this) {
                 logger.info("Closing executor.");
-                return reactorExecutor.closeAsync();
+                return executor.closeAsync();
             }
         }) : Mono.empty();
 

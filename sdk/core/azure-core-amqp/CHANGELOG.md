@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a livelock when an AMQP connection closes during an endpoint state notification.
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)

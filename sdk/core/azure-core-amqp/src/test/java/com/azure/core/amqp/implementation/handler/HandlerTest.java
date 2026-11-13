@@ -16,6 +16,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -137,6 +144,36 @@ public class HandlerTest {
 
         // The last state is always replayed before it is closed.
         StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete().verify();
+    }
+
+    @Test
+    public void closeWhileEndpointStateIsBeingEmitted() {
+        final ExecutorService executor = Executors.newFixedThreadPool(2);
+        final CompletableFuture<Void> activeCallbackEntered = new CompletableFuture<>();
+        final CompletableFuture<Void> releaseActiveCallback = new CompletableFuture<>();
+        try {
+            StepVerifier.create(handler.getEndpointStates().doOnNext(state -> {
+                if (state == EndpointState.ACTIVE) {
+                    activeCallbackEntered.complete(null);
+                    releaseActiveCallback.join();
+                }
+            })).expectNext(EndpointState.UNINITIALIZED).then(() -> {
+                executor.submit(() -> handler.onNext(EndpointState.ACTIVE));
+                assertDoesNotThrow(() -> {
+                    activeCallbackEntered.get(5, TimeUnit.SECONDS);
+                    executor.submit(handler::close).get(5, TimeUnit.SECONDS);
+                });
+                releaseActiveCallback.complete(null);
+            }).expectNext(EndpointState.ACTIVE, EndpointState.CLOSED).expectComplete().verify(Duration.ofSeconds(10));
+
+            StepVerifier.create(handler.getEndpointStates())
+                .expectNext(EndpointState.CLOSED)
+                .expectComplete()
+                .verify(Duration.ofSeconds(5));
+        } finally {
+            releaseActiveCallback.complete(null);
+            executor.shutdownNow();
+        }
     }
 
     /**
