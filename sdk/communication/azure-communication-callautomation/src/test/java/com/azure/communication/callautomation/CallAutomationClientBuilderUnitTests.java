@@ -4,6 +4,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -212,6 +213,37 @@ public class CallAutomationClientBuilderUnitTests {
 
         assertNotNull(
             builder.buildAsyncClient().getCallConnectionAsync("callConnectionId").getCallProperties().block());
+        assertEquals(2, requests.get());
+    }
+
+    @Test
+    public void defaultPipelineIgnoresBearerChallengeAfterCrossOriginRedirect() {
+        String redirectUrl = "https://redirect.example.com/calls/redirected";
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient httpClient = request -> {
+            String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (requests.incrementAndGet() == 1) {
+                assertNotNull(authorization);
+                return Mono.just(
+                    new MockHttpResponse(request, 302, new HttpHeaders().set(HttpHeaderName.LOCATION, redirectUrl)));
+            }
+            assertEquals(redirectUrl, request.getUrl().toString());
+            assertNull(authorization);
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json")
+                .set(HttpHeaderName.WWW_AUTHENTICATE, "Bearer error=\"insufficient_claims\", claims=\"ew==\"");
+            return Mono.just(new MockHttpResponse(request, 401, headers,
+                "{\"error\":{\"code\":\"Unauthorized\",\"message\":\"Unauthorized\"}}"
+                    .getBytes(StandardCharsets.UTF_8)));
+        };
+        CallConnectionAsync callConnection = builder.endpoint(MOCK_URL)
+            .credential(new MockTokenCredential())
+            .httpClient(httpClient)
+            .buildAsyncClient()
+            .getCallConnectionAsync("callConnectionId");
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> callConnection.getCallProperties().block());
+        assertEquals(401, exception.getResponse().getStatusCode());
         assertEquals(2, requests.get());
     }
 
