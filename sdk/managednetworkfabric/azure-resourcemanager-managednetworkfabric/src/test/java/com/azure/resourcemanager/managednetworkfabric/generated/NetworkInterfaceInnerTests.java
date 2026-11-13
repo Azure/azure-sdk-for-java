@@ -17,25 +17,25 @@ public final class NetworkInterfaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"physicalIdentifier\":\"fs\",\"connectedTo\":\"izhqikmgobl\",\"interfaceType\":\"Management\",\"ipv4Address\":\"cdiiisklbonx\",\"ipv6Address\":\"pjxvtrkfkg\",\"description\":\"jqnnpjwkosnyxi\",\"additionalDescription\":\"oujjcx\",\"lastOperation\":{\"details\":\"mrlhnzkwops\"},\"networkFabricId\":\"yinxu\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationState\":\"Provisioning\",\"annotation\":\"ezbfqployuek\"},\"identity\":{\"principalId\":\"vuftrsvjmnsvu\",\"tenantId\":\"jktvolef\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ampqocl\":{\"principalId\":\"pkdbx\",\"clientId\":\"fb\"}}},\"id\":\"nmxynlsuqbwzst\",\"name\":\"k\",\"type\":\"gvp\"}")
+            "{\"properties\":{\"physicalIdentifier\":\"gqb\",\"connectedTo\":\"xh\",\"interfaceType\":\"Data\",\"ipv4Address\":\"zxlermkmer\",\"ipv6Address\":\"skirhn\",\"description\":\"pkcbkfukdljq\",\"additionalDescription\":\"tsdyds\",\"lastOperation\":{\"details\":\"afyalo\"},\"networkFabricId\":\"wz\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"EnabledDegraded\",\"configurationState\":\"Succeeded\",\"operationalState\":\"Unknown\",\"annotation\":\"stifgufyjf\"},\"identity\":{\"principalId\":\"iyvndjokgwes\",\"tenantId\":\"zqhrqpfzlpejtznx\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"hydt\":{\"principalId\":\"jqbbgsimwejlw\",\"clientId\":\"bpjzobdwbcpraswk\"},\"kivdwgtqcume\":{\"principalId\":\"czkfwfat\",\"clientId\":\"wphn\"},\"k\":{\"principalId\":\"aaqgoqbdiuycs\",\"clientId\":\"kowkrbhzhr\"},\"uozkgyf\":{\"principalId\":\"mqowiuasfgqg\",\"clientId\":\"yhfaimqvd\"}}},\"id\":\"oehgfmqmskkixvlz\",\"name\":\"xplhpeva\",\"type\":\"yntvzjyielbq\"}")
             .toObject(NetworkInterfaceInner.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("oujjcx", model.additionalDescription());
-        Assertions.assertEquals("ezbfqployuek", model.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tsdyds", model.additionalDescription());
+        Assertions.assertEquals("stifgufyjf", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceInner model = new NetworkInterfaceInner()
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("ampqocl", new UserAssignedIdentity())))
-            .withAdditionalDescription("oujjcx")
-            .withAnnotation("ezbfqployuek");
+        NetworkInterfaceInner model = new NetworkInterfaceInner().withIdentity(new ManagedServiceIdentity()
+            .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("hydt", new UserAssignedIdentity(), "kivdwgtqcume",
+                new UserAssignedIdentity(), "k", new UserAssignedIdentity(), "uozkgyf", new UserAssignedIdentity())))
+            .withAdditionalDescription("tsdyds")
+            .withAnnotation("stifgufyjf");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceInner.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("oujjcx", model.additionalDescription());
-        Assertions.assertEquals("ezbfqployuek", model.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tsdyds", model.additionalDescription());
+        Assertions.assertEquals("stifgufyjf", model.annotation());
     }
 
     // Use "Map.of" if available

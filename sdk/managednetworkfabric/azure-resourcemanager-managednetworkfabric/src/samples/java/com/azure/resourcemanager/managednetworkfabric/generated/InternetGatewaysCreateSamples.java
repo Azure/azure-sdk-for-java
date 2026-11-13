@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class InternetGatewaysCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternetGateways_Create.json
+     * x-ms-original-file: 2026-01-15-preview/InternetGateways_Create.json
      */
     /**
      * Sample code: InternetGateways_Create_MaximumSet_Gen.

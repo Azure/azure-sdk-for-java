@@ -14,7 +14,7 @@ public final class UniqueRouteDistinguisherPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UniqueRouteDistinguisherProperties model = BinaryData.fromString(
-            "{\"uniqueRdConfigurationState\":\"Disabled\",\"uniqueRds\":[\"kwonrzpghl\",\"dtbgblxbuib\",\"vjztaflvsmfj\"],\"nniDerivedUniqueRdConfigurationState\":\"Disabled\"}")
+            "{\"uniqueRdConfigurationState\":\"Disabled\",\"uniqueRds\":[\"xhifpps\",\"peswyhhmifjuajx\",\"wvcmmpeglyuq\",\"cmlae\"],\"nniDerivedUniqueRdConfigurationState\":\"Disabled\"}")
             .toObject(UniqueRouteDistinguisherProperties.class);
         Assertions.assertEquals(UniqueRouteDistinguisherConfigurationState.DISABLED,
             model.uniqueRdConfigurationState());

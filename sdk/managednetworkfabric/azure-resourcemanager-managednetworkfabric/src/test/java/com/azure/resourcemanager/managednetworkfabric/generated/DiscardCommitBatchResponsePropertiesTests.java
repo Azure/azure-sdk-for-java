@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscardCommitBatchResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscardCommitBatchResponseProperties model = BinaryData.fromString("{\"commitBatchId\":\"gkts\"}")
+        DiscardCommitBatchResponseProperties model = BinaryData.fromString("{\"commitBatchId\":\"dtbgblxbuib\"}")
             .toObject(DiscardCommitBatchResponseProperties.class);
-        Assertions.assertEquals("gkts", model.commitBatchId());
+        Assertions.assertEquals("dtbgblxbuib", model.commitBatchId());
     }
 }

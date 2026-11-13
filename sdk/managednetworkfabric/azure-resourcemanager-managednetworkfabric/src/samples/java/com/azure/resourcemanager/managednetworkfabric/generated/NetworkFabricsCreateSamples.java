@@ -13,11 +13,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NNIDerivedUniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
+import com.azure.resourcemanager.managednetworkfabric.models.PostUpgradeProfileProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.PreUpgradeProfileProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchiveSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfileProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionAProperties;
@@ -31,7 +35,7 @@ import java.util.Map;
  */
 public final class NetworkFabricsCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Create.json
      */
     /**
      * Sample code: NetworkFabrics_Create_MaximumSet_Gen.
@@ -121,6 +125,17 @@ public final class NetworkFabricsCreateSamples {
             .withStorageArrayCount(1)
             .withAuthorizedTransceiver(
                 new AuthorizedTransceiverProperties().withVendor("vendorX").withKey("fakeTokenPlaceholder"))
+            .withSecretArchiveSettings(new SecretArchiveSettings().withAssociatedIdentity(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
+                .withVaultUri("https://myvault.vault.azure.net/"))
+            .withUpgradeProfile(Arrays.asList(new UpgradeProfileProperties()
+                .withPreUpgradeProfile(
+                    new PreUpgradeProfileProperties().withMaxEnteringMaintenanceTimeoutInSeconds(300))
+                .withPostUpgradeProfile(
+                    new PostUpgradeProfileProperties().withMaxExitingMaintenanceTimeoutInSeconds(3000)
+                        .withMlagReloadDelayTimeoutInSeconds(900))))
             .withAnnotation("annotation")
             .create();
     }

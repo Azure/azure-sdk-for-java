@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class AccessControlListsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/AccessControlLists_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/AccessControlLists_UpdateAdministrativeState.json
      */
     /**
      * Sample code: AccessControlLists_UpdateAdministrativeState_MaximumSet_Gen.

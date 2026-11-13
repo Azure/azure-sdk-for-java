@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkTapRulesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTapRules_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTapRules_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkTapRules_UpdateAdministrativeState_MaximumSet_Gen.

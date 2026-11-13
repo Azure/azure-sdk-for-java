@@ -12,14 +12,14 @@ public final class CommitBatchStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitBatchStatusRequest model
-            = BinaryData.fromString("{\"commitBatchId\":\"pxpyaf\"}").toObject(CommitBatchStatusRequest.class);
-        Assertions.assertEquals("pxpyaf", model.commitBatchId());
+            = BinaryData.fromString("{\"commitBatchId\":\"tm\"}").toObject(CommitBatchStatusRequest.class);
+        Assertions.assertEquals("tm", model.commitBatchId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitBatchStatusRequest model = new CommitBatchStatusRequest().withCommitBatchId("pxpyaf");
+        CommitBatchStatusRequest model = new CommitBatchStatusRequest().withCommitBatchId("tm");
         model = BinaryData.fromObject(model).toObject(CommitBatchStatusRequest.class);
-        Assertions.assertEquals("pxpyaf", model.commitBatchId());
+        Assertions.assertEquals("tm", model.commitBatchId());
     }
 }

@@ -15,28 +15,28 @@ public final class IpExtendedCommunityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpExtendedCommunityProperties model = BinaryData.fromString(
-            "{\"annotation\":\"qswbqerzwx\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":48829511246703614,\"routeTargets\":[\"gukvlbpkt\",\"dstyouam\",\"ewres\",\"moweg\"]},{\"action\":\"Permit\",\"sequenceNumber\":1168634176596881637,\"routeTargets\":[\"yxey\",\"uqi\",\"ijiitns\"]}],\"networkFabricId\":\"lz\",\"lastOperation\":{\"details\":\"ygr\"},\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\"}")
+            "{\"annotation\":\"cbhhez\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5160665524020906164,\"routeTargets\":[\"qxutrpbrruyuua\",\"vlm\"]},{\"action\":\"Permit\",\"sequenceNumber\":9171918442354377344,\"routeTargets\":[\"lbmxlbnwtpcpah\"]}],\"networkFabricId\":\"z\",\"lastOperation\":{\"details\":\"hmtfho\"},\"configurationState\":\"Provisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"UnderMaintenance\"}")
             .toObject(IpExtendedCommunityProperties.class);
-        Assertions.assertEquals("qswbqerzwx", model.annotation());
+        Assertions.assertEquals("cbhhez", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(48829511246703614L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("gukvlbpkt", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals(5160665524020906164L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("qxutrpbrruyuua", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityProperties model = new IpExtendedCommunityProperties().withAnnotation("qswbqerzwx")
+        IpExtendedCommunityProperties model = new IpExtendedCommunityProperties().withAnnotation("cbhhez")
             .withIpExtendedCommunityRules(Arrays.asList(
                 new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(48829511246703614L)
-                    .withRouteTargets(Arrays.asList("gukvlbpkt", "dstyouam", "ewres", "moweg")),
+                    .withSequenceNumber(5160665524020906164L)
+                    .withRouteTargets(Arrays.asList("qxutrpbrruyuua", "vlm")),
                 new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(1168634176596881637L)
-                    .withRouteTargets(Arrays.asList("yxey", "uqi", "ijiitns"))));
+                    .withSequenceNumber(9171918442354377344L)
+                    .withRouteTargets(Arrays.asList("lbmxlbnwtpcpah"))));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityProperties.class);
-        Assertions.assertEquals("qswbqerzwx", model.annotation());
+        Assertions.assertEquals("cbhhez", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(48829511246703614L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("gukvlbpkt", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals(5160665524020906164L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("qxutrpbrruyuua", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 }

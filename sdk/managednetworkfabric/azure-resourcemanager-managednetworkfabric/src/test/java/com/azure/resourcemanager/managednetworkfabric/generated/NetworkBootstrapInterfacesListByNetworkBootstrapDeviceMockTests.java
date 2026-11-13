@@ -22,7 +22,7 @@ public final class NetworkBootstrapInterfacesListByNetworkBootstrapDeviceMockTes
     @Test
     public void testListByNetworkBootstrapDevice() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"administrativeState\":\"RMA\",\"configurationState\":\"PendingCommit\",\"physicalIdentifier\":\"dsp\",\"connectedTo\":\"uhztvbgcflttes\",\"interfaceType\":\"Data\",\"description\":\"uuyttuindp\",\"additionalDescription\":\"ijncaqgtsbahtlop\",\"ipv4Address\":\"sbjzrnj\",\"ipv6Address\":\"gagmgullnashn\",\"serialNumber\":\"rmabbetzcdbqzw\",\"annotation\":\"akbvaqguaub\"},\"id\":\"wpllojdccd\",\"name\":\"ewtddigmmjve\",\"type\":\"jrcrbkw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"administrativeState\":\"UnderMaintenance\",\"configurationState\":\"PendingAdministrativeUpdate\",\"physicalIdentifier\":\"luqacebcn\",\"connectedTo\":\"hsaumju\",\"interfaceType\":\"Management\",\"description\":\"flvglvwkgcpfznek\",\"additionalDescription\":\"qgwvxwqqmv\",\"ipv4Address\":\"bmfobtmljobguo\",\"ipv6Address\":\"wnygbralcw\",\"serialNumber\":\"byczwegtzdp\",\"operationalState\":\"Down\",\"annotation\":\"xxvksqifr\"},\"id\":\"idvtur\",\"name\":\"gl\",\"type\":\"cmegoll\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class NetworkBootstrapInterfacesListByNetworkBootstrapDeviceMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkBootstrapInterface> response = manager.networkBootstrapInterfaces()
-            .listByNetworkBootstrapDevice("ixuy", "qsonfxsfjedjnxic", com.azure.core.util.Context.NONE);
+            .listByNetworkBootstrapDevice("yanooytilsmisewq", "jmm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ijncaqgtsbahtlop", response.iterator().next().additionalDescription());
-        Assertions.assertEquals("rmabbetzcdbqzw", response.iterator().next().serialNumber());
-        Assertions.assertEquals("akbvaqguaub", response.iterator().next().annotation());
+        Assertions.assertEquals("qgwvxwqqmv", response.iterator().next().additionalDescription());
+        Assertions.assertEquals("byczwegtzdp", response.iterator().next().serialNumber());
+        Assertions.assertEquals("xxvksqifr", response.iterator().next().annotation());
     }
 }

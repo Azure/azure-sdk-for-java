@@ -15,6 +15,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterface;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacePatch;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
@@ -91,6 +92,10 @@ public final class NetworkInterfaceImpl
 
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
+    }
+
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
     }
 
     public String annotation() {

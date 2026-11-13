@@ -23,7 +23,7 @@ public final class IpExtendedCommunitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"xwzznocrbtazop\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1089591809136719227,\"routeTargets\":[\"hmaknppucfvxq\",\"mxc\"]},{\"action\":\"Permit\",\"sequenceNumber\":6772469334226183531,\"routeTargets\":[\"nvdumi\"]}],\"networkFabricId\":\"xmrntphy\",\"lastOperation\":{\"details\":\"ddt\"},\"configurationState\":\"Rejected\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\"},\"location\":\"jabzs\",\"tags\":{\"wwvb\":\"zaxmkuthooaicmsz\"},\"id\":\"vibivh\",\"name\":\"ryppmmtqxqiqae\",\"type\":\"ugqfcorajdb\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"xwzznocrbtazop\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1089591809136719227,\"routeTargets\":[\"hmaknppucfvxq\",\"mxc\"]},{\"action\":\"Permit\",\"sequenceNumber\":6772469334226183531,\"routeTargets\":[\"nvdumi\"]}],\"networkFabricId\":\"xmrntphy\",\"lastOperation\":{\"details\":\"ddt\"},\"configurationState\":\"CommitStaged\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\"},\"location\":\"jabzs\",\"tags\":{\"wwvb\":\"zaxmkuthooaicmsz\"},\"id\":\"vibivh\",\"name\":\"ryppmmtqxqiqae\",\"type\":\"ugqfcorajdb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

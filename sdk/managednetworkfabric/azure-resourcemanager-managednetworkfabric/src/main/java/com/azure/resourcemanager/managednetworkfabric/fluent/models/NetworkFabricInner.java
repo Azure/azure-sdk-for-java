@@ -18,12 +18,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.FeatureFlagProperti
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.QosProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchiveSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationSummary;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfileProperties;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -387,6 +390,16 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
+     * Get the networkBootstrapDeviceId property: Azure resource ID for the NetworkBootstrapDevice belonging to this
+     * Network Fabric.
+     * 
+     * @return the networkBootstrapDeviceId value.
+     */
+    public String networkBootstrapDeviceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkBootstrapDeviceId();
+    }
+
+    /**
      * Get the terminalServerConfiguration property: Network and credentials configuration currently applied to terminal
      * server.
      * 
@@ -681,6 +694,16 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
+     * Get the operationalState property: Operational state of networkFabric indicating if the resources of the fabric
+     * are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
+    }
+
+    /**
      * Get the qosConfiguration property: NetworkFabric QoS Configuration.
      * 
      * @return the qosConfiguration value.
@@ -700,6 +723,56 @@ public final class NetworkFabricInner extends Resource {
             this.innerProperties = new NetworkFabricProperties();
         }
         this.innerProperties().withQosConfiguration(qosConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretArchiveSettings();
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the NetworkFabricInner object itself.
+     */
+    public NetworkFabricInner withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricProperties();
+        }
+        this.innerProperties().withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    /**
+     * Get the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @return the upgradeProfile value.
+     */
+    public List<UpgradeProfileProperties> upgradeProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeProfile();
+    }
+
+    /**
+     * Set the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @param upgradeProfile the upgradeProfile value to set.
+     * @return the NetworkFabricInner object itself.
+     */
+    public NetworkFabricInner withUpgradeProfile(List<UpgradeProfileProperties> upgradeProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricProperties();
+        }
+        this.innerProperties().withUpgradeProfile(upgradeProfile);
         return this;
     }
 

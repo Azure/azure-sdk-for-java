@@ -21,7 +21,7 @@ public final class NetworkBootstrapInterfacesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationState\":\"Provisioned\",\"physicalIdentifier\":\"kbchnhexmg\",\"connectedTo\":\"lufojue\",\"interfaceType\":\"Data\",\"description\":\"hgfwyzvnsna\",\"additionalDescription\":\"obcuy\",\"ipv4Address\":\"ltdgxiq\",\"ipv6Address\":\"rrxjfxueqyj\",\"serialNumber\":\"oytgnycnk\",\"annotation\":\"ipnzgnybuglala\"},\"id\":\"nc\",\"name\":\"hzqnhxksc\",\"type\":\"ykrzrjjernjkgalo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationState\":\"CommitStaged\",\"physicalIdentifier\":\"vlfkwdtsbjmchs\",\"connectedTo\":\"ezjyfaqdwfa\",\"interfaceType\":\"Data\",\"description\":\"etslxerhwlvh\",\"additionalDescription\":\"xxgeladqziljrsyc\",\"ipv4Address\":\"nsznjs\",\"ipv6Address\":\"jjupukhxpixuyy\",\"serialNumber\":\"onfxsfjedjnxic\",\"operationalState\":\"Degraded\",\"annotation\":\"cytedspkduhzt\"},\"id\":\"gcfltte\",\"name\":\"qpjcuuyttuindp\",\"type\":\"rijncaqgts\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class NetworkBootstrapInterfacesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkBootstrapInterface response = manager.networkBootstrapInterfaces()
-            .define("gvh")
-            .withExistingNetworkBootstrapDevice("szuhuojjbkyd", "s")
-            .withAdditionalDescription("gchtaeacbqkx")
-            .withSerialNumber("fx")
-            .withAnnotation("vav")
+            .define("ofzmvt")
+            .withExistingNetworkBootstrapDevice("j", "cpcpeur")
+            .withAdditionalDescription("qfmeeuuur")
+            .withSerialNumber("ev")
+            .withAnnotation("jhvg")
             .create();
 
-        Assertions.assertEquals("obcuy", response.additionalDescription());
-        Assertions.assertEquals("oytgnycnk", response.serialNumber());
-        Assertions.assertEquals("ipnzgnybuglala", response.annotation());
+        Assertions.assertEquals("xxgeladqziljrsyc", response.additionalDescription());
+        Assertions.assertEquals("onfxsfjedjnxic", response.serialNumber());
+        Assertions.assertEquals("cytedspkduhzt", response.annotation());
     }
 }

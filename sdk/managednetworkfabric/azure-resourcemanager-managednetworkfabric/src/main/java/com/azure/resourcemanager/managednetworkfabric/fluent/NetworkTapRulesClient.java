@@ -14,7 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRuleResyncResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRulePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
@@ -403,7 +403,7 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkTapRuleName);
 
     /**
@@ -418,7 +418,7 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String networkTapRuleName, Context context);
 
     /**
@@ -432,7 +432,7 @@ public interface NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkTapRuleName);
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String networkTapRuleName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -446,6 +446,6 @@ public interface NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkTapRuleName,
+    ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String networkTapRuleName,
         Context context);
 }

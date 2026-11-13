@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class IpExtendedCommunitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_Update.json
+     * x-ms-original-file: 2026-01-15-preview/IpExtendedCommunities_Update.json
      */
     /**
      * Sample code: IpExtendedCommunities_Update_MaximumSet_Gen.

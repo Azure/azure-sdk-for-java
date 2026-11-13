@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupDestination;
@@ -60,6 +61,11 @@ public final class NeighborGroupProperties implements JsonSerializable<NeighborG
      * Configuration state of the resource.
      */
     private ConfigurationState configurationState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    private AdministrativeState administrativeState;
 
     /**
      * Creates an instance of NeighborGroupProperties class.
@@ -162,6 +168,15 @@ public final class NeighborGroupProperties implements JsonSerializable<NeighborG
     }
 
     /**
+     * Get the administrativeState property: Administrative state of the resource.
+     * 
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -209,6 +224,9 @@ public final class NeighborGroupProperties implements JsonSerializable<NeighborG
                 } else if ("configurationState".equals(fieldName)) {
                     deserializedNeighborGroupProperties.configurationState
                         = ConfigurationState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNeighborGroupProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

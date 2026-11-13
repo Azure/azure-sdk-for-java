@@ -14,22 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitConfigurationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitConfigurationRequest model = BinaryData.fromString(
-            "{\"commitStage\":\"Rollback\",\"commitPolicy\":\"StageCEConfiguration\",\"devices\":[\"lndyclwgycv\",\"qnzjcyqqz\"]}")
+        CommitConfigurationRequest model = BinaryData
+            .fromString(
+                "{\"commitStage\":\"Rollback\",\"commitPolicy\":\"StageCEConfiguration\",\"devices\":[\"vrb\"]}")
             .toObject(CommitConfigurationRequest.class);
         Assertions.assertEquals(CommitStage.ROLLBACK, model.commitStage());
         Assertions.assertEquals(CommitConfigurationPolicy.STAGE_CECONFIGURATION, model.commitPolicy());
-        Assertions.assertEquals("lndyclwgycv", model.devices().get(0));
+        Assertions.assertEquals("vrb", model.devices().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitConfigurationRequest model = new CommitConfigurationRequest().withCommitStage(CommitStage.ROLLBACK)
             .withCommitPolicy(CommitConfigurationPolicy.STAGE_CECONFIGURATION)
-            .withDevices(Arrays.asList("lndyclwgycv", "qnzjcyqqz"));
+            .withDevices(Arrays.asList("vrb"));
         model = BinaryData.fromObject(model).toObject(CommitConfigurationRequest.class);
         Assertions.assertEquals(CommitStage.ROLLBACK, model.commitStage());
         Assertions.assertEquals(CommitConfigurationPolicy.STAGE_CECONFIGURATION, model.commitPolicy());
-        Assertions.assertEquals("lndyclwgycv", model.devices().get(0));
+        Assertions.assertEquals("vrb", model.devices().get(0));
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class RoutePoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/RoutePolicies_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/RoutePolicies_Delete.json
      */
     /**
      * Sample code: RoutePolicies_Delete_MaximumSet_Gen.

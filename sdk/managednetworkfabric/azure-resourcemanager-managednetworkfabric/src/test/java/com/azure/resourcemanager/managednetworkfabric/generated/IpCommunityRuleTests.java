@@ -15,25 +15,25 @@ public final class IpCommunityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityRule model = BinaryData.fromString(
-            "{\"action\":\"Permit\",\"sequenceNumber\":5680566642026176857,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoExport\",\"Internet\",\"NoExport\"],\"communityMembers\":[\"tta\",\"jyosxwwh\"]}")
+            "{\"action\":\"Permit\",\"sequenceNumber\":7243642612546485727,\"wellKnownCommunities\":[\"GShut\",\"Internet\",\"NoExport\"],\"communityMembers\":[\"ymmpujivy\"]}")
             .toObject(IpCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(5680566642026176857L, model.sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE, model.wellKnownCommunities().get(0));
-        Assertions.assertEquals("tta", model.communityMembers().get(0));
+        Assertions.assertEquals(7243642612546485727L, model.sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.GSHUT, model.wellKnownCommunities().get(0));
+        Assertions.assertEquals("ymmpujivy", model.communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpCommunityRule model = new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-            .withSequenceNumber(5680566642026176857L)
-            .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE, WellKnownCommunities.NO_EXPORT,
-                WellKnownCommunities.INTERNET, WellKnownCommunities.NO_EXPORT))
-            .withCommunityMembers(Arrays.asList("tta", "jyosxwwh"));
+            .withSequenceNumber(7243642612546485727L)
+            .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET,
+                WellKnownCommunities.NO_EXPORT))
+            .withCommunityMembers(Arrays.asList("ymmpujivy"));
         model = BinaryData.fromObject(model).toObject(IpCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(5680566642026176857L, model.sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE, model.wellKnownCommunities().get(0));
-        Assertions.assertEquals("tta", model.communityMembers().get(0));
+        Assertions.assertEquals(7243642612546485727L, model.sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.GSHUT, model.wellKnownCommunities().get(0));
+        Assertions.assertEquals("ymmpujivy", model.communityMembers().get(0));
     }
 }

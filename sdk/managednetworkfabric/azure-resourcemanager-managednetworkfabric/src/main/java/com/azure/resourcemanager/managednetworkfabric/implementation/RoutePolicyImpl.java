@@ -21,7 +21,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatemen
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -210,11 +210,11 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
             .updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration() {
+    public ValidateConfigurationResponseV2 validateConfiguration() {
         return serviceManager.routePolicies().validateConfiguration(resourceGroupName, routePolicyName);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(Context context) {
         return serviceManager.routePolicies().validateConfiguration(resourceGroupName, routePolicyName, context);
     }
 

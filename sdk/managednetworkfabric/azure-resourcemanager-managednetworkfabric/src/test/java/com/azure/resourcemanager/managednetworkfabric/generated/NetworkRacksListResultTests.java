@@ -13,13 +13,13 @@ public final class NetworkRacksListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkRacksListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"ckfavhkh\",\"networkDevices\":[\"wweifdy\",\"aoex\",\"guwnrdpuzlai\",\"sujtgg\"],\"lastOperation\":{\"details\":\"zam\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Provisioned\",\"annotation\":\"dcliqwzu\"},\"location\":\"yelrnh\",\"tags\":{\"syovqmqc\":\"vhqsz\"},\"id\":\"dp\",\"name\":\"oqwrnfckjthlok\",\"type\":\"xw\"}],\"nextLink\":\"fubkngejjx\"}")
+            "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"wtnnsvrfajyni\",\"networkDevices\":[\"bufgzqzhl\",\"ctblfehb\"],\"lastOperation\":{\"details\":\"yohrcmeqljxdum\"},\"provisioningState\":\"Updating\",\"configurationState\":\"Deprovisioned\",\"annotation\":\"ebldxagmdfjwc\"},\"location\":\"kwx\",\"tags\":{\"vgzacrzhnsby\":\"quvohufzdtsrpj\"},\"id\":\"gmgbhuqcz\",\"name\":\"uanbfulvc\",\"type\":\"glxoqwbztilqb\"}],\"nextLink\":\"wbgwzhbhf\"}")
             .toObject(NetworkRacksListResult.class);
-        Assertions.assertEquals("yelrnh", model.value().get(0).location());
-        Assertions.assertEquals("vhqsz", model.value().get(0).tags().get("syovqmqc"));
-        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.value().get(0).networkRackType());
-        Assertions.assertEquals("ckfavhkh", model.value().get(0).networkFabricId());
-        Assertions.assertEquals("dcliqwzu", model.value().get(0).annotation());
-        Assertions.assertEquals("fubkngejjx", model.nextLink());
+        Assertions.assertEquals("kwx", model.value().get(0).location());
+        Assertions.assertEquals("quvohufzdtsrpj", model.value().get(0).tags().get("vgzacrzhnsby"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
+        Assertions.assertEquals("wtnnsvrfajyni", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("ebldxagmdfjwc", model.value().get(0).annotation());
+        Assertions.assertEquals("wbgwzhbhf", model.nextLink());
     }
 }

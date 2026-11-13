@@ -13,7 +13,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.RouteType;
  */
 public final class NetworkToNetworkInterconnectsUpdateBfdAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.

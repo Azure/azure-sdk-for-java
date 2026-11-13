@@ -200,13 +200,15 @@ public interface NetworkFabrics {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult refreshConfiguration(String resourceGroupName, String networkFabricName, Context context);
+    OperationStatusResult refreshConfiguration(String resourceGroupName, String networkFabricName,
+        RefreshConfigurationRequestProperties body, Context context);
 
     /**
      * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
@@ -279,7 +281,7 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body);
 
     /**
@@ -294,7 +296,7 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body, Context context);
 
     /**

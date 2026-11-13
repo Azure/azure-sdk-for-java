@@ -11,6 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
 import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.VmProfile;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public final class NetworkFabricControllersCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabricControllers_Create.json
      */
     /**
      * Sample code: NetworkFabricControllers_Create_MaximumSet_Gen.
@@ -51,6 +52,7 @@ public final class NetworkFabricControllersCreateSamples {
             .withIpv4AddressSpace("172.253.0.0/19")
             .withIpv6AddressSpace("::/60")
             .withNfcSku(NfcSku.STANDARD)
+            .withVmProfile(new VmProfile().withVmSkuName("Standard_D4s_v3"))
             .create();
     }
 

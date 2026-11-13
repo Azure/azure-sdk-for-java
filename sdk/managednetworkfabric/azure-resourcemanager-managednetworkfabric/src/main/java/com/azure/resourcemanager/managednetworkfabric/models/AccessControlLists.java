@@ -169,7 +169,7 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName);
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String accessControlListName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -182,7 +182,7 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName,
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String accessControlListName,
         Context context);
 
     /**

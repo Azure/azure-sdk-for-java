@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class Layer2ConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Layer2Configuration model = BinaryData
-            .fromString(
-                "{\"mtu\":1668427039,\"interfaces\":[\"wevsfgdrmnszdosm\",\"sqsvzvmxtc\",\"ghndae\",\"hgsulwvgs\"]}")
-            .toObject(Layer2Configuration.class);
-        Assertions.assertEquals(1668427039, model.mtu());
-        Assertions.assertEquals("wevsfgdrmnszdosm", model.interfaces().get(0));
+        Layer2Configuration model
+            = BinaryData.fromString("{\"mtu\":2114305274,\"interfaces\":[\"rvtipquks\",\"iknsgo\"]}")
+                .toObject(Layer2Configuration.class);
+        Assertions.assertEquals(2114305274, model.mtu());
+        Assertions.assertEquals("rvtipquks", model.interfaces().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Layer2Configuration model = new Layer2Configuration().withMtu(1668427039)
-            .withInterfaces(Arrays.asList("wevsfgdrmnszdosm", "sqsvzvmxtc", "ghndae", "hgsulwvgs"));
+        Layer2Configuration model
+            = new Layer2Configuration().withMtu(2114305274).withInterfaces(Arrays.asList("rvtipquks", "iknsgo"));
         model = BinaryData.fromObject(model).toObject(Layer2Configuration.class);
-        Assertions.assertEquals(1668427039, model.mtu());
-        Assertions.assertEquals("wevsfgdrmnszdosm", model.interfaces().get(0));
+        Assertions.assertEquals(2114305274, model.mtu());
+        Assertions.assertEquals("rvtipquks", model.interfaces().get(0));
     }
 }

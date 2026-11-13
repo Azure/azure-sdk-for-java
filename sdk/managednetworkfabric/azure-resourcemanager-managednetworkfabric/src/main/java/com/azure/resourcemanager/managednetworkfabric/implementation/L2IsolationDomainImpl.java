@@ -20,7 +20,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import java.util.Collections;
 import java.util.Map;
 
@@ -213,11 +213,11 @@ public final class L2IsolationDomainImpl
             .updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration() {
+    public ValidateConfigurationResponseV2 validateConfiguration() {
         return serviceManager.l2IsolationDomains().validateConfiguration(resourceGroupName, l2IsolationDomainName);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(Context context) {
         return serviceManager.l2IsolationDomains()
             .validateConfiguration(resourceGroupName, l2IsolationDomainName, context);
     }

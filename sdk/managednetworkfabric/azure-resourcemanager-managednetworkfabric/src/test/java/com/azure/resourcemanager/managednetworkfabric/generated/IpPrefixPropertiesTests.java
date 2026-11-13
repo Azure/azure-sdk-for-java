@@ -16,46 +16,46 @@ public final class IpPrefixPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpPrefixProperties model = BinaryData.fromString(
-            "{\"annotation\":\"pvelszerqze\",\"networkFabricId\":\"o\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3527539741753718294,\"networkPrefix\":\"xwaljgl\",\"condition\":\"Range\",\"subnetMaskLength\":\"qwaafrqulhm\"},{\"action\":\"Permit\",\"sequenceNumber\":1237200805001740489,\"networkPrefix\":\"hdvafjrqpjiyrqjc\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"wmzwdfkbnrzorpdl\"},{\"action\":\"Permit\",\"sequenceNumber\":7502311595298203245,\"networkPrefix\":\"tqjfgxxsaet\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"vpyigdaqq\"},{\"action\":\"Deny\",\"sequenceNumber\":5236877755933058202,\"networkPrefix\":\"cduwjoedx\",\"condition\":\"Range\",\"subnetMaskLength\":\"aifpaurwwgil\"}],\"lastOperation\":{\"details\":\"qacdmkxwxdcvjwcy\"},\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"UnderMaintenance\"}")
+            "{\"annotation\":\"czjnc\",\"networkFabricId\":\"iyqvldaswv\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3369917839311572660,\"networkPrefix\":\"qzlgcndhzxrrfcfs\",\"condition\":\"Range\",\"subnetMaskLength\":\"gsnxuw\"},{\"action\":\"Deny\",\"sequenceNumber\":860747801573155854,\"networkPrefix\":\"hefsb\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"zxomeikjclwz\"},{\"action\":\"Deny\",\"sequenceNumber\":5355520891451835218,\"networkPrefix\":\"wpfsuqtaaz\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"yxoyfp\"},{\"action\":\"Permit\",\"sequenceNumber\":2129339423545302965,\"networkPrefix\":\"qezxlhdj\",\"condition\":\"Range\",\"subnetMaskLength\":\"a\"}],\"lastOperation\":{\"details\":\"psozjiihj\"},\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"RMA\"}")
             .toObject(IpPrefixProperties.class);
-        Assertions.assertEquals("pvelszerqze", model.annotation());
+        Assertions.assertEquals("czjnc", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());
-        Assertions.assertEquals(3527539741753718294L, model.ipPrefixRules().get(0).sequenceNumber());
-        Assertions.assertEquals("xwaljgl", model.ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(3369917839311572660L, model.ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("qzlgcndhzxrrfcfs", model.ipPrefixRules().get(0).networkPrefix());
         Assertions.assertEquals(Condition.RANGE, model.ipPrefixRules().get(0).condition());
-        Assertions.assertEquals("qwaafrqulhm", model.ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("gsnxuw", model.ipPrefixRules().get(0).subnetMaskLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPrefixProperties model = new IpPrefixProperties().withAnnotation("pvelszerqze")
+        IpPrefixProperties model = new IpPrefixProperties().withAnnotation("czjnc")
             .withIpPrefixRules(Arrays.asList(
                 new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(3527539741753718294L)
-                    .withNetworkPrefix("xwaljgl")
+                    .withSequenceNumber(3369917839311572660L)
+                    .withNetworkPrefix("qzlgcndhzxrrfcfs")
                     .withCondition(Condition.RANGE)
-                    .withSubnetMaskLength("qwaafrqulhm"),
-                new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(1237200805001740489L)
-                    .withNetworkPrefix("hdvafjrqpjiyrqjc")
-                    .withCondition(Condition.EQUAL_TO)
-                    .withSubnetMaskLength("wmzwdfkbnrzorpdl"),
-                new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(7502311595298203245L)
-                    .withNetworkPrefix("tqjfgxxsaet")
-                    .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
-                    .withSubnetMaskLength("vpyigdaqq"),
+                    .withSubnetMaskLength("gsnxuw"),
                 new IpPrefixRule().withAction(CommunityActionTypes.DENY)
-                    .withSequenceNumber(5236877755933058202L)
-                    .withNetworkPrefix("cduwjoedx")
+                    .withSequenceNumber(860747801573155854L)
+                    .withNetworkPrefix("hefsb")
+                    .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                    .withSubnetMaskLength("zxomeikjclwz"),
+                new IpPrefixRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(5355520891451835218L)
+                    .withNetworkPrefix("wpfsuqtaaz")
+                    .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                    .withSubnetMaskLength("yxoyfp"),
+                new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(2129339423545302965L)
+                    .withNetworkPrefix("qezxlhdj")
                     .withCondition(Condition.RANGE)
-                    .withSubnetMaskLength("aifpaurwwgil")));
+                    .withSubnetMaskLength("a")));
         model = BinaryData.fromObject(model).toObject(IpPrefixProperties.class);
-        Assertions.assertEquals("pvelszerqze", model.annotation());
+        Assertions.assertEquals("czjnc", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());
-        Assertions.assertEquals(3527539741753718294L, model.ipPrefixRules().get(0).sequenceNumber());
-        Assertions.assertEquals("xwaljgl", model.ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(3369917839311572660L, model.ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("qzlgcndhzxrrfcfs", model.ipPrefixRules().get(0).networkPrefix());
         Assertions.assertEquals(Condition.RANGE, model.ipPrefixRules().get(0).condition());
-        Assertions.assertEquals("qwaafrqulhm", model.ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("gsnxuw", model.ipPrefixRules().get(0).subnetMaskLength());
     }
 }

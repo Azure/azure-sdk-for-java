@@ -38,7 +38,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.L2IsolationDomainsC
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.implementation.models.L2IsolationDomainsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -1327,13 +1327,13 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    private PollerFlux<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfigurationAsync(String resourceGroupName, String l2IsolationDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
-            ValidateConfigurationResponseInner.class, this.client.getContext());
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            mono, this.client.getHttpPipeline(), ValidateConfigurationResponseV2Inner.class,
+            ValidateConfigurationResponseV2Inner.class, this.client.getContext());
     }
 
     /**
@@ -1347,11 +1347,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, l2IsolationDomainName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class,
+            Context.NONE);
     }
 
     /**
@@ -1366,12 +1367,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context) {
         Response<BinaryData> response
             = validateConfigurationWithResponse(resourceGroupName, l2IsolationDomainName, context);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, context);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class, context);
     }
 
     /**
@@ -1385,7 +1386,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+    private Mono<ValidateConfigurationResponseV2Inner> validateConfigurationAsync(String resourceGroupName,
         String l2IsolationDomainName) {
         return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1402,7 +1403,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
         String l2IsolationDomainName) {
         return beginValidateConfiguration(resourceGroupName, l2IsolationDomainName).getFinalResult();
     }
@@ -1419,7 +1420,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
         String l2IsolationDomainName, Context context) {
         return beginValidateConfiguration(resourceGroupName, l2IsolationDomainName, context).getFinalResult();
     }

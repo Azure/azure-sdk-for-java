@@ -23,7 +23,7 @@ public final class NetworkInterfacesListByNetworkDeviceMockTests {
     @Test
     public void testListByNetworkDevice() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"tfkkiupmdaj\",\"connectedTo\":\"dvvzb\",\"interfaceType\":\"Management\",\"ipv4Address\":\"okiffqpwdyzsetr\",\"ipv6Address\":\"tqhnsoijucprkqyw\",\"description\":\"xga\",\"additionalDescription\":\"msetzcxlisvqfbls\",\"lastOperation\":{\"details\":\"polpsap\"},\"networkFabricId\":\"exhimvlocdxvh\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"configurationState\":\"Deprovisioned\",\"annotation\":\"pntrddyriwanv\"},\"identity\":{\"principalId\":\"mqsci\",\"tenantId\":\"fulxgnz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ydehbvbexrbynnl\":{\"principalId\":\"wsooqypvplmyz\",\"clientId\":\"vghh\"},\"wzzsicbbosacr\":{\"principalId\":\"d\",\"clientId\":\"k\"},\"jvtgecehennledho\":{\"principalId\":\"scfkefeltx\",\"clientId\":\"amimgju\"}}},\"id\":\"fjwkctdnnqokq\",\"name\":\"uzsl\",\"type\":\"yj\"}]}";
+            = "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"nxyr\",\"connectedTo\":\"egabsfjrjzdqscgo\",\"interfaceType\":\"Management\",\"ipv4Address\":\"ibepgf\",\"ipv6Address\":\"ijoehhqwwsg\",\"description\":\"iwooet\",\"additionalDescription\":\"ssyazmmbuxqtokck\",\"lastOperation\":{\"details\":\"ftqk\"},\"networkFabricId\":\"ruheawucm\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"EnabledDegraded\",\"configurationState\":\"CommitRollbackFailed\",\"operationalState\":\"Degraded\",\"annotation\":\"lyve\"},\"identity\":{\"principalId\":\"jguwts\",\"tenantId\":\"jwiz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"awsaskullvtsauj\":{\"principalId\":\"vixtykjrdxl\",\"clientId\":\"mvrblj\"}}},\"id\":\"htz\",\"name\":\"dzqrpfhzxkjygkui\",\"type\":\"gwdhawjcoz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class NetworkInterfacesListByNetworkDeviceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<NetworkInterface> response = manager.networkInterfaces()
-            .listByNetworkDevice("uaefwdkpadkts", "ywaojr", com.azure.core.util.Context.NONE);
+        PagedIterable<NetworkInterface> response
+            = manager.networkInterfaces().listByNetworkDevice("yvmwaejxzkqcm", "dc", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("msetzcxlisvqfbls", response.iterator().next().additionalDescription());
-        Assertions.assertEquals("pntrddyriwanv", response.iterator().next().annotation());
+        Assertions.assertEquals("ssyazmmbuxqtokck", response.iterator().next().additionalDescription());
+        Assertions.assertEquals("lyve", response.iterator().next().annotation());
     }
 }

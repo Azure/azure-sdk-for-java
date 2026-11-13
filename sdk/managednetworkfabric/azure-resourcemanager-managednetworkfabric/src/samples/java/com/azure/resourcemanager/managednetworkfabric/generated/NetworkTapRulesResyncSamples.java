@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkTapRulesResyncSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTapRules_Resync.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTapRules_Resync.json
      */
     /**
      * Sample code: NetworkTapRules_Resync_MaximumSet_Gen.

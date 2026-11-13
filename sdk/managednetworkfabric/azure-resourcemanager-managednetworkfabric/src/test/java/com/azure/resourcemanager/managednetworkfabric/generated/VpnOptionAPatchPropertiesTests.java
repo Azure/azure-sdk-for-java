@@ -13,39 +13,39 @@ public final class VpnOptionAPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VpnOptionAPatchProperties model = BinaryData.fromString(
-            "{\"mtu\":667641436,\"vlanId\":606360738,\"peerASN\":466236631596998274,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":2120399292,\"multiplier\":1021377544},\"primaryIpv4Prefix\":\"knv\",\"primaryIpv6Prefix\":\"ddlggb\",\"secondaryIpv4Prefix\":\"olgzubakdlkv\",\"secondaryIpv6Prefix\":\"cmfnsffet\"}")
+            "{\"mtu\":1122563469,\"vlanId\":1452046394,\"peerASN\":8729388413598040358,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1517520134,\"multiplier\":1752783647},\"primaryIpv4Prefix\":\"aqipmnxclfrsbzrn\",\"primaryIpv6Prefix\":\"vwvpuofddtbfme\",\"secondaryIpv4Prefix\":\"cnginxdvm\",\"secondaryIpv6Prefix\":\"yqxfvgy\"}")
             .toObject(VpnOptionAPatchProperties.class);
-        Assertions.assertEquals("knv", model.primaryIpv4Prefix());
-        Assertions.assertEquals("ddlggb", model.primaryIpv6Prefix());
-        Assertions.assertEquals("olgzubakdlkv", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("cmfnsffet", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(667641436, model.mtu());
-        Assertions.assertEquals(606360738, model.vlanId());
-        Assertions.assertEquals(466236631596998274L, model.peerASN());
-        Assertions.assertEquals(2120399292, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1021377544, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("aqipmnxclfrsbzrn", model.primaryIpv4Prefix());
+        Assertions.assertEquals("vwvpuofddtbfme", model.primaryIpv6Prefix());
+        Assertions.assertEquals("cnginxdvm", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("yqxfvgy", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(1122563469, model.mtu());
+        Assertions.assertEquals(1452046394, model.vlanId());
+        Assertions.assertEquals(8729388413598040358L, model.peerASN());
+        Assertions.assertEquals(1517520134, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1752783647, model.bfdConfiguration().multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VpnOptionAPatchProperties model = new VpnOptionAPatchProperties().withPrimaryIpv4Prefix("knv")
-            .withPrimaryIpv6Prefix("ddlggb")
-            .withSecondaryIpv4Prefix("olgzubakdlkv")
-            .withSecondaryIpv6Prefix("cmfnsffet")
-            .withMtu(667641436)
-            .withVlanId(606360738)
-            .withPeerASN(466236631596998274L)
+        VpnOptionAPatchProperties model = new VpnOptionAPatchProperties().withPrimaryIpv4Prefix("aqipmnxclfrsbzrn")
+            .withPrimaryIpv6Prefix("vwvpuofddtbfme")
+            .withSecondaryIpv4Prefix("cnginxdvm")
+            .withSecondaryIpv6Prefix("yqxfvgy")
+            .withMtu(1122563469)
+            .withVlanId(1452046394)
+            .withPeerASN(8729388413598040358L)
             .withBfdConfiguration(
-                new BfdPatchConfiguration().withIntervalInMilliSeconds(2120399292).withMultiplier(1021377544));
+                new BfdPatchConfiguration().withIntervalInMilliSeconds(1517520134).withMultiplier(1752783647));
         model = BinaryData.fromObject(model).toObject(VpnOptionAPatchProperties.class);
-        Assertions.assertEquals("knv", model.primaryIpv4Prefix());
-        Assertions.assertEquals("ddlggb", model.primaryIpv6Prefix());
-        Assertions.assertEquals("olgzubakdlkv", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("cmfnsffet", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(667641436, model.mtu());
-        Assertions.assertEquals(606360738, model.vlanId());
-        Assertions.assertEquals(466236631596998274L, model.peerASN());
-        Assertions.assertEquals(2120399292, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1021377544, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("aqipmnxclfrsbzrn", model.primaryIpv4Prefix());
+        Assertions.assertEquals("vwvpuofddtbfme", model.primaryIpv6Prefix());
+        Assertions.assertEquals("cnginxdvm", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("yqxfvgy", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(1122563469, model.mtu());
+        Assertions.assertEquals(1452046394, model.vlanId());
+        Assertions.assertEquals(8729388413598040358L, model.peerASN());
+        Assertions.assertEquals(1517520134, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1752783647, model.bfdConfiguration().multiplier());
     }
 }

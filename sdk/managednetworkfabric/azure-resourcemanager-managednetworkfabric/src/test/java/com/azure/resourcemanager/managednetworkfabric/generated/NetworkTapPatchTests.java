@@ -23,61 +23,53 @@ public final class NetworkTapPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapPatch model = BinaryData.fromString(
-            "{\"properties\":{\"pollingType\":\"Push\",\"destinations\":[{\"name\":\"xrdeexw\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"uvnxbohpzur\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"beadyfen\",\"ozoijoxcbpkiw\",\"eacbtaxdrp\"]},\"destinationTapRuleId\":\"hsxw\"},{\"name\":\"rztdacrqcwk\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"syajmmczupd\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"sdbk\"]},\"destinationTapRuleId\":\"kdium\"}],\"annotation\":\"ivxwkscwbshfih\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"yi\":{\"principalId\":\"lau\",\"clientId\":\"ue\"},\"fyhsb\":{\"principalId\":\"ztyecxd\",\"clientId\":\"spgnnd\"},\"vzr\":{\"principalId\":\"wlvsvsyl\",\"clientId\":\"prqtfk\"}}},\"tags\":{\"kkmvz\":\"onxdwfcuhbgftfvq\",\"dqrjylwqqsemjhh\":\"neg\",\"hztb\":\"lsub\",\"zwufi\":\"jrdzwyktdp\"}}")
+            "{\"properties\":{\"pollingType\":\"Push\",\"destinations\":[{\"name\":\"wapndmtqvmk\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"gqx\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"fqgtodgkllefmi\",\"dcsrvbbnas\",\"fyxhsxcgqbm\",\"bpqcnx\"]},\"destinationTapRuleId\":\"ehojvmazu\"}],\"annotation\":\"fpiuufhp\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"cduyrgca\":{\"principalId\":\"givbhmn\",\"clientId\":\"jlyhbjfnmmibg\"},\"igsqzmfkiaag\":{\"principalId\":\"umqeobrwreu\",\"clientId\":\"sawha\"},\"jfkxnwtzsroeqcr\":{\"principalId\":\"rxjkc\",\"clientId\":\"enubrf\"}}},\"tags\":{\"nhdikatzmtuvfn\":\"jskqsfnmiwapd\",\"cuiaun\":\"itjkbibxlwzlvkc\",\"psvax\":\"odincfbaoboiahk\"}}")
             .toObject(NetworkTapPatch.class);
-        Assertions.assertEquals("onxdwfcuhbgftfvq", model.tags().get("kkmvz"));
+        Assertions.assertEquals("jskqsfnmiwapd", model.tags().get("nhdikatzmtuvfn"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals(PollingType.PUSH, model.pollingType());
-        Assertions.assertEquals("xrdeexw", model.destinations().get(0).name());
+        Assertions.assertEquals("wapndmtqvmk", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("uvnxbohpzur", model.destinations().get(0).destinationId());
+        Assertions.assertEquals("gqx", model.destinations().get(0).destinationId());
         Assertions.assertEquals(Encapsulation.NONE,
             model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("beadyfen",
+        Assertions.assertEquals("fqgtodgkllefmi",
             model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("hsxw", model.destinations().get(0).destinationTapRuleId());
-        Assertions.assertEquals("ivxwkscwbshfih", model.annotation());
+        Assertions.assertEquals("ehojvmazu", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("fpiuufhp", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkTapPatch model = new NetworkTapPatch()
-            .withTags(
-                mapOf("kkmvz", "onxdwfcuhbgftfvq", "dqrjylwqqsemjhh", "neg", "hztb", "lsub", "zwufi", "jrdzwyktdp"))
+            .withTags(mapOf("nhdikatzmtuvfn", "jskqsfnmiwapd", "cuiaun", "itjkbibxlwzlvkc", "psvax", "odincfbaoboiahk"))
             .withIdentity(
                 new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("yi", new UserAssignedIdentity(), "fyhsb",
-                        new UserAssignedIdentity(), "vzr", new UserAssignedIdentity())))
+                    .withUserAssignedIdentities(mapOf("cduyrgca", new UserAssignedIdentity(), "igsqzmfkiaag",
+                        new UserAssignedIdentity(), "jfkxnwtzsroeqcr", new UserAssignedIdentity())))
             .withPollingType(PollingType.PUSH)
-            .withDestinations(Arrays.asList(
-                new DestinationPatchProperties().withName("xrdeexw")
+            .withDestinations(
+                Arrays.asList(new DestinationPatchProperties().withName("wapndmtqvmk")
                     .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                    .withDestinationId("uvnxbohpzur")
-                    .withIsolationDomainProperties(
-                        new IsolationDomainPatchProperties().withEncapsulation(Encapsulation.NONE)
-                            .withNeighborGroupIds(Arrays.asList("beadyfen", "ozoijoxcbpkiw", "eacbtaxdrp")))
-                    .withDestinationTapRuleId("hsxw"),
-                new DestinationPatchProperties().withName("rztdacrqcwk")
-                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                    .withDestinationId("syajmmczupd")
-                    .withIsolationDomainProperties(
-                        new IsolationDomainPatchProperties().withEncapsulation(Encapsulation.NONE)
-                            .withNeighborGroupIds(Arrays.asList("sdbk")))
-                    .withDestinationTapRuleId("kdium")))
-            .withAnnotation("ivxwkscwbshfih");
+                    .withDestinationId("gqx")
+                    .withIsolationDomainProperties(new IsolationDomainPatchProperties()
+                        .withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("fqgtodgkllefmi", "dcsrvbbnas", "fyxhsxcgqbm", "bpqcnx")))
+                    .withDestinationTapRuleId("ehojvmazu")))
+            .withAnnotation("fpiuufhp");
         model = BinaryData.fromObject(model).toObject(NetworkTapPatch.class);
-        Assertions.assertEquals("onxdwfcuhbgftfvq", model.tags().get("kkmvz"));
+        Assertions.assertEquals("jskqsfnmiwapd", model.tags().get("nhdikatzmtuvfn"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals(PollingType.PUSH, model.pollingType());
-        Assertions.assertEquals("xrdeexw", model.destinations().get(0).name());
+        Assertions.assertEquals("wapndmtqvmk", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("uvnxbohpzur", model.destinations().get(0).destinationId());
+        Assertions.assertEquals("gqx", model.destinations().get(0).destinationId());
         Assertions.assertEquals(Encapsulation.NONE,
             model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("beadyfen",
+        Assertions.assertEquals("fqgtodgkllefmi",
             model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("hsxw", model.destinations().get(0).destinationTapRuleId());
-        Assertions.assertEquals("ivxwkscwbshfih", model.annotation());
+        Assertions.assertEquals("ehojvmazu", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("fpiuufhp", model.annotation());
     }
 
     // Use "Map.of" if available

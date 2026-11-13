@@ -12,14 +12,14 @@ public final class DiscardCommitBatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscardCommitBatchRequest model
-            = BinaryData.fromString("{\"commitBatchId\":\"ytzuaedrl\"}").toObject(DiscardCommitBatchRequest.class);
-        Assertions.assertEquals("ytzuaedrl", model.commitBatchId());
+            = BinaryData.fromString("{\"commitBatchId\":\"kzou\"}").toObject(DiscardCommitBatchRequest.class);
+        Assertions.assertEquals("kzou", model.commitBatchId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscardCommitBatchRequest model = new DiscardCommitBatchRequest().withCommitBatchId("ytzuaedrl");
+        DiscardCommitBatchRequest model = new DiscardCommitBatchRequest().withCommitBatchId("kzou");
         model = BinaryData.fromObject(model).toObject(DiscardCommitBatchRequest.class);
-        Assertions.assertEquals("ytzuaedrl", model.commitBatchId());
+        Assertions.assertEquals("kzou", model.commitBatchId());
     }
 }

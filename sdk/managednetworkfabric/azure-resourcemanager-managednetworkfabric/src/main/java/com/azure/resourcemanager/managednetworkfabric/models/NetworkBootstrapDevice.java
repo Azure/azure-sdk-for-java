@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkBootstrapDeviceInner;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,6 +87,13 @@ public interface NetworkBootstrapDevice {
     String serialNumber();
 
     /**
+     * Gets the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @return the controlPlaneAcls value.
+     */
+    List<String> controlPlaneAcls();
+
+    /**
      * Gets the version property: Current version of the device as defined in SKU.
      * 
      * @return the version value.
@@ -161,6 +169,21 @@ public interface NetworkBootstrapDevice {
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
+
+    /**
+     * Gets the operationalState property: Operational state of networkBootstrapDevice indicating if the device is
+     * reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
+     * Gets the secretRotationStatus property: Secret rotation status for the terminal server's secrets.
+     * 
+     * @return the secretRotationStatus value.
+     */
+    List<SecretRotationStatus> secretRotationStatus();
 
     /**
      * Gets the region of the resource.
@@ -245,9 +268,9 @@ public interface NetworkBootstrapDevice {
          * The stage of the NetworkBootstrapDevice definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithAnnotation,
-            DefinitionStages.WithHostName, DefinitionStages.WithSerialNumber, DefinitionStages.WithNetworkDeviceSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithAnnotation, DefinitionStages.WithHostName, DefinitionStages.WithSerialNumber,
+            DefinitionStages.WithControlPlaneAcls, DefinitionStages.WithNetworkDeviceSku {
             /**
              * Executes the create request.
              * 
@@ -332,6 +355,19 @@ public interface NetworkBootstrapDevice {
         }
 
         /**
+         * The stage of the NetworkBootstrapDevice definition allowing to specify controlPlaneAcls.
+         */
+        interface WithControlPlaneAcls {
+            /**
+             * Specifies the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs..
+             * 
+             * @param controlPlaneAcls Control Plane Access Control List ARM resource IDs.
+             * @return the next definition stage.
+             */
+            WithCreate withControlPlaneAcls(List<String> controlPlaneAcls);
+        }
+
+        /**
          * The stage of the NetworkBootstrapDevice definition allowing to specify networkDeviceSku.
          */
         interface WithNetworkDeviceSku {
@@ -356,7 +392,7 @@ public interface NetworkBootstrapDevice {
      * The template for NetworkBootstrapDevice update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithAnnotation,
-        UpdateStages.WithHostName, UpdateStages.WithSerialNumber {
+        UpdateStages.WithHostName, UpdateStages.WithSerialNumber, UpdateStages.WithControlPlaneAcls {
         /**
          * Executes the update request.
          * 
@@ -442,6 +478,19 @@ public interface NetworkBootstrapDevice {
              * @return the next definition stage.
              */
             Update withSerialNumber(String serialNumber);
+        }
+
+        /**
+         * The stage of the NetworkBootstrapDevice update allowing to specify controlPlaneAcls.
+         */
+        interface WithControlPlaneAcls {
+            /**
+             * Specifies the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs..
+             * 
+             * @param controlPlaneAcls Control Plane Access Control List ARM resource IDs.
+             * @return the next definition stage.
+             */
+            Update withControlPlaneAcls(List<String> controlPlaneAcls);
         }
     }
 

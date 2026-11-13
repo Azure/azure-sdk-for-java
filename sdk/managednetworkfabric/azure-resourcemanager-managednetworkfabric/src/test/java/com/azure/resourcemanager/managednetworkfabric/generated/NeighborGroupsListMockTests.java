@@ -23,7 +23,7 @@ public final class NeighborGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"qdymoa\",\"destination\":{\"ipv4Addresses\":[\"cmdix\"],\"ipv6Addresses\":[\"qbcalgspzoafp\",\"zlvhohzkcsjddzpo\",\"mnmkypeqmuue\"]},\"networkTapIds\":[\"krulavxe\",\"y\"],\"networkTapRuleIds\":[\"chwpfunptsry\",\"jaekbw\",\"xvsytbxcjubad\"],\"networkFabricIds\":[\"jquliovrc\",\"nthluze\",\"valezkyfykm\"],\"lastOperation\":{\"details\":\"asuwep\"},\"provisioningState\":\"Failed\",\"configurationState\":\"Deprovisioning\"},\"identity\":{\"principalId\":\"yc\",\"tenantId\":\"ufutfqffw\",\"type\":\"None\",\"userAssignedIdentities\":{\"s\":{\"principalId\":\"rykshizw\",\"clientId\":\"wikyew\"},\"c\":{\"principalId\":\"wqzwsg\",\"clientId\":\"pqqemeftlgjrfkq\"},\"bnoisbmvrmenrcqi\":{\"principalId\":\"elokxklgl\",\"clientId\":\"regjo\"},\"ntyuq\":{\"principalId\":\"hvps\",\"clientId\":\"uiuvingmonq\"}}},\"location\":\"xyoj\",\"tags\":{\"aysckydqyjzwmfw\":\"ykfjga\",\"gvmuotcseabfy\":\"qziz\",\"nqrbyqhywxbowcjk\":\"ampvwxlkhprltxip\"},\"id\":\"r\",\"name\":\"gvyuewgylol\",\"type\":\"xwlql\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"pgc\",\"destination\":{\"ipv4Addresses\":[\"whtjo\",\"xllhkzunn\"],\"ipv6Addresses\":[\"wxyawxkdvev\",\"yuuihap\",\"qmcvu\"]},\"networkTapIds\":[\"ubljnizwztlcrxfi\",\"ifgxnfarmf\",\"cqrder\",\"trulzlrmrtcs\"],\"networkTapRuleIds\":[\"hlcxbaxcgcdfelva\",\"bdb\",\"cjznt\",\"blxeyg\"],\"networkFabricIds\":[\"hroi\",\"jtgqdymoanpk\",\"mdixiu\"],\"lastOperation\":{\"details\":\"calgspz\"},\"provisioningState\":\"Failed\",\"configurationState\":\"Provisioned\",\"administrativeState\":\"RMA\"},\"identity\":{\"principalId\":\"ohzkcsjddzpo\",\"tenantId\":\"nmky\",\"type\":\"None\",\"userAssignedIdentities\":{\"y\":{\"principalId\":\"ueo\",\"clientId\":\"krulavxe\"},\"xvsytbxcjubad\":{\"principalId\":\"lchwpfunptsr\",\"clientId\":\"jaekbw\"},\"mn\":{\"principalId\":\"mjquliovrcnn\",\"clientId\":\"luzeyvalezkyfy\"}}},\"location\":\"asuwep\",\"tags\":{\"ufutfqffw\":\"tytbycc\"},\"id\":\"n\",\"name\":\"gjrykshizwdsw\",\"type\":\"kyewvskzw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class NeighborGroupsListMockTests {
 
         PagedIterable<NeighborGroup> response = manager.neighborGroups().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xyoj", response.iterator().next().location());
-        Assertions.assertEquals("ykfjga", response.iterator().next().tags().get("aysckydqyjzwmfw"));
+        Assertions.assertEquals("asuwep", response.iterator().next().location());
+        Assertions.assertEquals("tytbycc", response.iterator().next().tags().get("ufutfqffw"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("qdymoa", response.iterator().next().annotation());
-        Assertions.assertEquals("cmdix", response.iterator().next().destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("qbcalgspzoafp", response.iterator().next().destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("pgc", response.iterator().next().annotation());
+        Assertions.assertEquals("whtjo", response.iterator().next().destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("wxyawxkdvev", response.iterator().next().destination().ipv6Addresses().get(0));
     }
 }

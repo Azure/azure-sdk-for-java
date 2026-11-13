@@ -12,6 +12,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.io.IOException;
 
@@ -74,6 +75,11 @@ public final class NetworkBootstrapInterfaceProperties extends AnnotationResourc
      * Serial number of the interface. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
     private String serialNumber;
+
+    /*
+     * Operational state of networkBootstrapInterface indicating if the interface is reachable
+     */
+    private OperationalState operationalState;
 
     /**
      * Creates an instance of NetworkBootstrapInterfaceProperties class.
@@ -205,6 +211,16 @@ public final class NetworkBootstrapInterfaceProperties extends AnnotationResourc
     }
 
     /**
+     * Get the operationalState property: Operational state of networkBootstrapInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -269,6 +285,9 @@ public final class NetworkBootstrapInterfaceProperties extends AnnotationResourc
                     deserializedNetworkBootstrapInterfaceProperties.ipv6Address = reader.getString();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedNetworkBootstrapInterfaceProperties.serialNumber = reader.getString();
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkBootstrapInterfaceProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

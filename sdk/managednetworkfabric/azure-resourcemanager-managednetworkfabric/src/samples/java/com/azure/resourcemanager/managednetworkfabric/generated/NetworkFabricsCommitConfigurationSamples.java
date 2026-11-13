@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsCommitConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_CommitConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_CommitConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_CommitConfiguration_MaximumSet_Gen.

@@ -14,9 +14,9 @@ public final class NniUpdateBfdAdministrativeStateResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NniUpdateBfdAdministrativeStateResponseProperties model
-            = BinaryData.fromString("{\"routeType\":\"OptionA\",\"administrativeState\":\"RMA\"}")
+            = BinaryData.fromString("{\"routeType\":\"OptionA\",\"administrativeState\":\"Enabled\"}")
                 .toObject(NniUpdateBfdAdministrativeStateResponseProperties.class);
         Assertions.assertEquals(RouteType.OPTIONA, model.routeType());
-        Assertions.assertEquals(BfdAdministrativeState.RMA, model.administrativeState());
+        Assertions.assertEquals(BfdAdministrativeState.ENABLED, model.administrativeState());
     }
 }

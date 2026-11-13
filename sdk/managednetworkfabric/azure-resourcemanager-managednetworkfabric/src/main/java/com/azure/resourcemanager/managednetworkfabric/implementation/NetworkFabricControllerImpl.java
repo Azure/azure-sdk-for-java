@@ -18,7 +18,9 @@ import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdent
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricController;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllerPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.VmProfile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +138,14 @@ public final class NetworkFabricControllerImpl
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
+    }
+
+    public VmProfile vmProfile() {
+        return this.innerModel().vmProfile();
     }
 
     public Region region() {
@@ -313,6 +323,11 @@ public final class NetworkFabricControllerImpl
 
     public NetworkFabricControllerImpl withNfcSku(NfcSku nfcSku) {
         this.innerModel().withNfcSku(nfcSku);
+        return this;
+    }
+
+    public NetworkFabricControllerImpl withVmProfile(VmProfile vmProfile) {
+        this.innerModel().withVmProfile(vmProfile);
         return this;
     }
 

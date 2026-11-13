@@ -35,9 +35,13 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricResync
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricRotateCertificatesResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricRotatePasswordsResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.OperationStatusResult;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.QosPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.QosProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RefreshConfigurationRequestProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchivePatchSettings;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchiveSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationSummary;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountPatchConfiguration;
@@ -48,8 +52,10 @@ import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistingu
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfileProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfilePropertiesPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import com.azure.resourcemanager.managednetworkfabric.models.ViewDeviceConfigurationOperationResponse;
 import java.util.Collections;
 import java.util.List;
@@ -145,6 +151,10 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
 
     public long fabricAsn() {
         return this.innerModel().fabricAsn();
+    }
+
+    public String networkBootstrapDeviceId() {
+        return this.innerModel().networkBootstrapDeviceId();
     }
 
     public TerminalServerConfiguration terminalServerConfiguration() {
@@ -254,8 +264,25 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this.innerModel().administrativeState();
     }
 
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
+    }
+
     public QosProperties qosConfiguration() {
         return this.innerModel().qosConfiguration();
+    }
+
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerModel().secretArchiveSettings();
+    }
+
+    public List<UpgradeProfileProperties> upgradeProfile() {
+        List<UpgradeProfileProperties> inner = this.innerModel().upgradeProfile();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String annotation() {
@@ -389,8 +416,9 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return serviceManager.networkFabrics().refreshConfiguration(resourceGroupName, networkFabricName);
     }
 
-    public OperationStatusResult refreshConfiguration(Context context) {
-        return serviceManager.networkFabrics().refreshConfiguration(resourceGroupName, networkFabricName, context);
+    public OperationStatusResult refreshConfiguration(RefreshConfigurationRequestProperties body, Context context) {
+        return serviceManager.networkFabrics()
+            .refreshConfiguration(resourceGroupName, networkFabricName, body, context);
     }
 
     public UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body) {
@@ -415,11 +443,12 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
             .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body) {
+    public ValidateConfigurationResponseV2 validateConfiguration(ValidateConfigurationProperties body) {
         return serviceManager.networkFabrics().validateConfiguration(resourceGroupName, networkFabricName, body);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(ValidateConfigurationProperties body,
+        Context context) {
         return serviceManager.networkFabrics()
             .validateConfiguration(resourceGroupName, networkFabricName, body, context);
     }
@@ -668,6 +697,16 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this;
     }
 
+    public NetworkFabricImpl withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        this.innerModel().withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    public NetworkFabricImpl withUpgradeProfile(List<UpgradeProfileProperties> upgradeProfile) {
+        this.innerModel().withUpgradeProfile(upgradeProfile);
+        return this;
+    }
+
     public NetworkFabricImpl withAnnotation(String annotation) {
         if (isInCreateMode()) {
             this.innerModel().withAnnotation(annotation);
@@ -723,6 +762,16 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
 
     public NetworkFabricImpl withAuthorizedTransceiver(AuthorizedTransceiverPatchProperties authorizedTransceiver) {
         this.updateBody.withAuthorizedTransceiver(authorizedTransceiver);
+        return this;
+    }
+
+    public NetworkFabricImpl withSecretArchiveSettings(SecretArchivePatchSettings secretArchiveSettings) {
+        this.updateBody.withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    public NetworkFabricImpl withUpgradeProfileForUpdate(List<UpgradeProfilePropertiesPatchProperties> upgradeProfile) {
+        this.updateBody.withUpgradeProfile(upgradeProfile);
         return this;
     }
 
