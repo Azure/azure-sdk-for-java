@@ -22,7 +22,7 @@ public final class ConfigTemplatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"rdrenxo\",\"latestVersion\":\"i\",\"provisioningState\":\"InProgress\"},\"eTag\":\"beivdlhydwbdbfg\",\"location\":\"punytjl\",\"tags\":{\"ta\":\"mmpathu\",\"wllbv\":\"deani\",\"ravaq\":\"wzsfftedousnktjt\"},\"id\":\"gfkbebauzlqbtxx\",\"name\":\"pfhnjzudrt\",\"type\":\"zkg\"}]}";
+            = "{\"value\":[{\"properties\":{\"uniqueIdentifier\":\"dsgxcelujiswlluu\",\"description\":\"xhfwlfxzfwuge\",\"latestVersion\":\"cknecexkgr\",\"provisioningState\":\"Failed\"},\"eTag\":\"jdmngsytqpdzfyxc\",\"location\":\"awoxcgzbe\",\"tags\":{\"xdwdrpazqjkrfm\":\"bifopf\",\"gtji\":\"wotfcuu\",\"cjjkmqenh\":\"pgayiawohfmhnnzm\",\"vs\":\"idzr\"},\"id\":\"lo\",\"name\":\"ovslvivqsuvwtenb\",\"type\":\"pijpkhc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class ConfigTemplatesListMockTests {
 
         PagedIterable<ConfigTemplate> response = manager.configTemplates().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("punytjl", response.iterator().next().location());
-        Assertions.assertEquals("mmpathu", response.iterator().next().tags().get("ta"));
-        Assertions.assertEquals("rdrenxo", response.iterator().next().properties().description());
+        Assertions.assertEquals("awoxcgzbe", response.iterator().next().location());
+        Assertions.assertEquals("bifopf", response.iterator().next().tags().get("xdwdrpazqjkrfm"));
+        Assertions.assertEquals("xhfwlfxzfwuge", response.iterator().next().properties().description());
     }
 }

@@ -23,6 +23,11 @@ public final class SolutionProperties implements JsonSerializable<SolutionProper
     private String solutionTemplateId;
 
     /*
+     * Display name of the solution
+     */
+    private String displayName;
+
+    /*
      * List of latest revisions for available solution template versions
      */
     private List<AvailableSolutionTemplateVersion> availableSolutionTemplateVersions;
@@ -45,6 +50,15 @@ public final class SolutionProperties implements JsonSerializable<SolutionProper
      */
     public String solutionTemplateId() {
         return this.solutionTemplateId;
+    }
+
+    /**
+     * Get the displayName property: Display name of the solution.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -92,6 +106,8 @@ public final class SolutionProperties implements JsonSerializable<SolutionProper
 
                 if ("solutionTemplateId".equals(fieldName)) {
                     deserializedSolutionProperties.solutionTemplateId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSolutionProperties.displayName = reader.getString();
                 } else if ("availableSolutionTemplateVersions".equals(fieldName)) {
                     List<AvailableSolutionTemplateVersion> availableSolutionTemplateVersions
                         = reader.readArray(reader1 -> AvailableSolutionTemplateVersion.fromJson(reader1));

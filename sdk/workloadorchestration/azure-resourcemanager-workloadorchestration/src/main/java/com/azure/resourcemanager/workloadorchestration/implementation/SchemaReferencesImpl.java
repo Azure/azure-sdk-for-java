@@ -43,6 +43,14 @@ public final class SchemaReferencesImpl implements SchemaReferences {
         }
     }
 
+    public void deleteByResourceGroup(String resourceUri, String schemaReferenceName) {
+        this.serviceClient().delete(resourceUri, schemaReferenceName);
+    }
+
+    public void delete(String resourceUri, String schemaReferenceName, Context context) {
+        this.serviceClient().delete(resourceUri, schemaReferenceName, context);
+    }
+
     public PagedIterable<SchemaReference> listByResourceGroup(String resourceUri) {
         PagedIterable<SchemaReferenceInner> inner = this.serviceClient().listByResourceGroup(resourceUri);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaReferenceImpl(inner1, this.manager()));
@@ -53,11 +61,79 @@ public final class SchemaReferencesImpl implements SchemaReferences {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaReferenceImpl(inner1, this.manager()));
     }
 
+    public SchemaReference getById(String id) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String schemaReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName");
+        if (schemaReferenceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaReferences'.", id)));
+        }
+        return this.getWithResponse(resourceUri, schemaReferenceName, Context.NONE).getValue();
+    }
+
+    public Response<SchemaReference> getByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String schemaReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName");
+        if (schemaReferenceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaReferences'.", id)));
+        }
+        return this.getWithResponse(resourceUri, schemaReferenceName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String schemaReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName");
+        if (schemaReferenceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaReferences'.", id)));
+        }
+        this.delete(resourceUri, schemaReferenceName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String schemaReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName");
+        if (schemaReferenceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaReferences'.", id)));
+        }
+        this.delete(resourceUri, schemaReferenceName, context);
+    }
+
     private SchemaReferencesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public SchemaReferenceImpl define(String name) {
+        return new SchemaReferenceImpl(name, this.manager());
     }
 }

@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetSnapshotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetSnapshot model = BinaryData
-            .fromString("{\"targetId\":\"eqvldspast\",\"targetSpecification\":{},\"solutionScope\":\"dmflv\"}")
+        TargetSnapshot model = BinaryData.fromString(
+            "{\"targetId\":\"lbyulidwcwvmze\",\"targetSpecification\":{\"kspzhzmtksjcit\":\"\\\"datanfhjirwgdnqzbr\\\"\"},\"solutionScope\":\"gsxcdgljplkeua\"}")
             .toObject(TargetSnapshot.class);
-        Assertions.assertEquals("eqvldspast", model.targetId());
-        Assertions.assertEquals("dmflv", model.solutionScope());
+        Assertions.assertEquals("lbyulidwcwvmze", model.targetId());
+        Assertions.assertEquals("gsxcdgljplkeua", model.solutionScope());
     }
 }

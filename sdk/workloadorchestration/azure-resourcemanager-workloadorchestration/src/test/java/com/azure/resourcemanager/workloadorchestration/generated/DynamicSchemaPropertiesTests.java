@@ -11,7 +11,7 @@ public final class DynamicSchemaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaProperties model = BinaryData.fromString(
-            "{\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Application\",\"provisioningState\":\"Failed\"}")
+            "{\"displayName\":\"oqjzehtbmufpowno\",\"configurationType\":\"Shared\",\"configurationModel\":\"Common\",\"provisioningState\":\"Deleting\"}")
             .toObject(DynamicSchemaProperties.class);
     }
 

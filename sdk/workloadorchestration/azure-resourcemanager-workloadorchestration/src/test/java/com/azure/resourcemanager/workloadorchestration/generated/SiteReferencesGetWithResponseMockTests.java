@@ -21,7 +21,7 @@ public final class SiteReferencesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"siteId\":\"bctbhp\",\"provisioningState\":\"Initialized\"},\"id\":\"cvrdnyeitaneqady\",\"name\":\"zjahwriuomz\",\"type\":\"zfkiceevsaaxwsp\"}";
+            = "{\"properties\":{\"siteId\":\"taqgxqbfkcein\",\"provisioningState\":\"Failed\"},\"id\":\"cjbiyw\",\"name\":\"vsfgdr\",\"type\":\"nszdosmjsq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SiteReferencesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SiteReference response = manager.siteReferences()
-            .getWithResponse("rhwv", "xqqggljky", "sjrclrvtzq", com.azure.core.util.Context.NONE)
+            .getWithResponse("wppeygk", "zbloasybxhqvovd", "mhttuvsqjsrvj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bctbhp", response.properties().siteId());
+        Assertions.assertEquals("taqgxqbfkcein", response.properties().siteId());
     }
 }

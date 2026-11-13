@@ -22,7 +22,7 @@ public final class SiteReferencesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"siteId\":\"vdpwwobtdphti\",\"provisioningState\":\"Succeeded\"},\"id\":\"ofw\",\"name\":\"nmhkscauwaz\",\"type\":\"gwd\"}";
+            = "{\"properties\":{\"siteId\":\"eppjnaphifkfrp\",\"provisioningState\":\"Succeeded\"},\"id\":\"bpebrmj\",\"name\":\"nfpgh\",\"type\":\"b\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SiteReferencesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SiteReference response = manager.siteReferences()
-            .define("nxmlbmuoswk")
-            .withExistingContext("zpvpvdyly", "covqseusrfjbdxzf")
-            .withProperties(new SiteReferenceProperties().withSiteId("dihdcyyyzlwhb"))
+            .define("ahn")
+            .withExistingContext("v", "nwbhanzgesfhshag")
+            .withProperties(new SiteReferenceProperties().withSiteId("pbyfyvynpmggq"))
             .create();
 
-        Assertions.assertEquals("vdpwwobtdphti", response.properties().siteId());
+        Assertions.assertEquals("eppjnaphifkfrp", response.properties().siteId());
     }
 }
