@@ -37,6 +37,11 @@ public final class RuntimeName extends ExpandableStringEnum<RuntimeName> {
     public static final RuntimeName PYTHON = fromString("python");
 
     /**
+     * Static value go for RuntimeName.
+     */
+    public static final RuntimeName GO = fromString("go");
+
+    /**
      * Static value custom for RuntimeName.
      */
     public static final RuntimeName CUSTOM = fromString("custom");

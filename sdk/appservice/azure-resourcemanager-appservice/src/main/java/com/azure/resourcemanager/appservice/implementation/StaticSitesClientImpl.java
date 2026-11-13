@@ -203,7 +203,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserCollection>> listStaticSiteUsers(@HostParam("endpoint") String endpoint,
@@ -212,7 +212,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @PathParam("authprovider") String authprovider, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSiteUser(@HostParam("endpoint") String endpoint,
@@ -220,7 +220,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("authprovider") String authprovider, @PathParam("userid") String userid, Context context);
 
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUser(@HostParam("endpoint") String endpoint,
@@ -14849,7 +14849,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14891,7 +14891,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14932,7 +14932,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14951,7 +14951,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14970,7 +14970,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
