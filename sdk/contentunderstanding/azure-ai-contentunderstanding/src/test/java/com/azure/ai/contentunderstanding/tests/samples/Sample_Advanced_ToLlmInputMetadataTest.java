@@ -20,6 +20,7 @@ public class Sample_Advanced_ToLlmInputMetadataTest extends ContentUnderstanding
     public void testToLlmInputMetadataFromAnalysisResult() throws Exception {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample("sample_metadata.pdf"));
+        setPlaybackSyncPollerPollInterval(poller);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
 
         AnalysisResult result = poller.getFinalResult();

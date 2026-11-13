@@ -4,23 +4,32 @@
 package com.azure.core.credential;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.scheduler.VirtualTimeScheduler;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenCacheTests {
@@ -169,25 +178,43 @@ public class TokenCacheTests {
         assertTrue(refreshes.get() <= 11);
     }
 
-    @Test
-    public void testRefreshOnFlow() throws InterruptedException {
+    @ParameterizedTest
+    @CsvSource({ "true,20", "false,20", "true,33", "false,33" })
+    public void testRefreshOnFlow(boolean sync, int refreshAfterSeconds) {
         AtomicLong refreshes = new AtomicLong(0);
+        Instant start = Instant.now();
+        AtomicReference<Instant> now = new AtomicReference<>(start);
+        Clock clock = new MutableClock(now, ZoneOffset.UTC);
 
         TokenCredential dummyCred = request -> {
             refreshes.incrementAndGet();
-            return Mono.just(new TokenCacheTests.Token("testToken", 200000, 33000));
+            OffsetDateTime issuedAt = OffsetDateTime.now(clock);
+            return Mono.just(
+                new AccessToken("testToken", issuedAt.plusSeconds(200), issuedAt.plusSeconds(refreshAfterSeconds)));
         };
 
-        AccessTokenCache cache = new AccessTokenCache(dummyCred);
+        AccessTokenCache cache = new AccessTokenCache(dummyCred, clock);
+        TokenRequestContext context = new TokenRequestContext();
+        Supplier<AccessToken> getToken = sync
+            ? () -> cache.getTokenSync(context, false)
+            : () -> cache.getToken(context, false).block(DEFAULT_TIMEOUT);
 
-        cache.getTokenSync(new TokenRequestContext(), false);
+        AccessToken token = getToken.get();
+        assertEquals(1, refreshes.get());
 
-        sleep(40000);
+        now.set(start.plusSeconds(Math.min(30, refreshAfterSeconds)));
+        assertSame(token, getToken.get());
+        now.set(now.get().plusNanos(1));
+        assertSame(token, getToken.get(), "Both the refresh time and cooldown must have elapsed");
 
-        cache.getTokenSync(new TokenRequestContext(), false);
+        now.set(start.plusSeconds(Math.max(30, refreshAfterSeconds)));
+        assertSame(token, getToken.get(), "The refresh boundary is exclusive");
+        assertEquals(1, refreshes.get());
 
-        // Ensure refresh is made after refreshOn duration.
+        now.set(now.get().plusNanos(1));
+        assertNotSame(token, getToken.get());
         assertEquals(2, refreshes.get());
+        assertTrue(now.get().isBefore(token.getExpiresAt().toInstant()), "The original token must remain unexpired");
     }
 
     private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync() {
@@ -199,6 +226,31 @@ public class TokenCacheTests {
     private Mono<AccessToken> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
         return Mono.delay(Duration.ofSeconds(latency.getAndIncrement()))
             .map(l -> new Token(Integer.toString(ThreadLocalRandom.current().nextInt(100))));
+    }
+
+    private static final class MutableClock extends Clock {
+        private final AtomicReference<Instant> now;
+        private final ZoneId zone;
+
+        private MutableClock(AtomicReference<Instant> now, ZoneId zone) {
+            this.now = now;
+            this.zone = zone;
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return zone;
+        }
+
+        @Override
+        public Clock withZone(ZoneId zone) {
+            return new MutableClock(now, zone);
+        }
+
+        @Override
+        public Instant instant() {
+            return now.get();
+        }
     }
 
     public static class Token extends AccessToken {

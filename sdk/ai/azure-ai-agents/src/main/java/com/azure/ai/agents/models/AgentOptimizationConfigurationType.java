@@ -13,13 +13,13 @@ import java.util.Collection;
 public final class AgentOptimizationConfigurationType extends ExpandableStringEnum<AgentOptimizationConfigurationType> {
 
     /**
-     * Comparative agent optimization.
+     * Comparative agent optimization that can generate multiple candidates within configured search limits.
      */
     @Generated
     public static final AgentOptimizationConfigurationType AGENT_OPTIMIZATION = fromString("agent_optimization");
 
     /**
-     * One-shot prompt optimization.
+     * One-shot prompt optimization that generates a single candidate.
      */
     @Generated
     public static final AgentOptimizationConfigurationType PROMPT_OPTIMIZATION = fromString("prompt_optimization");
@@ -54,4 +54,11 @@ public final class AgentOptimizationConfigurationType extends ExpandableStringEn
     public static Collection<AgentOptimizationConfigurationType> values() {
         return values(AgentOptimizationConfigurationType.class);
     }
+
+    /**
+     * Generates a single candidate containing zero or more skill outcomes from trace evidence, with optional
+     * reporting-only evaluation recorded on baseline and learned candidates.
+     */
+    @Generated
+    public static final AgentOptimizationConfigurationType SKILL_OPTIMIZATION = fromString("skill_optimization");
 }

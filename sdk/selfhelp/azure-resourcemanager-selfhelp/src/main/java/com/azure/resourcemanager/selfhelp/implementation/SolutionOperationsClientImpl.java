@@ -368,7 +368,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
+    private SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
         String solutionResourceName, SolutionResourceInner solutionRequestBody) {
         Response<BinaryData> response = createWithResponse(scope, solutionResourceName, solutionRequestBody);
         return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,
@@ -639,7 +639,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
+    private SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
         String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
         Response<BinaryData> response = updateWithResponse(scope, solutionResourceName, solutionPatchRequestBody);
         return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,

@@ -186,11 +186,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private List<NetworkInjection> networkInjections;
 
     /*
-     * Represents the foundry auto-upgrade configuration for a Cognitive Services account.
-     */
-    private FoundryAutoUpgrade foundryAutoUpgrade;
-
-    /*
      * Specifies whether this resource support project management as child resources, used as containers for access
      * management, data isolation and cost in AI Foundry.
      */
@@ -208,32 +203,13 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private List<String> associatedProjects;
 
     /*
-     * Reusable default agent capability settings inherited by child projects.
+     * Private CA trust sources for supported features in an AIServices account with allowProjectManagement enabled.
+     * Supports one Azure Key Vault source containing version-pinned references to secrets with PEM-encoded CA
+     * certificates or certificate bundles. On PUT or PATCH, a non-null array replaces the complete configuration, so
+     * include all references to retain. Omit this property or send null to preserve the existing configuration; send an
+     * empty array to clear it.
      */
-    private CapabilitySettings capabilitySettings;
-
-    /*
-     * Customer-owned AKS hosting configurations for Foundry agents. This property can only be specified when the
-     * account is created; an existing account without a hosting configuration cannot add one later. This API version
-     * supports exactly one configuration, while the array shape is reserved for future API versions that may support
-     * multiple configurations. Once set, the configuration cannot be changed, removed, or reordered. Account update
-     * requests should omit this property or send the complete existing value unchanged. Responses only include hosting
-     * configuration types defined by the requested API version.
-     */
-    private List<AgentHostingConfiguration> agentHostingConfigurations;
-
-    /*
-     * The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     */
-    private List<String> costControlIds;
-
-    /*
-     * The account-level connections used to publish cost control telemetry and events. Application Insights is optional
-     * for attachment, accounting, and enforcement and can be configured later. Event Grid must be configured before
-     * attaching a cost control with an alert threshold.
-     */
-    private CostControlConnections costControlConnections;
+    private List<TrustedCertificateSource> trustedCertificateSources;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -742,28 +718,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the foundryAutoUpgrade property: Represents the foundry auto-upgrade configuration for a Cognitive Services
-     * account.
-     * 
-     * @return the foundryAutoUpgrade value.
-     */
-    public FoundryAutoUpgrade foundryAutoUpgrade() {
-        return this.foundryAutoUpgrade;
-    }
-
-    /**
-     * Set the foundryAutoUpgrade property: Represents the foundry auto-upgrade configuration for a Cognitive Services
-     * account.
-     * 
-     * @param foundryAutoUpgrade the foundryAutoUpgrade value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withFoundryAutoUpgrade(FoundryAutoUpgrade foundryAutoUpgrade) {
-        this.foundryAutoUpgrade = foundryAutoUpgrade;
-        return this;
-    }
-
-    /**
      * Get the allowProjectManagement property: Specifies whether this resource support project management as child
      * resources, used as containers for access management, data isolation and cost in AI Foundry.
      * 
@@ -830,99 +784,30 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the capabilitySettings property: Reusable default agent capability settings inherited by child projects.
+     * Get the trustedCertificateSources property: Private CA trust sources for supported features in an AIServices
+     * account with allowProjectManagement enabled. Supports one Azure Key Vault source containing version-pinned
+     * references to secrets with PEM-encoded CA certificates or certificate bundles. On PUT or PATCH, a non-null array
+     * replaces the complete configuration, so include all references to retain. Omit this property or send null to
+     * preserve the existing configuration; send an empty array to clear it.
      * 
-     * @return the capabilitySettings value.
+     * @return the trustedCertificateSources value.
      */
-    public CapabilitySettings capabilitySettings() {
-        return this.capabilitySettings;
+    public List<TrustedCertificateSource> trustedCertificateSources() {
+        return this.trustedCertificateSources;
     }
 
     /**
-     * Set the capabilitySettings property: Reusable default agent capability settings inherited by child projects.
+     * Set the trustedCertificateSources property: Private CA trust sources for supported features in an AIServices
+     * account with allowProjectManagement enabled. Supports one Azure Key Vault source containing version-pinned
+     * references to secrets with PEM-encoded CA certificates or certificate bundles. On PUT or PATCH, a non-null array
+     * replaces the complete configuration, so include all references to retain. Omit this property or send null to
+     * preserve the existing configuration; send an empty array to clear it.
      * 
-     * @param capabilitySettings the capabilitySettings value to set.
+     * @param trustedCertificateSources the trustedCertificateSources value to set.
      * @return the AccountProperties object itself.
      */
-    public AccountProperties withCapabilitySettings(CapabilitySettings capabilitySettings) {
-        this.capabilitySettings = capabilitySettings;
-        return this;
-    }
-
-    /**
-     * Get the agentHostingConfigurations property: Customer-owned AKS hosting configurations for Foundry agents. This
-     * property can only be specified when the account is created; an existing account without a hosting configuration
-     * cannot add one later. This API version supports exactly one configuration, while the array shape is reserved for
-     * future API versions that may support multiple configurations. Once set, the configuration cannot be changed,
-     * removed, or reordered. Account update requests should omit this property or send the complete existing value
-     * unchanged. Responses only include hosting configuration types defined by the requested API version.
-     * 
-     * @return the agentHostingConfigurations value.
-     */
-    public List<AgentHostingConfiguration> agentHostingConfigurations() {
-        return this.agentHostingConfigurations;
-    }
-
-    /**
-     * Set the agentHostingConfigurations property: Customer-owned AKS hosting configurations for Foundry agents. This
-     * property can only be specified when the account is created; an existing account without a hosting configuration
-     * cannot add one later. This API version supports exactly one configuration, while the array shape is reserved for
-     * future API versions that may support multiple configurations. Once set, the configuration cannot be changed,
-     * removed, or reordered. Account update requests should omit this property or send the complete existing value
-     * unchanged. Responses only include hosting configuration types defined by the requested API version.
-     * 
-     * @param agentHostingConfigurations the agentHostingConfigurations value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties
-        withAgentHostingConfigurations(List<AgentHostingConfiguration> agentHostingConfigurations) {
-        this.agentHostingConfigurations = agentHostingConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     * 
-     * @return the costControlIds value.
-     */
-    public List<String> costControlIds() {
-        return this.costControlIds;
-    }
-
-    /**
-     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this account.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     * 
-     * @param costControlIds the costControlIds value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withCostControlIds(List<String> costControlIds) {
-        this.costControlIds = costControlIds;
-        return this;
-    }
-
-    /**
-     * Get the costControlConnections property: The account-level connections used to publish cost control telemetry and
-     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
-     * Event Grid must be configured before attaching a cost control with an alert threshold.
-     * 
-     * @return the costControlConnections value.
-     */
-    public CostControlConnections costControlConnections() {
-        return this.costControlConnections;
-    }
-
-    /**
-     * Set the costControlConnections property: The account-level connections used to publish cost control telemetry and
-     * events. Application Insights is optional for attachment, accounting, and enforcement and can be configured later.
-     * Event Grid must be configured before attaching a cost control with an alert threshold.
-     * 
-     * @param costControlConnections the costControlConnections value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withCostControlConnections(CostControlConnections costControlConnections) {
-        this.costControlConnections = costControlConnections;
+    public AccountProperties withTrustedCertificateSources(List<TrustedCertificateSource> trustedCertificateSources) {
+        this.trustedCertificateSources = trustedCertificateSources;
         return this;
     }
 
@@ -954,17 +839,12 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
         jsonWriter.writeArrayField("networkInjections", this.networkInjections,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("foundryAutoUpgrade", this.foundryAutoUpgrade);
         jsonWriter.writeBooleanField("allowProjectManagement", this.allowProjectManagement);
         jsonWriter.writeStringField("defaultProject", this.defaultProject);
         jsonWriter.writeArrayField("associatedProjects", this.associatedProjects,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("capabilitySettings", this.capabilitySettings);
-        jsonWriter.writeArrayField("agentHostingConfigurations", this.agentHostingConfigurations,
+        jsonWriter.writeArrayField("trustedCertificateSources", this.trustedCertificateSources,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("costControlConnections", this.costControlConnections);
         return jsonWriter.writeEndObject();
     }
 
@@ -1063,8 +943,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<NetworkInjection> networkInjections
                         = reader.readArray(reader1 -> NetworkInjection.fromJson(reader1));
                     deserializedAccountProperties.networkInjections = networkInjections;
-                } else if ("foundryAutoUpgrade".equals(fieldName)) {
-                    deserializedAccountProperties.foundryAutoUpgrade = FoundryAutoUpgrade.fromJson(reader);
                 } else if ("allowProjectManagement".equals(fieldName)) {
                     deserializedAccountProperties.allowProjectManagement = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultProject".equals(fieldName)) {
@@ -1072,17 +950,10 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                 } else if ("associatedProjects".equals(fieldName)) {
                     List<String> associatedProjects = reader.readArray(reader1 -> reader1.getString());
                     deserializedAccountProperties.associatedProjects = associatedProjects;
-                } else if ("capabilitySettings".equals(fieldName)) {
-                    deserializedAccountProperties.capabilitySettings = CapabilitySettings.fromJson(reader);
-                } else if ("agentHostingConfigurations".equals(fieldName)) {
-                    List<AgentHostingConfiguration> agentHostingConfigurations
-                        = reader.readArray(reader1 -> AgentHostingConfiguration.fromJson(reader1));
-                    deserializedAccountProperties.agentHostingConfigurations = agentHostingConfigurations;
-                } else if ("costControlIds".equals(fieldName)) {
-                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAccountProperties.costControlIds = costControlIds;
-                } else if ("costControlConnections".equals(fieldName)) {
-                    deserializedAccountProperties.costControlConnections = CostControlConnections.fromJson(reader);
+                } else if ("trustedCertificateSources".equals(fieldName)) {
+                    List<TrustedCertificateSource> trustedCertificateSources
+                        = reader.readArray(reader1 -> TrustedCertificateSource.fromJson(reader1));
+                    deserializedAccountProperties.trustedCertificateSources = trustedCertificateSources;
                 } else {
                     reader.skipChildren();
                 }

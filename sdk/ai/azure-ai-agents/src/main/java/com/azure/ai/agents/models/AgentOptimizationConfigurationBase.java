@@ -82,6 +82,8 @@ public class AgentOptimizationConfigurationBase implements JsonSerializable<Agen
                     return AgentOptimizationConfiguration.fromJson(readerToUse.reset());
                 } else if ("prompt_optimization".equals(discriminatorValue)) {
                     return PromptOptimizationConfiguration.fromJson(readerToUse.reset());
+                } else if ("skill_optimization".equals(discriminatorValue)) {
+                    return SkillOptimizationConfiguration.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

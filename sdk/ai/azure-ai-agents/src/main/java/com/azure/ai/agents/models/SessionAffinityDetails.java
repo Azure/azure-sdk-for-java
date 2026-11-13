@@ -20,14 +20,7 @@ import java.io.IOException;
 public final class SessionAffinityDetails implements JsonSerializable<SessionAffinityDetails> {
 
     /*
-     * The effective session affinity mode.
-     */
-    @Generated
-    private final SessionAffinityMode mode;
-
-    /*
-     * The identity source selected after applying precedence. `conversation` and `previous_response_id` apply only to
-     * the Responses API. Omitted when affinity is disabled.
+     * The identity source selected after applying precedence. Omitted when affinity is disabled.
      */
     @Generated
     private SessionAffinitySource source;
@@ -40,28 +33,8 @@ public final class SessionAffinityDetails implements JsonSerializable<SessionAff
     private SessionAffinityDecision decision;
 
     /**
-     * Creates an instance of SessionAffinityDetails class.
-     *
-     * @param mode the mode value to set.
-     */
-    @Generated
-    private SessionAffinityDetails(SessionAffinityMode mode) {
-        this.mode = mode;
-    }
-
-    /**
-     * Get the mode property: The effective session affinity mode.
-     *
-     * @return the mode value.
-     */
-    @Generated
-    public SessionAffinityMode getMode() {
-        return this.mode;
-    }
-
-    /**
-     * Get the source property: The identity source selected after applying precedence. `conversation` and
-     * `previous_response_id` apply only to the Responses API. Omitted when affinity is disabled.
+     * Get the source property: The identity source selected after applying precedence. Omitted when affinity is
+     * disabled.
      *
      * @return the source value.
      */
@@ -88,7 +61,7 @@ public final class SessionAffinityDetails implements JsonSerializable<SessionAff
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("strategy", this.strategy == null ? null : this.strategy.toString());
         jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
         jsonWriter.writeStringField("decision", this.decision == null ? null : this.decision.toString());
         return jsonWriter.writeEndObject();
@@ -106,14 +79,14 @@ public final class SessionAffinityDetails implements JsonSerializable<SessionAff
     @Generated
     public static SessionAffinityDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SessionAffinityMode mode = null;
+            SessionAffinityStrategy strategy = null;
             SessionAffinitySource source = null;
             SessionAffinityDecision decision = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("mode".equals(fieldName)) {
-                    mode = SessionAffinityMode.fromString(reader.getString());
+                if ("strategy".equals(fieldName)) {
+                    strategy = SessionAffinityStrategy.fromString(reader.getString());
                 } else if ("source".equals(fieldName)) {
                     source = SessionAffinitySource.fromString(reader.getString());
                 } else if ("decision".equals(fieldName)) {
@@ -122,10 +95,36 @@ public final class SessionAffinityDetails implements JsonSerializable<SessionAff
                     reader.skipChildren();
                 }
             }
-            SessionAffinityDetails deserializedSessionAffinityDetails = new SessionAffinityDetails(mode);
+            SessionAffinityDetails deserializedSessionAffinityDetails = new SessionAffinityDetails(strategy);
             deserializedSessionAffinityDetails.source = source;
             deserializedSessionAffinityDetails.decision = decision;
             return deserializedSessionAffinityDetails;
         });
+    }
+
+    /*
+     * The effective session affinity strategy.
+     */
+    @Generated
+    private final SessionAffinityStrategy strategy;
+
+    /**
+     * Creates an instance of SessionAffinityDetails class.
+     *
+     * @param strategy the strategy value to set.
+     */
+    @Generated
+    private SessionAffinityDetails(SessionAffinityStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    /**
+     * Get the strategy property: The effective session affinity strategy.
+     *
+     * @return the strategy value.
+     */
+    @Generated
+    public SessionAffinityStrategy getStrategy() {
+        return this.strategy;
     }
 }

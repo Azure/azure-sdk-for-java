@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ProjectInner;
-import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
@@ -19,39 +18,28 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kak\",\"description\":\"ldtve\",\"endpoints\":{\"hzjkn\":\"cl\",\"pzaamrdixtreki\":\"uxgvttxpnr\"},\"isDefault\":true,\"capabilitySettings\":{\"documentStore\":\"kbr\",\"vectorStore\":\"fgllukkutvlx\",\"blobStore\":\"pqhvmblcouqehbhb\"}},\"tags\":{\"mbltoo\":\"ziryrandoy\",\"alsygao\":\"mkfqlwxldy\",\"sibjgs\":\"njpnnbmj\"},\"location\":\"xxahmrnadzyqegxy\",\"etag\":\"pinbmhwbjijkgqxn\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"znj\",\"principalId\":\"jvaannggiycwkd\",\"userAssignedIdentities\":{\"mrrqmbzmqkratb\":{\"principalId\":\"xw\",\"clientId\":\"ka\"},\"ijymrhbguzozky\":{\"principalId\":\"wbjsidbirkf\",\"clientId\":\"sokdgoge\"}}},\"id\":\"nfnzhhh\",\"name\":\"o\",\"type\":\"mffjkutycyarn\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"bkau\",\"description\":\"fshfph\",\"endpoints\":{\"wkojpllndnpd\":\"ulaiywzejywhs\",\"fugsnnfhyetefy\":\"rpqaf\",\"ctfjgtixr\":\"oc\",\"wolba\":\"vzuyturmlmu\"},\"isDefault\":false},\"tags\":{\"gajinnixjawrtmj\":\"ionszonwp\"},\"location\":\"myccx\",\"etag\":\"hcoxov\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"nlusfnrd\",\"principalId\":\"xtxrdcqtjvidt\",\"userAssignedIdentities\":{\"qfecjxeygtuhx\":{\"principalId\":\"uslvyjtcvuwkasi\",\"clientId\":\"esfuught\"}}},\"id\":\"cbuewmrswnjlxuz\",\"name\":\"hwpusxj\",\"type\":\"aqehg\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals("kak", model.properties().displayName());
-        Assertions.assertEquals("ldtve", model.properties().description());
-        Assertions.assertEquals("kbr", model.properties().capabilitySettings().documentStore());
-        Assertions.assertEquals("fgllukkutvlx", model.properties().capabilitySettings().vectorStore());
-        Assertions.assertEquals("pqhvmblcouqehbhb", model.properties().capabilitySettings().blobStore());
-        Assertions.assertEquals("ziryrandoy", model.tags().get("mbltoo"));
-        Assertions.assertEquals("xxahmrnadzyqegxy", model.location());
+        Assertions.assertEquals("bkau", model.properties().displayName());
+        Assertions.assertEquals("fshfph", model.properties().description());
+        Assertions.assertEquals("ionszonwp", model.tags().get("gajinnixjawrtmj"));
+        Assertions.assertEquals("myccx", model.location());
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectInner model = new ProjectInner()
-            .withProperties(new ProjectProperties().withDisplayName("kak")
-                .withDescription("ldtve")
-                .withCapabilitySettings(new CapabilitySettings().withDocumentStore("kbr")
-                    .withVectorStore("fgllukkutvlx")
-                    .withBlobStore("pqhvmblcouqehbhb")))
-            .withTags(mapOf("mbltoo", "ziryrandoy", "alsygao", "mkfqlwxldy", "sibjgs", "njpnnbmj"))
-            .withLocation("xxahmrnadzyqegxy")
+            .withProperties(new ProjectProperties().withDisplayName("bkau").withDescription("fshfph"))
+            .withTags(mapOf("gajinnixjawrtmj", "ionszonwp"))
+            .withLocation("myccx")
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("mrrqmbzmqkratb", new UserAssignedIdentity(), "ijymrhbguzozky", new UserAssignedIdentity())));
+                .withUserAssignedIdentities(mapOf("qfecjxeygtuhx", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("kak", model.properties().displayName());
-        Assertions.assertEquals("ldtve", model.properties().description());
-        Assertions.assertEquals("kbr", model.properties().capabilitySettings().documentStore());
-        Assertions.assertEquals("fgllukkutvlx", model.properties().capabilitySettings().vectorStore());
-        Assertions.assertEquals("pqhvmblcouqehbhb", model.properties().capabilitySettings().blobStore());
-        Assertions.assertEquals("ziryrandoy", model.tags().get("mbltoo"));
-        Assertions.assertEquals("xxahmrnadzyqegxy", model.location());
+        Assertions.assertEquals("bkau", model.properties().displayName());
+        Assertions.assertEquals("fshfph", model.properties().description());
+        Assertions.assertEquals("ionszonwp", model.tags().get("gajinnixjawrtmj"));
+        Assertions.assertEquals("myccx", model.location());
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
