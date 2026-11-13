@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation.instrumentation.otel.metrics;
 
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
@@ -12,52 +11,17 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
 import io.clientcore.core.instrumentation.metrics.Meter;
+import io.opentelemetry.api.metrics.MeterBuilder;
+import io.opentelemetry.api.metrics.MeterProvider;
 
 import java.util.List;
 import java.util.Objects;
-
-import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.METER_BUILDER_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.METER_PROVIDER_CLASS;
 
 /**
  * A class that wraps the OpenTelemetry meter.
  */
 public class OTelMeter implements Meter {
     private static final ClientLogger LOGGER = new ClientLogger(OTelMeter.class);
-    private static final FallbackInvoker SET_INSTRUMENTATION_VERSION_INVOKER;
-    private static final FallbackInvoker BUILD_INVOKER;
-    private static final FallbackInvoker SET_SCHEMA_URL_INVOKER;
-    private static final FallbackInvoker GET_METER_BUILDER_INVOKER;
-
-    static {
-        ReflectiveInvoker setInstrumentationVersionInvoker = null;
-        ReflectiveInvoker buildInvoker = null;
-        ReflectiveInvoker setSchemaUrlInvoker = null;
-        ReflectiveInvoker getMeterBuilderInvoker = null;
-
-        if (OTelInitializer.isInitialized()) {
-            try {
-                setInstrumentationVersionInvoker = getMethodInvoker(METER_BUILDER_CLASS,
-                    METER_BUILDER_CLASS.getMethod("setInstrumentationVersion", String.class));
-
-                setSchemaUrlInvoker = getMethodInvoker(METER_BUILDER_CLASS,
-                    METER_BUILDER_CLASS.getMethod("setSchemaUrl", String.class));
-
-                buildInvoker = getMethodInvoker(METER_BUILDER_CLASS, METER_BUILDER_CLASS.getMethod("build"));
-
-                getMeterBuilderInvoker = getMethodInvoker(METER_PROVIDER_CLASS,
-                    METER_PROVIDER_CLASS.getMethod("meterBuilder", String.class));
-            } catch (Throwable t) {
-                OTelInitializer.initError(LOGGER, t);
-            }
-        }
-
-        SET_INSTRUMENTATION_VERSION_INVOKER = new FallbackInvoker(setInstrumentationVersionInvoker, LOGGER);
-        SET_SCHEMA_URL_INVOKER = new FallbackInvoker(setSchemaUrlInvoker, LOGGER);
-        BUILD_INVOKER = new FallbackInvoker(buildInvoker, NoopMeter.INSTANCE, LOGGER);
-        GET_METER_BUILDER_INVOKER = new FallbackInvoker(getMeterBuilderInvoker, LOGGER);
-    }
 
     private final Object otelMeter;
 
@@ -68,11 +32,12 @@ public class OTelMeter implements Meter {
      * @param sdkOptions The library options.
      */
     public OTelMeter(Object otelMeterProvider, SdkInstrumentationOptions sdkOptions) {
-        Object meterBuilder = GET_METER_BUILDER_INVOKER.invoke(otelMeterProvider, sdkOptions.getSdkName());
+        MeterBuilder meterBuilder = FallbackInvoker.call(LOGGER, null,
+            () -> ((MeterProvider) otelMeterProvider).meterBuilder(sdkOptions.getSdkName()));
         if (meterBuilder != null) {
-            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(meterBuilder, sdkOptions.getSdkVersion());
-            SET_SCHEMA_URL_INVOKER.invoke(meterBuilder, sdkOptions.getSchemaUrl());
-            this.otelMeter = BUILD_INVOKER.invoke(meterBuilder);
+            FallbackInvoker.run(LOGGER, () -> meterBuilder.setInstrumentationVersion(sdkOptions.getSdkVersion()));
+            FallbackInvoker.run(LOGGER, () -> meterBuilder.setSchemaUrl(sdkOptions.getSchemaUrl()));
+            this.otelMeter = FallbackInvoker.call(LOGGER, NoopMeter.INSTANCE, () -> meterBuilder.build());
         } else {
             this.otelMeter = null;
         }

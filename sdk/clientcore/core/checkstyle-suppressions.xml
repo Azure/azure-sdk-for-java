@@ -5,6 +5,8 @@
 <suppressions>
   <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodNameCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <!-- The optional SLF4J bridge implements ClientLogger's delegation to SLF4J. -->
+  <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />

@@ -3,9 +3,10 @@
 
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.implementation.ReflectionUtils;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.NOPLogger;
 
 import static io.clientcore.core.instrumentation.logging.LogLevel.ERROR;
 import static io.clientcore.core.instrumentation.logging.LogLevel.INFORMATIONAL;
@@ -14,16 +15,7 @@ import static io.clientcore.core.instrumentation.logging.LogLevel.WARNING;
 
 public class Slf4jLoggerShim {
     private static final DefaultLogger DEFAULT_LOGGER = new DefaultLogger(Slf4jLoggerShim.class);
-    private static final ReflectiveInvoker LOGGER_FACTORY_GET_LOGGER;
-    private static final ReflectiveInvoker LOGGER_VERBOSE;
-    private static final ReflectiveInvoker LOGGER_INFO;
-    private static final ReflectiveInvoker LOGGER_WARN;
-    private static final ReflectiveInvoker LOGGER_ERROR;
-    private static final ReflectiveInvoker LOGGER_IS_VERBOSE_ENABLED;
-    private static final ReflectiveInvoker LOGGER_IS_INFO_ENABLED;
-    private static final ReflectiveInvoker LOGGER_IS_WARN_ENABLED;
-    private static final ReflectiveInvoker LOGGER_IS_ERROR_ENABLED;
-    private static final Class<?> NOP_LOGGER_CLASS;
+    private static final boolean SLF4J_AVAILABLE = isSlf4jAvailable();
     private static boolean slf4jErrorLogged = false;
     private final DefaultLogger defaultLogger;
 
@@ -38,73 +30,15 @@ public class Slf4jLoggerShim {
     private final boolean isWarnEnabledForDefault;
     private final boolean isErrorEnabledForDefault;
 
-    static {
-        Class<?> nopLoggerClass;
-        ReflectiveInvoker getLoggerMethodHandle;
-        ReflectiveInvoker logVerboseMethodHandle;
-        ReflectiveInvoker logInfoMethodHandle;
-        ReflectiveInvoker logWarnMethodHandle;
-        ReflectiveInvoker logErrorMethodHandle;
-
-        ReflectiveInvoker isVerboseEnabledMethodHandle;
-        ReflectiveInvoker isInfoEnabledMethodHandle;
-        ReflectiveInvoker isWarnEnabledMethodHandle;
-        ReflectiveInvoker isErrorEnabledMethodHandle;
-
+    private static boolean isSlf4jAvailable() {
         try {
-            nopLoggerClass = Class.forName("org.slf4j.helpers.NOPLogger", true, Slf4jLoggerShim.class.getClassLoader());
-
-            Class<?> loggerFactoryClass
-                = Class.forName("org.slf4j.LoggerFactory", true, Slf4jLoggerShim.class.getClassLoader());
-            Class<?> loggerClass = Class.forName("org.slf4j.Logger", true, Slf4jLoggerShim.class.getClassLoader());
-
-            getLoggerMethodHandle = ReflectionUtils.getMethodInvoker(loggerFactoryClass,
-                loggerFactoryClass.getMethod("getLogger", String.class));
-            logVerboseMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("debug", String.class, Throwable.class));
-            logInfoMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("info", String.class, Throwable.class));
-            logWarnMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("warn", String.class, Throwable.class));
-            logErrorMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("error", String.class, Throwable.class));
-
-            isVerboseEnabledMethodHandle
-                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isDebugEnabled"));
-            isInfoEnabledMethodHandle
-                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isInfoEnabled"));
-            isWarnEnabledMethodHandle
-                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isWarnEnabled"));
-            isErrorEnabledMethodHandle
-                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isErrorEnabled"));
-        } catch (Exception e) {
+            OptionalDependency.load("org.slf4j.LoggerFactory");
+            Slf4jAdapter.initialize();
+            return true;
+        } catch (Throwable e) {
             DEFAULT_LOGGER.log(VERBOSE, "Failed to initialize Slf4jLoggerShim.", e);
-
-            nopLoggerClass = null;
-
-            getLoggerMethodHandle = null;
-
-            logVerboseMethodHandle = null;
-            logInfoMethodHandle = null;
-            logWarnMethodHandle = null;
-            logErrorMethodHandle = null;
-
-            isVerboseEnabledMethodHandle = null;
-            isInfoEnabledMethodHandle = null;
-            isWarnEnabledMethodHandle = null;
-            isErrorEnabledMethodHandle = null;
+            return false;
         }
-
-        LOGGER_FACTORY_GET_LOGGER = getLoggerMethodHandle;
-        NOP_LOGGER_CLASS = nopLoggerClass;
-        LOGGER_VERBOSE = logVerboseMethodHandle;
-        LOGGER_INFO = logInfoMethodHandle;
-        LOGGER_WARN = logWarnMethodHandle;
-        LOGGER_ERROR = logErrorMethodHandle;
-        LOGGER_IS_VERBOSE_ENABLED = isVerboseEnabledMethodHandle;
-        LOGGER_IS_INFO_ENABLED = isInfoEnabledMethodHandle;
-        LOGGER_IS_WARN_ENABLED = isWarnEnabledMethodHandle;
-        LOGGER_IS_ERROR_ENABLED = isErrorEnabledMethodHandle;
     }
 
     public Slf4jLoggerShim(DefaultLogger defaultLogger) {
@@ -128,10 +62,10 @@ public class Slf4jLoggerShim {
         if (localSlf4jLogger != null) {
             try {
                 // If so, attempt to set logging levels to what is enabled for the SLF4J Logger.
-                isVerboseEnabled = (boolean) LOGGER_IS_VERBOSE_ENABLED.invokeWithArguments(localSlf4jLogger);
-                isInfoEnabled = (boolean) LOGGER_IS_INFO_ENABLED.invokeWithArguments(localSlf4jLogger);
-                isWarnEnabled = (boolean) LOGGER_IS_WARN_ENABLED.invokeWithArguments(localSlf4jLogger);
-                isErrorEnabled = (boolean) LOGGER_IS_ERROR_ENABLED.invokeWithArguments(localSlf4jLogger);
+                isVerboseEnabled = Slf4jAdapter.isDebugEnabled(localSlf4jLogger);
+                isInfoEnabled = Slf4jAdapter.isInfoEnabled(localSlf4jLogger);
+                isWarnEnabled = Slf4jAdapter.isWarnEnabled(localSlf4jLogger);
+                isErrorEnabled = Slf4jAdapter.isErrorEnabled(localSlf4jLogger);
             } catch (Throwable e) {
                 writeSlf4jDisabledError(VERBOSE, "Failed to check if SLF4J log level is enabled", e);
                 slf4jLogger = null;
@@ -139,7 +73,7 @@ public class Slf4jLoggerShim {
         }
 
         // Always track what the DefaultLogger has enabled if we need to use it as the logging path or if we need to
-        // fall back to it in case of issue with reflectively invoking the SLF4J Logger.
+        // fall back to it in case of issue with calling the SLF4J Logger.
         this.isVerboseEnabledForDefault = defaultLogger.isEnabled(VERBOSE);
         this.isInfoEnabledForDefault = defaultLogger.isEnabled(INFORMATIONAL);
         this.isWarnEnabledForDefault = defaultLogger.isEnabled(WARNING);
@@ -183,31 +117,7 @@ public class Slf4jLoggerShim {
         // Again, attempt to use the SLF4J Logger if it was on the classpath.
         if (localSlf4jLogger != null) {
             try {
-                switch (logLevel) {
-                    case VERBOSE:
-                        LOGGER_VERBOSE.invoke(localSlf4jLogger, message, throwable);
-
-                        break;
-
-                    case INFORMATIONAL:
-                        LOGGER_INFO.invoke(localSlf4jLogger, message, throwable);
-
-                        break;
-
-                    case WARNING:
-                        LOGGER_WARN.invoke(localSlf4jLogger, message, throwable);
-
-                        break;
-
-                    case ERROR:
-                        LOGGER_ERROR.invoke(localSlf4jLogger, message, throwable);
-
-                        break;
-
-                    default:
-                        // Don't do anything, this state shouldn't be possible.
-                        break;
-                }
+                Slf4jAdapter.log(localSlf4jLogger, logLevel, message, throwable);
             } catch (Throwable e) {
                 writeSlf4jDisabledError(VERBOSE, "Failed to log message with SLF4J", e);
                 slf4jLogger = null;
@@ -222,14 +132,14 @@ public class Slf4jLoggerShim {
     }
 
     static Object createLogger(String className) {
-        if (LOGGER_FACTORY_GET_LOGGER == null || NOP_LOGGER_CLASS == null) {
+        if (!SLF4J_AVAILABLE) {
             return null;
         }
 
         try {
-            Object logger = LOGGER_FACTORY_GET_LOGGER.invokeStatic(className);
+            Object logger = Slf4jAdapter.createLogger(className);
 
-            if (NOP_LOGGER_CLASS.isAssignableFrom(logger.getClass())) {
+            if (logger == null) {
                 writeSlf4jDisabledError(VERBOSE, "Resolved NOPLogger", null);
                 return null;
             }
@@ -246,6 +156,66 @@ public class Slf4jLoggerShim {
             slf4jErrorLogged = true;
             DEFAULT_LOGGER.log(level, String.format("[DefaultLogger]: %s. SLF4J logging will be disabled.", message),
                 throwable);
+        }
+    }
+
+    // Keep optional SLF4J types behind the availability check.
+    private static final class Slf4jAdapter {
+        private static void initialize() {
+            // Complete provider discovery before concurrent callers request loggers.
+            LoggerFactory.getILoggerFactory();
+        }
+
+        private static Object createLogger(String className) {
+            Logger logger = LoggerFactory.getLogger(className);
+            return logger instanceof NOPLogger ? null : logger;
+        }
+
+        private static boolean isDebugEnabled(Object logger) {
+            return ((Logger) logger).isDebugEnabled();
+        }
+
+        private static boolean isInfoEnabled(Object logger) {
+            return ((Logger) logger).isInfoEnabled();
+        }
+
+        private static boolean isWarnEnabled(Object logger) {
+            return ((Logger) logger).isWarnEnabled();
+        }
+
+        private static boolean isErrorEnabled(Object logger) {
+            return ((Logger) logger).isErrorEnabled();
+        }
+
+        private static void log(Object slf4jLogger, LogLevel logLevel, String message, Throwable throwable) {
+            Logger logger = (Logger) slf4jLogger;
+            // Keep raw line breaks from creating additional log records. Structured messages are already escaped.
+            String singleLineMessage = message == null ? null : message.replace('\r', ' ').replace('\n', ' ');
+            switch (logLevel) {
+                case VERBOSE:
+                    logger.debug(singleLineMessage, throwable);
+
+                    break;
+
+                case INFORMATIONAL:
+                    logger.info(singleLineMessage, throwable);
+
+                    break;
+
+                case WARNING:
+                    logger.warn(singleLineMessage, throwable);
+
+                    break;
+
+                case ERROR:
+                    logger.error(singleLineMessage, throwable);
+
+                    break;
+
+                default:
+                    // Don't do anything, this state shouldn't be possible.
+                    break;
+            }
         }
     }
 }
