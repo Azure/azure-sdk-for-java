@@ -3,13 +3,20 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.BinaryData;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -27,6 +34,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -268,7 +277,56 @@ public class ServiceBusSenderClientTest {
         // Assert
         Assertions.assertEquals(expected, actual);
         verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime);
+    }
 
+    @ParameterizedTest
+    @EnumSource(AmqpRetryMode.class)
+    void scheduleMessageAllowsServerBusyRetryDelay(AmqpRetryMode mode) {
+        AmqpRetryOptions options = new AmqpRetryOptions().setMode(mode)
+            .setTryTimeout(Duration.ofMillis(1500))
+            .setDelay(Duration.ofMillis(1))
+            .setMaxDelay(Duration.ofSeconds(5))
+            .setMaxRetries(1);
+        Duration retryDelay = RetryUtil.getRetryPolicy(options)
+            .calculateRetryDelay(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "busy", null), 1);
+        Assertions.assertTrue(retryDelay.compareTo(MessageUtils.getTotalTimeout(options)) > 0);
+        ServiceBusMessage message = new ServiceBusMessage(TEST_CONTENTS);
+        OffsetDateTime dueAt = OffsetDateTime.now().plusMinutes(1);
+        when(asyncSender.scheduleMessage(message, dueAt)).thenReturn(Mono.delay(retryDelay).thenReturn(42L));
+        ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder
+            = spy(new ServiceBusClientBuilder().retryOptions(options).sender().queueName(ENTITY_NAME));
+        doReturn(asyncSender).when(builder).buildAsyncClient();
+
+        try (ServiceBusSenderClient client = builder.buildClient()) {
+            Assertions.assertEquals(42L, client.scheduleMessage(message, dueAt));
+        }
+    }
+
+    @Test
+    void scheduleMessageRetainsBoundedWait() {
+        ServiceBusMessage message = new ServiceBusMessage(TEST_CONTENTS);
+        OffsetDateTime dueAt = OffsetDateTime.now().plusMinutes(1);
+        when(asyncSender.scheduleMessage(message, dueAt)).thenReturn(Mono.never());
+
+        try (ServiceBusSenderClient client
+            = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT, Duration.ofMillis(1))) {
+            Assertions.assertThrows(IllegalStateException.class, () -> client.scheduleMessage(message, dueAt));
+        }
+    }
+
+    @Test
+    void schedulingBudgetDoesNotChangeSendOrTransactionTimeouts() {
+        ServiceBusMessage message = new ServiceBusMessage(TEST_CONTENTS);
+        OffsetDateTime dueAt = OffsetDateTime.now().plusMinutes(1);
+        when(asyncSender.sendMessage(message)).thenReturn(Mono.never());
+        when(asyncSender.scheduleMessage(message, dueAt, transactionContext)).thenReturn(Mono.never());
+
+        try (ServiceBusSenderClient client
+            = new ServiceBusSenderClient(asyncSender, Duration.ofMillis(1), RETRY_TIMEOUT)) {
+            Assertions.assertThrows(IllegalStateException.class, () -> client.sendMessage(message));
+            Assertions.assertThrows(IllegalStateException.class,
+                () -> client.scheduleMessage(message, dueAt, transactionContext));
+        }
     }
 
     /**
