@@ -5,10 +5,9 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
-import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -16,6 +15,7 @@ import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.exception.ResourceModifiedException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
@@ -40,6 +40,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>{@code FOUNDRY_VOICE_AGENT_NAME} - Optional. The voice agent name. Defaults to
  *   {@code sample-live-text-conversation-agent-java}.</li>
  * </ul>
+ * <p>This sample deletes and replaces an existing agent with the selected name on a creation conflict.
+ * Use a name reserved for this sample. The replacement is deleted on exit, including on failure.</p>
  */
 public class VoiceAgentLiveTextConversationSample {
     private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(45);
@@ -52,27 +54,20 @@ public class VoiceAgentLiveTextConversationSample {
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .allowPreview(true);
+            .endpoint(endpoint);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaAgentsClient betaAgents = builder.beta().buildBetaAgentsClient();
-        BetaVoiceAgentWebSocketClient realtime = builder.beta().buildBetaVoiceAgentWebSocketClient();
-        BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
+        VoiceAgentsWebSocketClient realtime = builder.buildVoiceAgentsWebSocketClient();
+        VoiceAgentsConversationsClient conversations = builder.buildVoiceAgentsConversationsClient();
 
-        Map<String, String> request = new LinkedHashMap<>();
-        request.put("kind", "voice");
-        request.put("name", agentName);
-        AgentDetails generated = betaAgents.createAgentFromPrompt(BinaryData.fromObject(request));
-
-        try {
-            AgentVersionDetails latest = generated.getVersions().getLatest();
+        try (SampleAgent agent = createAgent(agents, agentName)) {
+            AgentVersionDetails latest = agent.details.getVersions().getLatest();
             VoiceAgentDefinition definition = (VoiceAgentDefinition) latest.getDefinition();
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition.setStore(true)));
 
             AtomicReference<String> conversationId = new AtomicReference<>();
             try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player
                     = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer();
-                BetaVoiceAgentWebSocketSessionClient session = realtime.openWebSocketSession(agentName);
+                VoiceAgentsWebSocketSessionClient session = realtime.openWebSocketSession(agentName);
                 Scanner scanner = new Scanner(System.in)) {
                 AtomicReference<CompletableFuture<Void>> responseCompleted = new AtomicReference<>();
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
@@ -124,13 +119,47 @@ public class VoiceAgentLiveTextConversationSample {
             } else {
                 System.out.println("No persisted conversation ID was returned.");
             }
-        } finally {
-            agents.deleteAgent(agentName);
-            System.out.println("Deleted voice agent: " + agentName);
         }
     }
 
-    private static boolean awaitResponse(BetaVoiceAgentWebSocketSessionClient session,
+    static SampleAgent createAgent(AgentsClient agents, String agentName) {
+        Map<String, String> request = new LinkedHashMap<>();
+        request.put("kind", "voice");
+        request.put("name", agentName);
+        BinaryData body = BinaryData.fromObject(request);
+        AgentDetails details;
+        try {
+            details = agents.createAgentFromPrompt(body);
+        } catch (ResourceModifiedException error) {
+            if (error.getResponse() == null || error.getResponse().getStatusCode() != 409) {
+                throw error;
+            }
+            System.err.println("Deleting existing voice agent before replacement: " + agentName);
+            agents.deleteAgent(agentName);
+            details = agents.createAgentFromPrompt(body);
+        }
+        return new SampleAgent(agents, agentName, details);
+    }
+
+    static final class SampleAgent implements AutoCloseable {
+        final AgentDetails details;
+        private final AgentsClient agents;
+        private final String name;
+
+        private SampleAgent(AgentsClient agents, String name, AgentDetails details) {
+            this.agents = agents;
+            this.name = name;
+            this.details = details;
+        }
+
+        @Override
+        public void close() {
+            agents.deleteAgent(name);
+            System.out.println("Deleted voice agent: " + name);
+        }
+    }
+
+    private static boolean awaitResponse(VoiceAgentsWebSocketSessionClient session,
         CompletableFuture<Void> completion) {
         try {
             completion.get(RESPONSE_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);

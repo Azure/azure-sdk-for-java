@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -19,7 +18,6 @@ import java.io.IOException;
  * response generation.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeResponseContentPartAddedEvent extends RealtimeServerEvent {
 
     /*
@@ -58,7 +56,10 @@ public final class RealtimeResponseContentPartAddedEvent extends RealtimeServerE
     @Generated
     private final long contentIndex;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The content part that was added.
+     */
+    @Generated
     private final Part part;
 
     /**
@@ -127,8 +128,8 @@ public final class RealtimeResponseContentPartAddedEvent extends RealtimeServerE
      *
      * @return the part value.
      */
+    @Generated
     public Part getPart() {
-        // AI Tooling: openai-java de-dup
         return this.part;
     }
 

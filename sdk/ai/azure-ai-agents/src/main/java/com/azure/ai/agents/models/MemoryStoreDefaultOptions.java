@@ -105,7 +105,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
         jsonWriter.writeBooleanField("chat_summary_enabled", this.chatSummaryEnabled);
         jsonWriter.writeStringField("user_profile_details", this.userProfileDetails);
         jsonWriter.writeBooleanField("procedural_memory_enabled", this.proceduralMemoryEnabled);
-        jsonWriter.writeNumberField("default_ttl_seconds", this.defaultTtlSeconds);
+        jsonWriter.writeNumberField("default_ttl_seconds", this.defaultTtl);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,7 +125,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
             boolean chatSummaryEnabled = false;
             String userProfileDetails = null;
             Boolean proceduralMemoryEnabled = null;
-            Long defaultTtlSeconds = null;
+            Long defaultTtl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -138,7 +138,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
                 } else if ("procedural_memory_enabled".equals(fieldName)) {
                     proceduralMemoryEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("default_ttl_seconds".equals(fieldName)) {
-                    defaultTtlSeconds = reader.getNullable(JsonReader::getLong);
+                    defaultTtl = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -147,7 +147,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
                 = new MemoryStoreDefaultOptions(userProfileEnabled, chatSummaryEnabled);
             deserializedMemoryStoreDefaultOptions.userProfileDetails = userProfileDetails;
             deserializedMemoryStoreDefaultOptions.proceduralMemoryEnabled = proceduralMemoryEnabled;
-            deserializedMemoryStoreDefaultOptions.defaultTtlSeconds = defaultTtlSeconds;
+            deserializedMemoryStoreDefaultOptions.defaultTtl = defaultTtl;
             return deserializedMemoryStoreDefaultOptions;
         });
     }
@@ -158,13 +158,6 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
      */
     @Generated
     private Boolean proceduralMemoryEnabled;
-
-    /*
-     * The default time-to-live for memories in seconds. A value of `0` indicates that memories do not expire. Defaults
-     * to `0`.
-     */
-    @Generated
-    private Long defaultTtlSeconds;
 
     /**
      * Get the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. The service
@@ -190,33 +183,40 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
         return this;
     }
 
-    /**
-     * Get the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of `0` indicates
-     * that memories do not expire. Defaults to `0`.
-     *
-     * @return the defaultTtlSeconds value.
+    /*
+     * The default time-to-live for memories in seconds. A value of `0` indicates that memories do not expire. Defaults
+     * to `0`.
      */
     @Generated
-    public Duration getDefaultTtlSeconds() {
-        if (this.defaultTtlSeconds == null) {
+    private Long defaultTtl;
+
+    /**
+     * Get the defaultTtl property: The default time-to-live for memories in seconds. A value of `0` indicates that
+     * memories do not expire. Defaults to `0`.
+     *
+     * @return the defaultTtl value.
+     */
+    @Generated
+    public Duration getDefaultTtl() {
+        if (this.defaultTtl == null) {
             return null;
         }
-        return Duration.ofSeconds(this.defaultTtlSeconds);
+        return Duration.ofSeconds(this.defaultTtl);
     }
 
     /**
-     * Set the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of `0` indicates
-     * that memories do not expire. Defaults to `0`.
+     * Set the defaultTtl property: The default time-to-live for memories in seconds. A value of `0` indicates that
+     * memories do not expire. Defaults to `0`.
      *
-     * @param defaultTtlSeconds the defaultTtlSeconds value to set.
+     * @param defaultTtl the defaultTtl value to set.
      * @return the MemoryStoreDefaultOptions object itself.
      */
     @Generated
-    public MemoryStoreDefaultOptions setDefaultTtlSeconds(Duration defaultTtlSeconds) {
-        if (defaultTtlSeconds == null) {
-            this.defaultTtlSeconds = null;
+    public MemoryStoreDefaultOptions setDefaultTtl(Duration defaultTtl) {
+        if (defaultTtl == null) {
+            this.defaultTtl = null;
         } else {
-            this.defaultTtlSeconds = defaultTtlSeconds.getSeconds();
+            this.defaultTtl = defaultTtl.getSeconds();
         }
         return this;
     }

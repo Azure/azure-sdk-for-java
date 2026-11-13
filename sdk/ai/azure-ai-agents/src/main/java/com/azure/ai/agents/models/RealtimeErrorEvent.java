@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -20,7 +19,6 @@ import java.io.IOException;
  * recommend to implementers to monitor and log error messages by default.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeErrorEvent extends RealtimeServerEvent {
 
     /*
@@ -35,7 +33,10 @@ public final class RealtimeErrorEvent extends RealtimeServerEvent {
     @Generated
     private final String eventId;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * Details of the error.
+     */
+    @Generated
     private final RealtimeError error;
 
     /**
@@ -64,8 +65,8 @@ public final class RealtimeErrorEvent extends RealtimeServerEvent {
      *
      * @return the error value.
      */
+    @Generated
     public RealtimeError getError() {
-        // AI Tooling: openai-java de-dup
         return this.error;
     }
 
