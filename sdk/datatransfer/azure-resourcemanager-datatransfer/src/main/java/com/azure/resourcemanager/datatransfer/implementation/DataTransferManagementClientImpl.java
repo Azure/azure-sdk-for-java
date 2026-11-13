@@ -31,8 +31,10 @@ import com.azure.resourcemanager.datatransfer.fluent.ConnectionsClient;
 import com.azure.resourcemanager.datatransfer.fluent.DataTransferManagementClient;
 import com.azure.resourcemanager.datatransfer.fluent.FlowProfilesClient;
 import com.azure.resourcemanager.datatransfer.fluent.FlowsClient;
+import com.azure.resourcemanager.datatransfer.fluent.MessagingTransferFlowsClient;
 import com.azure.resourcemanager.datatransfer.fluent.OperationsClient;
 import com.azure.resourcemanager.datatransfer.fluent.PipelinesClient;
+import com.azure.resourcemanager.datatransfer.fluent.StorageTransferFlowsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -202,6 +204,34 @@ public final class DataTransferManagementClientImpl implements DataTransferManag
     }
 
     /**
+     * The StorageTransferFlowsClient object to access its operations.
+     */
+    private final StorageTransferFlowsClient storageTransferFlows;
+
+    /**
+     * Gets the StorageTransferFlowsClient object to access its operations.
+     * 
+     * @return the StorageTransferFlowsClient object.
+     */
+    public StorageTransferFlowsClient getStorageTransferFlows() {
+        return this.storageTransferFlows;
+    }
+
+    /**
+     * The MessagingTransferFlowsClient object to access its operations.
+     */
+    private final MessagingTransferFlowsClient messagingTransferFlows;
+
+    /**
+     * Gets the MessagingTransferFlowsClient object to access its operations.
+     * 
+     * @return the MessagingTransferFlowsClient object.
+     */
+    public MessagingTransferFlowsClient getMessagingTransferFlows() {
+        return this.messagingTransferFlows;
+    }
+
+    /**
      * The AzureDataTransfersClient object to access its operations.
      */
     private final AzureDataTransfersClient azureDataTransfers;
@@ -232,12 +262,14 @@ public final class DataTransferManagementClientImpl implements DataTransferManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-02-06-preview";
+        this.apiVersion = "2026-06-29-preview";
         this.operations = new OperationsClientImpl(this);
         this.flowProfiles = new FlowProfilesClientImpl(this);
         this.pipelines = new PipelinesClientImpl(this);
         this.connections = new ConnectionsClientImpl(this);
         this.flows = new FlowsClientImpl(this);
+        this.storageTransferFlows = new StorageTransferFlowsClientImpl(this);
+        this.messagingTransferFlows = new MessagingTransferFlowsClientImpl(this);
         this.azureDataTransfers = new AzureDataTransfersClientImpl(this);
     }
 

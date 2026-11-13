@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.Schema;
  */
 public final class AzureDataTransferValidateSchemaSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/postValidateSchema.json
+     * x-ms-original-file: 2026-06-29-preview/postValidateSchema.json
      */
     /**
      * Sample code: Performs action request.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ResourceBody;
  */
 public final class PipelinesApproveConnectionSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/approveConnection.json
+     * x-ms-original-file: 2026-06-29-preview/approveConnection.json
      */
     /**
      * Sample code: Approves the specified connection in a pipeline.

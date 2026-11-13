@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.PipelineProperties;
  */
 public final class PipelinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/createOrUpdatePipeline.json
+     * x-ms-original-file: 2026-06-29-preview/createOrUpdatePipeline.json
      */
     /**
      * Sample code: Creates or updates the pipeline resource.

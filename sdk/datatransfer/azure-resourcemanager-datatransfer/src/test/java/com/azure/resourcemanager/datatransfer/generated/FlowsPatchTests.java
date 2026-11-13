@@ -19,34 +19,36 @@ public final class FlowsPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlowsPatch model = BinaryData.fromString(
-            "{\"properties\":{\"streamProtocol\":\"SRT\",\"passphrase\":\"idltugsresmkss\",\"streamId\":\"oiftxfkfwegprh\",\"streamLatency\":3447954674598592829},\"identity\":{\"principalId\":\"cbiqtgdqoh\",\"tenantId\":\"wsldrizetpwbr\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"joylh\":{\"principalId\":\"bphbqzmizakakank\",\"clientId\":\"dnjzh\"},\"slstvasy\":{\"principalId\":\"muoyxprimr\",\"clientId\":\"pteecjme\"}}},\"tags\":{\"uufuz\":\"dzaumweooh\"}}")
+            "{\"properties\":{\"streamProtocol\":\"SRT\",\"passphrase\":\"rnxzh\",\"streamId\":\"exrxzbujrtrhq\",\"streamLatency\":3272712647525819374},\"identity\":{\"principalId\":\"h\",\"tenantId\":\"lnzonzlrpiqywn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"reljeamur\":{\"principalId\":\"z\",\"clientId\":\"fizehtdhgbjk\"},\"bccxjmonfdgn\":{\"principalId\":\"mlovuanashcxl\",\"clientId\":\"jerbdkelvidizozs\"},\"zhmkdasvflyh\":{\"principalId\":\"cypuuwwlt\",\"clientId\":\"qjctzenkeif\"},\"bwjl\":{\"principalId\":\"cu\",\"clientId\":\"hxgsrboldfor\"}}},\"tags\":{\"tuodxeszabbelaw\":\"bfhfovvacqp\",\"rwoycqucwyh\":\"muaslzkw\",\"svfuurutlwexxwl\":\"hnomdrkywuh\"}}")
             .toObject(FlowsPatch.class);
         Assertions.assertEquals(StreamProtocol.SRT, model.properties().streamProtocol());
-        Assertions.assertEquals("idltugsresmkss", model.properties().passphrase());
-        Assertions.assertEquals("oiftxfkfwegprh", model.properties().streamId());
-        Assertions.assertEquals(3447954674598592829L, model.properties().streamLatency());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("dzaumweooh", model.tags().get("uufuz"));
+        Assertions.assertEquals("rnxzh", model.properties().passphrase());
+        Assertions.assertEquals("exrxzbujrtrhq", model.properties().streamId());
+        Assertions.assertEquals(3272712647525819374L, model.properties().streamLatency());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bfhfovvacqp", model.tags().get("tuodxeszabbelaw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FlowsPatch model = new FlowsPatch()
             .withProperties(new FlowsPatchProperties().withStreamProtocol(StreamProtocol.SRT)
-                .withPassphrase("idltugsresmkss")
-                .withStreamId("oiftxfkfwegprh")
-                .withStreamLatency(3447954674598592829L))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withPassphrase("rnxzh")
+                .withStreamId("exrxzbujrtrhq")
+                .withStreamLatency(3272712647525819374L))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("joylh", new UserAssignedIdentity(), "slstvasy", new UserAssignedIdentity())))
-            .withTags(mapOf("uufuz", "dzaumweooh"));
+                    mapOf("reljeamur", new UserAssignedIdentity(), "bccxjmonfdgn", new UserAssignedIdentity(),
+                        "zhmkdasvflyh", new UserAssignedIdentity(), "bwjl", new UserAssignedIdentity())))
+            .withTags(
+                mapOf("tuodxeszabbelaw", "bfhfovvacqp", "rwoycqucwyh", "muaslzkw", "svfuurutlwexxwl", "hnomdrkywuh"));
         model = BinaryData.fromObject(model).toObject(FlowsPatch.class);
         Assertions.assertEquals(StreamProtocol.SRT, model.properties().streamProtocol());
-        Assertions.assertEquals("idltugsresmkss", model.properties().passphrase());
-        Assertions.assertEquals("oiftxfkfwegprh", model.properties().streamId());
-        Assertions.assertEquals(3447954674598592829L, model.properties().streamLatency());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("dzaumweooh", model.tags().get("uufuz"));
+        Assertions.assertEquals("rnxzh", model.properties().passphrase());
+        Assertions.assertEquals("exrxzbujrtrhq", model.properties().streamId());
+        Assertions.assertEquals(3272712647525819374L, model.properties().streamLatency());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bfhfovvacqp", model.tags().get("tuodxeszabbelaw"));
     }
 
     // Use "Map.of" if available

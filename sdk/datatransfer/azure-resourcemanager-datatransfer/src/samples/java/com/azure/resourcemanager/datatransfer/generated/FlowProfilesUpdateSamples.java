@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.FlowProfile;
  */
 public final class FlowProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/patchFlowProfile.json
+     * x-ms-original-file: 2026-06-29-preview/patchFlowProfile.json
      */
     /**
      * Sample code: Updates the flowprofile resource.

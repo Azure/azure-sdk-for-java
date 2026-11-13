@@ -11,25 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectedResource model = BinaryData.fromString(
-            "{\"name\":\"hmtnvy\",\"id\":\"iatkzwpcnp\",\"location\":\"cjaesgvvs\",\"subscriptionName\":\"yajguqfhwygzlv\"}")
+        SelectedResource model = BinaryData
+            .fromString(
+                "{\"name\":\"feo\",\"id\":\"erqwkyhkobopg\",\"location\":\"dkow\",\"subscriptionName\":\"bqpc\"}")
             .toObject(SelectedResource.class);
-        Assertions.assertEquals("hmtnvy", model.name());
-        Assertions.assertEquals("iatkzwpcnp", model.id());
-        Assertions.assertEquals("cjaesgvvs", model.location());
-        Assertions.assertEquals("yajguqfhwygzlv", model.subscriptionName());
+        Assertions.assertEquals("feo", model.name());
+        Assertions.assertEquals("erqwkyhkobopg", model.id());
+        Assertions.assertEquals("dkow", model.location());
+        Assertions.assertEquals("bqpc", model.subscriptionName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelectedResource model = new SelectedResource().withName("hmtnvy")
-            .withId("iatkzwpcnp")
-            .withLocation("cjaesgvvs")
-            .withSubscriptionName("yajguqfhwygzlv");
+        SelectedResource model = new SelectedResource().withName("feo")
+            .withId("erqwkyhkobopg")
+            .withLocation("dkow")
+            .withSubscriptionName("bqpc");
         model = BinaryData.fromObject(model).toObject(SelectedResource.class);
-        Assertions.assertEquals("hmtnvy", model.name());
-        Assertions.assertEquals("iatkzwpcnp", model.id());
-        Assertions.assertEquals("cjaesgvvs", model.location());
-        Assertions.assertEquals("yajguqfhwygzlv", model.subscriptionName());
+        Assertions.assertEquals("feo", model.name());
+        Assertions.assertEquals("erqwkyhkobopg", model.id());
+        Assertions.assertEquals("dkow", model.location());
+        Assertions.assertEquals("bqpc", model.subscriptionName());
     }
 }

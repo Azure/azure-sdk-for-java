@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectionIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionIdList model
-            = BinaryData.fromString("{\"value\":[\"rhneuyowq\",\"d\",\"ytisibir\"]}").toObject(ConnectionIdList.class);
-        Assertions.assertEquals("rhneuyowq", model.value().get(0));
+        ConnectionIdList model = BinaryData.fromString("{\"value\":[\"lfzxiavrmbzonoki\",\"rjqc\",\"rgz\"]}")
+            .toObject(ConnectionIdList.class);
+        Assertions.assertEquals("lfzxiavrmbzonoki", model.value().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionIdList model = new ConnectionIdList().withValue(Arrays.asList("rhneuyowq", "d", "ytisibir"));
+        ConnectionIdList model = new ConnectionIdList().withValue(Arrays.asList("lfzxiavrmbzonoki", "rjqc", "rgz"));
         model = BinaryData.fromObject(model).toObject(ConnectionIdList.class);
-        Assertions.assertEquals("rhneuyowq", model.value().get(0));
+        Assertions.assertEquals("lfzxiavrmbzonoki", model.value().get(0));
     }
 }

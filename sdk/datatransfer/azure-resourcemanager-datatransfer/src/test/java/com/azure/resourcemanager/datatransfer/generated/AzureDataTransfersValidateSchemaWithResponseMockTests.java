@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 public final class AzureDataTransfersValidateSchemaWithResponseMockTests {
     @Test
     public void testValidateSchemaWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"Succeeded\",\"message\":\"vzvluyq\"}";
+        String responseStr = "{\"status\":\"Failed\",\"message\":\"ztnlmsoo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class AzureDataTransfersValidateSchemaWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidateSchemaResult response = manager.azureDataTransfers()
-            .validateSchemaWithResponse(new Schema().withId("taznkcqwwxwjyof")
-                .withConnectionId("hnkbtlwljssmctsn")
+            .validateSchemaWithResponse(new Schema().withId("hjiotiffbbcngkeg")
+                .withConnectionId("y")
                 .withStatus(SchemaStatus.NEW)
-                .withName("wolgisubxbt")
-                .withContent("gfgf")
-                .withDirection(Direction.RECEIVE)
-                .withSchemaUri("ykwlefksxqceazf")
-                .withSchemaType(SchemaType.XSD), com.azure.core.util.Context.NONE)
+                .withName("fetwi")
+                .withContent("rzoxpdxqlfro")
+                .withDirection(Direction.SEND)
+                .withSchemaUri("nkiuajewnah")
+                .withSchemaType(SchemaType.ZIP), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ValidateSchemaStatus.SUCCEEDED, response.status());
-        Assertions.assertEquals("vzvluyq", response.message());
+        Assertions.assertEquals(ValidateSchemaStatus.FAILED, response.status());
+        Assertions.assertEquals("ztnlmsoo", response.message());
     }
 }

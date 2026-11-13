@@ -39,12 +39,17 @@ import com.azure.resourcemanager.datatransfer.fluent.models.ConnectionInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.ListFlowsByPipelineResultInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.PipelineInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.SchemasListResultInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowResponseBodyInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowSummaryInner;
+import com.azure.resourcemanager.datatransfer.implementation.models.ListTransferFlowsByPipelineResult;
 import com.azure.resourcemanager.datatransfer.implementation.models.PipelineListResult;
 import com.azure.resourcemanager.datatransfer.models.Action;
 import com.azure.resourcemanager.datatransfer.models.ConnectionIdList;
+import com.azure.resourcemanager.datatransfer.models.ListTransferFlowsByPipelineRequestBody;
 import com.azure.resourcemanager.datatransfer.models.PipelinesPatch;
 import com.azure.resourcemanager.datatransfer.models.ResourceBody;
 import com.azure.resourcemanager.datatransfer.models.Schema;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowRequestBody;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -205,6 +210,24 @@ public final class PipelinesClientImpl implements PipelinesClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ResourceBody connection, Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/approveTransferFlow")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> approveTransferFlow(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TransferFlowRequestBody body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/approveTransferFlow")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> approveTransferFlowSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TransferFlowRequestBody body, Context context);
+
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/executeAction")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -243,6 +266,26 @@ public final class PipelinesClientImpl implements PipelinesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ConnectionIdList connections,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/listTransferFlows")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListTransferFlowsByPipelineResult>> listTransferFlows(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ListTransferFlowsByPipelineRequestBody body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/listTransferFlows")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ListTransferFlowsByPipelineResult> listTransferFlowsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ListTransferFlowsByPipelineRequestBody body, Context context);
+
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/listSchemas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -279,6 +322,24 @@ public final class PipelinesClientImpl implements PipelinesClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ResourceBody connection, Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/rejectTransferFlow")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> rejectTransferFlow(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TransferFlowRequestBody body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/rejectTransferFlow")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> rejectTransferFlowSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("pipelineName") String pipelineName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TransferFlowRequestBody body, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -308,6 +369,22 @@ public final class PipelinesClientImpl implements PipelinesClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<PipelineListResult> listBySubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListTransferFlowsByPipelineResult>> listTransferFlowsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ListTransferFlowsByPipelineResult> listTransferFlowsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -1265,6 +1342,184 @@ public final class PipelinesClientImpl implements PipelinesClient {
     }
 
     /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> approveTransferFlowWithResponseAsync(String resourceGroupName,
+        String pipelineName, TransferFlowRequestBody body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.approveTransferFlow(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> approveTransferFlowWithResponse(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.approveTransferFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> approveTransferFlowWithResponse(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.approveTransferFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, context);
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginApproveTransferFlowAsync(String resourceGroupName, String pipelineName, TransferFlowRequestBody body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = approveTransferFlowWithResponseAsync(resourceGroupName, pipelineName, body);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginApproveTransferFlow(String resourceGroupName, String pipelineName, TransferFlowRequestBody body) {
+        Response<BinaryData> response = approveTransferFlowWithResponse(resourceGroupName, pipelineName, body);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(response,
+            TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class, Context.NONE);
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginApproveTransferFlow(String resourceGroupName, String pipelineName, TransferFlowRequestBody body,
+            Context context) {
+        Response<BinaryData> response = approveTransferFlowWithResponse(resourceGroupName, pipelineName, body, context);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(response,
+            TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class, context);
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TransferFlowResponseBodyInner> approveTransferFlowAsync(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        return beginApproveTransferFlowAsync(resourceGroupName, pipelineName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferFlowResponseBodyInner approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        return beginApproveTransferFlow(resourceGroupName, pipelineName, body).getFinalResult();
+    }
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferFlowResponseBodyInner approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        return beginApproveTransferFlow(resourceGroupName, pipelineName, body, context).getFinalResult();
+    }
+
+    /**
      * Executes a privileged or administrative action on the specified Pipeline.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1508,6 +1763,171 @@ public final class PipelinesClientImpl implements PipelinesClient {
     public ListFlowsByPipelineResultInner list(String resourceGroupName, String pipelineName) {
         final ConnectionIdList connections = null;
         return listWithResponse(resourceGroupName, pipelineName, connections, Context.NONE).getValue();
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransferFlowSummaryInner>> listTransferFlowsSinglePageAsync(String resourceGroupName,
+        String pipelineName, ListTransferFlowsByPipelineRequestBody body) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listTransferFlows(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, pipelineName, accept, body, context))
+            .<PagedResponse<TransferFlowSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransferFlowSummaryInner> listTransferFlowsAsync(String resourceGroupName, String pipelineName,
+        ListTransferFlowsByPipelineRequestBody body) {
+        return new PagedFlux<>(() -> listTransferFlowsSinglePageAsync(resourceGroupName, pipelineName, body),
+            nextLink -> listTransferFlowsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransferFlowSummaryInner> listTransferFlowsAsync(String resourceGroupName, String pipelineName) {
+        final ListTransferFlowsByPipelineRequestBody body = null;
+        return new PagedFlux<>(() -> listTransferFlowsSinglePageAsync(resourceGroupName, pipelineName, body),
+            nextLink -> listTransferFlowsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TransferFlowSummaryInner> listTransferFlowsSinglePage(String resourceGroupName,
+        String pipelineName, ListTransferFlowsByPipelineRequestBody body) {
+        final String accept = "application/json";
+        Response<ListTransferFlowsByPipelineResult> res
+            = service.listTransferFlowsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, pipelineName, accept, body, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TransferFlowSummaryInner> listTransferFlowsSinglePage(String resourceGroupName,
+        String pipelineName, ListTransferFlowsByPipelineRequestBody body, Context context) {
+        final String accept = "application/json";
+        Response<ListTransferFlowsByPipelineResult> res
+            = service.listTransferFlowsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, pipelineName, accept, body, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransferFlowSummaryInner> listTransferFlows(String resourceGroupName, String pipelineName) {
+        final ListTransferFlowsByPipelineRequestBody body = null;
+        return new PagedIterable<>(() -> listTransferFlowsSinglePage(resourceGroupName, pipelineName, body),
+            nextLink -> listTransferFlowsNextSinglePage(nextLink));
+    }
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransferFlowSummaryInner> listTransferFlows(String resourceGroupName, String pipelineName,
+        ListTransferFlowsByPipelineRequestBody body, Context context) {
+        return new PagedIterable<>(() -> listTransferFlowsSinglePage(resourceGroupName, pipelineName, body, context),
+            nextLink -> listTransferFlowsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1769,6 +2189,183 @@ public final class PipelinesClientImpl implements PipelinesClient {
     }
 
     /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rejectTransferFlowWithResponseAsync(String resourceGroupName,
+        String pipelineName, TransferFlowRequestBody body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.rejectTransferFlow(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> rejectTransferFlowWithResponse(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.rejectTransferFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> rejectTransferFlowWithResponse(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.rejectTransferFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, body, context);
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginRejectTransferFlowAsync(String resourceGroupName, String pipelineName, TransferFlowRequestBody body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = rejectTransferFlowWithResponseAsync(resourceGroupName, pipelineName, body);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginRejectTransferFlow(String resourceGroupName, String pipelineName, TransferFlowRequestBody body) {
+        Response<BinaryData> response = rejectTransferFlowWithResponse(resourceGroupName, pipelineName, body);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(response,
+            TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class, Context.NONE);
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner> beginRejectTransferFlow(
+        String resourceGroupName, String pipelineName, TransferFlowRequestBody body, Context context) {
+        Response<BinaryData> response = rejectTransferFlowWithResponse(resourceGroupName, pipelineName, body, context);
+        return this.client.<TransferFlowResponseBodyInner, TransferFlowResponseBodyInner>getLroResult(response,
+            TransferFlowResponseBodyInner.class, TransferFlowResponseBodyInner.class, context);
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TransferFlowResponseBodyInner> rejectTransferFlowAsync(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        return beginRejectTransferFlowAsync(resourceGroupName, pipelineName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferFlowResponseBodyInner rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body) {
+        return beginRejectTransferFlow(resourceGroupName, pipelineName, body).getFinalResult();
+    }
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferFlowResponseBodyInner rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context) {
+        return beginRejectTransferFlow(resourceGroupName, pipelineName, body, context).getFinalResult();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1880,6 +2477,63 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String accept = "application/json";
         Response<PipelineListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransferFlowSummaryInner>> listTransferFlowsNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listTransferFlowsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TransferFlowSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TransferFlowSummaryInner> listTransferFlowsNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ListTransferFlowsByPipelineResult> res
+            = service.listTransferFlowsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TransferFlowSummaryInner> listTransferFlowsNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<ListTransferFlowsByPipelineResult> res
+            = service.listTransferFlowsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

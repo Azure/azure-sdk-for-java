@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ResourceBody;
  */
 public final class FlowsLinkSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/linkFlow.json
+     * x-ms-original-file: 2026-06-29-preview/linkFlow.json
      */
     /**
      * Sample code: Links the specified flow.

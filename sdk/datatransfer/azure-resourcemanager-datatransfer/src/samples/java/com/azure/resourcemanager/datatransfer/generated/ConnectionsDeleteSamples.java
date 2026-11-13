@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class ConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/deleteConnection.json
+     * x-ms-original-file: 2026-06-29-preview/deleteConnection.json
      */
     /**
      * Sample code: Deletes the connection resource.

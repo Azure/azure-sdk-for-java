@@ -13,16 +13,15 @@ public final class SetDestinationEndpointPortsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SetDestinationEndpointPorts model
-            = BinaryData.fromString("{\"ports\":[2795060636198959975,2464411057052311846]}")
-                .toObject(SetDestinationEndpointPorts.class);
-        Assertions.assertEquals(2795060636198959975L, model.ports().get(0));
+            = BinaryData.fromString("{\"ports\":[7335502586573474096]}").toObject(SetDestinationEndpointPorts.class);
+        Assertions.assertEquals(7335502586573474096L, model.ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SetDestinationEndpointPorts model
-            = new SetDestinationEndpointPorts().withPorts(Arrays.asList(2795060636198959975L, 2464411057052311846L));
+            = new SetDestinationEndpointPorts().withPorts(Arrays.asList(7335502586573474096L));
         model = BinaryData.fromObject(model).toObject(SetDestinationEndpointPorts.class);
-        Assertions.assertEquals(2795060636198959975L, model.ports().get(0));
+        Assertions.assertEquals(7335502586573474096L, model.ports().get(0));
     }
 }

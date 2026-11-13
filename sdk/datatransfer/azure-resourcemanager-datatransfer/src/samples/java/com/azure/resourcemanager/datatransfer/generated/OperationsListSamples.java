@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/listOperations.json
+     * x-ms-original-file: 2026-06-29-preview/listOperations.json
      */
     /**
      * Sample code: List operations.

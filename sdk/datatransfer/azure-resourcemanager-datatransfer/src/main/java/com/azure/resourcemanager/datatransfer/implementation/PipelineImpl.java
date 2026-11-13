@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.datatransfer.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
@@ -13,12 +14,16 @@ import com.azure.resourcemanager.datatransfer.models.Action;
 import com.azure.resourcemanager.datatransfer.models.Connection;
 import com.azure.resourcemanager.datatransfer.models.ConnectionIdList;
 import com.azure.resourcemanager.datatransfer.models.ListFlowsByPipelineResult;
+import com.azure.resourcemanager.datatransfer.models.ListTransferFlowsByPipelineRequestBody;
 import com.azure.resourcemanager.datatransfer.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.datatransfer.models.Pipeline;
 import com.azure.resourcemanager.datatransfer.models.PipelineProperties;
 import com.azure.resourcemanager.datatransfer.models.ResourceBody;
 import com.azure.resourcemanager.datatransfer.models.Schema;
 import com.azure.resourcemanager.datatransfer.models.SchemasListResult;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowRequestBody;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowResponseBody;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowSummary;
 import java.util.Collections;
 import java.util.Map;
 
@@ -166,6 +171,14 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
         return serviceManager.pipelines().approveConnection(resourceGroupName, pipelineName, connection, context);
     }
 
+    public TransferFlowResponseBody approveTransferFlow(TransferFlowRequestBody body) {
+        return serviceManager.pipelines().approveTransferFlow(resourceGroupName, pipelineName, body);
+    }
+
+    public TransferFlowResponseBody approveTransferFlow(TransferFlowRequestBody body, Context context) {
+        return serviceManager.pipelines().approveTransferFlow(resourceGroupName, pipelineName, body, context);
+    }
+
     public Pipeline executeAction(Action action) {
         return serviceManager.pipelines().executeAction(resourceGroupName, pipelineName, action);
     }
@@ -182,6 +195,15 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
         return serviceManager.pipelines().list(resourceGroupName, pipelineName);
     }
 
+    public PagedIterable<TransferFlowSummary> listTransferFlows() {
+        return serviceManager.pipelines().listTransferFlows(resourceGroupName, pipelineName);
+    }
+
+    public PagedIterable<TransferFlowSummary> listTransferFlows(ListTransferFlowsByPipelineRequestBody body,
+        Context context) {
+        return serviceManager.pipelines().listTransferFlows(resourceGroupName, pipelineName, body, context);
+    }
+
     public Response<SchemasListResult> listSchemasListWithResponse(Schema schema, Context context) {
         return serviceManager.pipelines().listSchemasListWithResponse(resourceGroupName, pipelineName, schema, context);
     }
@@ -196,6 +218,14 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
 
     public Connection rejectConnection(ResourceBody connection, Context context) {
         return serviceManager.pipelines().rejectConnection(resourceGroupName, pipelineName, connection, context);
+    }
+
+    public TransferFlowResponseBody rejectTransferFlow(TransferFlowRequestBody body) {
+        return serviceManager.pipelines().rejectTransferFlow(resourceGroupName, pipelineName, body);
+    }
+
+    public TransferFlowResponseBody rejectTransferFlow(TransferFlowRequestBody body, Context context) {
+        return serviceManager.pipelines().rejectTransferFlow(resourceGroupName, pipelineName, body, context);
     }
 
     public PipelineImpl withRegion(Region location) {
