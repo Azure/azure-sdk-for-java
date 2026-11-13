@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class WcfRelaysDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayDelete.json
      */
     /**
      * Sample code: RelayDelete.

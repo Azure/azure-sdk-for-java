@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class HybridConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridconnectionDelete.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridconnectionDelete.json
      */
     /**
      * Sample code: RelayHybridconnectionDelete.

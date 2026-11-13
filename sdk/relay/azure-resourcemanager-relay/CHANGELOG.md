@@ -1,14 +1,58 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-10-26)
+
+- Azure Resource Manager Relay client library for Java. This package contains Microsoft Azure SDK for Relay Management SDK. Use these API to manage Azure Relay resources through Azure Resource Manager. Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.AvailableRelayClustersList` was added
 
-### Bugs Fixed
+* `models.RelayClusterSkuInfo` was added
 
-### Other Changes
+* `models.RelayClusterSkuCapacity` was added
+
+* `models.RelayCluster$Definition` was added
+
+* `models.RelayNamespaceIdListResult` was added
+
+* `models.Clusters` was added
+
+* `models.RelayClusterSkuListResult` was added
+
+* `models.RelayClusterSku` was added
+
+* `models.RelayCluster$DefinitionStages` was added
+
+* `models.RelayClusterSkuTier` was added
+
+* `models.RelayCluster$UpdateStages` was added
+
+* `models.RelayClusterUpdate` was added
+
+* `models.AvailableRelayClusterRegion` was added
+
+* `models.RelayClusterSkuScaleType` was added
+
+* `models.RelayCluster` was added
+
+* `models.RelayClusterProperties` was added
+
+* `models.RelayClusterProvisioningState` was added
+
+* `models.RelayClusterSkuUpdate` was added
+
+* `models.RelayCluster$Update` was added
+
+* `models.RelayClusterSkuDetails` was added
+
+* `models.RelayNamespaceReference` was added
+
+* `models.RelayClusterSkuName` was added
+
+#### `RelayManager` was modified
+
+* `clusters()` was added
 
 ## 1.1.0 (2026-07-25)
 

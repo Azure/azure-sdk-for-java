@@ -28,7 +28,7 @@ public final class HybridConnectionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.hybridConnections()
-            .deleteWithResponse("yighxpk", "wzbaiue", "baumnyqupedeoj", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jriplrbpbewtghf", "blcg", "xzvlvqhjkbegib", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class WcfRelaysDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleDelete.json
      */
     /**
      * Sample code: RelayAuthorizationRuleDelete.

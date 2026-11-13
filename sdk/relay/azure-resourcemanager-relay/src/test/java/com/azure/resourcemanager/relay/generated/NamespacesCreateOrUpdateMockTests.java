@@ -33,7 +33,7 @@ public final class NamespacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"ormrlxqtvcofudfl\",\"createdAt\":\"2021-10-24T03:31:48Z\",\"updatedAt\":\"2021-04-04T17:02:59Z\",\"serviceBusEndpoint\":\"gdknnqv\",\"metricId\":\"znqntoru\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"location\":\"c\",\"id\":\"auwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"location\":\"q\",\"id\":\"fkifr\",\"name\":\"tpuqujmq\",\"type\":\"gkfbtndoaong\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"location\":\"i\",\"id\":\"jed\",\"name\":\"twwaezkojvdcpzf\",\"type\":\"qouicybxarzgsz\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"location\":\"opidoamciodh\",\"id\":\"azxkhnzbonlwnto\",\"name\":\"gokdwbwhks\",\"type\":\"zcmrvexztvb\"}],\"publicNetworkAccess\":\"Enabled\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"koowtl\",\"tags\":{\"wqaldsyu\":\"ux\",\"ykutwpf\":\"ximerqfobwyznk\",\"sd\":\"pagmhrskdsnf\",\"wpusdsttwvogv\":\"akgtdlmkkzevdlh\"},\"id\":\"bejdcn\",\"name\":\"qqmoaku\",\"type\":\"gm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"nhlmctlpdng\",\"createdAt\":\"2021-01-29T19:24:27Z\",\"updatedAt\":\"2021-02-05T15:31:44Z\",\"serviceBusEndpoint\":\"hrixkwmy\",\"metricId\":\"ejvegrhbpnaixex\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"location\":\"cexdrrvqa\",\"id\":\"kghtpwijnh\",\"name\":\"jsvfycxzbfvoowv\",\"type\":\"vmtgjqppy\"}],\"publicNetworkAccess\":\"Enabled\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"gfipnsxk\",\"tags\":{\"krrjrea\":\"a\",\"gumhjglikkxws\":\"xt\",\"vuzlm\":\"olbq\",\"lcrpw\":\"felfktg\"},\"id\":\"xeznoi\",\"name\":\"brnjwmw\",\"type\":\"pn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,30 +43,24 @@ public final class NamespacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RelayNamespace response = manager.namespaces()
-            .define("zrtuzq")
-            .withRegion("lewyhmlwpaz")
-            .withExistingResourceGroup("ayffim")
-            .withTags(mapOf("yq", "ofncckwyfzqwhxxb", "ztppriolxorjalto", "xzfe"))
+            .define("wygzlvdnkfxusem")
+            .withRegion("nrvgoupmfiibfgg")
+            .withExistingResourceGroup("cyajguqf")
+            .withTags(mapOf("kvtkkg", "olvrw"))
             .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD))
             .withPrivateEndpointConnections(Arrays.asList(
                 new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new ConnectionState())
-                    .withProvisioningState(EndPointProvisioningState.DELETING),
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new ConnectionState())
-                    .withProvisioningState(EndPointProvisioningState.SUCCEEDED),
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new ConnectionState())
-                    .withProvisioningState(EndPointProvisioningState.FAILED),
+                    .withProvisioningState(EndPointProvisioningState.UPDATING),
                 new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new ConnectionState())
                     .withProvisioningState(EndPointProvisioningState.UPDATING)))
-            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_THREE)
             .create();
 
-        Assertions.assertEquals("koowtl", response.location());
-        Assertions.assertEquals("ux", response.tags().get("wqaldsyu"));
+        Assertions.assertEquals("gfipnsxk", response.location());
+        Assertions.assertEquals("a", response.tags().get("krrjrea"));
         Assertions.assertEquals(SkuName.STANDARD, response.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
         Assertions.assertEquals(EndPointProvisioningState.DELETING,

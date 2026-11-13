@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class HybridConnectionsDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleDelete.

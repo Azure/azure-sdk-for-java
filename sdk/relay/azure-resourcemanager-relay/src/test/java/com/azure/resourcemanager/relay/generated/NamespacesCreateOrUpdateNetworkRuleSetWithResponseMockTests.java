@@ -27,7 +27,7 @@ public final class NamespacesCreateOrUpdateNetworkRuleSetWithResponseMockTests {
     @Test
     public void testCreateOrUpdateNetworkRuleSetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"trustedServiceAccessEnabled\":false,\"defaultAction\":\"Deny\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"ipRules\":[{\"ipMask\":\"l\",\"action\":\"Allow\"},{\"ipMask\":\"xagl\",\"action\":\"Allow\"}]},\"id\":\"jwosytxitcskfck\",\"name\":\"qumiek\",\"type\":\"ez\"}";
+            = "{\"properties\":{\"trustedServiceAccessEnabled\":false,\"defaultAction\":\"Allow\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"ipRules\":[{\"ipMask\":\"gzpfrla\",\"action\":\"Allow\"},{\"ipMask\":\"nwoiind\",\"action\":\"Allow\"}]},\"id\":\"jylwbtlhflsj\",\"name\":\"dhszfjv\",\"type\":\"bgofeljag\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,19 +38,19 @@ public final class NamespacesCreateOrUpdateNetworkRuleSetWithResponseMockTests {
 
         NetworkRuleSet response
             = manager.namespaces()
-                .createOrUpdateNetworkRuleSetWithResponse("fnjhfjxwmszkkfo", "rey",
+                .createOrUpdateNetworkRuleSetWithResponse("x", "smwutwbdsrezpd",
                     new NetworkRuleSetInner().withTrustedServiceAccessEnabled(false)
                         .withDefaultAction(DefaultAction.DENY)
                         .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
                         .withIpRules(Arrays
-                            .asList(new NWRuleSetIpRules().withIpMask("a").withAction(NetworkRuleIPAction.ALLOW))),
+                            .asList(new NWRuleSetIpRules().withIpMask("wyt").withAction(NetworkRuleIPAction.ALLOW))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertFalse(response.trustedServiceAccessEnabled());
-        Assertions.assertEquals(DefaultAction.DENY, response.defaultAction());
+        Assertions.assertEquals(DefaultAction.ALLOW, response.defaultAction());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, response.publicNetworkAccess());
-        Assertions.assertEquals("l", response.ipRules().get(0).ipMask());
+        Assertions.assertEquals("gzpfrla", response.ipRules().get(0).ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, response.ipRules().get(0).action());
     }
 }

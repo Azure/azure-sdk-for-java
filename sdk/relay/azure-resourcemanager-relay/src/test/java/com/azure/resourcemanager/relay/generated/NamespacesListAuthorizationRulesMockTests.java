@@ -23,7 +23,7 @@ public final class NamespacesListAuthorizationRulesMockTests {
     @Test
     public void testListAuthorizationRules() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"rights\":[\"Send\",\"Manage\",\"Send\",\"Listen\"]},\"location\":\"plvwiwubmwmbes\",\"id\":\"nkww\",\"name\":\"pp\",\"type\":\"flcxoga\"}]}";
+            = "{\"value\":[{\"properties\":{\"rights\":[\"Manage\",\"Send\",\"Send\",\"Manage\"]},\"location\":\"kniod\",\"id\":\"oebwnujhemms\",\"name\":\"vdkcrodtj\",\"type\":\"nfwjlfltkacjvefk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class NamespacesListAuthorizationRulesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AuthorizationRule> response
-            = manager.namespaces().listAuthorizationRules("tmweriofzpyq", "emwabnet", com.azure.core.util.Context.NONE);
+            = manager.namespaces().listAuthorizationRules("zwl", "nwxuqlcvydyp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AccessRights.SEND, response.iterator().next().rights().get(0));
+        Assertions.assertEquals(AccessRights.MANAGE, response.iterator().next().rights().get(0));
     }
 }

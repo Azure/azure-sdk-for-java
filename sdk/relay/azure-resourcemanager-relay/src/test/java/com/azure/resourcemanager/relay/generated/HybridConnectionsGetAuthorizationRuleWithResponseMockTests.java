@@ -22,7 +22,7 @@ public final class HybridConnectionsGetAuthorizationRuleWithResponseMockTests {
     @Test
     public void testGetAuthorizationRuleWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rights\":[\"Manage\",\"Manage\",\"Send\",\"Send\"]},\"location\":\"vahfn\",\"id\":\"kyqxjvuujqgidokg\",\"name\":\"ljyoxgvcltb\",\"type\":\"sncghkjeszz\"}";
+            = "{\"properties\":{\"rights\":[\"Manage\"]},\"location\":\"dhbt\",\"id\":\"phywpnvj\",\"name\":\"oqnermclfpl\",\"type\":\"hoxus\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class HybridConnectionsGetAuthorizationRuleWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationRule response = manager.hybridConnections()
-            .getAuthorizationRuleWithResponse("aetcktvfcivfs", "kymuctqhjfbebr", "cxerf", "wutttxfvjrbi",
+            .getAuthorizationRuleWithResponse("qsx", "nmic", "kvceoveilovnotyf", "fcnj",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
