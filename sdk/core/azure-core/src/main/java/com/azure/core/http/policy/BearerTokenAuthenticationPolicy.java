@@ -28,8 +28,8 @@ import java.util.Objects;
  * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
  *
  * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
- * requests are sent over HTTPS to prevent the token from being leaked. For each pipeline call, bearer authorization
- * and authentication challenges are limited to the host and port of the initial authorization request.</p>
+ * requests are sent over HTTPS to prevent the token from being leaked. When following redirects, bearer authorization
+ * and authentication challenges are limited to the origin of the request that began the redirect chain.</p>
  *
  * <p><strong>Code sample:</strong></p>
  *
@@ -55,7 +55,6 @@ import java.util.Objects;
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
-    private static final String AUTHORIZED_URL_CONTEXT_KEY = "azure-core-bearer-token-authorized-url";
 
     private final String[] scopes;
     private final AccessTokenCache cache;
@@ -202,10 +201,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private static boolean shouldSkipAuthorization(HttpPipelineCallContext context, URL requestUrl) {
-        URL authorizedUrl = (URL) context.getData(AUTHORIZED_URL_CONTEXT_KEY).orElse(null);
-        if (authorizedUrl == null) {
-            context.setData(AUTHORIZED_URL_CONTEXT_KEY, requestUrl);
-        } else if (!isSameOrigin(authorizedUrl, requestUrl)) {
+        URL redirectOrigin = (URL) context.getData(RedirectPolicy.REDIRECT_ORIGIN_CONTEXT_KEY).orElse(null);
+        if (redirectOrigin != null && !isSameOrigin(redirectOrigin, requestUrl)) {
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             return true;
         }

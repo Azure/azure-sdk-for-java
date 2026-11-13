@@ -11,8 +11,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -45,6 +47,8 @@ import java.util.Set;
  * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
+    static final String REDIRECT_ORIGIN_CONTEXT_KEY = "azure-core-redirect-origin";
+
     private final RedirectStrategy redirectStrategy;
 
     /**
@@ -89,8 +93,12 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         return next.clone().process().flatMap(httpResponse -> {
             if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+                URL sourceUrl = httpResponse.getRequest().getUrl();
                 HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
-                return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
+                return Mono.using(() -> setRedirectOrigin(context, sourceUrl),
+                    ignored -> attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1,
+                        attemptedRedirectUrls),
+                    previousOrigin -> context.setData(REDIRECT_ORIGIN_CONTEXT_KEY, previousOrigin.orElse(null)));
             } else {
                 return Mono.just(httpResponse);
             }
@@ -110,11 +118,24 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         HttpResponse httpResponse = next.clone().processSync();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+            URL sourceUrl = httpResponse.getRequest().getUrl();
             HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
-            return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
+            Optional<Object> previousOrigin = setRedirectOrigin(context, sourceUrl);
+            try {
+                return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1,
+                    attemptedRedirectUrls);
+            } finally {
+                context.setData(REDIRECT_ORIGIN_CONTEXT_KEY, previousOrigin.orElse(null));
+            }
         } else {
             return httpResponse;
         }
+    }
+
+    private static Optional<Object> setRedirectOrigin(HttpPipelineCallContext context, URL sourceUrl) {
+        Optional<Object> previousOrigin = context.getData(REDIRECT_ORIGIN_CONTEXT_KEY);
+        context.setData(REDIRECT_ORIGIN_CONTEXT_KEY, previousOrigin.orElse(sourceUrl));
+        return previousOrigin;
     }
 
     private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {

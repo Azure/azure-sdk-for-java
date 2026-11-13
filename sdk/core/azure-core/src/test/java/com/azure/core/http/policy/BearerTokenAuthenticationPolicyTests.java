@@ -48,6 +48,43 @@ public class BearerTokenAuthenticationPolicyTests {
         assertRedirectAuthentication("https://LOCALHOST:443/final", true, true);
     }
 
+    @SyncAsyncTest
+    public void configuredSecondaryHostRetryAuthenticates() {
+        String secondaryUrl = "https://secondary.example.com/resource";
+        AtomicInteger credentialCalls = new AtomicInteger();
+        AtomicInteger requests = new AtomicInteger();
+        TokenCredential credential = getCaeTokenCredential(new AtomicReference<>(), credentialCalls);
+        HttpPipelinePolicy secondaryRetry = (context, next) -> {
+            HttpRequest originalRequest = context.getHttpRequest().copy();
+            return next.clone().process().flatMap(response -> {
+                if (response.getStatusCode() != 503) {
+                    return Mono.just(response);
+                }
+                response.close();
+                context.setHttpRequest(originalRequest.setUrl(secondaryUrl));
+                return next.process();
+            });
+        };
+        HttpClient client = request -> {
+            assertEquals("Bearer token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            if (requests.incrementAndGet() == 1) {
+                return Mono.just(new MockHttpResponse(request, 503));
+            }
+            assertEquals(secondaryUrl, request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
+            .policies(secondaryRetry, new BearerTokenAuthenticationPolicy(credential, "scope"))
+            .build();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://primary.example.com/resource");
+        try (HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+            () -> pipeline.send(request))) {
+            assertEquals(200, response.getStatusCode());
+        }
+        assertEquals(2, requests.get());
+        assertEquals(1, credentialCalls.get());
+    }
+
     private static void assertRedirectAuthentication(String redirectUrl, boolean authAfterRedirect,
         boolean expectAuthorization) {
         AtomicInteger credentialCalls = new AtomicInteger();
