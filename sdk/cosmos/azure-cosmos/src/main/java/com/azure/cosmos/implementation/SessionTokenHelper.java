@@ -152,17 +152,10 @@ public class SessionTokenHelper {
         }
     }
 
-    // Selects target/parent progress without consulting ambient state or unrelated ranges.
+    // Selects a unique exact-range token. Missing or duplicate matches cannot be scoped.
     public static ISessionToken scopeCompoundSessionToken(String originalToken, PartitionKeyRange target) {
-        Set<String> rangeIds = new HashSet<>();
-        if (target != null) {
-            rangeIds.add(target.getId());
-            if (target.getParents() != null) {
-                rangeIds.addAll(target.getParents());
-            }
-        }
-
         ISessionToken selected = null;
+        boolean duplicateMatch = false;
         for (String segment : StringUtils.split(originalToken, ",")) {
             String[] items = StringUtils.split(segment, ":");
             if (items.length != 2) {
@@ -171,12 +164,16 @@ public class SessionTokenHelper {
             }
 
             ISessionToken parsed = SessionTokenHelper.parse(items[1]);
-            if (rangeIds.contains(items[0])) {
-                selected = selected == null ? parsed : selected.merge(parsed);
+            if (target != null && items[0].equals(target.getId())) {
+                if (selected == null) {
+                    selected = parsed;
+                } else {
+                    duplicateMatch = true;
+                }
             }
         }
 
-        return selected;
+        return duplicateMatch ? null : selected;
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,

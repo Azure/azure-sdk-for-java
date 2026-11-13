@@ -24,17 +24,19 @@ public class SessionTokenHelperTests {
         return new Object[][] {
             {"0:1#10#1=10,1:1#20#1=20", null, "1#20#1=20"},
             {"1:1#20#1=20", Collections.emptyList(), "1#20#1=20"},
-            {"0:1#10#1=10", Collections.singletonList("0"), "1#10#1=10"},
+            {"0:1#10#1=10", Collections.singletonList("0"), null},
             {"0:1#10#1=10,1:1#20#1=20", Collections.singletonList("0"), "1#20#1=20"},
-            {"1:1#20#1=20,1:1#30#1=30", null, "1#30#1=30"},
-            {"0:1#100#1=10#2=20,2:1#120#1=15#2=10", Arrays.asList("0", "2"), "1#120#1=15#2=20"},
+            {"0:1#100#1=100#2=100,1:1#20#1=20", Collections.singletonList("0"), "1#20#1=20"},
+            {"1:1#20#1=20,0:2#100#2=100", Collections.singletonList("0"), "1#20#1=20"},
+            {"0:1#100#1=10#2=20,2:1#120#1=15#2=10", Arrays.asList("0", "2"), null},
             {"9:1#999#1=999,1:1#20#1=20", null, "1#20#1=20"},
+            {"9:1#999#1=999,9:1#998#2=998,1:1#20#1=20", null, "1#20#1=20"},
             {"0:1#10#1=10,2:1#20#1=20", null, null}
         };
     }
 
     @Test(groups = "unit", dataProvider = "explicitTokenSelections")
-    public void selectsExplicitTargetAndParentProgress(String compoundToken, List<String> parents, String expected) {
+    public void selectsOnlyUniqueExactTargetProgress(String compoundToken, List<String> parents, String expected) {
         PartitionKeyRange target = new PartitionKeyRange("1", "", "FF", parents);
         ISessionToken selected = SessionTokenHelper.scopeCompoundSessionToken(compoundToken, target);
 
@@ -52,7 +54,8 @@ public class SessionTokenHelperTests {
             {"1:1#20#1=20,malformed"},
             {"9:not-a-vector,1:1#20#1=20"},
             {"1:1#20#1=20,9:not-a-vector"},
-            {"1:1#20#1=20:extra"}
+            {"1:1#20#1=20:extra"},
+            {"1:1#20#1=20,1:1#30#1=30,9:not-a-vector"}
         };
     }
 
@@ -63,14 +66,21 @@ public class SessionTokenHelperTests {
             .isInstanceOf(RuntimeException.class);
     }
 
-    @Test(groups = "unit")
-    public void propagatesIncompatibleRegionProgress() {
-        assertThatThrownBy(() -> SessionTokenHelper.scopeCompoundSessionToken(
-            "1:1#20#1=20,1:1#30#2=30", new PartitionKeyRange("1", "", "FF")))
-            .isInstanceOfSatisfying(CosmosException.class, error -> {
-                assertThat(error.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-                assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
-            });
+    @DataProvider
+    public Object[][] duplicateTargetProgress() {
+        return new Object[][] {
+            {"1:1#20#1=20,1:1#20#1=20"},
+            {"1:1#20#1=20,1:1#30#1=30"},
+            {"1:1#20#1=20,1:1#30#2=30"},
+            {"1:1#20#1=20,1:1#30#1=30#2=30"},
+            {"1:1#20#1=20,1:2#30#2=30,1:3#40#3=40"}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "duplicateTargetProgress")
+    public void duplicateExactMatchesCannotBeScoped(String token) {
+        assertThat(SessionTokenHelper.scopeCompoundSessionToken(
+            token, new PartitionKeyRange("1", "", "FF"))).isNull();
     }
 
     @Test(groups = "unit")
@@ -89,12 +99,11 @@ public class SessionTokenHelperTests {
     }
 
     @Test(groups = "unit")
-    public void compoundScopingIgnoresUnrelatedProgressWhenParentMatches() {
+    public void compoundScopingDoesNotInheritParentProgress() {
         PartitionKeyRange target = new PartitionKeyRange("1", "", "FF", Collections.singletonList("0"));
 
         assertThat(SessionTokenHelper.scopeCompoundSessionToken(
-            "0:1#10#1=10,2:1#999#1=999", target))
-            .isEqualTo(SessionTokenHelper.parse("1#10#1=10"));
+            "0:1#10#1=10,2:1#999#1=999", target)).isNull();
     }
 
     @Test(groups = "unit")

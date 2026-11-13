@@ -262,7 +262,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 String collectionRid = collection.v.getResourceId();
                 PartitionKeyDefinition definition = collection.v.getPartitionKey();
                 request.setPartitionKeyDefinition(definition);
-                return getPartitionKeyRangeCache().tryLookupAsync(diagnostics, collectionRid, null, request.properties)
+                return getPartitionKeyRangeCache().tryLookupAsync(
+                    diagnostics, collectionRid, null, false, request.properties)
                     .flatMap(cached -> {
                         if (cached.v == null) {
                             return Mono.error(new CollectionRoutingMapNotFoundException(
@@ -275,9 +276,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             return Mono.empty();
                         }
 
-                        // Passing the previous map forces refresh unless a newer map is already cached.
                         return getPartitionKeyRangeCache().tryLookupAsync(
-                            diagnostics, collectionRid, cached.v, request.properties)
+                            diagnostics, collectionRid, cached.v, true, request.properties)
                             .doOnNext(refreshed -> {
                                 if (refreshed.v == null) {
                                     throw new CollectionRoutingMapNotFoundException(

@@ -30,6 +30,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
@@ -104,8 +105,13 @@ public class ThinClientRangeHeadersTest {
         }
     }
 
-    @Test(groups = "unit")
-    public void narrowedRangeTakesPrecedenceOverHierarchicalPrefixPointRouting() throws Exception {
+    @DataProvider
+    public Object[][] hierarchicalSessionTokens() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "hierarchicalSessionTokens")
+    public void narrowedRangeTakesPrecedenceOverHierarchicalPrefixPointRouting(boolean compound) throws Exception {
         RxDocumentServiceRequest request = createRequest(OperationType.Query, "", "FF");
         PartitionKeyDefinition definition = new PartitionKeyDefinition();
         definition.setKind(PartitionKind.MULTI_HASH);
@@ -115,14 +121,48 @@ public class ThinClientRangeHeadersTest {
         request.getHeaders().put(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE, "effectivepartitionkeyrange");
         request.getHeaders().put(HttpConstants.HttpHeaders.START_EPK, "05C1D8");
         request.getHeaders().put(HttpConstants.HttpHeaders.END_EPK, "05C1DC");
+        request.setContentBytes("{\"query\":\"SELECT * FROM c\"}".getBytes(StandardCharsets.UTF_8));
+        String originalToken = "0:1#10#1=10,1:1#20#1=20";
+        if (compound) {
+            request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("1", "", "FF");
+            request.requestContext.sessionToken = SessionTokenHelper.parse("1#20#1=20");
+            request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, originalToken);
+        }
 
-        Map<Short, byte[]> tokens = serialize(createModel(), request);
+        ThinClientStoreModel model = createModel();
+        Map<Short, byte[]> tokens = serialize(model, request);
         assertThat(tokens).doesNotContainKey(RntbdRequestHeader.EffectivePartitionKey.id());
         assertThat(tokens.get(RntbdRequestHeader.StartEpkHash.id())).containsExactly(HexConvert.hexToBytes("05C1D8"));
         assertThat(tokens.get(RntbdRequestHeader.EndEpkHash.id())).containsExactly(HexConvert.hexToBytes("05C1DC"));
         assertThat(tokens.get(RntbdRequestHeader.StartEpk.id())).containsExactly("05C1D8".getBytes(StandardCharsets.UTF_8));
         assertThat(tokens.get(RntbdRequestHeader.EndEpk.id())).containsExactly("05C1DC".getBytes(StandardCharsets.UTF_8));
         assertThat(tokens.get(RntbdRequestHeader.ReadFeedKeyType.id())).containsExactly((byte) 3);
+        if (compound) {
+            assertThat(tokens.get(RntbdRequestHeader.SessionToken.id()))
+                .containsExactly("1:1#20#1=20".getBytes(StandardCharsets.UTF_8));
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
+            byte[] body = model.wrapInHttpRequest(request, new URI("https://localhost:10250")).body().single().block();
+            ByteBuf buffer = Unpooled.wrappedBuffer(body);
+            try {
+                buffer.writerIndex(buffer.getIntLE(0));
+                RntbdRequest decoded = RntbdRequest.decode(buffer);
+                assertThat(decoded.<String>getHeader(RntbdRequestHeader.SessionToken)).isEqualTo("1:1#20#1=20");
+                ByteBuf start = decoded.getHeader(RntbdRequestHeader.StartEpkHash);
+                try {
+                    assertThat(ByteBufUtil.getBytes(start)).containsExactly(HexConvert.hexToBytes("05C1D8"));
+                } finally {
+                    start.release();
+                }
+                ByteBuf end = decoded.getHeader(RntbdRequestHeader.EndEpkHash);
+                try {
+                    assertThat(ByteBufUtil.getBytes(end)).containsExactly(HexConvert.hexToBytes("05C1DC"));
+                } finally {
+                    end.release();
+                }
+            } finally {
+                buffer.release();
+            }
+        }
     }
 
     @Test(groups = "unit")
@@ -135,17 +175,20 @@ public class ThinClientRangeHeadersTest {
     @DataProvider
     public Object[][] compoundSessionTokenTopologies() {
         return new Object[][] {
-            {true, false, "0:1#10#1=10,1:1#20#1=20", "0", null},
-            {true, false, "0:1#10#1=10,9:1#20#1=20", "0", null},
-            {true, false, "0:1#10#1=10,9:1#20#1=20", "1", "0"},
-            {false, true, "1:1#10#1=10,2:1#20#1=20", "1", "0"},
-            {false, false, "0:1#10#1=10,1:1#20#1=20", "0", null}
+            {true, false, "0:1#10#1=10,1:1#20#1=20", "0", null, true},
+            {true, false, "0:1#10#1=10,9:1#20#1=20", "0", null, true},
+            {true, false, "0:1#999#1=999#2=999,1:1#10#1=10", "1", "0", true},
+            {false, true, "1:1#10#1=10,2:1#20#1=20", "1", "0", true},
+            {false, false, "0:1#10#1=10,1:1#20#1=20", "0", null, false},
+            {true, false, "0:1#10#1=10,9:1#20#1=20", "1", "0", false},
+            {true, false, "0:1#10#1=10,0:1#20#2=20", "0", null, false}
         };
     }
 
     @Test(groups = "unit", dataProvider = "compoundSessionTokenTopologies")
     public void scopesCompoundSessionTokenWithAtMostOneRefresh(
-        boolean cachedMatch, boolean refreshedMatch, String originalToken, String targetId, String parentId)
+        boolean cachedMatch, boolean refreshedMatch, String originalToken, String targetId, String parentId,
+        boolean expectToken)
         throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.when(httpClient.send(Mockito.any(), Mockito.any())).thenReturn(Mono.empty());
@@ -176,6 +219,8 @@ public class ThinClientRangeHeadersTest {
         if (cachedMatch) {
             Mockito.when(cached.getRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
             Mockito.when(cached.tryGetRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
+            Mockito.when(refreshed.getRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
+            Mockito.when(refreshed.tryGetRangeByPartitionKeyRangeId(targetId)).thenReturn(target);
         }
         if (refreshedMatch) {
             PartitionKeyRange staleParent = new PartitionKeyRange(parentId, "", "FF");
@@ -186,30 +231,34 @@ public class ThinClientRangeHeadersTest {
         }
         RxPartitionKeyRangeCache rangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
         Mockito.when(rangeCache.tryLookupAsync(
-            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.any()))
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.eq(false), Mockito.any()))
             .thenReturn(Mono.just(new Utils.ValueHolder<>(cached)));
         Mockito.when(rangeCache.tryLookupAsync(
-            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.any()))
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.eq(true), Mockito.any()))
             .thenReturn(Mono.just(new Utils.ValueHolder<>(refreshed)));
         model.setPartitionKeyRangeCache(rangeCache);
 
         model.performRequestInternal(request, new URI("https://localhost:10250")).block();
 
         Mockito.verify(httpClient).send(Mockito.any(), Mockito.any());
-        Mockito.verify(rangeCache, Mockito.times(cachedMatch ? 0 : 1)).tryLookupAsync(
-            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.any());
+        Mockito.verify(rangeCache, Mockito.times(cachedMatch && expectToken ? 0 : 1)).tryLookupAsync(
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.eq(cached), Mockito.eq(true), Mockito.any());
         Mockito.verify(rangeCache).tryLookupAsync(
-            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.any());
+            Mockito.any(), Mockito.eq(collection.getResourceId()), Mockito.isNull(), Mockito.eq(false), Mockito.any());
         Mockito.verifyNoMoreInteractions(rangeCache);
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
-        if (cachedMatch || refreshedMatch) {
+        if (expectToken) {
             assertThat(request.requestContext.resolvedPartitionKeyRange).isSameAs(target);
             assertThat(request.requestContext.sessionToken).isEqualTo(SessionTokenHelper.parse("1#10#1=10"));
             assertThat(request.requestContext.getSessionTokenEvaluationResults()).isEmpty();
             assertThat(serialize(model, request).get(RntbdRequestHeader.SessionToken.id()))
                 .containsExactly((targetId + ":1#10#1=10").getBytes(StandardCharsets.UTF_8));
         } else {
-            assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
+            if (cachedMatch) {
+                assertThat(request.requestContext.resolvedPartitionKeyRange).isSameAs(target);
+            } else {
+                assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
+            }
             assertThat(request.requestContext.sessionToken).isNull();
             assertThat(request.requestContext.getSessionTokenEvaluationResults()).hasSize(1);
             assertThat(serialize(model, request)).doesNotContainKey(RntbdRequestHeader.SessionToken.id());

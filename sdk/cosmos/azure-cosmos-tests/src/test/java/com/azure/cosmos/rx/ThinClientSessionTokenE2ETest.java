@@ -21,9 +21,20 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.SessionTokenHelper;
+import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -32,6 +43,10 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -42,6 +57,10 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
+import org.mockito.Mockito;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -49,13 +68,17 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -167,6 +190,88 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 180000)
+    public void crossPartitionQueryScopesEachTransportRequestToOneOfTwoPhysicalRanges() throws Exception {
+        assertThat(tokens).as("The fixture must contain progress from exactly two physical partitions").hasSize(2);
+        try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
+            awaitThinClientProbe(reader);
+            CosmosAsyncContainer container = reader.getDatabase(databaseId).getContainer("items");
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setSessionToken(compoundToken)
+                .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
+
+            assertQueryTransportScopes(reader, container, tokens, options,
+                items.stream().map(item -> item.get("id").asText()).collect(Collectors.toList()), 2);
+        }
+    }
+
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 300000)
+    public void hierarchicalPrefixQueryScopesCompoundProgressWithoutWideningItsEpkRange() throws Exception {
+        Map<String, ISessionToken> hierarchicalTokens = new LinkedHashMap<>();
+        List<String> expectedIds = new ArrayList<>();
+        try (CosmosAsyncClient writer = builder.buildAsyncClient()) {
+            awaitThinClientProbe(writer);
+            PartitionKeyDefinition definition = new PartitionKeyDefinition();
+            definition.setKind(PartitionKind.MULTI_HASH);
+            definition.setVersion(PartitionKeyDefinitionVersion.V2);
+            definition.setPaths(Arrays.asList("/tenantId", "/userId"));
+            CosmosAsyncContainer container = TestSuiteBase.createCollection(writer.getDatabase(databaseId),
+                new CosmosContainerProperties("hpk-items", definition), new CosmosContainerRequestOptions(), 10100);
+            assertThat(container.getFeedRanges().block(WAIT)).hasSize(2);
+            for (int tenant = 0; tenant < 16; tenant++) {
+                for (int user = 0; user < 3; user++) {
+                    String id = "tenant-" + tenant + "-user-" + user;
+                    ObjectNode item = MAPPER.createObjectNode().put("id", id)
+                        .put("tenantId", "tenant-" + tenant).put("userId", "user-" + user);
+                    CosmosItemResponse<ObjectNode> created = container.createItem(item).block(WAIT);
+                    TestSuiteBase.assertThinClientEndpointUsed(created.getDiagnostics());
+                    String[] parts = created.getSessionToken().split(":", 2);
+                    hierarchicalTokens.merge(parts[0], SessionTokenHelper.parse(parts[1]), ISessionToken::merge);
+                    if (tenant == 0) {
+                        expectedIds.add(id);
+                    }
+                }
+            }
+        }
+        assertThat(hierarchicalTokens).as("Seed HPK documents in both physical partitions").hasSize(2);
+        String originalToken = combine(hierarchicalTokens);
+        try (CosmosAsyncClient reader = builder.buildAsyncClient()) {
+            awaitThinClientProbe(reader);
+            CosmosAsyncContainer container = reader.getDatabase(databaseId).getContainer("hpk-items");
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setSessionToken(originalToken)
+                .setPartitionKey(new PartitionKeyBuilder().add("tenant-0").build())
+                .setCosmosEndToEndOperationLatencyPolicyConfig(policy(false));
+
+            assertQueryTransportScopes(reader, container, hierarchicalTokens, options, expectedIds, 1);
+        }
+    }
+
+    private static void assertQueryTransportScopes(
+        CosmosAsyncClient reader, CosmosAsyncContainer container, Map<String, ISessionToken> progress,
+        CosmosQueryRequestOptions options, List<String> expectedIds, int expectedRangeCount) throws Exception {
+
+        RxDocumentClientImpl client = (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(reader);
+        String collectionRid = container.read().block(WAIT).getProperties().getResourceId();
+        CollectionRoutingMap topology = client.getPartitionKeyRangeCache()
+            .tryLookupAsync(null, collectionRid, null, null).block(WAIT).v;
+        assertThat(topology.getOrderedPartitionKeyRanges()).hasSize(2);
+        String originalToken = options.getSessionToken();
+        try (QueryScopeRecorder recorder = new QueryScopeRecorder(client, topology, progress, originalToken)) {
+            List<FeedResponse<ObjectNode>> pages = container.queryItems("SELECT * FROM c", options, ObjectNode.class)
+                .byPage(2).collectList().block(WAIT);
+            List<String> actualIds = new ArrayList<>();
+            for (FeedResponse<ObjectNode> page : pages) {
+                TestSuiteBase.assertThinClientEndpointUsed(page.getCosmosDiagnostics());
+                assertThat(page.getCosmosDiagnostics().toString()).doesNotContain("could not be evaluated");
+                page.getResults().forEach(item -> actualIds.add(item.get("id").asText()));
+            }
+            assertThat(actualIds).containsExactlyInAnyOrderElementsOf(expectedIds);
+            assertThat(recorder.rangeIds).as("Distinct physical targets entering ThinClientStoreModel")
+                .hasSize(expectedRangeCount);
+            assertThat(recorder.wireRangeIds).containsExactlyInAnyOrderElementsOf(recorder.rangeIds);
+            assertThat(options.getSessionToken()).isEqualTo(originalToken);
+        }
+    }
+
     @DataProvider
     public Object[][] targetProgress() {
         return new Object[][] {{true, false}, {false, false}, {true, true}, {false, true}};
@@ -196,9 +301,11 @@ public class ThinClientSessionTokenE2ETest {
                 .block(WAIT);
             assertThat(response.getItem().get("version")).isEqualTo(item.get("version"));
             TestSuiteBase.assertThinClientEndpointUsed(response.getDiagnostics());
-            if (unknownRange || !includeTargetProgress) {
+            if (!includeTargetProgress) {
                 assertThat(response.getDiagnostics().toString())
                     .contains("could not be evaluated");
+            } else {
+                assertThat(response.getDiagnostics().toString()).doesNotContain("could not be evaluated");
             }
             assertThat(options.getSessionToken()).isEqualTo(original);
         }
@@ -281,13 +388,18 @@ public class ThinClientSessionTokenE2ETest {
         }
     }
 
-    @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, alwaysRun = true, timeOut = 120000)
+    @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, alwaysRun = true, timeOut = 240000)
     public void cleanup() {
         if (databaseId != null) {
             try (CosmosAsyncClient cleanupClient = builder.buildAsyncClient()) {
                 CosmosAsyncDatabase database = cleanupClient.getDatabase(databaseId);
                 TestSuiteBase.safeDeleteDatabase(database);
-                assertThatThrownBy(() -> database.read().block(WAIT))
+                assertThatThrownBy(() -> database.read()
+                    .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(2))
+                        .filter(error -> error instanceof CosmosException
+                            && ((CosmosException) error).getStatusCode() == 429)
+                        .onRetryExhaustedThrow((spec, signal) -> signal.failure()))
+                    .block(Duration.ofSeconds(120)))
                     .isInstanceOfSatisfying(CosmosException.class, error ->
                         assertThat(error.getStatusCode()).isEqualTo(404));
             }
@@ -316,5 +428,85 @@ public class ThinClientSessionTokenE2ETest {
     private static String combine(Map<String, ISessionToken> progress) {
         return progress.entrySet().stream().map(entry -> entry.getKey() + ":" + entry.getValue().convertToString())
             .collect(Collectors.joining(","));
+    }
+
+    private static final class QueryScopeRecorder implements AutoCloseable {
+        private final RxDocumentClientImpl client;
+        private final RxStoreModel original;
+        private final Set<String> rangeIds = ConcurrentHashMap.newKeySet();
+        private final Set<String> wireRangeIds = ConcurrentHashMap.newKeySet();
+
+        private QueryScopeRecorder(
+            RxDocumentClientImpl client, CollectionRoutingMap topology,
+            Map<String, ISessionToken> progress, String originalToken) throws Exception {
+
+            this.client = client;
+            this.original = ReflectionUtils.getThinProxy(client);
+            assertThat(original).isInstanceOf(ThinClientStoreModel.class);
+            ThinClientStoreModel transport = Mockito.spy((ThinClientStoreModel) original);
+            Mockito.doAnswer(invocation -> {
+                RxDocumentServiceRequest request = invocation.getArgument(0);
+                if (isDocumentQuery(request)) {
+                    assertThat(request.getEffectiveRange()).as("Each query attempt must have an EPK scope").isNotNull();
+                    List<PartitionKeyRange> ranges = topology.getOverlappingRanges(request.getEffectiveRange());
+                    assertThat(ranges).as("A data query entering the transport must overlap exactly one physical range")
+                        .hasSize(1);
+                    assertThat(request.getPartitionKeyRangeIdentity()).isNotNull();
+                    String rangeId = request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId();
+                    assertThat(rangeId).isEqualTo(ranges.get(0).getId());
+                    assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
+                    rangeIds.add(rangeId);
+                }
+                return invocation.callRealMethod();
+            }).when(transport).performRequestInternal(Mockito.any(), Mockito.any());
+            Mockito.doAnswer(invocation -> {
+                RxDocumentServiceRequest request = invocation.getArgument(0);
+                HttpRequest wireRequest = (HttpRequest) invocation.callRealMethod();
+                if (!isDocumentQuery(request)) {
+                    return wireRequest;
+                }
+                String rangeId = request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId();
+                assertThat(request.requestContext.resolvedPartitionKeyRange.getId()).isEqualTo(rangeId);
+                assertThat(progress).containsKey(rangeId);
+                assertThat(request.requestContext.sessionToken).isEqualTo(progress.get(rangeId));
+                String expectedToken = rangeId + ":" + progress.get(rangeId).convertToString();
+                return wireRequest.withBody(wireRequest.body().doOnNext(body -> {
+                    ByteBuf buffer = Unpooled.wrappedBuffer(body);
+                    try {
+                        buffer.writerIndex(buffer.getIntLE(0));
+                        RntbdRequest decoded = RntbdRequest.decode(buffer);
+                        assertThat(decoded.<String>getHeader(RntbdRequestHeader.SessionToken)).isEqualTo(expectedToken);
+                        ByteBuf start = decoded.getHeader(RntbdRequestHeader.StartEpkHash);
+                        try {
+                            assertThat(ByteBufUtil.getBytes(start))
+                                .containsExactly(HexConvert.hexToBytes(request.getEffectiveRange().getMin()));
+                        } finally {
+                            start.release();
+                        }
+                        ByteBuf end = decoded.getHeader(RntbdRequestHeader.EndEpkHash);
+                        try {
+                            assertThat(ByteBufUtil.getBytes(end))
+                                .containsExactly(HexConvert.hexToBytes(request.getEffectiveRange().getMax()));
+                        } finally {
+                            end.release();
+                        }
+                        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(originalToken);
+                        wireRangeIds.add(rangeId);
+                    } finally {
+                        buffer.release();
+                    }
+                }));
+            }).when(transport).wrapInHttpRequest(Mockito.any(), Mockito.any());
+            ReflectionUtils.setThinProxy(client, transport);
+        }
+
+        private static boolean isDocumentQuery(RxDocumentServiceRequest request) {
+            return request.getOperationType() == OperationType.Query && request.getResourceType() == ResourceType.Document;
+        }
+
+        @Override
+        public void close() {
+            ReflectionUtils.setThinProxy(client, original);
+        }
     }
 }
