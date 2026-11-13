@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class DetachTrafficFilterUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/DetachTrafficFilters_Update.json
+     * x-ms-original-file: 2026-03-15-preview/DetachTrafficFilters_Update.json
      */
     /**
      * Sample code: DetachTrafficFilter_Update.
