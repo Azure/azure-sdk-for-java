@@ -18,6 +18,8 @@
 
 ### Bugs Fixed
 
+- Fixed an exception when cancelling session acquisition on a Reactor non-blocking thread by closing the receive link asynchronously. ([#51213](https://github.com/Azure/azure-sdk-for-java/issues/51213))
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.

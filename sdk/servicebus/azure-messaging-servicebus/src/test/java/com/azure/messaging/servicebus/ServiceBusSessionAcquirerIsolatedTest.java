@@ -24,7 +24,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.PublisherProbe;
 import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.io.IOException;
@@ -111,12 +113,14 @@ public class ServiceBusSessionAcquirerIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldClientSideTimeoutAndDisposeLinkWhenAcquireHangsIfRetryDisabled() {
+    public void shouldClientSideTimeoutAndCloseLinkWhenAcquireHangsIfRetryDisabled() {
         // A receive link whose getSessionProperties() never emits simulates a hung acquire where the
         // broker accepts the link but never sends its detach. Without a client-side guard this would
         // block the caller for the full operation timeout (issue #49093).
         final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
         when(hungLink.getSessionProperties()).thenReturn(Mono.never());
+        final PublisherProbe<Void> closeProbe = PublisherProbe.empty();
+        when(hungLink.closeAsync()).thenReturn(closeProbe.mono());
         final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(1);
         sessionLinks.add(Mono.just(hungLink));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
@@ -131,8 +135,27 @@ public class ServiceBusSessionAcquirerIsolatedTest {
             });
         }
         Assertions.assertEquals(0, onCreateSessionLink.pending());
-        // The half-open link must be disposed when the client-side guard cancels the acquire.
-        Mockito.verify(hungLink).dispose();
+        closeProbe.assertWasSubscribed();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldCloseLinkAsynchronouslyWhenCancelledOnParallelScheduler() {
+        final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
+        when(hungLink.getSessionProperties()).thenReturn(Mono.never());
+        final PublisherProbe<Void> closeProbe = PublisherProbe.empty();
+        when(hungLink.closeAsync()).thenReturn(closeProbe.mono());
+        final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(1);
+        sessionLinks.add(Mono.just(hungLink));
+        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(new OnCreateSessionLink(sessionLinks));
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, false);
+
+        Mono.fromRunnable(() -> sessionAcquirer.acquire().subscribe().dispose())
+            .subscribeOn(Schedulers.parallel())
+            .block(AWAIT_DURATION);
+
+        closeProbe.assertWasSubscribed();
+        Mockito.verify(hungLink, Mockito.never()).dispose();
     }
 
     @Test

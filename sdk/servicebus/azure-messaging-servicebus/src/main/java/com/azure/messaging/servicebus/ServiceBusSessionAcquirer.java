@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -39,8 +40,8 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
  * On this non-retry path the acquirer bounds a single acquire attempt with a client-side guard set to twice the
  * broker try-timeout, so the broker's own timeout usually triggers first (and its error propagates), while a hung
  * acquire where the broker never responds still fails in bounded time instead of blocking the caller for the full
- * operation timeout. If this client-side guard expires, the acquirer disposes the half-open receive link so the
- * broker-side session lock (if any) is released rather than left orphaned. See
+ * operation timeout. If this client-side guard expires, the acquirer closes the half-open receive link asynchronously
+ * so the broker-side session lock (if any) is released. See
  * <a href="https://github.com/Azure/azure-sdk-for-java/issues/49093">issue 49093</a>.
  * For ServiceBusSessionReceiverClient, if the library retries session-acquire on broker timeout, the client-side sync
  * timeout might expire while waiting. When client-side timeout expires like this, library cannot cancel the outstanding
@@ -204,13 +205,13 @@ final class ServiceBusSessionAcquirer {
                     .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)))
                     // If the caller abandons the acquire before a session is established (e.g., the
                     // client-side timeout guard on the sync path, or a try-timeout on the retry path,
-                    // cancels the subscription), dispose the half-open receive link so it isn't leaked
+                    // cancels the subscription), close the half-open receive link so it isn't leaked
                     // and any broker-side session lock is released. On success the link ownership
-                    // transfers to the Session, so dispose only on cancellation.
+                    // transfers to the Session. Cancellation can run on a non-blocking scheduler.
                     // https://github.com/Azure/azure-sdk-for-java/issues/49093
                     .doFinally(signalType -> {
                         if (signalType == SignalType.CANCEL) {
-                            link.dispose();
+                            MessageUtils.subscribe(link.closeAsync());
                         }
                     });
             });
