@@ -66,14 +66,6 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     // region Constructors
 
     RntbdRequestHeaders(final RntbdRequestArgs args, final RntbdRequestFrame frame) {
-        this(args, frame, false, null);
-    }
-
-    RntbdRequestHeaders(
-        final RntbdRequestArgs args,
-        final RntbdRequestFrame frame,
-        final boolean overrideSessionToken,
-        final String sessionTokenOverride) {
 
         this(Unpooled.EMPTY_BUFFER);
 
@@ -185,10 +177,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getRestoreParams, BackendHeaders.RESTORE_PARAMS);
         this.fillTokenFromHeader(headers, this::getSecondaryMasterKey, BackendHeaders.SECONDARY_MASTER_KEY);
         this.fillTokenFromHeader(headers, this::getSecondaryReadonlyKey, BackendHeaders.SECONDARY_READONLY_KEY);
-        String sessionToken = overrideSessionToken ? sessionTokenOverride : headers.get(HttpHeaders.SESSION_TOKEN);
-        if (StringUtils.isNotEmpty(sessionToken)) {
-            this.getSessionToken().setValue(sessionToken);
-        }
+        this.fillTokenFromHeader(headers, this::getSessionToken, HttpHeaders.SESSION_TOKEN);
         this.fillTokenFromHeader(headers, this::getSharedOfferThroughput, HttpHeaders.SHARED_OFFER_THROUGHPUT);
         this.fillTokenFromHeader(headers, this::getTargetGlobalCommittedLsn, HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN);
         this.fillTokenFromHeader(headers, this::getTargetLsn, HttpHeaders.TARGET_LSN);
@@ -220,6 +209,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     // endregion
 
     // region Methods
+
+    void overrideSessionToken(final String sessionToken) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            this.getSessionToken().setValue(sessionToken);
+        } else {
+            this.tokens.put(RntbdRequestHeader.SessionToken, RntbdToken.create(RntbdRequestHeader.SessionToken));
+        }
+    }
 
     static RntbdRequestHeaders decode(final ByteBuf in) {
         final RntbdRequestHeaders metadata = new RntbdRequestHeaders(in);

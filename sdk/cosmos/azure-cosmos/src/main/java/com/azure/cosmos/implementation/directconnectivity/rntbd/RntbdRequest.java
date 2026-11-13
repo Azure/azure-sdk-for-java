@@ -119,7 +119,17 @@ public final class RntbdRequest {
     }
 
     public static RntbdRequest from(final RntbdRequestArgs args) {
-        return from(args, false, null);
+
+        final RxDocumentServiceRequest serviceRequest = args.serviceRequest();
+
+        final RntbdRequestFrame frame = new RntbdRequestFrame(
+            args.activityId(),
+            serviceRequest.getOperationType(),
+            serviceRequest.getResourceType());
+
+        final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
+
+        return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
     }
 
     /**
@@ -130,22 +140,8 @@ public final class RntbdRequest {
      * @return the wire request
      */
     public static RntbdRequest from(final RntbdRequestArgs args, final String sessionTokenOverride) {
-        return from(args, true, sessionTokenOverride);
-    }
-
-    private static RntbdRequest from(
-        final RntbdRequestArgs args, final boolean overrideSessionToken, final String sessionTokenOverride) {
-
-        final RxDocumentServiceRequest serviceRequest = args.serviceRequest();
-
-        final RntbdRequestFrame frame = new RntbdRequestFrame(
-            args.activityId(),
-            serviceRequest.getOperationType(),
-            serviceRequest.getResourceType());
-
-        final RntbdRequestHeaders headers = new RntbdRequestHeaders(
-            args, frame, overrideSessionToken, sessionTokenOverride);
-
-        return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
+        RntbdRequest request = from(args);
+        request.headers.overrideSessionToken(sessionTokenOverride);
+        return request;
     }
 }

@@ -76,45 +76,9 @@ public class SessionTokenHelper {
     }
 
     private static ISessionToken getLocalSessionToken(
-        RxDocumentServiceRequest request,
-        String globalSessionToken,
-        String partitionKeyRangeId) {
-
-        Collection<String> parents = request.requestContext.resolvedPartitionKeyRange != null
-            ? request.requestContext.resolvedPartitionKeyRange.getParents() : null;
-        ISessionToken sessionToken = selectPartitionLocalSessionToken(globalSessionToken, partitionKeyRangeId, parents);
-
-        if (sessionToken == null && StringUtils.isNotEmpty(globalSessionToken)) {
-            recordUnmatchedSessionToken(request, globalSessionToken, partitionKeyRangeId);
-        }
-
-        return sessionToken;
-    }
-
-    public static void recordUnmatchedSessionToken(
-        RxDocumentServiceRequest request, String globalSessionToken, String partitionKeyRangeId) {
-
-        String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
-            " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
-            "the request will fallback " +
-            "to eventual consistency.";
-        request.requestContext.getSessionTokenEvaluationResults().add(evaluationResult);
-        if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
-            logger.warn(evaluationResult);
-        }
-    }
-
-    // Selects target/parent progress without consulting ambient state or unrelated ranges.
-    public static ISessionToken scopeCompoundSessionToken(String originalToken, PartitionKeyRange target) {
-
-        return selectPartitionLocalSessionToken(
-            originalToken, target != null ? target.getId() : "", target != null ? target.getParents() : null);
-    }
-
-    private static ISessionToken selectPartitionLocalSessionToken(
-        String globalSessionToken,
-        String partitionKeyRangeId,
-        Collection<String> parentPartitionKeyRangeIds) {
+            RxDocumentServiceRequest request,
+            String globalSessionToken,
+            String partitionKeyRangeId) {
 
         if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
@@ -133,8 +97,8 @@ public class SessionTokenHelper {
 
         ISessionToken highestSessionToken = null;
 
-        if (parentPartitionKeyRangeIds != null) {
-            partitionKeyRangeSet.addAll(parentPartitionKeyRangeIds);
+        if (request.requestContext.resolvedPartitionKeyRange != null && request.requestContext.resolvedPartitionKeyRange.getParents() != null) {
+            partitionKeyRangeSet.addAll(request.requestContext.resolvedPartitionKeyRange.getParents());
         }
 
         for (String localToken : localTokens) {
@@ -155,7 +119,64 @@ public class SessionTokenHelper {
             }
         }
 
+        if (highestSessionToken == null) {
+            if (StringUtils.isNotEmpty(globalSessionToken)) {
+                Set<String> sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+
+                String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
+                    " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+                    "the request will fallback " +
+                    "to eventual consistency.";
+
+                sessionTokenEvaluationResults.add(evaluationResult);
+
+                if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+                    logger.warn(evaluationResult);
+                }
+            }
+        }
+
         return highestSessionToken;
+    }
+
+    public static void recordUnmatchedSessionToken(
+        RxDocumentServiceRequest request, String globalSessionToken, String partitionKeyRangeId) {
+
+        String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
+            " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+            "the request will fallback " +
+            "to eventual consistency.";
+        request.requestContext.getSessionTokenEvaluationResults().add(evaluationResult);
+        if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+            logger.warn(evaluationResult);
+        }
+    }
+
+    // Selects target/parent progress without consulting ambient state or unrelated ranges.
+    public static ISessionToken scopeCompoundSessionToken(String originalToken, PartitionKeyRange target) {
+        Set<String> rangeIds = new HashSet<>();
+        if (target != null) {
+            rangeIds.add(target.getId());
+            if (target.getParents() != null) {
+                rangeIds.addAll(target.getParents());
+            }
+        }
+
+        ISessionToken selected = null;
+        for (String segment : StringUtils.split(originalToken, ",")) {
+            String[] items = StringUtils.split(segment, ":");
+            if (items.length != 2) {
+                throw new BadRequestException(String.format(
+                    RMResources.InvalidSessionToken, target != null ? target.getId() : ""));
+            }
+
+            ISessionToken parsed = SessionTokenHelper.parse(items[1]);
+            if (rangeIds.contains(items[0])) {
+                selected = selected == null ? parsed : selected.merge(parsed);
+            }
+        }
+
+        return selected;
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,

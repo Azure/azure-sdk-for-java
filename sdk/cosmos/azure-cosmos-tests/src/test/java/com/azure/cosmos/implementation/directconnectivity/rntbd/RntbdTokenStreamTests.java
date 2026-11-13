@@ -58,7 +58,7 @@ public class RntbdTokenStreamTests {
 
     @DataProvider
     public Object[][] sessionTokenOverrides() {
-        return new Object[][] {{"0:1#10#1=10"}, {null}};
+        return new Object[][] {{"0:1#10#1=10"}, {null}, {""}};
     }
 
     @Test(groups = "unit", dataProvider = "sessionTokenOverrides")
