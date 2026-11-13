@@ -12,10 +12,10 @@ public final class ProviderMonitorSettingArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProviderMonitorSettingArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\"},\"location\":\"bmairrhvhfnracwn\",\"tags\":{\"uuj\":\"g\",\"bxsjybvitvqkj\":\"ouhdawsigrb\"},\"id\":\"az\",\"name\":\"umtggmuwdchozfn\",\"type\":\"fexl\"}],\"nextLink\":\"noakiz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\"},\"location\":\"vlmfej\",\"tags\":{\"ltygxhqfgqkayej\":\"eyk\"},\"id\":\"xtlgflwfg\",\"name\":\"ii\",\"type\":\"ci\"},{\"properties\":{\"provisioningState\":\"Running\"},\"location\":\"tlijjjrtva\",\"tags\":{\"yvkunmign\":\"szknxkvccxe\"},\"id\":\"hi\",\"name\":\"kgqogjw\",\"type\":\"indedvabbx\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\"},\"location\":\"eilbjywfcf\",\"tags\":{\"vjslczwcii\":\"rzzihvwypus\"},\"id\":\"jsllfryvd\",\"name\":\"vxadqacfrgnawbab\",\"type\":\"fbktyjmfczlf\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"rbzg\",\"tags\":{\"qg\":\"xqmjeajcxn\",\"jceagb\":\"hlusrvxisi\",\"xgo\":\"qvlsumywzas\"},\"id\":\"oyjfqipu\",\"name\":\"yznclkfkee\",\"type\":\"gv\"}],\"nextLink\":\"e\"}")
             .toObject(ProviderMonitorSettingArrayResponseWithContinuation.class);
-        Assertions.assertEquals("bmairrhvhfnracwn", model.value().get(0).location());
-        Assertions.assertEquals("g", model.value().get(0).tags().get("uuj"));
-        Assertions.assertEquals("noakiz", model.nextLink());
+        Assertions.assertEquals("vlmfej", model.value().get(0).location());
+        Assertions.assertEquals("eyk", model.value().get(0).tags().get("ltygxhqfgqkayej"));
+        Assertions.assertEquals("e", model.nextLink());
     }
 }

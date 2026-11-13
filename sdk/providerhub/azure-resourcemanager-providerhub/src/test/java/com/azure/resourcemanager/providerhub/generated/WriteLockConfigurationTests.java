@@ -13,14 +13,14 @@ public final class WriteLockConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WriteLockConfiguration model
-            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(WriteLockConfiguration.class);
-        Assertions.assertEquals(WriteLockState.DISABLED, model.state());
+            = BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(WriteLockConfiguration.class);
+        Assertions.assertEquals(WriteLockState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WriteLockConfiguration model = new WriteLockConfiguration().withState(WriteLockState.DISABLED);
+        WriteLockConfiguration model = new WriteLockConfiguration().withState(WriteLockState.ENABLED);
         model = BinaryData.fromObject(model).toObject(WriteLockConfiguration.class);
-        Assertions.assertEquals(WriteLockState.DISABLED, model.state());
+        Assertions.assertEquals(WriteLockState.ENABLED, model.state());
     }
 }

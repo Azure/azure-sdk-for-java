@@ -10,14 +10,18 @@ import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
 import com.azure.resourcemanager.providerhub.models.EndpointInformation;
 import com.azure.resourcemanager.providerhub.models.ExpeditedRolloutIntent;
 import com.azure.resourcemanager.providerhub.models.FilterRule;
+import com.azure.resourcemanager.providerhub.models.IsolationType;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
 import com.azure.resourcemanager.providerhub.models.NotificationEndpointType;
 import com.azure.resourcemanager.providerhub.models.NotificationOptions;
+import com.azure.resourcemanager.providerhub.models.PartnerCategory;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
 import com.azure.resourcemanager.providerhub.models.ResourceHydrationAccount;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilitiesEffect;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementErrorResponseMessageOptions;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementExpeditedRolloutMetadata;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesManagement;
@@ -37,7 +41,7 @@ import java.util.Arrays;
  */
 public final class ProviderRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/DirectProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectProviderRegistrations_CreateOrUpdate.
@@ -95,7 +99,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ProviderRegistrations_CreateOrUpdate.
@@ -130,7 +134,11 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
                             .withEffect(ResourceProviderCapabilitiesEffect.ALLOW),
                         new ResourceProviderCapabilities().withQuotaId("CSP_MG_2017-12-01")
                             .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)))
-                    .withCrossTenantTokenValidation(CrossTenantTokenValidation.ENSURE_SECURE_VALIDATION)),
+                    .withCrossTenantTokenValidation(CrossTenantTokenValidation.ENSURE_SECURE_VALIDATION)
+                    .withLifecycleInfo(new ResourceProviderLifecycleInfo().withIsolationType(IsolationType.PUBLIC)
+                        .withPartnerCategory(PartnerCategory.FIRST_PARTY)
+                        .withLifecycleStage(LifecycleStage.IN_DEVELOPMENT)
+                        .withAllowedSubscriptions(Arrays.asList("00000000-0000-0000-0000-000000000000")))),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,7 @@ public final class ManifestsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"manifest\":\"owly\",\"manifestUri\":\"zmudsqcm\",\"commitId\":\"x\"},\"id\":\"buwodmachbkv\",\"name\":\"rpbj\",\"type\":\"mvgoqpleh\"}";
+            = "{\"properties\":{\"manifest\":\"kvuznadvhmlie\",\"manifestUri\":\"gowxxbhtp\",\"commitId\":\"ioqemqwtqszzg\"},\"id\":\"sikawanvmwd\",\"name\":\"gjqcrbkompnbnfg\",\"type\":\"weoj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,11 @@ public final class ManifestsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ManifestInfo response
-            = manager.manifests().getWithResponse("jlei", "ibfiplhxfnsm", com.azure.core.util.Context.NONE).getValue();
+        ManifestInfo response = manager.manifests()
+            .getWithResponse("hirc", "gcvsvkkjbjolpy", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("owly", response.properties().manifest());
-        Assertions.assertEquals("zmudsqcm", response.properties().manifestUri());
+        Assertions.assertEquals("kvuznadvhmlie", response.properties().manifest());
+        Assertions.assertEquals("gowxxbhtp", response.properties().manifestUri());
     }
 }

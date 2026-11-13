@@ -14,42 +14,36 @@ public final class PrivateEndpointConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConfiguration model = BinaryData.fromString(
-            "{\"minApiVersion\":\"isofieypefojyqd\",\"groupConnectivityInformation\":[{\"groupId\":\"u\",\"requiredMembers\":[\"cp\",\"cwkhihi\"],\"requiredZoneNames\":[\"hzdsqtzbsrgnow\",\"jhf\",\"mvec\"],\"redirectMapId\":\"txmwoteyow\"},{\"groupId\":\"luqovekqvg\",\"requiredMembers\":[\"uwifzmpjwyiv\",\"ikf\",\"cvhrfsp\"],\"requiredZoneNames\":[\"agr\",\"tikteusqczkvykl\",\"ubyjaffmmf\",\"lcqcuubgqibrt\"],\"redirectMapId\":\"metttwgd\"},{\"groupId\":\"lqxihhrmooiz\",\"requiredMembers\":[\"eypxiutcxapzhyr\",\"etoge\",\"joxslhvnhla\",\"rqnkkzjcjbtr\"],\"requiredZoneNames\":[\"ehvvib\",\"xjjs\",\"oqbeitpkxzt\",\"oobklftidgfcwq\"],\"redirectMapId\":\"imaq\"},{\"groupId\":\"zhe\",\"requiredMembers\":[\"yhohujswtwkozzwc\",\"lkb\",\"wpfaj\",\"jwltlwtjjgu\"],\"requiredZoneNames\":[\"alhsnvkc\",\"mxzrpoa\",\"mlnwiaaomylweazu\",\"cse\"],\"redirectMapId\":\"wwnpj\"}]}")
+            "{\"minApiVersion\":\"bcblemb\",\"groupConnectivityInformation\":[{\"groupId\":\"bwvqvxkdi\",\"requiredMembers\":[\"ihebwtsw\",\"zuwfmdur\"],\"requiredZoneNames\":[\"egizv\",\"jfelisdjubggbqig\",\"xkbsazgakgac\"],\"redirectMapId\":\"cmjdmspof\"},{\"groupId\":\"pv\",\"requiredMembers\":[\"rylniofrzg\"],\"requiredZoneNames\":[\"jed\",\"st\",\"vnlvxbcuiiznktwf\"],\"redirectMapId\":\"snvpdibmi\"},{\"groupId\":\"ostbzbkiwb\",\"requiredMembers\":[\"n\",\"ophzfylsgcrp\",\"bcunezzceze\"],\"requiredZoneNames\":[\"w\",\"fwlwxjwetnps\",\"hclafzvaylptrs\"],\"redirectMapId\":\"wztcmwqkchc\"}]}")
             .toObject(PrivateEndpointConfiguration.class);
-        Assertions.assertEquals("isofieypefojyqd", model.minApiVersion());
-        Assertions.assertEquals("u", model.groupConnectivityInformation().get(0).groupId());
-        Assertions.assertEquals("cp", model.groupConnectivityInformation().get(0).requiredMembers().get(0));
-        Assertions.assertEquals("hzdsqtzbsrgnow",
-            model.groupConnectivityInformation().get(0).requiredZoneNames().get(0));
-        Assertions.assertEquals("txmwoteyow", model.groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("bcblemb", model.minApiVersion());
+        Assertions.assertEquals("bwvqvxkdi", model.groupConnectivityInformation().get(0).groupId());
+        Assertions.assertEquals("ihebwtsw", model.groupConnectivityInformation().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("egizv", model.groupConnectivityInformation().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("cmjdmspof", model.groupConnectivityInformation().get(0).redirectMapId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConfiguration model = new PrivateEndpointConfiguration().withMinApiVersion("isofieypefojyqd")
+        PrivateEndpointConfiguration model = new PrivateEndpointConfiguration().withMinApiVersion("bcblemb")
             .withGroupConnectivityInformation(Arrays.asList(
-                new GroupConnectivityInformation().withGroupId("u")
-                    .withRequiredMembers(Arrays.asList("cp", "cwkhihi"))
-                    .withRequiredZoneNames(Arrays.asList("hzdsqtzbsrgnow", "jhf", "mvec"))
-                    .withRedirectMapId("txmwoteyow"),
-                new GroupConnectivityInformation().withGroupId("luqovekqvg")
-                    .withRequiredMembers(Arrays.asList("uwifzmpjwyiv", "ikf", "cvhrfsp"))
-                    .withRequiredZoneNames(Arrays.asList("agr", "tikteusqczkvykl", "ubyjaffmmf", "lcqcuubgqibrt"))
-                    .withRedirectMapId("metttwgd"),
-                new GroupConnectivityInformation().withGroupId("lqxihhrmooiz")
-                    .withRequiredMembers(Arrays.asList("eypxiutcxapzhyr", "etoge", "joxslhvnhla", "rqnkkzjcjbtr"))
-                    .withRequiredZoneNames(Arrays.asList("ehvvib", "xjjs", "oqbeitpkxzt", "oobklftidgfcwq"))
-                    .withRedirectMapId("imaq"),
-                new GroupConnectivityInformation().withGroupId("zhe")
-                    .withRequiredMembers(Arrays.asList("yhohujswtwkozzwc", "lkb", "wpfaj", "jwltlwtjjgu"))
-                    .withRequiredZoneNames(Arrays.asList("alhsnvkc", "mxzrpoa", "mlnwiaaomylweazu", "cse"))
-                    .withRedirectMapId("wwnpj")));
+                new GroupConnectivityInformation().withGroupId("bwvqvxkdi")
+                    .withRequiredMembers(Arrays.asList("ihebwtsw", "zuwfmdur"))
+                    .withRequiredZoneNames(Arrays.asList("egizv", "jfelisdjubggbqig", "xkbsazgakgac"))
+                    .withRedirectMapId("cmjdmspof"),
+                new GroupConnectivityInformation().withGroupId("pv")
+                    .withRequiredMembers(Arrays.asList("rylniofrzg"))
+                    .withRequiredZoneNames(Arrays.asList("jed", "st", "vnlvxbcuiiznktwf"))
+                    .withRedirectMapId("snvpdibmi"),
+                new GroupConnectivityInformation().withGroupId("ostbzbkiwb")
+                    .withRequiredMembers(Arrays.asList("n", "ophzfylsgcrp", "bcunezzceze"))
+                    .withRequiredZoneNames(Arrays.asList("w", "fwlwxjwetnps", "hclafzvaylptrs"))
+                    .withRedirectMapId("wztcmwqkchc")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConfiguration.class);
-        Assertions.assertEquals("isofieypefojyqd", model.minApiVersion());
-        Assertions.assertEquals("u", model.groupConnectivityInformation().get(0).groupId());
-        Assertions.assertEquals("cp", model.groupConnectivityInformation().get(0).requiredMembers().get(0));
-        Assertions.assertEquals("hzdsqtzbsrgnow",
-            model.groupConnectivityInformation().get(0).requiredZoneNames().get(0));
-        Assertions.assertEquals("txmwoteyow", model.groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("bcblemb", model.minApiVersion());
+        Assertions.assertEquals("bwvqvxkdi", model.groupConnectivityInformation().get(0).groupId());
+        Assertions.assertEquals("ihebwtsw", model.groupConnectivityInformation().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("egizv", model.groupConnectivityInformation().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("cmjdmspof", model.groupConnectivityInformation().get(0).redirectMapId());
     }
 }

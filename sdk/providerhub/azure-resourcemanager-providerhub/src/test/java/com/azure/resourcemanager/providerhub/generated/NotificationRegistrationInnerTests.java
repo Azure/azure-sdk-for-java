@@ -17,37 +17,37 @@ public final class NotificationRegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationRegistrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"katbhjm\",\"nnbsoqeqa\"],\"notificationEndpoints\":[{\"notificationDestination\":\"lagun\",\"locations\":[\"febwlnbmhyreeudz\",\"av\"]},{\"notificationDestination\":\"dqmjxly\",\"locations\":[\"lgouwtlmjj\",\"uojqt\"]},{\"notificationDestination\":\"axkjeytunlbfjk\",\"locations\":[\"snkq\"]},{\"notificationDestination\":\"syrq\",\"locations\":[\"qhd\",\"nxaulk\"]}],\"provisioningState\":\"NotSpecified\"},\"id\":\"kifmjn\",\"name\":\"awtqabpxuckpgg\",\"type\":\"oweyirdhlis\"}")
+            "{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"pzwaklsbsbqqq\",\"gwwrxaomzis\",\"lrrcz\",\"zkhhltnjadhqo\"],\"notificationEndpoints\":[{\"notificationDestination\":\"oyueayfbpcmsp\",\"locations\":[\"rrueqthwmg\",\"mbscbbx\"]},{\"notificationDestination\":\"dhxiidlopedbwd\",\"locations\":[\"yybxubmdnafcbqw\",\"e\",\"jelaqacigele\",\"hdbvqvwzkjop\"]},{\"notificationDestination\":\"eonrlkwzdqybxce\",\"locations\":[\"cptsoqfyiase\",\"chkrttzr\",\"zisgykiuemvanb\",\"zohmnrxxbs\"]},{\"notificationDestination\":\"klinhmdptysprq\",\"locations\":[\"zxojpslsv\",\"g\",\"liufiqwoyxq\",\"apcohhouc\"]}],\"provisioningState\":\"Running\"},\"id\":\"jxcx\",\"name\":\"rzdcgdzbenribcaw\",\"type\":\"tzqdd\"}")
             .toObject(NotificationRegistrationInner.class);
         Assertions.assertEquals(NotificationMode.WEB_HOOK, model.properties().notificationMode());
-        Assertions.assertEquals(MessageScope.REGISTERED_SUBSCRIPTIONS, model.properties().messageScope());
-        Assertions.assertEquals("katbhjm", model.properties().includedEvents().get(0));
-        Assertions.assertEquals("lagun", model.properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("febwlnbmhyreeudz",
-            model.properties().notificationEndpoints().get(0).locations().get(0));
+        Assertions.assertEquals(MessageScope.NOT_SPECIFIED, model.properties().messageScope());
+        Assertions.assertEquals("pzwaklsbsbqqq", model.properties().includedEvents().get(0));
+        Assertions.assertEquals("oyueayfbpcmsp",
+            model.properties().notificationEndpoints().get(0).notificationDestination());
+        Assertions.assertEquals("rrueqthwmg", model.properties().notificationEndpoints().get(0).locations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotificationRegistrationInner model = new NotificationRegistrationInner()
             .withProperties(new NotificationRegistrationProperties().withNotificationMode(NotificationMode.WEB_HOOK)
-                .withMessageScope(MessageScope.REGISTERED_SUBSCRIPTIONS)
-                .withIncludedEvents(Arrays.asList("katbhjm", "nnbsoqeqa"))
+                .withMessageScope(MessageScope.NOT_SPECIFIED)
+                .withIncludedEvents(Arrays.asList("pzwaklsbsbqqq", "gwwrxaomzis", "lrrcz", "zkhhltnjadhqo"))
                 .withNotificationEndpoints(Arrays.asList(
-                    new NotificationEndpoint().withNotificationDestination("lagun")
-                        .withLocations(Arrays.asList("febwlnbmhyreeudz", "av")),
-                    new NotificationEndpoint().withNotificationDestination("dqmjxly")
-                        .withLocations(Arrays.asList("lgouwtlmjj", "uojqt")),
-                    new NotificationEndpoint().withNotificationDestination("axkjeytunlbfjk")
-                        .withLocations(Arrays.asList("snkq")),
-                    new NotificationEndpoint().withNotificationDestination("syrq")
-                        .withLocations(Arrays.asList("qhd", "nxaulk")))));
+                    new NotificationEndpoint().withNotificationDestination("oyueayfbpcmsp")
+                        .withLocations(Arrays.asList("rrueqthwmg", "mbscbbx")),
+                    new NotificationEndpoint().withNotificationDestination("dhxiidlopedbwd")
+                        .withLocations(Arrays.asList("yybxubmdnafcbqw", "e", "jelaqacigele", "hdbvqvwzkjop")),
+                    new NotificationEndpoint().withNotificationDestination("eonrlkwzdqybxce")
+                        .withLocations(Arrays.asList("cptsoqfyiase", "chkrttzr", "zisgykiuemvanb", "zohmnrxxbs")),
+                    new NotificationEndpoint().withNotificationDestination("klinhmdptysprq")
+                        .withLocations(Arrays.asList("zxojpslsv", "g", "liufiqwoyxq", "apcohhouc")))));
         model = BinaryData.fromObject(model).toObject(NotificationRegistrationInner.class);
         Assertions.assertEquals(NotificationMode.WEB_HOOK, model.properties().notificationMode());
-        Assertions.assertEquals(MessageScope.REGISTERED_SUBSCRIPTIONS, model.properties().messageScope());
-        Assertions.assertEquals("katbhjm", model.properties().includedEvents().get(0));
-        Assertions.assertEquals("lagun", model.properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("febwlnbmhyreeudz",
-            model.properties().notificationEndpoints().get(0).locations().get(0));
+        Assertions.assertEquals(MessageScope.NOT_SPECIFIED, model.properties().messageScope());
+        Assertions.assertEquals("pzwaklsbsbqqq", model.properties().includedEvents().get(0));
+        Assertions.assertEquals("oyueayfbpcmsp",
+            model.properties().notificationEndpoints().get(0).notificationDestination());
+        Assertions.assertEquals("rrueqthwmg", model.properties().notificationEndpoints().get(0).locations().get(0));
     }
 }

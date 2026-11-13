@@ -14,16 +14,16 @@ public final class OperationsDefinitionArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"qp\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"ionpimexg\",\"resource\":\"txgcpodgmaajr\",\"operation\":\"vdjwzrlovm\",\"description\":\"lwhijcoejctbzaq\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datacbkbfkg\\\"\"}],\"nextLink\":\"dkexxppofm\"}")
+            "{\"value\":[{\"name\":\"ionpimexg\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"po\",\"resource\":\"gmaajrm\",\"operation\":\"djwzrlov\",\"description\":\"clwhijcoejctbz\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datasycbkbfk\\\"\"},{\"name\":\"ukdkexxppofmxa\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"gddtocj\",\"resource\":\"xhvpmoue\",\"operation\":\"hd\",\"description\":\"xibqeojnx\"},\"actionType\":\"Internal\",\"properties\":\"\\\"dataddntwndei\\\"\"},{\"name\":\"btwnpzaoqvuhrhcf\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"provider\":\"glmjth\",\"resource\":\"qkwpyeicxmqc\",\"operation\":\"wqvhkhixuigdt\",\"description\":\"pbobjo\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataw\\\"\"},{\"name\":\"a\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"z\",\"resource\":\"yvvtpgvdfgio\",\"operation\":\"kftutqxlngxlefg\",\"description\":\"gnxkrxdqmidtth\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datadrabhjybige\\\"\"}],\"nextLink\":\"qfbow\"}")
             .toObject(OperationsDefinitionArrayResponseWithContinuation.class);
-        Assertions.assertEquals("qp", model.value().get(0).name());
-        Assertions.assertTrue(model.value().get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.USER, model.value().get(0).origin());
-        Assertions.assertEquals("ionpimexg", model.value().get(0).display().provider());
-        Assertions.assertEquals("txgcpodgmaajr", model.value().get(0).display().resource());
-        Assertions.assertEquals("vdjwzrlovm", model.value().get(0).display().operation());
-        Assertions.assertEquals("lwhijcoejctbzaq", model.value().get(0).display().description());
+        Assertions.assertEquals("ionpimexg", model.value().get(0).name());
+        Assertions.assertFalse(model.value().get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.SYSTEM, model.value().get(0).origin());
+        Assertions.assertEquals("po", model.value().get(0).display().provider());
+        Assertions.assertEquals("gmaajrm", model.value().get(0).display().resource());
+        Assertions.assertEquals("djwzrlov", model.value().get(0).display().operation());
+        Assertions.assertEquals("clwhijcoejctbz", model.value().get(0).display().description());
         Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.value().get(0).actionType());
-        Assertions.assertEquals("dkexxppofm", model.nextLink());
+        Assertions.assertEquals("qfbow", model.nextLink());
     }
 }

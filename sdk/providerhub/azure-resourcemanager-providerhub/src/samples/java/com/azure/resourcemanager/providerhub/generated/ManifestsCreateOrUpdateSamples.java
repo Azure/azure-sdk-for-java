@@ -11,7 +11,7 @@ import com.azure.resourcemanager.providerhub.models.ManifestInfoProperties;
  */
 public final class ManifestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Manifests_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/Manifests_CreateOrUpdate.json
      */
     /**
      * Sample code: Manifests_CreateOrUpdate.
@@ -22,7 +22,8 @@ public final class ManifestsCreateOrUpdateSamples {
         manager.manifests()
             .define("prod")
             .withExistingProviderRegistration("Microsoft.Contoso")
-            .withProperties(new ManifestInfoProperties().withManifest("<<Core RP manifest>>"))
+            .withProperties(new ManifestInfoProperties()
+                .withManifestUri("https://contoso.example/manifests/provider-manifest.json"))
             .create();
     }
 }

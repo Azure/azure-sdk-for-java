@@ -13,18 +13,18 @@ public final class ResourceTypeRegistrationPropertiesResourceTypeCommonAttribute
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceTypeCommonAttributeManagement model
-            = BinaryData.fromString("{\"commonApiVersionsMergeMode\":\"Overwrite\"}")
+            = BinaryData.fromString("{\"commonApiVersionsMergeMode\":\"Merge\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceTypeCommonAttributeManagement.class);
-        Assertions.assertEquals(CommonApiVersionsMergeMode.OVERWRITE, model.commonApiVersionsMergeMode());
+        Assertions.assertEquals(CommonApiVersionsMergeMode.MERGE, model.commonApiVersionsMergeMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceTypeCommonAttributeManagement model
             = new ResourceTypeRegistrationPropertiesResourceTypeCommonAttributeManagement()
-                .withCommonApiVersionsMergeMode(CommonApiVersionsMergeMode.OVERWRITE);
+                .withCommonApiVersionsMergeMode(CommonApiVersionsMergeMode.MERGE);
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesResourceTypeCommonAttributeManagement.class);
-        Assertions.assertEquals(CommonApiVersionsMergeMode.OVERWRITE, model.commonApiVersionsMergeMode());
+        Assertions.assertEquals(CommonApiVersionsMergeMode.MERGE, model.commonApiVersionsMergeMode());
     }
 }
