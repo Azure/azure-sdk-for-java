@@ -14,6 +14,8 @@
 
 - Removed `KeyVaultAdministrationServiceVersion.V2026_01_01_PREVIEW`; use `V2026_04_01` instead.
 
+- Fixed challenge-based authentication to correctly parse the tenant ID from DSTSv2 authority URIs.
+
 ### Other Changes
 
 - The default service version is now `2026-04-01`.
