@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceTypeItemsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N ResourceType Report.
@@ -46,7 +46,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceItemsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N resource Report.
@@ -70,7 +70,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsMonthlySummaryReportWithOtherOptionalFilter.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReportWithOtherOptionalFilter.json
      */
     /**
      * Sample code: QueryCarbonEmission Monthly Summary Report with optional filter - locationList, resourceTypeList,
@@ -97,7 +97,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsSubscriptionItemDetailsReportReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsSubscriptionItemDetailsReportReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Subscriptions item details Report.
@@ -123,7 +123,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsResourceGroupItemDetailsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsResourceGroupItemDetailsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission ResourceGroup item details Report.
@@ -149,7 +149,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceItemsMonthlyReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N resource monthly Report.
@@ -173,7 +173,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsOverallSummaryReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Overall Summary Report.
@@ -193,7 +193,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNSubscriptionItemsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N Subscriptions Report.
@@ -217,7 +217,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceGroupItemsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N ResourceGroup Report.
@@ -241,7 +241,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsResourceItemDetailsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission resource item details Report.
@@ -267,7 +267,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNSubscriptionItemsMonthlyReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N Subscriptions monthly Report.
@@ -291,7 +291,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNLocationItemsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N Locations Report.
@@ -315,7 +315,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsResourceItemDetailsReportWithPaginationToken.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsResourceItemDetailsReportWithPaginationToken.json
      */
     /**
      * Sample code: QueryCarbonEmission resource item details Report with pagination token.
@@ -342,7 +342,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsLocationItemDetailsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsLocationItemDetailsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Location item details Report.
@@ -368,7 +368,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsMonthlySummaryReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsMonthlySummaryReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Overall Monthly Summary Report.
@@ -388,7 +388,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsOverallSummaryReportWithOtherOptionalFilter.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsOverallSummaryReportWithOtherOptionalFilter.json
      */
     /**
      * Sample code: QueryCarbonEmission Overall Summary Report with optional filter - locationList, resourceTypeList,
@@ -415,7 +415,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNLocationItemsMonthlyReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N Locations monthly Report.
@@ -439,7 +439,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceTypeItemsMonthlyReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N ResourceType monthly Report.
@@ -463,7 +463,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsResourceTypeItemDetailsReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsResourceTypeItemDetailsReport.json
      */
     /**
      * Sample code: QueryCarbonEmission ResourceType item details Report.
@@ -489,7 +489,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
+     * x-ms-original-file: 2026-05-01-preview/queryCarbonEmissionsTopNResourceGroupItemsMonthlyReport.json
      */
     /**
      * Sample code: QueryCarbonEmission Top N ResourceGroup monthly Report.
