@@ -568,17 +568,39 @@ def delete_generated_source_code(path: str) -> None:
                     continue
 
 
+def update_tcgc_preview():
+    package_json = load_emitter_package_json()
+    package_json["devDependencies"]["@azure-tools/typespec-client-generator-core"] = (
+        "https://pkg.pr.new/@azure-tools/typespec-client-generator-core@267ed002645d055e479e042372dc951fdb34eb87"
+    )
+    lock_path = os.path.join(sdk_root, "eng", "emitter-package-lock.json")
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, "package.json"), "w") as manifest:
+            json.dump(package_json, manifest, indent=2)
+        shutil.copyfile(lock_path, os.path.join(tmp_dir, "package-lock.json"))
+        subprocess.check_call(
+            [
+                "npm",
+                "install",
+                "--package-lock-only",
+                "--ignore-scripts",
+                "--force",
+                "--no-audit",
+                "--no-fund",
+            ],
+            cwd=tmp_dir,
+        )
+        shutil.copyfile(os.path.join(tmp_dir, "package-lock.json"), lock_path)
+    save_emitter_package_json(package_json)
+
+
 def main():
     global sdk_root
 
     args = vars(parse_args())
     sdk_root = args["sdk_root"]
 
-    update_emitter(
-        args["package_json_path"],
-        args["emitter_version"],
-        args["upgrade_designated_libraries"],
-    )
+    update_tcgc_preview()
 
     update_sdks()
 
