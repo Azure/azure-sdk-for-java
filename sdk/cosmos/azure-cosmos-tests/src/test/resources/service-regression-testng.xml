@@ -1,0 +1,19 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="service-regression">
+  <listeners>
+    <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
+  </listeners>
+  <test name="service-regression" group-by-instances="true">
+    <groups>
+      <run>
+        <include name="service-regression"/>
+      </run>
+    </groups>
+    <packages>
+      <package name="com.azure.cosmos.*"/>
+    </packages>
+  </test>
+</suite>
