@@ -15,18 +15,18 @@ public final class OutboundRuleBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Failed\",\"errorInformation\":\"aabmdlqjb\",\"parentRuleNames\":[\"f\",\"xlhupmomihzbdnp\",\"pkcdpreyxely\"]},\"id\":\"ghflrufssjyghsf\",\"name\":\"rkbhammgmqfm\",\"type\":\"fgvqcpdw\"}")
+            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"ovjufycsjmlbe\",\"parentRuleNames\":[\"jiriuxeg\"]},\"id\":\"ortudawlpjfel\",\"name\":\"erppt\",\"type\":\"bgqnz\"}")
             .toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
-        Assertions.assertEquals(RuleStatus.FAILED, model.properties().status());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner()
-            .withProperties(new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.FAILED));
+            .withProperties(new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.INACTIVE));
         model = BinaryData.fromObject(model).toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
-        Assertions.assertEquals(RuleStatus.FAILED, model.properties().status());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 }

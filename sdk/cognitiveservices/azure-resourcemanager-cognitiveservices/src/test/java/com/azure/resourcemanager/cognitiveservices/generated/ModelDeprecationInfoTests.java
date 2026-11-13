@@ -14,10 +14,10 @@ public final class ModelDeprecationInfoTests {
     public void testDeserialize() throws Exception {
         ModelDeprecationInfo model = BinaryData
             .fromString(
-                "{\"fineTune\":\"nyyazttbtwwrqpue\",\"inference\":\"kzywbiex\",\"deprecationStatus\":\"Tentative\"}")
+                "{\"fineTune\":\"gipwhonowkg\",\"inference\":\"wankixzbi\",\"deprecationStatus\":\"Tentative\"}")
             .toObject(ModelDeprecationInfo.class);
-        Assertions.assertEquals("nyyazttbtwwrqpue", model.fineTune());
-        Assertions.assertEquals("kzywbiex", model.inference());
+        Assertions.assertEquals("gipwhonowkg", model.fineTune());
+        Assertions.assertEquals("wankixzbi", model.inference());
         Assertions.assertEquals(DeprecationStatus.TENTATIVE, model.deprecationStatus());
     }
 }

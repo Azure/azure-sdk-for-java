@@ -21,7 +21,7 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
     @Test
     public void testGetAssociationWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountId\":\"dizhrjqfyaytvsly\"},\"etag\":\"cgniuarlc\",\"tags\":{\"iocwdgujj\":\"gsxf\"},\"id\":\"fgrzx\",\"name\":\"arcbpae\",\"type\":\"zqsym\"}";
+            = "{\"properties\":{\"accountId\":\"yrqsdbpokszanm\"},\"etag\":\"gpterdiu\",\"tags\":{\"owifcqpolzkgysd\":\"rkskwztsdetjy\"},\"id\":\"yybzoxlvoc\",\"name\":\"tvdxxhe\",\"type\":\"gmlilwzghjhjvmab\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .getAssociationWithResponse("x", "kdlhzwhc", "kvbos", com.azure.core.util.Context.NONE)
+            .getAssociationWithResponse("lfdxaglz", "ytlbtlqhopxouvm", "siflikyypzkgxf",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gsxf", response.tags().get("iocwdgujj"));
-        Assertions.assertEquals("dizhrjqfyaytvsly", response.accountId());
+        Assertions.assertEquals("rkskwztsdetjy", response.tags().get("owifcqpolzkgysd"));
+        Assertions.assertEquals("yrqsdbpokszanm", response.accountId());
     }
 }

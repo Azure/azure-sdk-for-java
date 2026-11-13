@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicy.json
+     * x-ms-original-file: 2026-11-01/GetRaiPolicy.json
      */
     /**
      * Sample code: GetRaiPolicy.
@@ -22,7 +22,7 @@ public final class RaiPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicyAcs.json
+     * x-ms-original-file: 2026-11-01/GetRaiPolicyAcs.json
      */
     /**
      * Sample code: Get an ACS policy.

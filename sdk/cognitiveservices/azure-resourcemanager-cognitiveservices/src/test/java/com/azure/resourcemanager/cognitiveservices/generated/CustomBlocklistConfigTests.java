@@ -13,21 +13,21 @@ public final class CustomBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomBlocklistConfig model
-            = BinaryData.fromString("{\"source\":\"Completion\",\"blocklistName\":\"jzh\",\"blocking\":true}")
+            = BinaryData.fromString("{\"source\":\"PreToolCall\",\"blocklistName\":\"efajpj\",\"blocking\":false}")
                 .toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("jzh", model.blocklistName());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertEquals("efajpj", model.blocklistName());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("jzh")
-            .withBlocking(true)
-            .withSource(RaiPolicyContentSource.COMPLETION);
+        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("efajpj")
+            .withBlocking(false)
+            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL);
         model = BinaryData.fromObject(model).toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("jzh", model.blocklistName());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertEquals("efajpj", model.blocklistName());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
     }
 }

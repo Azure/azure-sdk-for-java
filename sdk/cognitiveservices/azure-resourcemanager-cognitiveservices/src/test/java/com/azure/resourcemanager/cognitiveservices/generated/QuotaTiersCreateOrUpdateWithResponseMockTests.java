@@ -23,7 +23,7 @@ public final class QuotaTiersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"currentTierName\":\"lhxsoanguhbnho\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-04-11T10:07:49Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"eggpdtyzpxlit\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2020-12-24T02:13:53Z\",\"upgradeUnavailabilityReason\":\"em\"}},\"id\":\"upehs\",\"name\":\"vsdfvhrypez\",\"type\":\"mmpkapvnpeukg\"}";
+            = "{\"properties\":{\"currentTierName\":\"crbkompnbnfgywe\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2020-12-27T19:59:50Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"mahiw\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-09-25T08:14:46Z\",\"upgradeUnavailabilityReason\":\"ch\"}},\"id\":\"pitskshfyftti\",\"name\":\"j\",\"type\":\"pzwhjunfdgbggc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class QuotaTiersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         QuotaTier response = manager.quotaTiers()
-            .define("dcyandblkb")
+            .define("scbgngc")
             .withProperties(
                 new QuotaTierProperties().withTierUpgradePolicy(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE))
             .create();
