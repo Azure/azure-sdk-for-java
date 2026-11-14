@@ -18,40 +18,46 @@ public final class ThroughputSettingsUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThroughputSettingsUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"throughput\":851546423,\"autoscaleSettings\":{\"maxThroughput\":526256547,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":false,\"incrementPercent\":344867697}},\"targetMaxThroughput\":441637569},\"minimumThroughput\":\"vewzcj\",\"offerReplacePending\":\"m\",\"instantMaximumThroughput\":\"pmguaadraufac\",\"softAllowedMaximumThroughput\":\"ahzovajjziuxxp\",\"throughputBuckets\":[{\"id\":1820009051,\"maxThroughputPercentage\":196518772,\"isDefaultBucket\":false},{\"id\":693666625,\"maxThroughputPercentage\":662153855,\"isDefaultBucket\":true}]}}")
+            "{\"resource\":{\"throughput\":1164866415,\"autoscaleSettings\":{\"maxThroughput\":338245093,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":false,\"incrementPercent\":455492587}},\"targetMaxThroughput\":725321010},\"minimumThroughput\":\"nhlmctlpdng\",\"offerReplacePending\":\"vgbmhr\",\"instantMaximumThroughput\":\"kw\",\"softAllowedMaximumThroughput\":\"ijejvegrhbpn\",\"throughputBuckets\":[{\"id\":1676095378,\"maxThroughputPercentage\":1096684768,\"isDefaultBucket\":true},{\"id\":69108212,\"maxThroughputPercentage\":1390286927,\"isDefaultBucket\":true},{\"id\":303838192,\"maxThroughputPercentage\":1155534980,\"isDefaultBucket\":true},{\"id\":973361877,\"maxThroughputPercentage\":1486564388,\"isDefaultBucket\":false}]}}")
             .toObject(ThroughputSettingsUpdateProperties.class);
-        Assertions.assertEquals(851546423, model.resource().throughput());
-        Assertions.assertEquals(526256547, model.resource().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1164866415, model.resource().throughput());
+        Assertions.assertEquals(338245093, model.resource().autoscaleSettings().maxThroughput());
         Assertions.assertFalse(model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().isEnabled());
-        Assertions.assertEquals(344867697,
+        Assertions.assertEquals(455492587,
             model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().incrementPercent());
-        Assertions.assertEquals(1820009051, model.resource().throughputBuckets().get(0).id());
-        Assertions.assertEquals(196518772, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
-        Assertions.assertFalse(model.resource().throughputBuckets().get(0).isDefaultBucket());
+        Assertions.assertEquals(1676095378, model.resource().throughputBuckets().get(0).id());
+        Assertions.assertEquals(1096684768, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
+        Assertions.assertTrue(model.resource().throughputBuckets().get(0).isDefaultBucket());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThroughputSettingsUpdateProperties model = new ThroughputSettingsUpdateProperties()
-            .withResource(new ThroughputSettingsResource().withThroughput(851546423)
-                .withAutoscaleSettings(new AutoscaleSettingsResource().withMaxThroughput(526256547)
+            .withResource(new ThroughputSettingsResource().withThroughput(1164866415)
+                .withAutoscaleSettings(new AutoscaleSettingsResource().withMaxThroughput(338245093)
                     .withAutoUpgradePolicy(new AutoUpgradePolicyResource().withThroughputPolicy(
-                        new ThroughputPolicyResource().withIsEnabled(false).withIncrementPercent(344867697))))
+                        new ThroughputPolicyResource().withIsEnabled(false).withIncrementPercent(455492587))))
                 .withThroughputBuckets(Arrays.asList(
-                    new ThroughputBucketResource().withId(1820009051)
-                        .withMaxThroughputPercentage(196518772)
-                        .withIsDefaultBucket(false),
-                    new ThroughputBucketResource().withId(693666625)
-                        .withMaxThroughputPercentage(662153855)
-                        .withIsDefaultBucket(true))));
+                    new ThroughputBucketResource().withId(1676095378)
+                        .withMaxThroughputPercentage(1096684768)
+                        .withIsDefaultBucket(true),
+                    new ThroughputBucketResource().withId(69108212)
+                        .withMaxThroughputPercentage(1390286927)
+                        .withIsDefaultBucket(true),
+                    new ThroughputBucketResource().withId(303838192)
+                        .withMaxThroughputPercentage(1155534980)
+                        .withIsDefaultBucket(true),
+                    new ThroughputBucketResource().withId(973361877)
+                        .withMaxThroughputPercentage(1486564388)
+                        .withIsDefaultBucket(false))));
         model = BinaryData.fromObject(model).toObject(ThroughputSettingsUpdateProperties.class);
-        Assertions.assertEquals(851546423, model.resource().throughput());
-        Assertions.assertEquals(526256547, model.resource().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1164866415, model.resource().throughput());
+        Assertions.assertEquals(338245093, model.resource().autoscaleSettings().maxThroughput());
         Assertions.assertFalse(model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().isEnabled());
-        Assertions.assertEquals(344867697,
+        Assertions.assertEquals(455492587,
             model.resource().autoscaleSettings().autoUpgradePolicy().throughputPolicy().incrementPercent());
-        Assertions.assertEquals(1820009051, model.resource().throughputBuckets().get(0).id());
-        Assertions.assertEquals(196518772, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
-        Assertions.assertFalse(model.resource().throughputBuckets().get(0).isDefaultBucket());
+        Assertions.assertEquals(1676095378, model.resource().throughputBuckets().get(0).id());
+        Assertions.assertEquals(1096684768, model.resource().throughputBuckets().get(0).maxThroughputPercentage());
+        Assertions.assertTrue(model.resource().throughputBuckets().get(0).isDefaultBucket());
     }
 }

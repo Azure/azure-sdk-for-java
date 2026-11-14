@@ -18,25 +18,30 @@ public final class ContinuousModeBackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContinuousModeBackupPolicy model = BinaryData.fromString(
-            "{\"type\":\"Continuous\",\"continuousModeProperties\":{\"tier\":\"Continuous30Days\"},\"migrationState\":{\"status\":\"Invalid\",\"targetType\":\"Continuous\",\"startTime\":\"2021-03-04T22:53:24Z\"}}")
+            "{\"type\":\"Continuous\",\"continuousModeProperties\":{\"tier\":\"Continuous30Days\"},\"migrationState\":{\"status\":\"Completed\",\"targetType\":\"Continuous\",\"startTime\":\"2021-10-06T09:12:42Z\"},\"backupRetentionLockExpirationTimestamp\":\"2021-01-06T14:59:57Z\"}")
             .toObject(ContinuousModeBackupPolicy.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.migrationState().status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.COMPLETED, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.CONTINUOUS, model.migrationState().targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T22:53:24Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T09:12:42Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:59:57Z"),
+            model.backupRetentionLockExpirationTimestamp());
         Assertions.assertEquals(ContinuousTier.CONTINUOUS30DAYS, model.continuousModeProperties().tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContinuousModeBackupPolicy model = new ContinuousModeBackupPolicy()
-            .withMigrationState(new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.INVALID)
+            .withMigrationState(new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.COMPLETED)
                 .withTargetType(BackupPolicyType.CONTINUOUS)
-                .withStartTime(OffsetDateTime.parse("2021-03-04T22:53:24Z")))
+                .withStartTime(OffsetDateTime.parse("2021-10-06T09:12:42Z")))
+            .withBackupRetentionLockExpirationTimestamp(OffsetDateTime.parse("2021-01-06T14:59:57Z"))
             .withContinuousModeProperties(new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS30DAYS));
         model = BinaryData.fromObject(model).toObject(ContinuousModeBackupPolicy.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.migrationState().status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.COMPLETED, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.CONTINUOUS, model.migrationState().targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T22:53:24Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T09:12:42Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:59:57Z"),
+            model.backupRetentionLockExpirationTimestamp());
         Assertions.assertEquals(ContinuousTier.CONTINUOUS30DAYS, model.continuousModeProperties().tier());
     }
 }

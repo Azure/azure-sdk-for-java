@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class GremlinResourcesUpdateGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/CosmosDBGremlinGraphThroughputUpdate.json
+     * x-ms-original-file: 2026-07-15/CosmosDBGremlinGraphThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputUpdate.
