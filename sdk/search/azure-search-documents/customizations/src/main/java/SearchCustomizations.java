@@ -1057,7 +1057,7 @@ public class SearchCustomizations extends Customization {
     private static void includeOldApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-            for (String version : Arrays.asList("2026-04-01", "2025-09-01",
+            for (String version : Arrays.asList("2026-10-01", "2026-04-01", "2025-09-01",
                 "2024-07-01", "2023-11-01", "2020-06-30")) {
                 String enumName = ("V" + version.replace("-", "_"));
                 enumName = enumName.toUpperCase(java.util.Locale.ROOT);
