@@ -520,10 +520,8 @@ public class DocumentQueryExecutionContextFactory {
                             queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
                     initialPageSize = pageSizeWithTopOrLimit;
                 }
-            }
-
-            // We need to compute the optimal initial page size for order-by queries
-            if (queryInfo.hasOrderBy()) {
+            } else if (queryInfo.hasOrderBy()) {
+                // Only streaming order-by can reduce the initial page size across ranges.
                 int top;
                 if (queryInfo.hasTop() && (top = queryInfo.getTop()) > 0) {
                     int pageSizeWithTop = Math.min(

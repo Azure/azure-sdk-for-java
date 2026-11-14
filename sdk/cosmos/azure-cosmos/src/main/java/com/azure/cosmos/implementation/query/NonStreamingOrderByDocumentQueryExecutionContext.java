@@ -102,12 +102,15 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
 
         context.setTop(initParams.getTop());
 
+        boolean useGlobalTop = queryInfo.hasTop() && !queryInfo.hasOffset() && !queryInfo.hasLimit()
+            && !queryInfo.hasDistinct() && !queryInfo.hasAggregates() && !queryInfo.hasGroupBy() && !queryInfo.hasDCount();
         try {
             context.initialize(
                 initParams.getFeedRanges(),
                 initParams.getQueryInfo().getOrderBy(),
                 initParams.getQueryInfo().getOrderByExpressions(),
                 initParams.getInitialPageSize(),
+                useGlobalTop,
                 collection);
 
             return Flux.just(context);
@@ -120,6 +123,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,
         int initialPageSize,
+        boolean useGlobalTop,
         DocumentCollection collection) throws CosmosException {
         // Since the continuation token will always be null,
         // we don't need to handle any initialization based on continuationToken.
@@ -140,6 +144,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             tracker,
             documentProducers,
             initialPageSize,
+            useGlobalTop,
             queryMetricMap,
             clientSideRequestStatistics);
     }
