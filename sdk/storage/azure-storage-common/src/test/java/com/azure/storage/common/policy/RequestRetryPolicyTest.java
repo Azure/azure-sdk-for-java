@@ -8,30 +8,54 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.SharedExecutorService;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link RequestRetryPolicy}.
  */
+@Isolated
 public class RequestRetryPolicyTest {
     static RequestRetryOptions retryTestOptions
         = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 4, 2, 100L, 1000L, "SecondaryHost");
@@ -150,6 +175,374 @@ public class RequestRetryPolicyTest {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
         assertEquals(3, closeCalls.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    public void tryTimeoutStopsBlockingSyncRequest(int maxTries) {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, maxTries, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    attempts.incrementAndGet();
+                    return Mono.<HttpResponse>never().block(Duration.ofSeconds(10));
+                }
+            }).build();
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            RuntimeException error = Assertions.assertThrows(RuntimeException.class, () -> sendRequestSync(pipeline));
+            Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+            assertEquals(maxTries, attempts.get());
+        });
+    }
+
+    @Test
+    public void tryTimeoutRetriesBlockingSyncRequestSuccessfully() {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    if (attempts.incrementAndGet() == 1) {
+                        return Mono.<HttpResponse>never().block(Duration.ofSeconds(10));
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            }).build();
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            assertEquals(200, sendRequestSync(pipeline).getStatusCode());
+            assertEquals(2, attempts.get());
+        });
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    public void tryTimeoutStopsAsyncRequest(int maxTries) {
+        AtomicInteger attempts = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, maxTries, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    attempts.incrementAndGet();
+                    return Mono.never();
+                }
+            }).build();
+
+        StepVerifier.create(sendRequest(pipeline)).expectError(TimeoutException.class).verify(Duration.ofSeconds(5));
+        assertEquals(maxTries, attempts.get());
+    }
+
+    @Test
+    public void timedSyncRetriesKeepFileBackedBody(@TempDir Path directory) throws IOException {
+        Path file = directory.resolve("request.bin");
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        Files.write(file, payload);
+        assertTimedSyncRetriesKeepBody(BinaryData.fromFile(file));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void timedSyncRetriesKeepInMemoryBody(boolean bufferList) {
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        assertTimedSyncRetriesKeepBody(bufferList
+            ? BinaryData.fromListByteBuffer(Collections.singletonList(ByteBuffer.wrap(payload)))
+            : BinaryData.fromBytes(payload));
+    }
+
+    private static void assertTimedSyncRetriesKeepBody(BinaryData body) {
+        AtomicInteger attempts = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null)))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    Assertions.assertSame(body, request.getBodyAsBinaryData());
+                    return new MockHttpResponse(request, attempts.incrementAndGet() == 1 ? 503 : 200);
+                }
+            })
+            .build();
+        try (HttpResponse response
+            = pipeline.sendSync(new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(2, attempts.get());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void timedSyncAttemptDoesNotOccupySharedExecutor(boolean operationTimeout) {
+        SharedExecutorService shared = SharedExecutorService.getInstance();
+        ScheduledExecutorService previous = shared.getExecutorService();
+        ScheduledExecutorService singleWorker = Executors.newSingleThreadScheduledExecutor();
+        shared.setExecutorService(singleWorker);
+        try {
+            HttpPipeline pipeline = new HttpPipelineBuilder()
+                .policies(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 2, 1L, 1L, null)))
+                .httpClient(new NoOpHttpClient() {
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        // Model a transport that dispatches to Core's shared executor, as the JDK client does.
+                        if (!operationTimeout) {
+                            return StorageImplUtils.sendRequest(() -> new MockHttpResponse(request, 200),
+                                Duration.ofSeconds(3), IllegalStateException.class);
+                        }
+                        return new MockHttpResponse(request, 200);
+                    }
+                })
+                .build();
+            try (HttpResponse response = StorageImplUtils.sendRequest(() -> sendRequestSync(pipeline),
+                operationTimeout ? Duration.ofSeconds(3) : null, IllegalStateException.class)) {
+                assertEquals(200, response.getStatusCode());
+            }
+        } finally {
+            singleWorker.shutdownNow();
+            if (previous == null || previous.isShutdown()) {
+                shared.reset();
+            } else {
+                shared.setExecutorService(previous);
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 2, 3 })
+    public void timedSyncAttemptAfterStalledWorkers(int workerLimit) {
+        ThreadPoolExecutor executor = RequestRetryPolicy.createSyncAttemptExecutor(workerLimit);
+        CountDownLatch release = new CountDownLatch(1);
+        AtomicInteger sends = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 1, 1, 1L, 1L, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options, executor))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    if ("stalled".equals(request.getUrl().getHost())) {
+                        awaitIgnoringInterrupts(release);
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+        try {
+            for (int i = 0; i < 2; i++) {
+                RuntimeException error = Assertions.assertThrows(RuntimeException.class,
+                    () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://stalled/"), Context.NONE));
+                Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+            }
+            assertEquals(2, sends.get());
+            HttpRequest healthy = new HttpRequest(HttpMethod.GET, "http://healthy/");
+            if (workerLimit == 2) {
+                RejectedExecutionException error = Assertions.assertThrows(RejectedExecutionException.class,
+                    () -> pipeline.sendSync(healthy, Context.NONE));
+                Assertions.assertTrue(error.getMessage().contains("The worker limit is 2"));
+                assertEquals(2, sends.get());
+            } else {
+                try (HttpResponse response = pipeline.sendSync(healthy, Context.NONE)) {
+                    assertEquals(200, response.getStatusCode());
+                }
+                assertEquals(3, sends.get());
+            }
+        } finally {
+            release.countDown();
+            executor.shutdownNow();
+        }
+    }
+
+    @Test
+    public void timedSyncBodyPreparationTimesOutBeforeSending() {
+        CountDownLatch release = new CountDownLatch(1);
+        AtomicBoolean readStarted = new AtomicBoolean();
+        AtomicInteger sends = new AtomicInteger();
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1 }) {
+            @Override
+            public synchronized int read(byte[] bytes, int offset, int length) {
+                readStarted.set(true);
+                awaitIgnoringInterrupts(release);
+                return super.read(bytes, offset, length);
+            }
+        }, 1L);
+        Assertions.assertTrue(body.isReplayable());
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    return new MockHttpResponse(request, 200);
+                }
+            }).build();
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(4), () -> {
+                HttpRequest request = new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body);
+                RuntimeException error
+                    = Assertions.assertThrows(RuntimeException.class, () -> pipeline.sendSync(request, Context.NONE));
+                Assertions.assertInstanceOf(TimeoutException.class, Exceptions.unwrap(error));
+                Assertions.assertTrue(readStarted.get());
+                assertEquals(0, sends.get());
+            });
+        } finally {
+            release.countDown();
+        }
+    }
+
+    @Test
+    public void timedSyncAttemptPropagatesFatalErrorWithoutRetrying() {
+        LinkageError failure = new LinkageError("transport linkage failure");
+        AtomicInteger sends = new AtomicInteger();
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 1, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    sends.incrementAndGet();
+                    throw failure;
+                }
+            }).build();
+        Assertions.assertSame(failure, Assertions.assertThrows(LinkageError.class, () -> sendRequestSync(pipeline)));
+        assertEquals(1, sends.get());
+    }
+
+    @Test
+    public void timedOutSyncAttemptHasIndependentBodyReader() {
+        byte[] payload = "request payload".getBytes(StandardCharsets.UTF_8);
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicReference<byte[]> firstPayload = new AtomicReference<>();
+        CountDownLatch releaseFirstReader = new CountDownLatch(1);
+        CountDownLatch firstReaderFinished = new CountDownLatch(1);
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options)).httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    int attempt = attempts.incrementAndGet();
+                    try (InputStream reader = request.getBodyAsBinaryData().toStream()) {
+                        if (attempt == 1) {
+                            byte[] actual = new byte[payload.length];
+                            actual[0] = (byte) reader.read();
+                            awaitIgnoringInterrupts(releaseFirstReader);
+                            int offset = 1;
+                            int read;
+                            while (offset < actual.length
+                                && (read = reader.read(actual, offset, actual.length - offset)) != -1) {
+                                offset += read;
+                            }
+                            firstPayload.set(java.util.Arrays.copyOf(actual, offset));
+                            firstReaderFinished.countDown();
+                        } else {
+                            Assertions.assertArrayEquals(payload, BinaryData.fromStream(reader).toBytes());
+                            releaseFirstReader.countDown();
+                            awaitIgnoringInterrupts(firstReaderFinished);
+                        }
+                        return new MockHttpResponse(request, 200);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }
+            }).build();
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(payload), (long) payload.length);
+        Assertions.assertTrue(body.isReplayable(), "The source must exercise the mark/reset replayable stream path");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, "http://localhost/").setBody(body);
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(8), () -> {
+                try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+                    assertEquals(200, response.getStatusCode());
+                    assertEquals(2, attempts.get());
+                    Assertions.assertArrayEquals(payload, firstPayload.get());
+                }
+            });
+        } finally {
+            releaseFirstReader.countDown();
+        }
+    }
+
+    @Test
+    public void timedOutSyncAttemptDoesNotModifyRetryAndClosesLateResponse() {
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicInteger closeCalls = new AtomicInteger();
+        CountDownLatch releaseFirstAttempt = new CountDownLatch(1);
+        CountDownLatch lateResponseClosed = new CountDownLatch(1);
+        HttpPipelinePolicy blockingPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                int attempt = attempts.incrementAndGet();
+                if (attempt == 1) {
+                    // Model a policy that resumes after cancellation, such as a non-interruptible token-cache lock.
+                    awaitIgnoringInterrupts(releaseFirstAttempt);
+                    context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, "first");
+                    context.setData("attempt", "first");
+                } else {
+                    context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, "second");
+                    context.setData("attempt", "second");
+                    releaseFirstAttempt.countDown();
+                    awaitIgnoringInterrupts(lateResponseClosed);
+                    assertEquals("second",
+                        context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+                    assertEquals("second", context.getData("attempt").orElse(null));
+                }
+                return next.processSync();
+            }
+        };
+        RequestRetryOptions options = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1L, 1L, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(options), blockingPolicy)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    if ("first".equals(context.getData("attempt").orElse(null))) {
+                        return new MockHttpResponse(request, 200) {
+                            @Override
+                            public void close() {
+                                closeCalls.incrementAndGet();
+                                super.close();
+                                lateResponseClosed.countDown();
+                            }
+                        };
+                    }
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(8), () -> {
+                HttpResponse response = sendRequestSync(pipeline);
+                assertEquals("second", response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+                assertEquals(2, attempts.get());
+                assertEquals(1, closeCalls.get());
+                response.close();
+            });
+        } finally {
+            releaseFirstAttempt.countDown();
+        }
+    }
+
+    private static void awaitIgnoringInterrupts(CountDownLatch latch) {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        boolean interrupted = false;
+        try {
+            while (true) {
+                try {
+                    Assertions.assertTrue(latch.await(Math.max(0, deadline - System.nanoTime()), TimeUnit.NANOSECONDS),
+                        "Timed out waiting for the other attempt");
+                    return;
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                }
+            }
+        } finally {
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     @Test

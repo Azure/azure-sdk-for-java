@@ -24,6 +24,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpPipelinePolicyTests {
 
@@ -57,6 +60,53 @@ public class HttpPipelinePolicyTests {
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(0, policy2.asyncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
+    }
+
+    @Test
+    public void cloneSyncPolicyWithIndependentContext() {
+        AtomicInteger downstreamCalls = new AtomicInteger();
+        HttpPipelinePolicy cloningPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                HttpRequest originalRequest = context.getHttpRequest();
+                HttpRequest attemptRequest = originalRequest.copy();
+                assertThrows(NullPointerException.class, () -> next.clone(null, Context.NONE));
+                assertThrows(NullPointerException.class, () -> next.clone(attemptRequest, null));
+                next.clone(attemptRequest, context.getContext().addData("attempt", "clone")).processSync();
+                assertSame(originalRequest, context.getHttpRequest());
+                assertEquals("original", context.getData("attempt").orElse(null));
+                return next.clone().processSync();
+            }
+        };
+        HttpPipelinePolicy downstreamPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                downstreamCalls.incrementAndGet();
+                if ("clone".equals(context.getData("attempt").orElse(null))) {
+                    HttpRequest request = context.getHttpRequest();
+                    context.setHttpRequest(request.copy());
+                    assertNotSame(request, context.getHttpRequest());
+                    context.setData("attempt", "changed");
+                }
+                return next.processSync();
+            }
+        };
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(cloningPolicy, downstreamPolicy)
+            .build();
+        pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/"),
+            Context.NONE.addData("attempt", "original"));
+        assertEquals(2, downstreamCalls.get());
     }
 
     @Test

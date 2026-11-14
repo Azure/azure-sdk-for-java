@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
+import com.azure.core.util.Context;
 
 /**
  * <p>A class that invokes the next policy in the HTTP pipeline in a synchronous manner.</p>
@@ -62,6 +63,20 @@ public class HttpPipelineNextSyncPolicy {
     @Override
     public HttpPipelineNextSyncPolicy clone() {
         return new HttpPipelineNextSyncPolicy(this.state.clone());
+    }
+
+    /**
+     * Creates a new instance at the same pipeline position with an independent call context.
+     * The supplied request and context values are not deep-copied. Callers running chains concurrently should
+     * supply independent requests and ensure that shared context values support concurrent access.
+     *
+     * @param request The request for the cloned chain.
+     * @param context The context data for the cloned chain.
+     * @return A new instance with its own call context.
+     * @throws NullPointerException If {@code request} or {@code context} is null.
+     */
+    public HttpPipelineNextSyncPolicy clone(HttpRequest request, Context context) {
+        return new HttpPipelineNextSyncPolicy(this.state.clone(new HttpPipelineCallContext(request, context)));
     }
 
     /**

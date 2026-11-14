@@ -8,7 +8,13 @@
 
 ### Bugs Fixed
 
+- Fixed synchronous Storage clients ignoring the per-attempt timeout configured in `RequestRetryOptions`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.61.0` to `1.62.0-beta.1`.
 
 ## 12.37.0-beta.1 (2026-11-05)
 
