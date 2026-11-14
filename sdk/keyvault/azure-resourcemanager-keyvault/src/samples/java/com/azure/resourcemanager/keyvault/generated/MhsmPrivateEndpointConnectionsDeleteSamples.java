@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class MhsmPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15/ManagedHsm_deletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-10-01-preview/ManagedHsm_deletePrivateEndpointConnection.json
      */
     /**
      * Sample code: ManagedHsmDeletePrivateEndpointConnection.

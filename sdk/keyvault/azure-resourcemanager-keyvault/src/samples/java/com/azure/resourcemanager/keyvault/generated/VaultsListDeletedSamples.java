@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class VaultsListDeletedSamples {
     /*
-     * x-ms-original-file: 2026-05-15/listDeletedVaults.json
+     * x-ms-original-file: 2026-10-01-preview/listDeletedVaults.json
      */
     /**
      * Sample code: List deleted vaults in the specified subscription.

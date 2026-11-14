@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-15/getVault.json
+     * x-ms-original-file: 2026-10-01-preview/getVault.json
      */
     /**
      * Sample code: Retrieve a vault.

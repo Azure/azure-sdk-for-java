@@ -11,7 +11,7 @@ import com.azure.resourcemanager.keyvault.models.CheckMhsmNameAvailabilityParame
  */
 public final class ManagedHsmsCheckMhsmNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-05-15/ManagedHsm_checkMhsmNameAvailability.json
+     * x-ms-original-file: 2026-10-01-preview/ManagedHsm_checkMhsmNameAvailability.json
      */
     /**
      * Sample code: Validate a managed hsm name.

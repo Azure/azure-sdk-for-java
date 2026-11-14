@@ -18,6 +18,11 @@ import java.util.Map;
 @Fluent
 public final class VaultPatchParameters implements JsonSerializable<VaultPatchParameters> {
     /*
+     * Managed service identity assigned to the vault.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The tags that will be assigned to the key vault.
      */
     private Map<String, String> tags;
@@ -31,6 +36,26 @@ public final class VaultPatchParameters implements JsonSerializable<VaultPatchPa
      * Creates an instance of VaultPatchParameters class.
      */
     public VaultPatchParameters() {
+    }
+
+    /**
+     * Get the identity property: Managed service identity assigned to the vault.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity assigned to the vault.
+     * 
+     * @param identity the identity value to set.
+     * @return the VaultPatchParameters object itself.
+     */
+    public VaultPatchParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -79,6 +104,9 @@ public final class VaultPatchParameters implements JsonSerializable<VaultPatchPa
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }
@@ -90,6 +118,7 @@ public final class VaultPatchParameters implements JsonSerializable<VaultPatchPa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
@@ -110,7 +139,9 @@ public final class VaultPatchParameters implements JsonSerializable<VaultPatchPa
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
+                if ("identity".equals(fieldName)) {
+                    deserializedVaultPatchParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVaultPatchParameters.tags = tags;
                 } else if ("properties".equals(fieldName)) {
