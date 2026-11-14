@@ -1,0 +1,62 @@
+parameters:
+  - name: kind
+    type: string
+    values:
+      - base
+      - target
+  - name: requestMode
+    type: string
+    values:
+      - create
+      - update
+  - name: repositoryOwner
+    type: string
+    default: Azure
+  - name: ref
+    type: string
+  - name: packageName
+    type: string
+  - name: operationId
+    type: string
+  - name: poolName
+    type: string
+    default: azsdk-pool
+  - name: imageOverride
+    type: string
+    default: ubuntu-24.04
+
+jobs:
+  - template: /eng/common/pipelines/templates/jobs/apireview-hub-generate-artifact-base.yml
+    parameters:
+      ${{ if eq(parameters.kind, 'base') }}:
+        jobName: GenerateBase
+      ${{ if eq(parameters.kind, 'target') }}:
+        jobName: GenerateTarget
+      kind: ${{ parameters.kind }}
+      requestMode: ${{ parameters.requestMode }}
+      language: java
+      repositoryFullName: ${{ format('{0}/{1}', parameters.repositoryOwner, 'azure-sdk-for-java') }}
+      ref: ${{ parameters.ref }}
+      packageName: ${{ parameters.packageName }}
+      operationId: ${{ parameters.operationId }}
+      poolName: ${{ parameters.poolName }}
+      imageOverride: ${{ parameters.imageOverride }}
+      stepList:
+        - task: JavaToolInstaller@0
+          displayName: Use Java 11
+          inputs:
+            versionSpec: '11'
+            jdkArchitectureOption: x64
+            jdkSourceOption: PreInstalled
+        - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
+        - task: PowerShell@2
+          displayName: Generate ${{ parameters.kind }} Java API review bundle
+          inputs:
+            targetType: filePath
+            filePath: $(BinDirectory)/Generate-ApiReviewArtifact.ps1
+            arguments: >-
+              -RepositoryRoot "$(Build.SourcesDirectory)"
+              -PackageName "${{ parameters.packageName }}"
+              -ToolJar "$(BinDirectory)/api-review-maven-plugin-1.0.0-beta.1.jar"
+              -OutputDirectory "$(ArtifactOutputDirectory)"
+            pwsh: true
