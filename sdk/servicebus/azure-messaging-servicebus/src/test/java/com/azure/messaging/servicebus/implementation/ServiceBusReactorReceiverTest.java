@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -42,7 +43,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSes
 import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.SESSION_FILTER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -92,6 +95,13 @@ class ServiceBusReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
+        when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        reactorReceiver = createReceiver();
+    }
+
+    private ServiceBusReactorReceiver createReceiver() {
         ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, "", LINK_NAME, "", null) {
             @Override
             public Flux<Delivery> getDeliveredMessages() {
@@ -104,11 +114,7 @@ class ServiceBusReactorReceiverTest {
             }
         };
 
-        when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
-
-        when(connection.getShutdownSignals()).thenReturn(Flux.never());
-
-        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver,
+        return new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver,
             new ReceiveLinkHandlerWrapper(receiveLinkHandler), tokenManager, reactorDispatcher, retryOptions);
     }
 
@@ -118,6 +124,20 @@ class ServiceBusReactorReceiverTest {
 
         openMocks.close();
         Mockito.framework().clearInlineMock(this);
+    }
+
+    @Test
+    void closesReceiverWhenConnectionShutdownIsReplayed() throws IOException {
+        Sinks.One<AmqpShutdownSignal> shutdown = Sinks.one();
+        shutdown.emitValue(new AmqpShutdownSignal(false, false, "Connection shutdown."),
+            Sinks.EmitFailureHandler.FAIL_FAST);
+        when(connection.getShutdownSignals()).thenReturn(shutdown.asMono().flux());
+        doThrow(new IOException("Dispatcher closed")).when(reactorDispatcher).invoke(any());
+
+        createReceiver();
+
+        verify(receiver).close();
+        verify(receiver).free();
     }
 
     /**

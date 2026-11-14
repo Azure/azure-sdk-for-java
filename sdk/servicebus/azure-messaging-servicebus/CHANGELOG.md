@@ -18,6 +18,8 @@
 
 ### Bugs Fixed
 
+- Fixed a receive link initialization race when the AMQP connection has already shut down. ([#51163](https://github.com/Azure/azure-sdk-for-java/issues/51163))
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
