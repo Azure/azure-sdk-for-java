@@ -475,10 +475,15 @@ public final class EventHubBufferedProducerClientBuilder
     }
 
     /**
-     * The amount of time to wait for a batch to be built with events in the buffer before publishing a partially full
-     * batch.
+     * The maximum time to wait for a partially full batch to be built, measured from the first event added to that
+     * batch. Adding more events to the same batch does not restart this wait. After a batch is published, including
+     * when it is full or explicitly flushed, the next batch starts its own wait when its first event is added.
      *
-     * @param maxWaitTime The amount of time to wait.
+     * <p>This interval controls batch building, not the time from enqueueing an event to service acknowledgement.
+     * Events may wait in the buffer before being added to a batch. Scheduling delays, queued or in-progress sends,
+     * and retries can also delay publication or acknowledgement.</p>
+     *
+     * @param maxWaitTime The maximum time to wait for building a partially full batch.
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
