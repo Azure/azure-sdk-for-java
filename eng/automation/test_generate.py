@@ -3,8 +3,14 @@ import os
 import shutil
 import tempfile
 import unittest
+from contextlib import ExitStack
+from unittest.mock import patch
+
 import yaml
 
+import generate
+import generate_data
+import generate_utils
 from generate import update_revapi_skip
 from generate_utils import should_remove_generated_source_code
 from utils import is_first_release, update_ci_path_filters, update_service_files_for_new_lib
@@ -380,6 +386,100 @@ class TestUpdateServiceFilesForNewLib(unittest.TestCase):
         self.assertEqual(
             updated_ci_yml["extends"]["parameters"]["Artifacts"][0]["name"], self.module
         )
+
+
+class TestApiReviewArtifacts(unittest.TestCase):
+
+    def test_collects_maven_generated_bundle_without_running_a_command(self):
+        with tempfile.TemporaryDirectory(prefix="api markdown ") as root:
+            folder = os.path.join("sdk", "example", "azure-example")
+            package = os.path.join(root, folder)
+            os.makedirs(package)
+            for filename in ("api.md", "api.metadata.yml"):
+                with open(os.path.join(package, filename), "w") as output:
+                    output.write("generated")
+
+            with patch("generate_utils.subprocess.check_call") as command:
+                artifacts = generate_utils.get_api_review_artifacts(root, folder)
+            self.assertEqual(
+                ["sdk/example/azure-example/api.md", "sdk/example/azure-example/api.metadata.yml"],
+                artifacts,
+            )
+            command.assert_not_called()
+
+    def test_rejects_an_incomplete_review_bundle(self):
+        for missing in ("api.md", "api.metadata.yml"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root:
+                present = "api.md" if missing == "api.metadata.yml" else "api.metadata.yml"
+                with open(os.path.join(root, present), "w"):
+                    pass
+                with patch("generate_utils.subprocess.check_call"):
+                    with self.assertRaisesRegex(RuntimeError, "API review file was not produced"):
+                        generate_utils.get_api_review_artifacts(root, ".")
+
+    def _generate_project(self, management, compiled=True, fallback=False):
+        module = generate if management else generate_data
+        folder = "sdk/example/azure-example"
+        api_path = folder + "/api.md"
+        metadata_path = folder + "/api.metadata.yml"
+        sources = folder + "/target/azure-example-1.0.0-sources.jar"
+        config = {
+            "specFolder": tempfile.gettempdir(),
+            "headSha": "test",
+            "repoHttpsUrl": "https://github.com/Azure/azure-rest-api-specs",
+            "sdkReleaseType": "beta",
+        }
+        if fallback:
+            config["runMode"] = "spec-pull-request"
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(
+                module, "generate_typespec_project",
+                return_value=(True, False, folder, "example", "azure-example"),
+            ))
+            stack.enter_context(patch.object(
+                module, "compile_arm_package" if management else "compile_package",
+                side_effect=[False, True] if fallback else [compiled],
+            ))
+            stack.enter_context(patch.object(
+                module, "set_or_increase_version" if management else "set_or_default_version",
+                return_value=("1.0.0", "1.1.0-beta.1"),
+            ))
+            stack.enter_context(patch.object(module, "compare_with_maven_package", return_value=(False, "", [])))
+            stack.enter_context(patch.object(module, "get_latest_ga_version", return_value="1.0.0"))
+            stack.enter_context(patch.object(module.glob, "glob", return_value=[sources]))
+            collector = stack.enter_context(patch.object(
+                module, "get_api_review_artifacts", return_value=[api_path, metadata_path],
+            ))
+            if management:
+                for name in ("update_version", "update_revapi_skip", "update_changelog_version"):
+                    stack.enter_context(patch.object(module, name))
+                stack.enter_context(patch.object(module, "get_latest_release_version", return_value="1.0.0"))
+            else:
+                stack.enter_context(patch.object(module, "clean_sdk_folder", return_value=True))
+            result = module.sdk_automation_typespec_project("specification/example", config)
+            if compiled or fallback:
+                collector.assert_called_once()
+                self.assertIn(api_path, result["artifacts"])
+                self.assertIn(metadata_path, result["artifacts"])
+                self.assertEqual(sources, result["apiViewArtifact"])
+                self.assertEqual("succeeded", result["result"])
+            else:
+                collector.assert_not_called()
+                self.assertEqual([], result["artifacts"])
+                self.assertEqual("failed", result["result"])
+
+    def test_both_generation_flows_include_maven_generated_review_files(self):
+        for management in (False, True):
+            with self.subTest(management=management):
+                self._generate_project(management)
+
+    def test_failed_builds_do_not_collect_review_files(self):
+        for management in (False, True):
+            with self.subTest(management=management):
+                self._generate_project(management, compiled=False)
+
+    def test_data_plane_fallback_includes_markdown(self):
+        self._generate_project(False, fallback=True)
 
 
 if __name__ == "__main__":
