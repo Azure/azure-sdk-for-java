@@ -72,6 +72,8 @@ public class PartitionProcessorImplTests {
         CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
         ProcessorSettings processorSettings = new ProcessorSettings(initialChangeFeedState, containerMock);
         processorSettings.withMaxItemCount(10);
+        processorSettings.withQuery("SELECT * FROM c WHERE c.age > 5");
+        processorSettings.withFeedPollDelay(Duration.ZERO);
 
         // Setup lease and checkpointer mocks
         Lease leaseMock = Mockito.mock(ServiceItemLease.class);
@@ -99,7 +101,7 @@ public class PartitionProcessorImplTests {
 
         // Checkpointing mock setup
         final ChangeFeedState continuationState = ChangeFeedState.fromString(lastContinuationToken);
-        Mockito.when(partitionCheckpointer.checkpointPartition(continuationState))
+        Mockito.when(partitionCheckpointer.checkpointPartition(Mockito.any()))
             .thenReturn(Mono.empty());
 
         // Create processor
@@ -114,6 +116,10 @@ public class PartitionProcessorImplTests {
         StepVerifier
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
             .verifyComplete();
+
+        Mockito.verify(changeFeedContextClientMock, Mockito.times(2)).createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.argThat(options -> processorSettings.getQuery().equals(options.getQuery())),
+            Mockito.any());
 
         if (shouldDoCheckpoint) {
             // Verify checkpoint was called since continuation token changed

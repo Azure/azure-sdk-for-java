@@ -44,6 +44,27 @@ public class ReadmeSamples {
         // END: readme-sample-createCosmosAsyncClient
     }
 
+    public void filteredChangeFeed() {
+        // BEGIN: readme-sample-filteredChangeFeed
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange())
+            .setQuery("SELECT * FROM c WHERE c.age > 5");
+        for (FeedResponse<Object> page : cosmosContainer.queryChangeFeed(options, Object.class).iterableByPage()) {
+            List<Object> matchingChanges = page.getResults();
+            String continuation = page.getContinuationToken();
+            // Process matchingChanges and persist continuation, even when matchingChanges is empty.
+        }
+        // END: readme-sample-filteredChangeFeed
+    }
+
+    public void filteredChangeFeedProcessorOptions() {
+        // BEGIN: readme-sample-filteredChangeFeedProcessorOptions
+        ChangeFeedProcessorOptions processorOptions = new ChangeFeedProcessorOptions()
+            .setLeasePrefix("age-filter-v1")
+            .setQuery("SELECT * FROM c WHERE c.age > 5");
+        // END: readme-sample-filteredChangeFeedProcessorOptions
+    }
+
     public void createCosmosClient() {
         // BEGIN: readme-sample-createCosmosClient
         CosmosClient cosmosClient = new CosmosClientBuilder()

@@ -144,6 +144,81 @@ The following section provides several code snippets covering some of the most c
 * [Create Database](#create-database)
 * [Create Container](#create-container)
 * [CRUD operation on Items](#crud-operation-on-items)
+* [Query-filtered change feed](#query-filtered-change-feed)
+
+### Query-filtered change feed
+
+The query-filtering APIs are in preview. Set `CosmosChangeFeedRequestOptions.setQuery(String)` for synchronous or asynchronous pull reads,
+or `ChangeFeedProcessorOptions.setQuery(String)` for a processor. This feature requires a Cosmos DB
+service deployment that supports query-filtered change feed through the Query Documents POST API;
+SDK support alone does not enable backend evaluation. All-versions-and-deletes mode also requires
+the account and container prerequisites for that mode.
+Gateway sends a Query Documents POST with the query JSON body. Direct encodes the equivalent native
+ReadFeed operation with the same query payload and change feed mode; it does not use ordinary query paging.
+All-versions-and-deletes mode retains its existing Gateway routing.
+
+A filtered response must include an ETag representing physical change feed progress. If it is missing,
+the SDK fails explicitly rather than substituting an ordinary document-query continuation or treating
+the response as the end of the feed.
+
+```java readme-sample-filteredChangeFeed
+CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+    .createForProcessingFromBeginning(FeedRange.forFullRange())
+    .setQuery("SELECT * FROM c WHERE c.age > 5");
+for (FeedResponse<Object> page : cosmosContainer.queryChangeFeed(options, Object.class).iterableByPage()) {
+    List<Object> matchingChanges = page.getResults();
+    String continuation = page.getContinuationToken();
+    // Process matchingChanges and persist continuation, even when matchingChanges is empty.
+}
+```
+
+The same options can be passed to `CosmosAsyncContainer.queryChangeFeed(...).byPage()`.
+For all-versions-and-deletes mode, use `allVersionsAndDeletes()` with an appropriate start position
+within the retained history, such as `createForProcessingFromNow(...)`, instead of starting from
+the beginning. For a processor, pass filtered options to `ChangeFeedProcessorBuilder.options(...)`:
+
+```java readme-sample-filteredChangeFeedProcessorOptions
+ChangeFeedProcessorOptions processorOptions = new ChangeFeedProcessorOptions()
+    .setLeasePrefix("age-filter-v1")
+    .setQuery("SELECT * FROM c WHERE c.age > 5");
+```
+
+The supported shape is `SELECT * FROM c` with optional single-document `WHERE` predicates,
+including equality and range comparisons, array expressions, computed properties, supported system
+functions, and UDFs. Projections, altered SELECT clauses (including TOP and DISTINCT), other root
+sources or aliases, JOIN, subqueries, ORDER BY, GROUP BY, OFFSET LIMIT, SKIP/TAKE, aggregations,
+parameterized queries, and multi-document evaluation are unsupported. SQL is passed unchanged to
+the service, which validates it and returns HTTP 400 for malformed or unsupported queries.
+The SDK neither parses SQL nor substitutes client-side filtering.
+
+Only a matching **current image** causes inclusion, in either mode. Previous-image matches do not
+cause a record to be included; previous-image evaluation is not a public option. In particular,
+do not rely on this filter to observe a transition out of a matching state or a deletion based on
+the deleted item's previous image. Null or an empty query retains the existing unfiltered GET path.
+Whitespace-only query text is sent to the service for validation, not silently treated as absent.
+The SDK does not send an empty POST body.
+
+Pull continuation tokens represent **physical feed progress**, not the query. A saved token can be
+resumed with a different query using `createForProcessingFromContinuation(...)` or `byPage(token)`;
+reapply the desired query to the request options. Filtering can return consecutive empty pages,
+including pages caused by response-size preemption. Do not stop because a page has no results:
+retain its continuation and let normal change feed paging determine when the feed is drained.
+If an empty successful filtered page fails to advance its continuation, the SDK fails explicitly
+instead of repeatedly reading the same page.
+
+A processor captures its query when built and persists a SHA-256 fingerprint of the exact SQL
+text in its lease configuration, without persisting SQL. Restarting with a different query,
+including whitespace/casing changes or adding/removing a filter, fails clearly. Build a new
+processor with a **new lease prefix or lease container** to change the filter; a new processor
+instance alone does not reset existing leases. Existing unfiltered leases remain compatible.
+All hosts sharing filtered leases must use an SDK version that supports filter identity checking;
+do not mix older processor versions into that lease namespace.
+
+The estimator still counts outstanding **physical changes**, not matching changes. Predicate
+evaluation is not index-backed in this initial scope and adds server CPU and evaluation latency.
+Filtered reads can be slower than unfiltered reads, scan more records than they return, and
+produce more empty pages. Normal retries, cancellation, routing, mode headers, and diagnostics
+remain in effect. The SDK does not add query text or document contents to logs or lease metadata.
 
 ### Create Cosmos Client
 ```java readme-sample-createCosmosClient2

@@ -67,6 +67,35 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /**
+     * Gets the SQL predicate query used to filter change feed records.
+     *
+     * @return the query, or null when filtering is disabled.
+     */
+    @Beta(Beta.SinceVersion.V4_84_0)
+    public String getQuery() {
+        return this.actualRequestOptions.getQuery();
+    }
+
+    /**
+     * Sets a service-evaluated query of the form {@code SELECT * FROM c WHERE ...}.
+     * Only the current image is evaluated, in both latest-version and all-versions-and-deletes modes.
+     * Projections, JOIN, subqueries, sorting, grouping, aggregations, TOP, DISTINCT, OFFSET LIMIT,
+     * and parameterized queries are not supported. The service validates SQL and returns HTTP 400
+     * for unsupported queries. Queries are not evaluated using the index and may increase latency.
+     * Null or an empty string disables filtering; whitespace-only SQL is sent to the service for validation.
+     * Continuation tokens track physical progress, not the query, and can be resumed with a different query.
+     * An empty result page does not necessarily mean that the feed has been drained.
+     *
+     * @param query the raw SQL query, or null or an empty string to disable filtering.
+     * @return the current request options.
+     */
+    @Beta(Beta.SinceVersion.V4_84_0)
+    public CosmosChangeFeedRequestOptions setQuery(String query) {
+        this.actualRequestOptions.setQuery(query);
+        return this;
+    }
+
+    /**
      * Gets the maximum number of items to be returned in the enumeration
      * operation.
      *
