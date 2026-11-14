@@ -13,16 +13,16 @@ public final class SkipTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkipTarget model
-            = BinaryData.fromString("{\"type\":\"AfterStageWait\",\"name\":\"nyfln\"}").toObject(SkipTarget.class);
-        Assertions.assertEquals(TargetType.AFTER_STAGE_WAIT, model.type());
-        Assertions.assertEquals("nyfln", model.name());
+            = BinaryData.fromString("{\"type\":\"Stage\",\"name\":\"qqxhrnxrxcpj\"}").toObject(SkipTarget.class);
+        Assertions.assertEquals(TargetType.STAGE, model.type());
+        Assertions.assertEquals("qqxhrnxrxcpj", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkipTarget model = new SkipTarget().withType(TargetType.AFTER_STAGE_WAIT).withName("nyfln");
+        SkipTarget model = new SkipTarget().withType(TargetType.STAGE).withName("qqxhrnxrxcpj");
         model = BinaryData.fromObject(model).toObject(SkipTarget.class);
-        Assertions.assertEquals(TargetType.AFTER_STAGE_WAIT, model.type());
-        Assertions.assertEquals("nyfln", model.name());
+        Assertions.assertEquals(TargetType.STAGE, model.type());
+        Assertions.assertEquals("qqxhrnxrxcpj", model.name());
     }
 }

@@ -14,20 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SkipPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkipProperties model = BinaryData.fromString(
-            "{\"targets\":[{\"type\":\"Group\",\"name\":\"eekulfgslqubkwd\"},{\"type\":\"Member\",\"name\":\"nrdsutujbazpjuoh\"}]}")
-            .toObject(SkipProperties.class);
-        Assertions.assertEquals(TargetType.GROUP, model.targets().get(0).type());
-        Assertions.assertEquals("eekulfgslqubkwd", model.targets().get(0).name());
+        SkipProperties model
+            = BinaryData.fromString("{\"targets\":[{\"type\":\"AfterStageWait\",\"name\":\"tgzukxitmmqt\"}]}")
+                .toObject(SkipProperties.class);
+        Assertions.assertEquals(TargetType.AFTER_STAGE_WAIT, model.targets().get(0).type());
+        Assertions.assertEquals("tgzukxitmmqt", model.targets().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkipProperties model = new SkipProperties()
-            .withTargets(Arrays.asList(new SkipTarget().withType(TargetType.GROUP).withName("eekulfgslqubkwd"),
-                new SkipTarget().withType(TargetType.MEMBER).withName("nrdsutujbazpjuoh")));
+        SkipProperties model = new SkipProperties().withTargets(
+            Arrays.asList(new SkipTarget().withType(TargetType.AFTER_STAGE_WAIT).withName("tgzukxitmmqt")));
         model = BinaryData.fromObject(model).toObject(SkipProperties.class);
-        Assertions.assertEquals(TargetType.GROUP, model.targets().get(0).type());
-        Assertions.assertEquals("eekulfgslqubkwd", model.targets().get(0).name());
+        Assertions.assertEquals(TargetType.AFTER_STAGE_WAIT, model.targets().get(0).type());
+        Assertions.assertEquals("tgzukxitmmqt", model.targets().get(0).name());
     }
 }

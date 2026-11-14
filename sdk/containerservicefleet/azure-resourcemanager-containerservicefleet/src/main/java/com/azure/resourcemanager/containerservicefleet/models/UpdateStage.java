@@ -43,6 +43,21 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     private Integer afterStageWaitInSeconds;
 
     /*
+     * Limits the number of member (cluster) upgrade failures tolerated within this stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n >= 0
+     * • A percentage p%, where 0 <= p <= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --> up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the entire
+     * stage to fail.
+     * • "25%" --> up to 25% of the members in this stage can fail their upgrade before the stage is considered failed.
+     */
+    private String maxAllowedFailures;
+
+    /*
      * The max number of upgrades that can run concurrently across all groups in this stage.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
      * at a time.
@@ -167,6 +182,50 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
+     * Get the maxAllowedFailures property: Limits the number of member (cluster) upgrade failures tolerated within this
+     * stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the
+     * entire stage to fail.
+     * • "25%" --&gt; up to 25% of the members in this stage can fail their upgrade before the stage is considered
+     * failed.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public String maxAllowedFailures() {
+        return this.maxAllowedFailures;
+    }
+
+    /**
+     * Set the maxAllowedFailures property: Limits the number of member (cluster) upgrade failures tolerated within this
+     * stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the
+     * entire stage to fail.
+     * • "25%" --&gt; up to 25% of the members in this stage can fail their upgrade before the stage is considered
+     * failed.
+     * 
+     * @param maxAllowedFailures the maxAllowedFailures value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withMaxAllowedFailures(String maxAllowedFailures) {
+        this.maxAllowedFailures = maxAllowedFailures;
+        return this;
+    }
+
+    /**
      * Get the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
      * stage.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
@@ -264,6 +323,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("memberSelector", this.memberSelector);
         jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        jsonWriter.writeStringField("maxAllowedFailures", this.maxAllowedFailures);
         jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
@@ -295,6 +355,8 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
                     deserializedUpdateStage.memberSelector = MemberSelector.fromJson(reader);
                 } else if ("afterStageWaitInSeconds".equals(fieldName)) {
                     deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateStage.maxAllowedFailures = reader.getString();
                 } else if ("maxConcurrency".equals(fieldName)) {
                     deserializedUpdateStage.maxConcurrency = reader.getString();
                 } else if ("beforeGates".equals(fieldName)) {

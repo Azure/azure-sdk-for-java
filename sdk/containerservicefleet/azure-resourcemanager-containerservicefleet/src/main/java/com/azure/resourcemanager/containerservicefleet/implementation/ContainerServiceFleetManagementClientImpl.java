@@ -35,6 +35,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.GatesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.IdentityBindingProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -220,6 +221,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The IdentityBindingProfilesClient object to access its operations.
+     */
+    private final IdentityBindingProfilesClient identityBindingProfiles;
+
+    /**
+     * Gets the IdentityBindingProfilesClient object to access its operations.
+     * 
+     * @return the IdentityBindingProfilesClient object.
+     */
+    public IdentityBindingProfilesClient getIdentityBindingProfiles() {
+        return this.identityBindingProfiles;
+    }
+
+    /**
      * The UpdateRunsClient object to access its operations.
      */
     private final UpdateRunsClient updateRuns;
@@ -292,13 +307,14 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-11-01";
+        this.apiVersion = "2026-11-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
         this.gates = new GatesClientImpl(this);
+        this.identityBindingProfiles = new IdentityBindingProfilesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
         this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);

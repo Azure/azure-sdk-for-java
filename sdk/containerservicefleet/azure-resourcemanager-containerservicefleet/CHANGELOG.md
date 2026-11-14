@@ -1,14 +1,68 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2026-11-13)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-11-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.IdentityBindingManagedIdentityProfile` was added
 
-### Bugs Fixed
+* `models.IdentityBindingProperties` was added
 
-### Other Changes
+* `models.IdentityBindingProfile$UpdateStages` was added
+
+* `models.IdentityBindingLabelSelector` was added
+
+* `models.IdentityBindingProfile` was added
+
+* `models.IdentityBindingProfiles` was added
+
+* `models.IdentityBindingOidcIssuerProfile` was added
+
+* `models.IdentityBindingProfile$Definition` was added
+
+* `models.IdentityBindingProfile$Update` was added
+
+* `models.IdentityBindingLabelSelectorRequirement` was added
+
+* `models.IdentityBindingProfileStatus` was added
+
+* `models.IdentityBindingProfileProvisioningState` was added
+
+* `models.IdentityBindingLabelSelectorOperator` was added
+
+* `models.IdentityBindingProfile$DefinitionStages` was added
+
+* `models.AllowedSubject` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `identityBindingProfiles()` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `failureCount()` was added
+* `maxAllowedFailures()` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `maxAllowedFailures()` was added
+* `failureCount()` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMaxAllowedFailures(java.lang.String)` was added
+* `maxAllowedFailures()` was added
+
+#### `models.UpdateRunStatus` was modified
+
+* `failureCount()` was added
+
+#### `models.UpdateStage` was modified
+
+* `withMaxAllowedFailures(java.lang.String)` was added
+* `maxAllowedFailures()` was added
 
 ## 1.4.0 (2026-11-11)
 
