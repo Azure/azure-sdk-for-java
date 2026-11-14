@@ -161,6 +161,7 @@ com.azure:azure-monitor-query-logs;1.1.1;1.2.0-beta.1
 com.azure:azure-monitor-query-metrics;1.1.1;1.2.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
+com.azure:apiview-java-processor;1.34.0;1.34.0
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-planetarycomputer;1.0.0;1.1.0-beta.1
 com.azure:azure-search-documents;12.2.0;12.3.0-beta.1

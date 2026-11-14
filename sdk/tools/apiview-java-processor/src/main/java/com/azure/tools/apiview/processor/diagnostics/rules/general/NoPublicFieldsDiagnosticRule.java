@@ -1,0 +1,28 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.tools.apiview.processor.diagnostics.rules.general;
+
+import com.azure.tools.apiview.processor.diagnostics.DiagnosticRule;
+import com.azure.tools.apiview.processor.model.ApiListing;
+import com.azure.tools.apiview.processor.model.Diagnostic;
+import com.github.javaparser.ast.CompilationUnit;
+
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPublicOrProtectedFields;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.makeId;
+import static com.azure.tools.apiview.processor.model.DiagnosticKind.ERROR;
+
+/**
+ * Checks no public fields conventions.
+ */
+public class NoPublicFieldsDiagnosticRule implements DiagnosticRule {
+
+    @Override
+    public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
+        getPublicOrProtectedFields(cu).filter(fieldDecl -> !fieldDecl.isStatic()).forEach(fieldDecl -> {
+            final String fieldId = makeId(fieldDecl);
+            listing.addDiagnostic(new Diagnostic(ERROR, fieldId,
+                "There should not be non-static public or protected fields in any class."));
+        });
+    }
+}
