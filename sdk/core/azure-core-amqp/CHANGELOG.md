@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Prevented token refresh cancellation during link closure or terminal authorization failure from interrupting shared connection dispatcher I/O.
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)
