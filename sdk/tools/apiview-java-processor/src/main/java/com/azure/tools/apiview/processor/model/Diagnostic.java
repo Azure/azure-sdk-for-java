@@ -5,6 +5,7 @@ package com.azure.tools.apiview.processor.model;
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
@@ -97,7 +98,7 @@ public class Diagnostic implements JsonSerializable<Diagnostic> {
             String targetId = null;
             DiagnosticKind level = null;
 
-            while (reader.nextToken() != null) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 

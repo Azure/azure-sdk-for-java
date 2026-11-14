@@ -12,6 +12,7 @@
 
 ### Bugs Fixed
 
+- Stop reading diagnostic JSON at its object boundary.
 - Report invalid builder parameter shapes as diagnostics instead of aborting API review generation.
 - Fail on source JAR processing errors instead of replacing API snapshots with incomplete output.
 - Preserve existing review bundles if generation fails after Maven cleanup.
