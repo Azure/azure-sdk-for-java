@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Header;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
@@ -160,6 +161,15 @@ public class ConnectionHandler extends Handler {
      */
     public int getMaxFrameSize() {
         return MAX_FRAME_SIZE;
+    }
+
+    /**
+     * Gets the headers from the client options associated with this connection.
+     *
+     * @return An {@link Iterable} of {@link Header} from the client options.
+     */
+    protected Iterable<Header> getHeaders() {
+        return connectionOptions.getClientOptions().getHeaders();
     }
 
     /**
