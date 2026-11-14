@@ -1,7 +1,7 @@
 ```java
 maven {
     parent : com.azure:azure-client-sdk-parent:1.7.0
-    properties : com.azure:azure-json:1.5.0
+    properties : com.azure:azure-json:1.6.0-beta.1
     configuration {
         jacoco {
             min-line-coverage : 0.8
