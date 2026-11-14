@@ -395,7 +395,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * @param errorCondition Error condition associated with close operation.
      * @return a {@link Mono} when subscribed attempt to initiate local-close, emitting {@code true}
      *     if local-close is scheduled on the dispatcher, emits {@code false} if unable to schedule
-     *     local-close that lead to manual close.
+     *     local-close and receiver cleanup proceeds without waiting for an acknowledgment.
      */
     private Mono<Boolean> beginClose(ErrorCondition errorCondition) {
         final Runnable localClose = () -> {
@@ -414,17 +414,14 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 dispatcher.invoke(localClose);
                 localCloseScheduled = true;
             } catch (IOException e) {
-                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
+                logger.warning("IO sink was closed when scheduling local close. Completing receiver cleanup.", e);
 
-                localClose.run();
                 terminateEndpointState();
                 completeClose();
             } catch (RejectedExecutionException e) {
                 // Not logging error here again because we have to log the exception when we throw it.
-                logger.info(
-                    "RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
+                logger.info("ReactorDispatcher rejected local close. Completing receiver cleanup.");
 
-                localClose.run();
                 terminateEndpointState();
                 completeClose();
             } finally {
@@ -498,7 +495,13 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         if (!isV2) {
             onHandlerClose();
         }
-        receiver.free();
+        try {
+            // Proton-J updates link and session reference counts while processing detach on the reactor thread.
+            dispatcher.invoke(receiver::free);
+        } catch (IOException | RejectedExecutionException e) {
+            // The owning session releases its links during connection teardown.
+            logger.verbose("Could not schedule receiver release on the reactor.", e);
+        }
         try {
             trackPrefetchSeqNoSubscription.close();
         } catch (Exception e) {
