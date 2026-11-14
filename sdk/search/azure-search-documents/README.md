@@ -575,7 +575,7 @@ The preview includes graph querying and diagnostics, knowledge source graph extr
 vector topic graph retrieval, automatic facet-backed filter hints, and random scoring.
 
 Use `SearchClient.graph` or `SearchAsyncClient.graph` with `GraphOptions` to query an existing graph index.
-For response headers and status, use `graphWithResponse`. A plan-only request must request at least one explain stage.
+A plan-only request must request at least one explain stage.
 See the [preview samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/PreviewSearchSamples.java).
 These APIs require a service that supports the preview; the samples do not provision resources.
 

@@ -1275,20 +1275,6 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Executes a graph query and returns its HTTP response and diagnostics.
-     *
-     * @param options the graph query and diagnostic options.
-     * @param requestOptions the HTTP request options.
-     * @return the graph result together with the HTTP response.
-     * @throws NullPointerException if options is null.
-     */
-    public Mono<Response<GraphQueryResult>> graphWithResponse(GraphOptions options, RequestOptions requestOptions) {
-        return SearchUtils
-            .mapResponse(hiddenGeneratedGraphWithResponse(BinaryData.fromObject(SearchUtils.fromGraphOptions(options)),
-                SearchUtils.addGraphHeaders(requestOptions, options)), GraphQueryResult.class);
-    }
-
-    /**
      * Retrieves a document from the index.
      *
      * @param key The key of the document to retrieve.

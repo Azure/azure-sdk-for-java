@@ -403,13 +403,14 @@ public class PreviewApiTests {
 
         assertGraphResult(builder.buildClient().graph(options));
         assertGraphResult(builder.buildAsyncClient().graph(options).block());
-        Response<GraphQueryResult> syncResponse = builder.buildClient().graphWithResponse(options, null);
-        assertEquals(200, syncResponse.getStatusCode());
-        assertGraphResult(syncResponse.getValue());
-        Response<GraphQueryResult> asyncResponse = builder.buildAsyncClient().graphWithResponse(options, null).block();
-        assertNotNull(asyncResponse);
-        assertEquals(200, asyncResponse.getStatusCode());
-        assertGraphResult(asyncResponse.getValue());
+    }
+
+    @Test
+    public void graphClientsDoNotExposeCustomResponseOverloads() {
+        assertThrows(NoSuchMethodException.class,
+            () -> SearchClient.class.getMethod("graphWithResponse", GraphOptions.class, RequestOptions.class));
+        assertThrows(NoSuchMethodException.class,
+            () -> SearchAsyncClient.class.getMethod("graphWithResponse", GraphOptions.class, RequestOptions.class));
     }
 
     private static void assertGraphResult(GraphQueryResult result) {

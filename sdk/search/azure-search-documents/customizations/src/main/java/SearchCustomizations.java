@@ -81,8 +81,6 @@ public class SearchCustomizations extends Customization {
                 async);
         }
 
-        addGraphResponseMethods(searchClient, false);
-        addGraphResponseMethods(searchAsyncClient, true);
         preservePagedSearchAuthorization(searchClient);
         preservePagedSearchAuthorization(searchAsyncClient);
         preserveScoringFunctionCompatibility(
@@ -355,29 +353,6 @@ public class SearchCustomizations extends Customization {
                         + "@param fieldName the field used as input.\n@param boost the score multiplier.\n"
                         + "@param parameters the scoring parameters."));
             }
-        }));
-    }
-
-    private static void addGraphResponseMethods(ClassCustomization customization, boolean async) {
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            String responseType = async ? "Mono<Response<GraphQueryResult>>" : "Response<GraphQueryResult>";
-            String converter = async ? "mapResponse" : "convertResponse";
-            if (clazz.getMethodsByName("graphWithResponse").isEmpty()) {
-                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
-                "public " + responseType
-                    + " graphWithResponse(GraphOptions options, RequestOptions requestOptions) {"
-                    + "return SearchUtils." + converter
-                    + "(hiddenGeneratedGraphWithResponse(BinaryData.fromObject(SearchUtils.fromGraphOptions(options)),"
-                    + "SearchUtils.addGraphHeaders(requestOptions, options)), GraphQueryResult.class); }"));
-            }
-            clazz.getMethodsByName("graphWithResponse")
-                .forEach(method -> method.getAllContainedComments().forEach(com.github.javaparser.ast.comments.Comment::remove));
-            clazz.getMethodsByName("graphWithResponse").forEach(method -> method.setJavadocComment(
-                "Executes a graph query and returns its HTTP response and diagnostics.\n"
-                    + "@param options the graph query and diagnostic options.\n"
-                    + "@param requestOptions the HTTP request options.\n"
-                    + "@return the graph result together with the HTTP response.\n"
-                    + "@throws NullPointerException if options is null."));
         }));
     }
 
