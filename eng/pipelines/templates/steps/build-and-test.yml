@@ -201,7 +201,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} -Dazure.core.amqp.source.tests=true ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
           exit $LASTEXITCODE
       env:
         # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
@@ -218,10 +218,11 @@ steps:
         mavenPomFile: ClientFromSourcePom.xml
         # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
         # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
+        # Enable AMQP recovery coverage only when the dependency is built from the same source.
         ${{ if eq(parameters.IsLiveTest, 'true') }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
+          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} -Dazure.core.amqp.source.tests=true ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
         ${{ else }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
+          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} -Dazure.core.amqp.source.tests=true ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaTestVersion)

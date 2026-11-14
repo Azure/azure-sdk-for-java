@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed sends hanging when their link closes during message encoding. ([#51120](https://github.com/Azure/azure-sdk-for-java/issues/51120))
+- Fixed cancelled sends that were still queued being transmitted later.
+- Fixed invalid duration metrics for sends rejected before transmission starts.
+
 ### Other Changes
 
 ## 2.13.0 (2026-10-27)
