@@ -1,0 +1,19 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/CHANGELOG.md b/sdk/contoso/azure-contoso-widgets/CHANGELOG.md
+new file mode 100644
+index 0000000..4444444
+--- /dev/null
++++ b/sdk/contoso/azure-contoso-widgets/CHANGELOG.md
+@@ -0,0 +1,14 @@
++# Release History
++
++## 1.0.0-beta.1 (Unreleased)
++
++Azure Widgets client library for Java.
++
++### Features Added
++
++### Breaking Changes
++
++### Features Added
++
++- Initial release of the Azure Widgets client library.
