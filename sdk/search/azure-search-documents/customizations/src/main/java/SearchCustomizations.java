@@ -46,7 +46,7 @@ public class SearchCustomizations extends Customization {
 
         ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
         includeOldApiVersions(serviceVersion);
-        removePreviewApiVersions(serviceVersion);
+        removeOldPreviewApiVersions(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
@@ -59,7 +59,6 @@ public class SearchCustomizations extends Customization {
 
         hideWithResponseBinaryDataApis(searchClient);
         hideWithResponseBinaryDataApis(searchAsyncClient);
-
         addGetDocumentOptionsToImpl(libraryCustomization.getPackage("com.azure.search.documents.implementation")
             .getClass("SearchClientImpl"));
         addTypedGetDocumentWithOptions(searchClient);
@@ -70,47 +69,344 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+        preserveUploadParameterOrder(indexes.getClass("SearchIndexClient"));
+        preserveUploadParameterOrder(indexes.getClass("SearchIndexAsyncClient"));
+        for (boolean async : Arrays.asList(false, true)) {
+            String suffix = async ? "AsyncClient" : "Client";
+            repairListingConvenience(indexes.getClass("SearchIndex" + suffix), "SynonymMaps", "SynonymMap", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "DataSourceConnections",
+                "SearchIndexerDataSourceConnection", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "Indexers", "SearchIndexer", async);
+            repairListingConvenience(indexes.getClass("SearchIndexer" + suffix), "Skillsets", "SearchIndexerSkillset",
+                async);
+        }
+
+        preservePagedSearchAuthorization(searchClient);
+        preservePagedSearchAuthorization(searchAsyncClient);
+        preserveScoringFunctionCompatibility(
+            libraryCustomization.getPackage("com.azure.search.documents.indexes.models").getClass("ScoringFunction"));
+        libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+            .getClass("KnowledgeSourceFileIngestionOperation")
+            .customizeAst(ast -> {
+                ast.getClassByName("KnowledgeSourceFileIngestionOperation").ifPresent(clazz -> clazz
+                    .getFieldByName("kind").ifPresent(field -> {
+                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+                        field.getVariable(0).setName("KIND");
+                    }));
+                ast.findAll(com.github.javaparser.ast.expr.FieldAccessExpr.class).stream()
+                    .filter(access -> access.getScope().isThisExpr() && access.getNameAsString().equals("kind"))
+                    .forEach(access -> access
+                        .setScope(StaticJavaParser.parseExpression("KnowledgeSourceFileIngestionOperation"))
+                        .setName("KIND"));
+            });
+        for (String kind : Arrays.asList("Distance", "Freshness", "Magnitude", "Tag")) {
+            preserveScoringConstructor(
+                libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+                    .getClass(kind + "ScoringFunction"), kind);
+        }
+        libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+            .getClass("SearchIndexKnowledgeSourceFilterHint")
+            .customizeAst(ast -> ast.getClassByName("SearchIndexKnowledgeSourceFilterHint").ifPresent(clazz -> {
+                if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 2)) {
+                    clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                        "public SearchIndexKnowledgeSourceFilterHint(String field, List<String> fieldValues) {"
+                            + "this(field); setFieldValues(fieldValues); }"));
+                    clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                        .forEach(constructor -> constructor.setJavadocComment("Creates a filter hint with explicit values.\n"
+                            + "@param field the field to filter.\n@param fieldValues the allowed filter values."));
+                }
+            }));
 
         customizeKnowledgeBaseRetrievalStream(libraryCustomization, logger);
         addQuerySourceAuthorizationOption(
-            libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
-                .getClass("KnowledgeBaseRetrievalOptions"));
-        forwardQuerySourceAuthorizationOption(knowledge.getClass("KnowledgeBaseRetrievalClient"));
-        forwardQuerySourceAuthorizationOption(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+            libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE).getClass("KnowledgeBaseRetrievalOptions"));
+        for (String className : Arrays.asList("KnowledgeBaseRetrievalClient", "KnowledgeBaseRetrievalAsyncClient")) {
+            ClassCustomization client = knowledge.getClass(className);
+            addGaRetrieveOverload(client);
+            addWorkIqRetrieveStream(client);
+            forwardQuerySourceAuthorizationOption(client);
+        }
         addQuerySourceAuthorizationToRetrieveImpl(
             libraryCustomization.getPackage("com.azure.search.documents.implementation")
                 .getClass("KnowledgeBaseRetrievalClientImpl"));
-
         customizeResponseCompletedStatusCode(libraryCustomization);
-        customizeKnowledgeSourceStatusDurationParsing(
-            libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
-                .getClass("KnowledgeSourceStatus"));
         for (String className : Arrays.asList("SearchIndexClient", "SearchIndexAsyncClient")) {
             ClassCustomization client = indexes.getClass(className);
             addTypedListingMethod(client, "listIndexStatsSummary", "IndexStatisticsSummary", false);
             addTypedListingMethod(client, "listKnowledgeSourceFiles", "KnowledgeSourceFile", true);
+            addListingMetadataMethods(client, className.endsWith("AsyncClient"));
         }
+        addListingMetadataRetrieval(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("SearchIndexClientImpl"));
+        addFileIngestionPollingErrorHandling(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("SearchIndexClientImpl"));
+        libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE)
+            .getClass("KnowledgeBaseIndexedSqlReference")
+            .customizeAst(ast -> ast.getClassByName("KnowledgeBaseIndexedSqlReference").ifPresent(clazz -> {
+                clazz.getMethodsByName("getDocUrl").get(0).setName("getDocumentUrl");
+            }));
+        customizeKnowledgeSourceStatusDurationParsing(
+            libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
+                .getClass("KnowledgeSourceStatus"));
+        repairAsyncSynonymMapsConvenienceMethod(indexes.getClass("SearchIndexAsyncClient"));
 
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
         // that mirror what the sync client already has as hand-written methods.
         addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
 
-        // The JSON property remains docUrl; only the Java getter name changes.
-        libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
-            .getClass("KnowledgeBaseIndexedSqlReference")
-            .customizeAst(ast -> {
-                List<MethodDeclaration> getters = ast.getClassByName("KnowledgeBaseIndexedSqlReference")
-                    .orElseThrow(() -> new IllegalStateException("Class KnowledgeBaseIndexedSqlReference not found."))
-                    .getMethodsByName("getDocUrl")
-                    .stream()
-                    .filter(method -> method.getParameters().isEmpty())
-                    .collect(java.util.stream.Collectors.toList());
-                if (getters.size() != 1) {
-                    throw new IllegalStateException("Expected exactly one zero-argument getDocUrl() method in "
-                        + "KnowledgeBaseIndexedSqlReference but found " + getters.size() + ".");
+        // SearchResourceEncryptionKey workaround: the spec marks keyVaultUri and keyVaultKeyName as required,
+        // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
+        addNoArgConstructorToEncryptionKey(libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+            .getClass("SearchResourceEncryptionKey"));
+    }
+
+    private static void addFileIngestionPollingErrorHandling(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.findAll(MethodDeclaration.class).stream()
+            .filter(method -> method.getNameAsString().startsWith("beginIngestKnowledgeSourceFile"))
+            .forEach(method -> method.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+                .filter(expression -> expression.getType().getNameAsString().equals("PollingStrategyOptions"))
+                .forEach(expression -> expression.setArgument(0, StaticJavaParser.parseExpression(
+                    "FileIngestionPollingHttpClient.createPipeline(this.getHttpPipeline())")))));
+    }
+
+    private static void addListingMetadataRetrieval(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedResponse");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                for (String operation : Arrays.asList("listIndexes", "listIndexStatsSummary")) {
+                    for (String suffix : Arrays.asList("", "Async")) {
+                        for (String page : Arrays.asList("", "Next")) {
+                            String original = operation + page + "SinglePage" + suffix;
+                            String name = operation + page + "SinglePageWithMetadata" + suffix;
+                            clazz.getMethodsByName(name).forEach(MethodDeclaration::remove);
+                            MethodDeclaration method = clazz.getMethodsByName(original).get(0).clone();
+                            method.setName(name).setPrivate(false).setPublic(true);
+                            method.addTypeParameter("T");
+                            method.addParameter("Class<T>", "itemType");
+                            method.setType(suffix.isEmpty() ? "IndexListingPagedResponse<T>"
+                                : "Mono<IndexListingPagedResponse<T>>");
+                            method.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+                                .filter(expression -> expression.getType().getNameAsString()
+                                    .equals("PagedResponseBase"))
+                                .forEach(expression -> expression.replace(StaticJavaParser.parseExpression(
+                                    "new IndexListingPagedResponse<>(res, itemType)")));
+                            method.setJavadocComment("Retrieves a listing page without discarding its metadata.\n"
+                                + "@param <T> the item type.\n"
+                                + (page.isEmpty() ? "" : "@param nextLink the continuation link.\n")
+                                + "@param requestOptions the request options.\n"
+                                + "@param itemType the item deserialization type.\n"
+                                + "@return the typed page and optional total count.");
+                            clazz.addMember(method);
+                        }
+                    }
                 }
-                getters.get(0).setName("getDocumentUrl");
             });
+        });
+    }
+
+    private static void addListingMetadataMethods(ClassCustomization customization, boolean async) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedIterable");
+            ast.addImport("com.azure.search.documents.indexes.models.IndexListingPagedFlux");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                for (String operation : Arrays.asList("listIndexes", "listIndexStatsSummary")) {
+                    String model = operation.equals("listIndexes") ? "SearchIndex" : "IndexStatisticsSummary";
+                    String name = operation + "WithMetadata";
+                    String pagedType = async ? "IndexListingPagedFlux" : "IndexListingPagedIterable";
+                    String suffix = async ? "Async" : "";
+                    String retrieval = "(token == null ? serviceClient." + operation + "SinglePageWithMetadata"
+                        + suffix + "(requestOptions, " + model + ".class) : serviceClient."
+                        + operation + "NextSinglePageWithMetadata" + suffix + "(token, nextOptions, "
+                        + model + ".class))" + (async ? ".flux()" : "");
+                    clazz.getMethodsByName(name).forEach(MethodDeclaration::remove);
+                    MethodDeclaration method = StaticJavaParser.parseMethodDeclaration(
+                        "public " + pagedType + "<" + model + "> " + name + "(RequestOptions requestOptions) {"
+                            + "RequestOptions nextOptions = new RequestOptions().setContext("
+                            + "requestOptions != null && requestOptions.getContext() != null"
+                            + " ? requestOptions.getContext() : Context.NONE);"
+                            + "return new " + pagedType + "<>(() -> (token, pageSize) -> " + retrieval + "); }");
+                    method.addAnnotation(StaticJavaParser.parseAnnotation(
+                        "@ServiceMethod(returns = ReturnType.COLLECTION)"));
+                    method.setJavadocComment("Lists " + (model.equals("SearchIndex") ? "indexes" : "index statistics")
+                        + " with HTTP and optional total-count metadata on each page.\n"
+                        + "Counts are null when not returned by the service. This method does not add a count-request "
+                        + "parameter, which is not defined by the preview listing contract.\n"
+                        + "Continuation links control subsequent requests; the initial request's context is retained.\n"
+                        + "@param requestOptions options for the initial HTTP request, or null for defaults.\n"
+                        + "@return the lazy listing with typed pages and optional total counts.\n"
+                        + "@throws com.azure.core.exception.HttpResponseException if a request is rejected.");
+                    clazz.addMember(method);
+                }
+            });
+            ast.getImports().removeIf(importDeclaration -> importDeclaration.getNameAsString()
+                .equals("com.azure.search.documents.indexes.models."
+                    + (async ? "IndexListingPagedIterable" : "IndexListingPagedFlux")));
+        });
+    }
+
+    private static void addGaRetrieveOverload(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            MethodDeclaration method = clazz.getMethodsBySignature("retrieve", "KnowledgeBaseRetrievalOptions",
+                "String", "String").get(0).clone();
+            method.getParameters().remove(2);
+            method.getBody().get().getStatements().removeIf(statement -> statement.isIfStmt()
+                && statement.asIfStmt().getCondition().toString().equals("queryWorkIQSourceAuthorization != null"));
+            method.setJavadocComment("Retrieves relevant data from backing stores.\n\n"
+                + "@param retrievalRequest The retrieval request to process.\n"
+                + "@param querySourceAuthorization Token identifying the user for which the query is being executed. "
+                + "This token is used to enforce security restrictions on documents.\n"
+                + "@return The retrieval result.\n"
+                + "@throws com.azure.core.exception.HttpResponseException if the service rejects the request.");
+            clazz.addMember(method);
+        }));
+    }
+
+    private static void addWorkIqRetrieveStream(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            MethodDeclaration method = clazz.getMethodsBySignature("retrieveStream",
+                "KnowledgeBaseRetrievalOptions", "String").get(0).clone();
+            method.addParameter("String", "queryWorkIQSourceAuthorization");
+            method.getBody().get().addStatement(1, StaticJavaParser.parseStatement(
+                "if (queryWorkIQSourceAuthorization != null) {"
+                    + "requestOptions.setHeader(HttpHeaderName.fromString("
+                    + "\"x-ms-query-work-iq-source-authorization\"), queryWorkIQSourceAuthorization); }"));
+            method.getJavadocComment().ifPresent(javadoc -> javadoc.setContent(javadoc.getContent().replace("@return",
+                "@param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app "
+                    + "registration configured on a Work IQ knowledge source.\n@return")));
+            clazz.addMember(method);
+        }));
+    }
+
+    private static void preservePagedSearchAuthorization(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> clazz
+            .getMethodsByName("search").forEach(method -> method
+                .findAll(com.github.javaparser.ast.expr.MethodCallExpr.class)
+                .stream()
+                .filter(call -> call.getNameAsString().equals("searchWithResponse")
+                    && call.getArguments().size() == 2
+                    && call.getArgument(1).toString().equals("requestOptions"))
+                .forEach(call -> call.setArgument(1,
+                    StaticJavaParser.parseExpression("SearchUtils.addSearchHeaders(requestOptions, options)"))))));
+    }
+
+    private static void repairListingConvenience(ClassCustomization customization, String operation, String model,
+        boolean async) {
+        customization.customizeAst(ast -> {
+            ast.addImport("com.azure.search.documents.indexes.models.ListingSearchType");
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                String methodName = "get" + operation;
+                String serviceMethod = "list" + operation + (async ? "Async" : "");
+                String body = "{ RequestOptions requestOptions = new RequestOptions();"
+                    + "if (select != null) { requestOptions.addQueryParam(\"$select\", String.join(\",\", select), false); }"
+                    + "if (search != null) { requestOptions.addQueryParam(\"search\", search, false); }"
+                    + "if (pageSize != null) { requestOptions.addQueryParam(\"pageSize\", pageSize.toString(), false); }"
+                    + "if (searchType != null) { requestOptions.addQueryParam(\"searchType\", searchType.toString(), false); }"
+                    + "return serviceClient." + serviceMethod
+                    + "(requestOptions).mapPage(value -> value.toObject(" + model + ".class)); }";
+                if (clazz.getMethodsByName(methodName).stream()
+                    .noneMatch(method -> method.getParameters().size() == 4)) {
+                    clazz.addMember(StaticJavaParser.parseBodyDeclaration((async ? "PagedFlux<" : "PagedIterable<")
+                        + model + "> " + methodName
+                        + "(List<String> select, String search, Integer pageSize, ListingSearchType searchType) " + body));
+                } else {
+                    clazz.getMethodsByName(methodName).stream()
+                        .filter(method -> method.getParameters().size() == 4)
+                        .forEach(method -> method.setBody(StaticJavaParser.parseBlock(body)));
+                }
+            });
+        });
+    }
+
+    private static void preserveUploadParameterOrder(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            for (MethodDeclaration method : clazz.getMethods()) {
+                if (method.isPublic() && method.getParameters().size() >= 2
+                    && method.getParameter(0).getNameAsString().equals("name")
+                    && method.getNameAsString().equals("uploadKnowledgeSourceFile")) {
+                    com.github.javaparser.ast.body.Parameter first = method.getParameter(0);
+                    method.getParameters().set(0, method.getParameter(1));
+                    method.getParameters().set(1, first);
+                    clazz.findAll(com.github.javaparser.ast.expr.MethodCallExpr.class).stream()
+                        .filter(call -> call.getNameAsString().equals(method.getNameAsString())
+                            && call.getArguments().size() >= 2
+                            && (!call.getScope().isPresent() || call.getScope().get().isThisExpr()))
+                        .forEach(call -> {
+                            com.github.javaparser.ast.expr.Expression argument = call.getArgument(0);
+                            call.getArguments().set(0, call.getArgument(1));
+                            call.getArguments().set(1, argument);
+                        });
+                }
+            }
+        }));
+    }
+
+    private static void preserveScoringConstructor(ClassCustomization customization, String kind) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 3
+                && constructor.getParameter(0).getType().asString().equals("String"))) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public " + kind + "ScoringFunction(String fieldName, double boost, " + kind
+                        + "ScoringParameters parameters) { this(boost, fieldName, parameters); }"));
+                clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 3
+                    && constructor.getParameter(0).getType().asString().equals("String"))
+                    .forEach(constructor -> constructor.setJavadocComment("Creates a field-based scoring function.\n"
+                        + "@param fieldName the field used as input.\n@param boost the score multiplier.\n"
+                        + "@param parameters the scoring parameters."));
+            }
+        }));
+    }
+
+    private static void preserveScoringFunctionCompatibility(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            if (!clazz.getFieldByName("fieldName").isPresent()) {
+                clazz.addField(String.class, "fieldName", Modifier.Keyword.PRIVATE);
+                clazz.addField(double.class, "boost", Modifier.Keyword.PRIVATE);
+            }
+            if (clazz.getConstructors().stream().noneMatch(constructor -> constructor.getParameters().size() == 2)) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "public ScoringFunction(String fieldName, double boost) {"
+                    + "this.fieldName = fieldName; this.boost = boost; }"));
+            }
+            if (clazz.getMethodsByName("getFieldName").isEmpty()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public String getFieldName() { return this.fieldName; }"));
+            }
+            if (clazz.getMethodsByName("getBoost").isEmpty()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "public double getBoost() { return this.boost; }"));
+            }
+            clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                .forEach(constructor -> constructor.getAllContainedComments()
+                    .forEach(com.github.javaparser.ast.comments.Comment::remove));
+            for (String getter : Arrays.asList("getFieldName", "getBoost")) {
+                clazz.getMethodsByName(getter).forEach(method -> method.getAllContainedComments()
+                    .forEach(com.github.javaparser.ast.comments.Comment::remove));
+            }
+            clazz.getConstructors().stream().filter(constructor -> constructor.getParameters().size() == 2)
+                .forEach(constructor -> constructor.setJavadocComment("Creates a field-based scoring function.\n"
+                    + "@param fieldName the field used as input.\n@param boost the score multiplier."));
+            clazz.getMethodsByName("getFieldName").forEach(method -> method.setJavadocComment(
+                "Gets the field used as input.\n@return the field name."));
+            clazz.getMethodsByName("getBoost").forEach(method -> method.setJavadocComment(
+                "Gets the score multiplier.\n@return the boost."));
+            clazz.getMethodsByName("toJson").stream()
+                .filter(method -> !method.getBody().get().toString().contains("this.fieldName"))
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                method.getBody().get().toString().replace("jsonWriter.writeStartObject();",
+                    "jsonWriter.writeStartObject(); if (this.fieldName != null) {"
+                        + "jsonWriter.writeStringField(\"fieldName\", this.fieldName);"
+                        + "jsonWriter.writeDoubleField(\"boost\", this.boost); }"))));
+            clazz.getMethodsByName("fromJsonKnownDiscriminator")
+                .stream()
+                .filter(method -> !method.getBody().get().toString().contains("deserializedScoringFunction.fieldName"))
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                    method.getBody().get().toString().replace("if (\"type\".equals(fieldName)) {",
+                        "if (\"fieldName\".equals(fieldName)) {"
+                            + "deserializedScoringFunction.fieldName = reader.getString();"
+                            + "} else if (\"boost\".equals(fieldName)) {"
+                            + "deserializedScoringFunction.boost = reader.getDouble();"
+                            + "} else if (\"type\".equals(fieldName)) {"))));
+        }));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -137,7 +433,7 @@ public class SearchCustomizations extends Customization {
         }
     }
 
-    // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the
+    // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the premature
     // retrieval stream API customizations isolated so they can be removed when native support is available.
     private static final String MODELS_PATH = "src/main/java/com/azure/search/documents/knowledgebases/models/";
 
@@ -153,8 +449,7 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addStreamModels(LibraryCustomization customization) {
-        customization.getRawEditor()
-            .replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
+        customization.getRawEditor().replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
         customization.getRawEditor()
             .replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
@@ -186,7 +481,8 @@ public class SearchCustomizations extends Customization {
 
     private static void customizeKnowledgeSourceStatusDurationParsing(ClassCustomization customization) {
         customization.customizeAst(ast -> ast
-            .addImport("com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser")
+            .addImport(
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser")
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> clazz.getMethodsByName("fromJson").forEach(method -> {
                 BlockStmt body = method.getBody()
@@ -330,7 +626,6 @@ public class SearchCustomizations extends Customization {
 
     private static final String KNOWLEDGE_MODELS_PACKAGE = "com.azure.search.documents.knowledgebases.models";
 
-    // The status code is exposed as a nullable Integer so unknown values round trip without a public wrapper type.
     private static void customizeResponseCompletedStatusCode(LibraryCustomization libraryCustomization) {
         String className = "KnowledgeBaseResponseCompletedEvent";
         libraryCustomization.getPackage(KNOWLEDGE_MODELS_PACKAGE)
@@ -370,11 +665,9 @@ public class SearchCustomizations extends Customization {
                     + "or JSON null, and unknown values round trip as plain integers.\n\n"
                     + "@return the statusCode value, or null if it was not provided.");
             }));
-
         libraryCustomization.getRawEditor().removeFile(MODELS_PATH + "KnowledgeBaseRetrievalStatusCode.java");
     }
 
-    // Client-only transport metadata: stored on the options but never serialized to or read from JSON.
     private static void addQuerySourceAuthorizationOption(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
             clazz.getFieldByName("querySourceAuthorization").ifPresent(FieldDeclaration::remove);
@@ -414,8 +707,6 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
-    // Must run after the stream methods are assembled. A non-null explicit parameter overrides the option, and a null
-    // explicit parameter falls back to KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization().
     private static void forwardQuerySourceAuthorizationOption(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
             clazz.getMethodsByName("createRetrieveRequestOptions").forEach(MethodDeclaration::remove);
@@ -436,7 +727,7 @@ public class SearchCustomizations extends Customization {
                 if (!method.isPublic() || !("retrieve".equals(name) || "retrieveStream".equals(name))) {
                     continue;
                 }
-                boolean hasExplicit = method.getParameters().size() == 2;
+                boolean hasExplicit = method.getParameterByName("querySourceAuthorization").isPresent();
                 BlockStmt body = method.getBody()
                     .orElseThrow(() -> new IllegalStateException("Retrieve method has no body."));
                 body.getStatements().removeIf(SearchCustomizations::isQuerySourceAuthorizationHeaderBlock);
@@ -472,16 +763,13 @@ public class SearchCustomizations extends Customization {
                 });
                 updated++;
             }
-            if (updated != 4) {
-                throw new IllegalStateException("Expected to update 4 retrieve methods in "
+            if (updated != 6) {
+                throw new IllegalStateException("Expected to update 6 retrieve methods in "
                     + customization.getClassName() + " but updated " + updated + ".");
             }
         }));
     }
 
-    // Adds a querySourceAuthorization header parameter to the internal retrieve REST methods so typed callers can
-    // supply the header without mutating or copying the caller's RequestOptions. RestProxy applies the header before
-    // RequestOptions callbacks, so a header explicitly set on RequestOptions still takes precedence.
     private static void addQuerySourceAuthorizationToRetrieveImpl(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.addImport("com.azure.core.annotation.Generated");
@@ -558,26 +846,18 @@ public class SearchCustomizations extends Customization {
                 }
                 MethodDeclaration overload
                     = StaticJavaParser.parseBodyDeclaration(overloadSource).asMethodDeclaration();
-                original.getJavadocComment().ifPresent(javadoc -> {
-                    String content = javadoc.getContent();
-                    String updated = content.replaceFirst("(\\* @param retrievalRequest [^\\n]*\\n)",
-                        "$1     * @param querySourceAuthorization Token identifying the user for which the query is "
-                            + "being executed. This token is used to enforce security restrictions on documents. A "
-                            + "header set explicitly on requestOptions takes precedence.\n");
-                    if (updated.equals(content)) {
-                        throw new IllegalStateException("Could not locate retrievalRequest javadoc for " + name + ".");
-                    }
-                    overload.setJavadocComment(updated);
-                });
+                overload.setJavadocComment("Retrieves relevant data from backing stores.\n\n"
+                    + "@param retrievalRequest The retrieval request to process.\n"
+                    + "@param querySourceAuthorization Token identifying the user for which the query is being "
+                    + "executed. A header set explicitly on requestOptions takes precedence.\n"
+                    + "@param requestOptions The options to configure the HTTP request.\n"
+                    + "@return The retrieval response" + (async ? " as a Mono" : "") + ".");
                 original.setBody(StaticJavaParser.parseBlock(delegate));
                 clazz.addMember(overload);
             }
         });
     }
 
-
-
-    // Matches only the generated `if (querySourceAuthorization != null) { requestOptions.setHeader(...); }` block.
     private static boolean isQuerySourceAuthorizationHeaderBlock(Statement statement) {
         return statement.isIfStmt()
             && "querySourceAuthorization != null".equals(statement.asIfStmt().getCondition().toString())
@@ -592,8 +872,34 @@ public class SearchCustomizations extends Customization {
             + "{@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.\n\n";
     }
 
+    private static void addTypedListingMethod(ClassCustomization customization, String methodName, String itemType,
+        boolean hasKnowledgeSourceName) {
+        boolean async = customization.getClassName().endsWith("AsyncClient");
+        String pagedType = async ? "PagedFlux" : "PagedIterable";
+        String parameters
+            = hasKnowledgeSourceName ? "String name, RequestOptions requestOptions" : "RequestOptions requestOptions";
+        String arguments = hasKnowledgeSourceName ? "name, requestOptions" : "requestOptions";
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            String[] parameterTypes = hasKnowledgeSourceName
+                ? new String[] { "String", "RequestOptions" }
+                : new String[] { "RequestOptions" };
+            clazz.getMethodsBySignature(methodName, parameterTypes).forEach(MethodDeclaration::remove);
+            MethodDeclaration method = StaticJavaParser
+                .parseMethodDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.COLLECTION)\npublic "
+                    + pagedType + "<" + itemType + "> " + methodName + "(" + parameters + ") {\n"
+                    + "    return this.serviceClient." + methodName + (async ? "Async" : "") + "(" + arguments + ")\n"
+                    + "        .mapPage(binaryData -> binaryData.toObject(" + itemType + ".class));\n}");
+            method.setJavadocComment("Lists matching resources as typed, lazily retrieved pages.\n\n"
+                + (hasKnowledgeSourceName ? "@param name The name of the knowledge source.\n" : "")
+                + "@param requestOptions The options to configure the HTTP request, including listing filters.\n"
+                + "@throws HttpResponseException if the service rejects the request.\n"
+                + "@return The matching resources as a paginated response with {@link " + pagedType + "}.");
+            clazz.addMember(method);
+        }));
+    }
+
     private static String baseEventSource() {
-        return header("com.azure.search.documents.knowledgebases.models")
+        return header("com.azure.search.documents.knowledgebases.models", true)
             + "import com.azure.core.annotation.Generated;\n"
             + "import com.azure.search.documents.knowledgebases.implementation."
             + "KnowledgeBaseRetrievalStreamEventConverter;\n" + "import java.util.List;\n\n" + "/**\n"
@@ -653,6 +959,7 @@ public class SearchCustomizations extends Customization {
             + "}\n";
     }
 
+
     private static String wrapperSource(String className, String payloadType, String eventName, boolean terminal,
         boolean listPayload) {
         String valueType = listPayload ? "List<" + payloadType + ">" : payloadType;
@@ -662,7 +969,7 @@ public class SearchCustomizations extends Customization {
                 + "        return true;\n" + "    }\n"
             : "";
 
-        return header("com.azure.search.documents.knowledgebases.models")
+        return header("com.azure.search.documents.knowledgebases.models", true)
             + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
             + listImports + "\n" + "/**\n" + " * Represents the {@code " + eventName
             + "} knowledge base retrieval stream event.\n" + " * Access the typed payload with {@link #getValue()}.\n"
@@ -676,10 +983,18 @@ public class SearchCustomizations extends Customization {
             + " getValue() {\n" + "        return value;\n" + "    }\n" + terminalOverride + "}\n";
     }
 
+
     private static String header(String packageName) {
-        return "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-            + "// Licensed under the MIT License.\n\n" + "package " + packageName + ";\n\n";
+        return header(packageName, false);
     }
+
+    private static String header(String packageName, boolean generated) {
+        return "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+            + "// Licensed under the MIT License.\n"
+            + (generated ? "// Code generated by Microsoft (R) TypeSpec Code Generator.\n" : "\n")
+            + "package " + packageName + ";\n\n";
+    }
+
 
     // Adds SearchAudience handling to generated builders. This is a temporary fix until
     // https://github.com/microsoft/typespec/issues/9458 is addressed.
@@ -717,9 +1032,12 @@ public class SearchCustomizations extends Customization {
     private static void includeOldApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-            for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
+            for (String version : Arrays.asList("2026-10-01", "2026-04-01", "2025-09-01",
+                "2024-07-01", "2023-11-01", "2020-06-30")) {
                 String enumName = ("V" + version.replace("-", "_"));
-                if (entries.stream().noneMatch(entry -> enumName.equals(entry.getNameAsString()))) {
+                enumName = enumName.toUpperCase(java.util.Locale.ROOT);
+                final String name = enumName;
+                if (entries.stream().noneMatch(entry -> entry.getNameAsString().equals(name))) {
                     entries.add(0, new EnumConstantDeclaration(enumName).addArgument(new StringLiteralExpr(version))
                         .setJavadocComment("Enum value " + version + "."));
                 }
@@ -729,10 +1047,11 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
-    private static void removePreviewApiVersions(ClassCustomization customization) {
+    private static void removeOldPreviewApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName())
             .ifPresent(enumDeclaration -> enumDeclaration.getEntries()
-                .removeIf(entry -> entry.getNameAsString().endsWith("_PREVIEW"))));
+                .removeIf(entry -> Arrays.asList("V2025_11_01_PREVIEW", "V2026_05_01_PREVIEW", "V2026_08_01_PREVIEW")
+                    .contains(entry.getNameAsString()))));
     }
 
     // At the time this was added, Java TypeSpec for Azure-type generation doesn't use 'T' in WithResponse APIs, which
@@ -777,37 +1096,17 @@ public class SearchCustomizations extends Customization {
         return type.toString().contains("BinaryData");
     }
 
-    private static void addTypedListingMethod(ClassCustomization customization, String methodName, String itemType,
-        boolean hasKnowledgeSourceName) {
-        boolean async = customization.getClassName().endsWith("AsyncClient");
-        String pagedType = async ? "PagedFlux" : "PagedIterable";
-        String parameters
-            = hasKnowledgeSourceName ? "String name, RequestOptions requestOptions" : "RequestOptions requestOptions";
-        String arguments = hasKnowledgeSourceName ? "name, requestOptions" : "requestOptions";
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            String[] parameterTypes = hasKnowledgeSourceName
-                ? new String[] { "String", "RequestOptions" }
-                : new String[] { "RequestOptions" };
-            clazz.getMethodsBySignature(methodName, parameterTypes).forEach(MethodDeclaration::remove);
-            MethodDeclaration method = StaticJavaParser
-                .parseMethodDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.COLLECTION)\npublic "
-                    + pagedType + "<" + itemType + "> " + methodName + "(" + parameters + ") {\n"
-                    + "    return this.serviceClient." + methodName + (async ? "Async" : "") + "(" + arguments + ")\n"
-                    + "        .mapPage(binaryData -> binaryData.toObject(" + itemType + ".class));\n}");
-            method.setJavadocComment("Lists matching resources as typed, lazily retrieved pages.\n\n"
-                + (hasKnowledgeSourceName ? "@param name The name of the knowledge source.\n" : "")
-                + "@param requestOptions The options to configure the HTTP request, including listing filters.\n"
-                + "@throws HttpResponseException if the service rejects the request.\n"
-                + "@return The matching resources as a paginated response with {@link " + pagedType + "}.");
-            clazz.addMember(method);
-        }));
+    private static void repairAsyncSynonymMapsConvenienceMethod(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> clazz
+            .getMethodsByName("getSynonymMaps")
+            .stream()
+            .filter(method -> method.getParameters().isEmpty() && method.isAnnotationPresent("Generated"))
+            .findFirst()
+            .ifPresent(method -> method.setBody(
+                StaticJavaParser.parseBlock("{ return getSynonymMaps(null, null, null, null); }")))));
     }
 
-    // Adds query source authorization, elevated read and $select parameters to the internal getDocument REST methods
-    // so typed callers don't need to mutate or copy the caller's RequestOptions. RestProxy applies these before the
-    // RequestOptions callbacks, so headers set explicitly on RequestOptions override them while query parameters
-    // added through RequestOptions are appended. Existing internal
-    // signatures are preserved and forward null for the new parameters.
+    // Adds operation parameters before RequestOptions callbacks without mutating the caller's options.
     private static void addGetDocumentOptionsToImpl(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.addImport("com.azure.core.annotation.Generated");
@@ -921,8 +1220,7 @@ public class SearchCustomizations extends Customization {
         });
     }
 
-    // Both typed response signatures are generator-owned so a preserved wrapper cannot suppress the new overload.
-    // No getDocument(String, GetDocumentOptions) is added so getDocument(key, null) stays source compatible.
+    // Avoid a two-argument options overload so getDocument(key, null) remains source compatible.
     private static void addTypedGetDocumentWithOptions(ClassCustomization customization) {
         boolean async = customization.getClassName().endsWith("AsyncClient");
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
@@ -1004,34 +1302,31 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
+    // SearchResourceEncryptionKey has keyName and vaultUrl as required (final) fields, but when
+    // isServiceLevelKey is true, they are not needed. This adds a no-arg constructor and makes those fields non-final.
+    private static void addNoArgConstructorToEncryptionKey(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Make keyName and vaultUrl non-final
+            clazz.getFieldByName("keyName").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+            clazz.getFieldByName("vaultUrl").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
 
+            // Add no-arg constructor
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration("/**\n"
+                + " * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is\n"
+                + " * set to true, in which case keyName and vaultUrl are not required.\n" + " */\n"
+                + "public SearchResourceEncryptionKey() {\n" + "    this.keyName = null;\n"
+                + "    this.vaultUrl = null;\n" + "}\n"));
+        }));
+    }
 
     // Adds public convenience methods to SearchIndexAsyncClient for knowledge base and knowledge source
     // createOrUpdate operations. The sync client has equivalent hand-written wrappers, but the async client
     // only has package-private generated convenience methods after hideWithResponseBinaryDataApis runs.
     private static void addAsyncKnowledgeBaseConvenienceMethods(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            clazz.getMethodsByName("createOrUpdateKnowledgeBase")
-                .stream()
-                .filter(method -> method.getParameters().size() == 1
-                    && "KnowledgeBase".equals(method.getParameter(0).getTypeAsString()))
-                .forEach(MethodDeclaration::remove);
-            clazz.getMethodsByName("createOrUpdateKnowledgeBaseWithResponse")
-                .stream()
-                .filter(method -> method.getParameters().size() == 2
-                    && "KnowledgeBase".equals(method.getParameter(0).getTypeAsString())
-                    && "RequestOptions".equals(method.getParameter(1).getTypeAsString()))
-                .forEach(MethodDeclaration::remove);
-            clazz.getMethodsByName("createOrUpdateKnowledgeSourceWithResponse")
-                .stream()
-                .filter(method -> method.getParameters().size() == 2
-                    && "KnowledgeSource".equals(method.getParameter(0).getTypeAsString())
-                    && "RequestOptions".equals(method.getParameter(1).getTypeAsString()))
-                .forEach(MethodDeclaration::remove);
-
             // Add: public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase)
             MethodDeclaration createOrUpdateKB = StaticJavaParser
-                .parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                .parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {\n"
                     + "    return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);\n" + "}\n")
                 .asMethodDeclaration();
@@ -1044,7 +1339,7 @@ public class SearchCustomizations extends Customization {
             // Add: public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(
             //          KnowledgeBase knowledgeBase, RequestOptions requestOptions)
             MethodDeclaration createOrUpdateKBWithResponse
-                = StaticJavaParser.parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                = StaticJavaParser.parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse("
                     + "KnowledgeBase knowledgeBase, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync("
@@ -1060,7 +1355,7 @@ public class SearchCustomizations extends Customization {
             // Add: public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(
             //          KnowledgeSource knowledgeSource, RequestOptions requestOptions)
             MethodDeclaration createOrUpdateKSWithResponse
-                = StaticJavaParser.parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                = StaticJavaParser.parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse("
                     + "KnowledgeSource knowledgeSource, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync("

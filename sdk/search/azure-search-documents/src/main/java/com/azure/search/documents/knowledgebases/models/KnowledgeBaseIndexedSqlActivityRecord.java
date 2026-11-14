@@ -44,6 +44,12 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
     private Integer count;
 
     /*
+     * Statistics about image serving for this retrieval activity
+     */
+    @Generated
+    private ImageServingStatistics imageServing;
+
+    /*
      * The indexed SQL arguments for the retrieval activity.
      */
     @Generated
@@ -102,6 +108,16 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
     }
 
     /**
+     * Get the imageServing property: Statistics about image serving for this retrieval activity.
+     *
+     * @return the imageServing value.
+     */
+    @Generated
+    public ImageServingStatistics getImageServing() {
+        return this.imageServing;
+    }
+
+    /**
      * Get the indexedSqlArguments property: The indexed SQL arguments for the retrieval activity.
      *
      * @return the indexedSqlArguments value.
@@ -131,6 +147,7 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
         jsonWriter.writeStringField("queryTime",
             this.queryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryTime));
         jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("indexedSqlArguments", this.indexedSqlArguments);
         return jsonWriter.writeEndObject();
     }
@@ -157,6 +174,7 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
             String knowledgeSourceName = null;
             OffsetDateTime queryTime = null;
             Integer count = null;
+            ImageServingStatistics imageServing = null;
             KnowledgeBaseIndexedSqlActivityArguments indexedSqlArguments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,6 +202,8 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getInt);
+                } else if ("imageServing".equals(fieldName)) {
+                    imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("indexedSqlArguments".equals(fieldName)) {
                     indexedSqlArguments = KnowledgeBaseIndexedSqlActivityArguments.fromJson(reader);
                 } else {
@@ -201,6 +221,7 @@ public final class KnowledgeBaseIndexedSqlActivityRecord extends KnowledgeBaseAc
             deserializedKnowledgeBaseIndexedSqlActivityRecord.knowledgeSourceName = knowledgeSourceName;
             deserializedKnowledgeBaseIndexedSqlActivityRecord.queryTime = queryTime;
             deserializedKnowledgeBaseIndexedSqlActivityRecord.count = count;
+            deserializedKnowledgeBaseIndexedSqlActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseIndexedSqlActivityRecord.indexedSqlArguments = indexedSqlArguments;
             return deserializedKnowledgeBaseIndexedSqlActivityRecord;
         });

@@ -4,11 +4,44 @@
 
 ### Features Added
 
+- Added support for `2026-11-01-preview`, now the default service version. Previously supported GA service versions remain available.
+- Added synchronous and asynchronous graph queries, typed results, query planning, diagnostics, statistics, and provenance models.
+- Added `GraphQueryError` for opt-in typed parsing of graph error bodies without changing existing exceptions.
+- Added `listIndexesWithMetadata` and `listIndexStatsSummaryWithMetadata` to read optional service-supplied total counts while preserving existing listing APIs. The preview contract does not define a count-request parameter.
+- Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
+- Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
+- Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
+- Carried forward the October GA knowledge base retrieval APIs: closeable synchronous and direct typed asynchronous event streams, query-source authorization options and overloads, and nullable numeric completion status codes. Work IQ authorization remains available in the November preview.
+- Added typed `RequestOptions` listing overloads and aligned `KnowledgeBaseIndexedSqlReference` with the GA `getDocumentUrl()` getter.
+- Carried forward the final October GA `GetDocumentOptions` and synchronous/asynchronous document lookup overloads, including authorization headers, elevated read, selected fields, and caller `RequestOptions` precedence.
+
 ### Breaking Changes
+
+- Removed `SearchServiceVersion.V2026_08_01_PREVIEW`; `V2026_11_01_PREVIEW` is now the only supported preview service version.
+- Removed preview `queryHints` from `AzureBlobKnowledgeSourceParameters` and `IndexedSharePointKnowledgeSourceParameters`, and `queryHintOverrides` from their runtime parameter models, to match the November contract in [spec PR #47300](https://github.com/Azure/azure-rest-api-specs/pull/47300). These properties remain supported on `SearchIndexKnowledgeSourceParameters` and `SearchIndexKnowledgeSourceParams`, respectively; `topicGraph` is not a replacement for query hints.
+- Removed preview query hints and query hint overrides from other non-SearchIndex knowledge sources, and their query hint processing activity properties, to match the service contract.
+- Aligned preview streaming APIs with the October GA signatures: synchronous `retrieveStream` returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` instead of accepting a callback, and asynchronous `retrieveStream` emits typed events directly instead of `ServerSentEvent` envelopes.
+- Removed preview-only `ServerSentEvent`, `ServerSentEventListener`, `UnknownKnowledgeBaseRetrievalStreamEvent`, and `KnowledgeBaseRetrievalStatusCode` types. As in GA, stream event wrappers have SDK-only constructors and are not JSON models; unknown events expose only their names. SQL references expose `getDocumentUrl()` instead of `getDocUrl()`.
 
 ### Bugs Fixed
 
+- Forwarded topic graph profile and organization access expiration settings from field-builder annotations.
+- Added field-builder annotations for sensitivity label IDs and names, source document IDs, and SharePoint site URLs, and forwarded permission filter settings to generated search fields.
+- Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
+- Carried forward SSE decoding, cancellation, backpressure, buffer ownership, and response-cleanup fixes.
+- Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
+- Corrected file update and delete argument order in the File knowledge source preview sample, including cleanup.
+- Updated the preview retrieval response parsing sample to use an existing knowledge base without modifying or deleting resources.
+- Preserved HTTP status, headers, and error bodies when polling preview file ingestion operations fails, instead of throwing an unrelated exception.
+
 ### Other Changes
+
+- Restored the opt-in Content Understanding skillset sample and index statistics pagination and indexer-runtime examples.
+- Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
+
+#### Dependency Updates
+
+- Carried forward the GA dependency baselines: `azure-core` 1.61.0 and `azure-core-http-netty` 1.17.0.
 
 ## 12.2.0 (2026-11-13)
 

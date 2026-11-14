@@ -168,7 +168,9 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("searchIndex".equals(discriminatorValue)) {
+                if ("graphSearch".equals(discriminatorValue)) {
+                    return KnowledgeBaseGraphSearchActivityRecord.fromJson(readerToUse.reset());
+                } else if ("searchIndex".equals(discriminatorValue)) {
                     return KnowledgeBaseSearchIndexActivityRecord.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeBaseAzureBlobActivityRecord.fromJson(readerToUse.reset());
@@ -178,6 +180,16 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     return KnowledgeBaseIndexedOneLakeActivityRecord.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return KnowledgeBaseWebActivityRecord.fromJson(readerToUse.reset());
+                } else if ("remoteSharePoint".equals(discriminatorValue)) {
+                    return KnowledgeBaseRemoteSharePointActivityRecord.fromJson(readerToUse.reset());
+                } else if ("workIQ".equals(discriminatorValue)) {
+                    return KnowledgeBaseWorkIQActivityRecord.fromJson(readerToUse.reset());
+                } else if ("fabricDataAgent".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricDataAgentActivityRecord.fromJson(readerToUse.reset());
+                } else if ("fabricOntology".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricOntologyActivityRecord.fromJson(readerToUse.reset());
+                } else if ("mcpServer".equals(discriminatorValue)) {
+                    return KnowledgeBaseMcpServerActivityRecord.fromJson(readerToUse.reset());
                 } else if ("file".equals(discriminatorValue)) {
                     return KnowledgeBaseFileActivityRecord.fromJson(readerToUse.reset());
                 } else if ("indexedSql".equals(discriminatorValue)) {

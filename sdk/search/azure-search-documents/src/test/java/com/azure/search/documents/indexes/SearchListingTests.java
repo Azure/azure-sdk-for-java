@@ -14,6 +14,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.search.documents.indexes.models.IndexListingPagedFlux;
+import com.azure.search.documents.indexes.models.IndexListingPagedIterable;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
@@ -54,7 +56,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchListingTests {
     private static final String ENDPOINT = "https://example.search.windows.net";
     private static final AzureKeyCredential CREDENTIAL = new AzureKeyCredential("key");
-    private static final String NEXT_LINK = ENDPOINT + "/next-page?api-version=2026-10-01&$skiptoken=opaque%2B%2F%3D";
+    private static final String NEXT_LINK
+        = ENDPOINT + "/next-page?api-version=2026-11-01-preview&$skiptoken=opaque%2B%2F%3D";
 
     @ParameterizedTest
     @MethodSource("listings")
@@ -212,9 +215,13 @@ public class SearchListingTests {
                 if (!Modifier.isPublic(method.getModifiers()) || !method.getName().startsWith("list")) {
                     continue;
                 }
-                assertEquals(PagedIterable.class, method.getReturnType());
+                boolean metadataListing = method.getName().equals("listIndexesWithMetadata")
+                    || method.getName().equals("listIndexStatsSummaryWithMetadata");
+                assertEquals(metadataListing ? IndexListingPagedIterable.class : PagedIterable.class,
+                    method.getReturnType(), method.toGenericString());
                 Method counterpart = asyncClient.getMethod(method.getName(), method.getParameterTypes());
-                assertEquals(PagedFlux.class, counterpart.getReturnType());
+                assertEquals(metadataListing ? IndexListingPagedFlux.class : PagedFlux.class,
+                    counterpart.getReturnType(), counterpart.toGenericString());
                 ParameterizedType type = assertInstanceOf(ParameterizedType.class, method.getGenericReturnType());
                 assertFalse(Arrays.asList(type.getActualTypeArguments()).contains(BinaryData.class));
                 ParameterizedType asyncType

@@ -74,6 +74,7 @@ public final class KnowledgeBaseAzureBlobReference extends KnowledgeBaseReferenc
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("blobUrl", this.blobUrl);
+        jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
         jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
@@ -96,6 +97,7 @@ public final class KnowledgeBaseAzureBlobReference extends KnowledgeBaseReferenc
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.AZURE_BLOB;
             String blobUrl = null;
+            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
             String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,6 +114,8 @@ public final class KnowledgeBaseAzureBlobReference extends KnowledgeBaseReferenc
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("blobUrl".equals(fieldName)) {
                     blobUrl = reader.getString();
+                } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
+                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else if ("citationUrl".equals(fieldName)) {
                     citationUrl = reader.getString();
                 } else {
@@ -124,9 +128,26 @@ public final class KnowledgeBaseAzureBlobReference extends KnowledgeBaseReferenc
             deserializedKnowledgeBaseAzureBlobReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseAzureBlobReference.type = type;
             deserializedKnowledgeBaseAzureBlobReference.blobUrl = blobUrl;
+            deserializedKnowledgeBaseAzureBlobReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
             deserializedKnowledgeBaseAzureBlobReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseAzureBlobReference;
         });
+    }
+
+    /*
+     * The sensitivity label information for the reference.
+     */
+    @Generated
+    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
+
+    /**
+     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
+     *
+     * @return the searchSensitivityLabelInfo value.
+     */
+    @Generated
+    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
+        return this.searchSensitivityLabelInfo;
     }
 
     /*

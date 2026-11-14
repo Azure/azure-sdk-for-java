@@ -37,14 +37,6 @@ public class SearchOptionsExample {
         searchResultsCountFromPage(searchClient);
         searchResultsCoverageFromPage(searchClient);
         searchResultsFacets(searchClient);
-        findSimilarDocuments(searchClient);
-    }
-
-    private static void findSimilarDocuments(SearchClient searchClient) {
-        SearchOptions options = new SearchOptions().setMoreLikeThis("1")
-            .setSearchFields("HotelName", "Description")
-            .setTop(5);
-        searchClient.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
     }
 
     private static void searchResultsFacets(SearchClient searchClient) {

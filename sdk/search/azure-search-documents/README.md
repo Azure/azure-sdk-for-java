@@ -33,43 +33,6 @@ Use the Azure AI Search client library to:
 
 ## Getting started
 
-### Service API version
-
-This development version targets the `2026-10-01` GA service API by default.
-Use `SearchServiceVersion.V2026_10_01` to select this version explicitly on a client builder.
-Preview-only APIs that are not included in this GA service version are not available in this development version.
-Previously supported GA service versions remain selectable with `SearchServiceVersion`.
-
-This release also removes public Java APIs for preview-only features accidentally exposed by the previous GA
-specification. The corresponding features were not supported by that GA service API, but removing the published Java
-APIs is a source and binary compatibility break. Selecting an older service version does not restore removed Java
-APIs. See the changelog's [Breaking Changes](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/CHANGELOG.md#breaking-changes)
-section and the [specification correction](https://github.com/Azure/azure-rest-api-specs/pull/47112) for details.
-
-Knowledge bases, typed retrieval streaming, and file knowledge sources are included in this GA API.
-See the [knowledge base configuration sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java),
-[retrieval response sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),
-[retrieval streaming sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
-[file knowledge source sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
-See [the changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/CHANGELOG.md) for additions, breaking changes, and fixes relative to the previous GA release,
-`12.1.1`. The [sample feature-coverage table](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md#new-ga-feature-coverage) maps the new capabilities
-to runnable examples and configuration snippets, including document permissions, indexed SQL and SharePoint sources,
-and content-understanding chunking.
-
-### Listing and pagination
-
-Listing operations use `list...` names and return typed `PagedIterable<T>` results on synchronous clients and
-`PagedFlux<T>` results on asynchronous clients. Pages are fetched lazily, and service-provided continuation links
-are followed automatically. Use `iterableByPage()` or `byPage()` to inspect pages, and pass a page's continuation
-token to the corresponding overload to resume a listing.
-
-Request-options overloads accept service-supported listing filters such as `search`, `searchType`, `pageSize`,
-and `$select` where applicable. A page size limits each service response, not the total number of returned items.
-Set `pageSize` explicitly in the request options or the listing overload that accepts it; the current generated
-listing APIs do not forward page-size hints from `iterableByPage(int)` or `byPage(int)` to the service.
-Use a new `RequestOptions` instance for each independently configured listing. The `list...Names()` methods request
-only resource names and retain pagination.
-
 ### Include the package
 
 #### Include the BOM file
@@ -112,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>12.2.0</version>
+    <version>12.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -301,6 +264,7 @@ tables.)_ The `azure-search-documents` client library exposes operations on thes
 * `SearchIndexClient` allows you to:
   * [Create, delete, update, or configure a search index](https://learn.microsoft.com/rest/api/searchservice/index-operations)
   * [Declare custom synonym maps to expand or rewrite queries](https://learn.microsoft.com/rest/api/searchservice/synonym-map-operations)
+  <!-- * Most of the `SearchServiceClient` functionality is not yet available in our current preview -->
 
 * `SearchIndexerClient` allows you to:
   * [Start indexers to automatically crawl data sources](https://learn.microsoft.com/rest/api/searchservice/indexer-operations)
@@ -413,26 +377,6 @@ SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search(options);
 // ...
 ```
 
-To find documents similar to an existing document, supply its key with `setMoreLikeThis`.
-Do not combine this option with search text.
-
-```java readme-sample-searchMoreLikeThis
-SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1")
-    .setSearchFields("HotelName", "Description")
-    .setTop(5);
-SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
-```
-
-For permission-filtered search, supply the user's query-source authorization token. These header options are preserved
-on continuation pages. Elevated reads bypass document-level permission checks and are disabled in this example.
-
-```java readme-sample-searchWithDocumentPermissions
-SearchOptions options = new SearchOptions().setSearchText("hotel")
-    .setQuerySourceAuthorization(querySourceToken)
-    .setEnableElevatedRead(false);
-SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
-```
-
 ### Creating an index
 
 You can use the [`SearchIndexClient`](#create-a-searchindexclient) to create a search index. Indexes can also define
@@ -506,6 +450,20 @@ information about it or navigate your customer to that document.
 
 ```java readme-sample-retrieveDocuments
 Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+```
+
+Use `GetDocumentOptions` to select fields or supply a query-source authorization token for document-level permissions.
+The three-argument `getDocumentWithResponse` overload is available on both synchronous and asynchronous clients.
+Explicit headers in `RequestOptions` override the operation options; query parameters in `RequestOptions` are appended.
+
+```java readme-sample-retrieveDocumentWithOptions
+GetDocumentOptions options = new GetDocumentOptions()
+    .setQuerySourceAuthorization(querySourceToken)
+    .setEnableElevatedRead(false)
+    .setSelectedFields(Arrays.asList("Id", "Name"));
+Map<String, Object> hotel = SEARCH_CLIENT.getDocumentWithResponse("1", options, null)
+    .getValue().getAdditionalProperties();
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
 ```
 
@@ -608,6 +566,33 @@ By default, a Netty based HTTP client will be used. The [HTTP clients wiki](http
 provides more information on configuring or changing the HTTP client.
 
 ## Next steps
+
+### November 2026 preview
+
+The unreleased beta defaults to `SearchServiceVersion.V2026_11_01_PREVIEW`.
+Set `serviceVersion` on a client builder to continue using a previously supported API version.
+The preview includes graph querying and diagnostics, knowledge source graph extraction and enrichment caches,
+vector topic graph retrieval, automatic facet-backed filter hints, and random scoring.
+
+Use `SearchClient.graph` or `SearchAsyncClient.graph` with `GraphOptions` to query an existing graph index.
+A plan-only request must request at least one explain stage.
+See the [preview samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/PreviewSearchSamples.java).
+These APIs require a service that supports the preview; the samples do not provision resources.
+
+The preview preserves the October GA knowledge base streaming APIs. `KnowledgeBaseRetrievalClient.retrieveStream`
+returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>`; use try-with-resources, especially when stopping
+early. `KnowledgeBaseRetrievalAsyncClient.retrieveStream` returns a `Flux<KnowledgeBaseRetrievalStreamEvent>` directly,
+without `ServerSentEvent` envelopes. Known events expose typed payloads through `getValue()`; unknown events expose
+only their names, not their payloads. Event wrappers are SDK-created envelopes; serialize their typed payloads instead.
+Completion status codes remain nullable integers.
+See the [streaming sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java),
+which provisions uniquely named sample resources and removes them afterward.
+
+Set `KnowledgeBaseRetrievalOptions.setQuerySourceAuthorization` to send query-source authorization as a header,
+never as JSON. An explicit non-null authorization argument overrides the option; null falls back to it.
+The three-argument retrieval and streaming overloads also support November's Work IQ authorization.
+Typed listing overloads accept `RequestOptions` and preserve service continuation links. File delete and update APIs
+take the knowledge source `name` before `fileId`. SQL references use the GA `getDocumentUrl()` getter.
 
 * Samples are explained in detail [here][samples_readme].
 * Read more about the [Azure AI Search service](https://learn.microsoft.com/azure/search/search-what-is-azure-search)
