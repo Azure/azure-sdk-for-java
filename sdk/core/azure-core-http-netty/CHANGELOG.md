@@ -11,6 +11,9 @@
 
 ### Bugs Fixed
 
+- Fixed stream-backed request bodies performing blocking reads on Netty event-loop threads, including blob uploads
+  using `BinaryData.fromStream` with a `BlobInputStream`.
+
 ### Other Changes
 
 ## 1.17.0 (2026-10-27)

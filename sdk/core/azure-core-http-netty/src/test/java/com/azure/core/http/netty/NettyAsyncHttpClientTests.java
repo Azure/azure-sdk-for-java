@@ -48,6 +48,7 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import javax.net.ssl.SSLException;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,6 +72,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -369,6 +371,60 @@ public class NettyAsyncHttpClientTests {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
+    }
+
+    @Test
+    public void testBlockingInputStreamUploadSync() throws IOException {
+        checkBlockingInputStreamUpload(true);
+    }
+
+    @Test
+    public void testBlockingInputStreamUploadAsync() throws IOException {
+        checkBlockingInputStreamUpload(false);
+    }
+
+    private void checkBlockingInputStreamUpload(boolean sync) throws IOException {
+        AtomicBoolean closed = new AtomicBoolean();
+        try (ByteArrayInputStream stream = new ByteArrayInputStream(Arrays.copyOfRange(LONG_BODY, 1, 43)) {
+            @Override
+            public synchronized int read(byte[] buffer, int offset, int length) {
+                // Model a BlobInputStream read that synchronously waits for a download.
+                Mono.delay(Duration.ofMillis(1)).block(Duration.ofSeconds(10));
+                return super.read(buffer, offset, length);
+            }
+
+            @Override
+            public synchronized void reset() {
+                assertFalse(Schedulers.isInNonBlockingThread());
+                super.reset();
+            }
+
+            @Override
+            public void close() throws IOException {
+                closed.set(true);
+                super.close();
+            }
+        }) {
+            HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+            BinaryData body = BinaryData.fromStream(stream, 42L);
+            assertTrue(body.isReplayable());
+
+            // Send the same body twice to verify that each subscription resets the stream.
+            for (int i = 0; i < 2; i++) {
+                HttpRequest request = new HttpRequest(HttpMethod.POST, url(SHORT_POST_BODY_WITH_VALIDATION_PATH))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, "42")
+                    .setBody(body);
+                try (HttpResponse response = sync
+                    ? client.sendSync(request, Context.NONE)
+                    : client.send(request).block(Duration.ofSeconds(10))) {
+                    assertNotNull(response);
+                    assertEquals(200, response.getStatusCode());
+                    response.getBodyAsByteArray().block(Duration.ofSeconds(10));
+                }
+                assertFalse(closed.get());
+            }
+        }
+        assertTrue(closed.get());
     }
 
     @Test
