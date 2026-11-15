@@ -11,7 +11,7 @@ public final class ManagedComputeCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeCapacityProperties model = BinaryData.fromString(
-            "{\"acceleratorType\":\"twwjwzzq\",\"availableAccelerators\":757200141,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":925467052,\"totalAvailableCapacity\":668235801,\"largestDeploymentCapacity\":1557390880},{\"modelInstanceAcceleratorCount\":266145265,\"totalAvailableCapacity\":1392769660,\"largestDeploymentCapacity\":98431225},{\"modelInstanceAcceleratorCount\":2045605742,\"totalAvailableCapacity\":1299066708,\"largestDeploymentCapacity\":303561669}]}")
+            "{\"acceleratorType\":\"lxydkxrxv\",\"offerScope\":\"xiwkgfbql\",\"scopeId\":\"qkhychocok\",\"availableAccelerators\":1774662003,\"totalAvailableAccelerators\":980146066,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":784642610,\"totalAvailableCapacity\":2025937557,\"largestDeploymentCapacity\":1476851751},{\"modelInstanceAcceleratorCount\":558382284,\"totalAvailableCapacity\":1469283789,\"largestDeploymentCapacity\":519865123},{\"modelInstanceAcceleratorCount\":450328402,\"totalAvailableCapacity\":1075829949,\"largestDeploymentCapacity\":662993818},{\"modelInstanceAcceleratorCount\":473142263,\"totalAvailableCapacity\":1871401315,\"largestDeploymentCapacity\":257563193}]}")
             .toObject(ManagedComputeCapacityProperties.class);
     }
 }

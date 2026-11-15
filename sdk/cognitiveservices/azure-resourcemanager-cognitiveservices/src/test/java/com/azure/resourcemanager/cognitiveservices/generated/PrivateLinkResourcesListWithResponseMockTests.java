@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"gbvuy\",\"requiredMembers\":[\"mbwep\",\"lnuom\",\"xhdkhmemx\"],\"requiredZoneNames\":[\"apesnbyoullyfz\",\"nxrmxxjv\",\"batjgzkm\"],\"displayName\":\"wzlmpxfmd\"},\"id\":\"i\",\"name\":\"mmdzphxulx\",\"type\":\"cbdnpfcg\"},{\"properties\":{\"groupId\":\"towqxxcp\",\"requiredMembers\":[\"pzloovhatiywtcv\",\"uzpk\",\"eomotq\",\"ql\"],\"requiredZoneNames\":[\"i\",\"gq\"],\"displayName\":\"k\"},\"id\":\"pfv\",\"name\":\"sqmmetwtlafnkjte\",\"type\":\"bdpnuvhgcgrllyy\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"xrq\",\"requiredMembers\":[\"zfvwjdthkvpyeyoa\",\"inmpnqupdkjrzfwk\"],\"requiredZoneNames\":[\"obd\",\"whqdcc\"],\"displayName\":\"vqsru\"},\"id\":\"ylcvwbzmfx\",\"name\":\"ry\",\"type\":\"fjxlpiy\"},{\"properties\":{\"groupId\":\"pfydrfbgcnyxbyxm\",\"requiredMembers\":[\"qyncgaullfstyygj\"],\"requiredZoneNames\":[\"lmwqg\",\"hmqmiwxzf\",\"vzucqfgufjnb\",\"wbmwdukinhl\"],\"displayName\":\"gde\"},\"id\":\"kzou\",\"name\":\"vewwpzrdwcgldo\",\"type\":\"gcandxfhhhtes\"},{\"properties\":{\"groupId\":\"tdnnck\",\"requiredMembers\":[\"jdshvv\",\"k\",\"xccyijjimhijzr\"],\"requiredZoneNames\":[\"xmv\",\"s\",\"uy\"],\"displayName\":\"nwgruhhqldr\"},\"id\":\"mnswxiexqwqnghx\",\"name\":\"i\",\"type\":\"v\"},{\"properties\":{\"groupId\":\"rxgunnqgy\",\"requiredMembers\":[\"tnylqu\"],\"requiredZoneNames\":[\"mvyumgmmuebsnzn\",\"gsqufmjxcyo\",\"eqcazisvbrqgcy\",\"pgawepk\"],\"displayName\":\"nrzpghlrdtbg\"},\"id\":\"xb\",\"name\":\"ibrv\",\"type\":\"ztaflvsmfj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("txtmrmgftjvi", "lohlgrjcxhhfhzns", com.azure.core.util.Context.NONE)
+            .listWithResponse("svgoocq", "azmzlpcx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("apesnbyoullyfz", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("obd", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

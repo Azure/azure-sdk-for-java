@@ -64,6 +64,7 @@ import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -111,7 +112,6 @@ import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
-
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
     public static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
@@ -509,6 +509,29 @@ public class ModelHelper {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
         }
+    }
+
+    /**
+     * Validates the options of a file copy before it's sent.
+     * <p>
+     * With {@link PermissionCopyModeType#SOURCE} or no permission copy mode, neither a file permission nor a file
+     * permission key may be set, as the service only accepts them with {@link PermissionCopyModeType#OVERRIDE}. With
+     * {@code OVERRIDE}, the file permission and file permission key are mutually exclusive. A copy flag and its
+     * corresponding SMB property may not both be set.
+     *
+     * @param options The copy options.
+     * @param smbProperties The SMB properties of the copy.
+     * @throws IllegalArgumentException If the options are invalid.
+     */
+    public static void validateCopyOptions(ShareFileCopyOptions options, FileSmbProperties smbProperties) {
+        if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
+            validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
+        } else if (options.getFilePermission() != null || smbProperties.getFilePermissionKey() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
+        }
+
+        validateCopyFlagAndSmbProperties(options, smbProperties);
     }
 
     public static Response<ShareFileUploadInfo> transformUploadResponse(Response<FilesUploadRangeHeaders> response) {

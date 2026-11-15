@@ -23,35 +23,36 @@ public final class ManagedNetworkSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNetworkSettingsProperties model = BinaryData.fromString(
-            "{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowInternetOutbound\",\"AllowInternetOutbound\",\"Disabled\"],\"isolationMode\":\"Disabled\",\"networkId\":\"rpilt\",\"outboundRules\":{\"ai\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Deleting\",\"errorInformation\":\"mf\",\"parentRuleNames\":[\"ode\",\"resrgvtshuvft\"]},\"x\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"vzgjyp\",\"parentRuleNames\":[\"xmpdxxzetww\",\"jwotnxlkfhglhrf\"]},\"mlccmetjscz\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"nhpcselqx\",\"parentRuleNames\":[\"pqibukklv\",\"rl\"]},\"vdgxly\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"nasd\",\"parentRuleNames\":[\"nzsieuscplh\"]}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V2\",\"firewallPublicIpAddress\":\"zsvko\",\"provisioningState\":\"Failed\"},\"provisioningState\":\"Deleted\"}")
+            "{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"AllowOnlyApprovedOutbound\",\"AllowOnlyApprovedOutbound\"],\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"vyqlkjuvsmbmslzo\",\"outboundRules\":{\"lubses\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Deleting\",\"errorInformation\":\"qvybefg\",\"parentRuleNames\":[\"nokcv\"]},\"xoe\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Provisioning\",\"errorInformation\":\"t\",\"parentRuleNames\":[\"nlp\",\"rykycndzfqivjr\",\"uykbbmn\",\"aglt\"]},\"h\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Inactive\",\"errorInformation\":\"fwmyymv\",\"parentRuleNames\":[\"pb\",\"fckdvez\",\"rcssbzhddubbnq\",\"b\"]}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"wugiqjti\",\"provisioningState\":\"Deferred\"},\"provisioningState\":\"Succeeded\"}")
             .toObject(ManagedNetworkSettingsProperties.class);
-        Assertions.assertEquals(IsolationMode.DISABLED, model.managedNetwork().isolationMode());
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, model.managedNetwork().outboundRules().get("ai").category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.managedNetwork().outboundRules().get("ai").status());
+        Assertions.assertEquals(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND, model.managedNetwork().isolationMode());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED,
+            model.managedNetwork().outboundRules().get("lubses").category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.managedNetwork().outboundRules().get("lubses").status());
         Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, model.managedNetwork().status().status());
-        Assertions.assertEquals(FirewallSku.STANDARD, model.managedNetwork().firewallSku());
-        Assertions.assertEquals(ManagedNetworkKind.V2, model.managedNetwork().managedNetworkKind());
+        Assertions.assertEquals(FirewallSku.BASIC, model.managedNetwork().firewallSku());
+        Assertions.assertEquals(ManagedNetworkKind.V1, model.managedNetwork().managedNetworkKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedNetworkSettingsProperties model = new ManagedNetworkSettingsProperties()
-            .withManagedNetwork(new ManagedNetworkSettingsEx().withIsolationMode(IsolationMode.DISABLED)
-                .withOutboundRules(mapOf("ai",
-                    new OutboundRule().withCategory(RuleCategory.USER_DEFINED).withStatus(RuleStatus.DELETING), "x",
-                    new OutboundRule().withCategory(RuleCategory.REQUIRED).withStatus(RuleStatus.FAILED), "mlccmetjscz",
-                    new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.INACTIVE), "vdgxly",
-                    new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.INACTIVE)))
+        ManagedNetworkSettingsProperties model = new ManagedNetworkSettingsProperties().withManagedNetwork(
+            new ManagedNetworkSettingsEx().withIsolationMode(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND)
+                .withOutboundRules(mapOf("lubses",
+                    new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.DELETING), "xoe",
+                    new OutboundRule().withCategory(RuleCategory.REQUIRED).withStatus(RuleStatus.PROVISIONING), "h",
+                    new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.INACTIVE)))
                 .withStatus(new ManagedNetworkProvisionStatusInner().withStatus(ManagedNetworkStatus.ACTIVE))
-                .withFirewallSku(FirewallSku.STANDARD)
-                .withManagedNetworkKind(ManagedNetworkKind.V2));
+                .withFirewallSku(FirewallSku.BASIC)
+                .withManagedNetworkKind(ManagedNetworkKind.V1));
         model = BinaryData.fromObject(model).toObject(ManagedNetworkSettingsProperties.class);
-        Assertions.assertEquals(IsolationMode.DISABLED, model.managedNetwork().isolationMode());
-        Assertions.assertEquals(RuleCategory.USER_DEFINED, model.managedNetwork().outboundRules().get("ai").category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.managedNetwork().outboundRules().get("ai").status());
+        Assertions.assertEquals(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND, model.managedNetwork().isolationMode());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED,
+            model.managedNetwork().outboundRules().get("lubses").category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.managedNetwork().outboundRules().get("lubses").status());
         Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, model.managedNetwork().status().status());
-        Assertions.assertEquals(FirewallSku.STANDARD, model.managedNetwork().firewallSku());
-        Assertions.assertEquals(ManagedNetworkKind.V2, model.managedNetwork().managedNetworkKind());
+        Assertions.assertEquals(FirewallSku.BASIC, model.managedNetwork().firewallSku());
+        Assertions.assertEquals(ManagedNetworkKind.V1, model.managedNetwork().managedNetworkKind());
     }
 
     // Use "Map.of" if available

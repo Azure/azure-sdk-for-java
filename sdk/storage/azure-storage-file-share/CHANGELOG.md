@@ -13,6 +13,11 @@
 ### Bugs Fixed
 - Fixed a bug where `ShareProperties.isSmbDirectoryLeaseEnabled()` always returned `null` because the value returned by
   the service was not mapped onto the public model.
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
+- Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
+  `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
+  request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
 
 ### Other Changes
 - Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
