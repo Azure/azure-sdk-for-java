@@ -23,10 +23,13 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
+import com.azure.search.documents.implementation.models.GraphRequest;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.GetDocumentOptions;
+import com.azure.search.documents.models.GraphOptions;
+import com.azure.search.documents.models.GraphQueryResult;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -390,19 +393,24 @@ public final class SearchClient {
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
-     *     queryType: String(simple/full/semantic) (Optional)
+     *     queryType: String(simple/full/semantic/agentic) (Optional)
+     *     agenticOptions (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *     }
      *     scoringStatistics: String(local/global) (Optional)
      *     sessionId: String (Optional)
      *     scoringParameters (Optional): [
      *         String (Optional)
      *     ]
      *     scoringProfile: String (Optional)
-     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *     debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *     search: String (Optional)
      *     searchFields (Optional): [
      *         String (Optional)
      *     ]
      *     searchMode: String(any/all) (Optional)
+     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
+     *     speller: String(none/lexicon) (Optional)
      *     select (Optional): [
      *         String (Optional)
      *     ]
@@ -414,17 +422,33 @@ public final class SearchClient {
      *     semanticQuery: String (Optional)
      *     answers: String(none/extractive) (Optional)
      *     captions: String(none/extractive) (Optional)
+     *     queryRewrites: String(none/generative) (Optional)
+     *     semanticFields (Optional): [
+     *         String (Optional)
+     *     ]
      *     vectorQueries (Optional): [
      *          (Optional){
-     *             kind: String(vector/text) (Required)
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
      *             k: Integer (Optional)
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
      *         }
      *     ]
-     *     vectorFilterMode: String(postFilter/preFilter) (Optional)
+     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *     hybridSearch (Optional): {
+     *         maxTextRecallSize: Integer (Optional)
+     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -440,6 +464,16 @@ public final class SearchClient {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -457,6 +491,32 @@ public final class SearchClient {
      *             }
      *         }
      *     ]
+     *     &#64;search.debug (Optional): {
+     *         queryRewrites (Optional): {
+     *             text (Optional): {
+     *                 inputQuery: String (Optional)
+     *                 rewrites (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *             vectors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         agentic (Optional): {
+     *             terminationReason: String(modelStopped/maxRuntimeExceeded/modelFailed) (Optional)
+     *             subQueries (Optional): [
+     *                  (Optional){
+     *                     search: String (Required)
+     *                     iteration: int (Required)
+     *                 }
+     *             ]
+     *             usage (Optional): {
+     *                 agenticPlanningTokens: long (Required)
+     *                 reasoningTokens: long (Required)
+     *             }
+     *         }
+     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -473,19 +533,24 @@ public final class SearchClient {
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
+     *         queryType: String(simple/full/semantic/agentic) (Optional)
+     *         agenticOptions (Optional): {
+     *             maxRuntimeInSeconds: Integer (Optional)
+     *         }
      *         scoringStatistics: String(local/global) (Optional)
      *         sessionId: String (Optional)
      *         scoringParameters (Optional): [
      *             String (Optional)
      *         ]
      *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/agentic/innerHits/all) (Optional)
      *         search: String (Optional)
      *         searchFields (Optional): [
      *             String (Optional)
      *         ]
      *         searchMode: String(any/all) (Optional)
+     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
+     *         speller: String(none/lexicon) (Optional)
      *         select (Optional): [
      *             String (Optional)
      *         ]
@@ -497,17 +562,33 @@ public final class SearchClient {
      *         semanticQuery: String (Optional)
      *         answers: String(none/extractive) (Optional)
      *         captions: String(none/extractive) (Optional)
+     *         queryRewrites: String(none/generative) (Optional)
+     *         semanticFields (Optional): [
+     *             String (Optional)
+     *         ]
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text) (Required)
+     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
+     *                 topicGraph (Optional): {
+     *                     kind: String(none/diverse/balanced) (Required)
+     *                 }
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         hybridSearch (Optional): {
+     *             maxTextRecallSize: Integer (Optional)
+     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
+     *         }
      *     }
      *     value (Required): [
      *          (Required){
@@ -529,6 +610,23 @@ public final class SearchClient {
      *                 }
      *             ]
      *             &#64;search.documentDebugInfo (Optional): {
+     *                 semantic (Optional): {
+     *                     titleField (Optional): {
+     *                         name: String (Optional)
+     *                         state: String(used/unused/partial) (Optional)
+     *                     }
+     *                     contentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     keywordFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     rerankerInput (Optional): {
+     *                         title: String (Optional)
+     *                         content: String (Optional)
+     *                         keywords: String (Optional)
+     *                     }
+     *                 }
      *                 vectors (Optional): {
      *                     subscores (Optional): {
      *                         text (Optional): {
@@ -545,6 +643,18 @@ public final class SearchClient {
      *                         documentBoost: Double (Optional)
      *                     }
      *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *              (Optional): {
      *                 String: Object (Required)
@@ -554,6 +664,7 @@ public final class SearchClient {
      *     &#64;odata.nextLink: String (Optional)
      *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
      *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
+     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
      * }
      * }
      * </pre>
@@ -971,6 +1082,187 @@ public final class SearchClient {
                 false);
         }
         return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     gql: String (Required)
+     *     search: String (Optional)
+     *     filter: String (Optional)
+     *     vectorQueries (Optional): [
+     *          (Optional){
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             k: Integer (Optional)
+     *             fields: String (Optional)
+     *             exhaustive: Boolean (Optional)
+     *             oversampling: Double (Optional)
+     *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *             topicGraph (Optional): {
+     *                 kind: String(none/diverse/balanced) (Required)
+     *             }
+     *         }
+     *     ]
+     *     executionMode: String(execute/planOnly) (Optional)
+     *     explain (Optional): [
+     *         String(syntax/semanticIr/logicalPlan/optimizedLogicalPlan/physicalPlan/requestAttributions/full) (Optional)
+     *     ]
+     *     includeStatistics: Boolean (Optional)
+     *     includeDiagnostics: Boolean (Optional)
+     *     provenance (Optional): {
+     *         kind: String(ids/hydrate) (Required)
+     *         maxEvidencePerRow: Integer (Optional)
+     *         hydrateDocuments (Optional): {
+     *             select: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     &#64;odata.count: Long (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.graphProvenance (Optional): {
+     *                 kind: String(ids/hydrate) (Optional)
+     *                 evidenceCount (Optional): {
+     *                     value: Integer (Optional)
+     *                     relation: String(exact/lowerBound) (Optional)
+     *                 }
+     *                 evidence (Optional): [
+     *                      (Optional){
+     *                         edgeId: String (Optional)
+     *                         chunkId: String (Optional)
+     *                         parentId: String (Optional)
+     *                         confidence (Optional): {
+     *                             edge: Double (Optional)
+     *                             subject: Double (Optional)
+     *                             predicate: Double (Optional)
+     *                             object: Double (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.graphStats (Optional): {
+     *         executionMode: String(execute/planOnly) (Optional)
+     *         queryCount: Integer (Optional)
+     *         documentsFetched: Integer (Optional)
+     *         isEstimated: Boolean (Optional)
+     *         totalMs: Long (Optional)
+     *         searchMs: Long (Optional)
+     *         planningMs: Long (Optional)
+     *     }
+     *     &#64;search.graphDiagnostics (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             severity: String(error/warning/info) (Optional)
+     *             phase: String(parse/bind/validation/planning/execution) (Optional)
+     *             message: String (Optional)
+     *             span: String (Optional)
+     *             suggestions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     &#64;search.graphExplain (Optional): {
+     *          (Optional): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     &#64;search.graphProvenanceDocuments (Optional): {
+     *          (Optional): {
+     *             String (Required): {
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param graphRequest The graphRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a graph query's projected rows and optional execution information along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedGraphWithResponse(BinaryData graphRequest, RequestOptions requestOptions) {
+        return this.serviceClient.graphWithResponse(graphRequest, requestOptions);
+    }
+
+    /**
+     * Executes a graph query over an index with an edge-list graph profile.
+     *
+     * @param options Options for graph API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a graph query's projected rows and optional execution information.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GraphQueryResult graph(GraphOptions options) {
+        // Generated convenience method for hiddenGeneratedGraphWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String querySourceAuthorization = options.getQuerySourceAuthorization();
+        Boolean enableElevatedRead = options.isEnableElevatedRead();
+        GraphRequest graphRequestObj = new GraphRequest(options.getGql()).setSearch(options.getSearch())
+            .setFilter(options.getFilter())
+            .setVectorQueries(options.getVectorQueries())
+            .setExecutionMode(options.getExecutionMode())
+            .setExplain(options.getExplain())
+            .setIncludeStatistics(options.isIncludeStatistics())
+            .setIncludeDiagnostics(options.isIncludeDiagnostics())
+            .setProvenance(options.getProvenance());
+        BinaryData graphRequest = BinaryData.fromObject(graphRequestObj);
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (enableElevatedRead != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                String.valueOf(enableElevatedRead));
+        }
+        return hiddenGeneratedGraphWithResponse(graphRequest, requestOptions).getValue()
+            .toObject(GraphQueryResult.class);
     }
 
     /**

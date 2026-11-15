@@ -44,6 +44,12 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
     private Integer count;
 
     /*
+     * Statistics about image serving for this retrieval activity
+     */
+    @Generated
+    private ImageServingStatistics imageServing;
+
+    /*
      * The indexed OneLake arguments for the retrieval activity.
      */
     @Generated
@@ -102,6 +108,16 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
     }
 
     /**
+     * Get the imageServing property: Statistics about image serving for this retrieval activity.
+     *
+     * @return the imageServing value.
+     */
+    @Generated
+    public ImageServingStatistics getImageServing() {
+        return this.imageServing;
+    }
+
+    /**
      * Get the indexedOneLakeArguments property: The indexed OneLake arguments for the retrieval activity.
      *
      * @return the indexedOneLakeArguments value.
@@ -131,6 +147,7 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
         jsonWriter.writeStringField("queryTime",
             this.queryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryTime));
         jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("indexedOneLakeArguments", this.indexedOneLakeArguments);
         return jsonWriter.writeEndObject();
     }
@@ -157,6 +174,7 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
             String knowledgeSourceName = null;
             OffsetDateTime queryTime = null;
             Integer count = null;
+            ImageServingStatistics imageServing = null;
             KnowledgeBaseIndexedOneLakeActivityArguments indexedOneLakeArguments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,6 +202,8 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getInt);
+                } else if ("imageServing".equals(fieldName)) {
+                    imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("indexedOneLakeArguments".equals(fieldName)) {
                     indexedOneLakeArguments = KnowledgeBaseIndexedOneLakeActivityArguments.fromJson(reader);
                 } else {
@@ -201,6 +221,7 @@ public final class KnowledgeBaseIndexedOneLakeActivityRecord extends KnowledgeBa
             deserializedKnowledgeBaseIndexedOneLakeActivityRecord.knowledgeSourceName = knowledgeSourceName;
             deserializedKnowledgeBaseIndexedOneLakeActivityRecord.queryTime = queryTime;
             deserializedKnowledgeBaseIndexedOneLakeActivityRecord.count = count;
+            deserializedKnowledgeBaseIndexedOneLakeActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseIndexedOneLakeActivityRecord.indexedOneLakeArguments = indexedOneLakeArguments;
             return deserializedKnowledgeBaseIndexedOneLakeActivityRecord;
         });
