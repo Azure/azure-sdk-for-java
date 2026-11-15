@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Get Queue Service Stats returns {@code <StorageServiceStats>} -- the Storage service-level envelope shared with Blob
  * and File -- while the TypeSpec model is named {@code QueueServiceStats}. azure-xml enforces the root element name, so
  * if the generated default drifts back to {@code "QueueServiceStats"} this operation throws instead of parsing. The
- * name is retargeted by QueueStorageCustomizations.retargetServiceStatsXmlRootName; this test is what makes that
- * customization's removal detectable.
+ * name is set by the Java-scoped {@code QueueServiceStatsJava} alternate model in the spec's {@code client.tsp}; this
+ * test is what makes a regression there detectable.
  */
 public class QueueServiceStatisticsXmlTests {
 

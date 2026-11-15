@@ -5,7 +5,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -18,7 +17,6 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.modules.ModuleDirective;
 import com.github.javaparser.ast.modules.ModuleExportsDirective;
 import com.github.javaparser.ast.modules.ModuleOpensDirective;
@@ -110,8 +108,6 @@ public class QueueStorageCustomizations extends Customization {
         retypeServiceVersionToQueueServiceVersion(customization, logger);
 
         restoreFluentModels(customization, logger);
-
-        retargetServiceStatsXmlRootName(customization, logger);
 
         restoreQueueStorageErrorJson(customization, logger);
 
@@ -378,26 +374,6 @@ public class QueueStorageCustomizations extends Customization {
         return -1;
     }
 
-    /**
-     * Retargets the XML root element of {@code QueueServiceStatistics} to the name the service sends.
-     * <p>
-     * {@code Get Queue Service Stats} returns {@code <StorageServiceStats>} (the Storage service-level envelope, shared
-     * with Blob and File), but the TypeSpec model is named {@code QueueServiceStats}, so the emitter defaults the root
-     * element to {@code "QueueServiceStats"}. {@code azure-xml} enforces the root element name, so
-     * {@code getStatistics} would fail without this. It's a customization rather than an {@code @Xml.name} in the
-     * shared {@code models.tsp} because that file has no per-language scoping. Both the {@code toXml} and
-     * {@code fromXml} defaults are retargeted so the model still round-trips against itself.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void retargetServiceStatsXmlRootName(LibraryCustomization customization, Logger logger) {
-        customization.getClass(MODELS_PACKAGE, "QueueServiceStatistics")
-            .customizeAst(ast -> ast
-                .findAll(StringLiteralExpr.class, literal -> literal.getValue().equals("QueueServiceStats"))
-                .forEach(literal -> literal.setString("StorageServiceStats")));
-        logger.info("Retargeted the QueueServiceStatistics XML root element to StorageServiceStats");
-    }
 
     /**
      * Restores JSON deserialization on the internal {@code QueueStorageError}. The emitter generates a model as either
@@ -586,41 +562,12 @@ public class QueueStorageCustomizations extends Customization {
 
     private static void addErrorMappingToAsyncMethod(MethodDeclaration method) {
         BlockStmt body = method.getBody().get();
-
-        // Bit of hack to insert the 'onErrorMap' in the right location.
-        // Unfortunately, 'onErrorMap' returns <T> which for some calls breaks typing, such as Void -> Object or
-        // PagedResponse -> PagedResponseBase. So, 'onErrorMap' needs to be inserted after the first method call.
-        // To do this, we track the first found '(' and the associated closing ')' to insert 'onErrorMap' after the ')'.
-        // So, 'service.methodCall(parameters).map()' becomes 'service.methodCall(parameters).onErrorMap().map()'.
-        String originalReturnStatement = body.getStatement(body.getStatements().size() - 1).asReturnStmt()
-            .getExpression().get().toString();
-        int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
-        String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
-            + ".onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException)"
-            + originalReturnStatement.substring(insertionPoint) + ";";
-        try {
-            Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
-            body.getStatements().set(body.getStatements().size() - 1, newReturn);
-        } catch (ParseProblemException ex) {
-            throw new RuntimeException("Failed to parse: " + newReturnStatement, ex);
-        }
-    }
-
-    private static int findAsyncOnErrorMapInsertionPoint(String returnStatement) {
-        int openParenthesis = 0;
-        int closeParenthesis = 0;
-        for (int i = 0; i < returnStatement.length(); i++) {
-            char c = returnStatement.charAt(i);
-            if (c == '(') {
-                openParenthesis++;
-            } else if (c == ')') {
-                closeParenthesis++;
-                if (openParenthesis == closeParenthesis) {
-                    return i + 1;
-                }
-            }
-        }
-        return -1;
+        ReturnStmt returnStmt = body.getStatement(body.getStatements().size() - 1).asReturnStmt();
+        MethodCallExpr onErrorMap = StaticJavaParser
+            .parseExpression("x.onErrorMap(QueueStorageErrorException.class, ModelHelper::mapToQueueStorageException)")
+            .asMethodCallExpr();
+        onErrorMap.setScope(returnStmt.getExpression().get());
+        returnStmt.setExpression(onErrorMap);
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {

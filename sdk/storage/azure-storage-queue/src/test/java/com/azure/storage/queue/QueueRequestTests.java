@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.storage.queue.models.GeoReplicationStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -111,6 +113,43 @@ public class QueueRequestTests {
         String body = requests.get(1).getBodyAsBinaryData().toString();
         assertTrue(body.contains("<Start>2026-01-02T00:00:00Z</Start>"), body);
         assertTrue(body.contains("<Expiry>2026-01-03T00:00:00Z</Expiry>"), body);
+    }
+
+    @Test
+    public void getStatisticsParsesTheServiceResponse() {
+        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceStats><GeoReplication>"
+            + "<Status>live</Status><LastSyncTime>Wed, 23 Oct 2013 22:05:54 GMT</LastSyncTime></GeoReplication>"
+            + "</StorageServiceStats>";
+        QueueServiceClientBuilder builder
+            = new QueueServiceClientBuilder().endpoint("https://account.queue.core.windows.net")
+                .credential(new MockTokenCredential())
+                .pipeline(capturingPipeline(new ArrayList<>(), 200, response));
+
+        assertEquals(GeoReplicationStatus.LIVE, builder.buildClient().getStatistics().getGeoReplication().getStatus());
+        StepVerifier.create(builder.buildAsyncClient().getStatistics())
+            .assertNext(stats -> assertEquals(GeoReplicationStatus.LIVE, stats.getGeoReplication().getStatus()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void setAccessPolicyWithoutPermissionsSendsAnEmptyList() {
+        List<HttpRequest> requests = new ArrayList<>();
+        QueueClientBuilder builder = new QueueClientBuilder().endpoint("https://account.queue.core.windows.net")
+            .queueName("myqueue")
+            .credential(new MockTokenCredential())
+            .pipeline(capturingPipeline(requests, 204, null));
+
+        builder.buildClient().setAccessPolicy(null);
+        builder.buildClient().setAccessPolicy(Collections.emptyList());
+        StepVerifier.create(builder.buildAsyncClient().setAccessPolicy(null)).verifyComplete();
+        StepVerifier.create(builder.buildAsyncClient().setAccessPolicy(Collections.emptyList())).verifyComplete();
+
+        assertEquals(4, requests.size());
+        for (HttpRequest request : requests) {
+            assertEquals("comp=acl", request.getUrl().getQuery());
+            String body = request.getBodyAsBinaryData().toString();
+            assertTrue(body.matches("(<\\?xml[^>]*\\?>)?<SignedIdentifiers(/>|></SignedIdentifiers>)"), body);
+        }
     }
 
     private static HttpPipeline capturingPipeline(List<HttpRequest> requests, int statusCode, String body) {
