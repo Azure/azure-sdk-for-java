@@ -583,7 +583,8 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
-        if (hostname.endsWith(".appconfig-staging.azure.com")) {
+        // Regional staging endpoints use "appconfig-stage" but share the staging audience.
+        if (hostname.endsWith(".appconfig-staging.azure.com") || hostname.endsWith(".appconfig-stage.azure.com")) {
             return "https://appconfig-staging.azure.com/.default";
         }
 

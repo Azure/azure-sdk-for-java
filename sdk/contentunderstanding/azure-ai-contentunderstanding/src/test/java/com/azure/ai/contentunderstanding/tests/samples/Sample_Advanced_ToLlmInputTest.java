@@ -50,6 +50,7 @@ public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTe
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyze("prebuilt-invoice", Arrays.asList(new AnalysisInput().setUrl(invoiceUrl)));
+        setPlaybackSyncPollerPollInterval(poller);
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
         AnalysisResult result = poller.getFinalResult();
@@ -125,6 +126,7 @@ public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTe
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyze("prebuilt-documentSearch", Arrays.asList(new AnalysisInput().setUrl(multiPageUrl)
                 .setContentRange(ContentRange.combine(ContentRange.pages(2, 3), ContentRange.page(5)))));
+        setPlaybackSyncPollerPollInterval(poller);
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
         AnalysisResult result = poller.getFinalResult();
@@ -176,6 +178,7 @@ public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTe
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingClient
             .beginAnalyze("prebuilt-videoSearch", Arrays.asList(new AnalysisInput().setUrl(videoUrl)));
+        setPlaybackSyncPollerPollInterval(poller);
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
         AnalysisResult result = poller.getFinalResult();
@@ -223,6 +226,7 @@ public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTe
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch",
                 Arrays.asList(new AnalysisInput().setUrl(audioUrl).setContentRange(new ContentRange("0-10000"))));
+        setPlaybackSyncPollerPollInterval(poller);
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.waitForCompletion().getStatus());
         AnalysisResult result = poller.getFinalResult();

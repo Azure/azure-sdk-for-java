@@ -873,6 +873,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             .blobName("blob")
             .credential(new StorageSharedKeyCredential("accountName", "accountKey"))
             .httpClient(httpClient)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .buildClient();
     }
 

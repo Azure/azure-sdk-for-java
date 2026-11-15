@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents.models;
 
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -18,7 +17,6 @@ import java.util.Objects;
  * function call outputs, and references in the same response input list.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeResponseInputItem implements JsonSerializable<RealtimeResponseInputItem> {
     private static final ClientLogger LOGGER = new ClientLogger(RealtimeResponseInputItem.class);
 

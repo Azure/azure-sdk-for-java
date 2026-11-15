@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2026-11-01/Gates_Get.json
+     * x-ms-original-file: 2026-11-02-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.
@@ -23,7 +23,7 @@ public final class GatesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/Gates_Get_ScheduledStart.json
+     * x-ms-original-file: 2026-11-02-preview/Gates_Get_ScheduledStart.json
      */
     /**
      * Sample code: Gets a ScheduledStart Gate resource.

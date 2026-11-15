@@ -87,11 +87,6 @@ public final class RoutingStorageContainerProperties implements JsonSerializable
      */
     private RoutingStorageContainerPropertiesEncoding encoding;
 
-    /*
-     * The format of the message payload delivered to this endpoint.
-     */
-    private MessagePayloadFormat messagePayloadFormat;
-
     /**
      * Creates an instance of RoutingStorageContainerProperties class.
      */
@@ -371,26 +366,6 @@ public final class RoutingStorageContainerProperties implements JsonSerializable
     }
 
     /**
-     * Get the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
-     * 
-     * @return the messagePayloadFormat value.
-     */
-    public MessagePayloadFormat messagePayloadFormat() {
-        return this.messagePayloadFormat;
-    }
-
-    /**
-     * Set the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
-     * 
-     * @param messagePayloadFormat the messagePayloadFormat value to set.
-     * @return the RoutingStorageContainerProperties object itself.
-     */
-    public RoutingStorageContainerProperties withMessagePayloadFormat(MessagePayloadFormat messagePayloadFormat) {
-        this.messagePayloadFormat = messagePayloadFormat;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -410,8 +385,6 @@ public final class RoutingStorageContainerProperties implements JsonSerializable
         jsonWriter.writeNumberField("batchFrequencyInSeconds", this.batchFrequencyInSeconds);
         jsonWriter.writeNumberField("maxChunkSizeInBytes", this.maxChunkSizeInBytes);
         jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
-        jsonWriter.writeStringField("messagePayloadFormat",
-            this.messagePayloadFormat == null ? null : this.messagePayloadFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -462,9 +435,6 @@ public final class RoutingStorageContainerProperties implements JsonSerializable
                 } else if ("encoding".equals(fieldName)) {
                     deserializedRoutingStorageContainerProperties.encoding
                         = RoutingStorageContainerPropertiesEncoding.fromString(reader.getString());
-                } else if ("messagePayloadFormat".equals(fieldName)) {
-                    deserializedRoutingStorageContainerProperties.messagePayloadFormat
-                        = MessagePayloadFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

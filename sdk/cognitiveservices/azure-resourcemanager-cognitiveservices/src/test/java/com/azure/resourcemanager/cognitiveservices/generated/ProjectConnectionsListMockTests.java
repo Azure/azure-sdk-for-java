@@ -25,7 +25,7 @@ public final class ProjectConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"ContainerRegistry\",\"createdByWorkspaceArmId\":\"dzycxhaoegjzgplj\",\"error\":\"wczsrazcbybic\",\"expiryTime\":\"2021-03-27T06:25:11Z\",\"group\":\"Azure\",\"isSharedToAll\":true,\"metadata\":{\"otennd\":\"asizzfmugykwuyc\",\"jzffp\":\"gthdzi\",\"adezmzxvf\":\"erwjqvswtwo\",\"o\":\"bxmmrvnuvqkrrsg\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Active\",\"sharedUserList\":[\"p\",\"abensjflwpftvv\",\"tmvifgcv\",\"im\"],\"target\":\"bmticxgosnxajp\",\"useWorkspaceManagedIdentity\":false},\"id\":\"mzxaoxlhmvj\",\"name\":\"nn\",\"type\":\"sbnuc\"}]}";
+            = "{\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Oracle\",\"createdByWorkspaceArmId\":\"swnyinxuprrxyxwj\",\"error\":\"bf\",\"expiryTime\":\"2021-05-13T00:48:53Z\",\"group\":\"Database\",\"isSharedToAll\":false,\"metadata\":{\"svjmnsvujnjk\":\"cpvuft\",\"se\":\"volefcj\",\"otfbjampqoclann\":\"kdb\",\"zstrktgvpatrg\":\"xynlsuqb\"},\"peRequirement\":\"Required\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"fhok\",\"mmculwkq\",\"cru\"],\"target\":\"krjflsgaojb\",\"useWorkspaceManagedIdentity\":false},\"id\":\"sdoctpzpu\",\"name\":\"zflmcdsgxcelujis\",\"type\":\"lluunxh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,19 @@ public final class ProjectConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConnectionPropertiesV2BasicResource> response = manager.projectConnections()
-            .list("b", "jjpduibsrrrq", "neqrypyur", "shhovtuer", "pzhbw", true, com.azure.core.util.Context.NONE);
+            .list("iqemcdiiisklbon", "xu", "jxvtrkfkgenjqnnp", "wkosnyxigf", "ujjcxgdqmrlhn", true,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ConnectionCategory.CONTAINER_REGISTRY,
-            response.iterator().next().properties().category());
-        Assertions.assertEquals("wczsrazcbybic", response.iterator().next().properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T06:25:11Z"),
+        Assertions.assertEquals(ConnectionCategory.ORACLE, response.iterator().next().properties().category());
+        Assertions.assertEquals("bf", response.iterator().next().properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T00:48:53Z"),
             response.iterator().next().properties().expiryTime());
-        Assertions.assertTrue(response.iterator().next().properties().isSharedToAll());
-        Assertions.assertEquals("asizzfmugykwuyc", response.iterator().next().properties().metadata().get("otennd"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE,
-            response.iterator().next().properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.ACTIVE, response.iterator().next().properties().peStatus());
-        Assertions.assertEquals("p", response.iterator().next().properties().sharedUserList().get(0));
-        Assertions.assertEquals("bmticxgosnxajp", response.iterator().next().properties().target());
+        Assertions.assertFalse(response.iterator().next().properties().isSharedToAll());
+        Assertions.assertEquals("cpvuft", response.iterator().next().properties().metadata().get("svjmnsvujnjk"));
+        Assertions.assertEquals(ManagedPERequirement.REQUIRED, response.iterator().next().properties().peRequirement());
+        Assertions.assertEquals(ManagedPEStatus.INACTIVE, response.iterator().next().properties().peStatus());
+        Assertions.assertEquals("fhok", response.iterator().next().properties().sharedUserList().get(0));
+        Assertions.assertEquals("krjflsgaojb", response.iterator().next().properties().target());
         Assertions.assertFalse(response.iterator().next().properties().useWorkspaceManagedIdentity());
     }
 }
