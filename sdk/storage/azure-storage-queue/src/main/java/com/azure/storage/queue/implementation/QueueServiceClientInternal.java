@@ -265,8 +265,8 @@ public final class QueueServiceClientInternal {
      * <pre>
      * {@code
      * {
-     *     Start: OffsetDateTime (Optional)
-     *     Expiry: OffsetDateTime (Required)
+     *     Start: String (Optional)
+     *     Expiry: String (Required)
      *     DelegatedUserTid: String (Optional)
      * }
      * }

@@ -589,8 +589,8 @@ public final class ServicesImpl {
      * <pre>
      * {@code
      * {
-     *     Start: OffsetDateTime (Optional)
-     *     Expiry: OffsetDateTime (Required)
+     *     Start: String (Optional)
+     *     Expiry: String (Required)
      *     DelegatedUserTid: String (Optional)
      * }
      * }
@@ -662,8 +662,8 @@ public final class ServicesImpl {
      * <pre>
      * {@code
      * {
-     *     Start: OffsetDateTime (Optional)
-     *     Expiry: OffsetDateTime (Required)
+     *     Start: String (Optional)
+     *     Expiry: String (Required)
      *     DelegatedUserTid: String (Optional)
      * }
      * }

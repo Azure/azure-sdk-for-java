@@ -16,6 +16,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -792,7 +793,9 @@ public final class QueueServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        KeyInfo keyInfo = new KeyInfo(expiry).setStart(start).setDelegatedUserTenantId(delegatedUserTenantId);
+        KeyInfo keyInfo = new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+            .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+            .setDelegatedUserTenantId(delegatedUserTenantId);
         return serviceClientInternal
             .getUserDelegationKeyWithResponse(keyInfo, null, RequestOptionsHelper.requestOptions(context))
             .map(response -> (Response<UserDelegationKey>) response);

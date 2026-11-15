@@ -122,11 +122,6 @@ public class ModelHelper {
     }
 
     /**
-     * Wire prefix for user-defined queue metadata headers. The generated protocol methods document a single
-     * {@code x-ms-meta} header collection; on the wire each entry is emitted as {@code x-ms-meta-<key>}.
-     */
-
-    /**
      * Converts a {@code List Queues} response into a {@link PagedResponse} of {@link QueueItem}, preserving
      * the {@code NextMarker}-based continuation the hand-written paging depends on.
      * <p>

@@ -7,11 +7,14 @@
 ### Breaking Changes
 
 - When no root element name is passed, `toXml`/`fromXml` on `QueueAccessPolicy`, `QueueAnalyticsLogging`,
-  `QueueMetrics`, `QueueRetentionPolicy` and `QueueServiceStatistics` now default to the service's element names
-  (`AccessPolicy`, `Logging`, `Metrics`, `RetentionPolicy` and `StorageServiceStats`) instead of the class names.
-  Requests and responses sent through the clients are unaffected.
+  `QueueMetrics` and `QueueRetentionPolicy` now default to the service's element names (`AccessPolicy`, `Logging`,
+  `Metrics` and `RetentionPolicy`) instead of the class names. Requests and responses sent through the clients are
+  unaffected.
 
 ### Bugs Fixed
+
+- Fixed `QueueServiceClient.getStatistics` failing to deserialize the service response, because
+  `QueueServiceStatistics` expected a `<QueueServiceStatistics>` root element instead of `<StorageServiceStats>`.
 
 ### Other Changes
 
