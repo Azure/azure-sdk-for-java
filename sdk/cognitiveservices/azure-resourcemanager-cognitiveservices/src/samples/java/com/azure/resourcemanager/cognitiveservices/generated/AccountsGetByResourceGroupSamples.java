@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/GetAccount.json
+     * x-ms-original-file: 2026-11-01/GetAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -17,6 +17,20 @@ public final class AccountsGetByResourceGroupSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void getAccount(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.accounts()
+            .getByResourceGroupWithResponse("myResourceGroup", "myAccount", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/GetAccountWithTrustedCertificateSources.json
+     */
+    /**
+     * Sample code: Get an account with private CA trust.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getAnAccountWithPrivateCATrust(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.accounts()
             .getByResourceGroupWithResponse("myResourceGroup", "myAccount", com.azure.core.util.Context.NONE);
     }

@@ -15,27 +15,27 @@ public final class GateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateConfiguration model = BinaryData.fromString(
-            "{\"displayName\":\"risjnhnytxifqjz\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Saturday\",\"startTime\":\"hu\",\"utcOffset\":\"lw\"}}")
+            "{\"displayName\":\"mczuo\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"cwwqiokn\",\"utcOffset\":\"sx\"}}")
             .toObject(GateConfiguration.class);
-        Assertions.assertEquals("risjnhnytxifqjz", model.displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.type());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduledStartConfiguration().startDay());
-        Assertions.assertEquals("hu", model.scheduledStartConfiguration().startTime());
-        Assertions.assertEquals("lw", model.scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("mczuo", model.displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.type());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("cwwqiokn", model.scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("sx", model.scheduledStartConfiguration().utcOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GateConfiguration model = new GateConfiguration().withDisplayName("risjnhnytxifqjz")
-            .withType(GateType.APPROVAL)
-            .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.SATURDAY)
-                .withStartTime("hu")
-                .withUtcOffset("lw"));
+        GateConfiguration model = new GateConfiguration().withDisplayName("mczuo")
+            .withType(GateType.SCHEDULED_START)
+            .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.THURSDAY)
+                .withStartTime("cwwqiokn")
+                .withUtcOffset("sx"));
         model = BinaryData.fromObject(model).toObject(GateConfiguration.class);
-        Assertions.assertEquals("risjnhnytxifqjz", model.displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.type());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduledStartConfiguration().startDay());
-        Assertions.assertEquals("hu", model.scheduledStartConfiguration().startTime());
-        Assertions.assertEquals("lw", model.scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("mczuo", model.displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.type());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("cwwqiokn", model.scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("sx", model.scheduledStartConfiguration().utcOffset());
     }
 }

@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -41,6 +41,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
             .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
                 new UpdateStage().withName("stage1")
                     .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
+                        .withMaxAllowedFailures("1")
                         .withMaxConcurrency("2")
                         .withMemberSelector(new MemberSelector().withByLabel("tier=frontend"))
                         .withBeforeGates(Arrays.asList(
@@ -48,6 +49,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
                         .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("gate after group-a")
                             .withType(GateType.APPROVAL)))))
                     .withAfterStageWaitInSeconds(3600)
+                    .withMaxAllowedFailures("2")
                     .withMaxConcurrency("10")
                     .withBeforeGates(Arrays.asList(
                         new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
@@ -56,6 +58,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
                 new UpdateStage().withName("stage2")
                     .withMemberSelector(new MemberSelector().withByLabel("env=production"))
                     .withAfterStageWaitInSeconds(600)
+                    .withMaxAllowedFailures("25%")
                     .withMaxConcurrency("50%")
                     .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("Wait until Friday evening")
                         .withType(GateType.SCHEDULED_START)

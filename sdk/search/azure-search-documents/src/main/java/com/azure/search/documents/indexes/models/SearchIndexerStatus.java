@@ -146,6 +146,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.runtime = IndexerRuntime.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     deserializedSearchIndexerStatus.lastResult = IndexerExecutionResult.fromJson(reader);
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSearchIndexerStatus.currentState = IndexerCurrentState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -160,6 +162,12 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     private IndexerRuntime runtime;
 
+    /*
+     * All of the state that defines and dictates the indexer's current execution.
+     */
+    @Generated
+    private IndexerCurrentState currentState;
+
     /**
      * Get the runtime property: Snapshot of the indexer's cumulative runtime consumption for the service over the
      * current UTC period.
@@ -169,5 +177,15 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public IndexerRuntime getRuntime() {
         return this.runtime;
+    }
+
+    /**
+     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
+     *
+     * @return the currentState value.
+     */
+    @Generated
+    public IndexerCurrentState getCurrentState() {
+        return this.currentState;
     }
 }

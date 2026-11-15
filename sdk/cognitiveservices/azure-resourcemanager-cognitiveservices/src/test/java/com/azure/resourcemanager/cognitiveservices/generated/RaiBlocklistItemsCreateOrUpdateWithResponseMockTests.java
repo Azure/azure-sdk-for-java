@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"drznlaxozqthkwxf\",\"isRegex\":false},\"etag\":\"izyxduyjnqzb\",\"tags\":{\"viyjuca\":\"akmfc\",\"iuh\":\"nsbqoitwhmuc\",\"ehyklelyqdvpqfbx\":\"xy\",\"mtxqlefnohey\":\"ycudus\"},\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
+            = "{\"properties\":{\"pattern\":\"lztpziizevjykof\",\"isRegex\":true},\"etag\":\"fkhkqtwqlep\",\"tags\":{\"fwzcntogffjwaj\":\"kca\"},\"id\":\"tw\",\"name\":\"vaqkifmxawost\",\"type\":\"zkn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("xqfg")
-            .withExistingRaiBlocklist("zahgtv", "gdobimor", "olxosgihtrxueqb")
-            .withTags(mapOf("vsl", "mfxzspf"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("jqswshesgcs").withIsRegex(true))
+            .define("vpltidajjvy")
+            .withExistingRaiBlocklist("jfwtgdfkkaui", "vmuafmc", "fedyuep")
+            .withTags(mapOf("ckgtxkrdtulc", "fdrugjq", "otcsu", "cjdk", "dyslbklglmnn", "mzoonsvobchkxfpw"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("cfkumcfjxo").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("drznlaxozqthkwxf", response.properties().pattern());
-        Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("akmfc", response.tags().get("viyjuca"));
+        Assertions.assertEquals("lztpziizevjykof", response.properties().pattern());
+        Assertions.assertTrue(response.properties().isRegex());
+        Assertions.assertEquals("kca", response.tags().get("fwzcntogffjwaj"));
     }
 
     // Use "Map.of" if available

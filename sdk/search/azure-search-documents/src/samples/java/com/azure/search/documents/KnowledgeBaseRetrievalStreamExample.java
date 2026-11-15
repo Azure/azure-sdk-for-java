@@ -181,8 +181,6 @@ public class KnowledgeBaseRetrievalStreamExample {
         }
         if (event instanceof KnowledgeBaseReferencesCompletedStreamEvent) {
             printEventData(((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue());
-            ((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue().forEach(reference ->
-                System.out.println("Citation URL: " + KnowledgeRetrievalResponseExample.citationUrl(reference)));
         }
         if (event instanceof KnowledgeBaseErrorStreamEvent) {
             printEventData(((KnowledgeBaseErrorStreamEvent) event).getValue());

@@ -14,17 +14,17 @@ public final class OutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRule model = BinaryData.fromString(
-            "{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"eysl\",\"parentRuleNames\":[\"kdcdjhunhgh\",\"gawnrrnquo\",\"sotirei\"]}")
+            "{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"ialwc\",\"parentRuleNames\":[\"kbbccc\",\"zpraoxn\"]}")
             .toObject(OutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundRule model = new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.DELETING);
+        OutboundRule model = new OutboundRule().withCategory(RuleCategory.REQUIRED).withStatus(RuleStatus.FAILED);
         model = BinaryData.fromObject(model).toObject(OutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
     }
 }

@@ -13,19 +13,19 @@ public final class RaiTopicResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiTopicResult model = BinaryData.fromString(
-            "{\"nextLink\":\"tmaaj\",\"value\":[{\"properties\":{\"topicId\":\"ylr\",\"topicName\":\"m\",\"description\":\"g\",\"sampleBlobUrl\":\"mzyospspshck\",\"status\":\"yjpmspbpssdfppyo\",\"failedReason\":\"ieyujtvc\",\"createdAt\":\"2021-06-10T09:27Z\",\"lastModifiedAt\":\"2021-03-17T21:21:35Z\"},\"etag\":\"rxmunjdxvgln\",\"tags\":{\"hpzvuqdflvoniyp\":\"lxpaglqivbgkcv\"},\"id\":\"ubcpzgpxti\",\"name\":\"hjknidibg\",\"type\":\"jxgpnrhgovfg\"}]}")
+            "{\"nextLink\":\"iykzkdncjdx\",\"value\":[{\"properties\":{\"topicId\":\"ggcula\",\"topicName\":\"wyrpgogtqxepnyl\",\"description\":\"uajlyj\",\"sampleBlobUrl\":\"vofqzhvfc\",\"status\":\"yfm\",\"failedReason\":\"uxrkjp\",\"createdAt\":\"2021-02-25T18:54:33Z\",\"lastModifiedAt\":\"2021-07-02T02:53:51Z\"},\"etag\":\"wiivwzjbhyzsx\",\"tags\":{\"vuqeqvldspast\":\"ambtrnegvm\",\"flvestmjlxrrilo\":\"bkkd\",\"kuziycsle\":\"apeewchpxlkt\",\"dcgzul\":\"ufuztcktyhjtq\"},\"id\":\"mrqzzrrjvpgl\",\"name\":\"dzgkr\",\"type\":\"qeevt\"}]}")
             .toObject(RaiTopicResult.class);
-        Assertions.assertEquals("tmaaj", model.nextLink());
-        Assertions.assertEquals("ylr", model.value().get(0).properties().topicId());
-        Assertions.assertEquals("m", model.value().get(0).properties().topicName());
-        Assertions.assertEquals("g", model.value().get(0).properties().description());
-        Assertions.assertEquals("mzyospspshck", model.value().get(0).properties().sampleBlobUrl());
-        Assertions.assertEquals("yjpmspbpssdfppyo", model.value().get(0).properties().status());
-        Assertions.assertEquals("ieyujtvc", model.value().get(0).properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T09:27Z"),
+        Assertions.assertEquals("iykzkdncjdx", model.nextLink());
+        Assertions.assertEquals("ggcula", model.value().get(0).properties().topicId());
+        Assertions.assertEquals("wyrpgogtqxepnyl", model.value().get(0).properties().topicName());
+        Assertions.assertEquals("uajlyj", model.value().get(0).properties().description());
+        Assertions.assertEquals("vofqzhvfc", model.value().get(0).properties().sampleBlobUrl());
+        Assertions.assertEquals("yfm", model.value().get(0).properties().status());
+        Assertions.assertEquals("uxrkjp", model.value().get(0).properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T18:54:33Z"),
             model.value().get(0).properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T21:21:35Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T02:53:51Z"),
             model.value().get(0).properties().lastModifiedAt());
-        Assertions.assertEquals("lxpaglqivbgkcv", model.value().get(0).tags().get("hpzvuqdflvoniyp"));
+        Assertions.assertEquals("ambtrnegvm", model.value().get(0).tags().get("vuqeqvldspast"));
     }
 }
