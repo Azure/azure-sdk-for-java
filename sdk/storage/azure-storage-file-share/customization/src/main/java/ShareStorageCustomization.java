@@ -5,7 +5,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -644,41 +643,12 @@ public class ShareStorageCustomization extends Customization {
 
     private static void addErrorMappingToAsyncMethod(MethodDeclaration method) {
         BlockStmt body = method.getBody().get();
-
-        // Bit of hack to insert the 'onErrorMap' in the right location.
-        // Unfortunately, 'onErrorMap' returns <T> which for some calls breaks typing, such as Void -> Object or
-        // PagedResponse -> PagedResponseBase. So, 'onErrorMap' needs to be inserted after the first method call.
-        // To do this, we track the first found '(' and the associated closing ')' to insert 'onErrorMap' after the ')'.
-        // So, 'service.methodCall(parameters).map()' becomes 'service.methodCall(parameters).onErrorMap().map()'.
-        String originalReturnStatement = body.getStatement(body.getStatements().size() - 1).asReturnStmt()
-            .getExpression().get().toString();
-        int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
-        String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
-            + ".onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException)"
-            + originalReturnStatement.substring(insertionPoint) + ";";
-        try {
-            Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
-            body.getStatements().set(body.getStatements().size() - 1, newReturn);
-        } catch (ParseProblemException ex) {
-            throw new RuntimeException("Failed to parse: " + newReturnStatement, ex);
-        }
-    }
-
-    private static int findAsyncOnErrorMapInsertionPoint(String returnStatement) {
-        int openParenthesis = 0;
-        int closeParenthesis = 0;
-        for (int i = 0; i < returnStatement.length(); i++) {
-            char c = returnStatement.charAt(i);
-            if (c == '(') {
-                openParenthesis++;
-            } else if (c == ')') {
-                closeParenthesis++;
-                if (openParenthesis == closeParenthesis) {
-                    return i + 1;
-                }
-            }
-        }
-        return -1;
+        ReturnStmt returnStmt = body.getStatement(body.getStatements().size() - 1).asReturnStmt();
+        MethodCallExpr onErrorMap = StaticJavaParser
+            .parseExpression("x.onErrorMap(ShareStorageErrorException.class, ModelHelper::mapToShareStorageException)")
+            .asMethodCallExpr();
+        onErrorMap.setScope(returnStmt.getExpression().get());
+        returnStmt.setExpression(onErrorMap);
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
