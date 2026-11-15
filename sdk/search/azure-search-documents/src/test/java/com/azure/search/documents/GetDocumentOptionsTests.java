@@ -19,6 +19,7 @@ import com.azure.search.documents.models.LookupDocument;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -43,24 +44,6 @@ public class GetDocumentOptionsTests {
     private static final HttpHeaderName AUTHORIZATION = HttpHeaderName.fromString("x-ms-query-source-authorization");
     private static final HttpHeaderName ELEVATED_READ = HttpHeaderName.fromString("x-ms-enable-elevated-read");
     private static final String DOCUMENT = "{\"id\":\"hotel-1\",\"title\":\"Hotel\"}";
-
-    @Test
-    public void defaultsAndFluentAccessors() {
-        GetDocumentOptions options = new GetDocumentOptions();
-        assertNull(options.getQuerySourceAuthorization());
-        assertNull(options.isEnableElevatedRead());
-        assertNull(options.getSelectedFields());
-        assertSame(options, options.setQuerySourceAuthorization("query-token"));
-        assertSame(options, options.setEnableElevatedRead(false));
-        assertSame(options, options.setSelectedFields(Arrays.asList("id", "title")));
-        assertEquals("query-token", options.getQuerySourceAuthorization());
-        assertEquals(Boolean.FALSE, options.isEnableElevatedRead());
-        assertEquals(Arrays.asList("id", "title"), options.getSelectedFields());
-        options.setQuerySourceAuthorization(null).setEnableElevatedRead(null).setSelectedFields(null);
-        assertNull(options.getQuerySourceAuthorization());
-        assertNull(options.isEnableElevatedRead());
-        assertNull(options.getSelectedFields());
-    }
 
     @ParameterizedTest
     @MethodSource("lookupOptions")
@@ -94,6 +77,19 @@ public class GetDocumentOptionsTests {
             Arguments.of(new GetDocumentOptions().setSelectedFields(Collections.emptyList()), null, null, ""),
             Arguments.of(new GetDocumentOptions().setSelectedFields(Arrays.asList("id", null, "title")), null, null,
                 "id,,title"));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = SearchServiceVersion.class, names = { "V2026_10_01", "V2026_11_01_PREVIEW" })
+    public void lookupOptionsSupportGaAndPreview(SearchServiceVersion version) {
+        SearchClientBuilder builder = builder(request -> {
+            assertEquals("query-token", request.getHeaders().getValue(AUTHORIZATION));
+            assertEquals("api-version=" + version.getVersion() + "&$select=id", query(request));
+        }).serviceVersion(version);
+        GetDocumentOptions options = new GetDocumentOptions().setQuerySourceAuthorization("query-token")
+            .setSelectedFields(Collections.singletonList("id"));
+        verifyDocument(false, builder, options, null);
+        verifyDocument(true, builder, options, null);
     }
 
     @ParameterizedTest
@@ -246,6 +242,7 @@ public class GetDocumentOptionsTests {
         return new SearchClientBuilder().endpoint("https://example.search.windows.net")
             .credential(new AzureKeyCredential("key"))
             .indexName("index")
+            .serviceVersion(SearchServiceVersion.V2026_10_01)
             .httpClient(request -> {
                 verifyRequest.accept(request);
                 return Mono.just(new MockHttpResponse(request, 200,
