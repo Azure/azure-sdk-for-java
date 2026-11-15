@@ -52,17 +52,6 @@ public final class ShareErrors {
      * @throws IllegalStateException If the client is file-ID-addressed.
      */
     public static void validatePathOperation(String fileId, String operationName) {
-        assertNotFileIdAddressed(fileId, operationName);
-    }
-
-    /**
-     * Throws if the client addresses its resource by file ID.
-     *
-     * @param fileId The client's file ID.
-     * @param operationName The operation name to report on failure.
-     * @throws IllegalStateException If the client is file-ID-addressed.
-     */
-    public static void assertNotFileIdAddressed(String fileId, String operationName) {
         if (!CoreUtils.isNullOrEmpty(fileId)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException(operationName + " is not supported for a file-ID-addressed client."));

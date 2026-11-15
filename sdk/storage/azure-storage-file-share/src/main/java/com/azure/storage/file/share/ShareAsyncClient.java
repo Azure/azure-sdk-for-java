@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,8 +22,11 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareAsyncClientInternal;
 import com.azure.storage.file.share.implementation.ShareErrors;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.FilePermissionFormat;
@@ -91,6 +95,7 @@ public class ShareAsyncClient {
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
+    private final ShareAsyncClientInternal shareClientInternal;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -110,6 +115,14 @@ public class ShareAsyncClient {
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
+        this.shareClientInternal = new ShareAsyncClientInternal(azureFileStorageClient.getShares());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this share's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.shareRequestOptions(context, azureFileStorageClient.getUrl(), shareName);
     }
 
     /**
@@ -410,13 +423,13 @@ public class ShareAsyncClient {
         options = options == null ? new ShareCreateOptions() : options;
         String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
-        return azureFileStorageClient.getShares()
-            .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
-                options.getAccessTier(), enabledProtocol, options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
-                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), context)
+        return shareClientInternal
+            .createWithResponse(null, options.getMetadata(), options.getQuotaInGb(), options.getAccessTier(),
+                enabledProtocol, options.getRootSquash(), options.isSnapshotVirtualDirectoryAccessEnabled(),
+                options.isPaidBurstingEnabled(), options.getPaidBurstingMaxIops(),
+                options.getPaidBurstingMaxBandwidthMibps(), options.getProvisionedMaxIops(),
+                options.getProvisionedMaxBandwidthMibps(), null, options.isChangeFeedEnabled(),
+                options.getChangeFeedRetentionInDays(), scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -565,8 +578,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .createSnapshotWithResponseAsync(shareName, null, metadata, context)
+        return shareClientInternal.createSnapshotWithResponse(null, metadata, scopedRequestOptions(context))
             .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
@@ -666,10 +678,11 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
+        return shareClientInternal
+            .deleteWithResponse(snapshot, null,
                 ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), context);
+                requestConditions.getLeaseId(), scopedRequestOptions(context))
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -848,8 +861,8 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
+        return shareClientInternal
+            .getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::mapGetPropertiesResponse);
     }
 
@@ -980,13 +993,13 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .setPropertiesNoCustomHeadersWithResponseAsync(shareName, null, options.getQuotaInGb(),
-                options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
+        return shareClientInternal
+            .setPropertiesWithResponse(null, options.getQuotaInGb(), options.getAccessTier(),
+                requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
+                options.getPaidBurstingMaxIops(), options.getPaidBurstingMaxBandwidthMibps(),
                 options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
-                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), context)
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1109,9 +1122,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .setMetadataNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(),
-                requestConditions.getLeaseId(), context)
+        return shareClientInternal
+            .setMetadataWithResponse(null, options.getMetadata(), requestConditions.getLeaseId(),
+                scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1173,11 +1186,10 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions()
             : finalOptions.getRequestConditions();
         try {
-            Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever
-                = marker -> this.azureFileStorageClient.getShares()
-                    .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), Context.NONE)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), response.getValue().items(), null, response.getDeserializedHeaders()));
+            Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever = marker -> shareClientInternal
+                .getAccessPolicyWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(null))
+                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), response.getValue().getItems(), null, response.getDeserializedHeaders()));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1300,9 +1312,9 @@ public class ShareAsyncClient {
 
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.getShares()
-            .setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
-                permissions, context)
+        return shareClientInternal
+            .setAccessPolicyWithResponse(null, requestConditions.getLeaseId(),
+                new ShareSignedIdentifierWrapper(permissions), scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1392,8 +1404,8 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .getStatisticsNoCustomHeadersWithResponseAsync(shareName, null, requestConditions.getLeaseId(), context)
+        return shareClientInternal
+            .getStatisticsWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::mapGetStatisticsResponse);
     }
 
@@ -2181,12 +2193,9 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission,
         FilePermissionFormat filePermissionFormat, Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission
-            = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
-        return azureFileStorageClient.getShares()
-            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-            .map(response -> new SimpleResponse<>(response,
-                response.getDeserializedHeaders().getXMsFilePermissionKey()));
+        SharePermission sharePermission = new SharePermission(filePermission).setFormat(filePermissionFormat);
+        return shareClientInternal.createPermissionWithResponse(sharePermission, null, scopedRequestOptions(context))
+            .map(response -> new SimpleResponse<>(response, response.getValue().getFilePermissionKey()));
     }
 
     /**
@@ -2290,8 +2299,8 @@ public class ShareAsyncClient {
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
         FilePermissionFormat filePermissionFormat, Context context) {
-        return azureFileStorageClient.getShares()
-            .getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, null, context)
+        return shareClientInternal
+            .getPermissionWithResponse(filePermissionKey, null, filePermissionFormat, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 
