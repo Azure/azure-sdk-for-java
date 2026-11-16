@@ -482,18 +482,19 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void stopCancelsInFlightChangeFeedRequest() throws InterruptedException {
+        String taskId = UUID.randomUUID().toString();
         Map<String, String> sourceConfigMap = new HashMap<>();
         sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
         sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", Arrays.asList(singlePartitionContainerName).toString());
-        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", taskId);
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosClientCacheItem clientItem =
             CosmosClientCache.getCosmosClient(
                 sourceConfig.getAccountConfig(),
-                "stopCancelsInFlightChangeFeedRequest");
+                taskId);
         CosmosContainerProperties containerProperties = getSinglePartitionContainer(clientItem.getClient());
         CosmosAsyncContainer container =
             clientItem.getClient().getDatabase(databaseName).getContainer(containerProperties.getId());
