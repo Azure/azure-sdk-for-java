@@ -3102,7 +3102,7 @@ class FileApiTests extends FileShareTestBase {
     /**
      * The sync file client delegates transfers (download, upload, streams) to an internal async client. The client
      * returned by rename must route those operations to the destination, exactly as a directly built client does. A
-     * stale delegate sends them to the source path instead, so a write can land on an unrelated file that now lives
+     * stale delegate sends them to the source path instead, so writes can land on an unrelated file that now lives
      * there.
      */
     @ParameterizedTest
