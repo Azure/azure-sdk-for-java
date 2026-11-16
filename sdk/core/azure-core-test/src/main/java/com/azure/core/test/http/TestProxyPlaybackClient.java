@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.implementation.PlaybackPollingUrlRewriter;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -183,13 +184,16 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Method is invoked after the response is received.
+     * <p>
+     * Restores the original request URL and moves polling URLs in the response onto the original request's host and
+     * port, keeping long-running operation polling on the playback endpoint.
      *
      * @param response The response received.
      * @return The transformed response.
      */
     private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.resetTestProxyData(response);
+        return PlaybackPollingUrlRewriter.rewritePollingUrls(TestProxyUtils.resetTestProxyData(response));
     }
 
     /**
