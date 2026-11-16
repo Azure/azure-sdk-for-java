@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (2026-11-13)
+## 1.6.0-beta.1 (2026-11-16)
 
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-11-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,8 +8,8 @@
 
 #### `models.RaiPolicies` was modified
 
-* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 ### Features Added
 
@@ -482,30 +482,30 @@
 
 #### `models.RaiPolicy$Definition` was modified
 
-* `withIfMatch(java.lang.String)` was added
 * `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
 
 #### `CognitiveServicesManager` was modified
 
-* `computes()` was added
-* `adapterDeployments()` was added
-* `raiBindings()` was added
-* `raiRegos()` was added
-* `managedComputeUsagesOperationGroups()` was added
-* `computeOperations()` was added
-* `accountCostControls()` was added
-* `arcDeployments()` was added
 * `projectCostControls()` was added
-* `attachedAksClusters()` was added
+* `managedComputeUsagesOperationGroups()` was added
+* `raiRegos()` was added
+* `computes()` was added
+* `computeOperations()` was added
 * `workbenches()` was added
+* `arcDeployments()` was added
+* `attachedAksClusters()` was added
+* `raiBindings()` was added
+* `accountCostControls()` was added
 * `managedComputeDeployments()` was added
+* `adapterDeployments()` was added
 
 #### `models.ProjectProperties` was modified
 
 * `toolControls()` was added
-* `capabilitySettings()` was added
 * `withToolControls(models.ToolControls)` was added
 * `withCapabilitySettings(models.CapabilitySettings)` was added
+* `capabilitySettings()` was added
 
 #### `models.ProvisioningState` was modified
 
@@ -513,19 +513,19 @@
 
 #### `models.Account` was modified
 
-* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
 * `evaluateDeploymentPoliciesWithResponse(models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
 
 #### `models.AccountProperties` was modified
 
-* `agentHostingConfigurations()` was added
-* `withCapabilitySettings(models.CapabilitySettings)` was added
-* `costControlConnections()` was added
-* `withFoundryAutoUpgrade(models.FoundryAutoUpgrade)` was added
-* `foundryAutoUpgrade()` was added
-* `withAgentHostingConfigurations(java.util.List)` was added
 * `capabilitySettings()` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
+* `withFoundryAutoUpgrade(models.FoundryAutoUpgrade)` was added
 * `withCostControlConnections(models.CostControlConnections)` was added
+* `agentHostingConfigurations()` was added
+* `foundryAutoUpgrade()` was added
+* `costControlConnections()` was added
 
 #### `models.ConnectionCategory` was modified
 
@@ -540,19 +540,19 @@
 
 #### `models.RaiPolicyProperties` was modified
 
-* `withFormat(models.RaiPolicyFormat)` was added
-* `withCustomExternalSafetyProviders(java.util.List)` was added
-* `acs()` was added
-* `customExternalSafetyProviders()` was added
 * `format()` was added
+* `withFormat(models.RaiPolicyFormat)` was added
+* `acs()` was added
 * `acsRegos()` was added
+* `customExternalSafetyProviders()` was added
 * `withAcs(models.RaiAcsManifest)` was added
+* `withCustomExternalSafetyProviders(java.util.List)` was added
 * `withAcsRegos(java.util.List)` was added
 
 #### `models.DeploymentProperties` was modified
 
-* `withSpeculativeDecoding(models.DeploymentSpeculativeDecoding)` was added
 * `speculativeDecoding()` was added
+* `withSpeculativeDecoding(models.DeploymentSpeculativeDecoding)` was added
 
 #### `models.RaiPolicies` was modified
 
