@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class DdosCustomPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/DdosCustomPolicyListAll.json
+     * x-ms-original-file: 2026-03-01/DdosCustomPolicyListAll.json
      */
     /**
      * Sample code: List all DDoS custom policies in subscription.

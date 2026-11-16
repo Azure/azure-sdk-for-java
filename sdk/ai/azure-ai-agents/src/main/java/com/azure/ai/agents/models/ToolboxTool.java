@@ -191,6 +191,8 @@ public class ToolboxTool implements JsonSerializable<ToolboxTool> {
                     return A2APreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {
                     return BrowserAutomationPreviewToolboxTool.fromJson(readerToUse.reset());
+                } else if ("browser_automation".equals(discriminatorValue)) {
+                    return BrowserAutomationToolboxTool.fromJson(readerToUse.reset());
                 } else if ("reminder_preview".equals(discriminatorValue)) {
                     return ReminderPreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("work_iq_preview".equals(discriminatorValue)) {

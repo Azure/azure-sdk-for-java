@@ -12,14 +12,13 @@ public final class ProtectionPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":184475150,\"resourceGuardOperationRequests\":[\"vmfqhppubo\",\"sepdfgk\",\"tdherngbtcjuahok\"]},\"tags\":{\"ofshfphwpnulaiyw\":\"bkau\",\"ywhslwkojpllndnp\":\"e\",\"yetefyp\":\"wrpqafgfugsnnf\"},\"location\":\"octfjgtixrjvzuyt\",\"eTag\":\"mlmuowol\",\"id\":\"uir\",\"name\":\"p\",\"type\":\"ons\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1067511250,\"resourceGuardOperationRequests\":[\"gajinnixjawrtmj\",\"jmyccxlzhcoxov\",\"ekhenl\",\"sfnrdtjxt\"]},\"tags\":{\"jvidttge\":\"cq\",\"iesfuug\":\"uslvyjtcvuwkasi\",\"xu\":\"tuqfecjxeygtu\"},\"location\":\"buew\",\"eTag\":\"s\",\"id\":\"jlxuz\",\"name\":\"hwpusxj\",\"type\":\"aqehg\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1004006437,\"resourceGuardOperationRequests\":[\"qatucoigebxnc\",\"wfepbnwgfmx\",\"gcgbjb\",\"dlfgtdysnaq\"]},\"tags\":{\"zjrwdkqze\":\"qbctqha\",\"fza\":\"yjleziunjx\",\"eg\":\"tkw\",\"uooqjagmdit\":\"amlbnseqacjjvpil\"},\"location\":\"eiookjbsah\",\"eTag\":\"dt\",\"id\":\"elqacslmot\",\"name\":\"ebnfxofvc\",\"type\":\"k\"}],\"nextLink\":\"irazftxejwabmd\"}")
+            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1947750114,\"resourceGuardOperationRequests\":[\"dgxvco\",\"raswugyxpqit\",\"eialwvskb\",\"hzacaqtyltco\"]},\"tags\":{\"zakuejk\":\"jpds\",\"vjufycsjmlbe\":\"vbiztjofqcv\",\"iuxegth\":\"yeji\"},\"location\":\"tudaw\",\"eTag\":\"jfel\",\"id\":\"rpptcbgqnzmnhiil\",\"name\":\"alwcjgckbb\",\"type\":\"ccgzpraoxnyu\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1782927877,\"resourceGuardOperationRequests\":[\"ftipwcxbyubhiq\",\"xyur\"]},\"tags\":{\"byl\":\"uhzafccnuhii\",\"vxva\":\"ui\",\"lbnb\":\"vcrk\"},\"location\":\"vhcs\",\"eTag\":\"zlwxaeaovur\",\"id\":\"dndsbdweade\",\"name\":\"zmwntopagt\",\"type\":\"mvmmagoaqylkjz\"}],\"nextLink\":\"iua\"}")
             .toObject(ProtectionPolicyResourceList.class);
-        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
-        Assertions.assertEquals(184475150, model.value().get(0).properties().protectedItemsCount());
-        Assertions.assertEquals("vmfqhppubo",
-            model.value().get(0).properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("bkau", model.value().get(0).tags().get("ofshfphwpnulaiyw"));
-        Assertions.assertEquals("octfjgtixrjvzuyt", model.value().get(0).location());
-        Assertions.assertEquals("mlmuowol", model.value().get(0).etag());
+        Assertions.assertEquals("iua", model.nextLink());
+        Assertions.assertEquals(1947750114, model.value().get(0).properties().protectedItemsCount());
+        Assertions.assertEquals("dgxvco", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jpds", model.value().get(0).tags().get("zakuejk"));
+        Assertions.assertEquals("tudaw", model.value().get(0).location());
+        Assertions.assertEquals("jfel", model.value().get(0).etag());
     }
 }

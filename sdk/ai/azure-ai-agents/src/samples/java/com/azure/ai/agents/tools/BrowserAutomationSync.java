@@ -5,9 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.BrowserAutomationPreviewTool;
+import com.azure.ai.agents.models.BrowserAutomationTool;
 import com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;
 import com.azure.ai.agents.models.BrowserAutomationToolParameters;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -44,7 +43,7 @@ public class BrowserAutomationSync {
 
         // BEGIN: com.azure.ai.agents.define_browser_automation
         // Create browser automation tool with connection configuration
-        BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
+        BrowserAutomationTool browserTool = new BrowserAutomationTool(
             new BrowserAutomationToolParameters(
                 new BrowserAutomationToolConnectionParameters(connectionId)
             )
@@ -61,7 +60,6 @@ public class BrowserAutomationSync {
 
         try {
             // Create a response
-            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Response response = openAIClient.responses().create(

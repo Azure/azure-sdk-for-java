@@ -51,6 +51,11 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
     private List<IotHubDefinitionDescription> iotHubs;
 
     /*
+     * The Device Registry namespaces linked to the provisioning service.
+     */
+    private List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces;
+
+    /*
      * Allocation policy to be used by this provisioning service.
      */
     private AllocationPolicy allocationPolicy;
@@ -216,6 +221,15 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
     public IotDpsPropertiesDescription withIotHubs(List<IotHubDefinitionDescription> iotHubs) {
         this.iotHubs = iotHubs;
         return this;
+    }
+
+    /**
+     * Get the deviceRegistryNamespaces property: The Device Registry namespaces linked to the provisioning service.
+     * 
+     * @return the deviceRegistryNamespaces value.
+     */
+    public List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces() {
+        return this.deviceRegistryNamespaces;
     }
 
     /**
@@ -405,6 +419,10 @@ public final class IotDpsPropertiesDescription implements JsonSerializable<IotDp
                     List<IotHubDefinitionDescription> iotHubs
                         = reader.readArray(reader1 -> IotHubDefinitionDescription.fromJson(reader1));
                     deserializedIotDpsPropertiesDescription.iotHubs = iotHubs;
+                } else if ("deviceRegistryNamespaces".equals(fieldName)) {
+                    List<DeviceRegistryNamespaceDescription> deviceRegistryNamespaces
+                        = reader.readArray(reader1 -> DeviceRegistryNamespaceDescription.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.deviceRegistryNamespaces = deviceRegistryNamespaces;
                 } else if ("allocationPolicy".equals(fieldName)) {
                     deserializedIotDpsPropertiesDescription.allocationPolicy
                         = AllocationPolicy.fromString(reader.getString());

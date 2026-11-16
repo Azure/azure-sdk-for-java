@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckElasticVolumeFilePathAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckElasticVolumeFilePathAvailabilityRequest model = BinaryData.fromString("{\"filePath\":\"qojpy\"}")
+        CheckElasticVolumeFilePathAvailabilityRequest model = BinaryData.fromString("{\"filePath\":\"uagrttikteusqc\"}")
             .toObject(CheckElasticVolumeFilePathAvailabilityRequest.class);
-        Assertions.assertEquals("qojpy", model.filePath());
+        Assertions.assertEquals("uagrttikteusqc", model.filePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckElasticVolumeFilePathAvailabilityRequest model
-            = new CheckElasticVolumeFilePathAvailabilityRequest().withFilePath("qojpy");
+            = new CheckElasticVolumeFilePathAvailabilityRequest().withFilePath("uagrttikteusqc");
         model = BinaryData.fromObject(model).toObject(CheckElasticVolumeFilePathAvailabilityRequest.class);
-        Assertions.assertEquals("qojpy", model.filePath());
+        Assertions.assertEquals("uagrttikteusqc", model.filePath());
     }
 }

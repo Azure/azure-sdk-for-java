@@ -29,7 +29,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyDraftsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyDraftPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyDraftPut.json
      */
     /**
      * Sample code: create or update firewall policy draft.

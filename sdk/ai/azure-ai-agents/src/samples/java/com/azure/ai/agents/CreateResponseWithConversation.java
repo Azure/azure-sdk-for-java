@@ -3,14 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -23,12 +17,16 @@ import com.openai.services.blocking.ConversationService;
 
 /**
  * This sample demonstrates how to invoke the OpenAI Responses API against a Prompt Agent,
- * routing the Responses API request through the agent's endpoint URL.
+ * using the same agent-scoped client for conversation and response operations without configuring the endpoint.
+ *
+ * <p>Set {@code FOUNDRY_PROJECT_ENDPOINT} and {@code FOUNDRY_MODEL_NAME} before running.
+ * Optionally set {@code FOUNDRY_AGENT_NAME} to a new agent name; the default is {@code my-agent}.</p>
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_NAME", "my-agent");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -36,7 +34,8 @@ public class CreateResponseWithConversation {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        ConversationService conversationService = openAIClient.conversations();
 
         AgentVersionDetails agent = null;
         String conversationId = null;
@@ -46,17 +45,8 @@ public class CreateResponseWithConversation {
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant.");
 
-            agent = agentsClient.createAgentVersion("my-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
-
-            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRule(
-                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
-                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-            agentsClient.updateAgentDetails(agent.getName(),
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Create a conversation
             Conversation conversation = conversationService.create();
@@ -83,19 +73,17 @@ public class CreateResponseWithConversation {
                 }
             }
             System.out.println("Response ID: " + response.id());
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         } finally {
-            // Cleanup conversation
-            if (conversationId != null) {
-                conversationService.delete(conversationId);
-                System.out.println("Conversation deleted.");
-            }
-            // Cleanup agent
-            if (agent != null) {
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                System.out.println("Agent deleted.");
+            try {
+                if (conversationId != null) {
+                    conversationService.delete(conversationId);
+                    System.out.println("Conversation deleted.");
+                }
+            } finally {
+                if (agent != null) {
+                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                    System.out.println("Agent version deleted.");
+                }
             }
         }
     }

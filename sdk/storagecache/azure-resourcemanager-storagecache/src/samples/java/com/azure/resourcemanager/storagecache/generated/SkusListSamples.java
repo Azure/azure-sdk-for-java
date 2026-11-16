@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Skus_List.json
+     * x-ms-original-file: 2026-08-01/Skus_List.json
      */
     /**
      * Sample code: Skus_List.

@@ -15,18 +15,18 @@ public final class OutboundRuleBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"tedousnktjtgrava\",\"parentRuleNames\":[\"fkbebauzl\",\"btxxwpfhnjzud\",\"tpzkgmeboywhcz\",\"qrhm\"]},\"id\":\"qbedygisrzwn\",\"name\":\"kdidjc\",\"type\":\"lrmpwctofldse\"}")
+            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"ovjufycsjmlbe\",\"parentRuleNames\":[\"jiriuxeg\"]},\"id\":\"ortudawlpjfel\",\"name\":\"erppt\",\"type\":\"bgqnz\"}")
             .toObject(OutboundRuleBasicResourceInner.class);
         Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.properties().status());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner().withProperties(
-            new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.PROVISIONING));
+        OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner()
+            .withProperties(new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.INACTIVE));
         model = BinaryData.fromObject(model).toObject(OutboundRuleBasicResourceInner.class);
         Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.properties().status());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 }

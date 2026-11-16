@@ -15,6 +15,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
@@ -25,6 +26,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownlo
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
@@ -35,8 +37,11 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHea
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
+import com.azure.storage.file.share.implementation.models.HardLink;
+import com.azure.storage.file.share.implementation.models.HardLinkList;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
@@ -61,6 +66,7 @@ import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -69,6 +75,8 @@ import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
+import com.azure.storage.file.share.models.ShareFileLink;
+import com.azure.storage.file.share.models.ShareFileLinks;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
@@ -92,6 +100,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,6 +115,8 @@ import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+    private static final DateTimeFormatter SMB_DATE_FORMATTER
+        = DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
@@ -213,6 +224,7 @@ public class ModelHelper {
      */
     public static ShareProperties populateShareProperties(SharePropertiesInternal sharePropertiesInternal) {
         ShareProperties properties = new ShareProperties();
+        properties.setCreationTime(sharePropertiesInternal.getCreationTime());
         properties.setLastModified(sharePropertiesInternal.getLastModified());
         properties.setETag(sharePropertiesInternal.getETag());
         properties.setQuota(sharePropertiesInternal.getQuota());
@@ -420,9 +432,10 @@ public class ModelHelper {
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileProperties shareFileProperties = ShareFilePropertiesHelper.create(eTag, lastModified, metadata,
-            fileType, contentLength, contentType, contentMD5, contentEncoding, cacheControl, contentDisposition,
-            leaseStatusType, leaseStateType, leaseDurationType, copyCompletionTime, copyStatusDescription, copyId,
-            copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties, posixProperties);
+            fileType, contentLength, contentType, headers.getContentLanguage(), contentMD5, contentEncoding,
+            cacheControl, contentDisposition, leaseStatusType, leaseStateType, leaseDurationType, copyCompletionTime,
+            copyStatusDescription, copyId, copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties,
+            posixProperties, headers.getXMsFileName());
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
@@ -470,6 +483,55 @@ public class ModelHelper {
         }
     }
 
+    /**
+     * Validates the options of a file copy before it's sent.
+     * <p>
+     * With {@link PermissionCopyModeType#SOURCE} or no permission copy mode, neither a file permission nor a file
+     * permission key may be set, as the service only accepts them with {@link PermissionCopyModeType#OVERRIDE}. With
+     * {@code OVERRIDE}, the file permission and file permission key are mutually exclusive. A copy flag and its
+     * corresponding SMB property may not both be set.
+     *
+     * @param options The copy options.
+     * @param smbProperties The SMB properties of the copy.
+     * @throws IllegalArgumentException If the options are invalid.
+     */
+    public static void validateCopyOptions(ShareFileCopyOptions options, FileSmbProperties smbProperties) {
+        if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
+            validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
+        } else if (options.getFilePermission() != null || smbProperties.getFilePermissionKey() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
+        }
+
+        validateCopyFlagAndSmbProperties(options, smbProperties);
+    }
+
+    /**
+     * Creates the SMB information sent with a file copy. Properties selected by
+     * {@link ShareFileCopyOptions#getSmbPropertiesToCopy()} are left unset.
+     *
+     * @param options The copy options.
+     * @param smbProperties The SMB properties of the copy.
+     * @return The SMB information of the copy.
+     */
+    public static CopyFileSmbInfo createCopyFileSmbInfo(ShareFileCopyOptions options, FileSmbProperties smbProperties) {
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy() == null
+            ? new CopyableFileSmbPropertiesList()
+            : options.getSmbPropertiesToCopy();
+        return new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
+            .setFileAttributes(
+                list.isFileAttributes() ? null : NtfsFileAttributes.toString(smbProperties.getNtfsFileAttributes()))
+            .setFileCreationTime(list.isCreatedOn() ? null : toSmbDate(smbProperties.getFileCreationTime()))
+            .setFileLastWriteTime(list.isLastWrittenOn() ? null : toSmbDate(smbProperties.getFileLastWriteTime()))
+            .setFileChangeTime(list.isChangedOn() ? null : toSmbDate(smbProperties.getFileChangeTime()))
+            .setIgnoreReadOnly(options.isIgnoreReadOnly())
+            .setSetArchiveAttribute(options.isArchiveAttributeSet());
+    }
+
+    private static String toSmbDate(OffsetDateTime time) {
+        return time == null ? null : time.format(SMB_DATE_FORMATTER);
+    }
+
     public static Response<ShareFileUploadInfo>
         transformUploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
@@ -498,6 +560,7 @@ public class ModelHelper {
         mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
         SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties().setETag(headers.getETag())
+            .setCreationTime(headers.getXMsShareCreationTime())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getXMsMeta())
             .setQuota(headers.getXMsShareQuota())
@@ -522,7 +585,10 @@ public class ModelHelper {
             .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(
-                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime())
+            .setChangeFeedEnabled(headers.isXMsFileEnableChangeFeed())
+            .setChangeFeedBlobContainerName(headers.getXMsFileBlobContainerForXfilesChangeFeed())
+            .setChangeFeedRetentionInDays(headers.getXMsFileChangeFeedRetentionInDays());
 
         return new SimpleResponse<>(response, shareProperties);
     }
@@ -579,16 +645,16 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    public static Response<ShareDirectoryProperties>
-        mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
+    public static Response<ShareDirectoryProperties> mapShareDirectoryPropertiesResponse(Response<Void> response) {
+        DirectoriesGetPropertiesHeaders headers = new DirectoriesGetPropertiesHeaders(response.getHeaders());
+        Map<String, String> metadata = headers.getXMsMeta();
+        String eTag = headers.getETag();
+        OffsetDateTime offsetDateTime = headers.getLastModified();
+        boolean isServerEncrypted = headers.isXMsServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
-            offsetDateTime, isServerEncrypted, smbProperties, posixProperties);
+            offsetDateTime, isServerEncrypted, smbProperties, posixProperties, headers.getXMsFileName());
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
@@ -759,5 +825,27 @@ public class ModelHelper {
             }
         }
         return ranges;
+    }
+
+    public static Response<ShareFileLinks>
+        getFileLinksResponse(ResponseBase<FilesGetHardLinksHeaders, HardLinkList> response) {
+        FilesGetHardLinksHeaders headers = response.getDeserializedHeaders();
+        FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        ShareFileProperties properties = ShareFilePropertiesHelper.create(headers.getETag(), headers.getLastModified(),
+            headers.getXMsMeta(), headers.getXMsType(), headers.getXMsContentLength(), headers.getXMsContentType(),
+            headers.getXMsContentLanguage(), headers.getXMsContentMd5(), headers.getXMsContentEncoding(),
+            headers.getXMsCacheControl(), headers.getXMsContentDisposition(), headers.getXMsLeaseStatus(),
+            headers.getXMsLeaseState(), headers.getXMsLeaseDuration(), headers.getXMsCopyCompletionTime(),
+            headers.getXMsCopyStatusDescription(), headers.getXMsCopyId(), headers.getXMsCopyProgress(),
+            headers.getXMsCopySource(), headers.getXMsCopyStatus(), headers.isXMsServerEncrypted(), smbProperties,
+            posixProperties, headers.getXMsFileName());
+        List<ShareFileLink> links = new ArrayList<>();
+        for (HardLink hardLink : response.getValue().getHardLinks()) {
+            StringEncoded encodedFileName = hardLink.getFileName();
+            links.add(new ShareFileLink(hardLink.getParentId(),
+                encodedFileName == null ? null : decodeName(encodedFileName)));
+        }
+        return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
     }
 }

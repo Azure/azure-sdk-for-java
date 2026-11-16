@@ -1103,7 +1103,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 globalEndpointManager,
                 httpClient,
                 apiType,
-                additionalHeaders);
+                additionalHeaders,
+                this.clientTelemetryConfig);
     }
 
     ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
@@ -1119,7 +1120,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            additionalHeaders);
+            additionalHeaders,
+            this.clientTelemetryConfig);
     }
 
     private HttpClient httpClient() {
@@ -7643,6 +7645,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.storeClientFactory);
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+            if (this.gatewayProxy != null) {
+                this.gatewayProxy.close();
+            }
+            if (this.thinProxy != null) {
+                this.thinProxy.close();
+            }
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
 

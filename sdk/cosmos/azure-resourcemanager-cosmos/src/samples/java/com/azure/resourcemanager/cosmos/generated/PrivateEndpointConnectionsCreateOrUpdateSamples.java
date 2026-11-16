@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionState
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBPrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.

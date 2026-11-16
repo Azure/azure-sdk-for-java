@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class AuthenticationPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyUpdate.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyUpdate.json
      */
     /**
      * Sample code: Updates authentication policy tags and identity.

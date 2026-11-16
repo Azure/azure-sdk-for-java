@@ -14,35 +14,35 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalAssignme
  */
 public interface GoalAssignments {
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment along with {@link Response}.
+     * @return a goal assignment along with {@link Response}.
      */
     Response<GoalAssignment> getWithResponse(String serviceGroupName, String goalAssignmentName, Context context);
 
     /**
-     * Get a GoalAssignment.
+     * Gets a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalAssignment.
+     * @return a goal assignment.
      */
     GoalAssignment get(String serviceGroupName, String goalAssignmentName);
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,10 +51,10 @@ public interface GoalAssignments {
     void createOrUpdate(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner resource);
 
     /**
-     * Create a GoalAssignment.
+     * Creates or updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,10 +65,10 @@ public interface GoalAssignments {
         Context context);
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,10 +77,10 @@ public interface GoalAssignments {
     void update(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner properties);
 
     /**
-     * Update a GoalAssignment.
+     * Updates a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,10 +90,10 @@ public interface GoalAssignments {
     void update(String serviceGroupName, String goalAssignmentName, GoalAssignmentInner properties, Context context);
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,10 +102,10 @@ public interface GoalAssignments {
     void updateGoalResources(String serviceGroupName, String goalAssignmentName, UpdateGoalResourceRequest body);
 
     /**
-     * Action to exclude a resource from goal assignment.
+     * Updates goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +120,7 @@ public interface GoalAssignments {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,7 +132,7 @@ public interface GoalAssignments {
      * the assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,10 +141,10 @@ public interface GoalAssignments {
     void refreshGoalResources(String serviceGroupName, String goalAssignmentName, Context context);
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,10 +152,10 @@ public interface GoalAssignments {
     void deleteByResourceGroup(String serviceGroupName, String goalAssignmentName);
 
     /**
-     * Delete a GoalAssignment.
+     * Deletes a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,11 +164,11 @@ public interface GoalAssignments {
     void delete(String serviceGroupName, String goalAssignmentName, Context context);
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -177,11 +177,11 @@ public interface GoalAssignments {
     void recommendCapacity(String serviceGroupName, String goalAssignmentName, RecommendCapacityRequest body);
 
     /**
-     * Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered capacity
+     * Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered capacity
      * assessments and recommendations.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +192,7 @@ public interface GoalAssignments {
         Context context);
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +203,7 @@ public interface GoalAssignments {
     PagedIterable<GoalAssignment> list(String serviceGroupName);
 
     /**
-     * List GoalAssignment resources by tenant.
+     * Lists goal assignments in a service group.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -148,6 +149,29 @@ public final class VirtualNetworkApplianceInner extends Resource {
             this.innerProperties = new VirtualNetworkAppliancePropertiesFormatInner();
         }
         this.innerProperties().withBandwidthInGbps(bandwidthInGbps);
+        return this;
+    }
+
+    /**
+     * Get the capacityProvider property: The reference to the capacity provider resource.
+     * 
+     * @return the capacityProvider value.
+     */
+    public SubResource capacityProvider() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityProvider();
+    }
+
+    /**
+     * Set the capacityProvider property: The reference to the capacity provider resource.
+     * 
+     * @param capacityProvider the capacityProvider value to set.
+     * @return the VirtualNetworkApplianceInner object itself.
+     */
+    public VirtualNetworkApplianceInner withCapacityProvider(SubResource capacityProvider) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkAppliancePropertiesFormatInner();
+        }
+        this.innerProperties().withCapacityProvider(capacityProvider);
         return this;
     }
 

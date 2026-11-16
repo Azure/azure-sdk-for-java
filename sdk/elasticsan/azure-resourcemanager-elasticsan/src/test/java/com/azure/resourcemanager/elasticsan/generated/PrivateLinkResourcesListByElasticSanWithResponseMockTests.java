@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListByElasticSanWithResponseMockTests {
     @Test
     public void testListByElasticSanWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ikayuhqlbjbsybb\",\"requiredMembers\":[\"vtldgmfpgvmpip\"],\"requiredZoneNames\":[\"thaqfxssmwu\"]},\"id\":\"bdsrez\",\"name\":\"drhneuyow\",\"type\":\"kdw\"},{\"properties\":{\"groupId\":\"sibircgpi\",\"requiredMembers\":[\"imejzanl\",\"zxiavrm\",\"zonokixrjqci\"],\"requiredZoneNames\":[\"pfrlazsz\",\"nwoiind\"]},\"id\":\"wp\",\"name\":\"ylwbtlhflsjcdhsz\",\"type\":\"jvfbgofelja\"},{\"properties\":{\"groupId\":\"mqhldvrii\",\"requiredMembers\":[\"nalghfkvtvsexso\",\"ueluqhhahhxvrhmz\"],\"requiredZoneNames\":[\"jgwwspughftq\",\"xhqxujxukndxdigr\",\"guufzd\"]},\"id\":\"yqtfihwh\",\"name\":\"otzi\",\"type\":\"gamv\"}],\"nextLink\":\"ho\"}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ljxkcgxxlx\",\"requiredMembers\":[\"gcvizqzdwlvwlyou\",\"fgfb\"],\"requiredZoneNames\":[\"bdyhgkfminsgowz\",\"ttsttktlahbqact\"]},\"id\":\"gzukxitmm\",\"name\":\"tg\",\"type\":\"qqxhrnxrxcpj\"}],\"nextLink\":\"savokqdzf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListByElasticSanWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listByElasticSanWithResponse("jjklff", "mouwqlgzrfzeey", com.azure.core.util.Context.NONE)
+            .listByElasticSanWithResponse("smsks", "pi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("thaqfxssmwu", response.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("bdyhgkfminsgowz", response.value().get(0).requiredZoneNames().get(0));
     }
 }

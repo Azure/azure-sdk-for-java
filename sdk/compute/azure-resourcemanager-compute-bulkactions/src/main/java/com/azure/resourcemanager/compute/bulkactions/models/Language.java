@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The language used for scheduled action notifications.
+ * The language used for recurring bulk action notifications.
  */
 public final class Language extends ExpandableStringEnum<Language> {
     /**

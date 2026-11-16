@@ -12,8 +12,8 @@ public final class OperationResultInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationResultInfo model
-            = BinaryData.fromString("{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"uaurkihcir\",\"defxrdc\"]}")
+            = BinaryData.fromString("{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"hqfgqkayejsx\"]}")
                 .toObject(OperationResultInfo.class);
-        Assertions.assertEquals("uaurkihcir", model.jobList().get(0));
+        Assertions.assertEquals("hqfgqkayejsx", model.jobList().get(0));
     }
 }

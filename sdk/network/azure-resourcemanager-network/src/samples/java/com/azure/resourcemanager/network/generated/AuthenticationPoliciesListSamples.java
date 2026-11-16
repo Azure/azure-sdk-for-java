@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AuthenticationPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyListAll.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyListAll.json
      */
     /**
      * Sample code: Lists JWT validation and user sign-in authentication policies in a subscription.

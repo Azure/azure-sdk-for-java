@@ -47,8 +47,7 @@ public final class ImageGenTool extends Tool {
      * divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
      * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
      * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
-     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
-     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing.
      */
     @Generated
     private ImageGenToolSize size;
@@ -85,6 +84,12 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolBackground background;
 
     /*
+     * The input_fidelity property.
+     */
+    @Generated
+    private InputFidelity inputFidelity;
+
+    /*
      * Optional mask for inpainting. Contains `image_url`
      * (string, optional) and `file_id` (string, optional).
      */
@@ -96,6 +101,30 @@ public final class ImageGenTool extends Tool {
      */
     @Generated
     private Long partialImages;
+
+    /*
+     * Whether to generate a new image or edit an existing image. Default: `auto`.
+     */
+    @Generated
+    private ImageGenActionEnum action;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Creates an instance of ImageGenTool class.
@@ -173,8 +202,7 @@ public final class ImageGenTool extends Tool {
      * 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The
      * requested size must also satisfy the model's current pixel and edge limits. The standard sizes `1024x1024`,
      * `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow
-     * automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-     * `1024x1024`, `1792x1024`, or `1024x1792`.
+     * automatic sizing.
      *
      * @return the size value.
      */
@@ -191,8 +219,7 @@ public final class ImageGenTool extends Tool {
      * 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The
      * requested size must also satisfy the model's current pixel and edge limits. The standard sizes `1024x1024`,
      * `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow
-     * automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-     * `1024x1024`, `1792x1024`, or `1024x1792`.
+     * automatic sizing.
      *
      * @param size the size value to set.
      * @return the ImageGenTool object itself.
@@ -235,6 +262,18 @@ public final class ImageGenTool extends Tool {
     @Generated
     public Long getOutputCompression() {
         return this.outputCompression;
+    }
+
+    /**
+     * Set the outputCompression property: Compression level for the output image. Default: 100.
+     *
+     * @param outputCompression the outputCompression value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setOutputCompression(Long outputCompression) {
+        this.outputCompression = outputCompression;
+        return this;
     }
 
     /**
@@ -294,6 +333,28 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
+     * Get the inputFidelity property: The input_fidelity property.
+     *
+     * @return the inputFidelity value.
+     */
+    @Generated
+    public InputFidelity getInputFidelity() {
+        return this.inputFidelity;
+    }
+
+    /**
+     * Set the inputFidelity property: The input_fidelity property.
+     *
+     * @param inputFidelity the inputFidelity value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setInputFidelity(InputFidelity inputFidelity) {
+        this.inputFidelity = inputFidelity;
+        return this;
+    }
+
+    /**
      * Get the inputImageMask property: Optional mask for inpainting. Contains `image_url`
      * (string, optional) and `file_id` (string, optional).
      *
@@ -326,6 +387,107 @@ public final class ImageGenTool extends Tool {
     @Generated
     public Long getPartialImages() {
         return this.partialImages;
+    }
+
+    /**
+     * Set the partialImages property: Number of partial images to generate in streaming mode, from 0 (default value) to
+     * 3.
+     *
+     * @param partialImages the partialImages value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setPartialImages(Long partialImages) {
+        this.partialImages = partialImages;
+        return this;
+    }
+
+    /**
+     * Get the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
+     *
+     * @return the action value.
+     */
+    @Generated
+    public ImageGenActionEnum getAction() {
+        return this.action;
+    }
+
+    /**
+     * Set the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
+     *
+     * @param action the action value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setAction(ImageGenActionEnum action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param name the name value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param description the description value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
     }
 
     /**
@@ -406,170 +568,5 @@ public final class ImageGenTool extends Tool {
             }
             return deserializedImageGenTool;
         });
-    }
-
-    /*
-     * The input_fidelity property.
-     */
-    @Generated
-    private InputFidelity inputFidelity;
-
-    /**
-     * Set the outputCompression property: Compression level for the output image. Default: 100.
-     *
-     * @param outputCompression the outputCompression value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setOutputCompression(Long outputCompression) {
-        this.outputCompression = outputCompression;
-        return this;
-    }
-
-    /**
-     * Get the inputFidelity property: The input_fidelity property.
-     *
-     * @return the inputFidelity value.
-     */
-    @Generated
-    public InputFidelity getInputFidelity() {
-        return this.inputFidelity;
-    }
-
-    /**
-     * Set the inputFidelity property: The input_fidelity property.
-     *
-     * @param inputFidelity the inputFidelity value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setInputFidelity(InputFidelity inputFidelity) {
-        this.inputFidelity = inputFidelity;
-        return this;
-    }
-
-    /**
-     * Set the partialImages property: Number of partial images to generate in streaming mode, from 0 (default value) to
-     * 3.
-     *
-     * @param partialImages the partialImages value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setPartialImages(Long partialImages) {
-        this.partialImages = partialImages;
-        return this;
-    }
-
-    /*
-     * Whether to generate a new image or edit an existing image. Default: `auto`.
-     */
-    @Generated
-    private ImageGenActionEnum action;
-
-    /**
-     * Get the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
-     *
-     * @return the action value.
-     */
-    @Generated
-    public ImageGenActionEnum getAction() {
-        return this.action;
-    }
-
-    /**
-     * Set the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
-     *
-     * @param action the action value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setAction(ImageGenActionEnum action) {
-        this.action = action;
-        return this;
-    }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param name the name value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param description the description value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
-        return this;
     }
 }

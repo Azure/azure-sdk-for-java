@@ -193,9 +193,13 @@ public final class AccessBridgeImpl implements AccessBridge, AccessBridge.Defini
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accessBridgeName = AccessBridgeAllowedName
-            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessBridges"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}",
+            "resourceGroupName");
+        this.accessBridgeName = AccessBridgeAllowedName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}",
+            "accessBridgeName"));
     }
 
     public AccessBridge refresh() {

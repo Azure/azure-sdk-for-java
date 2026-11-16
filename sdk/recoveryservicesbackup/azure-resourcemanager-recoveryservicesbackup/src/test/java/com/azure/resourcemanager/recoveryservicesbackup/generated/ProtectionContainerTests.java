@@ -13,27 +13,27 @@ public final class ProtectionContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionContainer model = BinaryData.fromString(
-            "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"xkmcwaekrrjre\",\"backupManagementType\":\"AzureIaasVM\",\"registrationStatus\":\"sgumhjglikkxwsl\",\"healthStatus\":\"bq\",\"protectableObjectType\":\"uzlm\",\"sourceLocation\":\"elfk\"}")
+            "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"hgppipifhpfeoa\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"xtxj\",\"healthStatus\":\"heafidlt\",\"protectableObjectType\":\"sr\",\"sourceLocation\":\"mks\"}")
             .toObject(ProtectionContainer.class);
-        Assertions.assertEquals("xkmcwaekrrjre", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("sgumhjglikkxwsl", model.registrationStatus());
-        Assertions.assertEquals("bq", model.healthStatus());
-        Assertions.assertEquals("uzlm", model.protectableObjectType());
+        Assertions.assertEquals("hgppipifhpfeoa", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("xtxj", model.registrationStatus());
+        Assertions.assertEquals("heafidlt", model.healthStatus());
+        Assertions.assertEquals("sr", model.protectableObjectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionContainer model = new ProtectionContainer().withFriendlyName("xkmcwaekrrjre")
-            .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-            .withRegistrationStatus("sgumhjglikkxwsl")
-            .withHealthStatus("bq")
-            .withProtectableObjectType("uzlm");
+        ProtectionContainer model = new ProtectionContainer().withFriendlyName("hgppipifhpfeoa")
+            .withBackupManagementType(BackupManagementType.INVALID)
+            .withRegistrationStatus("xtxj")
+            .withHealthStatus("heafidlt")
+            .withProtectableObjectType("sr");
         model = BinaryData.fromObject(model).toObject(ProtectionContainer.class);
-        Assertions.assertEquals("xkmcwaekrrjre", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("sgumhjglikkxwsl", model.registrationStatus());
-        Assertions.assertEquals("bq", model.healthStatus());
-        Assertions.assertEquals("uzlm", model.protectableObjectType());
+        Assertions.assertEquals("hgppipifhpfeoa", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("xtxj", model.registrationStatus());
+        Assertions.assertEquals("heafidlt", model.healthStatus());
+        Assertions.assertEquals("sr", model.protectableObjectType());
     }
 }

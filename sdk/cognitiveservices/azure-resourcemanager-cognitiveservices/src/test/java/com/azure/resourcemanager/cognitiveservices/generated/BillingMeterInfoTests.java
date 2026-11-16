@@ -12,10 +12,10 @@ public final class BillingMeterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BillingMeterInfo model
-            = BinaryData.fromString("{\"name\":\"t\",\"meterId\":\"wwrq\",\"unit\":\"edckzywbiexzfey\"}")
+            = BinaryData.fromString("{\"name\":\"ttgzfbis\",\"meterId\":\"bkh\",\"unit\":\"deyeamdphagalpbu\"}")
                 .toObject(BillingMeterInfo.class);
-        Assertions.assertEquals("t", model.name());
-        Assertions.assertEquals("wwrq", model.meterId());
-        Assertions.assertEquals("edckzywbiexzfey", model.unit());
+        Assertions.assertEquals("ttgzfbis", model.name());
+        Assertions.assertEquals("bkh", model.meterId());
+        Assertions.assertEquals("deyeamdphagalpbu", model.unit());
     }
 }

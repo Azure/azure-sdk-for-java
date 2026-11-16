@@ -366,7 +366,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link SyncPoller} for polling of nginx Certificate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, deploymentName, certificateName, body);

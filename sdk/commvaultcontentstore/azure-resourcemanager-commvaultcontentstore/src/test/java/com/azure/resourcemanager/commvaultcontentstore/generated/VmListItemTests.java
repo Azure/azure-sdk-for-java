@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class VmListItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmListItem model = BinaryData.fromString("{\"vmGuid\":\"gureodkwobdag\"}").toObject(VmListItem.class);
-        Assertions.assertEquals("gureodkwobdag", model.vmGuid());
+        VmListItem model = BinaryData.fromString("{\"vmGuid\":\"wsbpfvm\"}").toObject(VmListItem.class);
+        Assertions.assertEquals("wsbpfvm", model.vmGuid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmListItem model = new VmListItem().withVmGuid("gureodkwobdag");
+        VmListItem model = new VmListItem().withVmGuid("wsbpfvm");
         model = BinaryData.fromObject(model).toObject(VmListItem.class);
-        Assertions.assertEquals("gureodkwobdag", model.vmGuid());
+        Assertions.assertEquals("wsbpfvm", model.vmGuid());
     }
 }

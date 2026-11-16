@@ -68,8 +68,13 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
 
     /**
      * Static value browser_automation_preview for ToolType.
+     *
+     * @deprecated This legacy Browser Automation tool is deprecated and is no longer available. Use
+     * {@link ToolType#BROWSER_AUTOMATION} instead. See <a href="https://aka.ms/bat/docs">Browser Automation
+     * documentation</a>.
      */
     @Generated
+    @Deprecated
     public static final ToolType BROWSER_AUTOMATION_PREVIEW = fromString("browser_automation_preview");
 
     /**
@@ -246,4 +251,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType BROWSER_AUTOMATION = fromString("browser_automation");
+
+    /**
+     * Static value microsoft_copilot_toolset_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType MICROSOFT_COPILOT_TOOLSET_PREVIEW = fromString("microsoft_copilot_toolset_preview");
 }

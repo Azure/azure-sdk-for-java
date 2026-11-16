@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ConfigurationAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_List.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_List.json
      */
     /**
      * Sample code: ConfigurationAssignments_List.

@@ -4,18 +4,13 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.SessionLogEvent;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.util.BinaryData;
@@ -31,16 +26,45 @@ import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ResponseCreateEvent;
+import com.openai.models.live.ServerEvent;
+import java.time.Duration;
 
 public final class ReadmeSamples {
-    public void realtimeForwardCompatibility(BetaVoiceAgentWebSocketClient realtimeClient, String agentName) {
+    public void liveConnectionOptions(AgentsClientBuilder builder, String agentName) {
+        // BEGIN: readme-sample-com.azure.ai.agents.live_connection_options
+        BetaVoiceAgentsLiveWebSocketClient liveClient = builder.beta().buildBetaVoiceAgentsLiveWebSocketClient();
+        VoiceAgentLiveWebSocketConnectionOptions options = new VoiceAgentLiveWebSocketConnectionOptions()
+            .setReceiveBufferCapacity(512)
+            .setMaxMessageSize(8 * 1024 * 1024)
+            .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR)
+            .setHandshakeTimeout(Duration.ofSeconds(30))
+            .setCloseTimeout(Duration.ofSeconds(10))
+            .setStoreEnabled(false);
+
+        try (BetaVoiceAgentsLiveWebSocketSessionClient session = liveClient.openWebSocketSession(agentName, options)) {
+            for (ServerEvent event : session.receiveEvents()) {
+                if (event.isSessionStarted()) {
+                    session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
+                } else if (event.isSessionOutputTranscriptDelta()) {
+                    System.out.print(event.asSessionOutputTranscriptDelta().delta());
+                } else if (event.isSessionClosed() || event.isErrorEvent()) {
+                    break;
+                }
+            }
+        }
+        // END: readme-sample-com.azure.ai.agents.live_connection_options
+    }
+
+    public void realtimeForwardCompatibility(VoiceAgentsWebSocketClient realtimeClient, String agentName) {
         // BEGIN: com.azure.ai.agents.realtime_forward_compatibility
         VoiceAgentWebSocketConnectionOptions options
             = new VoiceAgentWebSocketConnectionOptions()
                 .setReceiveBufferCapacity(512)
                 .setMaxMessageSize(8 * 1024 * 1024)
                 .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-        try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+        try (VoiceAgentsWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
             session.sendEvent(BinaryData.fromString(
                 "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
             for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -61,7 +85,6 @@ public final class ReadmeSamples {
         AgentsClientBuilder builder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
 
@@ -74,17 +97,9 @@ public final class ReadmeSamples {
         AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
         // END: com.azure.ai.agents.create_prompt_agent
 
-        // BEGIN: com.azure.ai.agents.configure_agent_endpoint
-        AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRule(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
-            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
-        agentsClient.updateAgentDetails(agent.getName(),
-            new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-        // END: com.azure.ai.agents.configure_agent_endpoint
-
         // BEGIN: com.azure.ai.agents.create_conversation
+        OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+        ConversationService conversationsClient = agentScopedClient.conversations();
         Conversation conversation = conversationsClient.create();
         // END: com.azure.ai.agents.create_conversation
 
@@ -105,8 +120,6 @@ public final class ReadmeSamples {
         // END: com.azure.ai.agents.add_message_to_conversation
 
         // BEGIN: com.azure.ai.agents.create_response
-        OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
-
         Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
             .conversation(conversation.id())
             .build());

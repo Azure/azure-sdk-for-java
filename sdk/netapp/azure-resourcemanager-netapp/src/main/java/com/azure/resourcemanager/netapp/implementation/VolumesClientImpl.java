@@ -1577,8 +1577,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Boolean forceDelete) {
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Boolean forceDelete) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, forceDelete);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -3131,7 +3131,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
         String poolName, String volumeName, BreakFileLocksRequest body) {
         Response<BinaryData> response
             = breakFileLocksWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
@@ -3756,7 +3756,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, BreakReplicationRequest body) {
         Response<BinaryData> response
             = breakReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
@@ -7130,7 +7130,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName,
         String poolName, String volumeName, RelocateVolumeRequest body) {
         Response<BinaryData> response
             = relocateWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
@@ -7964,7 +7964,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
+    private SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
         String resourceGroupName, String accountName, String poolName, String volumeName,
         QuotaReportFilterRequest body) {
         Response<BinaryData> response

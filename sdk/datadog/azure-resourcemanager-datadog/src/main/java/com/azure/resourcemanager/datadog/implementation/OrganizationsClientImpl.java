@@ -204,7 +204,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
         Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
         return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,

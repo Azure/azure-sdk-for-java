@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class AuthenticationPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyCreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a user sign-in authentication policy within a resource group.
@@ -52,7 +52,7 @@ public final class AuthenticationPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyCreateOrUpdateJwtValidation.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyCreateOrUpdateJwtValidation.json
      */
     /**
      * Sample code: Creates or updates a JWT validation authentication policy within a resource group.

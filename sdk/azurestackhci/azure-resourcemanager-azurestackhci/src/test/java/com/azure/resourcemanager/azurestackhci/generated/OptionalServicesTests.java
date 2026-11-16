@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class OptionalServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptionalServices model = BinaryData.fromString("{\"customLocation\":\"k\"}").toObject(OptionalServices.class);
-        Assertions.assertEquals("k", model.customLocation());
+        OptionalServices model
+            = BinaryData.fromString("{\"customLocation\":\"cjabudurgkakmo\"}").toObject(OptionalServices.class);
+        Assertions.assertEquals("cjabudurgkakmo", model.customLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptionalServices model = new OptionalServices().withCustomLocation("k");
+        OptionalServices model = new OptionalServices().withCustomLocation("cjabudurgkakmo");
         model = BinaryData.fromObject(model).toObject(OptionalServices.class);
-        Assertions.assertEquals("k", model.customLocation());
+        Assertions.assertEquals("cjabudurgkakmo", model.customLocation());
     }
 }

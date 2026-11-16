@@ -22,7 +22,7 @@ public final class RelationshipsListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"pavbo\",\"parentEntityName\":\"fppdbwnu\",\"childEntityName\":\"gahxkumasjcaa\",\"tags\":{\"ehqepvufhbzehe\":\"mmcpug\",\"qnbldxe\":\"hoqhnl\",\"orim\":\"clgsc\",\"viyfcaabeolhbhlv\":\"rsrrmoucsofldp\"},\"discoveredBy\":\"xuqibsxtkcudf\"},\"id\":\"farfs\",\"name\":\"owlkjxnqpv\",\"type\":\"gf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"bmrqbrjbbmp\",\"parentEntityName\":\"dlvykfrex\",\"childEntityName\":\"rseqwjksghudgz\",\"tags\":{\"u\":\"gjggsv\",\"kmdyomkxfbvfbh\":\"kxibdafh\",\"rhpw\":\"y\",\"o\":\"gddeimaw\"},\"discoveredBy\":\"kkum\"},\"id\":\"kjcjcaztbwsnsqow\",\"name\":\"wcoml\",\"type\":\"kytwvcz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class RelationshipsListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Relationship> response = manager.relationships()
-            .listByHealthModel("ukphaimmoiroq", "oshbragapyy", OffsetDateTime.parse("2021-10-01T15:47:11Z"),
+            .listByHealthModel("esi", "uqtljqobbpih", OffsetDateTime.parse("2021-10-01T11:32:20Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pavbo", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("fppdbwnu", response.iterator().next().properties().parentEntityName());
-        Assertions.assertEquals("gahxkumasjcaa", response.iterator().next().properties().childEntityName());
-        Assertions.assertEquals("mmcpug", response.iterator().next().properties().tags().get("ehqepvufhbzehe"));
+        Assertions.assertEquals("bmrqbrjbbmp", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("dlvykfrex", response.iterator().next().properties().parentEntityName());
+        Assertions.assertEquals("rseqwjksghudgz", response.iterator().next().properties().childEntityName());
+        Assertions.assertEquals("gjggsv", response.iterator().next().properties().tags().get("u"));
     }
 }

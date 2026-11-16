@@ -13,18 +13,18 @@ public final class DataStoreInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataStoreInfoBase model
-            = BinaryData.fromString("{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"beddgssofw\"}")
+            = BinaryData.fromString("{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"glsbjjc\"}")
                 .toObject(DataStoreInfoBase.class);
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreType());
-        Assertions.assertEquals("beddgssofw", model.objectType());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals("glsbjjc", model.objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataStoreInfoBase model
-            = new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withObjectType("beddgssofw");
+            = new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE).withObjectType("glsbjjc");
         model = BinaryData.fromObject(model).toObject(DataStoreInfoBase.class);
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreType());
-        Assertions.assertEquals("beddgssofw", model.objectType());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals("glsbjjc", model.objectType());
     }
 }

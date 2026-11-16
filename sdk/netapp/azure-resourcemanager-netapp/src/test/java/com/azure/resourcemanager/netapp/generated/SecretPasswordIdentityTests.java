@@ -12,15 +12,15 @@ public final class SecretPasswordIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretPasswordIdentity model
-            = BinaryData.fromString("{\"principalId\":\"mgbro\",\"userAssignedIdentity\":\"ddbhf\"}")
+            = BinaryData.fromString("{\"principalId\":\"snewmozqvbub\",\"userAssignedIdentity\":\"amhsycxhxzgazt\"}")
                 .toObject(SecretPasswordIdentity.class);
-        Assertions.assertEquals("ddbhf", model.userAssignedIdentity());
+        Assertions.assertEquals("amhsycxhxzgazt", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretPasswordIdentity model = new SecretPasswordIdentity().withUserAssignedIdentity("ddbhf");
+        SecretPasswordIdentity model = new SecretPasswordIdentity().withUserAssignedIdentity("amhsycxhxzgazt");
         model = BinaryData.fromObject(model).toObject(SecretPasswordIdentity.class);
-        Assertions.assertEquals("ddbhf", model.userAssignedIdentity());
+        Assertions.assertEquals("amhsycxhxzgazt", model.userAssignedIdentity());
     }
 }

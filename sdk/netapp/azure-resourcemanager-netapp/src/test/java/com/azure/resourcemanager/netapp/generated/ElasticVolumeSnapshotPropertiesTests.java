@@ -12,16 +12,16 @@ public final class ElasticVolumeSnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeSnapshotProperties model
-            = BinaryData.fromString("{\"snapshotPolicyResourceId\":\"hdqazkmtgguwp\"}")
+            = BinaryData.fromString("{\"snapshotPolicyResourceId\":\"xvxevblbjednljla\"}")
                 .toObject(ElasticVolumeSnapshotProperties.class);
-        Assertions.assertEquals("hdqazkmtgguwp", model.snapshotPolicyResourceId());
+        Assertions.assertEquals("xvxevblbjednljla", model.snapshotPolicyResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticVolumeSnapshotProperties model
-            = new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("hdqazkmtgguwp");
+            = new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("xvxevblbjednljla");
         model = BinaryData.fromObject(model).toObject(ElasticVolumeSnapshotProperties.class);
-        Assertions.assertEquals("hdqazkmtgguwp", model.snapshotPolicyResourceId());
+        Assertions.assertEquals("xvxevblbjednljla", model.snapshotPolicyResourceId());
     }
 }

@@ -16,23 +16,24 @@ public final class SchedulerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"endpoint\":\"yoqpsoaccta\",\"ipAllowlist\":[\"kljla\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":381528868,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"gexpaojakhmsbz\",\"hcrzevd\",\"hlxaolthqtr\",\"qjbpfzfsin\"],\"privateEndpoint\":{\"id\":\"f\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"zoxxjtf\",\"actionsRequired\":\"luwfzitonpeqfpjk\"},\"provisioningState\":\"Failed\"},\"id\":\"fpdvhpfxxypi\",\"name\":\"i\",\"type\":\"mayhuybbkpodepoo\"},{\"properties\":{\"groupIds\":[\"vamih\",\"ognarxzxtheotus\",\"vyevcciqi\",\"nhungbw\"],\"privateEndpoint\":{\"id\":\"nfygxgispemvtz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ubljofxqe\",\"actionsRequired\":\"jaeq\"},\"provisioningState\":\"Creating\"},\"id\":\"b\",\"name\":\"s\",\"type\":\"msmjqulngsntn\"}]}")
+            "{\"provisioningState\":\"Provisioning\",\"endpoint\":\"ok\",\"ipAllowlist\":[\"ljyoxgvcltb\",\"sncghkjeszz\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":1755265349,\"redundancyState\":\"None\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"smx\"],\"privateEndpoint\":{\"id\":\"mpvecxgodebfqk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"pukgriwflzlfb\",\"actionsRequired\":\"puz\"},\"provisioningState\":\"Failed\"},\"id\":\"pnq\",\"name\":\"ahmgkbrp\",\"type\":\"y\"}]}")
             .toObject(SchedulerProperties.class);
-        Assertions.assertEquals("kljla", model.ipAllowlist().get(0));
+        Assertions.assertEquals("ljyoxgvcltb", model.ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.sku().name());
-        Assertions.assertEquals(381528868, model.sku().capacity());
+        Assertions.assertEquals(1755265349, model.sku().capacity());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchedulerProperties model = new SchedulerProperties().withIpAllowlist(Arrays.asList("kljla"))
-            .withSku(new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(381528868))
-            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        SchedulerProperties model
+            = new SchedulerProperties().withIpAllowlist(Arrays.asList("ljyoxgvcltb", "sncghkjeszz"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1755265349))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(SchedulerProperties.class);
-        Assertions.assertEquals("kljla", model.ipAllowlist().get(0));
+        Assertions.assertEquals("ljyoxgvcltb", model.ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.sku().name());
-        Assertions.assertEquals(381528868, model.sku().capacity());
+        Assertions.assertEquals(1755265349, model.sku().capacity());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

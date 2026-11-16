@@ -84,12 +84,16 @@ public final class SharedLimitCapsImpl implements SharedLimitCaps {
     }
 
     public SharedLimitCap getById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
+        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
         if (location == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
-        String vmFamilyName = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimitCaps");
+        String vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
         if (vmFamilyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimitCaps'.", id)));
@@ -98,12 +102,16 @@ public final class SharedLimitCapsImpl implements SharedLimitCaps {
     }
 
     public Response<SharedLimitCap> getByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
+        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
         if (location == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
-        String vmFamilyName = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimitCaps");
+        String vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
         if (vmFamilyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimitCaps'.", id)));
@@ -112,12 +120,16 @@ public final class SharedLimitCapsImpl implements SharedLimitCaps {
     }
 
     public void deleteById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
+        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
         if (location == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
-        String vmFamilyName = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimitCaps");
+        String vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
         if (vmFamilyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimitCaps'.", id)));
@@ -126,12 +138,16 @@ public final class SharedLimitCapsImpl implements SharedLimitCaps {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
+        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
         if (location == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
-        String vmFamilyName = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimitCaps");
+        String vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
         if (vmFamilyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimitCaps'.", id)));

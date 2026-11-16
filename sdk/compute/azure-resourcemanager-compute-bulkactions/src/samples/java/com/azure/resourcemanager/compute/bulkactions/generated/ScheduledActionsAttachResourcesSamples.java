@@ -16,15 +16,35 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_PartialSuccess.json
      */
     /**
-     * Sample code: 02 - Attach resources to a recurring scheduled action with individual notification settings.
+     * Sample code: 03 - Response with partial results when attaching resources to a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpaceindividualSpacenotificationSpacesettings(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceattachingSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Attach resources to a recurring bulk action with individual notification settings.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceactionSpacewithSpaceindividualSpacenotificationSpacesettings(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
@@ -50,36 +70,15 @@ public final class ScheduledActionsAttachResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Attach resources to a recurring scheduled action.
+     * Sample code: 01 - Attach resources to a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        zeroOneSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
-                new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
-                new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_PartialSuccess.json
-     */
-    /**
-     * Sample code: 03 - Response with partial results when attaching resources to a recurring scheduled action.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceattachingSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void zeroOneSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceaction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
                 new ScheduledActionResourceInput().withResourceId(

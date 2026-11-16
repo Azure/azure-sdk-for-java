@@ -17,32 +17,26 @@ public final class RaiToolLabelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiToolLabelProperties model = BinaryData.fromString(
-            "{\"toolConnectionName\":\"vacqpbtuodxesz\",\"accountScope\":{\"labelValues\":{\"wumuaslzk\":\"l\",\"mdr\":\"rrwoycqucwyhahn\"}},\"projectScopes\":[{\"project\":\"uh\",\"labelValues\":{\"lwexxwl\":\"vfuuru\",\"rzpgep\":\"lniexz\",\"chzyvlixqnrk\":\"tybbwwpgda\",\"uxswqrntvl\":\"xkjibnxmy\"}},{\"project\":\"ijpstte\",\"labelValues\":{\"hruncuwmq\":\"qqpwcyyuf\"}},{\"project\":\"pkcdqzhlct\",\"labelValues\":{\"jjrcgegydc\":\"unqndyfpchrqb\",\"olihrra\":\"boxjumvq\"}}]}")
+            "{\"toolConnectionName\":\"ppnvdxz\",\"accountScope\":{\"labelValues\":{\"vqagtltdhlf\":\"frbbc\",\"vgtrdcnifmzzs\":\"qojpy\"}},\"projectScopes\":[{\"project\":\"brn\",\"labelValues\":{\"m\":\"u\",\"fwafqrouda\":\"rafwgckhocxvdf\"}}]}")
             .toObject(RaiToolLabelProperties.class);
-        Assertions.assertEquals("vacqpbtuodxesz", model.toolConnectionName());
-        Assertions.assertEquals("l", model.accountScope().labelValues().get("wumuaslzk"));
-        Assertions.assertEquals("uh", model.projectScopes().get(0).project());
-        Assertions.assertEquals("vfuuru", model.projectScopes().get(0).labelValues().get("lwexxwl"));
+        Assertions.assertEquals("ppnvdxz", model.toolConnectionName());
+        Assertions.assertEquals("frbbc", model.accountScope().labelValues().get("vqagtltdhlf"));
+        Assertions.assertEquals("brn", model.projectScopes().get(0).project());
+        Assertions.assertEquals("u", model.projectScopes().get(0).labelValues().get("m"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelProperties model = new RaiToolLabelProperties().withToolConnectionName("vacqpbtuodxesz")
+        RaiToolLabelProperties model = new RaiToolLabelProperties().withToolConnectionName("ppnvdxz")
             .withAccountScope(new RaiToolLabelPropertiesAccountScope()
-                .withLabelValues(mapOf("wumuaslzk", "l", "mdr", "rrwoycqucwyhahn")))
-            .withProjectScopes(Arrays.asList(
-                new RaiToolLabelPropertiesProjectScopesItem().withProject("uh")
-                    .withLabelValues(mapOf("lwexxwl", "vfuuru", "rzpgep", "lniexz", "chzyvlixqnrk", "tybbwwpgda",
-                        "uxswqrntvl", "xkjibnxmy")),
-                new RaiToolLabelPropertiesProjectScopesItem().withProject("ijpstte")
-                    .withLabelValues(mapOf("hruncuwmq", "qqpwcyyuf")),
-                new RaiToolLabelPropertiesProjectScopesItem().withProject("pkcdqzhlct")
-                    .withLabelValues(mapOf("jjrcgegydc", "unqndyfpchrqb", "olihrra", "boxjumvq"))));
+                .withLabelValues(mapOf("vqagtltdhlf", "frbbc", "vgtrdcnifmzzs", "qojpy")))
+            .withProjectScopes(Arrays.asList(new RaiToolLabelPropertiesProjectScopesItem().withProject("brn")
+                .withLabelValues(mapOf("m", "u", "fwafqrouda", "rafwgckhocxvdf"))));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelProperties.class);
-        Assertions.assertEquals("vacqpbtuodxesz", model.toolConnectionName());
-        Assertions.assertEquals("l", model.accountScope().labelValues().get("wumuaslzk"));
-        Assertions.assertEquals("uh", model.projectScopes().get(0).project());
-        Assertions.assertEquals("vfuuru", model.projectScopes().get(0).labelValues().get("lwexxwl"));
+        Assertions.assertEquals("ppnvdxz", model.toolConnectionName());
+        Assertions.assertEquals("frbbc", model.accountScope().labelValues().get("vqagtltdhlf"));
+        Assertions.assertEquals("brn", model.projectScopes().get(0).project());
+        Assertions.assertEquals("u", model.projectScopes().get(0).labelValues().get("m"));
     }
 
     // Use "Map.of" if available

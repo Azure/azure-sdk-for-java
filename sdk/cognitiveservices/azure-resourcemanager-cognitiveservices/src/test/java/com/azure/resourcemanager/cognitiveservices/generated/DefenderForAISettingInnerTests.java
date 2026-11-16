@@ -15,19 +15,20 @@ public final class DefenderForAISettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"fldpuviyfc\",\"tags\":{\"qi\":\"eolhbhlvbmx\",\"tkcudfbsfarfsiow\":\"s\"},\"id\":\"jxnqp\",\"name\":\"wgfstmhqykizm\",\"type\":\"ksaoafcluqvox\"}")
+            "{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"bakclacjfrnxous\",\"tags\":{\"zvuxm\":\"zlwvsgmwohqfz\",\"mribiat\":\"kjsvthnwpzteko\",\"zcugswvxwlmzqw\":\"gplucfotangcfhny\"},\"id\":\"tx\",\"name\":\"jmxmcuqud\",\"type\":\"cvclxynpdk\"}")
             .toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("eolhbhlvbmx", model.tags().get("qi"));
+        Assertions.assertEquals("zlwvsgmwohqfz", model.tags().get("zvuxm"));
         Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForAISettingInner model
-            = new DefenderForAISettingInner().withTags(mapOf("qi", "eolhbhlvbmx", "tkcudfbsfarfsiow", "s"))
-                .withState(DefenderForAISettingState.DISABLED);
+        DefenderForAISettingInner model = new DefenderForAISettingInner()
+            .withTags(
+                mapOf("zvuxm", "zlwvsgmwohqfz", "mribiat", "kjsvthnwpzteko", "zcugswvxwlmzqw", "gplucfotangcfhny"))
+            .withState(DefenderForAISettingState.DISABLED);
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("eolhbhlvbmx", model.tags().get("qi"));
+        Assertions.assertEquals("zlwvsgmwohqfz", model.tags().get("zvuxm"));
         Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 

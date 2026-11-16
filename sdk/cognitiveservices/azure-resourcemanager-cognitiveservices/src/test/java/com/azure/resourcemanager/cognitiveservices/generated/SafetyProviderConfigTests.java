@@ -13,21 +13,21 @@ public final class SafetyProviderConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SafetyProviderConfig model = BinaryData
-            .fromString("{\"source\":\"PreToolCall\",\"safetyProviderName\":\"dieuzaofj\",\"blocking\":false}")
+            .fromString("{\"source\":\"PostToolCall\",\"safetyProviderName\":\"fxzsjabibsyst\",\"blocking\":true}")
             .toObject(SafetyProviderConfig.class);
-        Assertions.assertEquals("dieuzaofj", model.safetyProviderName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertEquals("fxzsjabibsyst", model.safetyProviderName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SafetyProviderConfig model = new SafetyProviderConfig().withSafetyProviderName("dieuzaofj")
-            .withBlocking(false)
-            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL);
+        SafetyProviderConfig model = new SafetyProviderConfig().withSafetyProviderName("fxzsjabibsyst")
+            .withBlocking(true)
+            .withSource(RaiPolicyContentSource.POST_TOOL_CALL);
         model = BinaryData.fromObject(model).toObject(SafetyProviderConfig.class);
-        Assertions.assertEquals("dieuzaofj", model.safetyProviderName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertEquals("fxzsjabibsyst", model.safetyProviderName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.source());
     }
 }

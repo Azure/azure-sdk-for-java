@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class BastionHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPutWithPrivateOnly.json
+     * x-ms-original-file: 2026-03-01/BastionHostPutWithPrivateOnly.json
      */
     /**
      * Sample code: Create Bastion Host With Private Only.
@@ -38,7 +38,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostDeveloperPut.json
+     * x-ms-original-file: 2026-03-01/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
@@ -57,7 +57,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPut.json
+     * x-ms-original-file: 2026-03-01/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
@@ -78,7 +78,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPutWithUserAssignedIdentityForSRConfig.json
+     * x-ms-original-file: 2026-03-01/BastionHostPutWithUserAssignedIdentityForSRConfig.json
      */
     /**
      * Sample code: Create or Update Bastion Host With User Assigned Identity for Session Recording Configuration.
@@ -106,7 +106,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPutWithZones.json
+     * x-ms-original-file: 2026-03-01/BastionHostPutWithZones.json
      */
     /**
      * Sample code: Create Bastion Host With Zones.
@@ -127,7 +127,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/BastionHostPutWithSystemAssignedIdentityForSRConfig.json
+     * x-ms-original-file: 2026-03-01/BastionHostPutWithSystemAssignedIdentityForSRConfig.json
      */
     /**
      * Sample code: Create or Update Bastion Host With System Assigned Identity for Session Recording Configuration.

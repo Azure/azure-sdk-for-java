@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDeleteStatus;
 import com.azure.resourcemanager.netapp.models.Volume;
 
 /**
@@ -11,7 +13,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-15-preview/Volumes_Update.json
+     * x-ms-original-file: 2026-08-15-preview/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.
@@ -22,6 +24,9 @@ public final class VolumesUpdateSamples {
         Volume resource = manager.volumes()
             .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().apply();
+        resource.update()
+            .withAsyncDirectoryDelete(
+                new AsyncDirectoryDelete().withStatus(AsyncDirectoryDeleteStatus.ENABLED).withTrashBinName("trash"))
+            .apply();
     }
 }

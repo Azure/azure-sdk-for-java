@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class PlatformProfile implements JsonSerializable<PlatformProfile> {
     /*
-     * Resource group name to put cluster resources
+     * The name of the resource group to put cluster resources in.
      * 
      * If not specified then a unique name is generated from the
      * following pattern
@@ -31,7 +31,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     private String managedResourceGroup;
 
     /*
-     * The Azure resource ID of the worker subnet
+     * The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters.
      */
     private String subnetId;
@@ -62,6 +62,12 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     private OperatorsAuthenticationProfile operatorsAuthentication;
 
     /*
+     * Azure Container Registry configuration for authenticating image pulls
+     * on the cluster's worker nodes.
+     */
+    private ContainerRegistryProfile containerRegistry;
+
+    /*
      * URL for the OIDC provider to be used for authentication
      * to authenticate against user Azure cloud account
      */
@@ -74,7 +80,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     }
 
     /**
-     * Get the managedResourceGroup property: Resource group name to put cluster resources
+     * Get the managedResourceGroup property: The name of the resource group to put cluster resources in.
      * 
      * If not specified then a unique name is generated from the
      * following pattern
@@ -92,7 +98,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     }
 
     /**
-     * Set the managedResourceGroup property: Resource group name to put cluster resources
+     * Set the managedResourceGroup property: The name of the resource group to put cluster resources in.
      * 
      * If not specified then a unique name is generated from the
      * following pattern
@@ -112,7 +118,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     }
 
     /**
-     * Get the subnetId property: The Azure resource ID of the worker subnet
+     * Get the subnetId property: The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters.
      * 
      * @return the subnetId value.
@@ -122,7 +128,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     }
 
     /**
-     * Set the subnetId property: The Azure resource ID of the worker subnet
+     * Set the subnetId property: The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters.
      * 
      * @param subnetId the subnetId value to set.
@@ -228,6 +234,28 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
     }
 
     /**
+     * Get the containerRegistry property: Azure Container Registry configuration for authenticating image pulls
+     * on the cluster's worker nodes.
+     * 
+     * @return the containerRegistry value.
+     */
+    public ContainerRegistryProfile containerRegistry() {
+        return this.containerRegistry;
+    }
+
+    /**
+     * Set the containerRegistry property: Azure Container Registry configuration for authenticating image pulls
+     * on the cluster's worker nodes.
+     * 
+     * @param containerRegistry the containerRegistry value to set.
+     * @return the PlatformProfile object itself.
+     */
+    public PlatformProfile withContainerRegistry(ContainerRegistryProfile containerRegistry) {
+        this.containerRegistry = containerRegistry;
+        return this;
+    }
+
+    /**
      * Get the issuerUrl property: URL for the OIDC provider to be used for authentication
      * to authenticate against user Azure cloud account.
      * 
@@ -249,6 +277,7 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
         jsonWriter.writeJsonField("operatorsAuthentication", this.operatorsAuthentication);
         jsonWriter.writeStringField("managedResourceGroup", this.managedResourceGroup);
         jsonWriter.writeStringField("outboundType", this.outboundType == null ? null : this.outboundType.toString());
+        jsonWriter.writeJsonField("containerRegistry", this.containerRegistry);
         return jsonWriter.writeEndObject();
     }
 
@@ -283,6 +312,8 @@ public final class PlatformProfile implements JsonSerializable<PlatformProfile> 
                     deserializedPlatformProfile.managedResourceGroup = reader.getString();
                 } else if ("outboundType".equals(fieldName)) {
                     deserializedPlatformProfile.outboundType = OutboundType.fromString(reader.getString());
+                } else if ("containerRegistry".equals(fieldName)) {
+                    deserializedPlatformProfile.containerRegistry = ContainerRegistryProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

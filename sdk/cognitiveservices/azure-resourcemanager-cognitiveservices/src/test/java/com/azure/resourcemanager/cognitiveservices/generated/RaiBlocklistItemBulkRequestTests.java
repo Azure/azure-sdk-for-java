@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiBlocklistItemBulkRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiBlocklistItemBulkRequest model
-            = BinaryData.fromString("{\"name\":\"ncxykxhdjhlimm\",\"properties\":{\"pattern\":\"f\",\"isRegex\":true}}")
-                .toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("ncxykxhdjhlimm", model.name());
-        Assertions.assertEquals("f", model.properties().pattern());
-        Assertions.assertTrue(model.properties().isRegex());
+        RaiBlocklistItemBulkRequest model = BinaryData
+            .fromString("{\"name\":\"nizshqvcim\",\"properties\":{\"pattern\":\"fgmblrrilbywdxsm\",\"isRegex\":false}}")
+            .toObject(RaiBlocklistItemBulkRequest.class);
+        Assertions.assertEquals("nizshqvcim", model.name());
+        Assertions.assertEquals("fgmblrrilbywdxsm", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("ncxykxhdjhlimm")
-            .withProperties(new RaiBlocklistItemProperties().withPattern("f").withIsRegex(true));
+        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("nizshqvcim")
+            .withProperties(new RaiBlocklistItemProperties().withPattern("fgmblrrilbywdxsm").withIsRegex(false));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("ncxykxhdjhlimm", model.name());
-        Assertions.assertEquals("f", model.properties().pattern());
-        Assertions.assertTrue(model.properties().isRegex());
+        Assertions.assertEquals("nizshqvcim", model.name());
+        Assertions.assertEquals("fgmblrrilbywdxsm", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 }

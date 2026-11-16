@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ncrdo\",\"requiredMembers\":[\"ysecp\",\"khxd\",\"yhqtzcvimmwcko\"],\"requiredZoneNames\":[\"fymtrtsvxupqtzck\",\"bcbkgnrfr\"],\"displayName\":\"chj\"},\"id\":\"cqzahgtvbgdob\",\"name\":\"morzolxosg\",\"type\":\"htrxueqbmxqfgv\"},{\"properties\":{\"groupId\":\"qs\",\"requiredMembers\":[\"esgcsqos\",\"cxlngoufpi\"],\"requiredZoneNames\":[\"mfxzspf\"],\"displayName\":\"slazipplxgtdu\"},\"id\":\"ty\",\"name\":\"i\",\"type\":\"drznlaxozqthkwxf\"},{\"properties\":{\"groupId\":\"zizyxdu\",\"requiredMembers\":[\"qzb\",\"qcakmfckviyj\"],\"requiredZoneNames\":[\"mnsbq\",\"itwhmucjiu\",\"cxyvehykl\",\"lyqdvpqfbxgyc\"],\"displayName\":\"usdmtxq\"},\"id\":\"fn\",\"name\":\"heywvfopkyllrey\",\"type\":\"nj\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"xrq\",\"requiredMembers\":[\"zfvwjdthkvpyeyoa\",\"inmpnqupdkjrzfwk\"],\"requiredZoneNames\":[\"obd\",\"whqdcc\"],\"displayName\":\"vqsru\"},\"id\":\"ylcvwbzmfx\",\"name\":\"ry\",\"type\":\"fjxlpiy\"},{\"properties\":{\"groupId\":\"pfydrfbgcnyxbyxm\",\"requiredMembers\":[\"qyncgaullfstyygj\"],\"requiredZoneNames\":[\"lmwqg\",\"hmqmiwxzf\",\"vzucqfgufjnb\",\"wbmwdukinhl\"],\"displayName\":\"gde\"},\"id\":\"kzou\",\"name\":\"vewwpzrdwcgldo\",\"type\":\"gcandxfhhhtes\"},{\"properties\":{\"groupId\":\"tdnnck\",\"requiredMembers\":[\"jdshvv\",\"k\",\"xccyijjimhijzr\"],\"requiredZoneNames\":[\"xmv\",\"s\",\"uy\"],\"displayName\":\"nwgruhhqldr\"},\"id\":\"mnswxiexqwqnghx\",\"name\":\"i\",\"type\":\"v\"},{\"properties\":{\"groupId\":\"rxgunnqgy\",\"requiredMembers\":[\"tnylqu\"],\"requiredZoneNames\":[\"mvyumgmmuebsnzn\",\"gsqufmjxcyo\",\"eqcazisvbrqgcy\",\"pgawepk\"],\"displayName\":\"nrzpghlrdtbg\"},\"id\":\"xb\",\"name\":\"ibrv\",\"type\":\"ztaflvsmfj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("dnccotelik", "iytehhxtzxqdwbym", com.azure.core.util.Context.NONE)
+            .listWithResponse("svgoocq", "azmzlpcx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fymtrtsvxupqtzck", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("obd", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

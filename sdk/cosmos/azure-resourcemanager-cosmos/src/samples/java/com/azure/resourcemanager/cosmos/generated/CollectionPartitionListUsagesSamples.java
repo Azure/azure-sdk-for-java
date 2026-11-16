@@ -9,14 +9,14 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CollectionPartitionListUsagesSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBCollectionPartitionGetUsages.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCollectionPartitionGetUsages.json
      */
     /**
-     * Sample code: CosmosDBCollectionPartitionGetUsages.
+     * Sample code: CosmosDBCollectionGetUsages.
      * 
      * @param manager Entry point to CosmosManager.
      */
-    public static void cosmosDBCollectionPartitionGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
+    public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getCollectionPartitions()
             .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "name.value eq 'Partition Storage'",

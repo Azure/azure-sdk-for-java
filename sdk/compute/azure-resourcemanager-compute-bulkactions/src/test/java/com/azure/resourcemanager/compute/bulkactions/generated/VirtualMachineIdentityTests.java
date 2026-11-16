@@ -16,7 +16,7 @@ public final class VirtualMachineIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"imejzanl\",\"tenantId\":\"xi\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rgz\":{\"principalId\":\"onok\",\"clientId\":\"rjqc\"},\"bt\":{\"principalId\":\"rlazszrnw\",\"clientId\":\"indfpwpjyl\"}}}")
+            "{\"principalId\":\"qzudphq\",\"tenantId\":\"vdkfwynwcvtbvk\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"v\":{\"principalId\":\"vyqia\",\"clientId\":\"zwpcnpwzcjaesg\"},\"vdnkfxusem\":{\"principalId\":\"cyajguqf\",\"clientId\":\"ygz\"},\"celve\":{\"principalId\":\"zrmuhapfcqdps\",\"clientId\":\"qvpsvuoymg\"}}}")
             .toObject(VirtualMachineIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -24,8 +24,8 @@ public final class VirtualMachineIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineIdentity model = new VirtualMachineIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("rgz", new UserAssignedIdentitiesValue(), "bt", new UserAssignedIdentitiesValue()));
+            .withUserAssignedIdentities(mapOf("v", new UserAssignedIdentitiesValue(), "vdnkfxusem",
+                new UserAssignedIdentitiesValue(), "celve", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(VirtualMachineIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }

@@ -35,6 +35,7 @@ import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsI
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.BucketsImpl;
 import com.azure.resourcemanager.netapp.implementation.CachesImpl;
+import com.azure.resourcemanager.netapp.implementation.ClusterPeersImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticBackupPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticBackupVaultsImpl;
@@ -43,6 +44,10 @@ import com.azure.resourcemanager.netapp.implementation.ElasticCapacityPoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticSnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticSnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.ElasticVolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.ExternalCacheConnectionsImpl;
+import com.azure.resourcemanager.netapp.implementation.ExternalCachesImpl;
+import com.azure.resourcemanager.netapp.implementation.ExternalClustersImpl;
+import com.azure.resourcemanager.netapp.implementation.ExternalSvmsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
@@ -55,6 +60,7 @@ import com.azure.resourcemanager.netapp.implementation.RansomwareReportsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.SvmPeersImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
@@ -68,6 +74,7 @@ import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
 import com.azure.resourcemanager.netapp.models.Buckets;
 import com.azure.resourcemanager.netapp.models.Caches;
+import com.azure.resourcemanager.netapp.models.ClusterPeers;
 import com.azure.resourcemanager.netapp.models.ElasticAccounts;
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicies;
 import com.azure.resourcemanager.netapp.models.ElasticBackupVaults;
@@ -76,6 +83,10 @@ import com.azure.resourcemanager.netapp.models.ElasticCapacityPools;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshots;
 import com.azure.resourcemanager.netapp.models.ElasticVolumes;
+import com.azure.resourcemanager.netapp.models.ExternalCacheConnections;
+import com.azure.resourcemanager.netapp.models.ExternalCaches;
+import com.azure.resourcemanager.netapp.models.ExternalClusters;
+import com.azure.resourcemanager.netapp.models.ExternalSvms;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimitsAccounts;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
@@ -87,6 +98,7 @@ import com.azure.resourcemanager.netapp.models.RansomwareReports;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Subvolumes;
+import com.azure.resourcemanager.netapp.models.SvmPeers;
 import com.azure.resourcemanager.netapp.models.VolumeGroups;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRules;
 import com.azure.resourcemanager.netapp.models.Volumes;
@@ -146,6 +158,18 @@ public final class NetAppFilesManager {
     private ElasticBackups elasticBackups;
 
     private ActiveDirectoryConfigs activeDirectoryConfigs;
+
+    private ExternalClusters externalClusters;
+
+    private ClusterPeers clusterPeers;
+
+    private ExternalSvms externalSvms;
+
+    private SvmPeers svmPeers;
+
+    private ExternalCaches externalCaches;
+
+    private ExternalCacheConnections externalCacheConnections;
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
@@ -647,6 +671,79 @@ public final class NetAppFilesManager {
                 = new ActiveDirectoryConfigsImpl(clientObject.getActiveDirectoryConfigs(), this);
         }
         return activeDirectoryConfigs;
+    }
+
+    /**
+     * Gets the resource collection API of ExternalClusters. It manages ExternalCluster.
+     * 
+     * @return Resource collection API of ExternalClusters.
+     */
+    public ExternalClusters externalClusters() {
+        if (this.externalClusters == null) {
+            this.externalClusters = new ExternalClustersImpl(clientObject.getExternalClusters(), this);
+        }
+        return externalClusters;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterPeers.
+     * 
+     * @return Resource collection API of ClusterPeers.
+     */
+    public ClusterPeers clusterPeers() {
+        if (this.clusterPeers == null) {
+            this.clusterPeers = new ClusterPeersImpl(clientObject.getClusterPeers(), this);
+        }
+        return clusterPeers;
+    }
+
+    /**
+     * Gets the resource collection API of ExternalSvms. It manages ExternalSvm.
+     * 
+     * @return Resource collection API of ExternalSvms.
+     */
+    public ExternalSvms externalSvms() {
+        if (this.externalSvms == null) {
+            this.externalSvms = new ExternalSvmsImpl(clientObject.getExternalSvms(), this);
+        }
+        return externalSvms;
+    }
+
+    /**
+     * Gets the resource collection API of SvmPeers.
+     * 
+     * @return Resource collection API of SvmPeers.
+     */
+    public SvmPeers svmPeers() {
+        if (this.svmPeers == null) {
+            this.svmPeers = new SvmPeersImpl(clientObject.getSvmPeers(), this);
+        }
+        return svmPeers;
+    }
+
+    /**
+     * Gets the resource collection API of ExternalCaches.
+     * 
+     * @return Resource collection API of ExternalCaches.
+     */
+    public ExternalCaches externalCaches() {
+        if (this.externalCaches == null) {
+            this.externalCaches = new ExternalCachesImpl(clientObject.getExternalCaches(), this);
+        }
+        return externalCaches;
+    }
+
+    /**
+     * Gets the resource collection API of ExternalCacheConnections. It manages ExternalCacheConnection.
+     * 
+     * @return Resource collection API of ExternalCacheConnections.
+     */
+    public ExternalCacheConnections externalCacheConnections() {
+        if (this.externalCacheConnections == null) {
+            this.externalCacheConnections
+                = new ExternalCacheConnectionsImpl(clientObject.getExternalCacheConnections(), this);
+        }
+        return externalCacheConnections;
     }
 
     /**

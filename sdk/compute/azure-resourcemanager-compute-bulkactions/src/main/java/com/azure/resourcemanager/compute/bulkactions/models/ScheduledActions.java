@@ -13,40 +13,40 @@ import com.azure.core.util.Context;
  */
 public interface ScheduledActions {
     /**
-     * Gets the specified scheduled action.
+     * Gets the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified scheduled action along with {@link Response}.
+     * @return the specified recurring bulk action along with {@link Response}.
      */
     Response<ScheduledAction> getByResourceGroupWithResponse(String resourceGroupName, String scheduledActionName,
         Context context);
 
     /**
-     * Gets the specified scheduled action.
+     * Gets the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified scheduled action.
+     * @return the specified recurring bulk action.
      */
     ScheduledAction getByResourceGroup(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Updates the specified scheduled action.
+     * Updates the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,12 +54,12 @@ public interface ScheduledActions {
     void update(String resourceGroupName, String scheduledActionName, ScheduledActionUpdate properties);
 
     /**
-     * Updates the specified scheduled action.
+     * Updates the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param properties The recurring bulk action properties to update. Omitted properties keep their current values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,11 +69,11 @@ public interface ScheduledActions {
         Context context);
 
     /**
-     * Deletes the specified scheduled action.
+     * Deletes the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -81,11 +81,11 @@ public interface ScheduledActions {
     void deleteByResourceGroup(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Deletes the specified scheduled action.
+     * Deletes the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,7 +94,7 @@ public interface ScheduledActions {
     void delete(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Lists scheduled actions in the specified resource group.
+     * Lists recurring bulk actions in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +105,7 @@ public interface ScheduledActions {
     PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists scheduled actions in the specified resource group.
+     * Lists recurring bulk actions in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -117,7 +117,7 @@ public interface ScheduledActions {
     PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists scheduled actions in the specified subscription.
+     * Lists recurring bulk actions in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,7 +126,7 @@ public interface ScheduledActions {
     PagedIterable<ScheduledAction> list();
 
     /**
-     * Lists scheduled actions in the specified subscription.
+     * Lists recurring bulk actions in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,134 +137,134 @@ public interface ScheduledActions {
     PagedIterable<ScheduledAction> list(Context context);
 
     /**
-     * Lists resources associated with the specified scheduled action.
+     * Lists resources associated with the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of compute resources associated with a scheduled action as paginated response with
+     * @return a paged list of compute resources associated with a recurring bulk action as paginated response with
      * {@link PagedIterable}.
      */
     PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Lists resources associated with the specified scheduled action.
+     * Lists resources associated with the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of compute resources associated with a scheduled action as paginated response with
+     * @return a paged list of compute resources associated with a recurring bulk action as paginated response with
      * {@link PagedIterable}.
      */
     PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName,
         Context context);
 
     /**
-     * Adds resources to the specified scheduled action.
+     * Adds resources to the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param body The resources to add to the scheduled action.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param body The resources to add to the recurring bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body);
 
     /**
-     * Adds resources to the specified scheduled action.
+     * Adds resources to the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param body The resources to add to the scheduled action.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param body The resources to add to the recurring bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body, Context context);
 
     /**
-     * Removes resources from the specified scheduled action.
+     * Removes resources from the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param body The resources to remove from the scheduled action.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param body The resources to remove from the recurring bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body);
 
     /**
-     * Removes resources from the specified scheduled action.
+     * Removes resources from the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
-     * @param body The resources to remove from the scheduled action.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param body The resources to remove from the recurring bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body, Context context);
 
     /**
-     * Updates resource-specific settings for the specified scheduled action.
+     * Updates resource-specific settings for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param body The resource-specific settings to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources along with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     Response<ResourceOperationResponse> patchResourcesWithResponse(String resourceGroupName, String scheduledActionName,
         ResourcePatchRequest body, Context context);
 
     /**
-     * Updates resource-specific settings for the specified scheduled action.
+     * Updates resource-specific settings for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param body The resource-specific settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse patchResources(String resourceGroupName, String scheduledActionName,
         ResourcePatchRequest body);
 
     /**
-     * Disables the specified scheduled action so future occurrences do not run.
+     * Disables the specified recurring bulk action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,11 +272,11 @@ public interface ScheduledActions {
     void disable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Disables the specified scheduled action so future occurrences do not run.
+     * Disables the specified recurring bulk action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -285,11 +285,11 @@ public interface ScheduledActions {
     void disable(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Enables the specified scheduled action so new occurrences run.
+     * Enables the specified recurring bulk action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,11 +297,11 @@ public interface ScheduledActions {
     void enable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Enables the specified scheduled action so new occurrences run.
+     * Enables the specified recurring bulk action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -310,90 +310,90 @@ public interface ScheduledActions {
     void enable(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Cancels the next occurrence of the specified scheduled action.
+     * Cancels the next occurrence of the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body);
 
     /**
-     * Cancels the next occurrence of the specified scheduled action.
+     * Cancels the next occurrence of the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
      * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of a scheduled action operation for targeted resources.
+     * @return results of a recurring bulk action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body, Context context);
 
     /**
-     * Runs the specified scheduled action immediately.
+     * Runs the specified recurring bulk action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a scheduled action.
+     * @return one scheduled execution of a recurring bulk action.
      */
     Occurrence triggerManualOccurrence(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Runs the specified scheduled action immediately.
+     * Runs the specified recurring bulk action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
-     * letters, numbers, and hyphens.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one scheduled execution of a scheduled action.
+     * @return one scheduled execution of a recurring bulk action.
      */
     Occurrence triggerManualOccurrence(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Gets the specified scheduled action.
+     * Gets the specified recurring bulk action.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified scheduled action along with {@link Response}.
+     * @return the specified recurring bulk action along with {@link Response}.
      */
     ScheduledAction getById(String id);
 
     /**
-     * Gets the specified scheduled action.
+     * Gets the specified recurring bulk action.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified scheduled action along with {@link Response}.
+     * @return the specified recurring bulk action along with {@link Response}.
      */
     Response<ScheduledAction> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified scheduled action.
+     * Deletes the specified recurring bulk action.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,7 +403,7 @@ public interface ScheduledActions {
     void deleteById(String id);
 
     /**
-     * Deletes the specified scheduled action.
+     * Deletes the specified recurring bulk action.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

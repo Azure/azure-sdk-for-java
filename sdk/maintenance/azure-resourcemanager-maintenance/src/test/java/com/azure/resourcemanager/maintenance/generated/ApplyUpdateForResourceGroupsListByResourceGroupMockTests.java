@@ -23,7 +23,7 @@ public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"wxezwzhok\",\"lastUpdateTime\":\"2021-09-18T08:14:23Z\"},\"id\":\"hh\",\"name\":\"qlgehg\",\"type\":\"pipifh\"}]}";
+            = "{\"value\":[{\"properties\":{\"status\":\"NoUpdatesPending\",\"resourceId\":\"tngfdgugeyzihgr\",\"lastUpdateTime\":\"2021-07-12T02:27:44Z\"},\"id\":\"zabs\",\"name\":\"mfp\",\"type\":\"hojeevy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApplyUpdate> response
-            = manager.applyUpdateForResourceGroups().listByResourceGroup("kylkdghrj", com.azure.core.util.Context.NONE);
+            = manager.applyUpdateForResourceGroups().listByResourceGroup("pctf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UpdateStatus.PENDING, response.iterator().next().status());
-        Assertions.assertEquals("wxezwzhok", response.iterator().next().resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T08:14:23Z"),
+        Assertions.assertEquals(UpdateStatus.NO_UPDATES_PENDING, response.iterator().next().status());
+        Assertions.assertEquals("tngfdgugeyzihgr", response.iterator().next().resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T02:27:44Z"),
             response.iterator().next().lastUpdateTime());
     }
 }

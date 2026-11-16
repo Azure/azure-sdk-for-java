@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureFunctionBinding;
 import com.azure.ai.agents.models.AzureFunctionDefinition;
@@ -90,12 +89,11 @@ public class AzureFunctionAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .toolChoice(ToolChoiceOptions.REQUIRED)
-                            .input("What is the weather in Seattle?")
-                            .build())));
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .toolChoice(ToolChoiceOptions.REQUIRED)
+                        .input("What is the weather in Seattle?")
+                        .build()));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

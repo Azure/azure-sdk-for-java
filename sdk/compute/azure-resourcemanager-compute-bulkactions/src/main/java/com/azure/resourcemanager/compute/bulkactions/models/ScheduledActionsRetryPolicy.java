@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Retry settings for a scheduled action operation.
+ * Retry settings for a recurring bulk action operation.
  */
 @Fluent
 public final class ScheduledActionsRetryPolicy implements JsonSerializable<ScheduledActionsRetryPolicy> {

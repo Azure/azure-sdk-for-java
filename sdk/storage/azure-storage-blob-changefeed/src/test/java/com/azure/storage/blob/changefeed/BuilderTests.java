@@ -37,6 +37,8 @@ public class BuilderTests {
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url)
@@ -48,9 +50,8 @@ public class BuilderTests {
     public void constructFromServiceClientBlobUserAgentModificationPolicy() {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .httpClient(
-                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+                + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobChangefeedClient changefeedClient = new BlobChangefeedClientBuilder(serviceClient).buildClient();

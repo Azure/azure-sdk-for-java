@@ -223,6 +223,13 @@ public interface NetworkManagementClient {
     ExpressRouteLagsClient getExpressRouteLags();
 
     /**
+     * Gets the ExpressRouteLagAuthorizationsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagAuthorizationsClient object.
+     */
+    ExpressRouteLagAuthorizationsClient getExpressRouteLagAuthorizations();
+
+    /**
      * Gets the FirewallPoliciesClient object to access its operations.
      * 
      * @return the FirewallPoliciesClient object.
@@ -753,6 +760,13 @@ public interface NetworkManagementClient {
      * @return the VirtualNetworkAppliancesClient object.
      */
     VirtualNetworkAppliancesClient getVirtualNetworkAppliances();
+
+    /**
+     * Gets the VirtualNetworkApplianceCapabilitiesClient object to access its operations.
+     * 
+     * @return the VirtualNetworkApplianceCapabilitiesClient object.
+     */
+    VirtualNetworkApplianceCapabilitiesClient getVirtualNetworkApplianceCapabilities();
 
     /**
      * Gets the ServiceGatewaysClient object to access its operations.

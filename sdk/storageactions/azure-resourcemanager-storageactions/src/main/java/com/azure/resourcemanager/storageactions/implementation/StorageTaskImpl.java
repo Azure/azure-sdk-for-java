@@ -132,8 +132,12 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
         com.azure.resourcemanager.storageactions.StorageActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageTaskName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageTasks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "resourceGroupName");
+        this.storageTaskName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "storageTaskName");
     }
 
     public StorageTask refresh() {

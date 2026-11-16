@@ -9,6 +9,7 @@ import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceP
 import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParametersForAutoProtection;
 import com.azure.resourcemanager.dataprotection.models.AzureOperationalStoreParameters;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
+import com.azure.resourcemanager.dataprotection.models.BackupSolutionType;
 import com.azure.resourcemanager.dataprotection.models.BlobBackupAutoProtectionRule;
 import com.azure.resourcemanager.dataprotection.models.BlobBackupDatasourceParametersForAutoProtection;
 import com.azure.resourcemanager.dataprotection.models.BlobBackupPatternType;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.KubernetesClusterBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.PolicyInfo;
 import com.azure.resourcemanager.dataprotection.models.PolicyParameters;
+import com.azure.resourcemanager.dataprotection.models.PostgreSqlFlexibleServerBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
@@ -35,7 +37,7 @@ import java.util.Map;
  */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
@@ -82,7 +84,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
      */
     /**
      * Sample code: Create BackupInstance with GenericBackupDatasourceParameters.
@@ -125,7 +127,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With ADLSBlobBackupDatasourceParameters.
@@ -167,7 +169,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create BackupInstance to perform critical operation With MUA.
@@ -214,7 +216,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
      */
     /**
      * Sample code: Create BackupInstance With BlobBackupAutoProtection.
@@ -267,7 +269,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-06-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+     * 2026-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With KubernetesClusterBackupDatasourceParameters.
@@ -321,7 +323,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
      */
     /**
      * Sample code: Create BackupInstance With ADLSBlobBackupAutoProtection.
@@ -368,6 +370,49 @@ public final class BackupInstancesCreateOrUpdateSamples {
                                         .withMode(BlobBackupRuleMode.EXCLUDE)
                                         .withType(BlobBackupPatternType.PREFIX)
                                         .withPattern("test-"))))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-07-01/BackupInstanceOperations/PutBackupInstance_PostgreSqlFlexibleServerBackupDatasourceParameters.json
+     */
+    /**
+     * Sample code: Create BackupInstance With PostgreSqlFlexibleServerBackupDatasourceParameters.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithPostgreSqlFlexibleServerBackupDatasourceParameters(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("pgflexbi")
+            .withExistingBackupVault("pgflexrg", "pgflexvault")
+            .withProperties(new BackupInstance().withFriendlyName("pgflexbi")
+                .withDataSourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("pgflexserver")
+                    .withResourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("pgflexserver")
+                    .withResourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/BackupVaults/pgflexvault/backupPolicies/pgflexpolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(
+                        Arrays.asList(new PostgreSqlFlexibleServerBackupDatasourceParameters()
+                            .withBackupSolutionType(BackupSolutionType.PHYSICAL_BACKUP)))))
                 .withObjectType("BackupInstance"))
             .create();
     }

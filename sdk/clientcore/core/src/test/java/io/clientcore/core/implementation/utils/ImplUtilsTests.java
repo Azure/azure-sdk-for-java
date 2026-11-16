@@ -7,6 +7,8 @@ import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -123,6 +125,64 @@ public class ImplUtilsTests {
             // Configuration has a positive value.
             Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("timeoutPrecedenceSupplier")
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    public void timeoutPrecedence(Duration explicit, String local, String global, long expectedMillis) {
+        String property = "ImplUtilsTests.timeout";
+        String previous = System.getProperty(property);
+        try {
+            System.setProperty(property, global == null ? "" : global);
+            Configuration configuration = local == null
+                ? Configuration.none()
+                : Configuration.from(new TestConfigurationSource().put(property, local));
+            assertEquals(Duration.ofMillis(expectedMillis),
+                ImplUtils.getTimeout(explicit, configuration, property, Duration.ofSeconds(10)));
+        } finally {
+            if (previous == null) {
+                System.clearProperty(property);
+            } else {
+                System.setProperty(property, previous);
+            }
+        }
+    }
+
+    private static Stream<Arguments> timeoutPrecedenceSupplier() {
+        return Stream.of(Arguments.of(Duration.ofSeconds(3), "2000", "1000", 3000),
+            Arguments.of(Duration.ZERO, "2000", "1000", 0), Arguments.of(Duration.ofNanos(-1), "2000", "1000", 0),
+            Arguments.of(Duration.ofNanos(1), "2000", "1000", 1), Arguments.of(null, "2000", "1000", 2000),
+            Arguments.of(null, "0", "1000", 0), Arguments.of(null, "-1", "1000", 0),
+            Arguments.of(null, null, "1000", 1000), Arguments.of(null, "", "1000", 1000),
+            Arguments.of(null, "invalid", "1000", 1000), Arguments.of(null, null, "0", 0),
+            Arguments.of(null, null, "-1", 0), Arguments.of(null, null, "invalid", 10000),
+            Arguments.of(null, null, null, 10000));
+    }
+
+    @Test
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    public void globalTimeoutIsResolvedOnEachCall() {
+        String property = "ImplUtilsTests.timeout";
+        String previous = System.getProperty(property);
+        try {
+            for (String value : new String[] { "1000", "2000" }) {
+                System.setProperty(property, value);
+                for (Configuration configuration : new Configuration[] {
+                    null,
+                    Configuration.getGlobalConfiguration(),
+                    Configuration.none() }) {
+                    assertEquals(Duration.ofMillis(Long.parseLong(value)),
+                        ImplUtils.getTimeout(null, configuration, property, Duration.ofSeconds(10)));
+                }
+            }
+        } finally {
+            if (previous == null) {
+                System.clearProperty(property);
+            } else {
+                System.setProperty(property, previous);
+            }
+        }
     }
 
     @Test

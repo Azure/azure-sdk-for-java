@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockTests {
     @Test
     public void testGetRequiredAmlFSSubnetsSizeWithResponse() throws Exception {
-        String responseStr = "{\"filesystemSubnetSize\":685537305}";
+        String responseStr = "{\"filesystemSubnetSize\":2849760}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockT
 
         RequiredAmlFilesystemSubnetsSize response = manager.resourceProviders()
             .getRequiredAmlFSSubnetsSizeWithResponse(
-                new RequiredAmlFilesystemSubnetsSizeInfo().withStorageCapacityTiB(51.31221F)
-                    .withSku(new SkuName().withName("c")),
+                new RequiredAmlFilesystemSubnetsSizeInfo().withStorageCapacityTiB(80.55519F)
+                    .withSku(new SkuName().withName("azej")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(685537305, response.filesystemSubnetSize());
+        Assertions.assertEquals(2849760, response.filesystemSubnetSize());
     }
 }

@@ -13,11 +13,11 @@ public final class ReplacementConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplacementConfig model = BinaryData.fromString(
-            "{\"targetModelName\":\"ncuxrhdwb\",\"targetModelVersion\":\"xbniwdjs\",\"autoUpgradeStartDate\":\"2021-12-07T05:36:29Z\",\"upgradeOnExpiryLeadTimeDays\":670634549}")
+            "{\"targetModelName\":\"uttmrywnuzoqft\",\"targetModelVersion\":\"qzrnkcqvyxlwhz\",\"autoUpgradeStartDate\":\"2021-07-23T19:47:42Z\",\"upgradeOnExpiryLeadTimeDays\":1153823145}")
             .toObject(ReplacementConfig.class);
-        Assertions.assertEquals("ncuxrhdwb", model.targetModelName());
-        Assertions.assertEquals("xbniwdjs", model.targetModelVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T05:36:29Z"), model.autoUpgradeStartDate());
-        Assertions.assertEquals(670634549, model.upgradeOnExpiryLeadTimeDays());
+        Assertions.assertEquals("uttmrywnuzoqft", model.targetModelName());
+        Assertions.assertEquals("qzrnkcqvyxlwhz", model.targetModelVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T19:47:42Z"), model.autoUpgradeStartDate());
+        Assertions.assertEquals(1153823145, model.upgradeOnExpiryLeadTimeDays());
     }
 }

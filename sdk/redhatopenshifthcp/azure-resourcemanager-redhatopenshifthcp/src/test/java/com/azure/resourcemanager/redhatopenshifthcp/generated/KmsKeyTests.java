@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class KmsKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KmsKey model
-            = BinaryData.fromString("{\"name\":\"ijcoejctb\",\"version\":\"aqsqsycbkbfk\"}").toObject(KmsKey.class);
-        Assertions.assertEquals("ijcoejctb", model.name());
-        Assertions.assertEquals("aqsqsycbkbfk", model.version());
+        KmsKey model = BinaryData.fromString("{\"name\":\"onpimexgstxg\",\"version\":\"po\"}").toObject(KmsKey.class);
+        Assertions.assertEquals("onpimexgstxg", model.name());
+        Assertions.assertEquals("po", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KmsKey model = new KmsKey().withName("ijcoejctb").withVersion("aqsqsycbkbfk");
+        KmsKey model = new KmsKey().withName("onpimexgstxg").withVersion("po");
         model = BinaryData.fromObject(model).toObject(KmsKey.class);
-        Assertions.assertEquals("ijcoejctb", model.name());
-        Assertions.assertEquals("aqsqsycbkbfk", model.version());
+        Assertions.assertEquals("onpimexgstxg", model.name());
+        Assertions.assertEquals("po", model.version());
     }
 }

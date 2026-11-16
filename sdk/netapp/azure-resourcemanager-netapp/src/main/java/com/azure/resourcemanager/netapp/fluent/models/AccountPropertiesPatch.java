@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.AccountEncryption;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
@@ -29,7 +29,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     /*
      * Encryption settings
      */
-    private AccountEncryption encryption;
+    private AccountEncryptionPatch encryption;
 
     /*
      * Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and
@@ -78,7 +78,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * 
      * @return the encryption value.
      */
-    public AccountEncryption encryption() {
+    public AccountEncryptionPatch encryption() {
         return this.encryption;
     }
 
@@ -88,7 +88,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * @param encryption the encryption value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withEncryption(AccountEncryption encryption) {
+    public AccountPropertiesPatch withEncryption(AccountEncryptionPatch encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -210,7 +210,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
                         = reader.readArray(reader1 -> ActiveDirectory.fromJson(reader1));
                     deserializedAccountPropertiesPatch.activeDirectories = activeDirectories;
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.encryption = AccountEncryption.fromJson(reader);
+                    deserializedAccountPropertiesPatch.encryption = AccountEncryptionPatch.fromJson(reader);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.nfsV4IdDomain = reader.getString();
                 } else if ("entraIdConfig".equals(fieldName)) {

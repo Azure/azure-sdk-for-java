@@ -13,13 +13,13 @@ public final class AccountSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountSku model = BinaryData.fromString(
-            "{\"resourceType\":\"vdcsitynn\",\"sku\":{\"name\":\"mdectehfiqscjey\",\"tier\":\"Premium\",\"size\":\"zrkgqhcjrefovg\",\"family\":\"qsl\",\"capacity\":1641560645}}")
+            "{\"resourceType\":\"u\",\"sku\":{\"name\":\"wgqyw\",\"tier\":\"Standard\",\"size\":\"vynhzgpphrcg\",\"family\":\"cocpecfvmmcoofsx\",\"capacity\":1960553918}}")
             .toObject(AccountSku.class);
-        Assertions.assertEquals("vdcsitynn", model.resourceType());
-        Assertions.assertEquals("mdectehfiqscjey", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.sku().size());
-        Assertions.assertEquals("qsl", model.sku().family());
-        Assertions.assertEquals(1641560645, model.sku().capacity());
+        Assertions.assertEquals("u", model.resourceType());
+        Assertions.assertEquals("wgqyw", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("vynhzgpphrcg", model.sku().size());
+        Assertions.assertEquals("cocpecfvmmcoofsx", model.sku().family());
+        Assertions.assertEquals(1960553918, model.sku().capacity());
     }
 }

@@ -201,6 +201,48 @@ public interface NetAppManagementClient {
     ActiveDirectoryConfigsClient getActiveDirectoryConfigs();
 
     /**
+     * Gets the ExternalClustersClient object to access its operations.
+     * 
+     * @return the ExternalClustersClient object.
+     */
+    ExternalClustersClient getExternalClusters();
+
+    /**
+     * Gets the ClusterPeersClient object to access its operations.
+     * 
+     * @return the ClusterPeersClient object.
+     */
+    ClusterPeersClient getClusterPeers();
+
+    /**
+     * Gets the ExternalSvmsClient object to access its operations.
+     * 
+     * @return the ExternalSvmsClient object.
+     */
+    ExternalSvmsClient getExternalSvms();
+
+    /**
+     * Gets the SvmPeersClient object to access its operations.
+     * 
+     * @return the SvmPeersClient object.
+     */
+    SvmPeersClient getSvmPeers();
+
+    /**
+     * Gets the ExternalCachesClient object to access its operations.
+     * 
+     * @return the ExternalCachesClient object.
+     */
+    ExternalCachesClient getExternalCaches();
+
+    /**
+     * Gets the ExternalCacheConnectionsClient object to access its operations.
+     * 
+     * @return the ExternalCacheConnectionsClient object.
+     */
+    ExternalCacheConnectionsClient getExternalCacheConnections();
+
+    /**
      * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
      * 
      * @return the NetAppResourceQuotaLimitsClient object.

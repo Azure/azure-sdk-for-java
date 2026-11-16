@@ -11,7 +11,7 @@ public final class ProtectedItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectedItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceName\":\"q\",\"lastBackUpTime\":901362477495436627,\"resourceGroup\":\"tmuwlauwzi\",\"location\":\"xbmp\",\"vmGuid\":\"cjefuzmu\"},\"id\":\"bttdumorppxe\",\"name\":\"mnzb\",\"type\":\"bhjpglkfgohdne\"}")
+            "{\"properties\":{\"resourceName\":\"vmkcx\",\"lastBackUpTime\":9205614201426151802,\"resourceGroup\":\"pvhelxprg\",\"location\":\"yat\",\"vmGuid\":\"dckcbc\"},\"id\":\"jrjxgciqibrhosx\",\"name\":\"dqrhzoymib\",\"type\":\"rq\"}")
             .toObject(ProtectedItemInner.class);
     }
 }

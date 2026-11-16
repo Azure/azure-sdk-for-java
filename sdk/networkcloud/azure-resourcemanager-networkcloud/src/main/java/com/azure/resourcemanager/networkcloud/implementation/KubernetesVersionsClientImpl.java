@@ -455,7 +455,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      * a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesVersionName, KubernetesVersionInner kubernetesVersionParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesVersionName,
@@ -753,7 +753,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      * a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<KubernetesVersionInner>, KubernetesVersionInner> beginUpdate(String resourceGroupName,
         String kubernetesVersionName, String ifMatch, String ifNoneMatch,
         KubernetesVersionPatchParameters kubernetesVersionPatchParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesVersionName, ifMatch,
@@ -1022,7 +1022,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesVersionName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesVersionName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, kubernetesVersionName, ifMatch, ifNoneMatch);

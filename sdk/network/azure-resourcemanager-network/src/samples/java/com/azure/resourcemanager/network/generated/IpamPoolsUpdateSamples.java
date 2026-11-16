@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpamPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/IpamPools_UpdateClearAllocationBounds.json
+     * x-ms-original-file: 2026-03-01/IpamPools_UpdateClearAllocationBounds.json
      */
     /**
      * Sample code: Clear the allocation size bounds on a Pool resource.
@@ -24,7 +24,7 @@ public final class IpamPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/IpamPools_Update.json
+     * x-ms-original-file: 2026-03-01/IpamPools_Update.json
      */
     /**
      * Sample code: IpamPools_Update.
@@ -38,7 +38,7 @@ public final class IpamPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/IpamPools_UpdateAllocationBounds.json
+     * x-ms-original-file: 2026-03-01/IpamPools_UpdateAllocationBounds.json
      */
     /**
      * Sample code: Update the allocation size bounds on a Pool resource.

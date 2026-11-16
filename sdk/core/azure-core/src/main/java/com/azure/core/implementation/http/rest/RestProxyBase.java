@@ -27,6 +27,8 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -215,6 +217,24 @@ public abstract class RestProxyBase {
         // body as an Object.
         ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
+    }
+
+    /**
+     * Gets the response body as {@link BinaryData} without buffering it. A non-replayable body is tied to the response
+     * so the response is closed when the body terminates.
+     *
+     * @param response The HTTP response.
+     * @return The response body.
+     */
+    static BinaryData getOwnedResponseBody(HttpResponse response) {
+        BinaryData responseBody = response.getBodyAsBinaryData();
+        if (responseBody == null || responseBody.isReplayable()) {
+            return responseBody;
+        }
+
+        ResponseBodyOwner responseBodyOwner = new ResponseBodyOwner(response);
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(
+            responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), false));
     }
 
     static final class ResponseBodyOwner implements Closeable {

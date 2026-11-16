@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class TokenIssuerProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TokenIssuerProfile model = BinaryData.fromString(
-            "{\"url\":\"uedck\",\"audiences\":[\"wbiexzfey\",\"eaxib\",\"ujwb\",\"qwalmuzyoxaepd\"],\"ca\":\"jancu\"}")
+        TokenIssuerProfile model = BinaryData
+            .fromString(
+                "{\"url\":\"kyzxuutk\",\"audiences\":[\"ws\",\"wsvlxotogtwrupqs\",\"vnm\"],\"ca\":\"ykvceoveil\"}")
             .toObject(TokenIssuerProfile.class);
-        Assertions.assertEquals("uedck", model.url());
-        Assertions.assertEquals("wbiexzfey", model.audiences().get(0));
-        Assertions.assertEquals("jancu", model.ca());
+        Assertions.assertEquals("kyzxuutk", model.url());
+        Assertions.assertEquals("ws", model.audiences().get(0));
+        Assertions.assertEquals("ykvceoveil", model.ca());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TokenIssuerProfile model = new TokenIssuerProfile().withUrl("uedck")
-            .withAudiences(Arrays.asList("wbiexzfey", "eaxib", "ujwb", "qwalmuzyoxaepd"))
-            .withCa("jancu");
+        TokenIssuerProfile model = new TokenIssuerProfile().withUrl("kyzxuutk")
+            .withAudiences(Arrays.asList("ws", "wsvlxotogtwrupqs", "vnm"))
+            .withCa("ykvceoveil");
         model = BinaryData.fromObject(model).toObject(TokenIssuerProfile.class);
-        Assertions.assertEquals("uedck", model.url());
-        Assertions.assertEquals("wbiexzfey", model.audiences().get(0));
-        Assertions.assertEquals("jancu", model.ca());
+        Assertions.assertEquals("kyzxuutk", model.url());
+        Assertions.assertEquals("ws", model.audiences().get(0));
+        Assertions.assertEquals("ykvceoveil", model.ca());
     }
 }

@@ -450,7 +450,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
      * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
+    private SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginCreateOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkInner parameters,
             String ifMatch, String ifNoneMatch) {
@@ -771,7 +771,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
      * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
+    private SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters,
             String ifMatch) {
@@ -1057,7 +1057,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverPolicyName,
             dnsResolverPolicyVirtualNetworkLinkName, ifMatch);

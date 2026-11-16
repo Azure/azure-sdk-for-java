@@ -13,24 +13,24 @@ public final class OriginClusterInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OriginClusterInformation model = BinaryData.fromString(
-            "{\"peerClusterName\":\"rxkpmloazuruoc\",\"peerAddresses\":[\"oorb\",\"eoybfhjxakvvjgs\"],\"peerVserverName\":\"ordilmywwtkgkxny\",\"peerVolumeName\":\"dabg\"}")
+            "{\"peerClusterName\":\"cib\",\"peerAddresses\":[\"mowuxrk\"],\"peerVserverName\":\"pvdwxf\",\"peerVolumeName\":\"wiivwzjbhyzsx\"}")
             .toObject(OriginClusterInformation.class);
-        Assertions.assertEquals("rxkpmloazuruoc", model.peerClusterName());
-        Assertions.assertEquals("oorb", model.peerAddresses().get(0));
-        Assertions.assertEquals("ordilmywwtkgkxny", model.peerVserverName());
-        Assertions.assertEquals("dabg", model.peerVolumeName());
+        Assertions.assertEquals("cib", model.peerClusterName());
+        Assertions.assertEquals("mowuxrk", model.peerAddresses().get(0));
+        Assertions.assertEquals("pvdwxf", model.peerVserverName());
+        Assertions.assertEquals("wiivwzjbhyzsx", model.peerVolumeName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OriginClusterInformation model = new OriginClusterInformation().withPeerClusterName("rxkpmloazuruoc")
-            .withPeerAddresses(Arrays.asList("oorb", "eoybfhjxakvvjgs"))
-            .withPeerVserverName("ordilmywwtkgkxny")
-            .withPeerVolumeName("dabg");
+        OriginClusterInformation model = new OriginClusterInformation().withPeerClusterName("cib")
+            .withPeerAddresses(Arrays.asList("mowuxrk"))
+            .withPeerVserverName("pvdwxf")
+            .withPeerVolumeName("wiivwzjbhyzsx");
         model = BinaryData.fromObject(model).toObject(OriginClusterInformation.class);
-        Assertions.assertEquals("rxkpmloazuruoc", model.peerClusterName());
-        Assertions.assertEquals("oorb", model.peerAddresses().get(0));
-        Assertions.assertEquals("ordilmywwtkgkxny", model.peerVserverName());
-        Assertions.assertEquals("dabg", model.peerVolumeName());
+        Assertions.assertEquals("cib", model.peerClusterName());
+        Assertions.assertEquals("mowuxrk", model.peerAddresses().get(0));
+        Assertions.assertEquals("pvdwxf", model.peerVserverName());
+        Assertions.assertEquals("wiivwzjbhyzsx", model.peerVolumeName());
     }
 }

@@ -413,7 +413,7 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
      * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
+    private SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner>
         beginCreateOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
             String location, GroupQuotasEnforcementStatusInner locationSettings) {
         Response<BinaryData> response = createOrUpdateWithResponse(managementGroupId, groupQuotaName,
@@ -801,7 +801,7 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
      * @return the {@link SyncPoller} for polling of the GroupQuota Enforcement status for a Azure Location/Region.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner> beginUpdate(
+    private SyncPoller<PollResult<GroupQuotasEnforcementStatusInner>, GroupQuotasEnforcementStatusInner> beginUpdate(
         String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
         GroupQuotasEnforcementStatusInner locationSettings) {
         Response<BinaryData> response

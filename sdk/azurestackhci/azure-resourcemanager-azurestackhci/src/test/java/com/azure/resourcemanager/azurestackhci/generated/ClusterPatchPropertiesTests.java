@@ -15,29 +15,29 @@ public final class ClusterPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPatchProperties model = BinaryData.fromString(
-            "{\"cloudManagementEndpoint\":\"prwmdyvxqt\",\"aadClientId\":\"riwwroy\",\"aadTenantId\":\"exrmcqibycnojvk\",\"desiredProperties\":{\"windowsServerSubscription\":\"Enabled\",\"diagnosticLevel\":\"Basic\"}}")
+            "{\"cloudManagementEndpoint\":\"zdnds\",\"aadClientId\":\"nayqi\",\"aadTenantId\":\"nduhavhqlkthum\",\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"}}")
             .toObject(ClusterPatchProperties.class);
-        Assertions.assertEquals("prwmdyvxqt", model.cloudManagementEndpoint());
-        Assertions.assertEquals("riwwroy", model.aadClientId());
-        Assertions.assertEquals("exrmcqibycnojvk", model.aadTenantId());
-        Assertions.assertEquals(WindowsServerSubscription.ENABLED,
+        Assertions.assertEquals("zdnds", model.cloudManagementEndpoint());
+        Assertions.assertEquals("nayqi", model.aadClientId());
+        Assertions.assertEquals("nduhavhqlkthum", model.aadTenantId());
+        Assertions.assertEquals(WindowsServerSubscription.DISABLED,
             model.desiredProperties().windowsServerSubscription());
         Assertions.assertEquals(DiagnosticLevel.BASIC, model.desiredProperties().diagnosticLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPatchProperties model = new ClusterPatchProperties().withCloudManagementEndpoint("prwmdyvxqt")
-            .withAadClientId("riwwroy")
-            .withAadTenantId("exrmcqibycnojvk")
+        ClusterPatchProperties model = new ClusterPatchProperties().withCloudManagementEndpoint("zdnds")
+            .withAadClientId("nayqi")
+            .withAadTenantId("nduhavhqlkthum")
             .withDesiredProperties(
-                new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.ENABLED)
+                new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
                     .withDiagnosticLevel(DiagnosticLevel.BASIC));
         model = BinaryData.fromObject(model).toObject(ClusterPatchProperties.class);
-        Assertions.assertEquals("prwmdyvxqt", model.cloudManagementEndpoint());
-        Assertions.assertEquals("riwwroy", model.aadClientId());
-        Assertions.assertEquals("exrmcqibycnojvk", model.aadTenantId());
-        Assertions.assertEquals(WindowsServerSubscription.ENABLED,
+        Assertions.assertEquals("zdnds", model.cloudManagementEndpoint());
+        Assertions.assertEquals("nayqi", model.aadClientId());
+        Assertions.assertEquals("nduhavhqlkthum", model.aadTenantId());
+        Assertions.assertEquals(WindowsServerSubscription.DISABLED,
             model.desiredProperties().windowsServerSubscription());
         Assertions.assertEquals(DiagnosticLevel.BASIC, model.desiredProperties().diagnosticLevel());
     }

@@ -1,0 +1,16 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EndpointBasedEvaluatorDefinition",
+          "justification": "EndpointBasedEvaluatorDefinition is part of the Evaluations V1Preview surface, constructed only through BetaEvaluatorsClient / BetaEvaluatorsAsyncClient. Its parent EvaluatorDefinition and sibling subtypes (CodeBasedEvaluatorDefinition, RubricBasedEvaluatorDefinition, PromptBasedEvaluatorDefinition) were already @Beta in 2.6.1; this type was missing the annotation due to a generation inconsistency, now corrected."
+        }
+      ]
+    }
+  }
+]

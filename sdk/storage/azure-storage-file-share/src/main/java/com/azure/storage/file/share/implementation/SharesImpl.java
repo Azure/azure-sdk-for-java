@@ -104,6 +104,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -123,6 +125,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -142,6 +146,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -161,6 +167,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -635,6 +643,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -654,6 +664,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -673,6 +685,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -692,6 +706,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
             @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("x-ms-enable-smb-directory-lease") Boolean enableSmbDirectoryLease,
+            @HeaderParam("x-ms-file-enable-change-feed") Boolean fileEnableChangeFeed,
+            @HeaderParam("x-ms-file-change-feed-retention-in-days") Integer fileChangeFeedRetentionInDays,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -943,6 +959,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -953,12 +973,12 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease) {
-        return FluxUtil
-            .withContext(context -> createWithResponseAsync(shareName, timeout, metadata, quota, accessTier,
-                enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
-                shareProvisionedBandwidthMibps, enableSmbDirectoryLease, context))
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays) {
+        return FluxUtil.withContext(context -> createWithResponseAsync(shareName, timeout, metadata, quota, accessTier,
+            enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps,
+            enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -992,6 +1012,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1003,13 +1027,16 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Context context) {
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
-            shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, accept, context)
+        return service
+            .create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
+                this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1043,6 +1070,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1053,10 +1084,11 @@ public final class SharesImpl {
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -1091,6 +1123,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1102,10 +1138,12 @@ public final class SharesImpl {
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease, Context context) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays,
+        Context context) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, context)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -1140,6 +1178,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1150,12 +1192,12 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease) {
-        return FluxUtil
-            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, timeout, metadata, quota,
-                accessTier, enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
-                shareProvisionedBandwidthMibps, enableSmbDirectoryLease, context))
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays) {
+        return FluxUtil.withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, timeout, metadata,
+            quota, accessTier, enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps,
+            enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1189,6 +1231,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1200,13 +1246,16 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Context context) {
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
-            shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, accept, context)
+        return service
+            .createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
+                this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1240,6 +1289,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1251,7 +1304,8 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Context context) {
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays, Context context) {
         try {
             final String restype = "share";
             final String accept = "application/xml";
@@ -1259,7 +1313,7 @@ public final class SharesImpl {
                 this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
                 this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
-                enableSmbDirectoryLease, accept, context);
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1295,6 +1349,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1304,11 +1362,11 @@ public final class SharesImpl {
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
         createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
-            Context.NONE);
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays, Context.NONE);
     }
 
     /**
@@ -1341,6 +1399,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1352,7 +1414,8 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
-        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Context context) {
+        Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed,
+        Integer fileChangeFeedRetentionInDays, Context context) {
         try {
             final String restype = "share";
             final String accept = "application/xml";
@@ -1360,7 +1423,8 @@ public final class SharesImpl {
                 accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
                 enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
                 paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
-                shareProvisionedBandwidthMibps, enableSmbDirectoryLease, accept, context);
+                shareProvisionedBandwidthMibps, enableSmbDirectoryLease, fileEnableChangeFeed,
+                fileChangeFeedRetentionInDays, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -4012,6 +4076,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4022,11 +4090,12 @@ public final class SharesImpl {
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease) {
-        return FluxUtil.withContext(context -> setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier,
-            leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps,
-            enableSmbDirectoryLease, context))
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
+        return FluxUtil
+            .withContext(context -> setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId,
+                rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+                paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
+                fileEnableChangeFeed, fileChangeFeedRetentionInDays, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4058,6 +4127,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4069,7 +4142,8 @@ public final class SharesImpl {
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease, Context context) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays,
+        Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -4077,7 +4151,8 @@ public final class SharesImpl {
             .setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(), quota,
                 accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
                 paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
-                shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, accept, context)
+                shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, fileEnableChangeFeed,
+                fileChangeFeedRetentionInDays, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4109,6 +4184,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4118,10 +4197,12 @@ public final class SharesImpl {
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
         Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
-        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease) {
+        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease,
+        Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -4154,6 +4235,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4165,10 +4250,11 @@ public final class SharesImpl {
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
         Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
         Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease,
-        Context context) {
+        Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays, Context context) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, context)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -4201,6 +4287,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4211,12 +4301,11 @@ public final class SharesImpl {
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease) {
-        return FluxUtil
-            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, timeout, quota, accessTier,
-                leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
-                shareProvisionedBandwidthMibps, enableSmbDirectoryLease, context))
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
+        return FluxUtil.withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, timeout, quota,
+            accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps,
+            enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4248,6 +4337,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4259,14 +4352,17 @@ public final class SharesImpl {
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease, Context context) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays,
+        Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
-            shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease, accept, context)
+        return service
+            .setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
+                this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4298,6 +4394,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4309,7 +4409,8 @@ public final class SharesImpl {
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease, Context context) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays,
+        Context context) {
         try {
             final String restype = "share";
             final String comp = "properties";
@@ -4318,7 +4419,7 @@ public final class SharesImpl {
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
                 this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
-                enableSmbDirectoryLease, accept, context);
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -4352,6 +4453,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4360,11 +4465,12 @@ public final class SharesImpl {
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
         Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
-        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease) {
+        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease,
+        Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays) {
         setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, enableSmbDirectoryLease,
-            Context.NONE);
+            fileEnableChangeFeed, fileChangeFeedRetentionInDays, Context.NONE);
     }
 
     /**
@@ -4395,6 +4501,10 @@ public final class SharesImpl {
      * directories present in a share are to be enabled or disabled. An input of true specifies that granting of new
      * directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be
      * blocked.
+     * @param fileEnableChangeFeed Optional. Boolean. Default if not specified is false. This property enables change
+     * feed on the share.
+     * @param fileChangeFeedRetentionInDays Optional. Integer. Specifies the number of days that change feed records are
+     * retained, between 1 and 365. Default if not specified is 7 days.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4406,7 +4516,8 @@ public final class SharesImpl {
         ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps,
-        Boolean enableSmbDirectoryLease, Context context) {
+        Boolean enableSmbDirectoryLease, Boolean fileEnableChangeFeed, Integer fileChangeFeedRetentionInDays,
+        Context context) {
         try {
             final String restype = "share";
             final String comp = "properties";
@@ -4415,7 +4526,7 @@ public final class SharesImpl {
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
                 this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps,
-                enableSmbDirectoryLease, accept, context);
+                enableSmbDirectoryLease, fileEnableChangeFeed, fileChangeFeedRetentionInDays, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

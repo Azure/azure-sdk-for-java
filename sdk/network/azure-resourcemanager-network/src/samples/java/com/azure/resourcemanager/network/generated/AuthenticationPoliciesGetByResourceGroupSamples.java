@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AuthenticationPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyGet.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyGet.json
      */
     /**
      * Sample code: Gets a JWT validation authentication policy within a resource group.

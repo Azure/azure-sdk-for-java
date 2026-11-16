@@ -14,6 +14,91 @@ scoring:
   threshold: 0.8
 
 stimuli:
+  - name: legacy-plain-release-plan-link-is-accepted
+    tags:
+      rule: release-plan
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-release-plan-plain-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-missing-release-plan-java.diff"
+          dest: "pr-diff/026-NetworkLinks.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no release plan concern"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: prompt
+    rubric:
+      - The legacy Release Plan link label contains an HTTPS URL and must be accepted.
+      - Do not request a release-plan link or a description format change.
+
+  - name: legacy-formatted-release-plan-link-is-accepted
+    tags:
+      rule: release-plan
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-release-plan-formatted-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-missing-release-plan-java.diff"
+          dest: "pr-diff/026-NetworkLinks.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no release plan concern"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: prompt
+    rubric:
+      - The bold Release plan link label has a Markdown HTTP link and must be accepted.
+      - Do not request a release-plan link or a description format change.
+
+  - name: sdk-generation-table-release-plan-link-is-accepted
+    tags:
+      rule: release-plan
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-release-plan-table-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-missing-release-plan-java.diff"
+          dest: "pr-diff/026-NetworkLinks.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no release plan concern"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: prompt
+    rubric:
+      - The SDK generation details table contains an HTTPS link in the Release plan row and must be accepted.
+      - The absence of the legacy Release Plan link label is not a concern.
+      - Do not request a release-plan link or a description format change.
+
   - name: additive-beta-update-is-clean
     environment:
       skills:

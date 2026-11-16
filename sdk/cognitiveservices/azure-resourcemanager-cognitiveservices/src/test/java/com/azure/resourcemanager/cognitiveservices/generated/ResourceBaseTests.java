@@ -14,19 +14,19 @@ public final class ResourceBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceBase model = BinaryData.fromString(
-            "{\"description\":\"heqdurelyujlfyou\",\"tags\":{\"brzmqxucycijoclx\":\"kyeclcdigpta\",\"zjd\":\"utgjcyz\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"}}")
+            "{\"description\":\"fg\",\"tags\":{\"fhzbkr\":\"oqqtl\",\"ewdogiyetesy\":\"jjjavfqnvhnq\",\"vnynkb\":\"vidbztjhqtfb\"}}")
             .toObject(ResourceBase.class);
-        Assertions.assertEquals("heqdurelyujlfyou", model.description());
-        Assertions.assertEquals("kyeclcdigpta", model.tags().get("brzmqxucycijoclx"));
+        Assertions.assertEquals("fg", model.description());
+        Assertions.assertEquals("oqqtl", model.tags().get("fhzbkr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceBase model = new ResourceBase().withDescription("heqdurelyujlfyou")
-            .withTags(mapOf("brzmqxucycijoclx", "kyeclcdigpta", "zjd", "utgjcyz", "jb", "r", "w", "xjeaoqaqbzgyh"));
+        ResourceBase model = new ResourceBase().withDescription("fg")
+            .withTags(mapOf("fhzbkr", "oqqtl", "ewdogiyetesy", "jjjavfqnvhnq", "vnynkb", "vidbztjhqtfb"));
         model = BinaryData.fromObject(model).toObject(ResourceBase.class);
-        Assertions.assertEquals("heqdurelyujlfyou", model.description());
-        Assertions.assertEquals("kyeclcdigpta", model.tags().get("brzmqxucycijoclx"));
+        Assertions.assertEquals("fg", model.description());
+        Assertions.assertEquals("oqqtl", model.tags().get("fhzbkr"));
     }
 
     // Use "Map.of" if available

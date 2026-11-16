@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The operation performed by the scheduled action.
+ * The operation performed by the recurring bulk action.
  */
 public final class ScheduledActionType extends ExpandableStringEnum<ScheduledActionType> {
     /**

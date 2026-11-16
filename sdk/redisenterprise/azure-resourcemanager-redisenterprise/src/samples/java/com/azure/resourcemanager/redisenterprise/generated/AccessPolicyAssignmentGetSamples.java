@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class AccessPolicyAssignmentGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentGet.
@@ -24,7 +24,7 @@ public final class AccessPolicyAssignmentGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.

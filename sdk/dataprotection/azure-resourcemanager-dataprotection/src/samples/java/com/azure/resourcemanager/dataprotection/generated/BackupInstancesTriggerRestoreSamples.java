@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public final class BackupInstancesTriggerRestoreSamples {
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
      */
     /**
      * Sample code: Trigger Restore As Files.
@@ -56,7 +56,7 @@ public final class BackupInstancesTriggerRestoreSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithGenericParameters.json
      */
     /**
      * Sample code: Trigger Restore with GenericRestoreDatasourceCriteria.
@@ -100,7 +100,7 @@ public final class BackupInstancesTriggerRestoreSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
      */
     /**
      * Sample code: Trigger Restore With Rehydration.
@@ -140,7 +140,7 @@ public final class BackupInstancesTriggerRestoreSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/TriggerRestore.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/TriggerRestore.json
      */
     /**
      * Sample code: Trigger Restore.

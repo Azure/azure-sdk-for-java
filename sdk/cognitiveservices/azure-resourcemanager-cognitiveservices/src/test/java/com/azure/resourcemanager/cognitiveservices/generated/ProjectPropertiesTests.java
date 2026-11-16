@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,27 +12,17 @@ public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"displayName\":\"ucejikzoeovvtz\",\"description\":\"et\",\"endpoints\":{\"k\":\"nt\"},\"isDefault\":false,\"capabilitySettings\":{\"documentStore\":\"dbqzolxrzvhqjw\",\"vectorStore\":\"htgv\",\"blobStore\":\"pcrrk\"}}")
+            "{\"provisioningState\":\"Canceled\",\"displayName\":\"zjqatucoig\",\"description\":\"xncnwfe\",\"endpoints\":{\"gcgbjb\":\"wgfmx\",\"flq\":\"dlfgtdysnaq\",\"zeqyjleziun\":\"ctqhamzjrwdk\",\"eg\":\"xdfzantkw\"},\"isDefault\":false}")
             .toObject(ProjectProperties.class);
-        Assertions.assertEquals("ucejikzoeovvtz", model.displayName());
-        Assertions.assertEquals("et", model.description());
-        Assertions.assertEquals("dbqzolxrzvhqjw", model.capabilitySettings().documentStore());
-        Assertions.assertEquals("htgv", model.capabilitySettings().vectorStore());
-        Assertions.assertEquals("pcrrk", model.capabilitySettings().blobStore());
+        Assertions.assertEquals("zjqatucoig", model.displayName());
+        Assertions.assertEquals("xncnwfe", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDisplayName("ucejikzoeovvtz")
-            .withDescription("et")
-            .withCapabilitySettings(new CapabilitySettings().withDocumentStore("dbqzolxrzvhqjw")
-                .withVectorStore("htgv")
-                .withBlobStore("pcrrk"));
+        ProjectProperties model = new ProjectProperties().withDisplayName("zjqatucoig").withDescription("xncnwfe");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("ucejikzoeovvtz", model.displayName());
-        Assertions.assertEquals("et", model.description());
-        Assertions.assertEquals("dbqzolxrzvhqjw", model.capabilitySettings().documentStore());
-        Assertions.assertEquals("htgv", model.capabilitySettings().vectorStore());
-        Assertions.assertEquals("pcrrk", model.capabilitySettings().blobStore());
+        Assertions.assertEquals("zjqatucoig", model.displayName());
+        Assertions.assertEquals("xncnwfe", model.description());
     }
 }

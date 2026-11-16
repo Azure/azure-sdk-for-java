@@ -13,14 +13,14 @@ public final class WorkloadProtectableItemResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProtectableItemResourceInner model = BinaryData.fromString(
-            "{\"location\":\"qsix\",\"tags\":{\"vyqlkjuvsmbmslzo\":\"puj\"},\"eTag\":\"vwzdbpqvyb\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"vmx\",\"workloadType\":\"kcvtl\",\"friendlyName\":\"seskvcuar\",\"protectionState\":\"Protecting\"},\"id\":\"nlp\",\"name\":\"rykycndzfqivjr\",\"type\":\"uykbbmn\"}")
+            "{\"location\":\"bfrnuybffljfii\",\"tags\":{\"taadu\":\"oags\",\"wudohzilfm\":\"rexxfavs\"},\"eTag\":\"ikpsimsfeypof\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"bh\",\"workloadType\":\"gsdrm\",\"friendlyName\":\"tjxophgerhsmv\",\"protectionState\":\"Protected\"},\"id\":\"wzm\",\"name\":\"ilrixysf\",\"type\":\"imsqywwwmhk\"}")
             .toObject(WorkloadProtectableItemResourceInner.class);
-        Assertions.assertEquals("qsix", model.location());
-        Assertions.assertEquals("puj", model.tags().get("vyqlkjuvsmbmslzo"));
-        Assertions.assertEquals("vwzdbpqvyb", model.eTag());
-        Assertions.assertEquals("vmx", model.properties().backupManagementType());
-        Assertions.assertEquals("kcvtl", model.properties().workloadType());
-        Assertions.assertEquals("seskvcuar", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.properties().protectionState());
+        Assertions.assertEquals("bfrnuybffljfii", model.location());
+        Assertions.assertEquals("oags", model.tags().get("taadu"));
+        Assertions.assertEquals("ikpsimsfeypof", model.eTag());
+        Assertions.assertEquals("bh", model.properties().backupManagementType());
+        Assertions.assertEquals("gsdrm", model.properties().workloadType());
+        Assertions.assertEquals("tjxophgerhsmv", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
     }
 }

@@ -51,6 +51,18 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     private Integer instantRpRetentionRangeInDays;
 
     /*
+     * Specifies whether Instant Access snapshot is enabled for the policy. If false or omitted,
+     * instantAccessDurationMinutes is ignored and no Instant Access snapshot is retained.
+     */
+    private Boolean instantAccessSnapshotEnabled;
+
+    /*
+     * Duration in minutes for which the Instant Access snapshot is retained, when instantAccessSnapshotEnabled
+     * is true. Must be between 60 and 300 minutes; defaults to 300 minutes if not specified.
+     */
+    private Integer instantAccessDurationMinutes;
+
+    /*
      * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     private String timeZone;
@@ -187,6 +199,54 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     }
 
     /**
+     * Get the instantAccessSnapshotEnabled property: Specifies whether Instant Access snapshot is enabled for the
+     * policy. If false or omitted,
+     * instantAccessDurationMinutes is ignored and no Instant Access snapshot is retained.
+     * 
+     * @return the instantAccessSnapshotEnabled value.
+     */
+    public Boolean instantAccessSnapshotEnabled() {
+        return this.instantAccessSnapshotEnabled;
+    }
+
+    /**
+     * Set the instantAccessSnapshotEnabled property: Specifies whether Instant Access snapshot is enabled for the
+     * policy. If false or omitted,
+     * instantAccessDurationMinutes is ignored and no Instant Access snapshot is retained.
+     * 
+     * @param instantAccessSnapshotEnabled the instantAccessSnapshotEnabled value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withInstantAccessSnapshotEnabled(Boolean instantAccessSnapshotEnabled) {
+        this.instantAccessSnapshotEnabled = instantAccessSnapshotEnabled;
+        return this;
+    }
+
+    /**
+     * Get the instantAccessDurationMinutes property: Duration in minutes for which the Instant Access snapshot is
+     * retained, when instantAccessSnapshotEnabled
+     * is true. Must be between 60 and 300 minutes; defaults to 300 minutes if not specified.
+     * 
+     * @return the instantAccessDurationMinutes value.
+     */
+    public Integer instantAccessDurationMinutes() {
+        return this.instantAccessDurationMinutes;
+    }
+
+    /**
+     * Set the instantAccessDurationMinutes property: Duration in minutes for which the Instant Access snapshot is
+     * retained, when instantAccessSnapshotEnabled
+     * is true. Must be between 60 and 300 minutes; defaults to 300 minutes if not specified.
+     * 
+     * @param instantAccessDurationMinutes the instantAccessDurationMinutes value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withInstantAccessDurationMinutes(Integer instantAccessDurationMinutes) {
+        this.instantAccessDurationMinutes = instantAccessDurationMinutes;
+        return this;
+    }
+
+    /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      * 
      * @return the timeZone value.
@@ -280,6 +340,8 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         jsonWriter.writeMapField("tieringPolicy", this.tieringPolicy, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("instantRpRetentionRangeInDays", this.instantRpRetentionRangeInDays);
+        jsonWriter.writeBooleanField("instantAccessSnapshotEnabled", this.instantAccessSnapshotEnabled);
+        jsonWriter.writeNumberField("instantAccessDurationMinutes", this.instantAccessDurationMinutes);
         jsonWriter.writeStringField("timeZone", this.timeZone);
         jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
         jsonWriter.writeStringField("snapshotConsistencyType",
@@ -324,6 +386,12 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
                     deserializedAzureIaaSvmProtectionPolicy.tieringPolicy = tieringPolicy;
                 } else if ("instantRpRetentionRangeInDays".equals(fieldName)) {
                     deserializedAzureIaaSvmProtectionPolicy.instantRpRetentionRangeInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("instantAccessSnapshotEnabled".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectionPolicy.instantAccessSnapshotEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("instantAccessDurationMinutes".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectionPolicy.instantAccessDurationMinutes
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("timeZone".equals(fieldName)) {
                     deserializedAzureIaaSvmProtectionPolicy.timeZone = reader.getString();

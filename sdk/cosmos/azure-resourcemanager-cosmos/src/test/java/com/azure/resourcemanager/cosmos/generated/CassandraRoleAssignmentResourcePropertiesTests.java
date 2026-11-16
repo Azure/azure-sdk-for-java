@@ -12,22 +12,22 @@ public final class CassandraRoleAssignmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraRoleAssignmentResourceProperties model = BinaryData.fromString(
-            "{\"roleDefinitionId\":\"gfuyzwv\",\"scope\":\"limbyqecroodlik\",\"principalId\":\"rdaasaxxo\",\"provisioningState\":\"mfkwiyjvzuk\"}")
+            "{\"roleDefinitionId\":\"vribqlotokht\",\"scope\":\"taznkcqwwxwjyof\",\"principalId\":\"hnkbtlwljssmctsn\",\"provisioningState\":\"kpwolg\"}")
             .toObject(CassandraRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("gfuyzwv", model.roleDefinitionId());
-        Assertions.assertEquals("limbyqecroodlik", model.scope());
-        Assertions.assertEquals("rdaasaxxo", model.principalId());
+        Assertions.assertEquals("vribqlotokht", model.roleDefinitionId());
+        Assertions.assertEquals("taznkcqwwxwjyof", model.scope());
+        Assertions.assertEquals("hnkbtlwljssmctsn", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CassandraRoleAssignmentResourceProperties model
-            = new CassandraRoleAssignmentResourceProperties().withRoleDefinitionId("gfuyzwv")
-                .withScope("limbyqecroodlik")
-                .withPrincipalId("rdaasaxxo");
+            = new CassandraRoleAssignmentResourceProperties().withRoleDefinitionId("vribqlotokht")
+                .withScope("taznkcqwwxwjyof")
+                .withPrincipalId("hnkbtlwljssmctsn");
         model = BinaryData.fromObject(model).toObject(CassandraRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("gfuyzwv", model.roleDefinitionId());
-        Assertions.assertEquals("limbyqecroodlik", model.scope());
-        Assertions.assertEquals("rdaasaxxo", model.principalId());
+        Assertions.assertEquals("vribqlotokht", model.roleDefinitionId());
+        Assertions.assertEquals("taznkcqwwxwjyof", model.scope());
+        Assertions.assertEquals("hnkbtlwljssmctsn", model.principalId());
     }
 }

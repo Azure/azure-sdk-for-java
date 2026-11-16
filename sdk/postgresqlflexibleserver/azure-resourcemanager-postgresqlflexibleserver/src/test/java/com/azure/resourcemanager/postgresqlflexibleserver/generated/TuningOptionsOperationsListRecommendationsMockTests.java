@@ -24,7 +24,7 @@ public final class TuningOptionsOperationsListRecommendationsMockTests {
     @Test
     public void testListRecommendations() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"lkiexhajlfnthiq\",\"properties\":{\"initialRecommendedTime\":\"2021-04-12T13:07:20Z\",\"lastRecommendedTime\":\"2021-03-09T22:45:33Z\",\"timesRecommended\":595907044,\"improvedQueryIds\":[2836499147655086338],\"recommendationReason\":\"wswmt\",\"currentState\":\"yctww\",\"recommendationType\":\"ReIndex\",\"implementationDetails\":{\"method\":\"l\",\"script\":\"cvogygzyvne\"},\"analyzedWorkload\":{\"startTime\":\"2021-08-17T15:49:14Z\",\"endTime\":\"2021-04-25T12:48:49Z\",\"queryCount\":834532858},\"estimatedImpact\":[{\"dimensionName\":\"qtlffhzbk\",\"unit\":\"jjjavfqnvhnq\",\"queryId\":3558583731374766125,\"absoluteValue\":83.72335612887733},{\"dimensionName\":\"etesypvidbztjhqt\",\"unit\":\"ovnynkbwetnju\",\"queryId\":4288895377578645868,\"absoluteValue\":33.67119802997479}],\"details\":{\"databaseName\":\"upia\",\"schema\":\"xnafbw\",\"table\":\"oohtuovmaonurjtu\",\"indexType\":\"hihpvecmsl\",\"indexName\":\"bl\",\"indexColumns\":[\"lt\",\"sjuscvsfxigctmg\",\"uupb\"],\"includedColumns\":[\"ccyd\",\"tce\",\"kdqkkyihzt\",\"eq\"]}},\"id\":\"qzgwldoychil\",\"name\":\"cecfehuwaoaguh\",\"type\":\"cqlliz\"}]}";
+            = "{\"value\":[{\"kind\":\"aoaguhicqlli\",\"properties\":{\"initialRecommendedTime\":\"2021-03-27T13:55:17Z\",\"lastRecommendedTime\":\"2021-11-29T00:03:44Z\",\"timesRecommended\":1721395359,\"improvedQueryIds\":[6925026234132183381,5193389367085858770],\"recommendationReason\":\"wqejpmvsse\",\"currentState\":\"epwamcxtcz\",\"recommendationType\":\"VacuumTable\",\"implementationDetails\":{\"method\":\"knijduyyes\",\"script\":\"djfbocyv\"},\"analyzedWorkload\":{\"startTime\":\"2021-09-05T13:34:50Z\",\"endTime\":\"2021-11-21T19:57:49Z\",\"queryCount\":1432323564},\"estimatedImpact\":[{\"dimensionName\":\"mhlaku\",\"unit\":\"gbhgau\",\"queryId\":4631933065455269635,\"absoluteValue\":15.711268324053728},{\"dimensionName\":\"f\",\"unit\":\"ryjqgdkf\",\"queryId\":3604541138001569154,\"absoluteValue\":93.08567805175304},{\"dimensionName\":\"vjhvefgwbm\",\"unit\":\"c\",\"queryId\":8607561695105179750,\"absoluteValue\":60.642089073589865}],\"details\":{\"databaseName\":\"xbulpzealbmqkyo\",\"schema\":\"yvfkmbts\",\"table\":\"hxsgxj\",\"indexType\":\"mzrrscubiwsdrn\",\"indexName\":\"qwodiffjx\",\"indexColumns\":[\"mmuabwi\",\"vjogjonmcyefo\",\"zbamwine\"],\"includedColumns\":[\"fkak\",\"oldtvevboclzhz\",\"knyuxgvttxpn\"]}},\"id\":\"pzaamrdixtreki\",\"name\":\"swyskbruffg\",\"type\":\"lukkutvlxhrpqhvm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class TuningOptionsOperationsListRecommendationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ObjectRecommendation> response = manager.tuningOptionsOperations()
-            .listRecommendations("ommpvfqaw", "fgbrtt", TuningOptionParameterEnum.INDEX,
-                RecommendationTypeParameterEnum.ANALYZE_TABLE, com.azure.core.util.Context.NONE);
+            .listRecommendations("ihztgeqmgqzgwldo", "chillcecf", TuningOptionParameterEnum.TABLE,
+                RecommendationTypeParameterEnum.DROP_INDEX, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lkiexhajlfnthiq", response.iterator().next().kind());
+        Assertions.assertEquals("aoaguhicqlli", response.iterator().next().kind());
     }
 }

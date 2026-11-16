@@ -9,10 +9,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.QualityOfService;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import java.io.IOException;
 import java.util.List;
@@ -56,6 +58,31 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
      * A boolean indicating whether or not Data Integrity Check is enabled
      */
     private Boolean enforceDataIntegrityCheckForIscsi;
+
+    /*
+     * A boolean indicating whether or not Encryption in Transit is enabled, supported only for ISCSI protocol.
+     */
+    private Boolean encryptionInTransit;
+
+    /*
+     * Reserved IOPS allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+     */
+    private Integer reservedIops;
+
+    /*
+     * Reserved MBps allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+     */
+    private Integer reservedMBps;
+
+    /*
+     * Quality of Service tier for the volume group, applicable for ElasticSanVersion V2 only.
+     */
+    private QualityOfService qualityOfService;
+
+    /*
+     * The retention policy for the soft deleted volume group and its associated resources.
+     */
+    private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /**
      * Creates an instance of VolumeGroupProperties class.
@@ -184,6 +211,116 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     }
 
     /**
+     * Get the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is enabled,
+     * supported only for ISCSI protocol.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    public Boolean encryptionInTransit() {
+        return this.encryptionInTransit;
+    }
+
+    /**
+     * Set the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is enabled,
+     * supported only for ISCSI protocol.
+     * 
+     * @param encryptionInTransit the encryptionInTransit value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withEncryptionInTransit(Boolean encryptionInTransit) {
+        this.encryptionInTransit = encryptionInTransit;
+        return this;
+    }
+
+    /**
+     * Get the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedIops value.
+     */
+    public Integer reservedIops() {
+        return this.reservedIops;
+    }
+
+    /**
+     * Set the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedIops the reservedIops value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withReservedIops(Integer reservedIops) {
+        this.reservedIops = reservedIops;
+        return this;
+    }
+
+    /**
+     * Get the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedMBps value.
+     */
+    public Integer reservedMBps() {
+        return this.reservedMBps;
+    }
+
+    /**
+     * Set the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedMBps the reservedMBps value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withReservedMBps(Integer reservedMBps) {
+        this.reservedMBps = reservedMBps;
+        return this;
+    }
+
+    /**
+     * Get the qualityOfService property: Quality of Service tier for the volume group, applicable for ElasticSanVersion
+     * V2 only.
+     * 
+     * @return the qualityOfService value.
+     */
+    public QualityOfService qualityOfService() {
+        return this.qualityOfService;
+    }
+
+    /**
+     * Set the qualityOfService property: Quality of Service tier for the volume group, applicable for ElasticSanVersion
+     * V2 only.
+     * 
+     * @param qualityOfService the qualityOfService value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withQualityOfService(QualityOfService qualityOfService) {
+        this.qualityOfService = qualityOfService;
+        return this;
+    }
+
+    /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.deleteRetentionPolicy;
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,6 +335,9 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (deleteRetentionPolicy() != null) {
+            deleteRetentionPolicy().validate();
+        }
     }
 
     /**
@@ -211,6 +351,12 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
         jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         jsonWriter.writeBooleanField("enforceDataIntegrityCheckForIscsi", this.enforceDataIntegrityCheckForIscsi);
+        jsonWriter.writeBooleanField("encryptionInTransit", this.encryptionInTransit);
+        jsonWriter.writeNumberField("reservedIops", this.reservedIops);
+        jsonWriter.writeNumberField("reservedMBps", this.reservedMBps);
+        jsonWriter.writeStringField("qualityOfService",
+            this.qualityOfService == null ? null : this.qualityOfService.toString());
+        jsonWriter.writeJsonField("deleteRetentionPolicy", this.deleteRetentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -247,6 +393,17 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
                 } else if ("enforceDataIntegrityCheckForIscsi".equals(fieldName)) {
                     deserializedVolumeGroupProperties.enforceDataIntegrityCheckForIscsi
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryptionInTransit".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.encryptionInTransit = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reservedIops".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.reservedIops = reader.getNullable(JsonReader::getInt);
+                } else if ("reservedMBps".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.reservedMBps = reader.getNullable(JsonReader::getInt);
+                } else if ("qualityOfService".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.qualityOfService
+                        = QualityOfService.fromString(reader.getString());
+                } else if ("deleteRetentionPolicy".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.deleteRetentionPolicy = DeleteRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

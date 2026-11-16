@@ -23,7 +23,7 @@ public final class ElasticBackupsListByVaultMockTests {
     @Test
     public void testListByVault() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationDate\":\"2021-05-26T18:48:04Z\",\"snapshotCreationDate\":\"2021-07-13T10:24:08Z\",\"completionDate\":\"2020-12-23T19:05:54Z\",\"provisioningState\":\"Failed\",\"size\":1108455514030548539,\"label\":\"nkgzukwdr\",\"backupType\":\"Manual\",\"failureReason\":\"thfceyjncj\",\"elasticVolumeResourceId\":\"lfuyfjbpfiddhlr\",\"snapshotUsage\":\"UseExistingSnapshot\",\"elasticSnapshotResourceId\":\"qyjmqrfuioc\",\"elasticBackupPolicyResourceId\":\"el\",\"volumeSize\":\"Regular\"},\"id\":\"azrhxudd\",\"name\":\"mdtff\",\"type\":\"sjmrkkhm\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationDate\":\"2021-11-07T03:00:21Z\",\"snapshotCreationDate\":\"2021-06-19T03:03:45Z\",\"completionDate\":\"2021-07-19T00:19:56Z\",\"provisioningState\":\"Patching\",\"size\":6595403235648304746,\"label\":\"bawkikcdg\",\"backupType\":\"Scheduled\",\"failureReason\":\"sd\",\"elasticVolumeResourceId\":\"jey\",\"snapshotUsage\":\"UseExistingSnapshot\",\"elasticSnapshotResourceId\":\"ede\",\"elasticBackupPolicyResourceId\":\"iwhagxsur\",\"volumeSize\":\"Regular\"},\"id\":\"shzz\",\"name\":\"g\",\"type\":\"ll\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ElasticBackupsListByVaultMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ElasticBackup> response
-            = manager.elasticBackups().listByVault("kdxkuk", "kczynuhhoqeqsh", "vl", com.azure.core.util.Context.NONE);
+        PagedIterable<ElasticBackup> response = manager.elasticBackups()
+            .listByVault("paczmuh", "cakznhokhoitwhrj", "dmmazdnc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nkgzukwdr", response.iterator().next().properties().label());
-        Assertions.assertEquals("lfuyfjbpfiddhlr", response.iterator().next().properties().elasticVolumeResourceId());
+        Assertions.assertEquals("bawkikcdg", response.iterator().next().properties().label());
+        Assertions.assertEquals("jey", response.iterator().next().properties().elasticVolumeResourceId());
         Assertions.assertEquals(SnapshotUsage.USE_EXISTING_SNAPSHOT,
             response.iterator().next().properties().snapshotUsage());
-        Assertions.assertEquals("qyjmqrfuioc", response.iterator().next().properties().elasticSnapshotResourceId());
+        Assertions.assertEquals("ede", response.iterator().next().properties().elasticSnapshotResourceId());
     }
 }
