@@ -12,8 +12,8 @@ public final class RansomwareReportsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RansomwareReportsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"eventTime\":\"2021-02-17T18:59:40Z\",\"state\":\"Resolved\",\"severity\":\"None\",\"clearedCount\":1523928061,\"reportedCount\":1977365948,\"suspects\":[{\"extension\":\"zhonnxkrlgnyhmo\",\"resolution\":\"PotentialThreat\",\"fileCount\":954408257,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"rrghxjbdhqxvcxgf\"},\"id\":\"dsofbshrns\",\"name\":\"buswdvzyy\",\"type\":\"ycnunvjsrtk\"},{\"properties\":{\"eventTime\":\"2021-01-10T15:25:32Z\",\"state\":\"Active\",\"severity\":\"Moderate\",\"clearedCount\":610729333,\"reportedCount\":1997575188,\"suspects\":[{\"extension\":\"xdyuxzejnt\",\"resolution\":\"FalsePositive\",\"fileCount\":1675293509,\"suspectFiles\":[{}]},{\"extension\":\"l\",\"resolution\":\"PotentialThreat\",\"fileCount\":1456439071,\"suspectFiles\":[{},{},{}]},{\"extension\":\"qmi\",\"resolution\":\"PotentialThreat\",\"fileCount\":1222923392,\"suspectFiles\":[{},{},{}]}],\"provisioningState\":\"f\"},\"id\":\"aomtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}],\"nextLink\":\"uyovw\"}")
+            "{\"value\":[{\"properties\":{\"eventTime\":\"2021-08-12T19:36:43Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":547890191,\"reportedCount\":313573135,\"suspects\":[{\"extension\":\"qzudphq\",\"resolution\":\"FalsePositive\",\"fileCount\":1460544442,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"nwcvtbvkayhmtnv\",\"resolution\":\"FalsePositive\",\"fileCount\":686807657,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"pcnp\",\"resolution\":\"FalsePositive\",\"fileCount\":48409211,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"vvsccyajguq\"},\"id\":\"wygzlvdnkfxusem\",\"name\":\"wzrmuh\",\"type\":\"pfcqdp\"}],\"nextLink\":\"xqv\"}")
             .toObject(RansomwareReportsList.class);
-        Assertions.assertEquals("uyovw", model.nextLink());
+        Assertions.assertEquals("xqv", model.nextLink());
     }
 }
