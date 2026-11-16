@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiTopicsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/GetRaiTopic.json
+     * x-ms-original-file: 2026-11-01/GetRaiTopic.json
      */
     /**
      * Sample code: GetRaiTopic.

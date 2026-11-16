@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/ListNetworkSecurityPerimeterConfigurations.json
+     * x-ms-original-file: 2026-11-01/ListNetworkSecurityPerimeterConfigurations.json
      */
     /**
      * Sample code: ListNetworkSecurityPerimeterConfigurations.

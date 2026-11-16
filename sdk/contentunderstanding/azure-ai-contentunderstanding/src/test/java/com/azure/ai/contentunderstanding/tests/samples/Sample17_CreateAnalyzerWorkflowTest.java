@@ -30,12 +30,14 @@ public class Sample17_CreateAnalyzerWorkflowTest extends ContentUnderstandingPre
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> defaultPoller
                 = contentUnderstandingClient.beginCreateAnalyzer(defaultId,
                     PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel), true);
+            setPlaybackSyncPollerPollInterval(defaultPoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 defaultPoller.waitForCompletion().getStatus());
             ContentAnalyzer defaultAnalyzer = defaultPoller.getFinalResult();
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> agenticPoller
                 = contentUnderstandingClient.beginCreateAnalyzer(agenticId,
                     PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel), true);
+            setPlaybackSyncPollerPollInterval(agenticPoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 agenticPoller.waitForCompletion().getStatus());
             ContentAnalyzer agenticAnalyzer = agenticPoller.getFinalResult();
@@ -63,12 +65,14 @@ public class Sample17_CreateAnalyzerWorkflowTest extends ContentUnderstandingPre
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> defaultCreatePoller
                 = contentUnderstandingClient.beginCreateAnalyzer(defaultId,
                     PreviewSampleTestSupport.createDefaultWorkflowAnalyzer(completionModel), true);
+            setPlaybackSyncPollerPollInterval(defaultCreatePoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 defaultCreatePoller.waitForCompletion().getStatus());
             ContentAnalyzer defaultAnalyzer = defaultCreatePoller.getFinalResult();
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> agenticCreatePoller
                 = contentUnderstandingClient.beginCreateAnalyzer(agenticId,
                     PreviewSampleTestSupport.createAgenticWorkflowAnalyzer(completionModel), true);
+            setPlaybackSyncPollerPollInterval(agenticCreatePoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 agenticCreatePoller.waitForCompletion().getStatus());
             ContentAnalyzer agenticAnalyzer = agenticCreatePoller.getFinalResult();
@@ -85,11 +89,13 @@ public class Sample17_CreateAnalyzerWorkflowTest extends ContentUnderstandingPre
             BinaryData invoice = PreviewSampleTestSupport.readSample("workflow_invoice_20_items.pdf");
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> defaultAnalysisPoller
                 = contentUnderstandingClient.beginAnalyzeBinary(defaultId, invoice);
+            setPlaybackSyncPollerPollInterval(defaultAnalysisPoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 defaultAnalysisPoller.waitForCompletion().getStatus());
             AnalysisResult defaultResult = defaultAnalysisPoller.getFinalResult();
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> agenticAnalysisPoller
                 = contentUnderstandingClient.beginAnalyzeBinary(agenticId, invoice);
+            setPlaybackSyncPollerPollInterval(agenticAnalysisPoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 agenticAnalysisPoller.waitForCompletion().getStatus());
             AnalysisResult agenticResult = agenticAnalysisPoller.getFinalResult();

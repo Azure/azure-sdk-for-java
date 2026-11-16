@@ -13,18 +13,22 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -33,12 +37,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -266,5 +274,135 @@ public class AsyncRestProxyTests {
     private static Stream<Arguments> streamingResponseOwnershipSupplier() {
         return Stream.of(Arguments.of("text/event-stream", ContentType.APPLICATION_JSON, true, 0),
             Arguments.of(null, "text/event-stream; charset=utf-8", false, 1));
+    }
+
+    private static final Context STREAM_RESPONSE_BODY
+        = Context.NONE.addData(HttpUtils.AZURE_STREAM_RESPONSE_BODY, true);
+
+    @ParameterizedTest
+    @ValueSource(strings = { ContentType.APPLICATION_OCTET_STREAM, "text/plain", "image/png" })
+    public void streamResponseBodyStreamsBinaryData(String contentType) {
+        byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicBoolean bodySubscribed = new AtomicBoolean();
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        MockService service = createService(
+            request -> new StreamingHttpResponse(request, contentType, expectedBytes.length, Flux.defer(() -> {
+                bodySubscribed.set(true);
+                return Flux.just(ByteBuffer.wrap(expectedBytes));
+            }), responseCloseCount));
+
+        Response<BinaryData> response
+            = service.getStreamingResponse(new RequestOptions(), STREAM_RESPONSE_BODY).block();
+
+        assertFalse(bodySubscribed.get(), "The body must not be read before the response is emitted.");
+        assertFalse(response.getValue().isReplayable());
+        assertEquals(expectedBytes.length, response.getValue().getLength());
+        assertArraysEqual(expectedBytes, response.getValue().toBytes());
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void streamedResponseBodyErrorSurfacesWhenBodyIsRead() {
+        byte[] firstChunk = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        MockService service
+            = createService(request -> new StreamingHttpResponse(request, ContentType.APPLICATION_OCTET_STREAM, 10,
+                Flux.concat(Flux.just(ByteBuffer.wrap(firstChunk)), Flux.error(new IOException("Connection reset"))),
+                responseCloseCount));
+
+        Response<BinaryData> response
+            = service.getStreamingResponse(new RequestOptions(), STREAM_RESPONSE_BODY).block();
+
+        StepVerifier.create(response.getValue().toFluxByteBuffer())
+            .assertNext(buffer -> assertArraysEqual(firstChunk, FluxUtil.byteBufferToArray(buffer)))
+            .verifyError(IOException.class);
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("bufferedByDefaultSupplier")
+    public void binaryDataIsBufferedByDefault(Context context) {
+        byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicBoolean bodySubscribed = new AtomicBoolean();
+        MockService service = createService(request -> new StreamingHttpResponse(request,
+            ContentType.APPLICATION_OCTET_STREAM, expectedBytes.length, Flux.defer(() -> {
+                bodySubscribed.set(true);
+                return Flux.just(ByteBuffer.wrap(expectedBytes));
+            }), new AtomicInteger()));
+
+        Response<BinaryData> response = service.getStreamingResponse(new RequestOptions(), context).block();
+
+        assertTrue(bodySubscribed.get());
+        assertTrue(response.getValue().isReplayable());
+        assertArraysEqual(expectedBytes, response.getValue().toBytes());
+    }
+
+    private static Stream<Arguments> bufferedByDefaultSupplier() {
+        return Stream.of(Arguments.of(Context.NONE),
+            Arguments.of(Context.NONE.addData(HttpUtils.AZURE_STREAM_RESPONSE_BODY, false)));
+    }
+
+    private static MockService createService(Function<HttpRequest, HttpResponse> responseFactory) {
+        HttpClient client = request -> Mono.just(responseFactory.apply(request));
+        return RestProxy.create(MockService.class, new HttpPipelineBuilder().httpClient(client).build());
+    }
+
+    /**
+     * A response whose body is a live, single-use stream, using the default {@link HttpResponse#getBodyAsBinaryData()}.
+     */
+    private static final class StreamingHttpResponse extends HttpResponse {
+        private final HttpHeaders headers;
+        private final Flux<ByteBuffer> body;
+        private final AtomicInteger closeCount;
+
+        StreamingHttpResponse(HttpRequest request, String contentType, long contentLength, Flux<ByteBuffer> body,
+            AtomicInteger closeCount) {
+            super(request);
+            this.headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType)
+                .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+            this.body = body;
+            this.closeCount = closeCount;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return 200;
+        }
+
+        @Override
+        @Deprecated
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return body;
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return FluxUtil.collectBytesInByteBufferStream(body);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return getBodyAsString(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
+
+        @Override
+        public void close() {
+            closeCount.incrementAndGet();
+        }
     }
 }

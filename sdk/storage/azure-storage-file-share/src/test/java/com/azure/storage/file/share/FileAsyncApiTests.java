@@ -1440,8 +1440,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setSmbPropertiesToCopy(list);
 
         StepVerifier
-            .create(createFileMono.then(Mono.fromRunnable(
-                () -> setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null)))))
+            .create(createFileMono.thenMany(
+                setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null))))
             .verifyError(IllegalArgumentException.class);
     }
 

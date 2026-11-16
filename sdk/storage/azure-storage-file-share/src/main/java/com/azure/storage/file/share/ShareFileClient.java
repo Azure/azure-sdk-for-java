@@ -58,7 +58,6 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
-import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -806,6 +805,7 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
+        StorageImplUtils.assertNotNull("options", options);
         ShareErrors.validatePathOperation(fileId, "beginCopy");
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
@@ -816,53 +816,8 @@ public class ShareFileClient {
         FileSmbProperties tempSmbProperties
             = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
-        String filePermissionKey = tempSmbProperties.getFilePermissionKey();
-
-        if (options.getFilePermission() == null
-            || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
-            if ((options.getFilePermission() != null || filePermissionKey != null)
-                && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
-            }
-        } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
-            // Checks that file permission and file permission key are valid
-            try {
-                ModelHelper.validateFilePermissionAndKey(options.getFilePermission(),
-                    tempSmbProperties.getFilePermissionKey());
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
-        }
-
-        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy() == null
-            ? new CopyableFileSmbPropertiesList()
-            : options.getSmbPropertiesToCopy();
-        // check if only copy flag or smb properties are set (not both)
-        try {
-            ModelHelper.validateCopyFlagAndSmbProperties(options, tempSmbProperties);
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
-
-        String fileAttributes
-            = list.isFileAttributes() ? null : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime
-            = list.isCreatedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-        String fileLastWriteTime = list.isLastWrittenOn()
-            ? null
-            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        String fileChangedOnTime
-            = list.isChangedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-
-        final CopyFileSmbInfo copyFileSmbInfo
-            = new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
-                .setFileAttributes(fileAttributes)
-                .setFileCreationTime(fileCreationTime)
-                .setFileLastWriteTime(fileLastWriteTime)
-                .setFileChangeTime(fileChangedOnTime)
-                .setIgnoreReadOnly(options.isIgnoreReadOnly())
-                .setSetArchiveAttribute(options.isArchiveAttributeSet());
+        ModelHelper.validateCopyOptions(options, tempSmbProperties);
+        final CopyFileSmbInfo copyFileSmbInfo = ModelHelper.createCopyFileSmbInfo(options, tempSmbProperties);
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 

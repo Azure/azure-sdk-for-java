@@ -35,8 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiPolicyInner;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.RaiPolicyListResult;
-import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesCreateOrUpdateResponse;
-import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesGetResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -77,7 +75,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<RaiPoliciesGetResponse> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<RaiPolicyInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("Accept") String accept, Context context);
@@ -86,7 +84,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        RaiPoliciesGetResponse getSync(@HostParam("endpoint") String endpoint,
+        Response<RaiPolicyInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("Accept") String accept, Context context);
@@ -94,22 +92,20 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<RaiPoliciesCreateOrUpdateResponse> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<RaiPolicyInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Content-Type") String contentType,
+            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") RaiPolicyInner raiPolicy,
             Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        RaiPoliciesCreateOrUpdateResponse createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<RaiPolicyInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Content-Type") String contentType,
+            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") RaiPolicyInner raiPolicy,
             Context context);
 
@@ -120,7 +116,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("If-Match") String ifMatch, Context context);
+            @PathParam("raiPolicyName") String raiPolicyName, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}")
@@ -129,7 +125,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("raiPolicyName") String raiPolicyName, @HeaderParam("If-Match") String ifMatch, Context context);
+            @PathParam("raiPolicyName") String raiPolicyName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies")
@@ -173,11 +169,11 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account on successful completion of
-     * {@link Mono}.
+     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RaiPoliciesGetResponse> getWithResponseAsync(String resourceGroupName, String accountName,
+    private Mono<Response<RaiPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String raiPolicyName) {
         final String accept = "application/json";
         return FluxUtil
@@ -214,10 +210,10 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account.
+     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RaiPoliciesGetResponse getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
+    public Response<RaiPolicyInner> getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
         Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -247,22 +243,20 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
      * @param raiPolicy Properties describing the Content Filters.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiPolicy on successful completion of {@link Mono}.
+     * @return cognitive Services RaiPolicy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RaiPoliciesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String raiPolicyName, RaiPolicyInner raiPolicy, String ifMatch, String ifNoneMatch) {
+    private Mono<Response<RaiPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
+        String raiPolicyName, RaiPolicyInner raiPolicy) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, ifMatch, ifNoneMatch,
-                contentType, accept, raiPolicy, context))
+                this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, contentType, accept,
+                raiPolicy, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -281,10 +275,8 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RaiPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName, String raiPolicyName,
         RaiPolicyInner raiPolicy) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, raiPolicyName, raiPolicy, ifMatch,
-            ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, raiPolicyName, raiPolicy)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -294,22 +286,20 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
      * @param raiPolicy Properties describing the Content Filters.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiPolicy.
+     * @return cognitive Services RaiPolicy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RaiPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String accountName,
-        String raiPolicyName, RaiPolicyInner raiPolicy, String ifMatch, String ifNoneMatch, Context context) {
+    public Response<RaiPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String raiPolicyName, RaiPolicyInner raiPolicy, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, ifMatch, ifNoneMatch,
-            contentType, accept, raiPolicy, context);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, contentType, accept,
+            raiPolicy, context);
     }
 
     /**
@@ -327,10 +317,8 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiPolicyInner createOrUpdate(String resourceGroupName, String accountName, String raiPolicyName,
         RaiPolicyInner raiPolicy) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, raiPolicy, ifMatch,
-            ifNoneMatch, Context.NONE).getValue();
+        return createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, raiPolicy, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -339,7 +327,6 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,10 +334,10 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
-        String raiPolicyName, String ifMatch) {
+        String raiPolicyName) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, ifMatch, context))
+                this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -360,17 +347,16 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
-        String ifMatch) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
+        String raiPolicyName) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, ifMatch, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, Context.NONE);
     }
 
     /**
@@ -379,7 +365,6 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,30 +373,9 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
-        String ifMatch, Context context) {
+        Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, ifMatch, context);
-    }
-
-    /**
-     * Deletes the specified Content Filters associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String raiPolicyName, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, raiPolicyName, ifMatch);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+            this.client.getSubscriptionId(), resourceGroupName, accountName, raiPolicyName, context);
     }
 
     /**
@@ -428,30 +392,9 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
         String raiPolicyName) {
-        final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, raiPolicyName, ifMatch);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, raiPolicyName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
-    }
-
-    /**
-     * Deletes the specified Content Filters associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
-        String raiPolicyName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiPolicyName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -468,8 +411,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiPolicyName) {
-        final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiPolicyName, ifMatch);
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiPolicyName);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
@@ -479,7 +421,6 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -488,28 +429,9 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
-        String raiPolicyName, String ifMatch, Context context) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, raiPolicyName, ifMatch, context);
+        String raiPolicyName, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiPolicyName, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the specified Content Filters associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, accountName, raiPolicyName, ifMatch).last()
-            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -525,8 +447,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String raiPolicyName) {
-        final String ifMatch = null;
-        return beginDeleteAsync(resourceGroupName, accountName, raiPolicyName, ifMatch).last()
+        return beginDeleteAsync(resourceGroupName, accountName, raiPolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -542,8 +463,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiPolicyName) {
-        final String ifMatch = null;
-        beginDelete(resourceGroupName, accountName, raiPolicyName, ifMatch).getFinalResult();
+        beginDelete(resourceGroupName, accountName, raiPolicyName).getFinalResult();
     }
 
     /**
@@ -552,16 +472,14 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch,
-        Context context) {
-        beginDelete(resourceGroupName, accountName, raiPolicyName, ifMatch, context).getFinalResult();
+    public void delete(String resourceGroupName, String accountName, String raiPolicyName, Context context) {
+        beginDelete(resourceGroupName, accountName, raiPolicyName, context).getFinalResult();
     }
 
     /**

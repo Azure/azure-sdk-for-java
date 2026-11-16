@@ -6,22 +6,23 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.AIServicesAccountKey;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.WebApiHttpHeaders;
 import com.azure.search.documents.indexes.models.WebApiSkill;
-import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
-import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
-import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
-import com.azure.search.documents.indexes.models.AIServicesAccountKey;
 import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class CreateSkillsetExample {
 
@@ -41,17 +42,7 @@ public class CreateSkillsetExample {
             .buildClient();
 
         if (args.length > 0 && "content-understanding".equals(args[0])) {
-            SearchIndexerSkillset skillset = new SearchIndexerSkillset("content-understanding-sample",
-                contentUnderstandingSkill(System.getenv("SEARCH_CONTENT_MODEL_NAME"),
-                    System.getenv("SEARCH_CONTENT_MODEL_DEPLOYMENT"), ContentUnderstandingSkillChunkingMethod.SEMANTIC))
-                .setCognitiveServicesAccount(new AIServicesAccountKey(System.getenv("SEARCH_AI_SERVICES_API_KEY"),
-                    System.getenv("SEARCH_AI_SERVICES_ENDPOINT")));
-            searchIndexerClient.createSkillset(skillset);
-            try {
-                System.out.println(searchIndexerClient.getSkillset(skillset.getName()).getSkills());
-            } finally {
-                searchIndexerClient.deleteSkillset(skillset.getName());
-            }
+            createContentUnderstandingSkillset(searchIndexerClient);
             return;
         }
 
@@ -60,11 +51,28 @@ public class CreateSkillsetExample {
         cleanupSkillset(searchIndexerClient);
     }
 
+    private static void createContentUnderstandingSkillset(SearchIndexerClient client) {
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(
+            "content-understanding-" + UUID.randomUUID().toString().replace("-", ""),
+            contentUnderstandingSkill(requiredSetting("SEARCH_CONTENT_MODEL_NAME"),
+                requiredSetting("SEARCH_CONTENT_MODEL_DEPLOYMENT"), ContentUnderstandingSkillChunkingMethod.SEMANTIC))
+                    .setCognitiveServicesAccount(new AIServicesAccountKey(requiredSetting("SEARCH_AI_SERVICES_API_KEY"),
+                        requiredSetting("SEARCH_AI_SERVICES_ENDPOINT")));
+        client.createSkillset(skillset);
+        try {
+            System.out.println(client.getSkillset(skillset.getName()).getSkills());
+        } finally {
+            client.deleteSkillset(skillset.getName());
+        }
+    }
+
     /**
-     * Builds a content-understanding skill for file data, using token-based semantic chunks or fixed-size characters.
-     * Run the sample with {@code content-understanding} and set SEARCH_CONTENT_MODEL_NAME,
-     * SEARCH_CONTENT_MODEL_DEPLOYMENT, SEARCH_AI_SERVICES_ENDPOINT, and SEARCH_AI_SERVICES_API_KEY in addition to the Search endpoint and key.
-     * An indexer using this skill must expose /document/file_data (allowSkillsetToReadFileData).
+     * Builds a content-understanding skill using token-based semantic chunks or fixed-size character chunks.
+     * Run the sample with {@code content-understanding} and set {@code SEARCH_CONTENT_MODEL_NAME},
+     * {@code SEARCH_CONTENT_MODEL_DEPLOYMENT}, {@code SEARCH_AI_SERVICES_ENDPOINT}, and
+     * {@code SEARCH_AI_SERVICES_API_KEY}, in addition to the Search endpoint and key.
+     * The AI Services resource must support Content Understanding. An indexer using this skill must expose
+     * {@code /document/file_data} through {@code allowSkillsetToReadFileData}.
      *
      * @param modelName The supported model name.
      * @param deployment The provisioned model deployment.
@@ -77,12 +85,20 @@ public class CreateSkillsetExample {
         return new ContentUnderstandingSkill(
             Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
             Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
-            .setModelName(modelName)
-            .setModelDeployment(deployment)
-            .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties().setMethod(method)
-                .setUnit(semantic ? ContentUnderstandingSkillChunkingUnit.TOKENS
-                    : ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-                .setMaximumLength(semantic ? 500 : 2000));
+                .setModelName(modelName)
+                .setModelDeployment(deployment)
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties().setMethod(method)
+                    .setUnit(semantic ? ContentUnderstandingSkillChunkingUnit.TOKENS
+                        : ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(semantic ? 500 : 2000));
+    }
+
+    private static String requiredSetting(String name) {
+        String value = Configuration.getGlobalConfiguration().get(name);
+        if (value == null || value.isEmpty()) {
+            throw new IllegalStateException("Set " + name + " before running the Content Understanding sample.");
+        }
+        return value;
     }
 
     private static void createOcrSkillset(SearchIndexerClient searchIndexerClient) {

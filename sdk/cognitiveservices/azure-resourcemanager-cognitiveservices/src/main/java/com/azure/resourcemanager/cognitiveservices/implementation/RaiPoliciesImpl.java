@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiPolicyInner;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
-import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesGetResponse;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicy;
 
 public final class RaiPoliciesImpl implements RaiPolicies {
@@ -30,14 +29,10 @@ public final class RaiPoliciesImpl implements RaiPolicies {
 
     public Response<RaiPolicy> getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
         Context context) {
-        RaiPoliciesGetResponse inner
+        Response<RaiPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, raiPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RaiPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RaiPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public RaiPolicy get(String resourceGroupName, String accountName, String raiPolicyName) {
@@ -53,9 +48,8 @@ public final class RaiPoliciesImpl implements RaiPolicies {
         this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName);
     }
 
-    public void delete(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch,
-        Context context) {
-        this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName, ifMatch, context);
+    public void delete(String resourceGroupName, String accountName, String raiPolicyName, Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, raiPolicyName, context);
     }
 
     public PagedIterable<RaiPolicy> list(String resourceGroupName, String accountName) {
@@ -140,11 +134,10 @@ public final class RaiPoliciesImpl implements RaiPolicies {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
         }
-        String localIfMatch = null;
-        this.delete(resourceGroupName, accountName, raiPolicyName, localIfMatch, Context.NONE);
+        this.delete(resourceGroupName, accountName, raiPolicyName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}",
             "resourceGroupName");
@@ -166,7 +159,7 @@ public final class RaiPoliciesImpl implements RaiPolicies {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'raiPolicies'.", id)));
         }
-        this.delete(resourceGroupName, accountName, raiPolicyName, ifMatch, context);
+        this.delete(resourceGroupName, accountName, raiPolicyName, context);
     }
 
     private RaiPoliciesClient serviceClient() {

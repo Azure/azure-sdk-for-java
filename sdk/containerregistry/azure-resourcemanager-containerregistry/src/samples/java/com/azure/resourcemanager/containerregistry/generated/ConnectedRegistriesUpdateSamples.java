@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class ConnectedRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryUpdate.json
+     * x-ms-original-file: 2026-10-15-preview/ConnectedRegistryUpdate.json
      */
     /**
      * Sample code: ConnectedRegistryUpdate.
@@ -50,7 +50,7 @@ public final class ConnectedRegistriesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryUpdateManagedIdentity.json
+     * x-ms-original-file: 2026-10-15-preview/ConnectedRegistryUpdateManagedIdentity.json
      */
     /**
      * Sample code: ConnectedRegistryUpdateManagedIdentity.

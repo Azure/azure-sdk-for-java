@@ -33,12 +33,6 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
     private List<String> noProxy;
 
     /*
-     * A read-only list of all endpoints for which traffic should not be sent to the proxy. This list is a superset of
-     * noProxy and values injected by AKS.
-     */
-    private List<String> effectiveNoProxy;
-
-    /*
      * Alternative CA cert to use for connecting to proxy servers.
      */
     private String trustedCa;
@@ -113,16 +107,6 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
     public ManagedClusterHttpProxyConfig withNoProxy(List<String> noProxy) {
         this.noProxy = noProxy;
         return this;
-    }
-
-    /**
-     * Get the effectiveNoProxy property: A read-only list of all endpoints for which traffic should not be sent to the
-     * proxy. This list is a superset of noProxy and values injected by AKS.
-     * 
-     * @return the effectiveNoProxy value.
-     */
-    public List<String> effectiveNoProxy() {
-        return this.effectiveNoProxy;
     }
 
     /**
@@ -212,9 +196,6 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
                 } else if ("noProxy".equals(fieldName)) {
                     List<String> noProxy = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterHttpProxyConfig.noProxy = noProxy;
-                } else if ("effectiveNoProxy".equals(fieldName)) {
-                    List<String> effectiveNoProxy = reader.readArray(reader1 -> reader1.getString());
-                    deserializedManagedClusterHttpProxyConfig.effectiveNoProxy = effectiveNoProxy;
                 } else if ("trustedCa".equals(fieldName)) {
                     deserializedManagedClusterHttpProxyConfig.trustedCa = reader.getString();
                 } else if ("enabled".equals(fieldName)) {

@@ -7,6 +7,11 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
+- Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
+  `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
+  request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
 
 ### Other Changes
 

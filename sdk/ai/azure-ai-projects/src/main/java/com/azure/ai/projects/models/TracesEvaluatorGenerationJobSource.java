@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 /**
  * Traces source for evaluator generation jobs — conversation traces from Application Insights.
@@ -236,6 +237,7 @@ public final class TracesEvaluatorGenerationJobSource extends EvaluatorGeneratio
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("agent_version", this.agentVersion);
         jsonWriter.writeNumberField("end_time", this.endTime);
+        jsonWriter.writeArrayField("trace_ids", this.traceIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -258,6 +260,7 @@ public final class TracesEvaluatorGenerationJobSource extends EvaluatorGeneratio
             String agentName = null;
             String agentVersion = null;
             Long endTime = null;
+            List<String> traceIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -275,6 +278,8 @@ public final class TracesEvaluatorGenerationJobSource extends EvaluatorGeneratio
                     agentVersion = reader.getString();
                 } else if ("end_time".equals(fieldName)) {
                     endTime = reader.getNullable(JsonReader::getLong);
+                } else if ("trace_ids".equals(fieldName)) {
+                    traceIds = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -287,7 +292,36 @@ public final class TracesEvaluatorGenerationJobSource extends EvaluatorGeneratio
             deserializedTracesEvaluatorGenerationJobSource.agentName = agentName;
             deserializedTracesEvaluatorGenerationJobSource.agentVersion = agentVersion;
             deserializedTracesEvaluatorGenerationJobSource.endTime = endTime;
+            deserializedTracesEvaluatorGenerationJobSource.traceIds = traceIds;
             return deserializedTracesEvaluatorGenerationJobSource;
         });
+    }
+
+    /*
+     * Optional explicit list of trace IDs to include.
+     */
+    @Generated
+    private List<String> traceIds;
+
+    /**
+     * Get the traceIds property: Optional explicit list of trace IDs to include.
+     *
+     * @return the traceIds value.
+     */
+    @Generated
+    public List<String> getTraceIds() {
+        return this.traceIds;
+    }
+
+    /**
+     * Set the traceIds property: Optional explicit list of trace IDs to include.
+     *
+     * @param traceIds the traceIds value to set.
+     * @return the TracesEvaluatorGenerationJobSource object itself.
+     */
+    @Generated
+    public TracesEvaluatorGenerationJobSource setTraceIds(List<String> traceIds) {
+        this.traceIds = traceIds;
+        return this;
     }
 }

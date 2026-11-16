@@ -21,13 +21,6 @@ public final class ClusterUpgradeSettings implements JsonSerializable<ClusterUpg
      */
     private UpgradeOverrideSettings overrideSettings;
 
-    /*
-     * Settings for upgrade gating on upgrades in this managed cluster. Health signals are `HealthSignal` custom
-     * resources published by monitoring components running in the cluster. Setting `enabled` to `true` here is a
-     * cluster-wide opt-in that applies to all agent pool upgrades in this cluster; an agent pool cannot opt out of it.
-     */
-    private UpgradeGateSettings upgradeGateSettings;
-
     /**
      * Creates an instance of ClusterUpgradeSettings class.
      */
@@ -55,32 +48,6 @@ public final class ClusterUpgradeSettings implements JsonSerializable<ClusterUpg
     }
 
     /**
-     * Get the upgradeGateSettings property: Settings for upgrade gating on upgrades in this managed cluster. Health
-     * signals are `HealthSignal` custom resources published by monitoring components running in the cluster. Setting
-     * `enabled` to `true` here is a cluster-wide opt-in that applies to all agent pool upgrades in this cluster; an
-     * agent pool cannot opt out of it.
-     * 
-     * @return the upgradeGateSettings value.
-     */
-    public UpgradeGateSettings upgradeGateSettings() {
-        return this.upgradeGateSettings;
-    }
-
-    /**
-     * Set the upgradeGateSettings property: Settings for upgrade gating on upgrades in this managed cluster. Health
-     * signals are `HealthSignal` custom resources published by monitoring components running in the cluster. Setting
-     * `enabled` to `true` here is a cluster-wide opt-in that applies to all agent pool upgrades in this cluster; an
-     * agent pool cannot opt out of it.
-     * 
-     * @param upgradeGateSettings the upgradeGateSettings value to set.
-     * @return the ClusterUpgradeSettings object itself.
-     */
-    public ClusterUpgradeSettings withUpgradeGateSettings(UpgradeGateSettings upgradeGateSettings) {
-        this.upgradeGateSettings = upgradeGateSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,9 +55,6 @@ public final class ClusterUpgradeSettings implements JsonSerializable<ClusterUpg
     public void validate() {
         if (overrideSettings() != null) {
             overrideSettings().validate();
-        }
-        if (upgradeGateSettings() != null) {
-            upgradeGateSettings().validate();
         }
     }
 
@@ -101,7 +65,6 @@ public final class ClusterUpgradeSettings implements JsonSerializable<ClusterUpg
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("overrideSettings", this.overrideSettings);
-        jsonWriter.writeJsonField("upgradeGateSettings", this.upgradeGateSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -122,8 +85,6 @@ public final class ClusterUpgradeSettings implements JsonSerializable<ClusterUpg
 
                 if ("overrideSettings".equals(fieldName)) {
                     deserializedClusterUpgradeSettings.overrideSettings = UpgradeOverrideSettings.fromJson(reader);
-                } else if ("upgradeGateSettings".equals(fieldName)) {
-                    deserializedClusterUpgradeSettings.upgradeGateSettings = UpgradeGateSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -999,6 +999,99 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImageVersionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-03-03";
+        final Boolean bypassSoftDelete = null;
+        context = this.client.mergeContext(context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, galleryImageName, galleryImageVersionName, bypassSoftDelete, context);
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImageVersionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-03-03";
+        final Boolean bypassSoftDelete = null;
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, galleryImageName,
+                galleryImageVersionName, bypassSoftDelete, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param bypassSoftDelete Specifies whether to bypass the gallery's soft-delete policy and permanently delete the
      * gallery image version. If true, the version is not retained in the recycle bin and cannot be restored. If false
      * or omitted, the version is soft-deleted when the gallery's soft-delete policy is enabled and permanently deleted
@@ -1073,6 +1166,29 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName,
+            galleryImageName, galleryImageVersionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1111,6 +1227,26 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         return this
             .beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
                 bypassSoftDelete, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context)
             .getSyncPoller();
     }
 
@@ -1188,6 +1324,27 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryName The name of the Shared Image Gallery.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1221,6 +1378,24 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         String galleryImageVersionName, Boolean bypassSoftDelete, Context context) {
         deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, bypassSoftDelete,
             context).block();
+    }
+
+    /**
+     * Delete a gallery image version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName, Context context) {
+        deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context).block();
     }
 
     /**

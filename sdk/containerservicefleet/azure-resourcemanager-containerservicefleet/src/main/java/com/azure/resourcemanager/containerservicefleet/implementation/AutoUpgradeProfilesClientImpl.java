@@ -385,7 +385,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
      * @return the {@link SyncPoller} for polling of the AutoUpgradeProfile resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AutoUpgradeProfileInner>, AutoUpgradeProfileInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<AutoUpgradeProfileInner>, AutoUpgradeProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, AutoUpgradeProfileInner resource,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName,
@@ -643,7 +643,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, ifMatch);

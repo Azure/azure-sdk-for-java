@@ -14,21 +14,21 @@ public final class FqdnOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"FQDN\",\"destination\":\"eobfsxstcyilbvzm\",\"category\":\"Dependency\",\"status\":\"Provisioning\",\"errorInformation\":\"quzexokjxebjvbz\",\"parentRuleNames\":[\"abwmvogljsv\",\"pgidnw\"]}")
+            "{\"type\":\"FQDN\",\"destination\":\"ffatsgftipw\",\"category\":\"Dependency\",\"status\":\"Failed\",\"errorInformation\":\"hiqdxy\",\"parentRuleNames\":[\"pnuhzafccnu\",\"iig\",\"yl\",\"ui\"]}")
             .toObject(FqdnOutboundRule.class);
         Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
-        Assertions.assertEquals("eobfsxstcyilbvzm", model.destination());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
+        Assertions.assertEquals("ffatsgftipw", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FqdnOutboundRule model = new FqdnOutboundRule().withCategory(RuleCategory.DEPENDENCY)
-            .withStatus(RuleStatus.PROVISIONING)
-            .withDestination("eobfsxstcyilbvzm");
+            .withStatus(RuleStatus.FAILED)
+            .withDestination("ffatsgftipw");
         model = BinaryData.fromObject(model).toObject(FqdnOutboundRule.class);
         Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
-        Assertions.assertEquals("eobfsxstcyilbvzm", model.destination());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
+        Assertions.assertEquals("ffatsgftipw", model.destination());
     }
 }

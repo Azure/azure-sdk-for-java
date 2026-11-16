@@ -24,12 +24,6 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
     public static final BackendPoolType NODE_IP = fromString("NodeIP");
 
     /**
-     * The type of the managed inbound Load Balancer BackendPool. Used only when loadBalancerSku is specified as
-     * 'service'. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
-     */
-    public static final BackendPoolType POD_IP = fromString("PodIP");
-
-    /**
      * Creates a new instance of BackendPoolType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
