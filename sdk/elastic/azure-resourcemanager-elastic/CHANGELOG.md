@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (2026-09-08)
+## 1.3.0-beta.1 (2026-11-16)
 
 - Azure Resource Manager Elastic client library for Java. This package contains Microsoft Azure SDK for Elastic Management SDK.  Package api-version 2026-03-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,17 +8,17 @@
 
 #### `models.Monitors` was modified
 
-* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
 
 ### Features Added
 
 #### `models.Monitors` was modified
 
-* `delete(java.lang.String,java.lang.String)` was added
 * `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
 * `delete(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String)` was added
 
 ## 1.2.0 (2026-03-03)
 
