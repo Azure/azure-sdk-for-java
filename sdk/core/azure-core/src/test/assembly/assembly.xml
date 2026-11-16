@@ -15,6 +15,7 @@
         <include>com/azure/core/validation/**/*</include>
         <include>keystore.jks</include>
         <include>http-protocol-keystore.jks</include>
+        <include>mtls-client-*.jks</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>

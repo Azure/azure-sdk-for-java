@@ -37,6 +37,7 @@ public class AccessToken {
     private final OffsetDateTime expiresAt;
     private final OffsetDateTime refreshAt;
     private final String tokenType;
+    private final ClientCertificateBinding clientCertificateBinding;
 
     /**
      * Creates an access token instance.
@@ -45,10 +46,7 @@ public class AccessToken {
      * @param expiresAt the expiration time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt) {
-        this.token = token;
-        this.expiresAt = expiresAt;
-        this.refreshAt = null;
-        this.tokenType = "Bearer";
+        this(token, expiresAt, null, "Bearer", null);
     }
 
     /**
@@ -59,10 +57,7 @@ public class AccessToken {
      * @param refreshAt the next token refresh time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt) {
-        this.token = token;
-        this.expiresAt = expiresAt;
-        this.refreshAt = refreshAt;
-        this.tokenType = "Bearer";
+        this(token, expiresAt, refreshAt, "Bearer", null);
     }
 
     /**
@@ -74,10 +69,26 @@ public class AccessToken {
      * @param tokenType the type of token.
      */
     public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt, String tokenType) {
+        this(token, expiresAt, refreshAt, tokenType, null);
+    }
+
+    /**
+     * Creates an access token instance that may be bound to a TLS client certificate, for mutual TLS (mTLS)
+     * proof-of-possession.
+     *
+     * @param token the token string.
+     * @param expiresAt the expiration time.
+     * @param refreshAt the next token refresh time.
+     * @param tokenType the type of token, such as {@code mtls_pop} for a token bound to a client certificate.
+     * @param clientCertificateBinding the client certificate the token is bound to, or null if it isn't bound to one.
+     */
+    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt, String tokenType,
+        ClientCertificateBinding clientCertificateBinding) {
         this.token = token;
         this.expiresAt = expiresAt;
         this.refreshAt = refreshAt;
         this.tokenType = tokenType;
+        this.clientCertificateBinding = clientCertificateBinding;
     }
 
     /**
@@ -123,10 +134,23 @@ public class AccessToken {
     /**
      * Gets the token type.
      *
-     * @return A string representing the token type. It can be "Bearer" or "Pop".
+     * @return A string representing the token type, such as "Bearer", "PoP" for a proof-of-possession token signed
+     * over a request, or "mtls_pop" for a token bound to a client certificate.
      */
     public String getTokenType() {
         return tokenType;
+    }
+
+    /**
+     * Gets the TLS client certificate this token is bound to, for mutual TLS (mTLS) proof-of-possession.
+     * <p>
+     * A token bound to a certificate must only be sent over a TLS connection that presents that certificate.
+     *
+     * @return The client certificate this token is bound to, or null if the token isn't bound to a certificate, as
+     * with bearer tokens and proof-of-possession tokens signed over a request.
+     */
+    public ClientCertificateBinding getClientCertificateBinding() {
+        return clientCertificateBinding;
     }
 
     /**

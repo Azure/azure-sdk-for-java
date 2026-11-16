@@ -7,6 +7,8 @@
 - Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
 - Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
   configuration. An unset or cleared maximum preserves the selected transport's existing default.
+- Added `ClientCertificateBinding` and `AccessToken.getClientCertificateBinding()` for access tokens bound to a TLS
+  client certificate, used for mutual TLS (mTLS) proof-of-possession.
 
 ### Breaking Changes
 
