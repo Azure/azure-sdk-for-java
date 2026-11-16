@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -26,11 +27,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -62,6 +65,57 @@ public class RestProxyUtilsTests {
 
         assertNull(httpRequest.getBody());
         assertNull(httpRequest.getBodyAsBinaryData());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void unknownLengthStreamWithoutHeaderIsPreserved(boolean synchronous) {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(EXPECTED));
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost").setBody(body);
+
+        BinaryData validated = synchronous
+            ? RestProxyUtils.validateLengthSync(request)
+            : RestProxyUtils.validateLengthAsync(request).block().getBodyAsBinaryData();
+
+        assertSame(body, validated);
+        assertNull(validated.getLength());
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        assertArraysEqual(EXPECTED, validated.toBytes());
+    }
+
+    @Test
+    public void unknownLengthFluxWithoutHeaderIsPreserved() {
+        AtomicInteger subscriptions = new AtomicInteger();
+        Flux<ByteBuffer> body = Flux.defer(() -> {
+            subscriptions.incrementAndGet();
+            return Flux.just(ByteBuffer.wrap(EXPECTED));
+        });
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost").setBody(body);
+
+        HttpRequest validated = RestProxyUtils.validateLengthAsync(request).block();
+
+        assertEquals(0, subscriptions.get());
+        assertNull(validated.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        assertArraysEqual(EXPECTED, FluxUtil.collectBytesInByteBufferStream(validated.getBody()).block());
+        assertEquals(1, subscriptions.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 4096 })
+    public void oversizedStreamDoesNotEmitBytesBeyondDeclaredLength(int expectedLength) {
+        AtomicInteger emittedBytes = new AtomicInteger();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost")
+            .setBody(BinaryData.fromStream(new ByteArrayInputStream(new byte[8193])))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(expectedLength));
+
+        StepVerifier
+            .create(RestProxyUtils.validateLengthAsync(request)
+                .flatMapMany(HttpRequest::getBody)
+                .doOnNext(buffer -> emittedBytes.addAndGet(buffer.remaining())))
+            .verifyError(UnexpectedLengthException.class);
+
+        assertTrue(emittedBytes.get() <= expectedLength,
+            "The transport must never receive bytes beyond Content-Length.");
     }
 
     @ParameterizedTest

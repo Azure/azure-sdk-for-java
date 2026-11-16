@@ -4,6 +4,9 @@
 package com.azure.core.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -14,13 +17,17 @@ import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -697,6 +704,88 @@ public class UrlBuilderTests {
     public void parseURLSchemeAndHost() throws MalformedURLException {
         final UrlBuilder builder = UrlBuilder.parse(URI.create("http://www.bing.com").toURL());
         assertEquals("http://www.bing.com", builder.toString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("queryMaterializations")
+    public void parsedQueryMutationsAreIsolated(String materialization, Consumer<UrlBuilder> materialize) {
+        String baseUrl = "https://example.com/query-isolation-" + materialization;
+        String query = "?single=a%2Bb&multi=one%20value&multi=two%26value&last=%2F";
+        String url = baseUrl + query;
+        UrlBuilder first = UrlBuilder.parse(url);
+        UrlBuilder second = UrlBuilder.parse(url);
+        materialize.accept(first);
+        materialize.accept(second);
+
+        first.addQueryParameter("single", "first%2Bvalue").addQueryParameter("multi", "third%20value");
+        String firstQuery
+            = "?single=a%2Bb&single=first%2Bvalue&multi=one%20value&multi=two%26value&multi=third%20value&last=%2F";
+        assertEquals(firstQuery, first.getQueryString());
+        assertEquals(baseUrl + firstQuery, first.toString());
+        assertEquals("one%20value,two%26value,third%20value", first.getQuery().get("multi"));
+        assertEquals(url, second.toString());
+        assertEquals(url, UrlBuilder.parse(url).toString());
+
+        second.addQueryParameter("single", "second%2Bvalue").addQueryParameter("multi", "fourth%20value");
+        String secondQuery
+            = "?single=a%2Bb&single=second%2Bvalue&multi=one%20value&multi=two%26value&multi=fourth%20value&last=%2F";
+        assertEquals(secondQuery, second.getQueryString());
+        assertEquals(baseUrl + secondQuery, second.toString());
+        assertEquals(baseUrl + firstQuery, first.toString());
+        assertEquals(url, UrlBuilder.parse(url).toString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("queryMaterializations")
+    public void parsedQueriesCanBeCleared(String materialization, Consumer<UrlBuilder> materialize) {
+        String baseUrl = "https://example.com/query-clearing-" + materialization;
+        String url = baseUrl + "?multi=one&multi=two&encoded=%2B%20";
+        List<Consumer<UrlBuilder>> clearers
+            = Arrays.asList(UrlBuilder::clearQuery, builder -> builder.setQuery(null), builder -> builder.setQuery(""));
+
+        for (Consumer<UrlBuilder> clear : clearers) {
+            UrlBuilder builder = UrlBuilder.parse(url);
+            UrlBuilder untouched = UrlBuilder.parse(url);
+            materialize.accept(builder);
+            clear.accept(builder);
+
+            assertEquals(baseUrl, builder.toString());
+            assertEquals("", builder.getQueryString());
+            assertTrue(builder.getQuery().isEmpty());
+            builder.addQueryParameter("new", "a%20b");
+            assertEquals(baseUrl + "?new=a%20b", builder.toString());
+            assertEquals(url, untouched.toString());
+            assertEquals(url, UrlBuilder.parse(url).toString());
+        }
+    }
+
+    private static Stream<Arguments> queryMaterializations() {
+        return Stream.of(Arguments.of("unmaterialized", (Consumer<UrlBuilder>) builder -> assertNotNull(builder)),
+            Arguments.of("getQuery", (Consumer<UrlBuilder>) UrlBuilder::getQuery),
+            Arguments.of("getQueryString", (Consumer<UrlBuilder>) UrlBuilder::getQueryString),
+            Arguments.of("toString", (Consumer<UrlBuilder>) UrlBuilder::toString));
+    }
+
+    @Test
+    public void concurrentParsedQueryMutationsAreIsolated() throws InterruptedException, ExecutionException {
+        String baseUrl = "https://example.com/concurrent-query-isolation";
+        String url = baseUrl + "?single=original&multi=one&multi=two&encoded=%2B%20";
+        List<UrlBuilder> builders
+            = IntStream.range(0, 8).mapToObj(i -> UrlBuilder.parse(url)).collect(Collectors.toList());
+        List<Callable<UrlBuilder>> tasks
+            = IntStream.range(0, builders.size()).mapToObj(i -> (Callable<UrlBuilder>) () -> {
+                String value = "worker-" + i;
+                return builders.get(i).addQueryParameter("single", value).addQueryParameter("multi", value);
+            }).collect(Collectors.toList());
+
+        List<Future<UrlBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks);
+        for (int i = 0; i < futures.size(); i++) {
+            String value = "worker-" + i;
+            String expected = baseUrl + "?single=original&single=" + value + "&multi=one&multi=two&multi=" + value
+                + "&encoded=%2B%20";
+            assertEquals(expected, futures.get(i).get().toString());
+        }
+        assertEquals(url, UrlBuilder.parse(url).toString());
     }
 
     @Test

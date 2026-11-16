@@ -15,6 +15,7 @@ import static com.azure.core.CoreTestUtils.fillArray;
 import static com.azure.core.CoreTestUtils.readStream;
 import static com.azure.core.CoreTestUtils.readStreamByteByByte;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link LengthValidatingInputStream}.
@@ -29,6 +30,43 @@ public class LengthValidatingInputStreamTests {
     public void negativeExpectedReadSizeThrows() {
         assertThrows(IllegalArgumentException.class,
             () -> new LengthValidatingInputStream(new ByteArrayInputStream(new byte[0]), -1));
+    }
+
+    @Test
+    public void oversizedReadFailsBeforeReturningBytes() {
+        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[8]), 4);
+
+        assertThrows(UnexpectedLengthException.class, () -> stream.read(new byte[8]));
+    }
+
+    @Test
+    public void oversizedSingleByteReadFailsBeforeReturningByte() throws Exception {
+        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[] { 1, 2 }), 1);
+
+        assertEquals(1, stream.read());
+        assertThrows(UnexpectedLengthException.class, stream::read);
+    }
+
+    @Test
+    public void zeroLengthBodyRejectsFirstByte() {
+        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[] { 1 }), 0);
+
+        assertThrows(UnexpectedLengthException.class, stream::read);
+    }
+
+    @Test
+    public void oversizedSkipFailsImmediately() {
+        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[8]), 4);
+
+        assertThrows(UnexpectedLengthException.class, () -> stream.skip(8));
+    }
+
+    @Test
+    public void emptyReadDoesNotConsumeOrValidateData() throws Exception {
+        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[] { 1 }), 0);
+
+        assertEquals(0, stream.read(new byte[0]));
+        assertThrows(UnexpectedLengthException.class, stream::read);
     }
 
     @Test

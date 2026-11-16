@@ -273,6 +273,9 @@ public final class RequestOptions {
 
     /**
      * Sets the body to send as part of the HTTP request.
+     * <p>
+     * Replacing an empty request with an unknown-length body removes its zero Content-Length header. To specify an
+     * explicit length for that body, set the Content-Length header after setting the body.
      *
      * @param requestBody the request body data
      * @return the modified RequestOptions object
@@ -280,7 +283,14 @@ public final class RequestOptions {
      */
     public RequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
+        this.requestCallback = this.requestCallback.andThen(request -> {
+            boolean emptyRequest = request.getBodyAsBinaryData() == null
+                && "0".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+            request.setBody(requestBody);
+            if (emptyRequest && requestBody.getLength() == null) {
+                request.getHeaders().remove(HttpHeaderName.CONTENT_LENGTH);
+            }
+        });
         return this;
     }
 

@@ -196,7 +196,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         }
 
         if (value == null) {
-            removeInternal(name);
+            removeInternal(formattedName);
         } else {
             headers.put(formattedName, new HttpHeader(name, value));
         }

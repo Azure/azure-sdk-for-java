@@ -46,7 +46,7 @@ public final class RestProxyUtils {
     }
 
     /**
-     * Validates the {@code Content-Length} of an asynchronous request.
+     * Validates the {@code Content-Length} of an asynchronous request when the header is present.
      *
      * @param request the request to validate.
      * @return a Mono that emits the request on successful validation.
@@ -60,8 +60,12 @@ public final class RestProxyUtils {
         }
 
         return Mono.fromCallable(() -> {
+            String contentLength = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            if (contentLength == null) {
+                return request;
+            }
             BinaryDataContent content = BinaryDataHelper.getContent(body);
-            long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+            long expectedLength = Long.parseLong(contentLength);
             if (content instanceof InputStreamContent) {
                 InputStream validatingInputStream = new LengthValidatingInputStream(content.toStream(), expectedLength);
                 request.setBody(BinaryData.fromStream(validatingInputStream, expectedLength));
@@ -123,7 +127,7 @@ public final class RestProxyUtils {
     }
 
     /**
-     * Validates the Length of the input request matches its configured Content Length.
+     * Validates the length of the input request against its Content-Length header when the header is present.
      * @param request the input request to validate.
      * @return the requests body as BinaryData on successful validation.
      * @throws IllegalStateException if the request body is an instance of FluxByteBufferContent.
@@ -134,12 +138,17 @@ public final class RestProxyUtils {
             return null;
         }
 
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-        Long length = binaryData.getLength();
         BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
         if (bdc instanceof FluxByteBufferContent) {
             throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
-        } else if (bdc instanceof InputStreamContent) {
+        }
+        String contentLength = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength == null) {
+            return binaryData;
+        }
+        final long expectedLength = Long.parseLong(contentLength);
+        Long length = binaryData.getLength();
+        if (bdc instanceof InputStreamContent) {
             InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
             InputStream inputStream = inputStreamContent.toStream();
             LengthValidatingInputStream lengthValidatingInputStream

@@ -214,11 +214,11 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (CoreUtils.isNullOrEmpty(query)) {
-            return this;
+        queryToCopy = null;
+        if (query != null) {
+            query.clear();
         }
 
-        query.clear();
         return this;
     }
 
@@ -273,10 +273,12 @@ public final class UrlBuilder {
             query = new LinkedHashMap<>(queryToCopy.size());
 
             for (Map.Entry<String, QueryParameter> entry : queryToCopy.entrySet()) {
-                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
+                List<String> values = entry.getValue().getValuesList();
+                first = writeQueryValues(stringBuilder, entry.getKey(), values, first);
 
-                query.put(entry.getKey(), entry.getValue());
+                query.put(entry.getKey(), new QueryParameter(entry.getKey(), values));
             }
+            queryToCopy = null;
         } else {
             // queryToCopy has been copied, use query to build the query string.
             for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
@@ -470,7 +472,8 @@ public final class UrlBuilder {
         }
 
         if (queryToCopy != null) {
-            query.putAll(queryToCopy);
+            queryToCopy
+                .forEach((name, parameter) -> query.put(name, new QueryParameter(name, parameter.getValuesList())));
             queryToCopy = null;
         }
     }
