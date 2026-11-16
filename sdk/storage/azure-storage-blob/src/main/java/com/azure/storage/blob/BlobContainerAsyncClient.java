@@ -36,6 +36,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -498,15 +499,24 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(
-                    t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409, t -> {
-                        HttpResponse response = ((BlobStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), false));
-                    });
+                .onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExists, t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    /**
+     * Whether a failure to create a container says that the container already exists. The status code alone does not:
+     * the service also answers 409 while a container of the same name is being deleted, for example.
+     */
+    static boolean isContainerAlreadyExists(Throwable t) {
+        return t instanceof BlobStorageException
+            && ((BlobStorageException) t).getStatusCode() == 409
+            && BlobErrorCode.CONTAINER_ALREADY_EXISTS.equals(((BlobStorageException) t).getErrorCode());
     }
 
     /**

@@ -7,6 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `createIfNotExists` on `BlobContainerClient` and `BlobContainerAsyncClient`, and
+  `createBlobContainerIfNotExists` on `BlobServiceClient` and `BlobServiceAsyncClient`, reporting every 409 as a
+  container that already exists. They now do so only for `ContainerAlreadyExists`, and throw for any other 409,
+  such as `ContainerBeingDeleted`. (#51281)
 
 ### Other Changes
 
