@@ -230,6 +230,100 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
 }
 ```
+### End-to-end timeout and availability strategy
+
+Configure `CosmosEndToEndOperationLatencyPolicyConfig` on your `CosmosClientBuilder` bean to apply an
+end-to-end timeout and a `ThresholdBasedAvailabilityStrategy` to both synchronous and reactive Spring
+Data repositories. These are Java SDK client settings, not `CosmosConfig` query or diagnostics settings.
+The availability strategy can hedge slow reads to other preferred regions before the timeout expires.
+Use at least two read regions configured on your account to exercise cross-region hedging.
+
+[EndToEndTimeoutAvailabilityIT](src/test/java/com/azure/spring/data/cosmos/repository/integration/EndToEndTimeoutAvailabilityIT.java)
+is a runnable sample with its own Spring configuration. It seeds two items with different partition-key
+values and runs the following repository query without specifying a partition key:
+
+```java
+@Query("SELECT * FROM c WHERE STARTSWITH(c.id, @prefix)")
+List<BasicItem> findByIdPrefix(@Param("prefix") String prefix);
+```
+
+The prefix restricts results to this test's items, but does not restrict routing to a single partition.
+The sample consumes the complete synchronous and reactive results and verifies that both items are returned.
+This demonstrates a query across logical partitions; it does not require multiple physical partitions.
+
+The resilience scenarios separately delay query-data responses in all eligible regions to verify
+SDK query-page timeout errors (HTTP 408, substatus 20008), and apply gateway `CONNECTION_DELAY` and
+`RESPONSE_DELAY` faults to query-plan calls in the first preferred region only. Each delay is tested
+separately, with both synchronous and reactive queries required to return all expected items within
+the recovery budget and diagnostics required to show another preferred region was contacted.
+
+Connection delays are transport-scoped, so the sample warms routing metadata before installing the
+regional fault. Cross-partition query plans are not cached by this SDK path. Each query must increase
+the fault hit count, and the recorded hit-operation keys must contain only `QueryPlan-Document`;
+otherwise the test fails rather than silently accepting a cache hit or delaying unrelated requests.
+Each scenario uses a fresh client to isolate endpoint-health state, and fault rules are disabled before cleanup.
+
+The SDK query-page timeout must not be interpreted as a deadline for the entire query, including
+query-plan acquisition and consumption of every page. Applications that need such a deadline should
+also enforce an application-level timeout and handle cancellation explicitly.
+Fault injection is test-only; an application needs only the sample's client and latency-policy
+configuration and ordinary repository queries.
+
+#### Set up and run the sample
+
+Prerequisites:
+
+- JDK 17 or later and Maven.
+- An Azure Cosmos DB for NoSQL account with key-based authentication enabled. Use its global account endpoint.
+- At least two readable account regions to run both regional QueryPlan delay cases. A single-region account
+  or the emulator can run the baseline and query-page timeout cases.
+- Network access to the account in Direct mode, including HTTPS access for gateway metadata requests.
+
+The sample automatically loads `cosmos-v4.properties` from your user home directory. It uses
+`ACCOUNT_HOST` and `ACCOUNT_KEY`, and optionally `PREFERRED_LOCATIONS` (comma-separated region names).
+Create the file outside the checkout, for example `$HOME\cosmos-v4.properties` on Windows:
+
+```properties
+ACCOUNT_HOST=https://<account-name>.documents.azure.com:443/
+ACCOUNT_KEY=<account-key>
+PREFERRED_LOCATIONS=East US,West US
+```
+
+Replace the placeholders with your account values and use the exact names of two of its read regions.
+You can instead reference a file in another repository with
+`"-Dcosmos.test.properties=C:\path\to\other-repository\cosmos-v4.properties"`.
+JVM system properties and environment variables take precedence over values in the file. The file is
+optional if `ACCOUNT_HOST` and `ACCOUNT_KEY` are already set in the environment. Keep credentials outside
+the repository; do not commit this file.
+
+From `sdk/spring/azure-spring-data-cosmos`, run only this sample with:
+
+```powershell
+mvn test-compile failsafe:integration-test failsafe:verify `
+    -P integration-test-azure "-Dit.test=EndToEndTimeoutAvailabilityIT" `
+    "-Dcosmos.endToEndTimeout=PT5S" `
+    "-Dcosmos.availability.threshold=PT0.5S" `
+    "-Dcosmos.availability.thresholdStep=PT0.1S" `
+    "-Dcosmos.preferredRegions=East US,West US"
+```
+
+With two preferred regions, expect four integration cases to pass with no skips: healthy cross-partition
+queries, delayed query-data timeout, first-region QueryPlan connection delay, and first-region QueryPlan
+response delay. Both query APIs are exercised in each regional-delay case. The faults are injected in
+this test client only; the sample does not fail over or change the availability of the Azure account.
+
+Replace the region names with your account's read regions, in preference order. The sample reads these
+custom properties using `@Value`; they are not automatically recognized Spring Boot properties.
+Durations use ISO-8601 syntax. The timeout must exceed the initial hedging threshold; choose a budget
+appropriate for your workload. The shown durations are the sample defaults. Without preferred regions,
+the two deterministic regional-delay cases are skipped, while the repository and timeout tests still run
+(including on the emulator). The SDK itself does not require explicit preferred regions for hedging when endpoint discovery
+provides multiple eligible regions; this test needs an explicit order to select the region whose plan calls
+are delayed. Successful-query assertions require the expected results and reactive completion, rather than
+relying on a diagnostics status alone.
+The sample uses `cosmos.database` (default `testdb`), creates the `BasicItem` container if needed, and deletes
+only its own test items. It does not delete the database or container. Running against Azure may incur charges.
+
 ### Customizing Configuration
 You can customize `DirectConnectionConfig` or `GatewayConnectionConfig` or both and provide them to `CosmosClientBuilder` bean to customize `CosmosAsyncClient`
 You can customize `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS`, `requestChargeThresholdInRU` and `payloadSizeThresholdInBytes` to customize the thresholds for diagnostic logging when combined with `CosmosDiagnosticsHandler` which enables diagnostic logging with the default thresholds when added to the `CosmosClientBuilder`.
