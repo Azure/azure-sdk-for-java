@@ -3,19 +3,60 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.identity.AzureIdentityEnvVars;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class KeyVaultEnvironmentRuntimeHintsTests {
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "com.azure.security.keyvault.secrets.implementation.models.SecretItem",
+        "com.azure.security.keyvault.secrets.implementation.models.SecretBundle"
+    })
+    void registersHintsForSecretResponseSerialization(String typeName)
+        throws ClassNotFoundException, NoSuchMethodException {
+        Class<?> type = Class.forName(typeName);
+        RuntimeHints hints = new RuntimeHints();
+        new KeyVaultEnvironmentRuntimeHints().registerHints(hints, getClass().getClassLoader());
+
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(type.getDeclaredMethod("fromJson", JsonReader.class))).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(type.getDeclaredMethod("toJson", JsonWriter.class))).accepts(hints);
+    }
+
+    @Test
+    void registersHintsForIdentityEnvironmentVariables() throws NoSuchMethodException {
+        RuntimeHints hints = new RuntimeHints();
+        new KeyVaultEnvironmentRuntimeHints().registerHints(hints, getClass().getClassLoader());
+
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onConstructorInvocation(AzureIdentityEnvVars.class.getDeclaredConstructor()))
+            .accepts(hints);
+    }
+
+    @Test
+    void doesNotRegisterHintsWithoutKeyVaultClient() {
+        RuntimeHints hints = new RuntimeHints();
+        new KeyVaultEnvironmentRuntimeHints().registerHints(hints,
+            new FilteredClassLoader("com.azure.security.keyvault.secrets"));
+
+        assertThat(hints.reflection().typeHints()).isEmpty();
+    }
 
     @Test
     void registersHintsForEnvironmentPropertyBinding() throws NoSuchMethodException {
@@ -34,8 +75,6 @@ class KeyVaultEnvironmentRuntimeHintsTests {
             .accepts(hints);
         assertThat(RuntimeHintsPredicates.reflection()
             .onMethodInvocation(AzureKeyVaultPropertySourceProperties.class, "setEndpoint")).accepts(hints);
-        assertThat(RuntimeHintsPredicates.reflection()
-            .onMethodInvocation(AzureGlobalProperties.class, "getCredential")).accepts(hints);
         assertThat(RuntimeHintsPredicates.reflection()
             .onMethodInvocation(TokenCredentialConfigurationProperties.class, "setClientId")).accepts(hints);
     }

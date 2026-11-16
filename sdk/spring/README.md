@@ -189,6 +189,8 @@ dependencyManagement {
 
 ### Key Vault Secrets in Spring Boot 4 native images
 
+Global Azure property binding hints are registered independently of the Key Vault Secrets client.
+
 To supply the Key Vault endpoint and credentials at deployment time, set
 `spring.cloud.azure.keyvault.secret.property-source-enabled=false` in the Spring AOT build environment.
 This skips Key Vault property source initialization during AOT processing. At runtime, enable the property source
