@@ -11,10 +11,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.io.Closeable;
+import java.util.ArrayDeque;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Queue;
 
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
@@ -24,8 +24,10 @@ public abstract class Handler extends BaseHandler implements Closeable {
     // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
     private final Sinks.Many<EndpointState> endpointStates
         = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
-    // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
-    private final AtomicBoolean isTerminal = new AtomicBoolean();
+    // Guard signal admission and drain ownership without holding a lock across subscriber callbacks.
+    private final Queue<Runnable> pendingSignals = new ArrayDeque<>();
+    private boolean emitting;
+    private boolean terminalQueued;
     private final String id;
     private final String connectionId;
     private final String hostname;
@@ -96,23 +98,8 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @param state The next endpoint state to emit.
      */
     void onNext(EndpointState state) {
-        if (isTerminal.get()) {
-            return;
-        }
-
-        endpointStates.emitNext(state, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit endpoint state. Non-serial access. Retrying.");
-
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit endpoint state.");
-
-                return false;
-            }
-        });
+        Objects.requireNonNull(state, "'state' cannot be null.");
+        emit(() -> endpointStates.emitNext(state, Sinks.EmitFailureHandler.FAIL_FAST), false);
     }
 
     /**
@@ -121,61 +108,48 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @param error The error to emit.
      */
     public void onError(Throwable error) {
-        if (isTerminal.getAndSet(true)) {
-            return;
-        }
-
-        endpointStates.emitError(error, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error. Non-serial access. Retrying.", error);
-
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Could not emit error.", error);
-
-                return false;
-            }
-        });
+        Objects.requireNonNull(error, "'error' cannot be null.");
+        emit(() -> endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST), true);
     }
 
     /**
      * Changes the endpoint to {@link EndpointState#CLOSED} and completes the stream of {@link #getEndpointStates()
-     * endpoint states}.
+     * endpoint states}. If a notification is in progress, that emitter delivers the close signals after it returns.
      */
     @Override
     public void close() {
-        if (isTerminal.getAndSet(true)) {
-            return;
+        emit(() -> {
+            // Replay CLOSED to late subscribers as well as notifying current subscribers.
+            endpointStates.emitNext(EndpointState.CLOSED, Sinks.EmitFailureHandler.FAIL_FAST);
+            endpointStates.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+        }, true);
+    }
+
+    private void emit(Runnable signal, boolean terminal) {
+        synchronized (pendingSignals) {
+            if (terminalQueued) {
+                return;
+            }
+
+            terminalQueued = terminal;
+            if (emitting) {
+                pendingSignals.add(signal);
+                return;
+            }
+            emitting = true;
         }
 
-        // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
-        // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
-        endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit closed endpoint state. Non-serial access. Retrying.");
-
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit closed endpoint state.");
-
-                return false;
+        // The current emitter delivers any signals queued by concurrent or reentrant callers.
+        Runnable next = signal;
+        for (;;) {
+            next.run();
+            synchronized (pendingSignals) {
+                next = pendingSignals.poll();
+                if (next == null) {
+                    emitting = false;
+                    return;
+                }
             }
-        });
-
-        endpointStates.emitComplete((signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete. Non-serial access. Retrying.");
-
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Could not emit complete.");
-
-                return false;
-            }
-        });
+        }
     }
 }
