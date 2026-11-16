@@ -417,8 +417,9 @@ public class PreviousImageRetentionTest {
         assertThat(containerJson(properties).has(POLICY_NAME)).as("An omitted policy must remain omitted").isFalse();
     }
 
-    private void assertIncludedPathsOmitted(CosmosContainerProperties properties) throws JsonProcessingException {
-        assertThat(containerJson(properties).path(POLICY_NAME).has("includedPaths"))
+    static void assertIncludedPathsOmitted(CosmosContainerProperties properties) throws JsonProcessingException {
+        assertThat(containerJson(properties).path(POLICY_NAME)
+            .path("supportedFeatures").path("allVersionsAndDeletes").has("includedPaths"))
             .as("Omitting includedPaths requests full previous documents")
             .isFalse();
     }
@@ -433,7 +434,7 @@ public class PreviousImageRetentionTest {
         }
     }
 
-    private JsonNode containerJson(CosmosContainerProperties properties) throws JsonProcessingException {
+    private static JsonNode containerJson(CosmosContainerProperties properties) throws JsonProcessingException {
         return OBJECT_MAPPER.readTree(ModelBridgeInternal.getResource(properties).toJson());
     }
 
