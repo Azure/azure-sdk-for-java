@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import com.azure.core.credential.ClientCertificateBinding;
+import com.azure.core.implementation.util.HttpUtils;
+
 import java.util.Objects;
 
 /**
@@ -50,6 +53,34 @@ public final class Contexts {
      */
     public ProgressReporter getHttpRequestProgressReporter() {
         return (ProgressReporter) context.getData(Keys.HTTP_REQUEST_PROGRESS_REPORTER).orElse(null);
+    }
+
+    /**
+     * Adds the TLS client certificate that the outgoing request's access token is bound to, for mutual TLS (mTLS)
+     * proof-of-possession.
+     * <p>
+     * HTTP clients that support certificate binding, as reported by
+     * {@link com.azure.core.http.HttpClient#supportsClientCertificateBinding()}, send the request only over a TLS
+     * connection that presents this certificate. The HTTP pipeline fails the request without sending it when its HTTP
+     * client doesn't support certificate binding.
+     *
+     * @param clientCertificateBinding The client certificate binding, or null to clear one added earlier.
+     * @return Itself.
+     */
+    public Contexts setClientCertificateBinding(ClientCertificateBinding clientCertificateBinding) {
+        context = context.addData(HttpUtils.AZURE_CLIENT_CERTIFICATE_BINDING, clientCertificateBinding);
+        return this;
+    }
+
+    /**
+     * Retrieves the TLS client certificate that the outgoing request's access token is bound to, for mutual TLS
+     * (mTLS) proof-of-possession.
+     *
+     * @return The client certificate binding, or null if the request doesn't carry one.
+     */
+    public ClientCertificateBinding getClientCertificateBinding() {
+        Object binding = context.getData(HttpUtils.AZURE_CLIENT_CERTIFICATE_BINDING).orElse(null);
+        return binding instanceof ClientCertificateBinding ? (ClientCertificateBinding) binding : null;
     }
 
     /**

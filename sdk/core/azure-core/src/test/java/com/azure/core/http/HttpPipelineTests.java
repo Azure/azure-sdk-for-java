@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.PortPolicy;
 import com.azure.core.http.policy.ProtocolPolicy;
@@ -10,18 +11,29 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.validation.http.MtlsTestCertificates;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpPipelineTests {
+    private static final ClientCertificateBinding BINDING
+        = MtlsTestCertificates.loadBinding(MtlsTestCertificates.CLIENT_A);
+
     @Test
     public void constructorWithNoArguments() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
@@ -184,5 +196,70 @@ public class HttpPipelineTests {
             = httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void boundRequestFailsBeforeSendingWhenClientCantBind() {
+        AtomicInteger sendCount = new AtomicInteger();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                sendCount.incrementAndGet();
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        }).build();
+        Context context = Contexts.empty().setClientCertificateBinding(BINDING).getContext();
+
+        StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"), context))
+            .verifyError(IllegalStateException.class);
+        assertThrows(IllegalStateException.class,
+            () -> httpPipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://example.com"), context));
+        assertEquals(0, sendCount.get());
+    }
+
+    @Test
+    public void clearedBindingIsSentByClientThatCantBind() {
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        }).build();
+        Context context
+            = Contexts.empty().setClientCertificateBinding(BINDING).setClientCertificateBinding(null).getContext();
+
+        StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"), context))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void boundRequestReachesClientThatCanBind() {
+        List<ClientCertificateBinding> received = new CopyOnWriteArrayList<>();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return send(request, Context.NONE);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request, Context context) {
+                received.add(Contexts.with(context).getClientCertificateBinding());
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+
+            @Override
+            public boolean supportsClientCertificateBinding() {
+                return true;
+            }
+        }).build();
+        Context context = Contexts.empty().setClientCertificateBinding(BINDING).getContext();
+
+        StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"), context))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+        assertEquals(200,
+            httpPipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://example.com"), context).getStatusCode());
+        assertEquals(Arrays.asList(BINDING, BINDING), received);
     }
 }

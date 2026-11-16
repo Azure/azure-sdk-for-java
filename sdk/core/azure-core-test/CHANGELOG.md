@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- `AssertingClient` now reports whether the client it wraps supports certificate binding, through
+  `HttpClient.supportsClientCertificateBinding()`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

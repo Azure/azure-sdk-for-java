@@ -77,6 +77,13 @@ public final class HttpUtils {
     public static final String AZURE_STREAM_RESPONSE_BODY = "azure-stream-response-body";
 
     /**
+     * Context key under which an outgoing request carries the {@code ClientCertificateBinding} of the access token it
+     * sends. Read and set it through {@code Contexts}.
+     */
+    public static final String AZURE_CLIENT_CERTIFICATE_BINDING
+        = "com.azure.core.http.request.client.certificate.binding";
+
+    /**
      * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.
      * Charset parameters don't affect this determination as event streams are always decoded as UTF-8.
      *

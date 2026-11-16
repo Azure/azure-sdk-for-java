@@ -9,6 +9,10 @@
   configuration. An unset or cleared maximum preserves the selected transport's existing default.
 - Added `ClientCertificateBinding` and `AccessToken.getClientCertificateBinding()` for access tokens bound to a TLS
   client certificate, used for mutual TLS (mTLS) proof-of-possession.
+- Added `HttpClient.supportsClientCertificateBinding()` and `Contexts.setClientCertificateBinding` and
+  `getClientCertificateBinding`, so that HTTP clients can send a request only over a TLS connection that presents the
+  certificate its access token is bound to. The HTTP pipeline fails a request that carries a binding, without sending
+  it, when its HTTP client doesn't support certificate binding.
 
 ### Breaking Changes
 

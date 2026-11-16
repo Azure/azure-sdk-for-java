@@ -43,6 +43,37 @@ public interface HttpClient {
     }
 
     /**
+     * Gets whether this client can bind requests to a TLS client certificate, for mutual TLS (mTLS)
+     * proof-of-possession.
+     * <p>
+     * A request carries a {@link com.azure.core.credential.ClientCertificateBinding} in its {@link Context} when its
+     * access token is bound to a client certificate (see
+     * {@link com.azure.core.util.Contexts#getClientCertificateBinding()}). The {@link HttpPipeline} fails such a
+     * request without sending it if this method returns false, so that the token is never sent without its
+     * certificate.
+     * <p>
+     * A client that returns true must send each bound request only over a TLS connection that presents the binding's
+     * certificate:
+     * <ul>
+     * <li>Build the TLS context from {@link com.azure.core.credential.ClientCertificateBinding#getKeyManager()}, using
+     * the JDK's TLS implementation and TLS 1.2. The private key may only be usable through the Java Cryptography
+     * Architecture, and mTLS proof-of-possession currently requires TLS 1.2.</li>
+     * <li>Never share a connection between requests bound to different certificates, or between bound and unbound
+     * requests.</li>
+     * <li>Where the client can inspect the TLS connection before sending, fail the request without sending it unless
+     * the connection presented the binding's certificate.</li>
+     * <li>Don't follow redirects automatically for bound requests.</li>
+     * </ul>
+     * A client that wraps another client should return the wrapped client's value.
+     *
+     * @return Whether this client can bind requests to a TLS client certificate. The default implementation returns
+     * false.
+     */
+    default boolean supportsClientCertificateBinding() {
+        return false;
+    }
+
+    /**
      * Creates a new {@link HttpClient} instance.
      *
      * @return A new {@link HttpClient} instance.

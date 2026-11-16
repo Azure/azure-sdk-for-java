@@ -27,9 +27,10 @@ import java.util.Objects;
  *
  * <p>
  * A credential that returns a token bound to a certificate attaches this binding to the {@link AccessToken}. HTTP
- * clients that support certificate binding build their TLS context from {@link #getKeyManager()}, so that the
- * connection carrying the token presents the certificate. The private key may not be exportable, for example when
- * hardware protects it, so the key manager is the only way to use it.
+ * clients that support certificate binding, as reported by
+ * {@link com.azure.core.http.HttpClient#supportsClientCertificateBinding()}, build their TLS context from
+ * {@link #getKeyManager()}, so that the connection carrying the token presents the certificate. The private key may
+ * not be exportable, for example when hardware protects it, so the key manager is the only way to use it.
  * </p>
  *
  * <p>
