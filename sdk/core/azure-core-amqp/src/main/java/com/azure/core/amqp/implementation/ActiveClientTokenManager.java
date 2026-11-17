@@ -12,6 +12,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -135,6 +136,12 @@ public class ActiveClientTokenManager implements TokenManager {
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
             .takeUntil(duration -> hasDisposed.get())
+            // Scheduling the next refresh replaces the refresh interval, which can interrupt an active tick when the
+            // cancellation occurs on another thread. The CBS response that schedules the next refresh can arrive (on
+            // the connection's reactor thread) while the tick is still running, e.g. signalling the connection's IO
+            // pipe; an interrupt then closes the pipe and kills the connection. Refreshing on another thread keeps the
+            // interrupt away from that work.
+            .publishOn(Schedulers.boundedElastic())
             .flatMap(delay -> {
 
                 LOGGER.atInfo().addKeyValue("scopes", scopes).log("Refreshing token.");
