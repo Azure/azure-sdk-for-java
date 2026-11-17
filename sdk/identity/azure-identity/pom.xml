@@ -71,6 +71,14 @@
       <artifactId>jna-platform</artifactId>
       <version>5.17.0</version> <!-- {x-version-update;net.java.dev.jna:jna-platform;external_dependency} -->
     </dependency>
+    <!-- Tests the reflective use of the optional KeyGuard attestation package. Declared after jna-platform, so that
+         its older jna doesn't replace the one jna-platform needs. -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j-key-attestation</artifactId>
+      <version>1.0.0-preview1</version> <!-- {x-version-update;com.microsoft.azure:msal4j-key-attestation;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
     <dependency>
       <groupId>com.google.code.gson</groupId>

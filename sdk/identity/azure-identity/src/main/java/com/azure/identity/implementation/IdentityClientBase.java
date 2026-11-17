@@ -118,6 +118,8 @@ public abstract class IdentityClientBase {
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
     static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
+    static final int MTLS_POP_CONNECT_TIMEOUT_MILLIS = 10_000;
+    static final int MTLS_POP_READ_TIMEOUT_MILLIS = 60_000;
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -403,21 +405,8 @@ public abstract class IdentityClientBase {
     }
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
-
-        ManagedIdentityId managedIdentityId;
-
-        if (!CoreUtils.isNullOrEmpty(clientId)) {
-            managedIdentityId = ManagedIdentityId.userAssignedClientId(clientId);
-        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
-            managedIdentityId = ManagedIdentityId.userAssignedResourceId(resourceId);
-        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
-            managedIdentityId = ManagedIdentityId.userAssignedObjectId(objectId);
-        } else {
-            managedIdentityId = ManagedIdentityId.systemAssigned();
-        }
-
-        ManagedIdentityApplication.Builder miBuilder
-            = ManagedIdentityApplication.builder(managedIdentityId).logPii(options.isUnsafeSupportLoggingEnabled());
+        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(getManagedIdentityId())
+            .logPii(options.isUnsafeSupportLoggingEnabled());
 
         ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
@@ -439,6 +428,47 @@ public abstract class IdentityClientBase {
         }
 
         return miBuilder.build();
+    }
+
+    /**
+     * Creates the MSAL application used only for managed identity tokens bound to a TLS client certificate (mTLS
+     * proof-of-possession).
+     * <p>
+     * MSAL only performs mTLS through HTTP clients that support it, which {@link HttpPipelineAdapter} doesn't, so this
+     * application sends its requests with MSAL's own HTTP client and retries. The proxy options still apply.
+     *
+     * @return the MSAL application for mTLS proof-of-possession.
+     */
+    ManagedIdentityApplication getManagedIdentityMtlsPopMsalApplication() {
+        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(getManagedIdentityId())
+            .logPii(options.isUnsafeSupportLoggingEnabled())
+            // MSAL's HTTP client doesn't time out by default.
+            .connectTimeoutForDefaultHttpClient(MTLS_POP_CONNECT_TIMEOUT_MILLIS)
+            .readTimeoutForDefaultHttpClient(MTLS_POP_READ_TIMEOUT_MILLIS);
+
+        if (options.getProxyOptions() != null) {
+            miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            miBuilder.executorService(options.getExecutorService());
+        } else {
+            miBuilder.executorService(SharedExecutorService.getInstance());
+        }
+
+        return miBuilder.build();
+    }
+
+    private ManagedIdentityId getManagedIdentityId() {
+        if (!CoreUtils.isNullOrEmpty(clientId)) {
+            return ManagedIdentityId.userAssignedClientId(clientId);
+        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            return ManagedIdentityId.userAssignedResourceId(resourceId);
+        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
+            return ManagedIdentityId.userAssignedObjectId(objectId);
+        } else {
+            return ManagedIdentityId.systemAssigned();
+        }
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {

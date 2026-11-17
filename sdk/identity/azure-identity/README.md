@@ -210,6 +210,74 @@ resource ID.
 
 **Note:** Use `azure-identity` version `1.7.0` or later to utilize [token caching](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md) support for managed identity authentication.
 
+### Managed identity mTLS proof-of-possession
+
+On Azure virtual machines and virtual machine scale sets, `ManagedIdentityCredential` can return access tokens bound to
+a TLS client certificate, for mutual TLS (mTLS) proof-of-possession. MSAL protects the certificate's private key with
+KeyGuard, and the client library sends the token only over TLS connections that present that certificate. The service
+rejects the token on any other connection, so a leaked token can't be used without the key.
+
+This feature is in preview. It needs the preview `msal4j` version that this version of `azure-identity` depends on.
+
+When a client library asks for a proof-of-possession token, `ManagedIdentityCredential`, including the one in
+`DefaultAzureCredential`, returns an mTLS proof-of-possession token if all of these are true:
+
+- The application runs on Windows x64, and MSAL finds that the virtual machine supports KeyGuard and IMDS v2.
+- The optional `com.microsoft.azure:msal4j-key-attestation` package is on the class path.
+- The `MSAL_KEY_ATTESTATION_LIBRARY_PATH` environment variable is set to the absolute path of `AttestationClientLib.dll`.
+- mTLS proof-of-possession isn't disabled.
+
+Otherwise, the credential returns a bearer token, and logs why. Once the credential uses mTLS proof-of-possession, it
+throws an exception when acquiring the token fails, for example when `AttestationClientLib.dll` can't be loaded,
+instead of returning a bearer token.
+
+The client library's HTTP client must be able to send the request over a connection that presents the token's
+certificate, as the default `azure-core-http-netty` client does. Otherwise, the request fails before it's sent.
+
+To set it up, add the attestation package:
+
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>msal4j-key-attestation</artifactId>
+    <version>1.0.0-preview1</version>
+</dependency>
+```
+
+The attestation package depends on `net.java.dev.jna:jna` 5.14.0, while `azure-identity` depends on
+`net.java.dev.jna:jna-platform` 5.17.0. Add `jna` 5.17.0 so that the two match:
+
+```xml
+<dependency>
+    <groupId>net.java.dev.jna</groupId>
+    <artifactId>jna</artifactId>
+    <version>5.17.0</version>
+</dependency>
+```
+
+Then download the [Microsoft.Azure.Security.KeyGuardAttestation](https://www.nuget.org/packages/Microsoft.Azure.Security.KeyGuardAttestation)
+NuGet package, which is a ZIP archive, and extract `runtimes/win-x64/native/AttestationClientLib.dll` from it. Set the
+`MSAL_KEY_ATTESTATION_LIBRARY_PATH` environment variable to the DLL's absolute path.
+
+Requests for mTLS proof-of-possession tokens go through MSAL's own HTTP client, because the credential's HTTP pipeline
+can't present a client certificate. The credential's proxy options and executor service still apply to them, but its
+HTTP client, HTTP pipeline and retry options don't.
+
+`DefaultAzureCredential` waits up to one second for MSAL to find out whether the virtual machine supports mTLS
+proof-of-possession. If MSAL doesn't answer in time, `DefaultAzureCredential` moves on to its next credential, and later
+requests use the answer once it arrives. `ManagedIdentityCredential` waits for the answer.
+
+To always use bearer tokens, disable mTLS proof-of-possession:
+
+```java readme-sample-disable-managed-identity-mtls-pop
+ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+    .disableMtlsProofOfPossession()
+    .build();
+```
+
+For `DefaultAzureCredential`, call `disableManagedIdentityMtlsProofOfPossession()` on `DefaultAzureCredentialBuilder`.
+To disable it without changing code, set the `MSAL_MI_DISABLE_IMDS_V2` environment variable to `true`.
+
 ## Cloud / Sovereign configuration
 
 By default, credentials authenticate to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure US Government or a private cloud, use one of the following solutions:

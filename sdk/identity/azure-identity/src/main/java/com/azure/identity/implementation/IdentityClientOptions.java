@@ -83,6 +83,7 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
     private boolean useImdsRetryStrategy;
+    private boolean mtlsProofOfPossessionDisabled;
 
     private String subscription;
 
@@ -761,6 +762,26 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
+     * Disables mutual TLS (mTLS) proof-of-possession for managed identity, so that managed identity credentials
+     * always return bearer tokens.
+     *
+     * @return the updated client options
+     */
+    public IdentityClientOptions disableMtlsProofOfPossession() {
+        this.mtlsProofOfPossessionDisabled = true;
+        return this;
+    }
+
+    /**
+     * Gets whether mutual TLS (mTLS) proof-of-possession is disabled for managed identity.
+     *
+     * @return true if managed identity credentials always return bearer tokens.
+     */
+    public boolean isMtlsProofOfPossessionDisabled() {
+        return mtlsProofOfPossessionDisabled;
+    }
+
+    /**
      * Gets the window handle for use with the interactive broker.
      * @return the window handle for use with the interactive broker.
      */
@@ -886,6 +907,9 @@ public final class IdentityClientOptions implements Cloneable {
         }
         if (isUnsafeSupportLoggingEnabled()) {
             clone.enableUnsafeSupportLogging();
+        }
+        if (isMtlsProofOfPossessionDisabled()) {
+            clone.disableMtlsProofOfPossession();
         }
         return clone;
     }

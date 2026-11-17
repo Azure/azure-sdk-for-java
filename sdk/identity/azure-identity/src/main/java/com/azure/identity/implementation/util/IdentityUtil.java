@@ -353,14 +353,21 @@ public final class IdentityUtil {
      * @return true if IMDS probing should be performed, false otherwise
      */
     public static boolean shouldProbeImds(IdentityClientOptions options) {
-        String dacEnvConfiguredCredential = options.getDACEnvConfiguredCredential();
-        boolean isManagedIdentityConfiguredForDac
-            = "managedidentitycredential".equalsIgnoreCase(dacEnvConfiguredCredential);
-
-        // Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
-        return options.isChained()
-            && !isManagedIdentityConfiguredForDac
+        return canSkipUnavailableManagedIdentity(options)
             && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource());
+    }
+
+    /**
+     * Determines if DefaultAzureCredential can move on from an unavailable managed identity: ManagedIdentityCredential
+     * is chained, and AZURE_TOKEN_CREDENTIALS doesn't select it alone. DefaultAzureCredential then bounds how long it
+     * waits for the managed identity host before treating it as unavailable.
+     *
+     * @param options the identity client options
+     * @return true if an unavailable managed identity can be skipped, false otherwise
+     */
+    public static boolean canSkipUnavailableManagedIdentity(IdentityClientOptions options) {
+        return options.isChained()
+            && !"managedidentitycredential".equalsIgnoreCase(options.getDACEnvConfiguredCredential());
     }
 
 }
