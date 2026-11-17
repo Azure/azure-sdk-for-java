@@ -13,21 +13,21 @@ public final class BucketServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BucketServerProperties model = BinaryData.fromString(
-            "{\"fqdn\":\"rfmluiqtq\",\"certificateCommonName\":\"avyvnqqyba\",\"certificateExpiryDate\":\"2021-03-17T00:26:12Z\",\"ipAddress\":\"ayjkqa\",\"certificateObject\":\"gzslesjcbhernnti\",\"onCertificateConflictAction\":\"Update\"}")
+            "{\"fqdn\":\"jchrdgoihxumw\",\"certificateCommonName\":\"ond\",\"certificateExpiryDate\":\"2021-03-20T06:57:53Z\",\"ipAddress\":\"udfdlwgg\",\"certificateObject\":\"sb\",\"onCertificateConflictAction\":\"Fail\"}")
             .toObject(BucketServerProperties.class);
-        Assertions.assertEquals("rfmluiqtq", model.fqdn());
-        Assertions.assertEquals("gzslesjcbhernnti", model.certificateObject());
-        Assertions.assertEquals(OnCertificateConflictAction.UPDATE, model.onCertificateConflictAction());
+        Assertions.assertEquals("jchrdgoihxumw", model.fqdn());
+        Assertions.assertEquals("sb", model.certificateObject());
+        Assertions.assertEquals(OnCertificateConflictAction.FAIL, model.onCertificateConflictAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BucketServerProperties model = new BucketServerProperties().withFqdn("rfmluiqtq")
-            .withCertificateObject("gzslesjcbhernnti")
-            .withOnCertificateConflictAction(OnCertificateConflictAction.UPDATE);
+        BucketServerProperties model = new BucketServerProperties().withFqdn("jchrdgoihxumw")
+            .withCertificateObject("sb")
+            .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL);
         model = BinaryData.fromObject(model).toObject(BucketServerProperties.class);
-        Assertions.assertEquals("rfmluiqtq", model.fqdn());
-        Assertions.assertEquals("gzslesjcbhernnti", model.certificateObject());
-        Assertions.assertEquals(OnCertificateConflictAction.UPDATE, model.onCertificateConflictAction());
+        Assertions.assertEquals("jchrdgoihxumw", model.fqdn());
+        Assertions.assertEquals("sb", model.certificateObject());
+        Assertions.assertEquals(OnCertificateConflictAction.FAIL, model.onCertificateConflictAction());
     }
 }
