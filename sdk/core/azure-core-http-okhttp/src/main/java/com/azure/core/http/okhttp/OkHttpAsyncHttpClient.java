@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
@@ -12,6 +13,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.BinaryDataRequestBody;
+import com.azure.core.http.okhttp.implementation.ClientCertificateBinder;
+import com.azure.core.http.okhttp.implementation.ClientCertificateBoundClients;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
@@ -42,6 +45,8 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.function.Supplier;
 
 /**
  * This class provides a OkHttp-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -78,19 +83,38 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
     final OkHttpClient httpClient;
+    final ClientCertificateBoundClients boundClients;
 
     private final Duration responseTimeout;
 
-    OkHttpAsyncHttpClient(OkHttpClient httpClient, Duration responseTimeout) {
+    /**
+     * Creates an OkHttpAsyncHttpClient.
+     *
+     * @param httpClient The OkHttp client.
+     * @param responseTimeout The response timeout.
+     * @param clientCertificateBindingClock Supplies the current time, used to retire the clients of requests bound to
+     * TLS client certificates that expired.
+     */
+    OkHttpAsyncHttpClient(OkHttpClient httpClient, Duration responseTimeout,
+        Supplier<Instant> clientCertificateBindingClock) {
         EventListener.Factory factory = httpClient.eventListenerFactory();
-        this.httpClient
+        OkHttpClient client
             = httpClient.newBuilder().eventListenerFactory(new ResponseTimeoutListenerFactory(factory)).build();
+        this.httpClient = client;
         this.responseTimeout = responseTimeout;
+        this.boundClients
+            = new ClientCertificateBoundClients(binding -> ClientCertificateBinder.bindToCertificate(client, binding),
+                clientCertificateBindingClock, ClientCertificateBoundClients.DEFAULT_MAXIMUM_CLIENTS);
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return send(request, Context.NONE);
+    }
+
+    @Override
+    public boolean supportsClientCertificateBinding() {
+        return true;
     }
 
     @Override
@@ -103,7 +127,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        Contexts contexts = Contexts.with(context);
+        ProgressReporter progressReporter = contexts.getHttpRequestProgressReporter();
+        ClientCertificateBinding binding = contexts.getClientCertificateBinding();
 
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
@@ -121,7 +147,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter, perCallTimeout))
                 .subscribe(okHttpRequest -> {
                     try {
-                        Call call = httpClient.newCall(okHttpRequest);
+                        Call call = getClient(binding).newCall(okHttpRequest);
                         call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
                             eagerlyConvertHeaders));
                         sink.onCancel(call::cancel);
@@ -142,18 +168,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        Contexts contexts = Contexts.with(context);
+        ProgressReporter progressReporter = contexts.getHttpRequestProgressReporter();
+        OkHttpClient client = getClient(contexts.getClientCertificateBinding());
 
         Request okHttpRequest = toOkHttpRequest(request, progressReporter, perCallTimeout);
         Call call = null;
         try {
-            call = httpClient.newCall(okHttpRequest);
+            call = client.newCall(okHttpRequest);
             Response okHttpResponse = call.execute();
             return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
                 eagerlyConvertHeaders);
         } catch (IOException e) {
+            IllegalStateException clientCertificateError = ClientCertificateBinder.getClientCertificateError(e);
+            if (clientCertificateError != null) {
+                throw LOGGER.logExceptionAsError(clientCertificateError);
+            }
+
             throw LOGGER.logExceptionAsError(new UncheckedIOException(mapIOException(e, call)));
         }
+    }
+
+    /*
+     * Gets the client for a request. A request whose access token is bound to a TLS client certificate goes through the
+     * client for that certificate.
+     */
+    private OkHttpClient getClient(ClientCertificateBinding binding) {
+        return binding == null ? httpClient : boundClients.getClient(binding);
     }
 
     /**
@@ -309,7 +350,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onFailure(okhttp3.Call call, IOException e) {
-            if (e.getSuppressed().length == 1) {
+            IllegalStateException clientCertificateError = ClientCertificateBinder.getClientCertificateError(e);
+            if (clientCertificateError != null) {
+                sink.error(LOGGER.logExceptionAsError(clientCertificateError));
+            } else if (e.getSuppressed().length == 1) {
                 // Propagate suppressed exception when there is one.
                 // This happens when body emission fails in the middle.
                 Throwable suppressed = e.getSuppressed()[0];
