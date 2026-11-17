@@ -22,7 +22,7 @@ Verification runs tests, Spotless formatting checks, and shared SDK Checkstyle r
 ## Generate an API review bundle
 
 Use the [API review Maven plugin](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tools/api-review-maven-plugin/README.md)
-for `api.md` and `api.metadata.yml`, or the [ARH wrappers](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/tools/api-review/README.md)
+for `api.md` and `api.metadata.yml`, or its [ARH wrappers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tools/api-review-maven-plugin/README.md#standalone-execution-and-api-review-hub)
 to build and stage the executable tool once for both baseline and target generation.
 
 ## Usage
