@@ -23,168 +23,168 @@ import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
  */
 public interface MongoClustersClient {
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster along with {@link Response}.
+     * @return information about a DocumentDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String mongoClusterName,
         Context context);
 
     /**
-     * Gets information about a mongo cluster.
+     * Gets information about a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a mongo cluster.
+     * @return information about a DocumentDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MongoClusterInner getByResourceGroup(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, MongoClusterInner resource);
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String mongoClusterName, MongoClusterInner resource, Context context);
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MongoClusterInner createOrUpdate(String resourceGroupName, String mongoClusterName, MongoClusterInner resource);
 
     /**
-     * Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some of the
-     * properties, use PATCH.
+     * Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify some of
+     * the properties, use PATCH.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MongoClusterInner createOrUpdate(String resourceGroupName, String mongoClusterName, MongoClusterInner resource,
         Context context);
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
         String mongoClusterName, MongoClusterUpdate properties);
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a mongo cluster resource.
+     * @return the {@link SyncPoller} for polling of represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
         String mongoClusterName, MongoClusterUpdate properties, Context context);
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties);
 
     /**
-     * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
-     * normal mongo cluster definition.
+     * Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in the
+     * normal DocumentDB cluster definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a mongo cluster resource.
+     * @return represents a DocumentDB cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties,
         Context context);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,10 +194,10 @@ public interface MongoClustersClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -208,10 +208,10 @@ public interface MongoClustersClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mongoClusterName, Context context);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,10 +220,10 @@ public interface MongoClustersClient {
     void delete(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Deletes a mongo cluster.
+     * Deletes a DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public interface MongoClustersClient {
     void delete(String resourceGroupName, String mongoClusterName, Context context);
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public interface MongoClustersClient {
     PagedIterable<MongoClusterInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the mongo clusters in a given resource group.
+     * List all the DocumentDB clusters in a given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -258,7 +258,7 @@ public interface MongoClustersClient {
     PagedIterable<MongoClusterInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -268,7 +268,7 @@ public interface MongoClustersClient {
     PagedIterable<MongoClusterInner> list();
 
     /**
-     * List all the mongo clusters in a given subscription.
+     * List all the DocumentDB clusters in a given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,37 +280,37 @@ public interface MongoClustersClient {
     PagedIterable<MongoClusterInner> list(Context context);
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster along with {@link Response}.
+     * @return the connection strings for the given DocumentDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ListConnectionStringsResultInner> listConnectionStringsWithResponse(String resourceGroupName,
         String mongoClusterName, Context context);
 
     /**
-     * List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as well
-     * as other connection strings supported by the cluster.
+     * List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256, as
+     * well as other connection strings supported by the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given mongo cluster.
+     * @return the connection strings for the given DocumentDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ListConnectionStringsResultInner listConnectionStrings(String resourceGroupName, String mongoClusterName);
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -325,7 +325,7 @@ public interface MongoClustersClient {
         CheckNameAvailabilityRequest body, Context context);
 
     /**
-     * Check if mongo cluster name is available for use.
+     * Check if DocumentDB cluster name is available for use.
      * 
      * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
@@ -338,10 +338,10 @@ public interface MongoClustersClient {
     CheckNameAvailabilityResponseInner checkNameAvailability(String location, CheckNameAvailabilityRequest body);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -353,10 +353,10 @@ public interface MongoClustersClient {
         PromoteReplicaRequest body);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -369,10 +369,10 @@ public interface MongoClustersClient {
         PromoteReplicaRequest body, Context context);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -382,10 +382,10 @@ public interface MongoClustersClient {
     void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body);
 
     /**
-     * Promotes a replica mongo cluster to a primary role.
+     * Promotes a replica DocumentDB cluster to a primary role.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
