@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+Subvolume operations and configuration were removed from the service API specification for API version `2026-09-01`. Applications using the APIs listed below must remove those usages before upgrading.
+
 #### `models.SubvolumeInfo$Update` was removed
 
 #### `models.SubvolumeInfo` was removed
