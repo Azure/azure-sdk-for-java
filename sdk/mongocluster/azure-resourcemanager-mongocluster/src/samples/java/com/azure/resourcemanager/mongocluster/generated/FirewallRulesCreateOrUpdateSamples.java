@@ -14,11 +14,11 @@ public final class FirewallRulesCreateOrUpdateSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_FirewallRuleCreate.json
      */
     /**
-     * Sample code: Creates a firewall rule on a Mongo Cluster resource.
+     * Sample code: Creates a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAFirewallRuleOnAMongoClusterResource(
+    public static void createsAFirewallRuleOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules()
             .define("rule1")

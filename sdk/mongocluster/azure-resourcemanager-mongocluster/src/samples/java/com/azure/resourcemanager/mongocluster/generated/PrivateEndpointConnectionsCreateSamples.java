@@ -16,11 +16,11 @@ public final class PrivateEndpointConnectionsCreateSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_PrivateEndpointConnectionPut.json
      */
     /**
-     * Sample code: Approves a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Approves a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void approvesAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void approvesAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .define("pecTest")

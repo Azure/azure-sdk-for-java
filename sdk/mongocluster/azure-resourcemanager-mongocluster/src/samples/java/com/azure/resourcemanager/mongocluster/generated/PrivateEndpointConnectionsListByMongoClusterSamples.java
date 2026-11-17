@@ -12,11 +12,11 @@ public final class PrivateEndpointConnectionsListByMongoClusterSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_PrivateEndpointConnectionList.json
      */
     /**
-     * Sample code: Lists the private endpoint connection resources on a Mongo Cluster resource.
+     * Sample code: Lists the private endpoint connection resources on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsThePrivateEndpointConnectionResourcesOnAMongoClusterResource(
+    public static void listsThePrivateEndpointConnectionResourcesOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);

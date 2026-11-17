@@ -12,12 +12,12 @@ public final class FirewallRulesGetSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_FirewallRuleGet.json
      */
     /**
-     * Sample code: Gets a firewall rule on a Mongo Cluster resource.
+     * Sample code: Gets a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void
-        getsAFirewallRuleOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+    public static void getsAFirewallRuleOnADocumentDBClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules()
             .getWithResponse("TestGroup", "myMongoCluster", "rule1", com.azure.core.util.Context.NONE);
     }

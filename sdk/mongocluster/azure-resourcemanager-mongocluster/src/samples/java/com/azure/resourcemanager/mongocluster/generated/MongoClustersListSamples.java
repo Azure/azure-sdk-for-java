@@ -12,11 +12,11 @@ public final class MongoClustersListSamples {
      * x-ms-original-file: 2026-06-15-preview/MongoClusters_List.json
      */
     /**
-     * Sample code: Lists the Mongo Cluster resources in a subscription.
+     * Sample code: Lists the DocumentDB cluster resources in a subscription.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsTheMongoClusterResourcesInASubscription(
+    public static void listsTheDocumentDBClusterResourcesInASubscription(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().list(com.azure.core.util.Context.NONE);
     }
