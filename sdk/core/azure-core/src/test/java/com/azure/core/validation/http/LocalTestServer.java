@@ -22,6 +22,7 @@ import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
@@ -83,9 +84,9 @@ public class LocalTestServer {
     }
 
     /**
-     * Creates a local server for mutual TLS (mTLS) tests. Its HTTPS connector only accepts TLS 1.2 and HTTP/1.1 and, when
-     * asked to, requests a certificate from clients during the TLS handshake, accepting any certificate a client
-     * presents. Clients can still connect without presenting one.
+     * Creates a local server for mutual TLS (mTLS) tests. Its HTTPS connector accepts TLS 1.2 and TLS 1.3 and only
+     * HTTP/1.1 and, when asked to, requests a certificate from clients during the TLS handshake, accepting any
+     * certificate a client presents. Clients can still connect without presenting one.
      *
      * @param requestHandler The request handler that will process requests. It can get the certificate a client
      * presented with {@link #getClientCertificate(HttpServletRequest)}.
@@ -99,9 +100,9 @@ public class LocalTestServer {
     }
 
     /**
-     * Creates a local server for mutual TLS (mTLS) tests. Its HTTPS connector only accepts TLS 1.2 and, when asked to,
-     * requests a certificate from clients during the TLS handshake, accepting any certificate a client presents. Clients
-     * can still connect without presenting one.
+     * Creates a local server for mutual TLS (mTLS) tests. Its HTTPS connector accepts TLS 1.2 and TLS 1.3 and, when
+     * asked to, requests a certificate from clients during the TLS handshake, accepting any certificate a client
+     * presents. Clients can still connect without presenting one.
      *
      * @param requestHandler The request handler that will process requests. It can get the certificate a client
      * presented with {@link #getClientCertificate(HttpServletRequest)}.
@@ -112,18 +113,47 @@ public class LocalTestServer {
      */
     public static LocalTestServer createMutualTlsServer(RequestHandler requestHandler, boolean requestClientCertificate,
         HttpProtocolVersion maximumHttpVersion) {
+        return createMutualTlsServer(requestHandler, requestClientCertificate, maximumHttpVersion, "TLSv1.3",
+            "TLSv1.2");
+    }
+
+    /**
+     * Creates a local server for mutual TLS (mTLS) tests whose HTTPS connector only accepts the given TLS protocols, for
+     * example to test TLS 1.2 and TLS 1.3 separately. When asked to, the HTTPS connector requests a certificate from
+     * clients during the TLS handshake, accepting any certificate a client presents. Clients can still connect without
+     * presenting one.
+     *
+     * @param requestHandler The request handler that will process requests. It can get the certificate a client
+     * presented with {@link #getClientCertificate(HttpServletRequest)}, and the TLS protocol of the connection with
+     * {@link #getTlsProtocol(HttpServletRequest)}.
+     * @param requestClientCertificate Whether the HTTPS connector requests a certificate from clients.
+     * @param maximumHttpVersion The maximum HTTPS protocol version. HTTP/2 also permits HTTP/1.1.
+     * @param tlsProtocols The TLS protocols the HTTPS connector accepts, such as {@code "TLSv1.2"} or
+     * {@code "TLSv1.3"}.
+     * @return The server, which must be started before it processes requests.
+     * @throws IllegalArgumentException If no TLS protocol is given.
+     * @throws RuntimeException If the server cannot configure SSL.
+     */
+    public static LocalTestServer createMutualTlsServer(RequestHandler requestHandler, boolean requestClientCertificate,
+        HttpProtocolVersion maximumHttpVersion, String... tlsProtocols) {
+        if (tlsProtocols == null || tlsProtocols.length == 0) {
+            throw new IllegalArgumentException("At least one TLS protocol is required.");
+        }
+
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setSslContext(maximumHttpVersion == HttpProtocolVersion.HTTP_2
             ? Http2ConnectorFactory.createMutualTlsSslContext()
             : createMutualTlsSslContext(null));
-        sslContextFactory.setIncludeProtocols("TLSv1.2");
+        sslContextFactory.setIncludeProtocols(tlsProtocols);
         sslContextFactory.setWantClientAuth(requestClientCertificate);
 
         return new LocalTestServer(requestHandler, 10, maximumHttpVersion, sslContextFactory);
     }
 
     /**
-     * Gets the certificate the client presented during the TLS handshake of the connection a request came on.
+     * Gets the certificate the client presented on the TLS connection a request came on. When the connection resumed
+     * a TLS session, the client doesn't present its certificate again, and this is the certificate it presented when
+     * the session was created.
      *
      * @param request The request.
      * @return The certificate the client presented, or null if it didn't present one.
@@ -132,6 +162,17 @@ public class LocalTestServer {
         X509Certificate[] certificates
             = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
         return certificates == null || certificates.length == 0 ? null : certificates[0];
+    }
+
+    /**
+     * Gets the TLS protocol of the connection a request came on.
+     *
+     * @param request The request.
+     * @return The TLS protocol, such as {@code "TLSv1.3"}, or null if the request didn't come over TLS.
+     */
+    public static String getTlsProtocol(HttpServletRequest request) {
+        Object session = request.getAttribute("org.eclipse.jetty.servlet.request.ssl_session");
+        return session instanceof SSLSession ? ((SSLSession) session).getProtocol() : null;
     }
 
     private LocalTestServer(RequestHandler requestHandler, int maxThreads, HttpProtocolVersion maximumHttpVersion,
