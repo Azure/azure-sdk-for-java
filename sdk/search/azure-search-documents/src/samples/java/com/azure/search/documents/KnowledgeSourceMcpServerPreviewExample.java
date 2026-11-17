@@ -25,10 +25,10 @@ import java.util.Arrays;
  */
 public class KnowledgeSourceMcpServerPreviewExample {
 
-    private static final String KB_NAME = "mcp-server-kind-sample-kb";
-    private static final String KS_NAME = "mcp-server-kind-sample-ks";
-
     public static void main(String[] args) {
+        String knowledgeBaseName = PreviewSampleSupport.name("java-dp11-mcp-kb");
+        String knowledgeSourceName = PreviewSampleSupport.name("java-dp11-mcp-ks");
+        String serverUrl = PreviewSampleSupport.required("SEARCH_MCP_SERVER_URL");
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         String apiKey = System.getenv("SEARCH_API_KEY");
 
@@ -40,32 +40,32 @@ public class KnowledgeSourceMcpServerPreviewExample {
         KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .knowledgeBaseName(KB_NAME)
+            .knowledgeBaseName(knowledgeBaseName)
             .buildClient();
 
-        try {
+        try (PreviewSampleSupport.Resources resources = new PreviewSampleSupport.Resources(searchIndexClient)) {
             // Create KS — MCP Server requires a server URL and a list of tools
             McpServerKnowledgeSource knowledgeSource = new McpServerKnowledgeSource(
-                KS_NAME,
+                knowledgeSourceName,
                 new McpServerKnowledgeSourceParameters(
-                    "https://my-mcp-server.example.com/sse",
+                    serverUrl,
                     Arrays.asList(
                         new McpServerTool().setName("search-tool").setMaxOutputTokens(2000),
                         new McpServerTool().setName("lookup-tool").setMaxOutputTokens(1000)
                     )
                 )
             );
-            searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+            resources.createKnowledgeSource(knowledgeSource);
 
             // Verify KS kind
-            KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(KS_NAME);
+            KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSourceName);
             System.out.println("KnowledgeSource kind = " + retrieved.getKind());
 
             // Hook up KS to a KB
-            KnowledgeSourceReference ref = new KnowledgeSourceReference(KS_NAME);
-            KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, ref);
-            searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
-            System.out.println("Created KnowledgeBase " + KB_NAME + " referencing " + KS_NAME);
+            KnowledgeSourceReference ref = new KnowledgeSourceReference(knowledgeSourceName);
+            KnowledgeBase knowledgeBase = new KnowledgeBase(knowledgeBaseName, ref);
+            resources.createKnowledgeBase(knowledgeBase);
+            System.out.println("Created KnowledgeBase " + knowledgeBaseName + " referencing " + knowledgeSourceName);
 
             // Issue retrieval request to verify everything is wired up end-to-end
             KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions()
@@ -73,9 +73,6 @@ public class KnowledgeSourceMcpServerPreviewExample {
             KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(options);
             System.out.println("Response messages: " + result.getResponse().size());
 
-        } finally {
-            searchIndexClient.deleteKnowledgeBase(KB_NAME);
-            searchIndexClient.deleteKnowledgeSource(KS_NAME);
         }
     }
 }

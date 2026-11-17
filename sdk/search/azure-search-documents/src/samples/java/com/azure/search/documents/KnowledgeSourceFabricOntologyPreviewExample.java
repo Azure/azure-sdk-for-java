@@ -22,14 +22,13 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemant
  */
 public class KnowledgeSourceFabricOntologyPreviewExample {
 
-    private static final String KB_NAME = "fabric-ontology-kind-sample-kb";
-    private static final String KS_NAME = "fabric-ontology-kind-sample-ks";
-
     public static void main(String[] args) {
+        String knowledgeBaseName = PreviewSampleSupport.name("java-dp11-fabric-ontology-kb");
+        String knowledgeSourceName = PreviewSampleSupport.name("java-dp11-fabric-ontology-ks");
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         String apiKey = System.getenv("SEARCH_API_KEY");
-        String workspaceId = System.getenv("FABRIC_WORKSPACE_ID");
-        String ontologyId = System.getenv("FABRIC_ONTOLOGY_ID");
+        String workspaceId = PreviewSampleSupport.required("FABRIC_WORKSPACE_ID");
+        String ontologyId = PreviewSampleSupport.required("FABRIC_ONTOLOGY_ID");
 
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
@@ -39,26 +38,26 @@ public class KnowledgeSourceFabricOntologyPreviewExample {
         KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .knowledgeBaseName(KB_NAME)
+            .knowledgeBaseName(knowledgeBaseName)
             .buildClient();
 
-        try {
+        try (PreviewSampleSupport.Resources resources = new PreviewSampleSupport.Resources(searchIndexClient)) {
             // Create KS — Fabric Ontology requires a workspace ID and ontology ID
             FabricOntologyKnowledgeSource knowledgeSource = new FabricOntologyKnowledgeSource(
-                KS_NAME,
+                knowledgeSourceName,
                 new FabricOntologyKnowledgeSourceParameters(workspaceId, ontologyId)
             );
-            searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+            resources.createKnowledgeSource(knowledgeSource);
 
             // Verify KS kind
-            KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(KS_NAME);
+            KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSourceName);
             System.out.println("KnowledgeSource kind = " + retrieved.getKind());
 
             // Hook up KS to a KB
-            KnowledgeSourceReference ref = new KnowledgeSourceReference(KS_NAME);
-            KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, ref);
-            searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
-            System.out.println("Created KnowledgeBase " + KB_NAME + " referencing " + KS_NAME);
+            KnowledgeSourceReference ref = new KnowledgeSourceReference(knowledgeSourceName);
+            KnowledgeBase knowledgeBase = new KnowledgeBase(knowledgeBaseName, ref);
+            resources.createKnowledgeBase(knowledgeBase);
+            System.out.println("Created KnowledgeBase " + knowledgeBaseName + " referencing " + knowledgeSourceName);
 
             // Issue retrieval request to verify everything is wired up end-to-end
             KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions()
@@ -66,9 +65,6 @@ public class KnowledgeSourceFabricOntologyPreviewExample {
             KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(options);
             System.out.println("Response messages: " + result.getResponse().size());
 
-        } finally {
-            searchIndexClient.deleteKnowledgeBase(KB_NAME);
-            searchIndexClient.deleteKnowledgeSource(KS_NAME);
         }
     }
 }
