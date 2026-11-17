@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"y\"},\"etag\":\"pffmnoii\",\"tags\":{\"a\":\"dyhbrjj\",\"sxxhdodp\":\"xrdsjrholuqwg\"},\"id\":\"yblvtbdmvsbyi\",\"name\":\"aelqpvekmkwjf\",\"type\":\"o\"}";
+            = "{\"properties\":{\"description\":\"alrjwaez\"},\"etag\":\"ybsps\",\"tags\":{\"suiwexpasckpg\":\"tcepzimfc\",\"cmxtoejt\":\"mlyxbwslx\",\"oluznt\":\"vqctmlidkxz\"},\"id\":\"c\",\"name\":\"ddpxqrxiperrp\",\"type\":\"fmfvmjjfzi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,22 +33,14 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RaiBlocklist response
-            = manager.raiBlocklistItems()
-                .batchAddWithResponse("vrdmvxyrxdh", "vqojbxaotcgbz", "mbtple", Arrays.asList(
-                    new RaiBlocklistItemBulkRequest().withName("oyidoxznvgvdtmuu")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("wsxmrszb").withIsRegex(true)),
-                    new RaiBlocklistItemBulkRequest().withName("xl")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("rxrzutylcur").withIsRegex(false)),
-                    new RaiBlocklistItemBulkRequest().withName("nbxqaeht")
-                        .withProperties(
-                            new RaiBlocklistItemProperties().withPattern("mbnvynfaooeacted").withIsRegex(false)),
-                    new RaiBlocklistItemBulkRequest().withName("kakddidahzllrqm")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("byx").withIsRegex(false))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        RaiBlocklist response = manager.raiBlocklistItems()
+            .batchAddWithResponse("rkbuatxkznl", "lmbx", "gkev",
+                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("vxzk")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("mz").withIsRegex(true))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("y", response.properties().description());
-        Assertions.assertEquals("dyhbrjj", response.tags().get("a"));
+        Assertions.assertEquals("alrjwaez", response.properties().description());
+        Assertions.assertEquals("tcepzimfc", response.tags().get("suiwexpasckpg"));
     }
 }

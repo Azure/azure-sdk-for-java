@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountsListSkusSamples {
     /*
-     * x-ms-original-file: 2026-11-01/ListSkus.json
+     * x-ms-original-file: 2026-11-15-preview/ListSkus.json
      */
     /**
      * Sample code: List SKUs.
