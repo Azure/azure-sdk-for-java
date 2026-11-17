@@ -3,12 +3,15 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
+import com.azure.core.http.netty.implementation.ClientCertificateBoundClients;
+import com.azure.core.http.netty.implementation.ClientCertificateBoundClients.BoundClient;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.NettyUtility;
 import com.azure.core.http.netty.implementation.NonProxyHostAddressResolverGroup;
@@ -21,26 +24,36 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import io.netty.util.internal.SystemPropertyUtil;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
+import reactor.netty.http.Http11SslContextSpec;
+import reactor.netty.http.Http2SslContextSpec;
 import reactor.netty.http.HttpDecoderSpec;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.tcp.SslProvider;
 import reactor.netty.transport.AddressUtils;
 import reactor.netty.transport.ProxyProvider;
 
+import javax.net.ssl.TrustManagerFactory;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
@@ -115,6 +128,21 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  *
+ * <p>
+ * <strong>Requests bound to a TLS client certificate</strong>
+ * </p>
+ *
+ * <p>
+ * Clients built by this builder support mutual TLS (mTLS) proof-of-possession (see
+ * {@link com.azure.core.http.HttpClient#supportsClientCertificateBinding()}). A request whose access token is bound to a
+ * client certificate goes over a connection pool used only for that certificate, configured like the builder's. It uses
+ * the JDK's TLS implementation, TLS 1.2 and the JVM's default trust, doesn't follow redirects, and is only sent once its
+ * connection has presented the certificate. A certificate's pool is closed when the certificate expires, or when more
+ * than 16 certificates are in use, least recently used first. When the builder is created from a Reactor Netty
+ * {@link HttpClient}, these requests share that client's connection pool, and its SSL configuration doesn't apply to
+ * them.
+ * </p>
+ *
  * @see HttpClient
  * @see NettyAsyncHttpClient
  */
@@ -139,6 +167,8 @@ public class NettyAsyncHttpClientBuilder {
     private Duration responseTimeout;
     private Duration readTimeout;
     private HttpProtocolVersion maximumHttpVersion;
+    private TrustManagerFactory clientCertificateBindingTrustManagerFactory;
+    private Supplier<Instant> clientCertificateBindingClock = Instant::now;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -229,10 +259,8 @@ public class NettyAsyncHttpClientBuilder {
             ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
             : null;
         AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
+        ClientSettings settings = new ClientSettings(this, buildProxyOptions, handler, proxyChallengeHolder);
 
-        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
-        // no-op address resolver to be set.
-        boolean setDefaultAddressResolverGroup = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
@@ -241,125 +269,218 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
-        if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
-            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
-        } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
-            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11, HttpProtocol.H2);
+        nettyHttpClient = settings.configure(nettyHttpClient);
+        ClientCertificateBoundClients boundClients
+            = new ClientCertificateBoundClients(createBoundClientFactory(settings, nettyHttpClient),
+                clientCertificateBindingClock, ClientCertificateBoundClients.DEFAULT_MAXIMUM_CLIENTS);
+
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, settings.addProxyHandler, boundClients);
+    }
+
+    /*
+     * Creates the Reactor Netty clients for requests whose access token is bound to a TLS client certificate. Each
+     * client presents only that certificate, using the JDK's TLS implementation and TLS 1.2, and doesn't follow
+     * redirects.
+     */
+    private Function<ClientCertificateBinding, BoundClient> createBoundClientFactory(ClientSettings settings,
+        HttpClient configuredClient) {
+        TrustManagerFactory trustManagerFactory = this.clientCertificateBindingTrustManagerFactory;
+
+        if (this.baseHttpClient != null) {
+            // Reactor Netty can't change the connection provider of a client, so clients bound to a certificate share
+            // the connection pool of the client passed to the builder. Checking the certificate each connection
+            // presented, before each request, keeps their connections apart.
+            return binding -> new BoundClient(bindToCertificate(configuredClient, binding, trustManagerFactory), null,
+                binding);
         }
 
-        // Keep the pooled default while respecting allocator choices made by the application.
-        if (!nettyHttpClient.configuration().options().containsKey(ChannelOption.ALLOCATOR)
-            && !SystemPropertyUtil.contains("io.netty.allocator.type")) {
-            // If ChannelOptions and io.netty.allocator.type wasn't configured with an allocator fallback to the default
-            // setting from Netty 4.1 which was the pooled allocator. Otherwise, respect the configuration, be it
-            // ChannelOptions or io.netty.allocator.type. In the future, this should be validated for if this should use
-            // the new Netty 4.2 default which is an adaptive allocator.
-            nettyHttpClient = nettyHttpClient.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        }
-
-        // If a resolver hasn't been set, set the default one.
-        if (nettyHttpClient.configuration().resolver() == null) {
-            nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
-            setDefaultAddressResolverGroup = true;
-        }
-
-        long writeTimeout
-            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT)
-                .toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-            DEFAULT_RESPONSE_TIMEOUT).toMillis();
-        long readTimeout
-            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT)
-                .toMillis();
-
-        // Get the initial HttpResponseDecoderSpec and update it.
-        // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
-        // instead of overwritten.
-        HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        long connectTimeoutMillis
-            = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT)
-                .toMillis();
-        nettyHttpClient = nettyHttpClient.port(port)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
-            .httpResponseDecoder(httpResponseDecoderSpec -> {
-                int maxHeaderSize = initialSpec.maxHeaderSize();
-                if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
-                    // Only change the max header size if it is the default value. If it's set, this was done external
-                    // to the SDK and we should respect that.
-                    // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
-                    maxHeaderSize = 256 * 1024;
-                }
-
-                // TODO (alzimmer): What does validating HTTP response headers get us?
-                return initialSpec.validateHeaders(false).maxHeaderSize(maxHeaderSize);
-            })
-            .doOnRequest(
-                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
-            .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
-
-        LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
-        if (loggingHandler == null) {
-            // Only enable wiretap if the LoggingHandler is null. If the LoggingHandler isn't null this means that a
-            // base client was passed with logging enabled. 'wiretap(boolean)' is a basic API that doesn't allow for
-            // in-depth settings to be done on how logging works, so setting it always can replace a customized logger
-            // with a basic one that isn't as useful in troubleshooting scenarios.
-            nettyHttpClient.wiretap(enableWiretap);
-        }
-
-        boolean addProxyHandler = false;
-
-        if (eventLoopGroup != null) {
-            nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
-        }
-
-        // Proxy configurations are present, set up a proxy in Netty.
-        if (buildProxyOptions != null) {
-            Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
-                ? null
-                : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
-
-            // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
-            if (handler != null) {
-                /*
-                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
-                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
-                 * before any request data is sent.
-                 */
-                addProxyHandler = true;
-                nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
-                    if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
-                        HttpProxyHandler httpProxyHandler
-                            = new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                handler, proxyChallengeHolder);
-                        httpProxyHandler.setConnectTimeoutMillis(connectTimeoutMillis);
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, httpProxyHandler);
-                    }
-                });
+        // Each certificate gets its own connection pool, configured like the builder's.
+        ConnectionProvider sharedConnectionProvider = this.connectionProvider;
+        return binding -> {
+            ConnectionProvider ownedConnectionProvider;
+            if (sharedConnectionProvider == null) {
+                ownedConnectionProvider = ConnectionProvider.create("azure-sdk-client-certificate",
+                    Math.max(ConnectionProvider.DEFAULT_POOL_MAX_CONNECTIONS, 500));
             } else {
-                nettyHttpClient
-                    = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
-                        .socketAddress(buildProxyOptions.getAddress())
-                        .connectTimeoutMillis(connectTimeoutMillis)
-                        .username(buildProxyOptions.getUsername())
-                        .password(ignored -> buildProxyOptions.getPassword())
-                        .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+                ConnectionProvider.Builder builder = sharedConnectionProvider.mutate();
+                ownedConnectionProvider = builder == null ? null : builder.build();
             }
 
-            if (setDefaultAddressResolverGroup) {
-                if (nonProxyHostsPattern != null) {
-                    // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
-                    // alternate between the no-op resolver for proxying situations and the default resolve for
-                    // non-proxy situation.
-                    nettyHttpClient
-                        = nettyHttpClient.resolver(new NonProxyHostAddressResolverGroup(nonProxyHostsPattern));
-                } else {
-                    // This mimics behaviors seen when Reactor Netty proxying is used.
-                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
-                }
+            // A connection provider that can't be copied is shared, like the pool of a client passed to the builder.
+            HttpClient client = HttpClient
+                .create(ownedConnectionProvider == null ? sharedConnectionProvider : ownedConnectionProvider);
+            return new BoundClient(bindToCertificate(settings.configure(client), binding, trustManagerFactory),
+                ownedConnectionProvider, binding);
+        };
+    }
+
+    private static HttpClient bindToCertificate(HttpClient client, ClientCertificateBinding binding,
+        TrustManagerFactory trustManagerFactory) {
+        Consumer<SslContextBuilder> configureSslContext = sslContextBuilder -> {
+            sslContextBuilder.sslProvider(io.netty.handler.ssl.SslProvider.JDK)
+                .protocols("TLSv1.2")
+                .keyManager(binding.getKeyManager());
+            if (trustManagerFactory != null) {
+                sslContextBuilder.trustManager(trustManagerFactory);
             }
+        };
+
+        SslProvider.GenericSslContextSpec<SslContextBuilder> sslContextSpec
+            = Arrays.asList(client.configuration().protocols()).contains(HttpProtocol.H2)
+                ? Http2SslContextSpec.forClient().configure(configureSslContext)
+                : Http11SslContextSpec.forClient().configure(configureSslContext);
+
+        return client.secure(spec -> spec.sslContext(sslContextSpec)).followRedirect(false);
+    }
+
+    /*
+     * The configuration applied to each Reactor Netty client that a built client uses. It's taken from the builder when
+     * the client is built, so that later changes to the builder don't affect it.
+     */
+    private static final class ClientSettings {
+        private final HttpProtocolVersion maximumHttpVersion;
+        private final int port;
+        private final boolean enableWiretap;
+        private final EventLoopGroup eventLoopGroup;
+        private final ProxyOptions buildProxyOptions;
+        private final AuthorizationChallengeHandler handler;
+        private final AtomicReference<ChallengeHolder> proxyChallengeHolder;
+        private final long writeTimeout;
+        private final long responseTimeout;
+        private final long readTimeout;
+        private final long connectTimeoutMillis;
+        private final boolean addProxyHandler;
+
+        private ClientSettings(NettyAsyncHttpClientBuilder builder, ProxyOptions buildProxyOptions,
+            AuthorizationChallengeHandler handler, AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+            this.maximumHttpVersion = builder.maximumHttpVersion;
+            this.port = builder.port;
+            this.enableWiretap = builder.enableWiretap;
+            this.eventLoopGroup = builder.eventLoopGroup;
+            this.buildProxyOptions = buildProxyOptions;
+            this.handler = handler;
+            this.proxyChallengeHolder = proxyChallengeHolder;
+            this.writeTimeout = getTimeout(builder.writeTimeout, builder.configuration,
+                PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT).toMillis();
+            this.responseTimeout = getTimeout(builder.responseTimeout, builder.configuration,
+                PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT).toMillis();
+            this.readTimeout = getTimeout(builder.readTimeout, builder.configuration,
+                PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT).toMillis();
+            this.connectTimeoutMillis = getTimeout(builder.connectTimeout, builder.configuration,
+                PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT).toMillis();
+            this.addProxyHandler = buildProxyOptions != null && handler != null;
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler);
+        private HttpClient configure(HttpClient nettyHttpClient) {
+            // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
+            // no-op address resolver to be set.
+            boolean setDefaultAddressResolverGroup = false;
+
+            if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+                nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
+            } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11, HttpProtocol.H2);
+            }
+
+            // Keep the pooled default while respecting allocator choices made by the application.
+            if (!nettyHttpClient.configuration().options().containsKey(ChannelOption.ALLOCATOR)
+                && !SystemPropertyUtil.contains("io.netty.allocator.type")) {
+                // If ChannelOptions and io.netty.allocator.type wasn't configured with an allocator fallback to the
+                // default setting from Netty 4.1 which was the pooled allocator. Otherwise, respect the configuration,
+                // be it ChannelOptions or io.netty.allocator.type. In the future, this should be validated for if this
+                // should use the new Netty 4.2 default which is an adaptive allocator.
+                nettyHttpClient = nettyHttpClient.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+            }
+
+            // If a resolver hasn't been set, set the default one.
+            if (nettyHttpClient.configuration().resolver() == null) {
+                nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
+                setDefaultAddressResolverGroup = true;
+            }
+
+            // Get the initial HttpResponseDecoderSpec and update it.
+            // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be
+            // updated instead of overwritten.
+            HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
+            nettyHttpClient = nettyHttpClient.port(port)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
+                .httpResponseDecoder(httpResponseDecoderSpec -> {
+                    int maxHeaderSize = initialSpec.maxHeaderSize();
+                    if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
+                        // Only change the max header size if it is the default value. If it's set, this was done
+                        // external to the SDK and we should respect that.
+                        // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+                        maxHeaderSize = 256 * 1024;
+                    }
+
+                    // TODO (alzimmer): What does validating HTTP response headers get us?
+                    return initialSpec.validateHeaders(false).maxHeaderSize(maxHeaderSize);
+                })
+                .doOnRequest((request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout,
+                    readTimeout))
+                .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
+
+            LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
+            if (loggingHandler == null) {
+                // Only enable wiretap if the LoggingHandler is null. If the LoggingHandler isn't null this means that a
+                // base client was passed with logging enabled. 'wiretap(boolean)' is a basic API that doesn't allow
+                // for in-depth settings to be done on how logging works, so setting it always can replace a customized
+                // logger with a basic one that isn't as useful in troubleshooting scenarios.
+                nettyHttpClient.wiretap(enableWiretap);
+            }
+
+            if (eventLoopGroup != null) {
+                nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
+            }
+
+            // Proxy configurations are present, set up a proxy in Netty.
+            if (buildProxyOptions != null) {
+                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                    ? null
+                    : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+                // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
+                if (handler != null) {
+                    /*
+                     * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                     * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                     * before any request data is sent.
+                     */
+                    nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
+                        if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
+                            HttpProxyHandler httpProxyHandler
+                                = new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                    handler, proxyChallengeHolder);
+                            httpProxyHandler.setConnectTimeoutMillis(connectTimeoutMillis);
+                            channel.pipeline().addFirst(NettyPipeline.ProxyHandler, httpProxyHandler);
+                        }
+                    });
+                } else {
+                    nettyHttpClient = nettyHttpClient
+                        .proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
+                            .socketAddress(buildProxyOptions.getAddress())
+                            .connectTimeoutMillis(connectTimeoutMillis)
+                            .username(buildProxyOptions.getUsername())
+                            .password(ignored -> buildProxyOptions.getPassword())
+                            .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+                }
+
+                if (setDefaultAddressResolverGroup) {
+                    if (nonProxyHostsPattern != null) {
+                        // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
+                        // alternate between the no-op resolver for proxying situations and the default resolve for
+                        // non-proxy situation.
+                        nettyHttpClient
+                            = nettyHttpClient.resolver(new NonProxyHostAddressResolverGroup(nonProxyHostsPattern));
+                    } else {
+                        // This mimics behaviors seen when Reactor Netty proxying is used.
+                        nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                    }
+                }
+            }
+
+            return nettyHttpClient;
+        }
     }
 
     /**
@@ -403,6 +524,18 @@ public class NettyAsyncHttpClientBuilder {
 
     NettyAsyncHttpClientBuilder connectionProviderInternal(ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
+        return this;
+    }
+
+    // Sets the trust for the connections of requests bound to a TLS client certificate, for tests against a local server.
+    NettyAsyncHttpClientBuilder clientCertificateBindingTrustManagerFactory(TrustManagerFactory trustManagerFactory) {
+        this.clientCertificateBindingTrustManagerFactory = trustManagerFactory;
+        return this;
+    }
+
+    // Sets the clock used to retire the connection pools of expired client certificates, for tests.
+    NettyAsyncHttpClientBuilder clientCertificateBindingClock(Supplier<Instant> clock) {
+        this.clientCertificateBindingClock = clock;
         return this;
     }
 
