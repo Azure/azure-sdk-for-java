@@ -48,4 +48,16 @@ public final class OptimizationContextType extends ExpandableStringEnum<Optimiza
     public static Collection<OptimizationContextType> values() {
         return values(OptimizationContextType.class);
     }
+
+    /**
+     * Agent trace evidence selected from project-authorized telemetry.
+     */
+    @Generated
+    public static final OptimizationContextType AGENT_TRACES = fromString("agent_traces");
+
+    /**
+     * Exact baseline skill references for skill optimization.
+     */
+    @Generated
+    public static final OptimizationContextType SKILL_REFERENCES = fromString("skill_references");
 }

@@ -34,11 +34,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     private String contextCacheContainerId;
 
     /*
-     * Speculative decoding settings for the deployment. This configuration applies to Fireworks model formats.
-     */
-    private DeploymentSpeculativeDecoding speculativeDecoding;
-
-    /*
      * Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
      */
     private DeploymentScaleSettings scaleSettings;
@@ -115,12 +110,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      */
     private DeploymentRouting routing;
 
-    /*
-     * The full resource IDs of cost controls directly attached to this deployment.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     */
-    private List<String> costControlIds;
-
     /**
      * Creates an instance of DeploymentProperties class.
      */
@@ -175,28 +164,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      */
     public DeploymentProperties withContextCacheContainerId(String contextCacheContainerId) {
         this.contextCacheContainerId = contextCacheContainerId;
-        return this;
-    }
-
-    /**
-     * Get the speculativeDecoding property: Speculative decoding settings for the deployment. This configuration
-     * applies to Fireworks model formats.
-     * 
-     * @return the speculativeDecoding value.
-     */
-    public DeploymentSpeculativeDecoding speculativeDecoding() {
-        return this.speculativeDecoding;
-    }
-
-    /**
-     * Set the speculativeDecoding property: Speculative decoding settings for the deployment. This configuration
-     * applies to Fireworks model formats.
-     * 
-     * @param speculativeDecoding the speculativeDecoding value to set.
-     * @return the DeploymentProperties object itself.
-     */
-    public DeploymentProperties withSpeculativeDecoding(DeploymentSpeculativeDecoding speculativeDecoding) {
-        this.speculativeDecoding = speculativeDecoding;
         return this;
     }
 
@@ -457,28 +424,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
-     * Get the costControlIds property: The full resource IDs of cost controls directly attached to this deployment.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     * 
-     * @return the costControlIds value.
-     */
-    public List<String> costControlIds() {
-        return this.costControlIds;
-    }
-
-    /**
-     * Set the costControlIds property: The full resource IDs of cost controls directly attached to this deployment.
-     * At the moment the service only supports a single cost control. This will be expanded in future API versions.
-     * 
-     * @param costControlIds the costControlIds value to set.
-     * @return the DeploymentProperties object itself.
-     */
-    public DeploymentProperties withCostControlIds(List<String> costControlIds) {
-        this.costControlIds = costControlIds;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -486,7 +431,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("model", this.model);
         jsonWriter.writeStringField("contextCacheContainerId", this.contextCacheContainerId);
-        jsonWriter.writeJsonField("speculativeDecoding", this.speculativeDecoding);
         jsonWriter.writeJsonField("scaleSettings", this.scaleSettings);
         jsonWriter.writeStringField("raiPolicyName", this.raiPolicyName);
         jsonWriter.writeStringField("versionUpgradeOption",
@@ -499,8 +443,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         jsonWriter.writeStringField("deploymentState",
             this.deploymentState == null ? null : this.deploymentState.toString());
         jsonWriter.writeJsonField("routing", this.routing);
-        jsonWriter.writeArrayField("costControlIds", this.costControlIds,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -526,9 +468,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                     deserializedDeploymentProperties.model = DeploymentModel.fromJson(reader);
                 } else if ("contextCacheContainerId".equals(fieldName)) {
                     deserializedDeploymentProperties.contextCacheContainerId = reader.getString();
-                } else if ("speculativeDecoding".equals(fieldName)) {
-                    deserializedDeploymentProperties.speculativeDecoding
-                        = DeploymentSpeculativeDecoding.fromJson(reader);
                 } else if ("scaleSettings".equals(fieldName)) {
                     deserializedDeploymentProperties.scaleSettings = DeploymentScaleSettings.fromJson(reader);
                 } else if ("capabilities".equals(fieldName)) {
@@ -561,9 +500,6 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                     deserializedDeploymentProperties.deploymentState = DeploymentState.fromString(reader.getString());
                 } else if ("routing".equals(fieldName)) {
                     deserializedDeploymentProperties.routing = DeploymentRouting.fromJson(reader);
-                } else if ("costControlIds".equals(fieldName)) {
-                    List<String> costControlIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDeploymentProperties.costControlIds = costControlIds;
                 } else {
                     reader.skipChildren();
                 }

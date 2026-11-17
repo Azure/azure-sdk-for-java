@@ -25,7 +25,7 @@ public final class ProtectionGroupsListByCloudAccountMockTests {
     @Test
     public void testListByCloudAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"plan\":\"oqh\",\"resources\":{\"manual\":[\"jqgwzp\",\"fqntcyp\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"startsWith\",\"value\":\"oimwkslirc\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"protected\",\"numberOfProtectedItems\":1956254866,\"lastBackUpTime\":8449348931909561214,\"backupActivityStatus\":\"fceacvlhvygd\",\"provisioningState\":\"Succeeded\"},\"id\":\"mrtwna\",\"name\":\"jslb\",\"type\":\"wkojgcyztsfmzn\"}]}";
+            = "{\"value\":[{\"properties\":{\"plan\":\"m\",\"resources\":{\"manual\":[\"aehvbbxuri\",\"ltfnhtbaxkgx\",\"wrck\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"hpluodpvruudlg\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"backed_up_with_error\",\"numberOfProtectedItems\":1325865791,\"lastBackUpTime\":7331905648619650026,\"backupActivityStatus\":\"tgk\",\"provisioningState\":\"Canceled\"},\"id\":\"dxeclzedqbcvh\",\"name\":\"lhpl\",\"type\":\"dqkdlwwqfbu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,15 @@ public final class ProtectionGroupsListByCloudAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionGroup> response
-            = manager.protectionGroups().listByCloudAccount("lw", "cesutrgjupauut", com.azure.core.util.Context.NONE);
+            = manager.protectionGroups().listByCloudAccount("jyxgtczh", "ydbsd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oqh", response.iterator().next().properties().plan());
-        Assertions.assertEquals("jqgwzp", response.iterator().next().properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_VALUE,
+        Assertions.assertEquals("m", response.iterator().next().properties().plan());
+        Assertions.assertEquals("aehvbbxuri", response.iterator().next().properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.TAG_NAME,
             response.iterator().next().properties().resources().matchRules().rules().get(0).property());
         Assertions.assertEquals(Operator.STARTS_WITH,
             response.iterator().next().properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("oimwkslirc",
+        Assertions.assertEquals("hpluodpvruudlg",
             response.iterator().next().properties().resources().matchRules().rules().get(0).value());
         Assertions.assertEquals(MatchType.ANY,
             response.iterator().next().properties().resources().matchRules().matchType());

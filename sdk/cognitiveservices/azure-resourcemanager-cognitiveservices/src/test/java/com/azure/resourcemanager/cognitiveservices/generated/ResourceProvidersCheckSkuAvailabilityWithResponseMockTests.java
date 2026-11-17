@@ -23,7 +23,7 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
     @Test
     public void testCheckSkuAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"mpyrguyfaz\",\"type\":\"ocbygvthrmxk\",\"skuName\":\"jww\",\"skuAvailable\":false,\"reason\":\"rawppkeboozf\",\"message\":\"acagae\"},{\"kind\":\"oiqclmgdtwgab\",\"type\":\"f\",\"skuName\":\"zbwjecooyvht\",\"skuAvailable\":true,\"reason\":\"elnii\",\"message\":\"cgagdvcdqhftzbp\"}]}";
+            = "{\"value\":[{\"kind\":\"poy\",\"type\":\"wwdjuxdbdl\",\"skuName\":\"gdyrcvuqbsgzl\",\"skuAvailable\":false,\"reason\":\"jnqogdxwbsfpyx\",\"message\":\"jlf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SkuAvailabilityListResult response = manager.resourceProviders()
-            .checkSkuAvailabilityWithResponse("owkdnjr",
-                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("krhwieh"))
-                    .withKind("cpnowaw")
-                    .withType("noehrguqlhfwa"),
+            .checkSkuAvailabilityWithResponse("jy",
+                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("qypzqzufgs", "fejyvdwtfxptpqa"))
+                    .withKind("amkncfgy")
+                    .withType("mxsnxocuul"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mpyrguyfaz", response.value().get(0).kind());
-        Assertions.assertEquals("ocbygvthrmxk", response.value().get(0).type());
-        Assertions.assertEquals("jww", response.value().get(0).skuName());
+        Assertions.assertEquals("poy", response.value().get(0).kind());
+        Assertions.assertEquals("wwdjuxdbdl", response.value().get(0).type());
+        Assertions.assertEquals("gdyrcvuqbsgzl", response.value().get(0).skuName());
         Assertions.assertFalse(response.value().get(0).skuAvailable());
-        Assertions.assertEquals("rawppkeboozf", response.value().get(0).reason());
-        Assertions.assertEquals("acagae", response.value().get(0).message());
+        Assertions.assertEquals("jnqogdxwbsfpyx", response.value().get(0).reason());
+        Assertions.assertEquals("jlf", response.value().get(0).message());
     }
 }

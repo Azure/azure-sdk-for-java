@@ -1,5 +1,18 @@
 # Release History
 
+## 1.15.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback while preserving existing defaults.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.14.0 (2026-10-27)
 
 ### Bugs Fixed

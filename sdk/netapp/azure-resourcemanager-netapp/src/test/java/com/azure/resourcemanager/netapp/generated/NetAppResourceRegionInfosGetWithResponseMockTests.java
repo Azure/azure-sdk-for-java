@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"hlkks\",\"isAvailable\":false},{\"availabilityZone\":\"vyfijdkzuqnw\",\"isAvailable\":true},{\"availabilityZone\":\"uqoly\",\"isAvailable\":false}]},\"id\":\"qwqul\",\"name\":\"utrjbhxyk\",\"type\":\"hyqezvqq\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"faqegplwryshwddk\",\"isAvailable\":true},{\"availabilityZone\":\"kqusybwptda\",\"isAvailable\":false},{\"availabilityZone\":\"vlf\",\"isAvailable\":false},{\"availabilityZone\":\"tpo\",\"isAvailable\":true}]},\"id\":\"azerohzrsq\",\"name\":\"lsxkd\",\"type\":\"wqapfgsdp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionInfoResource response
-            = manager.netAppResourceRegionInfos().getWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+            = manager.netAppResourceRegionInfos().getWithResponse("req", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            response.storageToNetworkProximity());
-        Assertions.assertEquals("hlkks", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertFalse(response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
+        Assertions.assertEquals("faqegplwryshwddk", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

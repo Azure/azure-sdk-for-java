@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
 import java.io.IOException;
@@ -127,6 +128,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
     private SmbNonBrowsable smbNonBrowsable;
+
+    /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    private SmbOplocks smbOplocks;
 
     /**
      * Creates an instance of VolumePatchProperties class.
@@ -527,6 +533,28 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -568,6 +596,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
             this.smbAccessBasedEnumeration == null ? null : this.smbAccessBasedEnumeration.toString());
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -627,6 +656,8 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                         = SmbAccessBasedEnumeration.fromString(reader.getString());
                 } else if ("smbNonBrowsable".equals(fieldName)) {
                     deserializedVolumePatchProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedVolumePatchProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

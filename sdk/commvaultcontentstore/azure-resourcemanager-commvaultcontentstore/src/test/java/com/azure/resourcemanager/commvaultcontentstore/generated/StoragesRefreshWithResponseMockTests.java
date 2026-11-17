@@ -24,7 +24,7 @@ public final class StoragesRefreshWithResponseMockTests {
     @Test
     public void testRefreshWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"r\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"vm\",\"name\":\"ipaslthaqfxssmwu\",\"type\":\"wbdsr\"}";
+            = "{\"properties\":{\"location\":\"pfcqdp\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COOL\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"oymgccelvezr\",\"name\":\"pqlmfe\",\"type\":\"kerqwkyh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class StoragesRefreshWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Storage response = manager.storages()
-            .refreshWithResponse("gzrf", "eeyebi", "ikayuhqlbjbsybb", com.azure.core.util.Context.NONE)
+            .refreshWithResponse("hwyg", "lvdnkfx", "semdwzrmu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("r", response.properties().location());
+        Assertions.assertEquals("pfcqdp", response.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
-        Assertions.assertEquals(StorageClassType.HOT, response.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COOL, response.properties().classProperty());
     }
 }

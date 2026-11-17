@@ -22,6 +22,7 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -43,6 +44,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.azure.storage.blob.implementation.util.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -81,6 +83,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -104,8 +107,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -164,6 +169,15 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
+    /*
+    The values below are shared fixtures for session authentication tests. They are never sent to the service.
+     */
+    public static final String TEST_SESSION_KEY = "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
+
+    public static final String TEST_SESSION_TOKEN = "test-session-token-abc123";
+
+    public static final String TEST_SESSION_ACCOUNT_NAME = "testaccount";
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -193,6 +207,11 @@ public class BlobTestBase extends TestProxyTestBase {
         super.beforeTest();
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
+        // Mock-only tests do not need service clients or a live container.
+        if (testContextManager.doNotRecordTest()) {
+            return;
+        }
+
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager
                 .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
@@ -203,7 +222,11 @@ public class BlobTestBase extends TestProxyTestBase {
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER),
-                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -240,7 +263,7 @@ public class BlobTestBase extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.PLAYBACK || testContextManager.doNotRecordTest()) {
             return;
         }
 
@@ -415,21 +438,145 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceClient(new SessionContext());
+    }
 
-        instrument(builder);
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildClient();
+    }
+
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceAsyncClient(new SessionContext());
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildAsyncClient();
+    }
+
+    /**
+     * Builds an OAuth service client builder. When {@code httpClient} is supplied it replaces the transport that
+     * {@code instrument} installed, which lets a test observe requests as they go on the wire.
+     *
+     * @param sessionContext The session options to configure.
+     * @param httpClient The transport to send requests with, or null to keep the instrumented one.
+     * @param policies Additional policies to add to the pipeline.
+     * @return The configured builder.
+     */
+    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext, HttpClient httpClient,
+        HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionContext(sessionContext)
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+        if (httpClient != null) {
+            builder.httpClient(httpClient);
+        }
+
+        builder.addPolicy(createSessionResponseLoggingPolicy());
+        builder.addPolicy(createLayoutResponseLoggingPolicy());
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    /**
+     * Creates a policy that logs the request IDs of CreateSession responses so a failing live run can be correlated
+     * with service-side logs.
+     *
+     * @return The policy.
+     */
+    protected HttpPipelinePolicy createSessionResponseLoggingPolicy() {
+        String testName = testContextManager.getTestName();
+        return (context, next) -> {
+            HttpRequest request = context.getHttpRequest();
+            String query = request.getUrl().getQuery();
+            if (request.getHttpMethod() != HttpMethod.POST || query == null || !query.contains("comp=session")) {
+                return next.process();
+            }
+
+            String clientRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+            return next.process()
+                .doOnNext(response -> LOGGER.atInfo()
+                    .addKeyValue("test", testName)
+                    .addKeyValue("statusCode", response.getStatusCode())
+                    .addKeyValue("x-ms-client-request-id", clientRequestId)
+                    .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))
+                    .addKeyValue("x-ms-error-code", response.getHeaderValue("x-ms-error-code"))
+                    .log("CreateSession response"));
+        };
+    }
+
+    /**
+     * Creates a policy that logs the status and request IDs of GetLayout responses so a failing live run can be
+     * correlated with service-side logs.
+     *
+     * @return The policy.
+     */
+    protected HttpPipelinePolicy createLayoutResponseLoggingPolicy() {
+        String testName = testContextManager.getTestName();
+        return (context, next) -> {
+            HttpRequest request = context.getHttpRequest();
+            String query = request.getUrl().getQuery();
+            if (request.getHttpMethod() != HttpMethod.GET || query == null || !query.contains("comp=layout")) {
+                return next.process();
+            }
+
+            String clientRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+            String range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            return next.process()
+                .doOnNext(response -> LOGGER.atInfo()
+                    .addKeyValue("test", testName)
+                    .addKeyValue("statusCode", response.getStatusCode())
+                    .addKeyValue("x-ms-range", range)
+                    .addKeyValue("hasMarker", query.contains("marker="))
+                    .addKeyValue("x-ms-client-request-id", clientRequestId)
+                    .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))
+                    .addKeyValue("x-ms-error-code", response.getHeaderValue("x-ms-error-code"))
+                    .log("GetLayout response"));
+        };
+    }
+
+    /**
+     * Creates a session expiration time in the future.
+     *
+     * @return A valid session expiration time.
+     */
+    public static OffsetDateTime createValidSessionExpiration() {
+        return OffsetDateTime.now().plusHours(1);
+    }
+
+    /**
+     * Creates a session expiration time in the past.
+     *
+     * @return An expired session expiration time.
+     */
+    public static OffsetDateTime createExpiredSessionExpiration() {
+        return OffsetDateTime.now().minusMinutes(5);
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {
@@ -480,6 +627,7 @@ public class BlobTestBase extends TestProxyTestBase {
             }
         }
 
+        builder.addPolicy(createLayoutResponseLoggingPolicy());
         instrument(builder);
 
         if (credential != null) {
@@ -1866,4 +2014,79 @@ public class BlobTestBase extends TestProxyTestBase {
             return false;
         }
     }
+
+    protected static String describeRanges(List<BlobLayoutRange> ranges) {
+        if (ranges == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < ranges.size(); i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            BlobLayoutRange r = ranges.get(i);
+            sb.append("{offset=")
+                .append(r.getRange().getOffset())
+                .append(", length=")
+                .append(r.getRange().getLength())
+                .append(", endpoint=")
+                .append(r.getEndpoint())
+                .append("}");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    protected static void assertLayoutCoversWindow(List<BlobLayoutRange> ranges, long windowStart,
+        long windowEndInclusive, String accountHost) {
+        String desc = describeRanges(ranges);
+        assertNotNull(ranges, "ranges must not be null; " + desc);
+        assertFalse(ranges.isEmpty(), "ranges must not be empty; " + desc);
+
+        long firstOffset = ranges.get(0).getRange().getOffset();
+        assertTrue(firstOffset <= windowStart,
+            "First range offset " + firstOffset + " must be <= windowStart " + windowStart + "; " + desc);
+
+        long nextOffset = firstOffset;
+        boolean unbounded = false;
+
+        for (int i = 0; i < ranges.size(); i++) {
+            BlobLayoutRange r = ranges.get(i);
+            long offset = r.getRange().getOffset();
+            Long length = r.getRange().getLength();
+
+            assertEquals(nextOffset, offset,
+                "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
+
+            URI endpoint = r.getEndpoint();
+            assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
+            String host = endpoint.getHost();
+            assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
+            assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
+            assertFalse(accountHost.equalsIgnoreCase(host),
+                "backend host '" + host + "' must not equal account host '" + accountHost + "'; " + desc);
+
+            if (length == null) {
+                // Null length means this range is unbounded; coverage through the end of the blob is satisfied.
+                unbounded = true;
+                break;
+            }
+            nextOffset = offset + length;
+        }
+
+        if (!unbounded) {
+            // nextOffset is the exclusive end of coverage; last covered byte = nextOffset - 1.
+            assertTrue(nextOffset > windowEndInclusive, "Coverage ends at byte " + (nextOffset - 1)
+                + " but windowEndInclusive is " + windowEndInclusive + "; " + desc);
+        }
+    }
+
+    protected static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayoutRange>> pages) {
+        List<BlobLayoutRange> result = new ArrayList<>();
+        for (PagedResponse<BlobLayoutRange> page : pages) {
+            result.addAll(page.getValue());
+        }
+        return result;
+    }
+
 }

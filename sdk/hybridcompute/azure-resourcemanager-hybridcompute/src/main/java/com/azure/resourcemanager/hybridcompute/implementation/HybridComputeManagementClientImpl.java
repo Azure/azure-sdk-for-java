@@ -45,6 +45,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.hybridcompute.fluent.SettingsOperationsClient;
+import com.azure.resourcemanager.hybridcompute.fluent.VmApplicationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -242,6 +243,20 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
     }
 
     /**
+     * The VmApplicationsClient object to access its operations.
+     */
+    private final VmApplicationsClient vmApplications;
+
+    /**
+     * Gets the VmApplicationsClient object to access its operations.
+     * 
+     * @return the VmApplicationsClient object.
+     */
+    public VmApplicationsClient getVmApplications() {
+        return this.vmApplications;
+    }
+
+    /**
      * The GatewaysClient object to access its operations.
      */
     private final GatewaysClient gateways;
@@ -412,7 +427,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-15";
+        this.apiVersion = "2026-09-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.licenses = new LicensesClientImpl(this);
@@ -420,6 +435,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         this.licenseProfiles = new LicenseProfilesClientImpl(this);
         this.machineExtensions = new MachineExtensionsClientImpl(this);
         this.machineRunCommands = new MachineRunCommandsClientImpl(this);
+        this.vmApplications = new VmApplicationsClientImpl(this);
         this.gateways = new GatewaysClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class VaultsGetDeletedSamples {
     /*
-     * x-ms-original-file: 2026-05-15/getDeletedVault.json
+     * x-ms-original-file: 2026-10-01-preview/getDeletedVault.json
      */
     /**
      * Sample code: Retrieve a deleted vault.

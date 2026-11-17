@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class MachinesAssessPatchesSamples {
     /*
-     * x-ms-original-file: 2026-07-15/machine/Machine_AssessPatches.json
+     * x-ms-original-file: 2026-09-01/machine/Machine_AssessPatches.json
      */
     /**
      * Sample code: Assess patch state of a machine.

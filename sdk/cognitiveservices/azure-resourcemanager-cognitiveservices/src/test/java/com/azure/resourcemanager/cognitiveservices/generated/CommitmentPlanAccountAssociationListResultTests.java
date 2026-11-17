@@ -12,8 +12,8 @@ public final class CommitmentPlanAccountAssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ikdgszywkbir\",\"value\":[{\"properties\":{\"accountId\":\"lhkjoqrvqq\"},\"etag\":\"t\",\"tags\":{\"oupmfii\":\"rv\",\"x\":\"fggjioolvr\",\"kkgll\":\"v\",\"uhbxvvy\":\"wjygvjayvblmhvk\"},\"id\":\"s\",\"name\":\"pbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"accountId\":\"hlmctlpdngitvgb\"},\"etag\":\"rixkwmyijejve\",\"tags\":{\"xhcexdrrvqahq\":\"bpnaixexccbdre\",\"jnhyjsvf\":\"ghtpw\",\"mtg\":\"cxzbfvoowvr\",\"y\":\"qp\"},\"id\":\"tronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"accountId\":\"lik\"},\"etag\":\"wslolbqp\",\"tags\":{\"elfk\":\"lmv\",\"njwmwkpnbsazejj\":\"gplcrpwjxeznoigb\",\"augzxnfaazpxdtn\":\"qkagfhsxt\"},\"id\":\"mkqjj\",\"name\":\"wuenvr\",\"type\":\"pyouaibrebqaays\"}]}")
+            "{\"nextLink\":\"wdmjsjqbjhhyx\",\"value\":[{\"properties\":{\"accountId\":\"co\"},\"etag\":\"hp\",\"tags\":{\"n\":\"gymare\",\"ubeddg\":\"jxqugjhky\",\"pxacqqudfn\":\"sofwqmzqalkrmnji\",\"imrzrtuzqog\":\"yxbaaabjyvayf\"},\"id\":\"xnevfdnwn\",\"name\":\"mewzsyyc\",\"type\":\"uzsoi\"},{\"properties\":{\"accountId\":\"dpfrxtrthzvaytdw\"},\"etag\":\"brqubp\",\"tags\":{\"pdtii\":\"exiili\"},\"id\":\"tdqoaxoruzfgsq\",\"name\":\"yfxrx\",\"type\":\"l\"},{\"properties\":{\"accountId\":\"ramxjezwlwnw\"},\"etag\":\"qlcvydy\",\"tags\":{\"ebwnujhe\":\"dooaojkniodko\",\"jlfltkacjvefkdlf\":\"msbvdkcrodtjinf\"},\"id\":\"kggkfpa\",\"name\":\"ao\",\"type\":\"pulpqblylsyxk\"},{\"properties\":{\"accountId\":\"sjervti\"},\"etag\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"dxrbuukzcle\",\"name\":\"yhmlwpaztzp\",\"type\":\"fn\"}]}")
             .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("ikdgszywkbir", model.nextLink());
+        Assertions.assertEquals("wdmjsjqbjhhyx", model.nextLink());
     }
 }

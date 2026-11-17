@@ -23,7 +23,7 @@ public final class BackupPoliciesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupPolicyId\":\"fdv\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":74462923,\"weeklyBackupsToKeep\":1859021657,\"monthlyBackupsToKeep\":749394932,\"volumesAssigned\":1524186089,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"qswankltytmhdr\",\"volumeResourceId\":\"nnhdrl\",\"backupsCount\":750712079,\"policyEnabled\":true}]},\"etag\":\"gguxhemlwyw\",\"location\":\"eczgfb\",\"tags\":{\"rlsmdesqplpvmjc\":\"lelssxblycsxzujk\",\"vteo\":\"oewbid\"},\"id\":\"xvgpiude\",\"name\":\"gfsxzec\",\"type\":\"axwk\"}";
+            = "{\"properties\":{\"backupPolicyId\":\"dsxwefoh\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":265247214,\"weeklyBackupsToKeep\":677434729,\"monthlyBackupsToKeep\":1225153333,\"volumesAssigned\":1360007500,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"xpvbrdfjm\",\"volumeResourceId\":\"yzfhotlhi\",\"backupsCount\":826163888,\"policyEnabled\":false},{\"volumeName\":\"unsjlpjrtwszhvvu\",\"volumeResourceId\":\"phvtrrmhwrb\",\"backupsCount\":691294611,\"policyEnabled\":false}]},\"etag\":\"ubhvj\",\"location\":\"r\",\"tags\":{\"memhooclutnpq\":\"yzlwh\",\"jk\":\"emc\"},\"id\":\"mykyujxsglhs\",\"name\":\"rryejylmbkzudnig\",\"type\":\"fihotj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,22 +33,23 @@ public final class BackupPoliciesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupPolicy response = manager.backupPolicies()
-            .define("mskwhqjjysl")
-            .withRegion("hpwpgddeimawzovg")
-            .withExistingNetAppAccount("plkeuachtomflryt", "wfpfmdgycx")
-            .withTags(mapOf("sqowxwc", "muikjcjcaztbws"))
-            .withDailyBackupsToKeep(1899940193)
-            .withWeeklyBackupsToKeep(1592039992)
-            .withMonthlyBackupsToKeep(1628656253)
-            .withEnabled(false)
+            .define("bdvibidmhmwffpl")
+            .withRegion("nbldxeaclgschori")
+            .withExistingNetAppAccount("zb", "ybww")
+            .withTags(mapOf("ucsofldpuviyf", "srrm", "bsxtkcudfbsfarfs", "aabeolhbhlvbmxuq", "gf", "owlkjxnqpv", "d",
+                "tmhqykiz"))
+            .withDailyBackupsToKeep(368767030)
+            .withWeeklyBackupsToKeep(1854140227)
+            .withMonthlyBackupsToKeep(1204308465)
+            .withEnabled(true)
             .create();
 
-        Assertions.assertEquals("eczgfb", response.location());
-        Assertions.assertEquals("lelssxblycsxzujk", response.tags().get("rlsmdesqplpvmjc"));
-        Assertions.assertEquals(74462923, response.dailyBackupsToKeep());
-        Assertions.assertEquals(1859021657, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(749394932, response.monthlyBackupsToKeep());
-        Assertions.assertTrue(response.enabled());
+        Assertions.assertEquals("r", response.location());
+        Assertions.assertEquals("yzlwh", response.tags().get("memhooclutnpq"));
+        Assertions.assertEquals(265247214, response.dailyBackupsToKeep());
+        Assertions.assertEquals(677434729, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(1225153333, response.monthlyBackupsToKeep());
+        Assertions.assertFalse(response.enabled());
     }
 
     // Use "Map.of" if available

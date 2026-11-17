@@ -20,7 +20,6 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.security.autoconfigure.web.servlet.ConditionalOnDefaultWebSecurity;
 import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -141,7 +140,7 @@ class AadResourceServerConfiguration {
 
     @EnableWebSecurity
     @EnableMethodSecurity
-    @ConditionalOnDefaultWebSecurity
+    @Conditional(AadDefaultWebSecurityCondition.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadResourceServerConfiguration {
 

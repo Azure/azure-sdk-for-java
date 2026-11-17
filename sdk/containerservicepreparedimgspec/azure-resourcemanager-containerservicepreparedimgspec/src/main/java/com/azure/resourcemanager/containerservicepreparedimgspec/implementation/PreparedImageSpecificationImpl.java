@@ -148,9 +148,12 @@ public final class PreparedImageSpecificationImpl
         com.azure.resourcemanager.containerservicepreparedimgspec.ContainerServicePreparedImageSpecificationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.preparedImageSpecificationName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "preparedImageSpecifications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "resourceGroupName");
+        this.preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
+            "preparedImageSpecificationName");
     }
 
     public PreparedImageSpecification refresh() {

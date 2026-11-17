@@ -479,7 +479,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response
@@ -755,7 +755,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
+    private SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters,
         String ifMatch) {
         Response<BinaryData> response
@@ -1006,7 +1006,7 @@ public final class DnsForwardingRulesetsClientImpl implements DnsForwardingRules
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

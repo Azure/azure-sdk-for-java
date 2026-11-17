@@ -15,9 +15,9 @@ import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
-import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
+import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -25,6 +25,7 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -188,6 +189,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean smbContinuouslyAvailable;
 
     /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    private SmbOplocks smbOplocks;
+
+    /*
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
      * manual qosType volume
      */
@@ -214,6 +220,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Specifies whether LDAP is enabled or not for a given NFS volume.
      */
     private Boolean ldapEnabled;
+
+    /*
+     * Specifies the type of LDAP server for a given NFS volume.
+     */
+    private LdapServerType ldapServerType;
 
     /*
      * Specifies whether Cool Access(tiering) is enabled for the volume.
@@ -331,12 +342,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Application specific placement rules for the particular volume
      */
     private List<PlacementKeyValuePairs> placementRules;
-
-    /*
-     * Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     */
-    private EnableSubvolumes enableSubvolumes;
 
     /*
      * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
@@ -887,6 +892,28 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
+        return this;
+    }
+
+    /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -981,6 +1008,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withLdapEnabled(Boolean ldapEnabled) {
         this.ldapEnabled = ldapEnabled;
+        return this;
+    }
+
+    /**
+     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    public LdapServerType ldapServerType() {
+        return this.ldapServerType;
+    }
+
+    /**
+     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @param ldapServerType the ldapServerType value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withLdapServerType(LdapServerType ldapServerType) {
+        this.ldapServerType = ldapServerType;
         return this;
     }
 
@@ -1349,28 +1396,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     * 
-     * @return the enableSubvolumes value.
-     */
-    public EnableSubvolumes enableSubvolumes() {
-        return this.enableSubvolumes;
-    }
-
-    /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     * 
-     * @param enableSubvolumes the enableSubvolumes value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
-        this.enableSubvolumes = enableSubvolumes;
-        return this;
-    }
-
-    /**
      * Get the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
      * to the logical availability zone where the volume resides.
      * 
@@ -1501,11 +1526,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
         jsonWriter.writeBooleanField("smbContinuouslyAvailable", this.smbContinuouslyAvailable);
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
         jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
         jsonWriter.writeStringField("encryptionKeySource",
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
         jsonWriter.writeStringField("keyVaultPrivateEndpointResourceId", this.keyVaultPrivateEndpointResourceId);
         jsonWriter.writeBooleanField("ldapEnabled", this.ldapEnabled);
+        jsonWriter.writeStringField("ldapServerType",
+            this.ldapServerType == null ? null : this.ldapServerType.toString());
         jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
         jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
         jsonWriter.writeStringField("coolAccessRetrievalPolicy",
@@ -1522,8 +1550,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("volumeSpecName", this.volumeSpecName);
         jsonWriter.writeArrayField("placementRules", this.placementRules,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("enableSubvolumes",
-            this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
         jsonWriter.writeStringField("breakthroughMode",
             this.breakthroughMode == null ? null : this.breakthroughMode.toString());
@@ -1609,6 +1635,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
                 } else if ("smbContinuouslyAvailable".equals(fieldName)) {
                     deserializedVolumeProperties.smbContinuouslyAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedVolumeProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
                 } else if ("throughputMibps".equals(fieldName)) {
                     deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("actualThroughputMibps".equals(fieldName)) {
@@ -1620,6 +1648,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.keyVaultPrivateEndpointResourceId = reader.getString();
                 } else if ("ldapEnabled".equals(fieldName)) {
                     deserializedVolumeProperties.ldapEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapServerType".equals(fieldName)) {
+                    deserializedVolumeProperties.ldapServerType = LdapServerType.fromString(reader.getString());
                 } else if ("coolAccess".equals(fieldName)) {
                     deserializedVolumeProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("coolnessPeriod".equals(fieldName)) {
@@ -1665,8 +1695,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     List<PlacementKeyValuePairs> placementRules
                         = reader.readArray(reader1 -> PlacementKeyValuePairs.fromJson(reader1));
                     deserializedVolumeProperties.placementRules = placementRules;
-                } else if ("enableSubvolumes".equals(fieldName)) {
-                    deserializedVolumeProperties.enableSubvolumes = EnableSubvolumes.fromString(reader.getString());
                 } else if ("provisionedAvailabilityZone".equals(fieldName)) {
                     deserializedVolumeProperties.provisionedAvailabilityZone = reader.getString();
                 } else if ("isLargeVolume".equals(fieldName)) {

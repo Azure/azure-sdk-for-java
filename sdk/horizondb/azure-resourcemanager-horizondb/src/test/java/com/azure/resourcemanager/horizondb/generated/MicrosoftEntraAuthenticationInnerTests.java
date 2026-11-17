@@ -14,16 +14,16 @@ public final class MicrosoftEntraAuthenticationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftEntraAuthenticationInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"dxepxgyq\",\"name\":\"gvr\",\"type\":\"mnpkukghimdblxg\"}")
+            "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Provisioning\"},\"id\":\"itykhevx\",\"name\":\"cedcpnmdy\",\"type\":\"dnwzxltjcvnhltiu\"}")
             .toObject(MicrosoftEntraAuthenticationInner.class);
-        Assertions.assertEquals(AuthenticationState.DISABLED, model.properties().state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, model.properties().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftEntraAuthenticationInner model = new MicrosoftEntraAuthenticationInner()
-            .withProperties(new MicrosoftEntraAuthenticationProperties().withState(AuthenticationState.DISABLED));
+            .withProperties(new MicrosoftEntraAuthenticationProperties().withState(AuthenticationState.ENABLED));
         model = BinaryData.fromObject(model).toObject(MicrosoftEntraAuthenticationInner.class);
-        Assertions.assertEquals(AuthenticationState.DISABLED, model.properties().state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, model.properties().state());
     }
 }

@@ -724,6 +724,31 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbOplocks();
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withSmbOplocks(smbOplocks);
+        return this;
+    }
+
+    /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      * 
@@ -830,6 +855,29 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withLdapEnabled(ldapEnabled);
+        return this;
+    }
+
+    /**
+     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    public LdapServerType ldapServerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
+    }
+
+    /**
+     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @param ldapServerType the ldapServerType value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withLdapServerType(LdapServerType ldapServerType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withLdapServerType(ldapServerType);
         return this;
     }
 
@@ -1234,31 +1282,6 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withPlacementRules(placementRules);
-        return this;
-    }
-
-    /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     * 
-     * @return the enableSubvolumes value.
-     */
-    public EnableSubvolumes enableSubvolumes() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableSubvolumes();
-    }
-
-    /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
-     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
-     * 
-     * @param enableSubvolumes the enableSubvolumes value to set.
-     * @return the VolumeGroupVolumeProperties object itself.
-     */
-    public VolumeGroupVolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

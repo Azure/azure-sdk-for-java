@@ -453,26 +453,19 @@ public final class BlobUrlParts {
         parts.setHost(host);
 
         // Parse host to get account name. Prefer known blob/dfs subdomains; fall back to first label otherwise.
-        boolean isBlobEndpoint = host != null && host.contains("." + Constants.UrlConstants.BLOB_URI_SUBDOMAIN + ".");
-        boolean isDfsEndpoint = host != null && host.contains("." + Constants.UrlConstants.DFS_URI_SUBDOMAIN + ".");
-
-        if (isBlobEndpoint) {
-            parts.setAccountName(
-                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN));
-        } else if (isDfsEndpoint) {
-            parts.setAccountName(
-                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN));
-        } else {
+        String accountName = StorageImplUtils.getAccountNameFromKnownServiceHost(host,
+            Constants.UrlConstants.BLOB_URI_SUBDOMAIN, Constants.UrlConstants.DFS_URI_SUBDOMAIN);
+        if (accountName == null) {
             // Fallback: use the first label of the host as the account name.
-            String accountName = host;
+            accountName = host;
             if (!CoreUtils.isNullOrEmpty(host)) {
                 int dotIndex = host.indexOf('.');
                 if (dotIndex != -1) {
                     accountName = host.substring(0, dotIndex);
                 }
             }
-            parts.setAccountName(accountName);
         }
+        parts.setAccountName(accountName);
 
         // find the container & blob names (if any)
         String path = url.getPath();

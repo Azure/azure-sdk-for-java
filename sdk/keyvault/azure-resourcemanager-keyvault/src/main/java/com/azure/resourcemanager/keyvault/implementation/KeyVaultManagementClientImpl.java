@@ -15,6 +15,7 @@ import com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateLinkResourcesClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmRegionsClient;
+import com.azure.resourcemanager.keyvault.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
@@ -155,6 +156,20 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
      * The ManagedHsmsClient object to access its operations.
      */
     private final ManagedHsmsClient managedHsms;
@@ -284,10 +299,11 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-15";
+        this.apiVersion = "2026-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.managedHsms = new ManagedHsmsClientImpl(this);
         this.mhsmPrivateEndpointConnections = new MhsmPrivateEndpointConnectionsClientImpl(this);
         this.secrets = new SecretsClientImpl(this);

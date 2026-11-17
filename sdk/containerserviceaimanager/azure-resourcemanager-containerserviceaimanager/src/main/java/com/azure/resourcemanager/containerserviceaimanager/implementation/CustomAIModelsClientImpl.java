@@ -425,7 +425,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
      * AIManager.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CustomAIModelInner>, CustomAIModelInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<CustomAIModelInner>, CustomAIModelInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String customAIModelName, CustomAIModelInner resource, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, customAIModelName,
@@ -707,7 +707,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String customAIModelName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, aiManagerName, customAIModelName, ifMatch);

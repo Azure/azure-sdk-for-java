@@ -13,24 +13,24 @@ public final class PoolPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolPatchProperties model = BinaryData.fromString(
-            "{\"size\":3326683287722087129,\"qosType\":\"Auto\",\"coolAccess\":false,\"customThroughputMibps\":1699732408}")
+            "{\"size\":1342503335647338523,\"qosType\":\"Manual\",\"coolAccess\":false,\"customThroughputMibps\":2013269428}")
             .toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(3326683287722087129L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(1342503335647338523L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertFalse(model.coolAccess());
-        Assertions.assertEquals(1699732408, model.customThroughputMibps());
+        Assertions.assertEquals(2013269428, model.customThroughputMibps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolPatchProperties model = new PoolPatchProperties().withSize(3326683287722087129L)
-            .withQosType(QosType.AUTO)
+        PoolPatchProperties model = new PoolPatchProperties().withSize(1342503335647338523L)
+            .withQosType(QosType.MANUAL)
             .withCoolAccess(false)
-            .withCustomThroughputMibps(1699732408);
+            .withCustomThroughputMibps(2013269428);
         model = BinaryData.fromObject(model).toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(3326683287722087129L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(1342503335647338523L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertFalse(model.coolAccess());
-        Assertions.assertEquals(1699732408, model.customThroughputMibps());
+        Assertions.assertEquals(2013269428, model.customThroughputMibps());
     }
 }

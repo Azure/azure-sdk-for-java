@@ -14,20 +14,20 @@ public final class ChangeDataCaptureCapabilityForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureCapabilityForPatchUpdate model
-            = BinaryData.fromString("{\"properties\":{\"desiredState\":\"Disabled\",\"autoUpgradeExtension\":false}}")
+            = BinaryData.fromString("{\"properties\":{\"desiredState\":\"Enabled\",\"autoUpgradeExtension\":true}}")
                 .toObject(ChangeDataCaptureCapabilityForPatchUpdate.class);
-        Assertions.assertEquals(ChangeDataCaptureDesiredState.DISABLED, model.properties().desiredState());
-        Assertions.assertFalse(model.properties().autoUpgradeExtension());
+        Assertions.assertEquals(ChangeDataCaptureDesiredState.ENABLED, model.properties().desiredState());
+        Assertions.assertTrue(model.properties().autoUpgradeExtension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChangeDataCaptureCapabilityForPatchUpdate model = new ChangeDataCaptureCapabilityForPatchUpdate()
             .withProperties(new ChangeDataCaptureCapabilityPropertiesForPatchUpdate()
-                .withDesiredState(ChangeDataCaptureDesiredState.DISABLED)
-                .withAutoUpgradeExtension(false));
+                .withDesiredState(ChangeDataCaptureDesiredState.ENABLED)
+                .withAutoUpgradeExtension(true));
         model = BinaryData.fromObject(model).toObject(ChangeDataCaptureCapabilityForPatchUpdate.class);
-        Assertions.assertEquals(ChangeDataCaptureDesiredState.DISABLED, model.properties().desiredState());
-        Assertions.assertFalse(model.properties().autoUpgradeExtension());
+        Assertions.assertEquals(ChangeDataCaptureDesiredState.ENABLED, model.properties().desiredState());
+        Assertions.assertTrue(model.properties().autoUpgradeExtension());
     }
 }

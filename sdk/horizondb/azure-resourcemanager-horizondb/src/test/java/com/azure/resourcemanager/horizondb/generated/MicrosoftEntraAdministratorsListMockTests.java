@@ -23,7 +23,7 @@ public final class MicrosoftEntraAdministratorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalName\":\"nmwmqtibx\",\"principalType\":\"User\",\"objectId\":\"ddtvqctt\",\"tenantId\":\"ijaeukm\",\"provisioningState\":\"Canceled\"},\"id\":\"ekpndzaapmudq\",\"name\":\"eqw\",\"type\":\"gp\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalName\":\"qxeysko\",\"principalType\":\"Group\",\"objectId\":\"inkfkbgbz\",\"tenantId\":\"wxeqocljmygvkzqk\",\"provisioningState\":\"Failed\"},\"id\":\"kbzefezrxcczurt\",\"name\":\"e\",\"type\":\"pqxbkwvzgnzvdf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class MicrosoftEntraAdministratorsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MicrosoftEntraAdministrator> response
-            = manager.microsoftEntraAdministrators().list("a", "f", com.azure.core.util.Context.NONE);
+            = manager.microsoftEntraAdministrators().list("zlmcmuapcvhdb", "v", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nmwmqtibx", response.iterator().next().properties().principalName());
-        Assertions.assertEquals(PrincipalTypes.USER, response.iterator().next().properties().principalType());
-        Assertions.assertEquals("ijaeukm", response.iterator().next().properties().tenantId());
+        Assertions.assertEquals("qxeysko", response.iterator().next().properties().principalName());
+        Assertions.assertEquals(PrincipalTypes.GROUP, response.iterator().next().properties().principalType());
+        Assertions.assertEquals("wxeqocljmygvkzqk", response.iterator().next().properties().tenantId());
     }
 }

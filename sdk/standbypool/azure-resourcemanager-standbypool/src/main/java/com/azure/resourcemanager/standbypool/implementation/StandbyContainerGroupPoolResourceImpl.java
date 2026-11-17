@@ -131,9 +131,12 @@ public final class StandbyContainerGroupPoolResourceImpl implements StandbyConta
         com.azure.resourcemanager.standbypool.StandbyPoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.standbyContainerGroupPoolName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "standbyContainerGroupPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "resourceGroupName");
+        this.standbyContainerGroupPoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "standbyContainerGroupPoolName");
     }
 
     public StandbyContainerGroupPoolResource refresh() {

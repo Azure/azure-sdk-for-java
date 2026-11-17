@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class ExtensionPublishersListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"fulubef\",\"name\":\"bpmfbfununmpzkrv\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"v\",\"name\":\"qqjwkrh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ExtensionPublishersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ExtensionPublisher> response
-            = manager.extensionPublishers().list("zptdmkrrbh", com.azure.core.util.Context.NONE);
+            = manager.extensionPublishers().list("ltxkpb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fulubef", response.iterator().next().id());
-        Assertions.assertEquals("bpmfbfununmpzkrv", response.iterator().next().name());
+        Assertions.assertEquals("v", response.iterator().next().id());
+        Assertions.assertEquals("qqjwkrh", response.iterator().next().name());
     }
 }
