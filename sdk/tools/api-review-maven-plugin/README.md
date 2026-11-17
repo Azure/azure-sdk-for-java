@@ -52,7 +52,7 @@ Both modes record the literal package version and forward-slash repository-relat
 
 ## Develop
 
-Use Maven 3.6.3+ and JDK 8+:
+Use Maven 3.6.3+ and JDK 11+ to build and verify the Java 8-compatible tool:
 
 ```shell
 mvn -f sdk/tools/api-review-maven-plugin/pom.xml clean verify
@@ -60,7 +60,9 @@ mvn -f sdk/tools/api-review-maven-plugin/pom.xml clean verify
 
 The plugin includes the shared processor sources and resources from `sdk/tools/apiview-java-processor`; there is no separately published processor dependency. `verify` checks Maven invocation and standalone execution of a copied JAR without a POM or Maven cache, comparing both bundles byte-for-byte. CI also verifies the standalone processor.
 
+Verification also runs SDK Checkstyle, Spotless formatting, and Codesnippet checks. Checkstyle covers plugin sources and tests; the processor module checks its own sources. Narrow exceptions allow Maven-injected fields and tool-specific exception handling.
+
 ## Release
 
 Run `release.yml` manually from `main` in the internal project, opting into `publishDevFeed`. It builds and tests on Linux, then ESRP-signs all three JARs and GPG-signs/publishes the plugin JAR, POM, sources, and Javadoc to the Java dev feed on Windows. Existing versions cannot be overwritten.
-The pipeline uses the EngSys-approved Java signing and publishing configuration. Register `ci.yml` as `tools - api-review-maven-plugin - ci` and `release.yml` as an internal release pipeline.
+The pipeline uses the EngSys-approved Java signing and publishing configuration. Register `eng/pipelines/api-review-java.yml` as `tools - api-review-maven-plugin - ci` and this module's `release.yml` as an internal release pipeline.

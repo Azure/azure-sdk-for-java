@@ -4,6 +4,7 @@ trigger:
   paths:
     include:
       - /sdk/tools/api-review-maven-plugin/
+      - /eng/pipelines/api-review-java.yml
       - /sdk/tools/apiview-java-processor/
       - /eng/pipelines/templates/jobs/apireview-hub-*-java.yml
       - /eng/scripts/Stage-ApiReviewTools.ps1
@@ -17,6 +18,7 @@ pr:
   paths:
     include:
       - /sdk/tools/api-review-maven-plugin/
+      - /eng/pipelines/api-review-java.yml
       - /sdk/tools/apiview-java-processor/
       - /eng/pipelines/templates/jobs/apireview-hub-*-java.yml
       - /eng/scripts/Stage-ApiReviewTools.ps1
