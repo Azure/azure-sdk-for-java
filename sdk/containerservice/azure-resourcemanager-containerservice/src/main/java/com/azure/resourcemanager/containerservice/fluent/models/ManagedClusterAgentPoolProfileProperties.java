@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolBlueGreenUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -30,9 +31,11 @@ import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PodIpAllocationMode;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PreparedImageSpecificationProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.UpgradeStrategy;
 import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
 import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
@@ -195,9 +198,25 @@ public class ManagedClusterAgentPoolProfileProperties
     private String nodeImageVersion;
 
     /*
+     * Defines the upgrade strategy for the agent pool. The default is Rolling.
+     */
+    private UpgradeStrategy upgradeStrategy;
+
+    /*
+     * Whether to enable the full-cache ephemeral OS disk feature. When this feature is enabled, the entire operating
+     * system will be locally cached on the ephemeral OS disk, preventing E17 events caused by network failures.
+     */
+    private Boolean enableOSDiskFullCaching;
+
+    /*
      * Settings for upgrading the agentpool
      */
     private AgentPoolUpgradeSettings upgradeSettings;
+
+    /*
+     * Settings for Blue-Green upgrade on the agentpool. Applies when upgrade strategy is set to BlueGreen.
+     */
+    private AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen;
 
     /*
      * The current deployment or provisioning state.
@@ -268,6 +287,16 @@ public class ManagedClusterAgentPoolProfileProperties
      * The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
      */
     private List<String> nodeTaints;
+
+    /*
+     * Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled
+     * by AKS and can be removed with a kubectl call. This field can be modified after node pool is created, but nodes
+     * will not be recreated with new taints until another operation that requires recreation (e.g. node image upgrade)
+     * happens. These taints allow for required configuration to run before the node is ready to accept workloads, for
+     * example 'key1=value1:NoSchedule' that then can be removed with `kubectl taint nodes node1
+     * key1=value1:NoSchedule-`
+     */
+    private List<String> nodeInitializationTaints;
 
     /*
      * The ID for Proximity Placement Group.
@@ -383,6 +412,11 @@ public class ManagedClusterAgentPoolProfileProperties
      * reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
      */
     private LocalDnsProfile localDnsProfile;
+
+    /*
+     * Settings to determine the prepared image specification used to provision nodes in a pool.
+     */
+    private PreparedImageSpecificationProfile preparedImageSpecificationProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -927,6 +961,50 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @return the upgradeStrategy value.
+     */
+    public UpgradeStrategy upgradeStrategy() {
+        return this.upgradeStrategy;
+    }
+
+    /**
+     * Set the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @param upgradeStrategy the upgradeStrategy value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withUpgradeStrategy(UpgradeStrategy upgradeStrategy) {
+        this.upgradeStrategy = upgradeStrategy;
+        return this;
+    }
+
+    /**
+     * Get the enableOSDiskFullCaching property: Whether to enable the full-cache ephemeral OS disk feature. When this
+     * feature is enabled, the entire operating system will be locally cached on the ephemeral OS disk, preventing E17
+     * events caused by network failures.
+     * 
+     * @return the enableOSDiskFullCaching value.
+     */
+    public Boolean enableOSDiskFullCaching() {
+        return this.enableOSDiskFullCaching;
+    }
+
+    /**
+     * Set the enableOSDiskFullCaching property: Whether to enable the full-cache ephemeral OS disk feature. When this
+     * feature is enabled, the entire operating system will be locally cached on the ephemeral OS disk, preventing E17
+     * events caused by network failures.
+     * 
+     * @param enableOSDiskFullCaching the enableOSDiskFullCaching value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withEnableOSDiskFullCaching(Boolean enableOSDiskFullCaching) {
+        this.enableOSDiskFullCaching = enableOSDiskFullCaching;
+        return this;
+    }
+
+    /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
      * 
      * @return the upgradeSettings value.
@@ -943,6 +1021,29 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
         this.upgradeSettings = upgradeSettings;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @return the upgradeSettingsBlueGreen value.
+     */
+    public AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen() {
+        return this.upgradeSettingsBlueGreen;
+    }
+
+    /**
+     * Set the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @param upgradeSettingsBlueGreen the upgradeSettingsBlueGreen value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen) {
+        this.upgradeSettingsBlueGreen = upgradeSettingsBlueGreen;
         return this;
     }
 
@@ -1200,6 +1301,37 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withNodeTaints(List<String> nodeTaints) {
         this.nodeTaints = nodeTaints;
+        return this;
+    }
+
+    /**
+     * Get the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @return the nodeInitializationTaints value.
+     */
+    public List<String> nodeInitializationTaints() {
+        return this.nodeInitializationTaints;
+    }
+
+    /**
+     * Set the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @param nodeInitializationTaints the nodeInitializationTaints value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withNodeInitializationTaints(List<String> nodeInitializationTaints) {
+        this.nodeInitializationTaints = nodeInitializationTaints;
         return this;
     }
 
@@ -1641,6 +1773,29 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
+     * 
+     * @return the preparedImageSpecificationProfile value.
+     */
+    public PreparedImageSpecificationProfile preparedImageSpecificationProfile() {
+        return this.preparedImageSpecificationProfile;
+    }
+
+    /**
+     * Set the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
+     * 
+     * @param preparedImageSpecificationProfile the preparedImageSpecificationProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withPreparedImageSpecificationProfile(PreparedImageSpecificationProfile preparedImageSpecificationProfile) {
+        this.preparedImageSpecificationProfile = preparedImageSpecificationProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1648,6 +1803,9 @@ public class ManagedClusterAgentPoolProfileProperties
     public void validate() {
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
+        }
+        if (upgradeSettingsBlueGreen() != null) {
+            upgradeSettingsBlueGreen().validate();
         }
         if (powerState() != null) {
             powerState().validate();
@@ -1691,6 +1849,9 @@ public class ManagedClusterAgentPoolProfileProperties
         if (localDnsProfile() != null) {
             localDnsProfile().validate();
         }
+        if (preparedImageSpecificationProfile() != null) {
+            preparedImageSpecificationProfile().validate();
+        }
     }
 
     /**
@@ -1723,7 +1884,11 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
         jsonWriter.writeStringField("nodeImageVersion", this.nodeImageVersion);
+        jsonWriter.writeStringField("upgradeStrategy",
+            this.upgradeStrategy == null ? null : this.upgradeStrategy.toString());
+        jsonWriter.writeBooleanField("enableOSDiskFullCaching", this.enableOSDiskFullCaching);
         jsonWriter.writeJsonField("upgradeSettings", this.upgradeSettings);
+        jsonWriter.writeJsonField("upgradeSettingsBlueGreen", this.upgradeSettingsBlueGreen);
         jsonWriter.writeJsonField("powerState", this.powerState);
         jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
             (writer, element) -> writer.writeString(element));
@@ -1737,6 +1902,8 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("nodeLabels", this.nodeLabels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("nodeTaints", this.nodeTaints, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeInitializationTaints", this.nodeInitializationTaints,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("proximityPlacementGroupID", this.proximityPlacementGroupId);
         jsonWriter.writeJsonField("kubeletConfig", this.kubeletConfig);
         jsonWriter.writeJsonField("linuxOSConfig", this.linuxOSConfig);
@@ -1759,6 +1926,7 @@ public class ManagedClusterAgentPoolProfileProperties
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", this.status);
         jsonWriter.writeJsonField("localDNSProfile", this.localDnsProfile);
+        jsonWriter.writeJsonField("preparedImageSpecificationProfile", this.preparedImageSpecificationProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1837,9 +2005,18 @@ public class ManagedClusterAgentPoolProfileProperties
                         = reader.getString();
                 } else if ("nodeImageVersion".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.nodeImageVersion = reader.getString();
+                } else if ("upgradeStrategy".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.upgradeStrategy
+                        = UpgradeStrategy.fromString(reader.getString());
+                } else if ("enableOSDiskFullCaching".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.enableOSDiskFullCaching
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("upgradeSettings".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.upgradeSettings
                         = AgentPoolUpgradeSettings.fromJson(reader);
+                } else if ("upgradeSettingsBlueGreen".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.upgradeSettingsBlueGreen
+                        = AgentPoolBlueGreenUpgradeSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.provisioningState = reader.getString();
                 } else if ("powerState".equals(fieldName)) {
@@ -1870,6 +2047,10 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("nodeTaints".equals(fieldName)) {
                     List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterAgentPoolProfileProperties.nodeTaints = nodeTaints;
+                } else if ("nodeInitializationTaints".equals(fieldName)) {
+                    List<String> nodeInitializationTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfileProperties.nodeInitializationTaints
+                        = nodeInitializationTaints;
                 } else if ("proximityPlacementGroupID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.proximityPlacementGroupId = reader.getString();
                 } else if ("kubeletConfig".equals(fieldName)) {
@@ -1925,6 +2106,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("localDNSProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.localDnsProfile
                         = LocalDnsProfile.fromJson(reader);
+                } else if ("preparedImageSpecificationProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.preparedImageSpecificationProfile
+                        = PreparedImageSpecificationProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
