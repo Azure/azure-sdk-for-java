@@ -69,4 +69,4 @@ The plugin includes the shared processor sources and resources from `sdk/tools/a
 
 Verification also runs SDK Checkstyle, Spotless formatting, and Codesnippet checks. Checkstyle covers plugin sources and tests; the processor module checks its own sources. Narrow exceptions allow Maven-injected fields and tool-specific exception handling.
 
-Register `eng/pipelines/api-review-java.yml` as `tools - api-review-maven-plugin - ci` for validation. This repository's ARH integration builds the tool from source and does not publish it.
+Both modules are validated by `sdk/tools/ci.yml`, with release disabled. This repository's ARH integration builds the tool from source and does not publish it.
