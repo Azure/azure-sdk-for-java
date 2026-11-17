@@ -30,7 +30,7 @@ import java.util.Objects;
  * clients that support certificate binding, as reported by
  * {@link com.azure.core.http.HttpClient#supportsClientCertificateBinding()}, build their TLS context from
  * {@link #getKeyManager()}, so that the connection carrying the token presents the certificate. The private key may
- * not be exportable, for example when hardware protects it, so the key manager is the only way to use it.
+ * not be exportable, for example when hardware protects it, so the binding provides a key manager instead of the key.
  * </p>
  *
  * <p>
