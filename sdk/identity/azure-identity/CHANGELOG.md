@@ -9,10 +9,10 @@
   machine scale sets with KeyGuard, in preview. When a client library asks for a proof-of-possession token, the optional
   `com.microsoft.azure:msal4j-key-attestation` package is on the class path and `MSAL_KEY_ATTESTATION_LIBRARY_PATH` is
   set to the path of `AttestationClientLib.dll`, the credential returns a token bound to a TLS client certificate
-  instead of a bearer token. It gets these tokens through MSAL's own HTTP client.
+  instead of a bearer token. It gets these tokens through MSAL's own HTTP client. ([#51316](https://github.com/Azure/azure-sdk-for-java/pull/51316))
 - Added `ManagedIdentityCredentialBuilder.disableMtlsProofOfPossession()` and
   `DefaultAzureCredentialBuilder.disableManagedIdentityMtlsProofOfPossession()` to always get bearer tokens from managed
-  identity.
+  identity. ([#51316](https://github.com/Azure/azure-sdk-for-java/pull/51316))
 
 ### Breaking Changes
 
