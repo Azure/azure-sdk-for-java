@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.8.0</version>
+  <version>1.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -169,6 +169,14 @@ ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .endpoint(endpoint)
     .buildClient();
 ```
+
+When using Microsoft Entra ID, the client automatically infers the authentication audience from the endpoint hostname,
+including sovereign cloud and staging endpoints. For example, `https://my-store.appconfig.sovereign.cloud` uses
+`https://appconfig.sovereign.cloud`, and `https://my-store.azconfig.io` uses `https://azconfig.io`.
+Unrecognized hostnames default to `https://appconfig.azure.com`. To override inference, call
+`audience(ConfigurationAudience.fromString("https://custom.audience"))` on the builder. Audience values in Java do not
+include a trailing slash; the client appends `/.default` to form the token scope. This applies to both synchronous and
+asynchronous clients. See [authentication token audiences](https://aka.ms/appconfig/client-token-audience) for details.
 
 ## Key concepts
 
@@ -619,5 +627,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
-
 

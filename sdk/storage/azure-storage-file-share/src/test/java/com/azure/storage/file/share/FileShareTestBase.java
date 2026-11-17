@@ -92,9 +92,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         super.beforeTest();
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
-        if (getTestMode() != TestMode.LIVE) {
-            interceptorManager
-                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+        if (!testContextManager.doNotRecordTest()) {
+            if (getTestMode() != TestMode.LIVE) {
+                interceptorManager.addSanitizers(Arrays.asList(
+                    new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
                     new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED",
@@ -103,12 +104,11 @@ public class FileShareTestBase extends TestProxyTestBase {
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-link-text", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER)));
-        }
+            }
 
-        // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
-        // in SAS tokens.
-        interceptorManager
-            .addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
+            // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query
+            // parameter in SAS tokens.
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
                 .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                     "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since", "x-ms-copy-source",
                     "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
@@ -117,13 +117,14 @@ public class FileShareTestBase extends TestProxyTestBase {
                 .setIgnoredQueryParameters(Arrays.asList("sv"))
                 .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
 
-        ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
-        primaryFileServiceClient = builder.buildClient();
-        primaryFileServiceAsyncClient = builder.buildAsyncClient();
+            ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
+            primaryFileServiceClient = builder.buildClient();
+            primaryFileServiceAsyncClient = builder.buildAsyncClient();
 
-        builder = getServiceClientBuilder(ENVIRONMENT.getPremiumFileAccount());
-        premiumFileServiceClient = builder.buildClient();
-        premiumFileServiceAsyncClient = builder.buildAsyncClient();
+            builder = getServiceClientBuilder(ENVIRONMENT.getPremiumFileAccount());
+            premiumFileServiceClient = builder.buildClient();
+            premiumFileServiceAsyncClient = builder.buildAsyncClient();
+        }
     }
 
     /**
@@ -132,7 +133,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.PLAYBACK || testContextManager.doNotRecordTest()) {
             return;
         }
 

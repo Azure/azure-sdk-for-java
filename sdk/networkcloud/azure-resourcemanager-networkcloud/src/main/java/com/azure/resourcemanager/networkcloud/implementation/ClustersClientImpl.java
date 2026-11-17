@@ -555,7 +555,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, ClusterInner clusterParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, clusterName, clusterParameters, ifMatch, ifNoneMatch);
@@ -838,7 +838,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         String ifMatch, String ifNoneMatch, ClusterPatchParameters clusterUpdateParameters) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, clusterName, ifMatch, ifNoneMatch, clusterUpdateParameters);
@@ -1106,7 +1106,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String ifMatch,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1804,7 +1804,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginDeploy(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginDeploy(String resourceGroupName,
         String clusterName, ClusterDeployParameters clusterDeployParameters) {
         Response<BinaryData> response = deployWithResponse(resourceGroupName, clusterName, clusterDeployParameters);
         return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
@@ -2037,7 +2037,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginInspect(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginInspect(String resourceGroupName,
         String clusterName, ClusterInspectParameters clusterInspectParameters) {
         Response<BinaryData> response = inspectWithResponse(resourceGroupName, clusterName, clusterInspectParameters);
         return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
@@ -2449,7 +2449,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginScanRuntime(
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginScanRuntime(
         String resourceGroupName, String clusterName, ClusterScanRuntimeParameters clusterScanRuntimeParameters) {
         Response<BinaryData> response
             = scanRuntimeWithResponse(resourceGroupName, clusterName, clusterScanRuntimeParameters);

@@ -89,6 +89,13 @@ public interface ContainerServiceFleetManagementClient {
     GatesClient getGates();
 
     /**
+     * Gets the IdentityBindingProfilesClient object to access its operations.
+     * 
+     * @return the IdentityBindingProfilesClient object.
+     */
+    IdentityBindingProfilesClient getIdentityBindingProfiles();
+
+    /**
      * Gets the UpdateRunsClient object to access its operations.
      * 
      * @return the UpdateRunsClient object.

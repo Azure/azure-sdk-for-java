@@ -6,6 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.SharedExecutorService;
@@ -19,11 +20,13 @@ import okhttp3.Dispatcher;
 import okhttp3.EventListener;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
@@ -47,6 +50,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LOCATION_PA
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.REDIRECT_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -57,13 +61,52 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
-    private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
-    private static final String JAVA_HTTP_PROXY_PORT = "http.proxyPort";
-    private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
-    private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String JAVA_HTTPS_PROXY_HOST = "https.proxyHost";
+    private static final String JAVA_HTTPS_PROXY_PORT = "https.proxyPort";
+    private static final String JAVA_HTTPS_PROXY_USER = "https.proxyUser";
+    private static final String JAVA_HTTPS_PROXY_PASSWORD = "https.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        OkHttpAsyncHttpClient client = (OkHttpAsyncHttpClient) builder.build();
+        assertEquals(version == HttpProtocolVersion.HTTP_2
+            ? Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1)
+            : Collections.singletonList(Protocol.HTTP_1_1), client.httpClient.protocols());
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1);
+        OkHttpAsyncHttpClient first = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1), cleared.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), first.httpClient.protocols());
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        List<Protocol> internalProtocols = Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE);
+        OkHttpClient internalClient = new OkHttpClient.Builder().protocols(internalProtocols).build();
+        OkHttpAsyncHttpClientBuilder builder
+            = new OkHttpAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
+        OkHttpAsyncHttpClient original = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient limited
+            = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(internalProtocols, original.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), limited.httpClient.protocols());
+        assertEquals(internalProtocols, cleared.httpClient.protocols());
+        assertEquals(internalProtocols, internalClient.protocols());
+    }
 
     /**
      * Tests that an {@link OkHttpAsyncHttpClient} is able to be built from an existing {@link OkHttpClient}.
@@ -475,8 +518,10 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
         Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier
-            = () -> new TestConfigurationSource().put(JAVA_HTTP_PROXY_HOST, "localhost")
-                .put(JAVA_HTTP_PROXY_PORT, "12345");
+            = () -> new TestConfigurationSource().put(JAVA_HTTPS_PROXY_HOST, "localhost")
+                .put(JAVA_HTTPS_PROXY_PORT, "12345")
+                .put(JAVA_NON_PROXY_HOSTS, "")
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "false");
 
         List<Arguments> arguments = new ArrayList<>();
 
@@ -498,7 +543,9 @@ public class OkHttpAsyncHttpClientBuilderTests {
          * HTTP proxy with authentication configured.
          */
         Configuration javaProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE,
-            baseJavaProxyConfigurationSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1"),
+            baseJavaProxyConfigurationSupplier.get()
+                .put(JAVA_HTTPS_PROXY_USER, "1")
+                .put(JAVA_HTTPS_PROXY_PASSWORD, "1"),
             EMPTY_SOURCE).build();
         arguments.add(Arguments.of(true, javaProxyWithAuthentication, SERVER_HTTP_URI + DEFAULT_PATH));
 
@@ -555,7 +602,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
         Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier
-            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
+            = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTPS_PROXY_USER, "1").put(JAVA_HTTPS_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)

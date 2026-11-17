@@ -1,5 +1,22 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `maximumHttpVersion` to enable HTTP/2 with HTTP/1.1 fallback. Clients created without a supplied JDK builder
+  still default to HTTP/1.1.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- HTTP clients created with a supplied JDK builder now honor its explicit HTTP version instead of silently
+  defaulting to HTTP/1.1.
+
+### Other Changes
+
 ## 1.3.0 (2026-10-27)
 
 ### Bugs Fixed

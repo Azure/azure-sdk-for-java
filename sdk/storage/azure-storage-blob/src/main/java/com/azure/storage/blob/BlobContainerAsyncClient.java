@@ -514,6 +514,13 @@ public final class BlobContainerAsyncClient {
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.delete -->
@@ -535,6 +542,13 @@ public final class BlobContainerAsyncClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -584,6 +598,13 @@ public final class BlobContainerAsyncClient {
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
@@ -610,6 +631,13 @@ public final class BlobContainerAsyncClient {
      * Marks the specified container for deletion if it exists. The container and any blobs contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1122,33 +1150,17 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions;
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
              If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
              Otherwise, prefer the new value.
-             */
+              */
             if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
-                } else {
-                    // Note that this prefers the value passed to .byPage(int) over the value on the options
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
-                        .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails())
-                        .setStartFrom(options.getStartFrom());
-                    if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-                        == StorageResponseSerializationFormat.ARROW) {
-                        finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                            .setEndBefore(options.getEndBefore());
-                    }
-                }
-            } else {
-                finalOptions = options;
+                finalOptions.setMaxResultsPerPage(pageSize);
             }
 
-            if (finalOptions != null
-                && ModelHelper.resolveSerializationFormat(finalOptions.getStorageResponseSerializationFormat())
-                    == StorageResponseSerializationFormat.ARROW) {
+            if (finalOptions.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
                 return listBlobsFlatSegmentArrow(marker, finalOptions, timeout);
             }
 
@@ -1366,33 +1378,17 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions;
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
              If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
              Otherwise, prefer the new value.
-             */
+              */
             if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
-                } else {
-                    // Note that this prefers the value passed to .byPage(int) over the value on the options
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
-                        .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails())
-                        .setStartFrom(options.getStartFrom());
-                    if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-                        == StorageResponseSerializationFormat.ARROW) {
-                        finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                            .setEndBefore(options.getEndBefore());
-                    }
-                }
-            } else {
-                finalOptions = options;
+                finalOptions.setMaxResultsPerPage(pageSize);
             }
 
-            if (finalOptions != null
-                && ModelHelper.resolveSerializationFormat(finalOptions.getStorageResponseSerializationFormat())
-                    == StorageResponseSerializationFormat.ARROW) {
+            if (finalOptions.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
                 return listBlobsHierarchySegmentArrow(marker, delimiter, finalOptions, timeout);
             }
 
@@ -1846,11 +1842,4 @@ public final class BlobContainerAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
-    //    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
-    //        if (modifiedRequestConditions == null) {
-    //            return true;
-    //        }
-    //        return modifiedRequestConditions.getIfModifiedSince() == null
-    //            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
-    //    }
 }

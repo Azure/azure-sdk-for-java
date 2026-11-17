@@ -224,12 +224,16 @@ public final class PolicySetDefinitionVersionsImpl implements PolicySetDefinitio
     }
 
     public PolicySetDefinitionVersion getById(String id) {
-        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policySetDefinitions");
+        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policySetDefinitionName");
         if (policySetDefinitionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'policySetDefinitions'.", id)));
         }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion");
         if (policyDefinitionVersion == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -240,12 +244,16 @@ public final class PolicySetDefinitionVersionsImpl implements PolicySetDefinitio
     }
 
     public Response<PolicySetDefinitionVersion> getByIdWithResponse(String id, String expand, Context context) {
-        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policySetDefinitions");
+        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policySetDefinitionName");
         if (policySetDefinitionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'policySetDefinitions'.", id)));
         }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion");
         if (policyDefinitionVersion == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -254,12 +262,16 @@ public final class PolicySetDefinitionVersionsImpl implements PolicySetDefinitio
     }
 
     public void deleteById(String id) {
-        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policySetDefinitions");
+        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policySetDefinitionName");
         if (policySetDefinitionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'policySetDefinitions'.", id)));
         }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion");
         if (policyDefinitionVersion == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -268,12 +280,16 @@ public final class PolicySetDefinitionVersionsImpl implements PolicySetDefinitio
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policySetDefinitions");
+        String policySetDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policySetDefinitionName");
         if (policySetDefinitionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'policySetDefinitions'.", id)));
         }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion");
         if (policyDefinitionVersion == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));

@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"vfcdisyirn\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"hcz\"}")
+            "{\"name\":\"refdee\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes\",\"resourceGroup\":\"ecuijpxtxs\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("vfcdisyirn", model.name());
-        Assertions.assertEquals(
-            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
-        Assertions.assertEquals("hcz", model.resourceGroup());
+        Assertions.assertEquals("refdee", model.name());
+        Assertions.assertEquals(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
+            model.type());
+        Assertions.assertEquals("ecuijpxtxs", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("vfcdisyirn")
-            .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-            .withResourceGroup("hcz");
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("refdee")
+            .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
+            .withResourceGroup("ecuijpxtxs");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("vfcdisyirn", model.name());
-        Assertions.assertEquals(
-            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
-        Assertions.assertEquals("hcz", model.resourceGroup());
+        Assertions.assertEquals("refdee", model.name());
+        Assertions.assertEquals(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
+            model.type());
+        Assertions.assertEquals("ecuijpxtxs", model.resourceGroup());
     }
 }

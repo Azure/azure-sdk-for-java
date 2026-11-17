@@ -12,21 +12,21 @@ public final class SkuMixPlacementZonePreferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementZonePreference model
-            = BinaryData.fromString("{\"zone\":\"dphlxaolt\",\"rank\":578472109,\"targetMaxCapacity\":545631747}")
+            = BinaryData.fromString("{\"zone\":\"xilnerku\",\"rank\":43446932,\"targetMaxCapacity\":227199794}")
                 .toObject(SkuMixPlacementZonePreference.class);
-        Assertions.assertEquals("dphlxaolt", model.zone());
-        Assertions.assertEquals(578472109, model.rank());
-        Assertions.assertEquals(545631747, model.targetMaxCapacity());
+        Assertions.assertEquals("xilnerku", model.zone());
+        Assertions.assertEquals(43446932, model.rank());
+        Assertions.assertEquals(227199794, model.targetMaxCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuMixPlacementZonePreference model = new SkuMixPlacementZonePreference().withZone("dphlxaolt")
-            .withRank(578472109)
-            .withTargetMaxCapacity(545631747);
+        SkuMixPlacementZonePreference model = new SkuMixPlacementZonePreference().withZone("xilnerku")
+            .withRank(43446932)
+            .withTargetMaxCapacity(227199794);
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementZonePreference.class);
-        Assertions.assertEquals("dphlxaolt", model.zone());
-        Assertions.assertEquals(578472109, model.rank());
-        Assertions.assertEquals(545631747, model.targetMaxCapacity());
+        Assertions.assertEquals("xilnerku", model.zone());
+        Assertions.assertEquals(43446932, model.rank());
+        Assertions.assertEquals(227199794, model.targetMaxCapacity());
     }
 }

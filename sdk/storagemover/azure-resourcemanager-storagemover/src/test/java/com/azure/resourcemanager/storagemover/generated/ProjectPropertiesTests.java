@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectProperties model = BinaryData.fromString("{\"description\":\"pj\",\"provisioningState\":\"Deleting\"}")
-            .toObject(ProjectProperties.class);
-        Assertions.assertEquals("pj", model.description());
+        ProjectProperties model
+            = BinaryData.fromString("{\"description\":\"ocfs\",\"provisioningState\":\"Succeeded\"}")
+                .toObject(ProjectProperties.class);
+        Assertions.assertEquals("ocfs", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDescription("pj");
+        ProjectProperties model = new ProjectProperties().withDescription("ocfs");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("pj", model.description());
+        Assertions.assertEquals("ocfs", model.description());
     }
 }

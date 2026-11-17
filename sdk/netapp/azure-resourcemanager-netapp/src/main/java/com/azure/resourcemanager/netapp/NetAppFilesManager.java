@@ -45,7 +45,6 @@ import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.RansomwareReportsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
-import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
@@ -68,7 +67,6 @@ import com.azure.resourcemanager.netapp.models.Pools;
 import com.azure.resourcemanager.netapp.models.RansomwareReports;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
-import com.azure.resourcemanager.netapp.models.Subvolumes;
 import com.azure.resourcemanager.netapp.models.VolumeGroups;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRules;
 import com.azure.resourcemanager.netapp.models.Volumes;
@@ -124,8 +122,6 @@ public final class NetAppFilesManager {
     private BackupsUnderBackupVaults backupsUnderBackupVaults;
 
     private BackupsUnderVolumes backupsUnderVolumes;
-
-    private Subvolumes subvolumes;
 
     private NetAppResources netAppResources;
 
@@ -588,18 +584,6 @@ public final class NetAppFilesManager {
             this.backupsUnderVolumes = new BackupsUnderVolumesImpl(clientObject.getBackupsUnderVolumes(), this);
         }
         return backupsUnderVolumes;
-    }
-
-    /**
-     * Gets the resource collection API of Subvolumes. It manages SubvolumeInfo.
-     * 
-     * @return Resource collection API of Subvolumes.
-     */
-    public Subvolumes subvolumes() {
-        if (this.subvolumes == null) {
-            this.subvolumes = new SubvolumesImpl(clientObject.getSubvolumes(), this);
-        }
-        return subvolumes;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 Azure Resource Manager Storage Mover client library for Java.
 
-This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-storagemover</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,13 +70,6 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
-```java
-storageMover = storageMoverManager.storageMovers()
-    .define(moveName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .create();
-```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storagemover/azure-resourcemanager-storagemover/SAMPLE.md)
 
 
@@ -87,6 +80,38 @@ storageMover = storageMoverManager.storageMovers()
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide][cg].
+
+### Testing API version 2026-05-01
+
+From the repository root, run the package tests with:
+
+```powershell
+mvn -f sdk\storagemover\azure-resourcemanager-storagemover\pom.xml test
+```
+
+Playback uses the recordings selected by `assets.json` and requires no Azure credentials.
+`ApiContractTests` also verifies the exact API version, request paths, and JSON payloads without network access.
+Its coverage matches the Python SDK's cross-tenant Blob/SMB settings, FSX source types, NFS 4.1,
+hourly/synchronization fields, agentless connections, and bodyless `reconcileJob` operation.
+Contract tests do not imply that service-blocked configurations or reconciliation succeed live.
+`SaveVerifyFileMD5` retains request-contract coverage; live schedule scenarios use `None` because
+the current service rejects this NFS-to-Blob MD5 configuration with `ResourceCreationValidateFailed`.
+
+Recorded scenarios cover Blob cross-tenant allow-list replacement, omission, and clearing;
+hourly schedule updates and invalid intervals; cross-tenant job validation; and agentless job
+definitions with a pending connection. Public/private S3 transfer scenarios require a successful job run.
+The hourly and agentless control-plane scenarios use `eastus2euap`.
+Files-to-files hourly jobs omit subpaths, which the service rejects even when set to `/`.
+Live hourly scenarios use the accepted `4h`/`6h` intervals; transport contracts retain Python's `PT1H`/`PT2H` values.
+
+For live testing, use the existing approved test infrastructure and the settings in `sample.env`.
+Set `AZURE_TEST_MODE=RECORD` to capture new scenarios, or `LIVE` to run without recording.
+The optional `STORAGE_MOVER_TEST_LOCATION` and private-link service overrides apply only to live/record runs;
+playback always uses canonical fixture values. The location override affects ordinary scenarios;
+shared S3 fixtures remain pinned to `westcentralus`. The agentless scenario uses the existing
+`E2E-VPC-PLS-E2ETest.Test.ECY` service without approving its pending private endpoint connection.
+Tests create disposable resource groups and containers and remove their own role assignments and connections.
+Tests requiring a registered agent remain disabled; they must not unregister or modify shared agents.
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 

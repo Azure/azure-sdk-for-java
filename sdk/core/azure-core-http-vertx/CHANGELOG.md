@@ -1,5 +1,23 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback without changing defaults or mutating
+  caller-supplied Vert.x options.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed the `Expect: 100-continue` fallback wait starting before the request headers were written. Time the headers
+  spent reaching the wire, such as on the first request in a JVM, shortened the wait for `100 Continue` and could
+  cause the body to be sent before the service had a chance to answer.
+
+### Other Changes
+
 ## 1.3.0 (2026-10-27)
 
 ### Features Added

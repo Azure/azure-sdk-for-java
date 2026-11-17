@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ManagedComputeCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/ListManagedComputeCapacities.json
+     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacities.json
      */
     /**
      * Sample code: List Managed Compute Capacities.
@@ -18,6 +18,49 @@ public final class ManagedComputeCapacitiesListSamples {
      */
     public static void
         listManagedComputeCapacities(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.managedComputeCapacities().list("MaaP", null, null, com.azure.core.util.Context.NONE);
+        manager.managedComputeCapacities().list("MaaP", "H100_80GB", null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithDeployment.json
+     */
+    /**
+     * Sample code: List Managed Compute Capacities For Deployment With Matching Account Location.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void listManagedComputeCapacitiesForDeploymentWithMatchingAccountLocation(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.managedComputeCapacities()
+            .list("MaaP", "H100_80GB",
+                "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/managedComputeDeployments/deploymentName",
+                "eastus", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithLocation.json
+     */
+    /**
+     * Sample code: List Managed Compute Capacities With Location.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void listManagedComputeCapacitiesWithLocation(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.managedComputeCapacities().list("MaaP", "H100_80GB", null, "eastus", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ListManagedComputeCapacitiesWithUnsupportedLocation.json
+     */
+    /**
+     * Sample code: List Managed Compute Capacities With Unsupported DataZone Location.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void listManagedComputeCapacitiesWithUnsupportedDataZoneLocation(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.managedComputeCapacities()
+            .list("MaaP", "H100_80GB", null, "japaneast", com.azure.core.util.Context.NONE);
     }
 }

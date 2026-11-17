@@ -10,6 +10,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.ClusterCommonProperties;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
+import com.azure.resourcemanager.redisenterprise.models.FirewallRule;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
@@ -210,6 +211,15 @@ public final class ClusterUpdateProperties extends ClusterCommonProperties {
      * {@inheritDoc}
      */
     @Override
+    public ClusterUpdateProperties withFirewallRules(List<FirewallRule> firewallRules) {
+        super.withFirewallRules(firewallRules);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("highAvailability",
@@ -218,6 +228,7 @@ public final class ClusterUpdateProperties extends ClusterCommonProperties {
             minimumTlsVersion() == null ? null : minimumTlsVersion().toString());
         jsonWriter.writeJsonField("encryption", encryption());
         jsonWriter.writeJsonField("maintenanceConfiguration", maintenanceConfiguration());
+        jsonWriter.writeArrayField("firewallRules", firewallRules(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
@@ -249,6 +260,9 @@ public final class ClusterUpdateProperties extends ClusterCommonProperties {
                 } else if ("maintenanceConfiguration".equals(fieldName)) {
                     deserializedClusterUpdateProperties
                         .withMaintenanceConfiguration(MaintenanceConfiguration.fromJson(reader));
+                } else if ("firewallRules".equals(fieldName)) {
+                    List<FirewallRule> firewallRules = reader.readArray(reader1 -> FirewallRule.fromJson(reader1));
+                    deserializedClusterUpdateProperties.withFirewallRules(firewallRules);
                 } else if ("hostName".equals(fieldName)) {
                     deserializedClusterUpdateProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

@@ -444,7 +444,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName, FeatureEnableRequest body) {
         Response<BinaryData> response = enableWithResponse(location, featureName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,

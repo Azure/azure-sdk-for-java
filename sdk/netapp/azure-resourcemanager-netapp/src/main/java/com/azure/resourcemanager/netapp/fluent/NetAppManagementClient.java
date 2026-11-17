@@ -187,13 +187,6 @@ public interface NetAppManagementClient {
     BackupsUnderVolumesClient getBackupsUnderVolumes();
 
     /**
-     * Gets the SubvolumesClient object to access its operations.
-     * 
-     * @return the SubvolumesClient object.
-     */
-    SubvolumesClient getSubvolumes();
-
-    /**
      * Gets the NetAppResourcesClient object to access its operations.
      * 
      * @return the NetAppResourcesClient object.

@@ -214,8 +214,12 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     CacheImpl(CacheInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cacheName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "resourceGroupName");
+        this.cacheName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}",
+            "cacheName");
     }
 
     public Cache refresh() {

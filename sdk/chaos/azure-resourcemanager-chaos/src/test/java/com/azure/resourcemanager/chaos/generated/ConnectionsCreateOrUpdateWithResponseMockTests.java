@@ -23,7 +23,7 @@ public final class ConnectionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"AksExtension\",\"targetResourceId\":\"kdidjc\",\"principalId\":\"rmpwctofld\",\"tenantId\":\"acdhztxkbr\",\"certificateSubjectName\":\"drwjiy\",\"certificateIssuer\":\"hfjsrwqrxetf\",\"dstsPrincipal\":\"wvrrmdqn\",\"dataPlaneEndpoint\":\"cnawth\",\"status\":\"Pending\",\"provisioningState\":\"Updating\"},\"id\":\"u\",\"name\":\"eamc\",\"type\":\"hudfjecehok\"}";
+            = "{\"properties\":{\"kind\":\"AksExtension\",\"targetResourceId\":\"joedx\",\"principalId\":\"ucaifpaurwwgilf\",\"tenantId\":\"qacdmkxwxdcvjwcy\",\"certificateSubjectName\":\"akeciqchx\",\"certificateIssuer\":\"uicdsiwdfmmpzhzz\",\"dataPlaneEndpoint\":\"ywrgyngydgr\",\"status\":\"Pending\",\"provisioningState\":\"Succeeded\"},\"id\":\"iqao\",\"name\":\"djrkclamggl\",\"type\":\"lmf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,23 +33,21 @@ public final class ConnectionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Connection response = manager.connections()
-            .define("xolriy")
-            .withExistingWorkspace("wjcciklhsy", "krdre")
-            .withProperties(new ConnectionProperties().withKind(ConnectionKind.CSFI)
-                .withTargetResourceId("beivdlhydwbdbfg")
-                .withPrincipalId("punytjl")
-                .withTenantId("smmpathubt")
-                .withCertificateSubjectName("deani")
-                .withCertificateIssuer("llbvgwzsfftedous")
-                .withDstsPrincipal("tjtgravaqogfkb"))
+            .define("xpvelszerqzevxo")
+            .withExistingWorkspace("zlehgcvkbcknjolg", "y")
+            .withProperties(new ConnectionProperties().withKind(ConnectionKind.AKS_EXTENSION)
+                .withTargetResourceId("ntxwaljglzob")
+                .withPrincipalId("waafrqulh")
+                .withTenantId("yqbhd")
+                .withCertificateSubjectName("fjrqpjiyr")
+                .withCertificateIssuer("crgaxwmzwdf"))
             .create();
 
         Assertions.assertEquals(ConnectionKind.AKS_EXTENSION, response.properties().kind());
-        Assertions.assertEquals("kdidjc", response.properties().targetResourceId());
-        Assertions.assertEquals("rmpwctofld", response.properties().principalId());
-        Assertions.assertEquals("acdhztxkbr", response.properties().tenantId());
-        Assertions.assertEquals("drwjiy", response.properties().certificateSubjectName());
-        Assertions.assertEquals("hfjsrwqrxetf", response.properties().certificateIssuer());
-        Assertions.assertEquals("wvrrmdqn", response.properties().dstsPrincipal());
+        Assertions.assertEquals("joedx", response.properties().targetResourceId());
+        Assertions.assertEquals("ucaifpaurwwgilf", response.properties().principalId());
+        Assertions.assertEquals("qacdmkxwxdcvjwcy", response.properties().tenantId());
+        Assertions.assertEquals("akeciqchx", response.properties().certificateSubjectName());
+        Assertions.assertEquals("uicdsiwdfmmpzhzz", response.properties().certificateIssuer());
     }
 }

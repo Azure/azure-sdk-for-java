@@ -393,7 +393,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+    private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
         Response<BinaryData> response
@@ -654,7 +654,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+    private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);

@@ -24,7 +24,7 @@ public final class DefenderForAISettingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"kdw\",\"tags\":{\"aefe\":\"dupbkmzkwhjjsqw\"},\"id\":\"vkxdbnmcvaqy\",\"name\":\"dzdobuesdy\",\"type\":\"fxnzp\"}";
+            = "{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"mskkixvlzjxplhpe\",\"tags\":{\"vvbq\":\"yntvzjyielbq\",\"cqx\":\"knmp\"},\"id\":\"qa\",\"name\":\"ifubnsnstlpwqp\",\"type\":\"nxjkhtupsvyouw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class DefenderForAISettingsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DefenderForAISetting response = manager.defenderForAISettings()
-            .define("qfzwanduhduw")
-            .withExistingAccount("koymhbfexmizzjx", "j")
-            .withTags(mapOf("umjfgoxedrmrazhv", "flzbk"))
+            .define("hnskivdwgtqcume")
+            .withExistingAccount("swku", "ydtnaczkfwfatgaw")
+            .withTags(mapOf("k", "ycsbskowkrbhzhr"))
             .withState(DefenderForAISettingState.DISABLED)
             .create();
 
-        Assertions.assertEquals("dupbkmzkwhjjsqw", response.tags().get("aefe"));
+        Assertions.assertEquals("yntvzjyielbq", response.tags().get("vvbq"));
         Assertions.assertEquals(DefenderForAISettingState.ENABLED, response.state());
     }
 

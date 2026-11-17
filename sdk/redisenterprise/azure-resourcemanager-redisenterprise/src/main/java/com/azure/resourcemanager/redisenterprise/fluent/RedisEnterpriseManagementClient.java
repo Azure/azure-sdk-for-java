@@ -54,6 +54,13 @@ public interface RedisEnterpriseManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
+
+    /**
      * Gets the DatabasesClient object to access its operations.
      * 
      * @return the DatabasesClient object.

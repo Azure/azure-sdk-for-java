@@ -14,21 +14,21 @@ public final class RaiToolLabelPropertiesProjectScopesItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiToolLabelPropertiesProjectScopesItem model = BinaryData.fromString(
-            "{\"project\":\"esfuught\",\"labelValues\":{\"ic\":\"fecjxeygtuhx\",\"usxjbaqehg\":\"uewmrswnjlxuzrhw\",\"tu\":\"dohzjq\",\"gebx\":\"o\"}}")
+            "{\"project\":\"btgn\",\"labelValues\":{\"vodggxdbee\":\"zeyqxtjjfzqlqhyc\",\"wiuagydwqf\":\"mieknlraria\",\"ocqwogfnzjvus\":\"ylyrfgiagtco\"}}")
             .toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("esfuught", model.project());
-        Assertions.assertEquals("fecjxeygtuhx", model.labelValues().get("ic"));
+        Assertions.assertEquals("btgn", model.project());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.labelValues().get("vodggxdbee"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelPropertiesProjectScopesItem model
-            = new RaiToolLabelPropertiesProjectScopesItem().withProject("esfuught")
-                .withLabelValues(
-                    mapOf("ic", "fecjxeygtuhx", "usxjbaqehg", "uewmrswnjlxuzrhw", "tu", "dohzjq", "gebx", "o"));
+        RaiToolLabelPropertiesProjectScopesItem model = new RaiToolLabelPropertiesProjectScopesItem()
+            .withProject("btgn")
+            .withLabelValues(
+                mapOf("vodggxdbee", "zeyqxtjjfzqlqhyc", "wiuagydwqf", "mieknlraria", "ocqwogfnzjvus", "ylyrfgiagtco"));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("esfuught", model.project());
-        Assertions.assertEquals("fecjxeygtuhx", model.labelValues().get("ic"));
+        Assertions.assertEquals("btgn", model.project());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.labelValues().get("vodggxdbee"));
     }
 
     // Use "Map.of" if available

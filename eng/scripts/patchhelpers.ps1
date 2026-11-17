@@ -176,7 +176,7 @@ function TryAddLatestDependencyVersionFromMaven($DependencyId, [hashtable]$Lates
 # regardless of artifact ordering in patch_release_client.txt.
 # Dependencies in the patch list are checked directly; missing Azure dependencies
 # are resolved from Maven. External dependencies (reactor-core, jackson, etc.) are ignored.
-function FindArtifactsThatNeedPatching($ArtifactInfos) {
+function FindArtifactsThatNeedPatching($ArtifactInfos, [switch]$IncrementMinorVersion) {
     $latestVersions = @{}
     $unresolvedDependencies = @{}
     foreach ($arId in $ArtifactInfos.Keys) {
@@ -195,7 +195,7 @@ function FindArtifactsThatNeedPatching($ArtifactInfos) {
                 }
 
                 if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
-                    $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
+                    $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion -IncrementMinorVersion:$IncrementMinorVersion
                     $arInfo.FutureReleasePatchVersion = $patchVersion
                     $latestVersions[$arId] = $patchVersion
                     $changed = $true

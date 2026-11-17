@@ -575,6 +575,31 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
     }
 
     /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbOplocks();
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSmbOplocks(SmbOplocks smbOplocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSmbOplocks(smbOplocks);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

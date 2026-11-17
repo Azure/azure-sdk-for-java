@@ -14,7 +14,7 @@ public final class QuotaTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierInner model = BinaryData.fromString(
-            "{\"properties\":{\"currentTierName\":\"ytxtdgu\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-05-14T02:48:25Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"gdstyouam\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2021-03-14T15:02:31Z\",\"upgradeUnavailabilityReason\":\"wmowegmmute\"}},\"id\":\"eyguq\",\"name\":\"gijiitnspxlzd\",\"type\":\"sygrijwa\"}")
+            "{\"properties\":{\"currentTierName\":\"hxiidlopedb\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-09-29T16:17:54Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"bxubmdna\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2021-08-02T01:33:08Z\",\"upgradeUnavailabilityReason\":\"e\"}},\"id\":\"ela\",\"name\":\"acigel\",\"type\":\"ohdbvqvwzkj\"}")
             .toObject(QuotaTierInner.class);
         Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE, model.properties().tierUpgradePolicy());
     }

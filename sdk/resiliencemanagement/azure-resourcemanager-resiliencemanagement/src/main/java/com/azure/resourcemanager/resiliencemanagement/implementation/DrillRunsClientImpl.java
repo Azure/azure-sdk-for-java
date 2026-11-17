@@ -571,7 +571,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
+    private SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunFailoverRequest body) {
         Response<BinaryData> response
             = failOverWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
@@ -822,7 +822,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
+    private SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunReprotectRequest body) {
         Response<BinaryData> response
             = reprotectWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);

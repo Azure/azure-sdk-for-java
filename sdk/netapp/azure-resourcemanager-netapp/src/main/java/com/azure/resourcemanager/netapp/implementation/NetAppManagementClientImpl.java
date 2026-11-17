@@ -46,7 +46,6 @@ import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.RansomwareReportsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
-import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
@@ -429,20 +428,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
-     * The SubvolumesClient object to access its operations.
-     */
-    private final SubvolumesClient subvolumes;
-
-    /**
-     * Gets the SubvolumesClient object to access its operations.
-     * 
-     * @return the SubvolumesClient object.
-     */
-    public SubvolumesClient getSubvolumes() {
-        return this.subvolumes;
-    }
-
-    /**
      * The NetAppResourcesClient object to access its operations.
      */
     private final NetAppResourcesClient netAppResources;
@@ -487,7 +472,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-01";
+        this.apiVersion = "2026-09-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -508,7 +493,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.pools = new PoolsClientImpl(this);
         this.backupsUnderBackupVaults = new BackupsUnderBackupVaultsClientImpl(this);
         this.backupsUnderVolumes = new BackupsUnderVolumesClientImpl(this);
-        this.subvolumes = new SubvolumesClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceUsages = new NetAppResourceUsagesClientImpl(this);
     }

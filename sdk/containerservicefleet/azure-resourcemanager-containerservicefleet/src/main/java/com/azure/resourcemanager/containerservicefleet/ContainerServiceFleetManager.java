@@ -34,6 +34,7 @@ import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembe
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.GatesImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.IdentityBindingProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
@@ -44,6 +45,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
 import com.azure.resourcemanager.containerservicefleet.models.Gates;
+import com.azure.resourcemanager.containerservicefleet.models.IdentityBindingProfiles;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -70,6 +72,8 @@ public final class ContainerServiceFleetManager {
     private FleetManagedNamespaces fleetManagedNamespaces;
 
     private Gates gates;
+
+    private IdentityBindingProfiles identityBindingProfiles;
 
     private UpdateRuns updateRuns;
 
@@ -366,6 +370,19 @@ public final class ContainerServiceFleetManager {
             this.gates = new GatesImpl(clientObject.getGates(), this);
         }
         return gates;
+    }
+
+    /**
+     * Gets the resource collection API of IdentityBindingProfiles. It manages IdentityBindingProfile.
+     * 
+     * @return Resource collection API of IdentityBindingProfiles.
+     */
+    public IdentityBindingProfiles identityBindingProfiles() {
+        if (this.identityBindingProfiles == null) {
+            this.identityBindingProfiles
+                = new IdentityBindingProfilesImpl(clientObject.getIdentityBindingProfiles(), this);
+        }
+        return identityBindingProfiles;
     }
 
     /**

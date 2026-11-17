@@ -45,6 +45,7 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+        setPlaybackPollerFluxPollInterval(operation);
 
         AnalysisResult result = operation.last().flatMap(pollResponse -> {
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());

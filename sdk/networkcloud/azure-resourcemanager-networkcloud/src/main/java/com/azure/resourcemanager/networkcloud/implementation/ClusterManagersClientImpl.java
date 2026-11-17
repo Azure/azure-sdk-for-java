@@ -471,7 +471,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      * on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterManagerName,
@@ -839,7 +839,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1369,7 +1369,7 @@ public final class ClusterManagersClientImpl implements ClusterManagersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginUpdateRelayPrivateEndpointConnection(String resourceGroupName, String clusterManagerName,
             ClusterManagerUpdateRelayPrivateEndpointConnectionParameters clusterManagerUpdateRelayPrivateEndpointConnectionParameters) {
         Response<BinaryData> response = updateRelayPrivateEndpointConnectionWithResponse(resourceGroupName,

@@ -101,9 +101,15 @@ public final class EdgeMachineDiskImpl implements EdgeMachineDisk, EdgeMachineDi
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeMachines");
-        this.diskName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "disks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
+            "resourceGroupName");
+        this.edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
+            "edgeMachineName");
+        this.diskName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/disks/{diskName}",
+            "diskName");
     }
 
     public EdgeMachineDisk refresh() {

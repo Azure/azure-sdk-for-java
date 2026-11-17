@@ -38,7 +38,7 @@ public class JobRunTests extends StorageMoverManagementTestBase {
 
         StorageMover sm = storageMoverManager.storageMovers()
             .define(storageMoverName)
-            .withRegion(DEFAULT_REGION)
+            .withRegion(defaultRegion)
             .withExistingResourceGroup(resourceGroupName)
             .create();
         storageMoverManager.projects()

@@ -11,7 +11,7 @@ public final class ServerVersionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerVersionCapability model = BinaryData.fromString(
-            "{\"name\":\"dhcxgkmoy\",\"supportedVersionsToUpgrade\":[\"yuibhm\",\"dnbzydvfvfcjn\"],\"supportedFeatures\":[{\"name\":\"srvhmgorffuki\",\"status\":\"Disabled\"},{\"name\":\"mzhwplefaxvxi\",\"status\":\"Enabled\"},{\"name\":\"gnhnzeyq\",\"status\":\"Disabled\"},{\"name\":\"fzqlqhycavod\",\"status\":\"Disabled\"}],\"status\":\"Default\",\"reason\":\"esmi\"}")
+            "{\"name\":\"it\",\"supportedVersionsToUpgrade\":[\"ztmoobklftidg\",\"cwq\"],\"supportedFeatures\":[{\"name\":\"aqxzhemjyho\",\"status\":\"Disabled\"}],\"status\":\"Available\",\"reason\":\"wkozz\"}")
             .toObject(ServerVersionCapability.class);
     }
 }
