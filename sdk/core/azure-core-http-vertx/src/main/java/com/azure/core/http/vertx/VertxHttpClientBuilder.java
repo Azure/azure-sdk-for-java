@@ -6,6 +6,8 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.vertx.implementation.ClientCertificateBinder;
+import com.azure.core.http.vertx.implementation.ClientCertificateBoundClients;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.Configuration;
@@ -19,6 +21,7 @@ import io.vertx.core.net.ProxyType;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,6 +29,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
@@ -40,6 +44,20 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 
 /**
  * Builds a {@link VertxHttpClient}.
+ *
+ * <p>
+ * <strong>Requests bound to a TLS client certificate</strong>
+ * </p>
+ *
+ * <p>
+ * Clients built by this builder support mutual TLS (mTLS) proof-of-possession (see
+ * {@link HttpClient#supportsClientCertificateBinding()}). A request whose access token is bound to a client certificate
+ * goes through a Vert.x HTTP client used only for that certificate, created on the same {@link Vertx} instance with a
+ * copy of the client's {@link HttpClientOptions}, so it keeps their trust settings. It uses the JDK's SSL engine and TLS
+ * 1.2, doesn't follow redirects, and is only sent once its connection has presented the certificate. A certificate's
+ * Vert.x client is retired when the certificate expires, or when more than 16 certificates are in use, least recently
+ * used first, and closed once the responses of its requests have ended.
+ * </p>
  */
 public class VertxHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClientBuilder.class);
@@ -87,6 +105,7 @@ public class VertxHttpClientBuilder {
     private HttpClientOptions httpClientOptions;
     private Vertx vertx;
     private HttpProtocolVersion maximumHttpVersion;
+    private Supplier<Instant> clientCertificateBindingClock = Instant::now;
 
     /**
      * Creates an instance of {@link VertxHttpClientBuilder}.
@@ -256,6 +275,12 @@ public class VertxHttpClientBuilder {
         return this;
     }
 
+    // Sets the clock used to retire the clients of TLS client certificates that expired, for tests.
+    VertxHttpClientBuilder clientCertificateBindingClock(Supplier<Instant> clock) {
+        this.clientCertificateBindingClock = clock;
+        return this;
+    }
+
     /**
      * Creates a new Vert.x {@link HttpClient} instance on every call, using the configuration set in the builder at the
      * time of the build method call.
@@ -342,8 +367,18 @@ public class VertxHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
+
+        // Clients for requests bound to a TLS client certificate are created on the same Vert.x instance, from the
+        // options as they are now.
+        Vertx boundVertx = configuredVertx;
+        HttpClientOptions boundOptions = new HttpClientOptions(buildOptions);
+        ClientCertificateBoundClients boundClients = new ClientCertificateBoundClients(
+            binding -> VERTX_HTTP_CLIENT_FACTORY.apply(boundVertx,
+                ClientCertificateBinder.bindToCertificate(boundOptions, binding)),
+            clientCertificateBindingClock, ClientCertificateBoundClients.DEFAULT_MAXIMUM_CLIENTS);
+
         return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout);
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout, boundClients);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {

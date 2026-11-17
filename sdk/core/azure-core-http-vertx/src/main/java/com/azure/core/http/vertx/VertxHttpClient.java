@@ -3,12 +3,15 @@
 
 package com.azure.core.http.vertx;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.ClientCertificateBinder;
+import com.azure.core.http.vertx.implementation.ClientCertificateBoundClients;
 import com.azure.core.http.vertx.implementation.VertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.http.vertx.implementation.VertxUtils;
@@ -87,6 +90,7 @@ class VertxHttpClient implements HttpClient {
 
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
+    final ClientCertificateBoundClients boundClients;
     private final Duration responseTimeout;
     private final Duration writeTimeout;
     private final ScheduledExecutorService writeTimeoutExecutor;
@@ -102,21 +106,49 @@ class VertxHttpClient implements HttpClient {
 
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
         Duration writeTimeout) {
-        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance());
+        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance(), null);
+    }
+
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout, ClientCertificateBoundClients boundClients) {
+        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance(), boundClients);
     }
 
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
         Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor) {
+        this(client, buildOptions, responseTimeout, writeTimeout, writeTimeoutExecutor, null);
+    }
+
+    /**
+     * Constructs a {@link VertxHttpClient}.
+     *
+     * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
+     * @param buildOptions The options the client was built with.
+     * @param responseTimeout The response timeout.
+     * @param writeTimeout The write timeout.
+     * @param writeTimeoutExecutor The executor that schedules write timeouts.
+     * @param boundClients The clients for requests bound to a TLS client certificate, or null if the client can't bind
+     * requests to a certificate.
+     */
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor,
+        ClientCertificateBoundClients boundClients) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
         this.writeTimeout = writeTimeout;
         this.writeTimeoutExecutor = Objects.requireNonNull(writeTimeoutExecutor, "writeTimeoutExecutor cannot be null");
+        this.boundClients = boundClients;
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return send(request, Context.NONE);
+    }
+
+    @Override
+    public boolean supportsClientCertificateBinding() {
+        return boundClients != null;
     }
 
     @Override
@@ -156,7 +188,9 @@ class VertxHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        Contexts contexts = Contexts.with(context);
+        ProgressReporter progressReporter = contexts.getHttpRequestProgressReporter();
+        ClientCertificateBinding binding = contexts.getClientCertificateBinding();
 
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
@@ -185,7 +219,16 @@ class VertxHttpClient implements HttpClient {
             }
         });
 
-        client.request(options).andThen(requestResult -> {
+        // A request whose access token is bound to a TLS client certificate goes through the client for that
+        // certificate, which it leases until the exchange is over, and doesn't follow redirects.
+        ClientCertificateBoundClients.Lease lease = binding == null ? null : boundClients.lease(binding);
+        io.vertx.core.http.HttpClient requestClient = lease == null ? client : lease.getHttpClient();
+        if (lease != null) {
+            options.setFollowRedirects(false);
+            promise.future().onFailure(ignored -> lease.release());
+        }
+
+        requestClient.request(options).andThen(requestResult -> {
             if (requestResult.failed()) {
                 promise.tryFail(requestResult.cause());
                 return;
@@ -197,6 +240,18 @@ class VertxHttpClient implements HttpClient {
             if (promise.future().failed()) {
                 return;
             }
+
+            if (lease != null) {
+                // The connection's TLS handshake is complete and nothing has been written, so the request can be
+                // failed without sending it.
+                IllegalStateException clientCertificateError
+                    = ClientCertificateBinder.checkClientCertificate(vertxRequest, binding, request.getUrl().getHost());
+                if (clientCertificateError != null) {
+                    promise.tryFail(LOGGER.logExceptionAsError(clientCertificateError));
+                    return;
+                }
+            }
+
             WriteTimeout writeWatcher = new WriteTimeout(writeTimeout, promise, writeTimeoutExecutor);
             promise.future().onComplete(ignored -> writeWatcher.close());
 
@@ -223,6 +278,12 @@ class VertxHttpClient implements HttpClient {
             }
 
             responseFuture = responseFuture.onFailure(promise::tryFail);
+
+            if (lease != null) {
+                // Releases the lease once the response ends or fails, which may be after the response is returned.
+                responseFuture
+                    .onSuccess(vertxHttpResponse -> vertxHttpResponse.end().onComplete(ignored -> lease.release()));
+            }
 
             if (eagerlyReadResponse || ignoreResponseBody) {
                 responseFuture.andThen(responseResult -> {
