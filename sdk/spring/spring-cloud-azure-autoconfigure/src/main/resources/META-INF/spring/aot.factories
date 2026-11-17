@@ -1,5 +1,2 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar= \
 com.azure.spring.cloud.autoconfigure.implementation.SpringCloudAzureAutoconfigureRuntimeHints
-
-org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter=\
-com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration.AzureGlobalPropertiesBeanRegistrationExcludeFilter

@@ -17,6 +17,7 @@ class SpringCloudAzureAutoconfigureRuntimeHints implements RuntimeHintsRegistrar
     @Override
     @SuppressWarnings("removal")
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+        // Environment post-processors also bind global properties outside bean registration.
         BindableRuntimeHintsRegistrar.forTypes(AzureGlobalProperties.class, AzurePasswordlessProperties.class)
             .registerHints(hints);
         hints.reflection().registerTypeIfPresent(classLoader,
