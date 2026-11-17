@@ -35,6 +35,7 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -52,8 +53,7 @@ public class CosmosSourceTask extends SourceTask {
 
     private final PriorityQueue<ScheduledTaskUnit> taskUnitsQueue = new PriorityQueue<>();
     private final Object stopSignal = new Object();
-    private volatile boolean stopped;
-    private volatile long lifecycleGeneration;
+    private final AtomicReference<LifecycleState> lifecycleState = new AtomicReference<>(new LifecycleState(false));
 
     private long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
@@ -67,10 +67,7 @@ public class CosmosSourceTask extends SourceTask {
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
         try {
-            synchronized (this.stopSignal) {
-                this.stopped = false;
-                this.lifecycleGeneration++;
-            }
+            this.lifecycleState.set(new LifecycleState(false));
             LOGGER.info("Resetting task queue");
             this.taskUnitsQueue.clear();
 
@@ -175,8 +172,8 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public List<SourceRecord> poll() {
-        long pollGeneration = this.lifecycleGeneration;
-        if (isStopped(pollGeneration)) {
+        LifecycleState pollState = this.lifecycleState.get();
+        if (isStopped(pollState)) {
             return new ArrayList<>();
         }
 
@@ -191,10 +188,10 @@ public class CosmosSourceTask extends SourceTask {
             }
 
             long delayInMs = scheduledTaskUnit.getDelayInMs();
-            if (delayInMs > 0 && !waitForPollDelay(delayInMs, pollGeneration)) {
+            if (delayInMs > 0 && !waitForPollDelay(delayInMs, pollState)) {
                 return new ArrayList<>();
             }
-            if (isStopped(pollGeneration)) {
+            if (isStopped(pollState)) {
                 return new ArrayList<>();
             }
             taskUnit = scheduledTaskUnit.getTaskUnit();
@@ -255,20 +252,20 @@ public class CosmosSourceTask extends SourceTask {
         }
     }
 
-    private boolean waitForPollDelay(long delayInMs, long pollGeneration) throws InterruptedException {
+    private boolean waitForPollDelay(long delayInMs, LifecycleState pollState) throws InterruptedException {
         synchronized (this.stopSignal) {
             long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(delayInMs);
             long remainingNanos = deadlineNanos - System.nanoTime();
-            while (!isStopped(pollGeneration) && remainingNanos > 0) {
+            while (!isStopped(pollState) && remainingNanos > 0) {
                 TimeUnit.NANOSECONDS.timedWait(this.stopSignal, remainingNanos);
                 remainingNanos = deadlineNanos - System.nanoTime();
             }
-            return !isStopped(pollGeneration);
+            return !isStopped(pollState);
         }
     }
 
-    private boolean isStopped(long pollGeneration) {
-        return this.stopped || this.lifecycleGeneration != pollGeneration;
+    private boolean isStopped(LifecycleState pollState) {
+        return pollState.stopped || this.lifecycleState.get() != pollState;
     }
 
     private void logFeedRangeCounts(boolean flushLogs) {
@@ -637,12 +634,20 @@ public class CosmosSourceTask extends SourceTask {
     public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
         synchronized (this.stopSignal) {
-            this.stopped = true;
-            this.lifecycleGeneration++;
+            this.lifecycleState.set(new LifecycleState(true));
             this.stopSignal.notifyAll();
         }
         this.logFeedRangeCounts(true);
         this.cleanup();
+    }
+
+    // A fresh instance on every transition also identifies the lifecycle without a separate generation counter.
+    private static final class LifecycleState {
+        private final boolean stopped;
+
+        private LifecycleState(boolean stopped) {
+            this.stopped = stopped;
+        }
     }
 
     private static class FeedRangeLoggingContext {

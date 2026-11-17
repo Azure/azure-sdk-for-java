@@ -220,6 +220,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             List<SourceRecord> sourceRecords = delayedPoll.get(2, TimeUnit.SECONDS);
             assertThat(sourceRecords.size()).isEqualTo(0);
             assertThat(sourceTask.poll().size()).isEqualTo(0);
+
+            sourceTask.start(taskConfigMap);
+            validateFeedRangeRecords(sourceTask.poll(), Collections.singletonList(initialItem));
         } finally {
             pollExecutor.shutdownNow();
             if (sourceTask != null) {
