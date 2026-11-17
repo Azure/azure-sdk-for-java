@@ -1,14 +1,14 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0 (2026-11-17)
+
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure DocumentDB resources including clusters and firewall rules. Package api-version 2026-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.PromoteOption` was modified
 
-### Bugs Fixed
-
-### Other Changes
+* `PLANNED` was added
 
 ## 1.3.0-beta.1 (2026-07-28)
 

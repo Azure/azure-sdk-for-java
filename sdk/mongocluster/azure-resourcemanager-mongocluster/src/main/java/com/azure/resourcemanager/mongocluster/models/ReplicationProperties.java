@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Replica properties of the mongo cluster.
+ * Replica properties of the DocumentDB cluster.
  */
 @Immutable
 public final class ReplicationProperties implements JsonSerializable<ReplicationProperties> {
