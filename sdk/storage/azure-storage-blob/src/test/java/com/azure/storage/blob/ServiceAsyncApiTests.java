@@ -1076,8 +1076,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null), 409);
     }
 
-    // The service refuses the create for about 30 seconds after the delete, so this needs the real clock.
-    @LiveOnly
     @Test
     public void createContainerIfNotExistsOnContainerBeingDeleted() {
         String containerName = generateContainerName();

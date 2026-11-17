@@ -1133,6 +1133,17 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createContainerIfNotExistsOnContainerBeingDeleted() {
+        String containerName = generateContainerName();
+        primaryBlobServiceClient.createBlobContainer(containerName);
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> primaryBlobServiceClient.createBlobContainerIfNotExists(containerName));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
     public void deleteContainerIfExists() {
         String containerName = generateContainerName();
         primaryBlobServiceClient.createBlobContainer(containerName);

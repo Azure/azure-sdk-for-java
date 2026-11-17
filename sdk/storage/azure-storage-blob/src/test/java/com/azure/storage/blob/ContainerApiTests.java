@@ -302,8 +302,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertFalse(cc.createIfNotExists());
     }
 
-    // The service refuses the create for about 30 seconds after the delete, so this needs the real clock.
-    @LiveOnly
     @Test
     public void createIfNotExistsOnContainerBeingDeleted() {
         BlobContainerClient cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());

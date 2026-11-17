@@ -200,8 +200,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             201);
     }
 
-    // The service refuses the create for about 30 seconds after the delete, so this needs the real clock.
-    @LiveOnly
     @Test
     public void createIfNotExistsOnContainerBeingDeleted() {
         BlobContainerAsyncClient cc
