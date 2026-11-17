@@ -1,0 +1,70 @@
+trigger:
+  branches:
+    include: [main]
+  paths:
+    include:
+      - /sdk/tools/api-review-maven-plugin/
+      - /sdk/tools/apiview-java-processor/
+      - /eng/pipelines/templates/jobs/apireview-hub-*-java.yml
+      - /eng/scripts/Stage-ApiReviewTools.ps1
+      - /eng/scripts/Generate-ApiReviewArtifact.ps1
+      - /eng/scripts/tests/ApiReviewHub.tests.ps1
+      - /.vscode/eclipse-format-azure-sdk-for-java.xml
+
+pr:
+  branches:
+    include: [main]
+  paths:
+    include:
+      - /sdk/tools/api-review-maven-plugin/
+      - /sdk/tools/apiview-java-processor/
+      - /eng/pipelines/templates/jobs/apireview-hub-*-java.yml
+      - /eng/scripts/Stage-ApiReviewTools.ps1
+      - /eng/scripts/Generate-ApiReviewArtifact.ps1
+      - /eng/scripts/tests/ApiReviewHub.tests.ps1
+      - /.vscode/eclipse-format-azure-sdk-for-java.xml
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: Validate
+        jobs:
+          - job: Validate
+            variables:
+              - template: /eng/pipelines/templates/variables/globals.yml
+              - template: /eng/pipelines/templates/variables/image.yml
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+              - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
+              - task: Maven@4
+                displayName: Verify standalone processor
+                inputs:
+                  mavenPomFile: sdk/tools/apiview-java-processor/pom.xml
+                  goals: clean verify
+                  options: --batch-mode --no-transfer-progress
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: true
+                  testResultsFiles: sdk/tools/apiview-java-processor/target/surefire-reports/TEST-*.xml
+              - task: Maven@4
+                displayName: Verify Maven plugin
+                inputs:
+                  mavenPomFile: sdk/tools/api-review-maven-plugin/pom.xml
+                  goals: clean verify
+                  options: --batch-mode --no-transfer-progress
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: true
+                  testResultsFiles: sdk/tools/api-review-maven-plugin/target/surefire-reports/TEST-*.xml
+              - task: PowerShell@2
+                displayName: Test release scripts
+                inputs:
+                  targetType: filePath
+                  filePath: sdk/tools/api-review-maven-plugin/eng/Test-Scripts.ps1
+                  pwsh: true

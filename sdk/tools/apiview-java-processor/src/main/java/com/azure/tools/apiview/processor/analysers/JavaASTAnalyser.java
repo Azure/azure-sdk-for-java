@@ -761,9 +761,7 @@ public class JavaASTAnalyser implements Analyser {
             id = makeId(callableDeclaration);
             name = callableDeclaration.getNameAsString();
         } else {
-            System.out.println("Unknown definition type: " + definition.getClass().getName());
-            System.exit(-1);
-            return;
+            throw new IllegalStateException("Unknown definition type: " + definition.getClass().getName());
         }
 
         // when we are dealing with a type declaration, annotations go on the line *before* the definition,
@@ -1715,7 +1713,7 @@ public class JavaASTAnalyser implements Analyser {
         }
     }
 
-    private static SpacingState spacingState = SpacingState.DEFAULT;
+    private SpacingState spacingState = SpacingState.DEFAULT;
 
     private enum SpacingState {
         DEFAULT(Spacing.DEFAULT),

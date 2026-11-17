@@ -1,0 +1,172 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: publishDevFeed
+    displayName: Publish to the Java dev feed
+    type: boolean
+    default: false
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: Build
+        displayName: Build and test
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+          - job: Build
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+              - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
+              - task: Maven@4
+                displayName: Verify standalone processor
+                inputs:
+                  mavenPomFile: sdk/tools/apiview-java-processor/pom.xml
+                  goals: clean verify
+                  options: --batch-mode --no-transfer-progress
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: true
+                  testResultsFiles: sdk/tools/apiview-java-processor/target/surefire-reports/TEST-*.xml
+              - task: Maven@4
+                displayName: Build and test plugin
+                inputs:
+                  mavenPomFile: sdk/tools/api-review-maven-plugin/pom.xml
+                  goals: clean verify
+                  options: --batch-mode --no-transfer-progress
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: true
+                  testResultsFiles: sdk/tools/api-review-maven-plugin/target/surefire-reports/TEST-*.xml
+              - task: PowerShell@2
+                displayName: Test release scripts
+                inputs:
+                  targetType: filePath
+                  filePath: sdk/tools/api-review-maven-plugin/eng/Test-Scripts.ps1
+                  pwsh: true
+              - task: PowerShell@2
+                displayName: Stage Maven plugin package
+                inputs:
+                  targetType: filePath
+                  filePath: sdk/tools/api-review-maven-plugin/eng/Stage-Package.ps1
+                  arguments: >-
+                    -PackageDirectory "$(Build.SourcesDirectory)/sdk/tools/api-review-maven-plugin/target"
+                    -OutputDirectory "$(Build.ArtifactStagingDirectory)/api-review-maven-plugin"
+                  pwsh: true
+              - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                parameters:
+                  ArtifactName: api-review-maven-plugin
+                  ArtifactPath: $(Build.ArtifactStagingDirectory)/api-review-maven-plugin
+
+      - stage: PublishDevFeed
+        displayName: Sign and publish to Java dev feed
+        dependsOn: Build
+        condition: |
+          and(
+            succeeded(),
+            eq(${{ parameters.publishDevFeed }}, true),
+            eq(variables['Build.Reason'], 'Manual'),
+            eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+            eq(variables['System.TeamProject'], 'internal')
+          )
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+          - job: PublishDevFeed
+            displayName: Sign and publish Maven plugin
+            pool:
+              name: $(WINDOWSPOOL)
+              image: $(WINDOWSVMIMAGE)
+              os: windows
+            steps:
+              - checkout: self
+                path: s
+              - checkout: azure-sdk-build-tools
+                path: azure-sdk-build-tools
+              - download: current
+                displayName: Download Maven package
+                artifact: api-review-maven-plugin
+              - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
+              - task: PowerShell@2
+                displayName: Validate package version
+                inputs:
+                  targetType: filePath
+                  filePath: sdk/tools/api-review-maven-plugin/eng/Prepare-Release.ps1
+                  arguments: >-
+                    -PackageDirectory "$(Pipeline.Workspace)/api-review-maven-plugin"
+                    -FeedUrl "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+                  pwsh: true
+                env:
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+              - task: EsrpCodeSigning@6
+                displayName: Sign and verify JAR via ESRP
+                inputs:
+                  ConnectedServiceName: Azure SDK PME Managed Identity
+                  UseMSIAuthentication: true
+                  AppRegistrationClientId: 4fa2001b-ad7a-4a1e-9185-d6ea881f8712
+                  AppRegistrationTenantId: 975f013f-7f24-47e8-a7d3-abc4752bf346
+                  EsrpClientId: 5e796b8d-3c4d-4e28-93f6-12a44f4368a0
+                  AuthAKVName: kv-azuresdk-codesign
+                  AuthSignCertName: azure-sdk-esrp-signing-certificate
+                  FolderPath: $(Pipeline.Workspace)/api-review-maven-plugin
+                  Pattern: '*.jar'
+                  signConfigType: inlineSignParams
+                  inlineOperation: |
+                    [
+                      {
+                        "KeyCode": "CP-447347-Java",
+                        "OperationCode": "JavaSign",
+                        "Parameters": {
+                          "SigAlg": "SHA256withRSA",
+                          "Timestamp": "-tsa http://sha256timestamp.ws.digicert.com/sha256/timestamp"
+                        },
+                        "ToolName": "sign",
+                        "ToolVersion": "1.0"
+                      },
+                      {
+                        "KeyCode": "CP-447347-Java",
+                        "OperationCode": "JavaVerify",
+                        "Parameters": {},
+                        "ToolName": "sign",
+                        "ToolVersion": "1.0"
+                      }
+                    ]
+              - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+              - task: Maven@4
+                displayName: GPG sign and publish Maven plugin
+                inputs:
+                  mavenPomFile: sdk/tools/api-review-maven-plugin/pom.xml
+                  goals: org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file
+                  options: >-
+                    --batch-mode
+                    --no-transfer-progress
+                    -DrepositoryId=azure-sdk-for-java
+                    -Durl=https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                    -DgroupId=com.azure.tools
+                    -DartifactId=api-review-maven-plugin
+                    -Dversion=$(PackageVersion)
+                    -Dpackaging=maven-plugin
+                    -Dfile="$(PackageJarPath)"
+                    -DpomFile="$(PackagePomPath)"
+                    -Dsources="$(PackageSourcesPath)"
+                    -Djavadoc="$(PackageJavadocPath)"
+                    -Dgpg.executable="$(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe"
+                    -DgeneratePom=false
+                  javaHomeOption: JDKVersion
+                  jdkVersionOption: '1.8'
+                  jdkArchitectureOption: x64
+                  publishJUnitResults: false
+              - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                parameters:
+                  ArtifactName: api-review-maven-plugin-signed
+                  ArtifactPath: $(Pipeline.Workspace)/api-review-maven-plugin
+                  CustomCondition: succeeded()

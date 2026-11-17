@@ -95,6 +95,29 @@ public class Pom {
         return pom;
     }
 
+    /**
+     * Reads the POM for the expected Maven coordinates, independently of the archive's final name.
+     *
+     * @param sourcesJarFile the sources JAR
+     * @param groupId the expected group ID
+     * @param artifactId the expected artifact ID
+     * @return the embedded Maven metadata, with filename-based discovery as a fallback
+     * @throws IllegalStateException if the archive cannot be read
+     */
+    public static Pom fromSourcesJarFile(File sourcesJarFile, String groupId, String artifactId) {
+        try (JarFile jarFile = new JarFile(sourcesJarFile)) {
+            JarEntry entry = jarFile.getJarEntry("META-INF/maven/" + groupId + "/" + artifactId + "/pom.xml");
+            if (entry != null) {
+                try (InputStream stream = jarFile.getInputStream(entry)) {
+                    return new Pom(stream);
+                }
+            }
+        } catch (IOException exception) {
+            throw new IllegalStateException("Cannot read Maven metadata from " + sourcesJarFile, exception);
+        }
+        return fromSourcesJarFile(sourcesJarFile);
+    }
+
     static Map<String, String> parseFilename(String filename) {
         Matcher matcher = SOURCES_JAR_PATTERN.matcher(filename);
         if (!matcher.matches()) {

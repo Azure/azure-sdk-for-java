@@ -18,6 +18,29 @@ import static com.azure.tools.apiview.processor.diagnostics.rules.utils.MiscUtil
 public class RequiredBuilderMethodsDiagnosticRuleTests {
     @ParameterizedTest
     @CsvSource(
+        value = { "|1", "int value|1", "AmqpTransportType[] values|1", "AmqpTransportType value|0" },
+        delimiter = '|')
+    public void reportsMalformedAmqpTransportParameters(String parameters, int diagnosticCount) {
+        RequiredBuilderMethodsDiagnosticRule rule = new RequiredBuilderMethodsDiagnosticRule("amqp").addMethod(
+            "transportType", new RequiredBuilderMethodsDiagnosticRule.DirectSubclassCheckFunction("AmqpTransportType"));
+        ApiListing listing = new ApiListing();
+
+        rule.scanIndividual(StaticJavaParser.parse("package com.azure.test;"
+            + "@ServiceClientBuilder(serviceClients = TestClient.class, protocol = ServiceClientProtocol.AMQP)"
+            + "public class TestClientBuilder { public void transportType(" + (parameters == null ? "" : parameters)
+            + ") {} }"), listing);
+
+        assertEquals(diagnosticCount, listing.getDiagnostics().size());
+        if (diagnosticCount > 0) {
+            assertTrue(listing.getDiagnostics()
+                .get(0)
+                .getText()
+                .contains(parameters == null ? "Incorrect number" : "Incorrect type"));
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource(
         value = {
             "endpoint||1",
             "endpoint|int value|1",

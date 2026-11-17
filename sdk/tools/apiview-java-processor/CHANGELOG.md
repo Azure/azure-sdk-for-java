@@ -8,7 +8,7 @@
 ### Features Added
 
 - Added direct Markdown output with `--renderer=markdown`; JSON remains the default.
-- Added standalone `Generate-ApiMarkdown.ps1` to write `api.md` and `api.metadata.yml` to a build artifact directory.
+- Added a companion Maven plugin and API Review Hub wrappers to generate `api.md` and `api.metadata.yml`.
 
 ### Bugs Fixed
 
@@ -20,6 +20,8 @@
 - Finish and close compressed JSON output so it can be decompressed successfully.
 - Detect prohibited packages in fully qualified public API types.
 - Skip unrelated validation and source rewriting when building API review artifacts.
+- Isolate rendering state during concurrent generation.
+- Support Maven sources artifacts with custom filenames.
 
 ### Other Changes
 

@@ -21,6 +21,7 @@ import com.networknt.schema.ValidationMessage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -179,18 +180,48 @@ public class Main {
     }
 
     private static Optional<ApiListing> processFile(final File inputFile) {
-        final ApiListing apiListing = new ApiListing();
-
         if (inputFile.getName().endsWith("-sources.jar")) {
-            processJavaSourcesJar(inputFile, apiListing);
-            return Optional.of(apiListing);
+            return Optional.of(processSourcesJar(inputFile));
         }
 
         return Optional.empty();
     }
 
-    private static void processJavaSourcesJar(File inputFile, ApiListing apiListing) {
-        final Pom mavenPom = Pom.fromSourcesJarFile(inputFile);
+    /**
+     * Processes a sources JAR without invoking the command-line entry point.
+     *
+     * @param inputFile the sources JAR
+     * @return the generated API listing
+     * @throws IllegalArgumentException if the input is not an existing sources JAR
+     * @throws IllegalStateException if the sources cannot be processed
+     */
+    public static ApiListing processSourcesJar(File inputFile) {
+        return processSourcesJar(inputFile, null, null);
+    }
+
+    /**
+     * Processes a sources JAR using the Maven project's coordinates to select its embedded POM.
+     *
+     * @param inputFile the sources JAR
+     * @param groupId the expected Maven group ID
+     * @param artifactId the expected Maven artifact ID, or null for filename-based discovery
+     * @return the generated API listing
+     * @throws IllegalArgumentException if the input is not an existing sources JAR
+     * @throws IllegalStateException if the sources cannot be processed
+     */
+    public static ApiListing processSourcesJar(File inputFile, String groupId, String artifactId) {
+        if (!inputFile.isFile() || !inputFile.getName().endsWith("-sources.jar")) {
+            throw new IllegalArgumentException("Expected an existing sources JAR: " + inputFile);
+        }
+        Pom mavenPom = artifactId == null
+            ? Pom.fromSourcesJarFile(inputFile)
+            : Pom.fromSourcesJarFile(inputFile, groupId, artifactId);
+        ApiListing listing = new ApiListing();
+        processJavaSourcesJar(inputFile, listing, mavenPom);
+        return listing;
+    }
+
+    private static void processJavaSourcesJar(File inputFile, ApiListing apiListing, Pom mavenPom) {
         final String groupId = mavenPom.getGroupId();
         final String artifactId = mavenPom.getArtifactId();
 
@@ -222,8 +253,7 @@ public class Main {
                 try (Stream<Path> paths = Files.walk(root)) {
                     paths.forEach(allFiles::add);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    System.exit(-1);
+                    throw new UncheckedIOException(e);
                 }
             });
 

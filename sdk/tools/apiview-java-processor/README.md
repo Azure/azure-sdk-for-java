@@ -5,8 +5,7 @@
 
 The Java APIView processor generates API reviews from one or more Maven `-sources.jar` files.
 
-Imported from [Azure/azure-sdk-tools#16809](https://github.com/Azure/azure-sdk-tools/pull/16809)
-at commit `cb515d9def63095c233f47745f8fbd8068b7df2c`, including the Markdown renderer.
+Includes the processor fixes from [Azure/azure-sdk-tools#17586](https://github.com/Azure/azure-sdk-tools/pull/17586).
 
 ## Building
 
@@ -22,26 +21,9 @@ Verification runs tests, Spotless formatting checks, and shared SDK Checkstyle r
 
 ## Generate an API review bundle
 
-Run the standalone script with PowerShell 7+, Maven, and a JDK. It is not attached to the Maven lifecycle or SDK generation automation.
-
-From a library module directory, using PowerShell 7+, Maven, and a JDK:
-
-```powershell
-pwsh ../../../eng/scripts/Generate-ApiMarkdown.ps1
-```
-
-Or specify the package from the repository root:
-
-```powershell
-pwsh eng/scripts/Generate-ApiMarkdown.ps1 -PackagePath sdk/serialization/azure-json -OutputDirectory artifacts/azure-json
-```
-
-This builds the package and the in-repo processor, then writes `api.md` and `api.metadata.yml` to the output directory.
-Generation skips tests, documentation, formatting, snippet updates, and unrelated checks; use `verify` above to validate the processor.
-Without `-OutputDirectory`, output defaults to the package's `target/api-review` directory. Generated bundles are build artifacts, not checked-in SDK files.
-Metadata contains the SHA-256 hash of the normalized UTF-8/LF `api.md`, the package POM version, and the repository-relative package path.
-To reuse a built sources JAR, add `-SourcesJar <path-to-sources.jar>`.
-Pipeline generation, artifact publishing, and ARH integration are deferred.
+Use the [API review Maven plugin](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tools/api-review-maven-plugin/README.md)
+for `api.md` and `api.metadata.yml`, or the [ARH wrappers](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/tools/api-review/README.md)
+to build and stage the executable tool once for both baseline and target generation.
 
 ## Usage
 

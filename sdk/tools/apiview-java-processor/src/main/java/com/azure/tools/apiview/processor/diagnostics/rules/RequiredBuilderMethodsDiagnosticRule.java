@@ -10,7 +10,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MemberValuePair;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 
 import java.util.ArrayList;
@@ -180,8 +179,16 @@ public class RequiredBuilderMethodsDiagnosticRule implements DiagnosticRule {
 
         @Override
         public Optional<Diagnostic> apply(final MethodDeclaration methodDeclaration) {
+            if (methodDeclaration.getParameters().isEmpty()) {
+                return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
+                    "Incorrect number of parameters for this builder method. Expected at least 1 but was 0."));
+            }
             Type parameterType = methodDeclaration.getParameter(0).getType();
-            ClassOrInterfaceType classOrInterfaceType = parameterType.asClassOrInterfaceType();
+            if (!parameterType.isClassOrInterfaceType()) {
+                return Optional.of(new Diagnostic(WARNING, makeId(methodDeclaration),
+                    "Incorrect type being supplied to this builder method. Expected a subclass of " + parentTypeName
+                        + ", but was " + parameterType.asString() + "."));
+            }
 
             // TODO (apiview):
 

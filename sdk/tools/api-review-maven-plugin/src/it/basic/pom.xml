@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-widget</artifactId>
+  <version>1.0.0</version>
+  <properties><maven.compiler.source>8</maven.compiler.source><maven.compiler.target>8</maven.compiler.target></properties>
+  <build>
+    <finalName>custom-output</finalName>
+    <plugins>
+      <plugin><artifactId>maven-compiler-plugin</artifactId><version>3.12.1</version></plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId><version>3.4.0</version>
+        <executions><execution><goals><goal>jar-no-fork</goal></goals></execution></executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
