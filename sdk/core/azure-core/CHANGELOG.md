@@ -13,6 +13,11 @@
   `getClientCertificateBinding`, so that HTTP clients can send a request only over a TLS connection that presents the
   certificate its access token is bound to. The HTTP pipeline fails a request that carries a binding, without sending
   it, when its HTTP client doesn't support certificate binding.
+- Added proof-of-possession support to `BearerTokenAuthenticationPolicy`. When the token request asks for a
+  proof-of-possession token, or the token is bound to a TLS client certificate, the policy uses the token's type as the
+  authorization scheme, such as `mtls_pop`, and passes the certificate binding to the HTTP client with the request.
+  Other requests keep sending `Bearer`, whatever type the credential sets. A token bound to a certificate isn't sent
+  when `RedirectPolicy` redirects the request to another host.
 
 ### Breaking Changes
 
