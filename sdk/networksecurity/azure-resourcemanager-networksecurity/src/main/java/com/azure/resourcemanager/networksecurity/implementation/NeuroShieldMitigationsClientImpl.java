@@ -224,11 +224,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldMitigationsGetResponse> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -275,8 +275,9 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationsGetResponse getWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
@@ -322,11 +323,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldMitigationInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, top,
-                skipToken, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldMitigationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -396,9 +397,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         Response<NeuroShieldMitigationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            = service.listSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -423,9 +425,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         Response<NeuroShieldMitigationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            = service.listSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -496,9 +499,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldMitigationInner>> listByNeuroShieldSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByNeuroShield(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByNeuroShield(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldMitigationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -566,10 +570,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listByNeuroShieldSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldMitigationListResult> res = service.listByNeuroShieldSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top,
-            skipToken, accept, Context.NONE);
+        Response<NeuroShieldMitigationListResult> res
+            = service.listByNeuroShieldSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -592,10 +597,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listByNeuroShieldSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         Response<NeuroShieldMitigationListResult> res
-            = service.listByNeuroShieldSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context);
+            = service.listByNeuroShieldSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -663,11 +669,12 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldMitigationInner>> executeWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(
+                context -> service.execute(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -711,10 +718,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationInner> executeWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, mitigationId,
-            accept, context);
+        return service.executeSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
     /**
@@ -756,11 +763,12 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldMitigationInner>> rollbackWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.rollback(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(
+                context -> service.rollback(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -804,10 +812,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationInner> rollbackWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.rollbackSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, mitigationId,
-            accept, context);
+        return service.rollbackSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
     /**

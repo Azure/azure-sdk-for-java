@@ -26,7 +26,7 @@ public final class NeuroShieldsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"resourceGuid\":\"knalaulppg\",\"responseMode\":\"Manual\",\"severityThreshold\":\"Medium\",\"description\":\"apnyiropuhpig\"},\"etag\":\"gylgqgitxmedjvcs\",\"location\":\"n\",\"tags\":{\"zhxgktrmgucn\":\"ncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\",\"izpost\":\"lzdahzxctobgbkdm\"},\"id\":\"grcfb\",\"name\":\"nrmfqjhhk\",\"type\":\"bpvjymjhx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"resourceGuid\":\"sjkmnwqj\",\"responseMode\":\"Manual\",\"severityThreshold\":\"Critical\",\"description\":\"yhddvia\"},\"etag\":\"gfnmntfpmvmemfnc\",\"location\":\"wvvb\",\"tags\":{\"evwrdnhfuk\":\"lllchpodb\",\"fcvlerch\":\"vsjcswsmystuluqy\"},\"id\":\"qbmfpjbabwidf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +36,21 @@ public final class NeuroShieldsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldResource response = manager.neuroShields()
-            .define("mv")
-            .withRegion("aboekqv")
-            .withExistingResourceGroup("ultskzbbtdz")
+            .define("kqqfk")
+            .withRegion("bteoybf")
+            .withExistingResourceGroup("yiopi")
             .withProperties(new NeuroShieldProperties().withResponseMode(NeuroShieldResponseMode.AUTO)
-                .withSeverityThreshold(NeuroShieldSeverityThreshold.HIGH)
-                .withDescription("p"))
-            .withTags(mapOf("flhhcaal", "nsmvbxwyj"))
-            .withIfMatch("hnrztfol")
+                .withSeverityThreshold(NeuroShieldSeverityThreshold.LOW)
+                .withDescription("kpmloa"))
+            .withTags(mapOf("mywwtkgkxnyed", "akvvjgslordi", "yvudtjuewbci", "b", "xccybvpa", "xuuwhcj"))
+            .withIfMatch("stcyohpfkyrkdbd")
             .create();
 
-        Assertions.assertEquals("n", response.location());
-        Assertions.assertEquals("ncw", response.tags().get("zhxgktrmgucn"));
+        Assertions.assertEquals("wvvb", response.location());
+        Assertions.assertEquals("lllchpodb", response.tags().get("evwrdnhfuk"));
         Assertions.assertEquals(NeuroShieldResponseMode.MANUAL, response.properties().responseMode());
-        Assertions.assertEquals(NeuroShieldSeverityThreshold.MEDIUM, response.properties().severityThreshold());
-        Assertions.assertEquals("apnyiropuhpig", response.properties().description());
+        Assertions.assertEquals(NeuroShieldSeverityThreshold.CRITICAL, response.properties().severityThreshold());
+        Assertions.assertEquals("yhddvia", response.properties().description());
     }
 
     // Use "Map.of" if available
