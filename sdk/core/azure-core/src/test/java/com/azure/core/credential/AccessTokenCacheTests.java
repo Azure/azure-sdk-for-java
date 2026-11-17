@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link AccessTokenCache} specifically focused on tenant ID matching logic
@@ -414,6 +415,28 @@ public class AccessTokenCacheTests {
         assertEquals("token-2", getToken(cache, createProofOfPossessionContext("/a", HttpMethod.GET, null), sync));
         assertEquals("token-3", getToken(cache, bearerContext, sync));
         assertEquals(3, refreshCount.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void tokenIsNotReusedForContextWhoseRefreshFailed(boolean sync) {
+        // The credential fails the second token request, and otherwise returns the kind of token requested.
+        AtomicInteger refreshCount = new AtomicInteger();
+        TokenCredential credential = request -> {
+            int count = refreshCount.incrementAndGet();
+            if (count == 2) {
+                return Mono.error(new IllegalStateException("The token request failed."));
+            }
+
+            String tokenType = request.getProofOfPossessionOptions() == null ? "Bearer" : "PoP";
+            return Mono.just(new AccessToken("token-" + count, OffsetDateTime.now().plusHours(1), null, tokenType));
+        };
+        AccessTokenCache cache = new AccessTokenCache(credential);
+        TokenRequestContext proofOfPossessionContext = createProofOfPossessionContext("/a", HttpMethod.GET, null);
+
+        assertEquals("token-1", getToken(cache, new TokenRequestContext().addScopes(SCOPE), sync));
+        assertThrows(IllegalStateException.class, () -> getToken(cache, proofOfPossessionContext, sync));
+        assertEquals("token-3", getToken(cache, proofOfPossessionContext, sync));
     }
 
     @Test

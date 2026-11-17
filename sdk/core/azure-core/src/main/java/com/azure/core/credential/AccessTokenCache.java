@@ -196,8 +196,10 @@ public final class AccessTokenCache {
                             || this.tokenRequestContext == null;
 
                     if (forceRefresh) {
-                        this.tokenRequestContext = tokenRequestContext;
-                        tokenRefresh = Mono.defer(() -> tokenCredential.getToken(this.tokenRequestContext));
+                        // The context is stored once a token is acquired for it, so that a failed acquisition leaves
+                        // the cached token under the context it was acquired for.
+                        tokenRefresh = Mono.defer(() -> tokenCredential.getToken(tokenRequestContext))
+                            .doOnNext(ignored -> this.tokenRequestContext = tokenRequestContext);
                         fallback = Mono.empty();
                     } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                         // fresh cache & no need to refresh
@@ -279,8 +281,13 @@ public final class AccessTokenCache {
                     || this.tokenRequestContext == null;
 
             if (forceRefresh) {
-                this.tokenRequestContext = tokenRequestContext;
-                tokenRefresh = tokenSupplierSync;
+                // The context is stored once a token is acquired for it, so that a failed acquisition leaves the
+                // cached token under the context it was acquired for.
+                tokenRefresh = () -> {
+                    AccessToken token = tokenCredential.getTokenSync(tokenRequestContext);
+                    this.tokenRequestContext = tokenRequestContext;
+                    return token;
+                };
                 fallback = null;
             } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                 // fresh cache & no need to refresh

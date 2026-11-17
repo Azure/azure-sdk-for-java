@@ -26,6 +26,9 @@
 
 ### Bugs Fixed
 
+- Fixed `AccessTokenCache` returning its cached token for a token request context it had just failed to acquire a
+  token for, such as a new tenant, claims from a challenge or a proof-of-possession request. It now tries to acquire a
+  token for that context again.
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
