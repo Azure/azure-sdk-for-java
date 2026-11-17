@@ -17,7 +17,8 @@ public class QueryMetricsUtilsTest {
             String delimitedString) {
         assertThatThrownBy(() -> QueryMetricsUtils.parseDelimitedString(delimitedString))
                 .isInstanceOf(IllegalArgumentException.class)
-                .isNotInstanceOf(NullPointerException.class);
+                .isNotInstanceOf(NullPointerException.class)
+                .hasMessage("Received a malformed delimited-string attribute: '" + delimitedString + "'");
     }
 
     @DataProvider(name = "malformedDelimitedStrings")
@@ -30,7 +31,7 @@ public class QueryMetricsUtilsTest {
     }
 
     @Test(groups = "unit", dataProvider = "validDelimitedStrings")
-    public void parseDelimitedString_withPreservedInput_returnsExpectedMetrics(
+    public void parseDelimitedString_withValidInput_returnsExpectedMetrics(
             String delimitedString, HashMap<String, Double> expectedMetrics) {
         assertThat(QueryMetricsUtils.parseDelimitedString(delimitedString)).isEqualTo(expectedMetrics);
     }
@@ -52,7 +53,7 @@ public class QueryMetricsUtilsTest {
     }
 
     @Test(groups = "unit", dataProvider = "preservedExceptionDelimitedStrings")
-    public void parseDelimitedString_withPreservedExceptionInput_throwsExpectedException(
+    public void parseDelimitedString_withUnparseableInput_throwsExpectedException(
             String delimitedString, Class<? extends Throwable> expectedException) {
         assertThatThrownBy(() -> QueryMetricsUtils.parseDelimitedString(delimitedString))
                 .isExactlyInstanceOf(expectedException);

@@ -29,7 +29,7 @@ public class QueryMetricsUtils {
             String[] attributeKeyValue = StringUtils.split(attribute, "=");
 
             if (attributeKeyValue.length != 2) {
-                throw new IllegalArgumentException("Received a malformed delimited string: " + attribute);
+                throw new IllegalArgumentException("Received a malformed delimited-string attribute: '" + attribute + "'");
             }
 
             String attributeKey = attributeKeyValue[key];
