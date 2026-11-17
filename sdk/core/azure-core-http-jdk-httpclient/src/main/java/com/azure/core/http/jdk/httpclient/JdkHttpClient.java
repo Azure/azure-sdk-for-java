@@ -3,16 +3,20 @@
 
 package com.azure.core.http.jdk.httpclient;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.jdk.httpclient.implementation.AzureJdkHttpRequest;
 import com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber;
+import com.azure.core.http.jdk.httpclient.implementation.ClientCertificateBinder;
+import com.azure.core.http.jdk.httpclient.implementation.ClientCertificateBoundClients;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -39,6 +43,7 @@ class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
     final java.net.http.HttpClient jdkHttpClient;
+    final ClientCertificateBoundClients boundClients;
 
     private final Set<String> restrictedHeaders;
 
@@ -49,9 +54,11 @@ class JdkHttpClient implements HttpClient {
     private final java.net.http.HttpClient.Version httpVersion;
 
     JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
-        Duration responseTimeout, Duration readTimeout, java.net.http.HttpClient.Version httpVersion) {
+        Duration responseTimeout, Duration readTimeout, java.net.http.HttpClient.Version httpVersion,
+        ClientCertificateBoundClients boundClients) {
         this.jdkHttpClient = httpClient;
         this.httpVersion = httpVersion;
+        this.boundClients = boundClients;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
             throw LOGGER.logExceptionAsError(
@@ -83,6 +90,11 @@ class JdkHttpClient implements HttpClient {
     }
 
     @Override
+    public boolean supportsClientCertificateBinding() {
+        return true;
+    }
+
+    @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
@@ -97,15 +109,17 @@ class JdkHttpClient implements HttpClient {
                 int statusCode = jdkResponse.statusCode();
 
                 return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
-            })));
+            }))).onErrorMap(JdkHttpClient::mapClientCertificateError);
         } else {
             // The way 'BodyHandlers.ofPublisher()' works is that it returns the 'CompletableFuture' as soon as the
             // response is received, before any values of the 'Flow.Publisher<List<ByteBuffer>>' are emitted.
             // Given this, we can hook into 'Flux.timeout(Duration)' when we convert the
             // 'Flow.Publisher<List<ByteBuffer>>' to 'Flux<ByteBuffer>' to track the read timeout.
-            return Mono.defer(() -> Mono
-                .fromFuture(sendInternal(request, context, java.net.http.HttpResponse.BodyHandlers.ofPublisher(),
-                    jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse))));
+            return Mono
+                .defer(() -> Mono
+                    .fromFuture(sendInternal(request, context, java.net.http.HttpResponse.BodyHandlers.ofPublisher(),
+                        jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse))))
+                .onErrorMap(JdkHttpClient::mapClientCertificateError);
         }
     }
 
@@ -130,6 +144,10 @@ class JdkHttpClient implements HttpClient {
             // cancellable exchange instead, keeping timeout handling identical to the asynchronous path.
             return responseFuture.get();
         } catch (ExecutionException e) {
+            IllegalStateException clientCertificateError = ClientCertificateBinder.getClientCertificateError(e);
+            if (clientCertificateError != null) {
+                throw LOGGER.logExceptionAsError(clientCertificateError);
+            }
             Throwable cause = unwrapCompletionException(e.getCause());
             if (cause instanceof Error) {
                 throw LOGGER.logThrowableAsError((Error) cause);
@@ -158,10 +176,10 @@ class JdkHttpClient implements HttpClient {
         // A request-level preference avoids rewriting the version on the caller's mutable JDK builder.
         java.net.http.HttpRequest jdkRequest = new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER,
             writeTimeout, responseTimeout, watcher::uploadStarted, watcher::uploadCompleted, httpVersion);
-        CompletableFuture<java.net.http.HttpResponse<T>> exchange = jdkHttpClient.sendAsync(jdkRequest, info -> {
+        CompletableFuture<java.net.http.HttpResponse<T>> exchange = sendAsync(jdkRequest, info -> {
             watcher.responseReceived();
             return bodyHandler.apply(info);
-        });
+        }, Contexts.with(context).getClientCertificateBinding());
         if (jdkRequest.expectContinue()) {
             watcher.waitForContinue();
         }
@@ -188,6 +206,39 @@ class JdkHttpClient implements HttpClient {
             error = error.getCause();
         }
         return error;
+    }
+
+    /*
+     * Sends a request through the JDK client. A request whose access token is bound to a TLS client certificate goes
+     * through the client for that certificate.
+     */
+    private <T> CompletableFuture<java.net.http.HttpResponse<T>> sendAsync(java.net.http.HttpRequest jdkRequest,
+        java.net.http.HttpResponse.BodyHandler<T> bodyHandler, ClientCertificateBinding binding) {
+        if (binding == null) {
+            return jdkHttpClient.sendAsync(jdkRequest, bodyHandler);
+        }
+
+        // Only a TLS connection can present the certificate.
+        if (!"https".equalsIgnoreCase(jdkRequest.uri().getScheme())) {
+            return CompletableFuture
+                .failedFuture(ClientCertificateBinder.createNoTlsError(jdkRequest.uri().getHost(), binding));
+        }
+
+        ClientCertificateBoundClients.Lease lease = boundClients.lease(binding);
+        try {
+            return lease.getHttpClient().sendAsync(jdkRequest, bodyHandler);
+        } finally {
+            lease.release();
+        }
+    }
+
+    /*
+     * Maps the error of a request that wasn't sent because its connection didn't present the TLS client certificate
+     * its access token is bound to, so that it fails with the same error as on other HTTP clients.
+     */
+    private static Throwable mapClientCertificateError(Throwable error) {
+        IllegalStateException clientCertificateError = ClientCertificateBinder.getClientCertificateError(error);
+        return clientCertificateError == null ? error : LOGGER.logExceptionAsError(clientCertificateError);
     }
 
     private static final class ResponseTimeout {

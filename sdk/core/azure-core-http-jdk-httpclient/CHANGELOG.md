@@ -7,6 +7,9 @@
 - Added `maximumHttpVersion` to enable HTTP/2 with HTTP/1.1 fallback. Clients created without a supplied JDK builder
   still default to HTTP/1.1.
 - Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+- Added support for requests whose access token is bound to a TLS client certificate, for mutual TLS (mTLS)
+  proof-of-possession. Each certificate gets its own JDK HTTP client, using the JDK's TLS implementation, TLS 1.2 and
+  the JVM's default trust, and a bound request is only sent over a connection that presented its certificate.
 
 ### Breaking Changes
 
