@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class CommitmentPlansCreateOrUpdatePlanSamples {
     /*
-     * x-ms-original-file: 2026-11-01/CreateSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-11-15-preview/CreateSharedCommitmentPlan.json
      */
     /**
      * Sample code: Create Commitment Plan.

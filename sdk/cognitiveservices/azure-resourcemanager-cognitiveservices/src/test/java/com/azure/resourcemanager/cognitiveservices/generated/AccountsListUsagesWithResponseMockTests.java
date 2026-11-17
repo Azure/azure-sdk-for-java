@@ -24,7 +24,7 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"ldiuhzzgqlm\",\"value\":[{\"id\":\"z\",\"type\":\"udjpxpqht\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"hkrezsdsuxheqdgc\",\"localizedValue\":\"xsp\"},\"quotaPeriod\":\"ymmqgwokmikp\",\"limit\":52.317344582901995,\"currentValue\":27.11710943236596,\"nextResetTime\":\"vjipfdvhaxdv\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"phth\"},{\"id\":\"lmv\",\"type\":\"atl\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"ixwgiksbbvtooxrp\",\"localizedValue\":\"wp\"},\"quotaPeriod\":\"hgjtnhtukfaci\",\"limit\":75.95053283582567,\"currentValue\":71.1224625320421,\"nextResetTime\":\"eezbx\",\"status\":\"InOverage\",\"scopeType\":\"Classic\",\"scopeId\":\"vwcga\"}]}";
+            = "{\"nextLink\":\"fcsjvjnk\",\"value\":[{\"id\":\"zsqbibaaugicovj\",\"type\":\"vwrmjx\",\"unit\":\"Milliseconds\",\"name\":{\"value\":\"nxczbassqfyy\",\"localizedValue\":\"ppeygkbzbloasy\"},\"quotaPeriod\":\"h\",\"limit\":51.413376281262366,\"currentValue\":97.37201302115741,\"nextResetTime\":\"ttuvsq\",\"status\":\"InOverage\",\"scopeType\":\"Global\",\"scopeId\":\"qta\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class AccountsListUsagesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("kx", "pazwug", "yqvnjobfe", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("pqsvb", "eoge", "trcnqnvnc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ldiuhzzgqlm", response.nextLink());
+        Assertions.assertEquals("fcsjvjnk", response.nextLink());
         Assertions.assertEquals(UnitType.MILLISECONDS, response.value().get(0).unit());
-        Assertions.assertEquals("hkrezsdsuxheqdgc", response.value().get(0).name().value());
-        Assertions.assertEquals("xsp", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("ymmqgwokmikp", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(52.317344582901995D, response.value().get(0).limit());
-        Assertions.assertEquals(27.11710943236596D, response.value().get(0).currentValue());
-        Assertions.assertEquals("vjipfdvhaxdv", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
-        Assertions.assertEquals(QuotaScopeType.DATA_ZONE, response.value().get(0).scopeType());
-        Assertions.assertEquals("phth", response.value().get(0).scopeId());
+        Assertions.assertEquals("nxczbassqfyy", response.value().get(0).name().value());
+        Assertions.assertEquals("ppeygkbzbloasy", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("h", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(51.413376281262366D, response.value().get(0).limit());
+        Assertions.assertEquals(97.37201302115741D, response.value().get(0).currentValue());
+        Assertions.assertEquals("ttuvsq", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, response.value().get(0).status());
+        Assertions.assertEquals(QuotaScopeType.GLOBAL, response.value().get(0).scopeType());
+        Assertions.assertEquals("qta", response.value().get(0).scopeId());
     }
 }

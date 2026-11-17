@@ -19,6 +19,13 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTaskContext;
@@ -26,6 +33,7 @@ import org.apache.kafka.connect.storage.OffsetStorageReader;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,17 +42,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
+    private static final long NO_CHANGES_POLL_MAX_MS = 500;
 
     @Test(groups = "unit")
     public void pollDelayOnlyAppliesWhenChangeFeedHasNoChanges() {
@@ -102,7 +107,6 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             CosmosClientCache.getCosmosClient(sourceConfig.getAccountConfig(), "pollWithDelayAfterNoChanges");
         CosmosContainerProperties testContainer = null;
         CosmosSourceTask sourceTask = null;
-        ExecutorService pollExecutor = Executors.newSingleThreadExecutor();
 
         try {
             testContainer = clientItem
@@ -129,23 +133,19 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
             TestItem initialItem = TestItem.createNewItem();
             clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).createItem(initialItem).block();
-            validateFeedRangeRecords(sourceTask.poll(), Collections.singletonList(initialItem));
-            assertThat(sourceTask.poll().size()).isEqualTo(0);
+            validateFeedRangeRecords(pollUntilRecords(sourceTask, TIMEOUT), Collections.singletonList(initialItem));
+
+            long noChangesProcessedAtNanos = pollUntilNoChangesProcessed(sourceTask, TIMEOUT);
 
             TestItem laterItem = TestItem.createNewItem();
-            long pollStartedAtNanos = System.nanoTime();
-            Future<List<SourceRecord>> delayedPoll = pollExecutor.submit(sourceTask::poll);
-            Thread.sleep(500);
-            assertThat(delayedPoll.isDone()).isFalse();
-
             clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).createItem(laterItem).block();
-            List<SourceRecord> sourceRecords = delayedPoll.get(pollDelayInMs + TIMEOUT, TimeUnit.MILLISECONDS);
-            long pollDurationInMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - pollStartedAtNanos);
+            List<SourceRecord> sourceRecords = pollUntilRecords(sourceTask, pollDelayInMs + TIMEOUT);
+            long elapsedInMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - noChangesProcessedAtNanos);
 
-            assertThat(pollDurationInMs).isGreaterThanOrEqualTo(pollDelayInMs - 250);
+            // The delay began within NO_CHANGES_POLL_MAX_MS before the no-change poll returned.
+            assertThat(elapsedInMs).isGreaterThanOrEqualTo(pollDelayInMs - NO_CHANGES_POLL_MAX_MS);
             validateFeedRangeRecords(sourceRecords, Collections.singletonList(laterItem));
         } finally {
-            pollExecutor.shutdownNow();
             if (sourceTask != null) {
                 sourceTask.stop();
             }
@@ -158,7 +158,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
-    public void stopWakesPollWaitingForConfiguredDelay() throws Exception {
+    public void pollAndStopStayResponsiveDuringConfiguredDelay() throws Exception {
         int pollDelayInMs = 60000;
         String testContainerName = "KafkaCosmosTestPollStop-" + UUID.randomUUID();
         Map<String, String> sourceConfigMap = new HashMap<>();
@@ -174,12 +174,6 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             CosmosClientCache.getCosmosClient(sourceConfig.getAccountConfig(), "pollStopDuringDelay");
         CosmosContainerProperties testContainer = null;
         CosmosSourceTask sourceTask = null;
-        AtomicReference<Thread> pollThread = new AtomicReference<>();
-        ExecutorService pollExecutor = Executors.newSingleThreadExecutor(task -> {
-            Thread thread = new Thread(task);
-            pollThread.set(thread);
-            return thread;
-        });
 
         try {
             testContainer = clientItem
@@ -206,25 +200,19 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
             TestItem initialItem = TestItem.createNewItem();
             clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).createItem(initialItem).block();
-            validateFeedRangeRecords(sourceTask.poll(), Collections.singletonList(initialItem));
+            validateFeedRangeRecords(pollUntilRecords(sourceTask, TIMEOUT), Collections.singletonList(initialItem));
             assertThat(sourceTask.poll().size()).isEqualTo(0);
 
-            Future<List<SourceRecord>> delayedPoll = pollExecutor.submit(sourceTask::poll);
-            long waitDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
-            while (pollThread.get().getState() != Thread.State.TIMED_WAITING && System.nanoTime() < waitDeadline) {
-                Thread.sleep(10);
-            }
-            assertThat(pollThread.get().getState()).isEqualTo(Thread.State.TIMED_WAITING);
+            // The next poll is held back by the configured delay but must not block the caller for it.
+            long delayedPollStartedAtNanos = System.nanoTime();
+            assertThat(sourceTask.poll().size()).isEqualTo(0);
+            assertThat(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - delayedPollStartedAtNanos)).isLessThan(5_000);
+
+            long stopStartedAtNanos = System.nanoTime();
             sourceTask.stop();
-
-            List<SourceRecord> sourceRecords = delayedPoll.get(2, TimeUnit.SECONDS);
-            assertThat(sourceRecords.size()).isEqualTo(0);
+            assertThat(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - stopStartedAtNanos)).isLessThan(5_000);
             assertThat(sourceTask.poll().size()).isEqualTo(0);
-
-            sourceTask.start(taskConfigMap);
-            validateFeedRangeRecords(sourceTask.poll(), Collections.singletonList(initialItem));
         } finally {
-            pollExecutor.shutdownNow();
             if (sourceTask != null) {
                 sourceTask.stop();
             }
@@ -234,6 +222,30 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
             clientItem.getClient().close();
         }
+    }
+
+    // A poll that returns empty well inside the 1s poll bound means the no-change response was processed rather than timed out.
+    private static long pollUntilNoChangesProcessed(CosmosSourceTask sourceTask, long timeoutInMs) {
+        long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutInMs);
+        while (System.nanoTime() < deadlineNanos) {
+            long pollStartedAtNanos = System.nanoTime();
+            List<SourceRecord> sourceRecords = sourceTask.poll();
+            long returnedAtNanos = System.nanoTime();
+            assertThat(sourceRecords.size()).isEqualTo(0);
+            if (TimeUnit.NANOSECONDS.toMillis(returnedAtNanos - pollStartedAtNanos) < NO_CHANGES_POLL_MAX_MS) {
+                return returnedAtNanos;
+            }
+        }
+        throw new AssertionError("No-change response was not processed within " + timeoutInMs + "ms");
+    }
+
+    private static List<SourceRecord> pollUntilRecords(CosmosSourceTask sourceTask, long timeoutInMs) {
+        long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutInMs);
+        List<SourceRecord> sourceRecords = sourceTask.poll();
+        while (sourceRecords.isEmpty() && System.nanoTime() < deadlineNanos) {
+            sourceRecords = sourceTask.poll();
+        }
+        return sourceRecords;
     }
 
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
@@ -264,6 +276,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 .block()
                 .getProperties();
 
+        CosmosSourceTask sourceTask = null;
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
 
@@ -298,7 +311,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 testContainerName);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
-            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask = new CosmosSourceTask();
             sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
@@ -349,6 +362,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             }
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
             if (clientItem != null) {
                 clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).delete().block();
                 CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
@@ -389,6 +405,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 .block()
                 .getProperties();
 
+        CosmosSourceTask sourceTask = null;
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
             // define feedRanges task
@@ -401,7 +418,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 testContainerName);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
-            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask = new CosmosSourceTask();
             sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
@@ -418,6 +435,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             }
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
             if (clientItem != null) {
                 clientItem.getClient().getDatabase(databaseName).getContainer(testContainerName).delete().block();
                 CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
@@ -442,6 +462,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 sourceConfig.getAccountConfig(),
                 "pollWithSpecificFeedRange");
 
+        CosmosSourceTask sourceTask = null;
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
 
@@ -466,7 +487,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 multiPartitionContainer.getId());
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
-            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask = new CosmosSourceTask();
             sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
@@ -493,6 +514,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
             validateFeedRangeRecords(sourceRecords, expectedItems);
         } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
             if (clientItem != null) {
                 // clean up containers
                 cleanUpContainer(clientItem.getClient(), databaseName, multiPartitionContainerName);
@@ -528,6 +552,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         CosmosAsyncContainer throughputControlContainer =
             clientCacheItem.getClient().getDatabase(databaseName).getContainer(throughputControlContainerName);
         CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(clientCacheItem.getClient());
+        CosmosSourceTask sourceTask = null;
         try {
             // create throughput control container
             clientCacheItem
@@ -548,7 +573,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 singlePartitionContainer.getId());
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
-            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask = new CosmosSourceTask();
             sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
@@ -563,6 +588,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
             if (clientCacheItem != null) {
                 // delete throughput control containers
                 throughputControlContainer
@@ -600,6 +628,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 "pollWithAllVersionsAndDeletes");
 
         CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(clientCacheItem.getClient());
+        CosmosSourceTask sourceTask = null;
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
 
@@ -613,7 +642,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 singlePartitionContainer.getId());
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
-            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask = new CosmosSourceTask();
             sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
             sourceTask.poll();
@@ -641,12 +670,90 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
 
             assertThat(sourceRecords.size()).isEqualTo(3);
         } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
             if (clientCacheItem != null) {
                 // clean up containers
                 cleanUpContainer(clientCacheItem.getClient(), databaseName, singlePartitionContainer.getId());
                 CosmosClientCache.releaseCosmosClient(clientCacheItem.getClientConfig());
                 clientCacheItem.getClient().close();
             }
+        }
+    }
+
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
+    public void stopCancelsInFlightChangeFeedRequest() throws InterruptedException {
+        String taskId = UUID.randomUUID().toString();
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", Arrays.asList(singlePartitionContainerName).toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", taskId);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientItem =
+            CosmosClientCache.getCosmosClient(
+                sourceConfig.getAccountConfig(),
+                taskId);
+        CosmosContainerProperties containerProperties = getSinglePartitionContainer(clientItem.getClient());
+        CosmosAsyncContainer container =
+            clientItem.getClient().getDatabase(databaseName).getContainer(containerProperties.getId());
+        FaultInjectionRule responseDelayRule =
+            new FaultInjectionRuleBuilder("changeFeedResponseDelay-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                        .build())
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .delay(Duration.ofSeconds(30))
+                        .suppressServiceRequests(true)
+                        .build())
+                .hitLimit(1)
+                .build();
+        CosmosSourceTask sourceTask = null;
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(responseDelayRule)).block();
+
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                containerProperties.getId(),
+                containerProperties.getResourceId(),
+                FeedRange.forFullRange(),
+                null,
+                containerProperties.getId());
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
+            sourceTask.start(taskConfigMap);
+
+            long pollStartTime = System.nanoTime();
+            assertThat(sourceTask.poll().isEmpty()).isTrue();
+            assertThat(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - pollStartTime)).isLessThan(5_000);
+
+            long faultDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+            while (responseDelayRule.getHitCount() == 0 && System.nanoTime() < faultDeadline) {
+                Thread.sleep(100);
+            }
+            assertThat(responseDelayRule.getHitCount()).isGreaterThan(0);
+
+            long stopStartTime = System.nanoTime();
+            sourceTask.stop();
+            sourceTask = null;
+            assertThat(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - stopStartTime)).isLessThan(5_000);
+        } finally {
+            responseDelayRule.disable();
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
+            CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
+            clientItem.getClient().close();
         }
     }
 

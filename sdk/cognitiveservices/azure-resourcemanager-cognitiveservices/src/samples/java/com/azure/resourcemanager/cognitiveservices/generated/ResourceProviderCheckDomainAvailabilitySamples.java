@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilit
  */
 public final class ResourceProviderCheckDomainAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-11-01/CheckDomainAvailability.json
+     * x-ms-original-file: 2026-11-15-preview/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.

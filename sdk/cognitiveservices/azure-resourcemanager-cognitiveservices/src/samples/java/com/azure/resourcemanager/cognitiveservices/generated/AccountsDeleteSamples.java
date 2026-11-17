@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-11-01/DeleteAccount.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteAccount.json
      */
     /**
      * Sample code: Delete Account.

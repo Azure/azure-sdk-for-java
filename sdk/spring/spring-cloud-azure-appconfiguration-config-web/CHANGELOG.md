@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed request-triggered configuration refresh blocking servlet request threads and ensured asynchronous refresh failures are logged.
+
 ### Other Changes
 
 ## 7.4.0 (2026-07-24)

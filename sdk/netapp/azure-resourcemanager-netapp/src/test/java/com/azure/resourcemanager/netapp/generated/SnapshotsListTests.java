@@ -12,9 +12,9 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"snapshotId\":\"pwiyzvqtm\",\"created\":\"2021-09-22T09:26:58Z\",\"provisioningState\":\"xkp\"},\"location\":\"ksmond\",\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}],\"nextLink\":\"smocmbq\"}")
+            "{\"value\":[{\"properties\":{\"snapshotId\":\"drhvoodsotbo\",\"created\":\"2021-02-17T19:25:45Z\",\"provisioningState\":\"pcjwv\"},\"location\":\"hdldwmgxcxrsl\",\"id\":\"utwu\",\"name\":\"egrpkhj\",\"type\":\"niyqslui\"}],\"nextLink\":\"dggkzzlvmbmpa\"}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("ksmond", model.value().get(0).location());
-        Assertions.assertEquals("smocmbq", model.nextLink());
+        Assertions.assertEquals("hdldwmgxcxrsl", model.value().get(0).location());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.nextLink());
     }
 }

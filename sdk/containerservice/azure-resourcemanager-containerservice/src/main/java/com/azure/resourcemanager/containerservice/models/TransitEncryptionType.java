@@ -19,6 +19,12 @@ public final class TransitEncryptionType extends ExpandableStringEnum<TransitEnc
     public static final TransitEncryptionType WIRE_GUARD = fromString("WireGuard");
 
     /**
+     * Enables mTLS authentication and encryption for pod-to-pod traffic within the cluster. Refer to
+     * https://aka.ms/acnsciliummtls for relevant documentation.
+     */
+    public static final TransitEncryptionType M_TLS = fromString("mTLS");
+
+    /**
      * Disable Transit encryption.
      */
     public static final TransitEncryptionType NONE = fromString("None");
