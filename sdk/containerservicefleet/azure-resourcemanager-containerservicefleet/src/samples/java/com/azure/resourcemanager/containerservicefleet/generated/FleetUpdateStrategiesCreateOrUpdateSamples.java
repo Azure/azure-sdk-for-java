@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.
@@ -32,6 +32,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
             .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
                 new UpdateStage().withName("stage1")
                     .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
+                        .withMaxAllowedFailures("1")
                         .withMaxConcurrency("5")
                         .withMemberSelector(new MemberSelector().withByLabel("tier=frontend"))
                         .withBeforeGates(Arrays.asList(
@@ -39,6 +40,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
                         .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("gate after group-a")
                             .withType(GateType.APPROVAL)))))
                     .withAfterStageWaitInSeconds(3600)
+                    .withMaxAllowedFailures("2")
                     .withMaxConcurrency("20%")
                     .withBeforeGates(Arrays.asList(
                         new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
@@ -47,6 +49,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
                 new UpdateStage().withName("stage2")
                     .withMemberSelector(new MemberSelector().withByLabel("env=production"))
                     .withAfterStageWaitInSeconds(600)
+                    .withMaxAllowedFailures("25%")
                     .withMaxConcurrency("50%"))))
             .create();
     }

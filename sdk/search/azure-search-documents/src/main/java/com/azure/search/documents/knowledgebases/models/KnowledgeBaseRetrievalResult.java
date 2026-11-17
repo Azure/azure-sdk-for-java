@@ -83,6 +83,7 @@ public final class KnowledgeBaseRetrievalResult implements JsonSerializable<Know
         jsonWriter.writeArrayField("response", this.response, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("activity", this.activity, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("references", this.references, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("responseSensitivityLabelInfo", this.responseSensitivityLabelInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,11 +114,30 @@ public final class KnowledgeBaseRetrievalResult implements JsonSerializable<Know
                     List<KnowledgeBaseReference> references
                         = reader.readArray(reader1 -> KnowledgeBaseReference.fromJson(reader1));
                     deserializedKnowledgeBaseRetrievalResult.references = references;
+                } else if ("responseSensitivityLabelInfo".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalResult.responseSensitivityLabelInfo
+                        = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKnowledgeBaseRetrievalResult;
         });
+    }
+
+    /*
+     * The sensitivity label information for the overall response.
+     */
+    @Generated
+    private PurviewSensitivityLabelInfo responseSensitivityLabelInfo;
+
+    /**
+     * Get the responseSensitivityLabelInfo property: The sensitivity label information for the overall response.
+     *
+     * @return the responseSensitivityLabelInfo value.
+     */
+    @Generated
+    public PurviewSensitivityLabelInfo getResponseSensitivityLabelInfo() {
+        return this.responseSensitivityLabelInfo;
     }
 }
