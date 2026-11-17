@@ -481,7 +481,7 @@ public final class BlobContainerClient {
                 = createWithResponse(finalOptions.getMetadata(), finalOptions.getPublicAccessType(), timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (BlobContainerAsyncClient.isContainerAlreadyExists(e)) {
+            if (BlobContainerAsyncClient.isContainerAlreadyExistsError(e)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {

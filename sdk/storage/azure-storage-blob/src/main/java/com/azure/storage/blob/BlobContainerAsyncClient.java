@@ -499,7 +499,7 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExists, t -> {
+                .onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExistsError, t -> {
                     HttpResponse response = ((BlobStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
@@ -513,7 +513,7 @@ public final class BlobContainerAsyncClient {
      * Whether a failure to create a container says that the container already exists. The status code alone does not:
      * the service also answers 409 while a container of the same name is being deleted, for example.
      */
-    static boolean isContainerAlreadyExists(Throwable t) {
+    static boolean isContainerAlreadyExistsError(Throwable t) {
         return t instanceof BlobStorageException
             && ((BlobStorageException) t).getStatusCode() == 409
             && BlobErrorCode.CONTAINER_ALREADY_EXISTS.equals(((BlobStorageException) t).getErrorCode());

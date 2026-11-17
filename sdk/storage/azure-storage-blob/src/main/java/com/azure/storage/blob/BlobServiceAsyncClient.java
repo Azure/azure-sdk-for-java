@@ -323,7 +323,7 @@ public final class BlobServiceAsyncClient {
         try {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
-                context).onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExists, t -> {
+                context).onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExistsError, t -> {
                     HttpResponse response = ((BlobStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
