@@ -371,7 +371,7 @@ public class KeyVaultCredentialPolicyTest {
             .create(
                 onChallengeAndClearCache(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader))
             .verifyErrorMessage("The challenge resource 'https://vault.azure.net/.default' does not match the "
-                + "requested domain. If you wish to disable this check for your client, pass 'true' to the "
+                + "requested domain. If you wish to disable this check for your client, call the "
                 + "client builder's disableChallengeResourceVerification() method when building it. See "
                 + "https://aka.ms/azsdk/blog/vault-uri for more information.");
     }

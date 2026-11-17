@@ -152,8 +152,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     if (!isChallengeResourceValid(request, scope)) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(String
                             .format("The challenge resource '%s' does not match the requested domain. If you wish to "
-                                + "disable this check for your client, pass 'true' to the SecretClientBuilder"
-                                + ".disableChallengeResourceVerification() method when building it. See "
+                                + "disable this check for your client, call the client builder's "
+                                + "disableChallengeResourceVerification() method when building it. See "
                                 + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                     }
                 }
@@ -269,8 +269,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 if (!isChallengeResourceValid(request, scope)) {
                     throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                         "The challenge resource '%s' does not match the requested domain. If you wish to disable "
-                            + "this check for your client, pass 'true' to the SecretClientBuilder"
-                            + ".disableChallengeResourceVerification() method when building it. See "
+                            + "this check for your client, call the client builder's "
+                            + "disableChallengeResourceVerification() method when building it. See "
                             + "https://aka.ms/azsdk/blog/vault-uri for more information.",
                         scope)));
                 }
