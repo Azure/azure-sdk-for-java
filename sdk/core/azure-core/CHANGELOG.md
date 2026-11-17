@@ -18,6 +18,9 @@
   authorization scheme, such as `mtls_pop`, and passes the certificate binding to the HTTP client with the request.
   Other requests keep sending `Bearer`, whatever type the credential sets. A token bound to a certificate isn't sent
   when `RedirectPolicy` redirects the request to another host.
+- `AccessTokenCache` now keeps bearer and proof-of-possession tokens apart when comparing token request contexts. It
+  replaces a proof-of-possession token signed over a request when the request URL, method or nonce changes, and reuses
+  a token bound to a TLS client certificate across requests.
 
 ### Breaking Changes
 
