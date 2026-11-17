@@ -22,7 +22,7 @@ public final class MigrationsStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"xy\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"yrxvwfudwpznt\",\"creationTime\":\"2021-01-02T19:09:23Z\",\"lastModifiedTime\":\"2021-04-20T09:49:39Z\"},\"id\":\"rqjbhckfrl\",\"name\":\"rxsbkyvp\",\"type\":\"ca\"}";
+            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"xy\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"yrxvwfudwpznt\",\"creationTime\":\"2021-01-02T19:09:23Z\",\"lastModifiedTime\":\"2021-04-20T09:49:39Z\",\"rollbackEligibleUntil\":\"2021-07-17T04:44:41Z\"},\"id\":\"jbhckfrlhr\",\"name\":\"sbkyvpycanuzbp\",\"type\":\"kafkuwbcrnwbm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class MigrationsStartMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Migration response = manager.migrations()
-            .start("kphywpnvjto", "nermcl", new MigrationInner().withProperties(new MigrationProperties()),
+            .start("plpho", "uscrpabgyepsb", new MigrationInner().withProperties(new MigrationProperties()),
                 com.azure.core.util.Context.NONE);
 
     }

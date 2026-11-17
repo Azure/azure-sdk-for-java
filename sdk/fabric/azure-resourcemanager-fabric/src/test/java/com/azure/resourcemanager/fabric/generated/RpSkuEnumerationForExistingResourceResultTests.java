@@ -13,11 +13,11 @@ public final class RpSkuEnumerationForExistingResourceResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RpSkuEnumerationForExistingResourceResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"nhutjeltmrldhugj\",\"sku\":{\"name\":\"zdatqxhocdg\",\"tier\":\"Fabric\"}}],\"nextLink\":\"lgphu\"}")
+            "{\"value\":[{\"resourceType\":\"jitcjczdzevn\",\"sku\":{\"name\":\"hkr\",\"tier\":\"Fabric\"}},{\"resourceType\":\"d\",\"sku\":{\"name\":\"ppdsbdkvwrwj\",\"tier\":\"Fabric\"}}],\"nextLink\":\"snhu\"}")
             .toObject(RpSkuEnumerationForExistingResourceResult.class);
-        Assertions.assertEquals("nhutjeltmrldhugj", model.value().get(0).resourceType());
-        Assertions.assertEquals("zdatqxhocdg", model.value().get(0).sku().name());
+        Assertions.assertEquals("jitcjczdzevn", model.value().get(0).resourceType());
+        Assertions.assertEquals("hkr", model.value().get(0).sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("lgphu", model.nextLink());
+        Assertions.assertEquals("snhu", model.nextLink());
     }
 }

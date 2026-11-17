@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckinManifestWithResponseMockTests {
     @Test
     public void testCheckinManifestWithResponse() throws Exception {
         String responseStr
-            = "{\"isCheckedIn\":false,\"statusMessage\":\"iqswbqer\",\"pullRequest\":\"xiytxtdgukvl\",\"commitId\":\"ktg\"}";
+            = "{\"isCheckedIn\":true,\"statusMessage\":\"tudaw\",\"pullRequest\":\"jfel\",\"commitId\":\"rpptcbgqnzmnhiil\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,14 @@ public final class ResourceProvidersCheckinManifestWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckinManifestInfo response = manager.resourceProviders()
-            .checkinManifestWithResponse("jj",
-                new CheckinManifestParams().withEnvironment("fwbeqrkuorh")
-                    .withBaselineArmManifestLocation("ssruqnmdvhazcvj"),
+            .checkinManifestWithResponse("e",
+                new CheckinManifestParams().withEnvironment("yeji").withBaselineArmManifestLocation("iuxegth"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.isCheckedIn());
-        Assertions.assertEquals("iqswbqer", response.statusMessage());
-        Assertions.assertEquals("xiytxtdgukvl", response.pullRequest());
-        Assertions.assertEquals("ktg", response.commitId());
+        Assertions.assertTrue(response.isCheckedIn());
+        Assertions.assertEquals("tudaw", response.statusMessage());
+        Assertions.assertEquals("jfel", response.pullRequest());
+        Assertions.assertEquals("rpptcbgqnzmnhiil", response.commitId());
     }
 }

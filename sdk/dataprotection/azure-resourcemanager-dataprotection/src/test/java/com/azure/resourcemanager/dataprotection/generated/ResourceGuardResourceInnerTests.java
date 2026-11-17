@@ -16,26 +16,26 @@ public final class ResourceGuardResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"cjhwq\",\"requestResourceType\":\"jrybnwjewgdrjer\"},{\"vaultCriticalOperation\":\"aen\",\"requestResourceType\":\"eh\"},{\"vaultCriticalOperation\":\"doy\",\"requestResourceType\":\"ifthnz\"},{\"vaultCriticalOperation\":\"dslgnayqigynduh\",\"requestResourceType\":\"hqlkthumaqo\"}],\"vaultCriticalOperationExclusionList\":[\"ycduier\",\"gccymvaolpssl\"],\"description\":\"fmmdnbbg\"},\"eTag\":\"pswiydmcwyh\",\"location\":\"xssadbzmnvdf\",\"tags\":{\"stdbhhxsrzdzu\":\"daodvxzbncblyl\"},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"fb\",\"requestResourceType\":\"kcvqvpke\"},{\"vaultCriticalOperation\":\"cvdrhvoodsot\",\"requestResourceType\":\"bzdopcj\"},{\"vaultCriticalOperation\":\"nhdldwmgxcx\",\"requestResourceType\":\"lpmutwuoegrpkhj\"},{\"vaultCriticalOperation\":\"iyq\",\"requestResourceType\":\"uicpd\"}],\"vaultCriticalOperationExclusionList\":[\"zzlvmbmpaxmodfv\",\"efyw\",\"bpfvm\",\"yhrfouyftaakcpw\"],\"description\":\"zvqtmnubexkp\"},\"eTag\":\"smond\",\"location\":\"quxvypomgkop\",\"tags\":{\"qgxy\":\"ojvpa\",\"xozap\":\"mocmbqfqvmk\",\"dd\":\"helxprglya\",\"rjxgciqib\":\"kcbcue\"},\"id\":\"hos\",\"name\":\"sdqrhzoymibmrq\",\"type\":\"ibahwflus\"}")
             .toObject(ResourceGuardResourceInner.class);
-        Assertions.assertEquals("xssadbzmnvdf", model.location());
-        Assertions.assertEquals("daodvxzbncblyl", model.tags().get("stdbhhxsrzdzu"));
-        Assertions.assertEquals("ycduier", model.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("pswiydmcwyh", model.etag());
+        Assertions.assertEquals("quxvypomgkop", model.location());
+        Assertions.assertEquals("ojvpa", model.tags().get("qgxy"));
+        Assertions.assertEquals("zzlvmbmpaxmodfv", model.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("smond", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardResourceInner model = new ResourceGuardResourceInner().withLocation("xssadbzmnvdf")
-            .withTags(mapOf("stdbhhxsrzdzu", "daodvxzbncblyl"))
-            .withProperties(
-                new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("ycduier", "gccymvaolpssl")))
-            .withEtag("pswiydmcwyh");
+        ResourceGuardResourceInner model = new ResourceGuardResourceInner().withLocation("quxvypomgkop")
+            .withTags(mapOf("qgxy", "ojvpa", "xozap", "mocmbqfqvmk", "dd", "helxprglya", "rjxgciqib", "kcbcue"))
+            .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(
+                Arrays.asList("zzlvmbmpaxmodfv", "efyw", "bpfvm", "yhrfouyftaakcpw")))
+            .withEtag("smond");
         model = BinaryData.fromObject(model).toObject(ResourceGuardResourceInner.class);
-        Assertions.assertEquals("xssadbzmnvdf", model.location());
-        Assertions.assertEquals("daodvxzbncblyl", model.tags().get("stdbhhxsrzdzu"));
-        Assertions.assertEquals("ycduier", model.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("pswiydmcwyh", model.etag());
+        Assertions.assertEquals("quxvypomgkop", model.location());
+        Assertions.assertEquals("ojvpa", model.tags().get("qgxy"));
+        Assertions.assertEquals("zzlvmbmpaxmodfv", model.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("smond", model.etag());
     }
 
     // Use "Map.of" if available

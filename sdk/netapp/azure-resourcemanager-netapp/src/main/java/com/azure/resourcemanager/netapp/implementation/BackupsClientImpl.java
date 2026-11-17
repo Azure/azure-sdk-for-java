@@ -856,7 +856,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupPatch body) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body);

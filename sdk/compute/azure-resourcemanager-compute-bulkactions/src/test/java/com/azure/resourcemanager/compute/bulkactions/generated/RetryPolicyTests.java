@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetryPolicy model = BinaryData.fromString(
-            "{\"retryCount\":127605943,\"retryWindowInMinutes\":2028392349,\"onFailureAction\":\"GetInstanceView\"}")
+        RetryPolicy model = BinaryData
+            .fromString("{\"retryCount\":718311626,\"retryWindowInMinutes\":854028036,\"onFailureAction\":\"Create\"}")
             .toObject(RetryPolicy.class);
-        Assertions.assertEquals(127605943, model.retryCount());
-        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
+        Assertions.assertEquals(718311626, model.retryCount());
+        Assertions.assertEquals(854028036, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withRetryCount(127605943)
-            .withRetryWindowInMinutes(2028392349)
-            .withOnFailureAction(ResourceOperationType.GET_INSTANCE_VIEW);
+        RetryPolicy model = new RetryPolicy().withRetryCount(718311626)
+            .withRetryWindowInMinutes(854028036)
+            .withOnFailureAction(ResourceOperationType.CREATE);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(127605943, model.retryCount());
-        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
+        Assertions.assertEquals(718311626, model.retryCount());
+        Assertions.assertEquals(854028036, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.onFailureAction());
     }
 }

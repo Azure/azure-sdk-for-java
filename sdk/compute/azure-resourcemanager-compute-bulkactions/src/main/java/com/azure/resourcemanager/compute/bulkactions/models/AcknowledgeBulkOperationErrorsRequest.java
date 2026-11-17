@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The request to acknowledge bulk operation errors.
+ * The operations for which errors should be acknowledged.
  */
 @Fluent
 public final class AcknowledgeBulkOperationErrorsRequest
     implements JsonSerializable<AcknowledgeBulkOperationErrorsRequest> {
     /*
-     * The set of operation ids to acknowledge.
+     * The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
      */
     private List<String> operationIds;
 
@@ -30,7 +30,8 @@ public final class AcknowledgeBulkOperationErrorsRequest
     }
 
     /**
-     * Get the operationIds property: The set of operation ids to acknowledge.
+     * Get the operationIds property: The Bulk Action Operation Ids that identify operations for which errors should be
+     * acknowledged.
      * 
      * @return the operationIds value.
      */
@@ -39,7 +40,8 @@ public final class AcknowledgeBulkOperationErrorsRequest
     }
 
     /**
-     * Set the operationIds property: The set of operation ids to acknowledge.
+     * Set the operationIds property: The Bulk Action Operation Ids that identify operations for which errors should be
+     * acknowledged.
      * 
      * @param operationIds the operationIds value to set.
      * @return the AcknowledgeBulkOperationErrorsRequest object itself.

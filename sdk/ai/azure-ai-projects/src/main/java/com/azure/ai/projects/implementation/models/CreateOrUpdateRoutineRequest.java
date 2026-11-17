@@ -4,6 +4,7 @@
 package com.azure.ai.projects.implementation.models;
 
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
@@ -120,6 +121,7 @@ public final class CreateOrUpdateRoutineRequest implements JsonSerializable<Crea
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeMapField("triggers", this.triggers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeJsonField("authorization", this.authorization);
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +149,8 @@ public final class CreateOrUpdateRoutineRequest implements JsonSerializable<Crea
                     deserializedCreateOrUpdateRoutineRequest.triggers = triggers;
                 } else if ("action".equals(fieldName)) {
                     deserializedCreateOrUpdateRoutineRequest.action = RoutineAction.fromJson(reader);
+                } else if ("authorization".equals(fieldName)) {
+                    deserializedCreateOrUpdateRoutineRequest.authorization = RoutineAuthorization.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -184,6 +188,37 @@ public final class CreateOrUpdateRoutineRequest implements JsonSerializable<Crea
     @Generated
     public CreateOrUpdateRoutineRequest setAction(RoutineAction action) {
         this.action = action;
+        return this;
+    }
+
+    /*
+     * Optional authorization configuration for dispatching a newly created routine. Ignored when updating an existing
+     * routine.
+     */
+    @Generated
+    private RoutineAuthorization authorization;
+
+    /**
+     * Get the authorization property: Optional authorization configuration for dispatching a newly created routine.
+     * Ignored when updating an existing routine.
+     *
+     * @return the authorization value.
+     */
+    @Generated
+    public RoutineAuthorization getAuthorization() {
+        return this.authorization;
+    }
+
+    /**
+     * Set the authorization property: Optional authorization configuration for dispatching a newly created routine.
+     * Ignored when updating an existing routine.
+     *
+     * @param authorization the authorization value to set.
+     * @return the CreateOrUpdateRoutineRequest object itself.
+     */
+    @Generated
+    public CreateOrUpdateRoutineRequest setAuthorization(RoutineAuthorization authorization) {
+        this.authorization = authorization;
         return this;
     }
 }

@@ -12,22 +12,22 @@ import java.util.List;
  */
 public interface AcknowledgeBulkOperationErrorsResponse {
     /**
-     * Gets the acknowledged property: The set of operation ids that were newly acknowledged.
+     * Gets the acknowledged property: The Bulk Action Operation Ids that identify operations with acknowledged errors.
      * 
      * @return the acknowledged value.
      */
     List<String> acknowledged();
 
     /**
-     * Gets the notFound property: The set of operation ids that were not found in the completed operations store.
+     * Gets the notFound property: The Bulk Action Operation Ids that were not found or are no longer available.
      * 
      * @return the notFound value.
      */
     List<String> notFound();
 
     /**
-     * Gets the skipped property: The set of operation ids that were skipped because they were already acknowledged, not
-     * failed, or belong to a different scope.
+     * Gets the skipped property: The Bulk Action Operation Ids that identify operations with errors that could not be
+     * acknowledged.
      * 
      * @return the skipped value.
      */

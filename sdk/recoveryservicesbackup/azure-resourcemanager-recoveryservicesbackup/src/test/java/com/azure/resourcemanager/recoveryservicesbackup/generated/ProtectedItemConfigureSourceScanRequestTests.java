@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectedItemConfigureSourceScanRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectedItemConfigureSourceScanRequest model = BinaryData.fromString("{\"sourceScanAction\":\"Enable\"}")
+        ProtectedItemConfigureSourceScanRequest model = BinaryData.fromString("{\"sourceScanAction\":\"Disable\"}")
             .toObject(ProtectedItemConfigureSourceScanRequest.class);
-        Assertions.assertEquals(SourceScanAction.ENABLE, model.sourceScanAction());
+        Assertions.assertEquals(SourceScanAction.DISABLE, model.sourceScanAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectedItemConfigureSourceScanRequest model
-            = new ProtectedItemConfigureSourceScanRequest().withSourceScanAction(SourceScanAction.ENABLE);
+            = new ProtectedItemConfigureSourceScanRequest().withSourceScanAction(SourceScanAction.DISABLE);
         model = BinaryData.fromObject(model).toObject(ProtectedItemConfigureSourceScanRequest.class);
-        Assertions.assertEquals(SourceScanAction.ENABLE, model.sourceScanAction());
+        Assertions.assertEquals(SourceScanAction.DISABLE, model.sourceScanAction());
     }
 }

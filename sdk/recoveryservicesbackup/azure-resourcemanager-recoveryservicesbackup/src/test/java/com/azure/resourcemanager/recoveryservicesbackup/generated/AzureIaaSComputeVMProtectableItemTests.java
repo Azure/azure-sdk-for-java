@@ -13,14 +13,14 @@ public final class AzureIaaSComputeVMProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSComputeVMProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"y\",\"virtualMachineVersion\":\"ouvblgmo\",\"resourceGroup\":\"kltrfow\",\"backupManagementType\":\"vrfmvlihcvjd\",\"workloadType\":\"crjidhftukv\",\"friendlyName\":\"xlwyoj\",\"protectionState\":\"ProtectionFailed\"}")
+            "{\"protectableItemType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"vpaklozkxbz\",\"virtualMachineVersion\":\"ejpl\",\"resourceGroup\":\"anbtttkgsu\",\"backupManagementType\":\"nrswgkpjhboyik\",\"workloadType\":\"huhkslgwlok\",\"friendlyName\":\"eoijyzcqypzqzufg\",\"protectionState\":\"Protecting\"}")
             .toObject(AzureIaaSComputeVMProtectableItem.class);
-        Assertions.assertEquals("vrfmvlihcvjd", model.backupManagementType());
-        Assertions.assertEquals("crjidhftukv", model.workloadType());
-        Assertions.assertEquals("xlwyoj", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("y", model.virtualMachineId());
-        Assertions.assertEquals("ouvblgmo", model.virtualMachineVersion());
-        Assertions.assertEquals("kltrfow", model.resourceGroup());
+        Assertions.assertEquals("nrswgkpjhboyik", model.backupManagementType());
+        Assertions.assertEquals("huhkslgwlok", model.workloadType());
+        Assertions.assertEquals("eoijyzcqypzqzufg", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals("vpaklozkxbz", model.virtualMachineId());
+        Assertions.assertEquals("ejpl", model.virtualMachineVersion());
+        Assertions.assertEquals("anbtttkgsu", model.resourceGroup());
     }
 }

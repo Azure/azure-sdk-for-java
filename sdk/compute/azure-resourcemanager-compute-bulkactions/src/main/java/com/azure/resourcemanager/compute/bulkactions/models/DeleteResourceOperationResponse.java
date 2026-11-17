@@ -12,28 +12,28 @@ import java.util.List;
  */
 public interface DeleteResourceOperationResponse {
     /**
-     * Gets the description property: The description of the operation response.
+     * Gets the description property: A description of the bulk action result.
      * 
      * @return the description value.
      */
     String description();
 
     /**
-     * Gets the type property: The type of resources used in the delete request eg virtual machines.
+     * Gets the type property: The type of resources targeted by the bulk action.
      * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the location property: The location of the delete request eg westus.
+     * Gets the location property: The Azure region where Bulk Actions processes the request.
      * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the results property: The results from the delete request if no errors exist.
+     * Gets the results property: The result for each virtual machine.
      * 
      * @return the results value.
      */

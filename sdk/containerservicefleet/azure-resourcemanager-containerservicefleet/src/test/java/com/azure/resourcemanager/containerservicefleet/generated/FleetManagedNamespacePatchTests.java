@@ -5,7 +5,26 @@
 package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.containerservicefleet.models.AdoptionPolicy;
+import com.azure.resourcemanager.containerservicefleet.models.AffinityPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ClusterResourcePlacementSpecPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ClusterUpdateStrategyReference;
+import com.azure.resourcemanager.containerservicefleet.models.DeletePolicy;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePatch;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePropertiesPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedNamespaceProperties;
+import com.azure.resourcemanager.containerservicefleet.models.NetworkPolicy;
+import com.azure.resourcemanager.containerservicefleet.models.PlacementPolicyPatch;
+import com.azure.resourcemanager.containerservicefleet.models.PlacementProfilePatch;
+import com.azure.resourcemanager.containerservicefleet.models.PlacementType;
+import com.azure.resourcemanager.containerservicefleet.models.PolicyRule;
+import com.azure.resourcemanager.containerservicefleet.models.PropagationPolicyPatch;
+import com.azure.resourcemanager.containerservicefleet.models.PropagationType;
+import com.azure.resourcemanager.containerservicefleet.models.ResourceQuota;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategy;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategyType;
+import com.azure.resourcemanager.containerservicefleet.models.Toleration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,17 +32,128 @@ import org.junit.jupiter.api.Assertions;
 public final class FleetManagedNamespacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetManagedNamespacePatch model = BinaryData.fromString("{\"tags\":{\"yxczfclh\":\"xywnytnrsynlqidy\"}}")
+        FleetManagedNamespacePatch model = BinaryData.fromString(
+            "{\"tags\":{\"aofmxagkvtme\":\"lhspkdee\"},\"properties\":{\"managedNamespaceProperties\":{\"labels\":{\"hcdhmdual\":\"hahvljuahaq\",\"vfadmws\":\"exq\",\"lf\":\"crgvxpvgom\",\"ali\":\"isgwbnbbeldawkz\"},\"annotations\":{\"xosow\":\"qhakauhashsf\",\"cjooxdjebwpucwwf\":\"xcug\",\"hzceuojgjrwjue\":\"ovbvmeueciv\"},\"defaultResourceQuota\":{\"cpuRequest\":\"wmcdytdxwi\",\"cpuLimit\":\"nrjawgqwg\",\"memoryRequest\":\"ni\",\"memoryLimit\":\"x\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowSameNamespace\",\"egress\":\"AllowAll\"}},\"adoptionPolicy\":\"Never\",\"deletePolicy\":\"Keep\",\"propagationPolicy\":{\"type\":\"Placement\",\"placementProfile\":{\"defaultClusterResourcePlacement\":{\"policy\":{\"placementType\":\"PickFixed\",\"clusterNames\":[\"vylwzbtdhxuj\",\"nbmpowuwprzq\"],\"affinity\":{},\"tolerations\":[{},{},{}]},\"rolloutStrategy\":{\"type\":\"RollingUpdate\",\"clusterUpdateStrategy\":{}}}}}}}")
             .toObject(FleetManagedNamespacePatch.class);
-        Assertions.assertEquals("xywnytnrsynlqidy", model.tags().get("yxczfclh"));
+        Assertions.assertEquals("lhspkdee", model.tags().get("aofmxagkvtme"));
+        Assertions.assertEquals("hahvljuahaq",
+            model.properties().managedNamespaceProperties().labels().get("hcdhmdual"));
+        Assertions.assertEquals("qhakauhashsf",
+            model.properties().managedNamespaceProperties().annotations().get("xosow"));
+        Assertions.assertEquals("wmcdytdxwi",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("nrjawgqwg",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("ni",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("x",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE,
+            model.properties().managedNamespaceProperties().defaultNetworkPolicy().ingress());
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL,
+            model.properties().managedNamespaceProperties().defaultNetworkPolicy().egress());
+        Assertions.assertEquals(AdoptionPolicy.NEVER, model.properties().adoptionPolicy());
+        Assertions.assertEquals(DeletePolicy.KEEP, model.properties().deletePolicy());
+        Assertions.assertEquals(PropagationType.PLACEMENT, model.properties().propagationPolicy().type());
+        Assertions.assertEquals(PlacementType.PICK_FIXED,
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .policy()
+                .placementType());
+        Assertions.assertEquals("vylwzbtdhxuj",
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .policy()
+                .clusterNames()
+                .get(0));
+        Assertions.assertEquals(RolloutStrategyType.ROLLING_UPDATE,
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .rolloutStrategy()
+                .type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetManagedNamespacePatch model
-            = new FleetManagedNamespacePatch().withTags(mapOf("yxczfclh", "xywnytnrsynlqidy"));
+        FleetManagedNamespacePatch model = new FleetManagedNamespacePatch().withTags(mapOf("aofmxagkvtme", "lhspkdee"))
+            .withProperties(new FleetManagedNamespacePropertiesPatch()
+                .withManagedNamespaceProperties(new ManagedNamespaceProperties()
+                    .withLabels(mapOf("hcdhmdual", "hahvljuahaq", "vfadmws", "exq", "lf", "crgvxpvgom", "ali",
+                        "isgwbnbbeldawkz"))
+                    .withAnnotations(
+                        mapOf("xosow", "qhakauhashsf", "cjooxdjebwpucwwf", "xcug", "hzceuojgjrwjue", "ovbvmeueciv"))
+                    .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("wmcdytdxwi")
+                        .withCpuLimit("nrjawgqwg")
+                        .withMemoryRequest("ni")
+                        .withMemoryLimit("x"))
+                    .withDefaultNetworkPolicy(new NetworkPolicy().withIngress(PolicyRule.ALLOW_SAME_NAMESPACE)
+                        .withEgress(PolicyRule.ALLOW_ALL)))
+                .withAdoptionPolicy(AdoptionPolicy.NEVER)
+                .withDeletePolicy(DeletePolicy.KEEP)
+                .withPropagationPolicy(
+                    new PropagationPolicyPatch().withType(PropagationType.PLACEMENT)
+                        .withPlacementProfile(
+                            new PlacementProfilePatch()
+                                .withDefaultClusterResourcePlacement(
+                                    new ClusterResourcePlacementSpecPatch()
+                                        .withPolicy(
+                                            new PlacementPolicyPatch().withPlacementType(PlacementType.PICK_FIXED)
+                                                .withClusterNames(Arrays.asList("vylwzbtdhxuj", "nbmpowuwprzq"))
+                                                .withAffinity(new AffinityPatch())
+                                                .withTolerations(Arrays.asList(new Toleration(), new Toleration(),
+                                                    new Toleration())))
+                                        .withRolloutStrategy(
+                                            new RolloutStrategy().withType(RolloutStrategyType.ROLLING_UPDATE)
+                                                .withClusterUpdateStrategy(new ClusterUpdateStrategyReference()))))));
         model = BinaryData.fromObject(model).toObject(FleetManagedNamespacePatch.class);
-        Assertions.assertEquals("xywnytnrsynlqidy", model.tags().get("yxczfclh"));
+        Assertions.assertEquals("lhspkdee", model.tags().get("aofmxagkvtme"));
+        Assertions.assertEquals("hahvljuahaq",
+            model.properties().managedNamespaceProperties().labels().get("hcdhmdual"));
+        Assertions.assertEquals("qhakauhashsf",
+            model.properties().managedNamespaceProperties().annotations().get("xosow"));
+        Assertions.assertEquals("wmcdytdxwi",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("nrjawgqwg",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("ni",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("x",
+            model.properties().managedNamespaceProperties().defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE,
+            model.properties().managedNamespaceProperties().defaultNetworkPolicy().ingress());
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL,
+            model.properties().managedNamespaceProperties().defaultNetworkPolicy().egress());
+        Assertions.assertEquals(AdoptionPolicy.NEVER, model.properties().adoptionPolicy());
+        Assertions.assertEquals(DeletePolicy.KEEP, model.properties().deletePolicy());
+        Assertions.assertEquals(PropagationType.PLACEMENT, model.properties().propagationPolicy().type());
+        Assertions.assertEquals(PlacementType.PICK_FIXED,
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .policy()
+                .placementType());
+        Assertions.assertEquals("vylwzbtdhxuj",
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .policy()
+                .clusterNames()
+                .get(0));
+        Assertions.assertEquals(RolloutStrategyType.ROLLING_UPDATE,
+            model.properties()
+                .propagationPolicy()
+                .placementProfile()
+                .defaultClusterResourcePlacement()
+                .rolloutStrategy()
+                .type());
     }
 
     // Use "Map.of" if available

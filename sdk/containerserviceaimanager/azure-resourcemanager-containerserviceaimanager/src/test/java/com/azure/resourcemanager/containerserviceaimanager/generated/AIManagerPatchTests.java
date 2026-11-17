@@ -17,24 +17,24 @@ public final class AIManagerPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerPatch model = BinaryData.fromString(
-            "{\"tags\":{\"o\":\"xth\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\"},\"identity\":{\"principalId\":\"jqul\",\"tenantId\":\"sntnbybkzgcw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ksqrglssai\":{\"principalId\":\"xwrljdouskcqvkoc\",\"clientId\":\"jdkwtnhxbnjb\"},\"jfm\":{\"principalId\":\"p\",\"clientId\":\"nzl\"},\"vndhkrwpdapp\":{\"principalId\":\"eebvmgxsab\",\"clientId\":\"qduujitcjczdz\"},\"je\":{\"principalId\":\"bdkvwrwjf\",\"clientId\":\"snhu\"}}}}")
+            "{\"tags\":{\"ognarxzxtheotus\":\"ginuvamih\",\"nhungbw\":\"vyevcciqi\",\"gxg\":\"zrnf\",\"fublj\":\"spemvtzfk\"},\"identity\":{\"principalId\":\"qeof\",\"tenantId\":\"e\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"smjqulngsntnbyb\":{\"principalId\":\"b\",\"clientId\":\"v\"},\"douskcqvkocrcjdk\":{\"principalId\":\"gc\",\"clientId\":\"wclxxwrl\"}}}}")
             .toObject(AIManagerPatch.class);
-        Assertions.assertEquals("xth", model.tags().get("o"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ginuvamih", model.tags().get("ognarxzxtheotus"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AIManagerPatch model = new AIManagerPatch()
             .withTags(
-                mapOf("o", "xth", "cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz", "v", "xqeofjaeqjhqjba"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("ksqrglssai", new UserAssignedIdentity(), "jfm", new UserAssignedIdentity(), "vndhkrwpdapp",
-                        new UserAssignedIdentity(), "je", new UserAssignedIdentity())));
+                mapOf("ognarxzxtheotus", "ginuvamih", "nhungbw", "vyevcciqi", "gxg", "zrnf", "fublj", "spemvtzfk"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("smjqulngsntnbyb", new UserAssignedIdentity(), "douskcqvkocrcjdk",
+                        new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(AIManagerPatch.class);
-        Assertions.assertEquals("xth", model.tags().get("o"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ginuvamih", model.tags().get("ognarxzxtheotus"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

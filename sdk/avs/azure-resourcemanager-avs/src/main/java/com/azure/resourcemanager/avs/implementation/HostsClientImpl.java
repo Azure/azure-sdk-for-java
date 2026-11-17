@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -29,6 +31,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.HostsClient;
 import com.azure.resourcemanager.avs.fluent.models.HostModelInner;
 import com.azure.resourcemanager.avs.implementation.models.HostListResult;
+import com.azure.resourcemanager.avs.models.HostUpdate;
 import reactor.core.publisher.Mono;
 
 /**
@@ -100,6 +103,28 @@ public final class HostsClientImpl implements HostsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
             @PathParam("hostId") String hostId, @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts/{hostId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<HostModelInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
+            @PathParam("hostId") String hostId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") HostUpdate properties,
+            Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts/{hostId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<HostModelInner> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
+            @PathParam("hostId") String hostId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") HostUpdate properties,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -423,6 +448,154 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HostModelInner get(String resourceGroupName, String privateCloudName, String clusterName, String hostId) {
         return getWithResponse(resourceGroupName, privateCloudName, clusterName, hostId, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<HostModelInner>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
+        String clusterName, String hostId, HostUpdate properties) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (hostId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostId is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, hostId, contentType,
+                accept, properties, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<HostModelInner> updateAsync(String resourceGroupName, String privateCloudName, String clusterName,
+        String hostId, HostUpdate properties) {
+        return updateWithResponseAsync(resourceGroupName, privateCloudName, clusterName, hostId, properties)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HostModelInner> updateWithResponse(String resourceGroupName, String privateCloudName,
+        String clusterName, String hostId, HostUpdate properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (hostId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostId is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, hostId, contentType,
+            accept, properties, context);
+    }
+
+    /**
+     * Update a Host.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param hostId The host identifier.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HostModelInner update(String resourceGroupName, String privateCloudName, String clusterName, String hostId,
+        HostUpdate properties) {
+        return updateWithResponse(resourceGroupName, privateCloudName, clusterName, hostId, properties, Context.NONE)
+            .getValue();
     }
 
     /**

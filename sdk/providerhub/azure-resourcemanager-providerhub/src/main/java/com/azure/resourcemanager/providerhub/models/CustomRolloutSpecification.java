@@ -53,6 +53,16 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
      */
     private List<ResourceTypeRegistrationInner> resourceTypeRegistrations;
 
+    /*
+     * The rollout id.
+     */
+    private String rolloutId;
+
+    /*
+     * The manifest checkin specification.
+     */
+    private ManifestCheckinSpecification manifestCheckinSpecification;
+
     /**
      * Creates an instance of CustomRolloutSpecification class.
      */
@@ -205,6 +215,47 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
+     * Get the rolloutId property: The rollout id.
+     * 
+     * @return the rolloutId value.
+     */
+    public String rolloutId() {
+        return this.rolloutId;
+    }
+
+    /**
+     * Set the rolloutId property: The rollout id.
+     * 
+     * @param rolloutId the rolloutId value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification withRolloutId(String rolloutId) {
+        this.rolloutId = rolloutId;
+        return this;
+    }
+
+    /**
+     * Get the manifestCheckinSpecification property: The manifest checkin specification.
+     * 
+     * @return the manifestCheckinSpecification value.
+     */
+    public ManifestCheckinSpecification manifestCheckinSpecification() {
+        return this.manifestCheckinSpecification;
+    }
+
+    /**
+     * Set the manifestCheckinSpecification property: The manifest checkin specification.
+     * 
+     * @param manifestCheckinSpecification the manifestCheckinSpecification value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification
+        withManifestCheckinSpecification(ManifestCheckinSpecification manifestCheckinSpecification) {
+        this.manifestCheckinSpecification = manifestCheckinSpecification;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -221,6 +272,9 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
         }
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
+        }
+        if (manifestCheckinSpecification() != null) {
+            manifestCheckinSpecification().validate();
         }
     }
 
@@ -239,6 +293,8 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
         jsonWriter.writeJsonField("providerRegistration", this.providerRegistration);
         jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("rolloutId", this.rolloutId);
+        jsonWriter.writeJsonField("manifestCheckinSpecification", this.manifestCheckinSpecification);
         return jsonWriter.writeEndObject();
     }
 
@@ -278,6 +334,11 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
                     List<ResourceTypeRegistrationInner> resourceTypeRegistrations
                         = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
                     deserializedCustomRolloutSpecification.resourceTypeRegistrations = resourceTypeRegistrations;
+                } else if ("rolloutId".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.rolloutId = reader.getString();
+                } else if ("manifestCheckinSpecification".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.manifestCheckinSpecification
+                        = ManifestCheckinSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ModelDeploymentOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ModelDeploymentOverrides model = BinaryData
-            .fromString("{\"values\":{\"xytxhpzxbz\":\"bpg\",\"lcuhxwtctyqiklb\":\"fzab\",\"bhvgy\":\"ovplw\"}}")
+        ModelDeploymentOverrides model = BinaryData.fromString("{\"values\":{\"uzoqft\":\"ixzbinjeputtmryw\"}}")
             .toObject(ModelDeploymentOverrides.class);
-        Assertions.assertEquals("bpg", model.values().get("xytxhpzxbz"));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.values().get("uzoqft"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ModelDeploymentOverrides model = new ModelDeploymentOverrides()
-            .withValues(mapOf("xytxhpzxbz", "bpg", "lcuhxwtctyqiklb", "fzab", "bhvgy", "ovplw"));
+        ModelDeploymentOverrides model = new ModelDeploymentOverrides().withValues(mapOf("uzoqft", "ixzbinjeputtmryw"));
         model = BinaryData.fromObject(model).toObject(ModelDeploymentOverrides.class);
-        Assertions.assertEquals("bpg", model.values().get("xytxhpzxbz"));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.values().get("uzoqft"));
     }
 
     // Use "Map.of" if available

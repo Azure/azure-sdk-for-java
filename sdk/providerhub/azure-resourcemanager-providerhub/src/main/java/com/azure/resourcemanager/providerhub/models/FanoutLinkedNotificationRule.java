@@ -32,11 +32,6 @@ public final class FanoutLinkedNotificationRule implements JsonSerializable<Fano
      */
     private List<ResourceProviderEndpoint> endpoints;
 
-    /*
-     * The dsts configuration.
-     */
-    private FanoutLinkedNotificationRuleDstsConfiguration dstsConfiguration;
-
     /**
      * Creates an instance of FanoutLinkedNotificationRule class.
      */
@@ -104,27 +99,6 @@ public final class FanoutLinkedNotificationRule implements JsonSerializable<Fano
     }
 
     /**
-     * Get the dstsConfiguration property: The dsts configuration.
-     * 
-     * @return the dstsConfiguration value.
-     */
-    public FanoutLinkedNotificationRuleDstsConfiguration dstsConfiguration() {
-        return this.dstsConfiguration;
-    }
-
-    /**
-     * Set the dstsConfiguration property: The dsts configuration.
-     * 
-     * @param dstsConfiguration the dstsConfiguration value to set.
-     * @return the FanoutLinkedNotificationRule object itself.
-     */
-    public FanoutLinkedNotificationRule
-        withDstsConfiguration(FanoutLinkedNotificationRuleDstsConfiguration dstsConfiguration) {
-        this.dstsConfiguration = dstsConfiguration;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -135,9 +109,6 @@ public final class FanoutLinkedNotificationRule implements JsonSerializable<Fano
         }
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
-        }
-        if (dstsConfiguration() != null) {
-            dstsConfiguration().validate();
         }
     }
 
@@ -150,7 +121,6 @@ public final class FanoutLinkedNotificationRule implements JsonSerializable<Fano
         jsonWriter.writeJsonField("tokenAuthConfiguration", this.tokenAuthConfiguration);
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -179,9 +149,6 @@ public final class FanoutLinkedNotificationRule implements JsonSerializable<Fano
                     List<ResourceProviderEndpoint> endpoints
                         = reader.readArray(reader1 -> ResourceProviderEndpoint.fromJson(reader1));
                     deserializedFanoutLinkedNotificationRule.endpoints = endpoints;
-                } else if ("dstsConfiguration".equals(fieldName)) {
-                    deserializedFanoutLinkedNotificationRule.dstsConfiguration
-                        = FanoutLinkedNotificationRuleDstsConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

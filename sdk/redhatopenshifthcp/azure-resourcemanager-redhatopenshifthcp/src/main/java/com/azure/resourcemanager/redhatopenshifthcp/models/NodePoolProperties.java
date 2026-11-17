@@ -42,7 +42,13 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     private Integer replicas;
 
     /*
-     * Auto-repair
+     * autoRepair specifies whether health checks should be enabled for machines
+     * in the NodePool. Enabling this feature will cause the controller to
+     * automatically delete unhealthy machines. The unhealthy criteria are
+     * determined by checking the Node Ready condition and a timeout that might
+     * vary depending on the platform provider. autoRepair will not take action
+     * when more than 2 Nodes are unhealthy at the same time, giving time for
+     * the cluster to stabilize or for the user to manually intervene.
      */
     private Boolean autoRepair;
 
@@ -52,14 +58,14 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     private NodePoolAutoScaling autoScaling;
 
     /*
-     * Kubernetes labels to propagate to the NodePool Nodes
+     * Kubernetes labels to propagate to the NodePool Nodes.
      * Note that when the labels are updated this is only applied to newly
-     * create nodes in the Nodepool, existing node labels remain unchanged.
+     * created nodes in the NodePool, existing node labels remain unchanged.
      */
     private List<Label> labels;
 
     /*
-     * Taints for the nodes
+     * Taints for the nodes.
      */
     private List<Taint> taints;
 
@@ -79,7 +85,7 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     /*
      * Status of the node pool resource
      */
-    private ResourceStatus status;
+    private NodePoolResourceStatus status;
 
     /**
      * Creates an instance of NodePoolProperties class.
@@ -165,7 +171,13 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     }
 
     /**
-     * Get the autoRepair property: Auto-repair.
+     * Get the autoRepair property: autoRepair specifies whether health checks should be enabled for machines
+     * in the NodePool. Enabling this feature will cause the controller to
+     * automatically delete unhealthy machines. The unhealthy criteria are
+     * determined by checking the Node Ready condition and a timeout that might
+     * vary depending on the platform provider. autoRepair will not take action
+     * when more than 2 Nodes are unhealthy at the same time, giving time for
+     * the cluster to stabilize or for the user to manually intervene.
      * 
      * @return the autoRepair value.
      */
@@ -174,7 +186,13 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     }
 
     /**
-     * Set the autoRepair property: Auto-repair.
+     * Set the autoRepair property: autoRepair specifies whether health checks should be enabled for machines
+     * in the NodePool. Enabling this feature will cause the controller to
+     * automatically delete unhealthy machines. The unhealthy criteria are
+     * determined by checking the Node Ready condition and a timeout that might
+     * vary depending on the platform provider. autoRepair will not take action
+     * when more than 2 Nodes are unhealthy at the same time, giving time for
+     * the cluster to stabilize or for the user to manually intervene.
      * 
      * @param autoRepair the autoRepair value to set.
      * @return the NodePoolProperties object itself.
@@ -205,9 +223,9 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     }
 
     /**
-     * Get the labels property: Kubernetes labels to propagate to the NodePool Nodes
+     * Get the labels property: Kubernetes labels to propagate to the NodePool Nodes.
      * Note that when the labels are updated this is only applied to newly
-     * create nodes in the Nodepool, existing node labels remain unchanged.
+     * created nodes in the NodePool, existing node labels remain unchanged.
      * 
      * @return the labels value.
      */
@@ -216,9 +234,9 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
     }
 
     /**
-     * Set the labels property: Kubernetes labels to propagate to the NodePool Nodes
+     * Set the labels property: Kubernetes labels to propagate to the NodePool Nodes.
      * Note that when the labels are updated this is only applied to newly
-     * create nodes in the Nodepool, existing node labels remain unchanged.
+     * created nodes in the NodePool, existing node labels remain unchanged.
      * 
      * @param labels the labels value to set.
      * @return the NodePoolProperties object itself.
@@ -291,7 +309,7 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
      * 
      * @return the status value.
      */
-    public ResourceStatus status() {
+    public NodePoolResourceStatus status() {
         return this.status;
     }
 
@@ -349,7 +367,7 @@ public final class NodePoolProperties implements JsonSerializable<NodePoolProper
                 } else if ("nodeDrainTimeoutMinutes".equals(fieldName)) {
                     deserializedNodePoolProperties.nodeDrainTimeoutMinutes = reader.getNullable(JsonReader::getInt);
                 } else if ("status".equals(fieldName)) {
-                    deserializedNodePoolProperties.status = ResourceStatus.fromJson(reader);
+                    deserializedNodePoolProperties.status = NodePoolResourceStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

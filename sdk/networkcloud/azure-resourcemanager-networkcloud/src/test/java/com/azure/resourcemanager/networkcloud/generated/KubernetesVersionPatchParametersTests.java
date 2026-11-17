@@ -13,17 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class KubernetesVersionPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KubernetesVersionPatchParameters model = BinaryData.fromString("{\"tags\":{\"cgxxlxs\":\"mlqoljx\"}}")
+        KubernetesVersionPatchParameters model = BinaryData.fromString(
+            "{\"tags\":{\"jkmnwq\":\"yohpfkyrkdbdgiog\",\"m\":\"nobaiyhddviacegf\",\"vbalxlllc\":\"tfpmvmemfnczdw\",\"ukuv\":\"podbzevwrdnh\"}}")
             .toObject(KubernetesVersionPatchParameters.class);
-        Assertions.assertEquals("mlqoljx", model.tags().get("cgxxlxs"));
+        Assertions.assertEquals("yohpfkyrkdbdgiog", model.tags().get("jkmnwq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesVersionPatchParameters model
-            = new KubernetesVersionPatchParameters().withTags(mapOf("cgxxlxs", "mlqoljx"));
+        KubernetesVersionPatchParameters model = new KubernetesVersionPatchParameters().withTags(mapOf("jkmnwq",
+            "yohpfkyrkdbdgiog", "m", "nobaiyhddviacegf", "vbalxlllc", "tfpmvmemfnczdw", "ukuv", "podbzevwrdnh"));
         model = BinaryData.fromObject(model).toObject(KubernetesVersionPatchParameters.class);
-        Assertions.assertEquals("mlqoljx", model.tags().get("cgxxlxs"));
+        Assertions.assertEquals("yohpfkyrkdbdgiog", model.tags().get("jkmnwq"));
     }
 
     // Use "Map.of" if available

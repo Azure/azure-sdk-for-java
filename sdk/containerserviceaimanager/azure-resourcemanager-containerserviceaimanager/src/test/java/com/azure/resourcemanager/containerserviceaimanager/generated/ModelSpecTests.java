@@ -11,7 +11,7 @@ public final class ModelSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModelSpec model
-            = BinaryData.fromString("{\"license\":\"leggzfbu\",\"isRestricted\":true,\"maxContextLength\":1240175495}")
+            = BinaryData.fromString("{\"license\":\"suesnzw\",\"isRestricted\":false,\"maxContextLength\":317621756}")
                 .toObject(ModelSpec.class);
     }
 }

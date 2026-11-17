@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class WafSecurityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WafSecurityPolicy model = BinaryData.fromString("{\"id\":\"nchgej\"}").toObject(WafSecurityPolicy.class);
-        Assertions.assertEquals("nchgej", model.id());
+        WafSecurityPolicy model = BinaryData.fromString("{\"id\":\"h\"}").toObject(WafSecurityPolicy.class);
+        Assertions.assertEquals("h", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WafSecurityPolicy model = new WafSecurityPolicy().withId("nchgej");
+        WafSecurityPolicy model = new WafSecurityPolicy().withId("h");
         model = BinaryData.fromObject(model).toObject(WafSecurityPolicy.class);
-        Assertions.assertEquals("nchgej", model.id());
+        Assertions.assertEquals("h", model.id());
     }
 }

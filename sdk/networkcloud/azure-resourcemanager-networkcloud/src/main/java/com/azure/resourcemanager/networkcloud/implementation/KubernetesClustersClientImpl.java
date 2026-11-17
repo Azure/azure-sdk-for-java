@@ -475,7 +475,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, kubernetesClusterName,
@@ -773,7 +773,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
         String kubernetesClusterName, String ifMatch, String ifNoneMatch,
         KubernetesClusterPatchParameters kubernetesClusterUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, kubernetesClusterName, ifMatch,
@@ -1048,7 +1048,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, kubernetesClusterName, ifMatch, ifNoneMatch);

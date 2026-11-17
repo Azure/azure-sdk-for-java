@@ -30,9 +30,14 @@ public final class UnifiedResilienceItemProperties implements JsonSerializable<U
     private GoalsData goals;
 
     /*
-     * Computed and copied data of Azure recommendations.
+     * Resiliency posture computed for the service group.
      */
-    private RecommendationsData recommendations;
+    private UnifiedResilienceItemResiliencyPosture resiliencyPosture;
+
+    /*
+     * Usage plan and enrollment billing information for the service group.
+     */
+    private UnifiedResilienceItemBillingInfo billingInfo;
 
     /*
      * Last modified time of the unified resilience item.
@@ -64,12 +69,21 @@ public final class UnifiedResilienceItemProperties implements JsonSerializable<U
     }
 
     /**
-     * Get the recommendations property: Computed and copied data of Azure recommendations.
+     * Get the resiliencyPosture property: Resiliency posture computed for the service group.
      * 
-     * @return the recommendations value.
+     * @return the resiliencyPosture value.
      */
-    public RecommendationsData recommendations() {
-        return this.recommendations;
+    public UnifiedResilienceItemResiliencyPosture resiliencyPosture() {
+        return this.resiliencyPosture;
+    }
+
+    /**
+     * Get the billingInfo property: Usage plan and enrollment billing information for the service group.
+     * 
+     * @return the billingInfo value.
+     */
+    public UnifiedResilienceItemBillingInfo billingInfo() {
+        return this.billingInfo;
     }
 
     /**
@@ -88,11 +102,12 @@ public final class UnifiedResilienceItemProperties implements JsonSerializable<U
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("goals", this.goals);
-        jsonWriter.writeJsonField("recommendations", this.recommendations);
+        jsonWriter.writeJsonField("resiliencyPosture", this.resiliencyPosture);
         jsonWriter.writeStringField("lastModifiedTime",
             this.lastModifiedTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeJsonField("billingInfo", this.billingInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,14 +130,18 @@ public final class UnifiedResilienceItemProperties implements JsonSerializable<U
 
                 if ("goals".equals(fieldName)) {
                     deserializedUnifiedResilienceItemProperties.goals = GoalsData.fromJson(reader);
-                } else if ("recommendations".equals(fieldName)) {
-                    deserializedUnifiedResilienceItemProperties.recommendations = RecommendationsData.fromJson(reader);
+                } else if ("resiliencyPosture".equals(fieldName)) {
+                    deserializedUnifiedResilienceItemProperties.resiliencyPosture
+                        = UnifiedResilienceItemResiliencyPosture.fromJson(reader);
                 } else if ("lastModifiedTime".equals(fieldName)) {
                     deserializedUnifiedResilienceItemProperties.lastModifiedTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedUnifiedResilienceItemProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("billingInfo".equals(fieldName)) {
+                    deserializedUnifiedResilienceItemProperties.billingInfo
+                        = UnifiedResilienceItemBillingInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

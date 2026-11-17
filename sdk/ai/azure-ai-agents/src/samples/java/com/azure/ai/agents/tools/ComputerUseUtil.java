@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.tools;
 
+import com.openai.models.responses.ComputerAction;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
 import com.openai.models.responses.ResponseOutputItem;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -204,7 +206,7 @@ public final class ComputerUseUtil {
     }
 
     /**
-     * Process a computer action and simulate its execution.
+     * Process computer action(s) from a {@link ResponseComputerToolCall} and simulate execution.
      *
      * <p>In a real implementation, you might want to execute real browser operations
      * instead of just printing, take screenshots, and return actual screenshot data.</p>
@@ -219,35 +221,37 @@ public final class ComputerUseUtil {
             SearchState currentState,
             Map<String, ScreenshotInfo> screenshots) {
 
-        ResponseComputerToolCall.Action action = computerCall.action().get();
-        String actionType = getActionType(action);
+        List<ComputerAction> actions = computerCall.actions().orElse(Collections.emptyList());
+        for (ComputerAction action : actions) {
+            String actionType = getActionType(action);
 
-        System.out.printf("Executing computer action: %s%n", actionType);
+            System.out.printf("Executing computer action: %s%n", actionType);
 
-        // State transitions based on actions
-        if ("type".equals(actionType)) {
-            String text = getTypeText(action);
-            if (text != null && !text.isEmpty()) {
-                currentState = SearchState.TYPED;
-                System.out.printf("  Typing text: '%s' - Simulating keyboard input%n", text);
-            }
-        } else if ("keypress".equals(actionType)) {
-            // Check for ENTER key press
-            List<String> keys = getKeyPressKeys(action);
-            if (keys.stream().anyMatch(k -> k.contains("Return") || k.contains("ENTER") || k.contains("Enter"))) {
+            // State transitions based on actions
+            if ("type".equals(actionType)) {
+                String text = getTypeText(action);
+                if (text != null && !text.isEmpty()) {
+                    currentState = SearchState.TYPED;
+                    System.out.printf("  Typing text: '%s' - Simulating keyboard input%n", text);
+                }
+            } else if ("keypress".equals(actionType)) {
+                // Check for ENTER key press
+                List<String> keys = getKeyPressKeys(action);
+                if (keys.stream().anyMatch(k -> k.contains("Return") || k.contains("ENTER") || k.contains("Enter"))) {
+                    currentState = SearchState.PRESSED_ENTER;
+                    System.out.println("  -> Detected ENTER key press");
+                }
+            } else if ("click".equals(actionType) && currentState == SearchState.TYPED) {
+                // Check for click after typing (alternative submit method)
                 currentState = SearchState.PRESSED_ENTER;
-                System.out.println("  -> Detected ENTER key press");
+                System.out.println("  -> Detected click after typing");
             }
-        } else if ("click".equals(actionType) && currentState == SearchState.TYPED) {
-            // Check for click after typing (alternative submit method)
-            currentState = SearchState.PRESSED_ENTER;
-            System.out.println("  -> Detected click after typing");
+
+            // Provide more realistic feedback based on action type
+            printActionFeedback(action, actionType);
+
+            System.out.printf("  -> Action processed: %s%n", actionType);
         }
-
-        // Provide more realistic feedback based on action type
-        printActionFeedback(action, actionType);
-
-        System.out.printf("  -> Action processed: %s%n", actionType);
 
         // Determine screenshot based on current state
         ScreenshotInfo screenshotInfo;
@@ -263,12 +267,12 @@ public final class ComputerUseUtil {
     }
 
     /**
-     * Get the action type from a ResponseComputerToolCall.Action.
+     * Get the action type from a ComputerAction.
      *
      * @param action The action to get the type from.
      * @return The action type as a string.
      */
-    public static String getActionType(ResponseComputerToolCall.Action action) {
+    public static String getActionType(ComputerAction action) {
         if (action.isClick()) {
             return "click";
         } else if (action.isDrag()) {
@@ -297,7 +301,7 @@ public final class ComputerUseUtil {
      * @param action The action to extract text from.
      * @return The text to type, or null if not a type action.
      */
-    public static String getTypeText(ResponseComputerToolCall.Action action) {
+    public static String getTypeText(ComputerAction action) {
         if (action.isType()) {
             return action.asType().text();
         }
@@ -310,7 +314,7 @@ public final class ComputerUseUtil {
      * @param action The action to extract keys from.
      * @return The list of keys, or empty list if not a keypress action.
      */
-    public static List<String> getKeyPressKeys(ResponseComputerToolCall.Action action) {
+    public static List<String> getKeyPressKeys(ComputerAction action) {
         if (action.isKeypress()) {
             return action.asKeypress().keys();
         }
@@ -323,30 +327,30 @@ public final class ComputerUseUtil {
      * @param action The action to print feedback for.
      * @param actionType The type of action.
      */
-    public static void printActionFeedback(ResponseComputerToolCall.Action action, String actionType) {
+    public static void printActionFeedback(ComputerAction action, String actionType) {
         switch (actionType) {
             case "click":
-                ResponseComputerToolCall.Action.Click click = action.asClick();
+                ComputerAction.Click click = action.asClick();
                 System.out.printf("  Click at (%d, %d) - Simulating click on UI element%n", click.x(), click.y());
                 break;
             case "double_click":
-                ResponseComputerToolCall.Action.DoubleClick doubleClick = action.asDoubleClick();
+                ComputerAction.DoubleClick doubleClick = action.asDoubleClick();
                 System.out.printf("  Double-click at (%d, %d) - Simulating double-click on UI element%n",
                     doubleClick.x(), doubleClick.y());
                 break;
             case "drag":
-                ResponseComputerToolCall.Action.Drag drag = action.asDrag();
+                ComputerAction.Drag drag = action.asDrag();
                 String pathStr = drag.path().stream()
                     .map(p -> String.format("(%d, %d)", p.x(), p.y()))
                     .collect(Collectors.joining(" -> "));
                 System.out.printf("  Drag path: %s - Simulating drag operation%n", pathStr);
                 break;
             case "scroll":
-                ResponseComputerToolCall.Action.Scroll scroll = action.asScroll();
+                ComputerAction.Scroll scroll = action.asScroll();
                 System.out.printf("  Scroll at (%d, %d) - Simulating scroll action%n", scroll.x(), scroll.y());
                 break;
             case "keypress":
-                ResponseComputerToolCall.Action.Keypress keypress = action.asKeypress();
+                ComputerAction.Keypress keypress = action.asKeypress();
                 System.out.printf("  Key press: %s - Simulating key combination%n", keypress.keys());
                 break;
             case "screenshot":

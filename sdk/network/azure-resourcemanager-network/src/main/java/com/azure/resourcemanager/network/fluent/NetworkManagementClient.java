@@ -97,6 +97,13 @@ public interface NetworkManagementClient {
     ApplicationSecurityGroupsClient getApplicationSecurityGroups();
 
     /**
+     * Gets the AuthenticationPoliciesClient object to access its operations.
+     * 
+     * @return the AuthenticationPoliciesClient object.
+     */
+    AuthenticationPoliciesClient getAuthenticationPolicies();
+
+    /**
      * Gets the AzureFirewallsClient object to access its operations.
      * 
      * @return the AzureFirewallsClient object.
@@ -214,6 +221,13 @@ public interface NetworkManagementClient {
      * @return the ExpressRouteLagsClient object.
      */
     ExpressRouteLagsClient getExpressRouteLags();
+
+    /**
+     * Gets the ExpressRouteLagAuthorizationsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagAuthorizationsClient object.
+     */
+    ExpressRouteLagAuthorizationsClient getExpressRouteLagAuthorizations();
 
     /**
      * Gets the FirewallPoliciesClient object to access its operations.
@@ -746,6 +760,13 @@ public interface NetworkManagementClient {
      * @return the VirtualNetworkAppliancesClient object.
      */
     VirtualNetworkAppliancesClient getVirtualNetworkAppliances();
+
+    /**
+     * Gets the VirtualNetworkApplianceCapabilitiesClient object to access its operations.
+     * 
+     * @return the VirtualNetworkApplianceCapabilitiesClient object.
+     */
+    VirtualNetworkApplianceCapabilitiesClient getVirtualNetworkApplianceCapabilities();
 
     /**
      * Gets the ServiceGatewaysClient object to access its operations.

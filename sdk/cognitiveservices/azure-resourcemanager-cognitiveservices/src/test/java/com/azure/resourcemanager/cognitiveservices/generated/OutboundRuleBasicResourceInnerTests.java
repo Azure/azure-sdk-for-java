@@ -15,18 +15,18 @@ public final class OutboundRuleBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"tedousnktjtgrava\",\"parentRuleNames\":[\"fkbebauzl\",\"btxxwpfhnjzud\",\"tpzkgmeboywhcz\",\"qrhm\"]},\"id\":\"qbedygisrzwn\",\"name\":\"kdidjc\",\"type\":\"lrmpwctofldse\"}")
+            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"xzubfjzabbwzgv\",\"parentRuleNames\":[\"ixcdckixs\"]},\"id\":\"aigavkmvyxzerejr\",\"name\":\"pzjbyetjxryo\",\"type\":\"taeitwhlbecgihz\"}")
             .toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.properties().status());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner().withProperties(
-            new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.PROVISIONING));
+        OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner()
+            .withProperties(new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.DELETING));
         model = BinaryData.fromObject(model).toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.properties().status());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
+        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
     }
 }

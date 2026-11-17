@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Get_MaximumSet_Gen.
@@ -23,7 +23,7 @@ public final class VolumesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Volumes_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Get_MinimumSet_Gen.

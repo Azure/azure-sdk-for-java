@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClient;
+import com.azure.resourcemanager.privatedns.fluent.PrivateDnsResourceReferencesClient;
 import com.azure.resourcemanager.privatedns.fluent.PrivateZonesClient;
 import com.azure.resourcemanager.privatedns.fluent.RecordSetsClient;
 import com.azure.resourcemanager.privatedns.fluent.VirtualNetworkLinksClient;
@@ -147,6 +148,20 @@ public final class PrivateDnsManagementClientImpl extends AzureServiceClient imp
     }
 
     /**
+     * The PrivateDnsResourceReferencesClient object to access its operations.
+     */
+    private final PrivateDnsResourceReferencesClient privateDnsResourceReferences;
+
+    /**
+     * Gets the PrivateDnsResourceReferencesClient object to access its operations.
+     * 
+     * @return the PrivateDnsResourceReferencesClient object.
+     */
+    public PrivateDnsResourceReferencesClient getPrivateDnsResourceReferences() {
+        return this.privateDnsResourceReferences;
+    }
+
+    /**
      * Initializes an instance of PrivateDnsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -164,9 +179,10 @@ public final class PrivateDnsManagementClientImpl extends AzureServiceClient imp
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-06-01";
+        this.apiVersion = "2026-06-01-preview";
         this.recordSets = new RecordSetsClientImpl(this);
         this.privateZones = new PrivateZonesClientImpl(this);
         this.virtualNetworkLinks = new VirtualNetworkLinksClientImpl(this);
+        this.privateDnsResourceReferences = new PrivateDnsResourceReferencesClientImpl(this);
     }
 }

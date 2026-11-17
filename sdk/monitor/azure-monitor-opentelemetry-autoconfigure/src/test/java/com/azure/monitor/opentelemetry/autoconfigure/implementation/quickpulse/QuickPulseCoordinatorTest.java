@@ -205,6 +205,36 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockSender, Mockito.never()).setRedirectEndpointPrefix(any());
     }
 
+    @Test
+    void appliesValidPollingIntervalHint() {
+        QuickPulseCoordinator coordinator
+            = createCoordinator(mock(QuickPulseDataSender.class), mock(QuickPulsePingSender.class));
+
+        assertThat(coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint("1000")))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        assertThat(coordinator.getQpsServicePollingIntervalHintMillis()).isEqualTo(1000L);
+    }
+
+    @Test
+    void ignoresInvalidOrNonPositivePollingIntervalHint() {
+        QuickPulseCoordinator coordinator
+            = createCoordinator(mock(QuickPulseDataSender.class), mock(QuickPulsePingSender.class));
+        coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint("1000"));
+
+        for (String invalidHint : new String[] { "abc", "1.5", "99999999999999999999", "0", "-5" }) {
+            assertThat(coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint(invalidHint)))
+                .isEqualTo(QuickPulseStatus.QP_IS_ON);
+            assertThat(coordinator.getQpsServicePollingIntervalHintMillis()).isEqualTo(1000L);
+        }
+    }
+
+    private static IsSubscribedHeaders pingHeadersWithPollingHint(String pollingIntervalHint) {
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_POLLING_INTERVAL_HINT, pollingIntervalHint);
+        return new IsSubscribedHeaders(rawPingHeaders);
+    }
+
     private static QuickPulseCoordinator createCoordinator(QuickPulseDataSender mockSender,
         QuickPulsePingSender mockPingSender) {
         AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());

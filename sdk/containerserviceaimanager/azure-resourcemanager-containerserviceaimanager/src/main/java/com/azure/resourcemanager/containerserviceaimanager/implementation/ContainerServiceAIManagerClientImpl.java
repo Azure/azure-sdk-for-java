@@ -30,6 +30,7 @@ import com.azure.resourcemanager.containerserviceaimanager.fluent.AIManagerNames
 import com.azure.resourcemanager.containerserviceaimanager.fluent.AIManagersClient;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.AIModelsClient;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.ContainerServiceAIManagerClient;
+import com.azure.resourcemanager.containerserviceaimanager.fluent.CustomAIModelsClient;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.ModelDeploymentsClient;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.ModelSourcesClient;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.OperationsClient;
@@ -216,6 +217,20 @@ public final class ContainerServiceAIManagerClientImpl implements ContainerServi
     }
 
     /**
+     * The CustomAIModelsClient object to access its operations.
+     */
+    private final CustomAIModelsClient customAIModels;
+
+    /**
+     * Gets the CustomAIModelsClient object to access its operations.
+     * 
+     * @return the CustomAIModelsClient object.
+     */
+    public CustomAIModelsClient getCustomAIModels() {
+        return this.customAIModels;
+    }
+
+    /**
      * Initializes an instance of ContainerServiceAIManagerClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -232,13 +247,14 @@ public final class ContainerServiceAIManagerClientImpl implements ContainerServi
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-02-preview";
+        this.apiVersion = "2026-09-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.aIManagers = new AIManagersClientImpl(this);
         this.aIManagerNamespaces = new AIManagerNamespacesClientImpl(this);
         this.aIModels = new AIModelsClientImpl(this);
         this.modelSources = new ModelSourcesClientImpl(this);
         this.modelDeployments = new ModelDeploymentsClientImpl(this);
+        this.customAIModels = new CustomAIModelsClientImpl(this);
     }
 
     /**

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class AIManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagers_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates an AI Manager resource.
@@ -31,6 +31,28 @@ public final class AIManagersCreateOrUpdateSamples {
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.KEEP))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-02-preview/AIManagers_CreateOrUpdate_BYO.json
+     */
+    /**
+     * Sample code: Creates or updates an AI Manager resource attached to an existing AKS cluster (bring-your-own).
+     * 
+     * @param manager Entry point to ContainerServiceAIManagerManager.
+     */
+    public static void createsOrUpdatesAnAIManagerResourceAttachedToAnExistingAKSClusterBringYourOwn(
+        com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager manager) {
+        manager.aIManagers()
+            .define("aimanager1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.KEEP)
+                .withClusterResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/existing-aks"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

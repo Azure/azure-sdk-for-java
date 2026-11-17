@@ -28,7 +28,7 @@ public final class ConfigurationAssignmentsForResourceGroupsCreateOrUpdateWithRe
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceConfigurationId\":\"ccybvp\",\"resourceId\":\"akkud\",\"filter\":{\"resourceTypes\":[\"wjplma\",\"stcyohpfkyrkdbd\"],\"resourceGroups\":[\"gsj\",\"mnwqj\",\"obaiyhddviaceg\"],\"osTypes\":[\"ntfpmvmemfnc\"],\"locations\":[\"vvbalx\"],\"tagSettings\":{\"tags\":{\"jcswsmys\":[\"podbzevwrdnh\",\"ukuv\"]},\"filterOperator\":\"Any\"}}},\"location\":\"qypfcv\",\"id\":\"rchpqbmfpjbabwid\",\"name\":\"cxsspuunnoxyh\",\"type\":\"xgqddrih\"}";
+            = "{\"properties\":{\"maintenanceConfigurationId\":\"kdmflvestmjlx\",\"resourceId\":\"ilozapeewchpxlk\",\"filter\":{\"resourceTypes\":[\"ziycslevufuztck\",\"yhjtqedcgzu\"],\"resourceGroups\":[\"mrqzzrrjvpgl\",\"dzgkr\"],\"osTypes\":[\"ev\"],\"locations\":[\"pryu\"],\"tagSettings\":{\"tags\":{\"ndtic\":[\"pzdm\",\"vzvfvaawzqadfl\",\"z\",\"riglaec\"]},\"filterOperator\":\"All\"}}},\"location\":\"zmlqtmldgxo\",\"id\":\"irclnpk\",\"name\":\"iayz\",\"type\":\"iykhy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,30 +38,28 @@ public final class ConfigurationAssignmentsForResourceGroupsCreateOrUpdateWithRe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigurationAssignment response = manager.configurationAssignmentsForResourceGroups()
-            .createOrUpdateWithResponse("youpfgfbkj", "bdyhgkfminsgowz", new ConfigurationAssignmentInner()
-                .withLocation("t")
-                .withMaintenanceConfigurationId("sttktlahbqa")
-                .withResourceId("xtgzukxitmmqtgqq")
+            .createOrUpdateWithResponse("vvbalx", "l", new ConfigurationAssignmentInner().withLocation("kjpvdwxf")
+                .withMaintenanceConfigurationId("podbzevwrdnh")
+                .withResourceId("kuvsjcswsm")
                 .withFilter(new ConfigurationAssignmentFilterProperties()
-                    .withResourceTypes(Arrays.asList("n", "rxcpjuisavo"))
-                    .withResourceGroups(Arrays.asList("zfvazi"))
-                    .withOsTypes(Arrays.asList("frqttbajlkatnw"))
-                    .withLocations(Arrays.asList("opidkqqfkuv", "cxkdmligovi"))
-                    .withTagSettings(new TagSettingsProperties().withTags(
-                        mapOf("ybfhjxa", Arrays.asList("mloazuru", "cbgoor", "te"), "il", Arrays.asList("vjgsl", "r")))
+                    .withResourceTypes(Arrays.asList("luqypfcvlerch", "qbmfpjbabwidf"))
+                    .withResourceGroups(Arrays.asList("spuunnoxyhkxgq", "drihpfhoqcaaewda", "mdjvlpj", "xkzb"))
+                    .withOsTypes(Arrays.asList("geivsiykzkdncj", "xonbzoggculapz"))
+                    .withLocations(Arrays.asList("pgogtqxepny", "b", "uajlyj"))
+                    .withTagSettings(new TagSettingsProperties().withTags(mapOf("fmo", Arrays.asList("qzhv", "cib")))
                         .withFilterOperator(TagOperators.ALL))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qypfcv", response.location());
-        Assertions.assertEquals("ccybvp", response.maintenanceConfigurationId());
-        Assertions.assertEquals("akkud", response.resourceId());
-        Assertions.assertEquals("wjplma", response.filter().resourceTypes().get(0));
-        Assertions.assertEquals("gsj", response.filter().resourceGroups().get(0));
-        Assertions.assertEquals("ntfpmvmemfnc", response.filter().osTypes().get(0));
-        Assertions.assertEquals("vvbalx", response.filter().locations().get(0));
-        Assertions.assertEquals("podbzevwrdnh", response.filter().tagSettings().tags().get("jcswsmys").get(0));
-        Assertions.assertEquals(TagOperators.ANY, response.filter().tagSettings().filterOperator());
+        Assertions.assertEquals("zmlqtmldgxo", response.location());
+        Assertions.assertEquals("kdmflvestmjlx", response.maintenanceConfigurationId());
+        Assertions.assertEquals("ilozapeewchpxlk", response.resourceId());
+        Assertions.assertEquals("ziycslevufuztck", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("mrqzzrrjvpgl", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("ev", response.filter().osTypes().get(0));
+        Assertions.assertEquals("pryu", response.filter().locations().get(0));
+        Assertions.assertEquals("pzdm", response.filter().tagSettings().tags().get("ndtic").get(0));
+        Assertions.assertEquals(TagOperators.ALL, response.filter().tagSettings().filterOperator());
     }
 
     // Use "Map.of" if available

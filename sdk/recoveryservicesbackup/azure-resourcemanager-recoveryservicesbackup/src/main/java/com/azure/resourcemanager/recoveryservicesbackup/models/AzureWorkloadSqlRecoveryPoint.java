@@ -26,6 +26,7 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     private String objectType = "AzureWorkloadSQLRecoveryPoint";
 
     /*
+     * 
      * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
      * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
@@ -50,8 +51,8 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     }
 
     /**
-     * Get the extendedInfo property: Extended Info that provides data directory details. Will be populated in two
-     * cases:
+     * Get the extendedInfo property:
+     * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
      * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter.
      * 
@@ -62,8 +63,8 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     }
 
     /**
-     * Set the extendedInfo property: Extended Info that provides data directory details. Will be populated in two
-     * cases:
+     * Set the extendedInfo property:
+     * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
      * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter.
      * 

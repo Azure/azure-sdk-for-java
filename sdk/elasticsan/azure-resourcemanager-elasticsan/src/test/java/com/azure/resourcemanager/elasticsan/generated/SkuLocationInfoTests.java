@@ -10,8 +10,8 @@ import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
 public final class SkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuLocationInfo model = BinaryData
-            .fromString("{\"location\":\"aln\",\"zones\":[\"isxyawjoyaqcslyj\",\"kiidzyex\",\"nelixhnrztfo\",\"hb\"]}")
+        SkuLocationInfo model = BinaryData.fromString(
+            "{\"location\":\"qlpqwcciuq\",\"zones\":[\"butauvfb\",\"kuwhh\",\"hykojoxafnndlpic\",\"koymkcd\"],\"zoneDetails\":[{\"name\":[\"kpw\",\"reqnovvqfov\",\"jxywsuws\",\"rsndsytgadgvra\"],\"capabilities\":[{\"name\":\"e\",\"value\":\"zar\"}]},{\"name\":[\"q\",\"uijfqk\",\"cewiipfpub\",\"ibwwiftohqkv\"],\"capabilities\":[{\"name\":\"sgplsakn\",\"value\":\"fsynljphuop\"},{\"name\":\"dlqiyntorzih\",\"value\":\"osjswsr\"},{\"name\":\"lyzrpzbchckqqzqi\",\"value\":\"iysui\"},{\"name\":\"ynkedyatrwyhqmib\",\"value\":\"hwit\"}]},{\"name\":[\"pyy\",\"pcdpumnz\",\"mwzn\",\"abikns\"],\"capabilities\":[{\"name\":\"hxbld\",\"value\":\"wwrlkdmtncv\"}]}]}")
             .toObject(SkuLocationInfo.class);
     }
 }

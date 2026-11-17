@@ -31,12 +31,14 @@ public class Sample_Advanced_ClassifyInPageSegmentsTest extends ContentUnderstan
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
             = contentUnderstandingClient.beginCreateAnalyzer(analyzerId,
                 PreviewSampleTestSupport.createInPageClassifier(getModelProfile().getCompletionModel()), true);
+        setPlaybackSyncPollerPollInterval(createPoller);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createPoller.waitForCompletion().getStatus());
         try {
             assertNotNull(createPoller.getFinalResult());
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
                 = contentUnderstandingClient.beginAnalyzeBinary(analyzerId,
                     PreviewSampleTestSupport.readSample("mixed_financial_docs_in_page.pdf"));
+            setPlaybackSyncPollerPollInterval(analyzePoller);
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 analyzePoller.waitForCompletion().getStatus());
             AnalysisResult result = analyzePoller.getFinalResult();

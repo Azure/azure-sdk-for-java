@@ -12,11 +12,6 @@ import java.util.Collection;
  */
 public final class UsagePlanType extends ExpandableStringEnum<UsagePlanType> {
     /**
-     * Basic usage plan with restricted functionality without any charges.
-     */
-    public static final UsagePlanType BASIC = fromString("Basic");
-
-    /**
      * Standard usage plan with comprehensive functionality and usage based charges.
      */
     public static final UsagePlanType STANDARD = fromString("Standard");

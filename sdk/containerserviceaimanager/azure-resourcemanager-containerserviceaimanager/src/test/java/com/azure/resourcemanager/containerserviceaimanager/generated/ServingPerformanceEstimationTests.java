@@ -11,7 +11,7 @@ public final class ServingPerformanceEstimationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServingPerformanceEstimation model = BinaryData
-            .fromString("{\"relativeLatencyScore\":57.950686616526006,\"relativeThroughputScore\":6.799545400050433}")
+            .fromString("{\"relativeLatencyScore\":97.29868657736189,\"relativeThroughputScore\":50.57474212645342}")
             .toObject(ServingPerformanceEstimation.class);
     }
 }

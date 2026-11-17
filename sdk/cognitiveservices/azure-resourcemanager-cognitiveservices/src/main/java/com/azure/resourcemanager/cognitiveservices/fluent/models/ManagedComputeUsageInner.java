@@ -51,9 +51,14 @@ public final class ManagedComputeUsageInner implements JsonSerializable<ManagedC
     private Double currentValue;
 
     /*
-     * Offer scope (e.g., 'Global', 'Datazone-US').
+     * Offer scope. Supported values are 'Global' and 'DataZone'.
      */
     private String offerScope;
+
+    /*
+     * Scope identifier for the managed compute usage. Supported values are '' (empty), 'US', and 'EU'.
+     */
+    private String scopeId;
 
     /*
      * Deployments consuming this managed compute quota.
@@ -121,12 +126,22 @@ public final class ManagedComputeUsageInner implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the offerScope property: Offer scope (e.g., 'Global', 'Datazone-US').
+     * Get the offerScope property: Offer scope. Supported values are 'Global' and 'DataZone'.
      * 
      * @return the offerScope value.
      */
     public String offerScope() {
         return this.offerScope;
+    }
+
+    /**
+     * Get the scopeId property: Scope identifier for the managed compute usage. Supported values are '' (empty), 'US',
+     * and 'EU'.
+     * 
+     * @return the scopeId value.
+     */
+    public String scopeId() {
+        return this.scopeId;
     }
 
     /**
@@ -148,6 +163,7 @@ public final class ManagedComputeUsageInner implements JsonSerializable<ManagedC
         jsonWriter.writeNumberField("limit", this.limit);
         jsonWriter.writeNumberField("currentValue", this.currentValue);
         jsonWriter.writeStringField("offerScope", this.offerScope);
+        jsonWriter.writeStringField("scopeId", this.scopeId);
         jsonWriter.writeArrayField("deployments", this.deployments, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -181,6 +197,8 @@ public final class ManagedComputeUsageInner implements JsonSerializable<ManagedC
                     deserializedManagedComputeUsageInner.currentValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("offerScope".equals(fieldName)) {
                     deserializedManagedComputeUsageInner.offerScope = reader.getString();
+                } else if ("scopeId".equals(fieldName)) {
+                    deserializedManagedComputeUsageInner.scopeId = reader.getString();
                 } else if ("deployments".equals(fieldName)) {
                     List<ManagedComputeDeploymentInfo> deployments
                         = reader.readArray(reader1 -> ManagedComputeDeploymentInfo.fromJson(reader1));

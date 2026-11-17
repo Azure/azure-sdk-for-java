@@ -14,14 +14,14 @@ public final class AzureFileShareProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"n\",\"parentContainerFriendlyName\":\"ybfueqfrojsydgr\",\"azureFileShareType\":\"XSync\",\"backupManagementType\":\"ygywe\",\"workloadType\":\"kiecafygzm\",\"friendlyName\":\"eqvdsm\",\"protectionState\":\"Protected\"}")
+            "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"hapfjiik\",\"parentContainerFriendlyName\":\"diqfliejhpclbi\",\"azureFileShareType\":\"XSMB\",\"backupManagementType\":\"bwceivbvzip\",\"workloadType\":\"xgoooxzprad\",\"friendlyName\":\"kxknpdg\",\"protectionState\":\"ProtectionFailed\"}")
             .toObject(AzureFileShareProtectableItem.class);
-        Assertions.assertEquals("ygywe", model.backupManagementType());
-        Assertions.assertEquals("kiecafygzm", model.workloadType());
-        Assertions.assertEquals("eqvdsm", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
-        Assertions.assertEquals("n", model.parentContainerFabricId());
-        Assertions.assertEquals("ybfueqfrojsydgr", model.parentContainerFriendlyName());
-        Assertions.assertEquals(AzureFileShareType.XSYNC, model.azureFileShareType());
+        Assertions.assertEquals("bwceivbvzip", model.backupManagementType());
+        Assertions.assertEquals("xgoooxzprad", model.workloadType());
+        Assertions.assertEquals("kxknpdg", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals("hapfjiik", model.parentContainerFabricId());
+        Assertions.assertEquals("diqfliejhpclbi", model.parentContainerFriendlyName());
+        Assertions.assertEquals(AzureFileShareType.XSMB, model.azureFileShareType());
     }
 }

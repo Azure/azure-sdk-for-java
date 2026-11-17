@@ -17,7 +17,7 @@ public class MapsIntervalLegendsGetByClassMapName {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-interval-legend.maps-interval-legends-get-by-class-map-name
-        List<List<List<Long>>> response = dataClient.getIntervalLegend("modis-64A1", null, null);
+        List<List<List<Long>>> response = dataClient.getIntervalLegend("modis-64A1", (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-interval-legend.maps-interval-legends-get-by-class-map-name
     }
 }

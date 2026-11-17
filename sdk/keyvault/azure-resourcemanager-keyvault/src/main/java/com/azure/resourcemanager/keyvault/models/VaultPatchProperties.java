@@ -97,6 +97,34 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
      */
     private String publicNetworkAccess;
 
+    /*
+     * Configuration for Token Binding for Entra tokens
+     */
+    private TokenBindingParameters tokenBindingParameters;
+
+    /*
+     * Whether cross-tenant access protection is enabled for this vault. When enabled, changes to the vault tenant ID
+     * must use the subscription's home tenant ID. Once enabled, this protection cannot be disabled. If omitted, the
+     * existing value is preserved.
+     */
+    private Boolean enableCrossTenantAccessProtection;
+
+    /*
+     * Configures an external Managed HSM key used to wrap the vault's protection keys.
+     * When configured, this property is returned in create, update, get, and list responses.
+     * Responses contain the persisted key reference and authentication mechanism, not key material or credentials.
+     * It can be supplied when enabling wrapping on an existing vault.
+     * This property is available starting with API version 2026-10-01-preview, when the protection-key wrapping
+     * capability is available for the target vault.
+     * Reapplying an equivalent configuration is supported; replacing or removing it is not.
+     * A versionless reference can match the persisted versioned reference; resubmitting it does not rotate the key.
+     * After configuration, vault availability depends on the persisted Managed HSM key version remaining usable and
+     * accessible to the service.
+     * Disabling or deleting that key version, or revoking the service's access, can make the vault unavailable.
+     * Omitting this property preserves the existing configuration.
+     */
+    private WrappingKeyConfiguration protectionKeysWrappingKey;
+
     /**
      * Creates an instance of VaultPatchProperties class.
      */
@@ -400,6 +428,94 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
     }
 
     /**
+     * Get the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @return the tokenBindingParameters value.
+     */
+    public TokenBindingParameters tokenBindingParameters() {
+        return this.tokenBindingParameters;
+    }
+
+    /**
+     * Set the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @param tokenBindingParameters the tokenBindingParameters value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withTokenBindingParameters(TokenBindingParameters tokenBindingParameters) {
+        this.tokenBindingParameters = tokenBindingParameters;
+        return this;
+    }
+
+    /**
+     * Get the enableCrossTenantAccessProtection property: Whether cross-tenant access protection is enabled for this
+     * vault. When enabled, changes to the vault tenant ID must use the subscription's home tenant ID. Once enabled,
+     * this protection cannot be disabled. If omitted, the existing value is preserved.
+     * 
+     * @return the enableCrossTenantAccessProtection value.
+     */
+    public Boolean enableCrossTenantAccessProtection() {
+        return this.enableCrossTenantAccessProtection;
+    }
+
+    /**
+     * Set the enableCrossTenantAccessProtection property: Whether cross-tenant access protection is enabled for this
+     * vault. When enabled, changes to the vault tenant ID must use the subscription's home tenant ID. Once enabled,
+     * this protection cannot be disabled. If omitted, the existing value is preserved.
+     * 
+     * @param enableCrossTenantAccessProtection the enableCrossTenantAccessProtection value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withEnableCrossTenantAccessProtection(Boolean enableCrossTenantAccessProtection) {
+        this.enableCrossTenantAccessProtection = enableCrossTenantAccessProtection;
+        return this;
+    }
+
+    /**
+     * Get the protectionKeysWrappingKey property: Configures an external Managed HSM key used to wrap the vault's
+     * protection keys.
+     * When configured, this property is returned in create, update, get, and list responses.
+     * Responses contain the persisted key reference and authentication mechanism, not key material or credentials.
+     * It can be supplied when enabling wrapping on an existing vault.
+     * This property is available starting with API version 2026-10-01-preview, when the protection-key wrapping
+     * capability is available for the target vault.
+     * Reapplying an equivalent configuration is supported; replacing or removing it is not.
+     * A versionless reference can match the persisted versioned reference; resubmitting it does not rotate the key.
+     * After configuration, vault availability depends on the persisted Managed HSM key version remaining usable and
+     * accessible to the service.
+     * Disabling or deleting that key version, or revoking the service's access, can make the vault unavailable.
+     * Omitting this property preserves the existing configuration.
+     * 
+     * @return the protectionKeysWrappingKey value.
+     */
+    public WrappingKeyConfiguration protectionKeysWrappingKey() {
+        return this.protectionKeysWrappingKey;
+    }
+
+    /**
+     * Set the protectionKeysWrappingKey property: Configures an external Managed HSM key used to wrap the vault's
+     * protection keys.
+     * When configured, this property is returned in create, update, get, and list responses.
+     * Responses contain the persisted key reference and authentication mechanism, not key material or credentials.
+     * It can be supplied when enabling wrapping on an existing vault.
+     * This property is available starting with API version 2026-10-01-preview, when the protection-key wrapping
+     * capability is available for the target vault.
+     * Reapplying an equivalent configuration is supported; replacing or removing it is not.
+     * A versionless reference can match the persisted versioned reference; resubmitting it does not rotate the key.
+     * After configuration, vault availability depends on the persisted Managed HSM key version remaining usable and
+     * accessible to the service.
+     * Disabling or deleting that key version, or revoking the service's access, can make the vault unavailable.
+     * Omitting this property preserves the existing configuration.
+     * 
+     * @param protectionKeysWrappingKey the protectionKeysWrappingKey value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withProtectionKeysWrappingKey(WrappingKeyConfiguration protectionKeysWrappingKey) {
+        this.protectionKeysWrappingKey = protectionKeysWrappingKey;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -413,6 +529,12 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
         }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (tokenBindingParameters() != null) {
+            tokenBindingParameters().validate();
+        }
+        if (protectionKeysWrappingKey() != null) {
+            protectionKeysWrappingKey().validate();
         }
     }
 
@@ -436,6 +558,9 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
         jsonWriter.writeBooleanField("enablePurgeProtection", this.enablePurgeProtection);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeJsonField("tokenBindingParameters", this.tokenBindingParameters);
+        jsonWriter.writeBooleanField("enableCrossTenantAccessProtection", this.enableCrossTenantAccessProtection);
+        jsonWriter.writeJsonField("protectionKeysWrappingKey", this.protectionKeysWrappingKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -486,6 +611,14 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
                     deserializedVaultPatchProperties.networkAcls = NetworkRuleSet.fromJson(reader);
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedVaultPatchProperties.publicNetworkAccess = reader.getString();
+                } else if ("tokenBindingParameters".equals(fieldName)) {
+                    deserializedVaultPatchProperties.tokenBindingParameters = TokenBindingParameters.fromJson(reader);
+                } else if ("enableCrossTenantAccessProtection".equals(fieldName)) {
+                    deserializedVaultPatchProperties.enableCrossTenantAccessProtection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("protectionKeysWrappingKey".equals(fieldName)) {
+                    deserializedVaultPatchProperties.protectionKeysWrappingKey
+                        = WrappingKeyConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

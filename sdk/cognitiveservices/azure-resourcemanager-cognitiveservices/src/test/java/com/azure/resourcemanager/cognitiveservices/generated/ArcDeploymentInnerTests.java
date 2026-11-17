@@ -6,13 +6,11 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ArcDeploymentInner;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentComputeType;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentCpuMemoryResourceRequirements;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentKubernetesResources;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentResourceRequirements;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentRuntime;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSku;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSkuName;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentState;
@@ -24,59 +22,50 @@ public final class ArcDeploymentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentInner model = BinaryData.fromString(
-            "{\"properties\":{\"model\":{\"format\":\"kwiswskukjtas\",\"name\":\"vwisp\"},\"extensionId\":\"xkdtxfkndlqvtwkn\",\"runtime\":\"vllm\",\"compute\":\"cpu\",\"deploymentTemplate\":\"bugtywatmqa\",\"vllmParameters\":{\"tensorParallelSize\":783807092,\"maxModelLen\":1683033093,\"gpuMemoryUtilization\":60.073463,\"enforceEager\":true},\"replicas\":98605712,\"resources\":{\"requests\":{\"cpu\":\"oygzcbyfqxkfao\",\"memory\":\"tehqpuvjmvq\"},\"limits\":{\"cpu\":\"wckygr\",\"memory\":\"jn\",\"gpu\":1138069123}},\"nodeSelector\":{\"ceysfaqeg\":\"juskbrreqyn\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"ysh\",\"provisioningState\":\"Canceled\",\"provisioningDetails\":{\"message\":\"bxgkqusy\",\"lastOperationTimestamp\":\"2020-12-26T05:36:32Z\"},\"inferenceEndpoint\":\"dacarvvlfnty\",\"capabilities\":{\"lsxkd\":\"oiwenazerohzrsq\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"apfgsdpcvessm\",\"id\":\"h\",\"name\":\"uuipldq\",\"type\":\"ctekval\"}")
+            "{\"properties\":{\"model\":{\"format\":\"vkbiw\",\"name\":\"nhtfgfi\",\"version\":\"udy\",\"assetId\":\"izpacz\"},\"extensionId\":\"uhbcak\",\"runtime\":\"vllm\",\"compute\":\"cpu\",\"deploymentTemplate\":\"khoitw\",\"vllmParameters\":{\"tensorParallelSize\":1501704223,\"maxModelLen\":425415727,\"gpuMemoryUtilization\":34.847958,\"enforceEager\":true},\"replicas\":183545579,\"resources\":{\"requests\":{\"cpu\":\"kidbjpg\",\"memory\":\"hzqpxzbawkikcdgf\"},\"limits\":{\"cpu\":\"sd\",\"memory\":\"ey\",\"gpu\":1174873940}},\"nodeSelector\":{\"qrshzzbgullcxiq\":\"decfiwhagxsure\"},\"deploymentState\":\"Paused\",\"raiPolicyName\":\"oxdu\",\"provisioningState\":\"Creating\",\"provisioningDetails\":{\"message\":\"lrouigdmfiv\",\"lastOperationTimestamp\":\"2021-10-17T17:12:56Z\"},\"inferenceEndpoint\":\"rdqqi\",\"capabilities\":{\"ghpcvrwqirvt\":\"d\",\"odmkrrwepgqv\":\"tyhhmvfxlapja\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"qlujqgi\",\"id\":\"bwlyvxc\",\"name\":\"pqvctsfaeuhwwsk\",\"type\":\"stvzuzhasupml\"}")
             .toObject(ArcDeploymentInner.class);
-        Assertions.assertEquals("kwiswskukjtas", model.properties().model().format());
-        Assertions.assertEquals("vwisp", model.properties().model().name());
-        Assertions.assertEquals("xkdtxfkndlqvtwkn", model.properties().extensionId());
-        Assertions.assertEquals(ArcDeploymentRuntime.VLLM, model.properties().runtime());
-        Assertions.assertEquals(ArcDeploymentComputeType.CPU, model.properties().compute());
-        Assertions.assertEquals("bugtywatmqa", model.properties().deploymentTemplate());
-        Assertions.assertEquals(98605712, model.properties().replicas());
-        Assertions.assertEquals("oygzcbyfqxkfao", model.properties().resources().requests().cpu());
-        Assertions.assertEquals("tehqpuvjmvq", model.properties().resources().requests().memory());
-        Assertions.assertEquals("wckygr", model.properties().resources().limits().cpu());
-        Assertions.assertEquals("jn", model.properties().resources().limits().memory());
-        Assertions.assertEquals(1138069123, model.properties().resources().limits().gpu());
-        Assertions.assertEquals("juskbrreqyn", model.properties().nodeSelector().get("ceysfaqeg"));
-        Assertions.assertEquals(DeploymentState.RUNNING, model.properties().deploymentState());
-        Assertions.assertEquals("ysh", model.properties().raiPolicyName());
+        Assertions.assertEquals("izpacz", model.properties().model().assetId());
+        Assertions.assertEquals("uhbcak", model.properties().extensionId());
+        Assertions.assertEquals("khoitw", model.properties().deploymentTemplate());
+        Assertions.assertEquals(183545579, model.properties().replicas());
+        Assertions.assertEquals("kidbjpg", model.properties().resources().requests().cpu());
+        Assertions.assertEquals("hzqpxzbawkikcdgf", model.properties().resources().requests().memory());
+        Assertions.assertEquals("sd", model.properties().resources().limits().cpu());
+        Assertions.assertEquals("ey", model.properties().resources().limits().memory());
+        Assertions.assertEquals(1174873940, model.properties().resources().limits().gpu());
+        Assertions.assertEquals("decfiwhagxsure", model.properties().nodeSelector().get("qrshzzbgullcxiq"));
+        Assertions.assertEquals(DeploymentState.PAUSED, model.properties().deploymentState());
+        Assertions.assertEquals("oxdu", model.properties().raiPolicyName());
         Assertions.assertEquals(ArcDeploymentSkuName.ARC, model.sku().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcDeploymentInner model = new ArcDeploymentInner().withProperties(new ArcDeploymentProperties()
-            .withModel(new ArcDeploymentModel().withFormat("kwiswskukjtas").withName("vwisp"))
-            .withExtensionId("xkdtxfkndlqvtwkn")
-            .withRuntime(ArcDeploymentRuntime.VLLM)
-            .withCompute(ArcDeploymentComputeType.CPU)
-            .withDeploymentTemplate("bugtywatmqa")
-            .withReplicas(98605712)
+            .withModel(new ArcDeploymentModel().withAssetId("izpacz"))
+            .withExtensionId("uhbcak")
+            .withDeploymentTemplate("khoitw")
+            .withReplicas(183545579)
             .withResources(new ArcDeploymentKubernetesResources()
-                .withRequests(new ArcDeploymentCpuMemoryResourceRequirements().withCpu("oygzcbyfqxkfao")
-                    .withMemory("tehqpuvjmvq"))
-                .withLimits(
-                    new ArcDeploymentResourceRequirements().withCpu("wckygr").withMemory("jn").withGpu(1138069123)))
-            .withNodeSelector(mapOf("ceysfaqeg", "juskbrreqyn"))
-            .withDeploymentState(DeploymentState.RUNNING)
-            .withRaiPolicyName("ysh")).withSku(new ArcDeploymentSku().withName(ArcDeploymentSkuName.ARC));
+                .withRequests(
+                    new ArcDeploymentCpuMemoryResourceRequirements().withCpu("kidbjpg").withMemory("hzqpxzbawkikcdgf"))
+                .withLimits(new ArcDeploymentResourceRequirements().withCpu("sd").withMemory("ey").withGpu(1174873940)))
+            .withNodeSelector(mapOf("qrshzzbgullcxiq", "decfiwhagxsure"))
+            .withDeploymentState(DeploymentState.PAUSED)
+            .withRaiPolicyName("oxdu")).withSku(new ArcDeploymentSku().withName(ArcDeploymentSkuName.ARC));
         model = BinaryData.fromObject(model).toObject(ArcDeploymentInner.class);
-        Assertions.assertEquals("kwiswskukjtas", model.properties().model().format());
-        Assertions.assertEquals("vwisp", model.properties().model().name());
-        Assertions.assertEquals("xkdtxfkndlqvtwkn", model.properties().extensionId());
-        Assertions.assertEquals(ArcDeploymentRuntime.VLLM, model.properties().runtime());
-        Assertions.assertEquals(ArcDeploymentComputeType.CPU, model.properties().compute());
-        Assertions.assertEquals("bugtywatmqa", model.properties().deploymentTemplate());
-        Assertions.assertEquals(98605712, model.properties().replicas());
-        Assertions.assertEquals("oygzcbyfqxkfao", model.properties().resources().requests().cpu());
-        Assertions.assertEquals("tehqpuvjmvq", model.properties().resources().requests().memory());
-        Assertions.assertEquals("wckygr", model.properties().resources().limits().cpu());
-        Assertions.assertEquals("jn", model.properties().resources().limits().memory());
-        Assertions.assertEquals(1138069123, model.properties().resources().limits().gpu());
-        Assertions.assertEquals("juskbrreqyn", model.properties().nodeSelector().get("ceysfaqeg"));
-        Assertions.assertEquals(DeploymentState.RUNNING, model.properties().deploymentState());
-        Assertions.assertEquals("ysh", model.properties().raiPolicyName());
+        Assertions.assertEquals("izpacz", model.properties().model().assetId());
+        Assertions.assertEquals("uhbcak", model.properties().extensionId());
+        Assertions.assertEquals("khoitw", model.properties().deploymentTemplate());
+        Assertions.assertEquals(183545579, model.properties().replicas());
+        Assertions.assertEquals("kidbjpg", model.properties().resources().requests().cpu());
+        Assertions.assertEquals("hzqpxzbawkikcdgf", model.properties().resources().requests().memory());
+        Assertions.assertEquals("sd", model.properties().resources().limits().cpu());
+        Assertions.assertEquals("ey", model.properties().resources().limits().memory());
+        Assertions.assertEquals(1174873940, model.properties().resources().limits().gpu());
+        Assertions.assertEquals("decfiwhagxsure", model.properties().nodeSelector().get("qrshzzbgullcxiq"));
+        Assertions.assertEquals(DeploymentState.PAUSED, model.properties().deploymentState());
+        Assertions.assertEquals("oxdu", model.properties().raiPolicyName());
         Assertions.assertEquals(ArcDeploymentSkuName.ARC, model.sku().name());
     }
 

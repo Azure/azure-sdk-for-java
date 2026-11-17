@@ -34,9 +34,9 @@ import com.microsoft.azure.servicebus.rules.FalseFilter;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 import com.microsoft.azure.servicebus.rules.SqlFilter;
 import com.microsoft.azure.servicebus.rules.SqlRuleAction;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,7 +67,7 @@ public class ManagementTests extends TestBase {
 
     private ManagementClientAsync managementClientAsync;
 
-    @Before
+    @BeforeEach
     public void setup() {
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
         ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
@@ -102,10 +102,10 @@ public class ManagementTests extends TestBase {
         q.setAuthorizationRules(rules);
 
         QueueDescription qCreated = this.managementClientAsync.createQueueAsync(q).get();
-        Assert.assertEquals(q, qCreated);
+        Assertions.assertEquals(q, qCreated);
 
         QueueDescription queue = this.managementClientAsync.getQueueAsync(queueName).get();
-        Assert.assertEquals(qCreated, queue);
+        Assertions.assertEquals(qCreated, queue);
 
         queue.setEnableBatchedOperations(false);
         queue.setMaxDeliveryCount(9);
@@ -116,25 +116,25 @@ public class ManagementTests extends TestBase {
         queue.getAuthorizationRules().add(new SharedAccessAuthorizationRule("noManage", rights));
 
         QueueDescription updatedQ = this.managementClientAsync.updateQueueAsync(queue).get();
-        Assert.assertEquals(queue, updatedQ);
+        Assertions.assertEquals(queue, updatedQ);
 
         Boolean exists = this.managementClientAsync.queueExistsAsync(queueName).get();
-        Assert.assertTrue(exists);
+        Assertions.assertTrue(exists);
 
         List<QueueDescription> queues = this.managementClientAsync.getQueuesAsync().get();
-        Assert.assertTrue(queues.size() > 0);
+        Assertions.assertTrue(queues.size() > 0);
         AtomicBoolean found = new AtomicBoolean(false);
         queues.forEach(queueDescription -> {
             if (queueDescription.getPath().equalsIgnoreCase(queueName)) {
                 found.set(true);
             }
         });
-        Assert.assertTrue(found.get());
+        Assertions.assertTrue(found.get());
 
         this.managementClientAsync.deleteQueueAsync(queueName).get();
 
         exists = this.managementClientAsync.queueExistsAsync(queueName).get();
-        Assert.assertFalse(exists);
+        Assertions.assertFalse(exists);
     }
 
     @Test
@@ -160,10 +160,10 @@ public class ManagementTests extends TestBase {
         td.setAuthorizationRules(rules);
 
         TopicDescription tCreated = this.managementClientAsync.createTopicAsync(td).get();
-        Assert.assertEquals(td, tCreated);
+        Assertions.assertEquals(td, tCreated);
 
         TopicDescription topic = this.managementClientAsync.getTopicAsync(topicName).get();
-        Assert.assertEquals(tCreated, topic);
+        Assertions.assertEquals(tCreated, topic);
 
         topic.setEnableBatchedOperations(false);
         topic.setDefaultMessageTimeToLive(Duration.ofDays(3));
@@ -174,25 +174,25 @@ public class ManagementTests extends TestBase {
         topic.getAuthorizationRules().add(new SharedAccessAuthorizationRule("noManage", rights));
 
         TopicDescription updatedT = this.managementClientAsync.updateTopicAsync(topic).get();
-        Assert.assertEquals(topic, updatedT);
+        Assertions.assertEquals(topic, updatedT);
 
         Boolean exists = this.managementClientAsync.topicExistsAsync(topicName).get();
-        Assert.assertTrue(exists);
+        Assertions.assertTrue(exists);
 
         List<TopicDescription> topics = this.managementClientAsync.getTopicsAsync().get();
-        Assert.assertTrue(topics.size() > 0);
+        Assertions.assertTrue(topics.size() > 0);
         AtomicBoolean found = new AtomicBoolean(false);
         topics.forEach(topicDescription -> {
             if (topicDescription.getPath().equalsIgnoreCase(topicName)) {
                 found.set(true);
             }
         });
-        Assert.assertTrue(found.get());
+        Assertions.assertTrue(found.get());
 
         this.managementClientAsync.deleteTopicAsync(topicName).get();
 
         exists = this.managementClientAsync.topicExistsAsync(topicName).get();
-        Assert.assertFalse(exists);
+        Assertions.assertFalse(exists);
     }
 
     @Test
@@ -215,33 +215,33 @@ public class ManagementTests extends TestBase {
         subscriptionDescription.setUserMetadata("basicSubscriptionCrudTest");
 
         SubscriptionDescription createdS = this.managementClientAsync.createSubscriptionAsync(subscriptionDescription).get();
-        Assert.assertEquals(subscriptionDescription, createdS);
+        Assertions.assertEquals(subscriptionDescription, createdS);
 
         SubscriptionDescription getS = this.managementClientAsync.getSubscriptionAsync(topicName, subscriptionName).get();
-        Assert.assertEquals(createdS, getS);
+        Assertions.assertEquals(createdS, getS);
 
         getS.setEnableBatchedOperations(false);
         getS.setMaxDeliveryCount(9);
 
         SubscriptionDescription updatedQ = this.managementClientAsync.updateSubscriptionAsync(getS).get();
-        Assert.assertEquals(getS, updatedQ);
+        Assertions.assertEquals(getS, updatedQ);
 
         Boolean exists = this.managementClientAsync.subscriptionExistsAsync(topicName, subscriptionName).get();
-        Assert.assertTrue(exists);
+        Assertions.assertTrue(exists);
 
         List<SubscriptionDescription> subscriptions = this.managementClientAsync.getSubscriptionsAsync(topicName).get();
-        Assert.assertEquals(1, subscriptions.size());
-        Assert.assertEquals(subscriptionName, subscriptions.get(0).getSubscriptionName());
+        Assertions.assertEquals(1, subscriptions.size());
+        Assertions.assertEquals(subscriptionName, subscriptions.get(0).getSubscriptionName());
 
         this.managementClientAsync.deleteSubscriptionAsync(topicName, subscriptionName).get();
 
         exists = this.managementClientAsync.subscriptionExistsAsync(topicName, subscriptionName).get();
-        Assert.assertFalse(exists);
+        Assertions.assertFalse(exists);
 
         this.managementClientAsync.deleteTopicAsync(topicName).get();
 
         exists = this.managementClientAsync.subscriptionExistsAsync(topicName, subscriptionName).get();
-        Assert.assertFalse(exists);
+        Assertions.assertFalse(exists);
     }
 
     @Test
@@ -284,28 +284,28 @@ public class ManagementTests extends TestBase {
         this.managementClientAsync.createRuleAsync(topicName, subscriptionName, rule2).get();
 
         List<RuleDescription> rules = this.managementClientAsync.getRulesAsync(topicName, subscriptionName).get();
-        Assert.assertEquals(3, rules.size());
-        Assert.assertEquals("rule0", rules.get(0).getName());
-        Assert.assertEquals(rule1, rules.get(1));
-        Assert.assertEquals(rule2, rules.get(2));
+        Assertions.assertEquals(3, rules.size());
+        Assertions.assertEquals("rule0", rules.get(0).getName());
+        Assertions.assertEquals(rule1, rules.get(1));
+        Assertions.assertEquals(rule2, rules.get(2));
 
         ((CorrelationFilter) (rule2.getFilter())).setCorrelationId("correlationIdModified");
         RuleDescription updatedRule2 = this.managementClientAsync.updateRuleAsync(topicName, subscriptionName, rule2).get();
-        Assert.assertEquals(rule2, updatedRule2);
+        Assertions.assertEquals(rule2, updatedRule2);
 
         RuleDescription defaultRule = this.managementClientAsync.getRuleAsync(topicName, subscriptionName, "rule0").get();
-        Assert.assertNotNull(defaultRule);
+        Assertions.assertNotNull(defaultRule);
         this.managementClientAsync.deleteRuleAsync(topicName, subscriptionName, "rule0").get();
         try {
             this.managementClientAsync.getRuleAsync(topicName, subscriptionName, "rule0").get();
-            Assert.fail("Get rule0 should have thrown.");
+            Assertions.fail("Get rule0 should have thrown.");
         } catch (Exception ex) {
-            Assert.assertTrue(ex instanceof ExecutionException);
+            Assertions.assertTrue(ex instanceof ExecutionException);
             Throwable cause = ex.getCause();
-            Assert.assertTrue(cause instanceof MessagingEntityNotFoundException);
+            Assertions.assertTrue(cause instanceof MessagingEntityNotFoundException);
         }
 
-        Assert.assertFalse(this.managementClientAsync.ruleExistsAsync(topicName, subscriptionName, "rule0").get());
+        Assertions.assertFalse(this.managementClientAsync.ruleExistsAsync(topicName, subscriptionName, "rule0").get());
         this.managementClientAsync.deleteTopicAsync(topicName).get();
     }
 
@@ -335,14 +335,14 @@ public class ManagementTests extends TestBase {
 
         QueueRuntimeInfo runtimeInfo = this.managementClientAsync.getQueueRuntimeInfoAsync(queueName).get();
 
-        Assert.assertEquals(queueName, runtimeInfo.getPath());
-        Assert.assertTrue(runtimeInfo.getCreatedAt().isBefore(runtimeInfo.getUpdatedAt()));
-        Assert.assertTrue(runtimeInfo.getUpdatedAt().isBefore(runtimeInfo.getAccessedAt()));
-        Assert.assertEquals(1, runtimeInfo.getMessageCountDetails().getActiveMessageCount());
-        Assert.assertEquals(1, runtimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
-        Assert.assertEquals(1, runtimeInfo.getMessageCountDetails().getScheduledMessageCount());
-        Assert.assertEquals(3, runtimeInfo.getMessageCount());
-        Assert.assertTrue(runtimeInfo.getSizeInBytes() > 0);
+        Assertions.assertEquals(queueName, runtimeInfo.getPath());
+        Assertions.assertTrue(runtimeInfo.getCreatedAt().isBefore(runtimeInfo.getUpdatedAt()));
+        Assertions.assertTrue(runtimeInfo.getUpdatedAt().isBefore(runtimeInfo.getAccessedAt()));
+        Assertions.assertEquals(1, runtimeInfo.getMessageCountDetails().getActiveMessageCount());
+        Assertions.assertEquals(1, runtimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
+        Assertions.assertEquals(1, runtimeInfo.getMessageCountDetails().getScheduledMessageCount());
+        Assertions.assertEquals(3, runtimeInfo.getMessageCount());
+        Assertions.assertTrue(runtimeInfo.getSizeInBytes() > 0);
 
         this.managementClientAsync.deleteQueueAsync(queueName).get();
         receiver.close();
@@ -384,25 +384,25 @@ public class ManagementTests extends TestBase {
         TopicRuntimeInfo topicRuntimeInfo = this.managementClientAsync.getTopicRuntimeInfoAsync(topicName).get();
         SubscriptionRuntimeInfo subscriptionRuntimeInfo = this.managementClientAsync.getSubscriptionRuntimeInfoAsync(topicName, subscriptionName).get();
 
-        Assert.assertEquals(topicName, topicRuntimeInfo.getPath());
-        Assert.assertEquals(topicName, subscriptionRuntimeInfo.getTopicPath());
-        Assert.assertEquals(subscriptionName, subscriptionRuntimeInfo.getSubscriptionName());
+        Assertions.assertEquals(topicName, topicRuntimeInfo.getPath());
+        Assertions.assertEquals(topicName, subscriptionRuntimeInfo.getTopicPath());
+        Assertions.assertEquals(subscriptionName, subscriptionRuntimeInfo.getSubscriptionName());
 
-        Assert.assertEquals(0, topicRuntimeInfo.getMessageCountDetails().getActiveMessageCount());
-        Assert.assertEquals(0, topicRuntimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
-        Assert.assertEquals(1, topicRuntimeInfo.getMessageCountDetails().getScheduledMessageCount());
-        Assert.assertEquals(1, subscriptionRuntimeInfo.getMessageCountDetails().getActiveMessageCount());
-        Assert.assertEquals(1, subscriptionRuntimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
-        Assert.assertEquals(0, subscriptionRuntimeInfo.getMessageCountDetails().getScheduledMessageCount());
-        Assert.assertEquals(2, subscriptionRuntimeInfo.getMessageCount());
-        Assert.assertEquals(1, topicRuntimeInfo.getSubscriptionCount());
-        Assert.assertTrue(topicRuntimeInfo.getSizeInBytes() > 0);
+        Assertions.assertEquals(0, topicRuntimeInfo.getMessageCountDetails().getActiveMessageCount());
+        Assertions.assertEquals(0, topicRuntimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
+        Assertions.assertEquals(1, topicRuntimeInfo.getMessageCountDetails().getScheduledMessageCount());
+        Assertions.assertEquals(1, subscriptionRuntimeInfo.getMessageCountDetails().getActiveMessageCount());
+        Assertions.assertEquals(1, subscriptionRuntimeInfo.getMessageCountDetails().getDeadLetterMessageCount());
+        Assertions.assertEquals(0, subscriptionRuntimeInfo.getMessageCountDetails().getScheduledMessageCount());
+        Assertions.assertEquals(2, subscriptionRuntimeInfo.getMessageCount());
+        Assertions.assertEquals(1, topicRuntimeInfo.getSubscriptionCount());
+        Assertions.assertTrue(topicRuntimeInfo.getSizeInBytes() > 0);
 
-        Assert.assertTrue(topicRuntimeInfo.getCreatedAt().isBefore(topicRuntimeInfo.getUpdatedAt()));
-        Assert.assertTrue(topicRuntimeInfo.getUpdatedAt().isBefore(topicRuntimeInfo.getAccessedAt()));
-        Assert.assertTrue(subscriptionRuntimeInfo.getCreatedAt().isBefore(subscriptionRuntimeInfo.getUpdatedAt()));
-        Assert.assertTrue(subscriptionRuntimeInfo.getUpdatedAt().isBefore(subscriptionRuntimeInfo.getAccessedAt()));
-        Assert.assertTrue(topicRuntimeInfo.getUpdatedAt().isBefore(subscriptionRuntimeInfo.getUpdatedAt()));
+        Assertions.assertTrue(topicRuntimeInfo.getCreatedAt().isBefore(topicRuntimeInfo.getUpdatedAt()));
+        Assertions.assertTrue(topicRuntimeInfo.getUpdatedAt().isBefore(topicRuntimeInfo.getAccessedAt()));
+        Assertions.assertTrue(subscriptionRuntimeInfo.getCreatedAt().isBefore(subscriptionRuntimeInfo.getUpdatedAt()));
+        Assertions.assertTrue(subscriptionRuntimeInfo.getUpdatedAt().isBefore(subscriptionRuntimeInfo.getAccessedAt()));
+        Assertions.assertTrue(topicRuntimeInfo.getUpdatedAt().isBefore(subscriptionRuntimeInfo.getUpdatedAt()));
 
         this.managementClientAsync.deleteSubscriptionAsync(topicName, subscriptionName).get();
         this.managementClientAsync.deleteTopicAsync(topicName).get();
@@ -522,15 +522,15 @@ public class ManagementTests extends TestBase {
 
         IMessageReceiver receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destinationName);
         IMessage msg = receiver.receive();
-        Assert.assertNotNull(msg);
-        Assert.assertEquals("mid", msg.getMessageId());
+        Assertions.assertNotNull(msg);
+        Assertions.assertEquals("mid", msg.getMessageId());
         receiver.deadLetter(msg.getLockToken());
         receiver.close();
 
         receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, dlqDestinationName);
         msg = receiver.receive();
-        Assert.assertNotNull(msg);
-        Assert.assertEquals("mid", msg.getMessageId());
+        Assertions.assertNotNull(msg);
+        Assertions.assertEquals("mid", msg.getMessageId());
         receiver.complete(msg.getLockToken());
         receiver.close();
 
@@ -565,8 +565,8 @@ public class ManagementTests extends TestBase {
 
         IMessageReceiver receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destinationName + "/subscriptions/" + subscriptionName);
         IMessage msg = receiver.receive();
-        Assert.assertNotNull(msg);
-        Assert.assertEquals("mid", msg.getMessageId());
+        Assertions.assertNotNull(msg);
+        Assertions.assertEquals("mid", msg.getMessageId());
         receiver.complete(msg.getLockToken());
         receiver.close();
 
@@ -586,14 +586,14 @@ public class ManagementTests extends TestBase {
         AuthorizationRule rule22 = new SharedAccessAuthorizationRule(rule1.getKeyName(), rule1.getPrimaryKey(), rule1.getSecondaryKey(), rule1.getRights());
         qd2.setAuthorizationRules(new ArrayList<>(Arrays.asList(rule11, rule22)));
 
-        Assert.assertTrue(qd.equals(qd2));
+        Assertions.assertTrue(qd.equals(qd2));
     }
 
     @Test
     public void getNamespaceInfoTest() throws ExecutionException, InterruptedException {
         NamespaceInfo nsInfo = this.managementClientAsync.getNamespaceInfoAsync().get();
-        Assert.assertNotNull(nsInfo);
-        Assert.assertTrue(nsInfo.getNamespaceType() == NamespaceType.ServiceBus || nsInfo.getNamespaceType() == NamespaceType.Mixed);
+        Assertions.assertNotNull(nsInfo);
+        Assertions.assertTrue(nsInfo.getNamespaceType() == NamespaceType.ServiceBus || nsInfo.getNamespaceType() == NamespaceType.Mixed);
     }
 
     @Test
@@ -636,7 +636,7 @@ public class ManagementTests extends TestBase {
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
     	Document serializedDoc = loadXmlFromString(serializedXml);
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
-    	Assert.assertTrue("QueueDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
+        Assertions.assertTrue(elementEquals(expectedElement, serializedElement), "QueueDescrition parsing and serialization combo didn't work as expected");
     }
 
     @Test
@@ -673,7 +673,7 @@ public class ManagementTests extends TestBase {
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
     	Document serializedDoc = loadXmlFromString(serializedXml);
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
-    	Assert.assertTrue("SubscriptionDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
+        Assertions.assertTrue(elementEquals(expectedElement, serializedElement), "SubscriptionDescrition parsing and serialization combo didn't work as expected");
     }
 
     @Test
@@ -713,7 +713,7 @@ public class ManagementTests extends TestBase {
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
     	Document serializedDoc = loadXmlFromString(serializedXml);
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
-    	Assert.assertTrue("TopicDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
+        Assertions.assertTrue(elementEquals(expectedElement, serializedElement), "TopicDescrition parsing and serialization combo didn't work as expected");
     }
 
     private static Document loadXmlFromString(String xml) throws Exception {

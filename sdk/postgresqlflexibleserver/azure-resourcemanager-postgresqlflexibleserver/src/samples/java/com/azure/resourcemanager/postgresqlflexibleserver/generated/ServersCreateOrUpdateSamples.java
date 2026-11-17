@@ -15,10 +15,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyR
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ImmutableBackup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPublicNetworkAccessState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public final class ServersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateReviveDropped.json
+     * x-ms-original-file: 2026-10-01/ServersCreateReviveDropped.json
      */
     /**
      * Sample code: Create a new server using a backup of a server that was deleted or dropped recently.
@@ -56,8 +56,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * 2026-04-01-preview/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
+     * x-ms-original-file: 2026-10-01/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
      */
     /**
      * Sample code: Create a new server in Microsoft owned virtual network with zone redundant high availability.
@@ -74,12 +73,13 @@ public final class ServersCreateOrUpdateSamples {
             .withSku(new Sku().withName("Standard_D4ds_v5").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("exampleadministratorlogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SEVEN)
+            .withVersion("17")
             .withStorage(new Storage().withStorageSizeGB(512)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P20))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.ENABLED))
             .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT))
             .withAvailabilityZone("1")
@@ -88,7 +88,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-10-01/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Create a new server using a restore of a geographically redundant backup of an existing server, with
@@ -123,7 +123,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-10-01/ServersCreateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Create a new server with data encryption based on customer managed key.
@@ -142,7 +142,7 @@ public final class ServersCreateOrUpdateSamples {
                 new UserIdentity())).withType(IdentityType.USER_ASSIGNED))
             .withAdministratorLogin("exampleadministratorlogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SEVEN)
+            .withVersion("17")
             .withStorage(new Storage().withStorageSizeGB(512)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P20))
@@ -152,8 +152,9 @@ public final class ServersCreateOrUpdateSamples {
                 .withGeoBackupKeyUri("fakeTokenPlaceholder")
                 .withGeoBackupUserAssignedIdentityId("")
                 .withType(DataEncryptionType.AZURE_KEY_VAULT))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withDelegatedSubnetResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
@@ -165,7 +166,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-10-01/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Create a new server using a restore of a geographically redundant backup of an existing server, with
@@ -200,7 +201,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateReplica.json
+     * x-ms-original-file: 2026-10-01/ServersCreateReplica.json
      */
     /**
      * Sample code: Create a read replica of an existing server.
@@ -229,7 +230,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
+     * x-ms-original-file: 2026-10-01/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
      */
     /**
      * Sample code: Create a new server in your own virtual network with same zone high availability.
@@ -246,12 +247,13 @@ public final class ServersCreateOrUpdateSamples {
             .withSku(new Sku().withName("Standard_D4ds_v5").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("exampleadministratorlogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SEVEN)
+            .withVersion("17")
             .withStorage(new Storage().withStorageSizeGB(512)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P20))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withDelegatedSubnetResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
@@ -263,7 +265,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersClusterCreate.json
+     * x-ms-original-file: 2026-10-01/ServersClusterCreate.json
      */
     /**
      * Sample code: Create a new elastic cluster.
@@ -279,12 +281,13 @@ public final class ServersCreateOrUpdateSamples {
             .withSku(new Sku().withName("Standard_D4ds_v5").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("examplelogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SIX)
+            .withVersion("16")
             .withStorage(new Storage().withStorageSizeGB(256)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P15))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.DISABLED))
             .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
             .withCreateMode(CreateMode.CREATE)
@@ -293,7 +296,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreatePointInTimeRestore.json
+     * x-ms-original-file: 2026-10-01/ServersCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a new server using a point in time restore of a backup of an existing server.
@@ -315,7 +318,7 @@ public final class ServersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-04-01-preview/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
+     * 2026-10-01/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
      */
     /**
      * Sample code: Create a new server with Microsoft Entra authentication enabled in your own virtual network and
@@ -333,7 +336,7 @@ public final class ServersCreateOrUpdateSamples {
             .withSku(new Sku().withName("Standard_D4ds_v5").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("exampleadministratorlogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SEVEN)
+            .withVersion("17")
             .withStorage(new Storage().withStorageSizeGB(512)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P20))
@@ -341,8 +344,9 @@ public final class ServersCreateOrUpdateSamples {
                 .withPasswordAuth(PasswordBasedAuth.ENABLED)
                 .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
             .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withDelegatedSubnetResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
@@ -354,7 +358,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-10-01/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Create a new server with data encryption based on customer managed key with automatic key version
@@ -374,7 +378,7 @@ public final class ServersCreateOrUpdateSamples {
                 new UserIdentity())).withType(IdentityType.USER_ASSIGNED))
             .withAdministratorLogin("exampleadministratorlogin")
             .withAdministratorLoginPassword("examplepassword")
-            .withVersion(PostgresMajorVersion.ONE_SEVEN)
+            .withVersion("17")
             .withStorage(new Storage().withStorageSizeGB(512)
                 .withAutoGrow(StorageAutoGrow.DISABLED)
                 .withTier(AzureManagedDiskPerformanceTier.P20))
@@ -384,8 +388,9 @@ public final class ServersCreateOrUpdateSamples {
                 .withGeoBackupKeyUri("fakeTokenPlaceholder")
                 .withGeoBackupUserAssignedIdentityId("")
                 .withType(DataEncryptionType.AZURE_KEY_VAULT))
-            .withBackup(
-                new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7)
+                .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+                .withImmutableBackup(ImmutableBackup.ENABLED))
             .withNetwork(new Network().withDelegatedSubnetResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(

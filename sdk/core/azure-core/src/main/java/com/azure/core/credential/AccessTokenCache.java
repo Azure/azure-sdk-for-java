@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.core.publisher.Sinks;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -87,6 +88,7 @@ public final class AccessTokenCache {
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private final AtomicReference<AccessTokenCacheInfo> cacheInfo;
     private final TokenCredential tokenCredential;
+    private final Clock clock;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
     private final Supplier<Mono<AccessToken>> tokenSupplierAsync;
@@ -101,11 +103,16 @@ public final class AccessTokenCache {
      * @param tokenCredential the token credential to be used to acquire the token.
      */
     public AccessTokenCache(TokenCredential tokenCredential) {
+        this(tokenCredential, Clock.systemDefaultZone());
+    }
+
+    AccessTokenCache(TokenCredential tokenCredential, Clock clock) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
-        this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now()));
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+        this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now(clock)));
+        this.shouldRefresh = accessToken -> OffsetDateTime.now(clock)
             .isAfter(accessToken.getRefreshAt() == null
                 ? accessToken.getExpiresAt().minus(REFRESH_OFFSET)
                 : accessToken.getRefreshAt());
@@ -166,7 +173,7 @@ public final class AccessTokenCache {
 
                 if (wip.compareAndSet(null, Sinks.one())) {
                     final Sinks.One<AccessToken> sinksOne = wip.get();
-                    OffsetDateTime now = OffsetDateTime.now();
+                    OffsetDateTime now = OffsetDateTime.now(clock);
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
 
@@ -208,7 +215,13 @@ public final class AccessTokenCache {
                         ignored -> tokenRefresh.materialize()
                             .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
                             .doOnError(sinksOne::tryEmitError),
-                        w -> w.set(null));
+                        w -> {
+                            w.set(null);
+                            // If the refresh ended without a token, because it was cancelled or completed empty,
+                            // release the callers waiting on it. This happens after wip is cleared so that they can
+                            // start a new acquisition. No-op if the refresh already completed the sink.
+                            sinksOne.tryEmitEmpty();
+                        });
                 } else if (cachedToken != null && !cachedToken.isExpired() && !refreshOnContextChange) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cachedToken);
@@ -221,10 +234,10 @@ public final class AccessTokenCache {
                     Sinks.One<AccessToken> sinksOne = wip.get();
                     if (sinksOne == null) {
                         // the refreshing thread has finished
-                        return Mono.just(cachedToken);
+                        return validCachedToken();
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cachedToken));
+                        return sinksOne.asMono().switchIfEmpty(validCachedToken());
                     }
                 }
             } catch (Exception ex) {
@@ -242,7 +255,7 @@ public final class AccessTokenCache {
             AccessTokenCacheInfo cache = this.cacheInfo.get();
             AccessToken cachedToken = cache.getCachedAccessToken();
 
-            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime now = OffsetDateTime.now(clock);
             Supplier<AccessToken> tokenRefresh;
             AccessToken fallback;
 
@@ -284,7 +297,7 @@ public final class AccessTokenCache {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
                     buildTokenRefreshLog(LogLevel.VERBOSE, cachedToken, now).log("Acquired a new access token.");
-                    OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
+                    OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now(clock).plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
                     return token;
@@ -294,7 +307,7 @@ public final class AccessTokenCache {
             } catch (Throwable error) {
                 buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now).log("Failed to acquire a new access token.",
                     error);
-                OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
+                OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now(clock);
                 AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
                 if (fallback != null) {
@@ -306,6 +319,17 @@ public final class AccessTokenCache {
                 throw LOGGER.logExceptionAsError(new RuntimeException(error));
             }
         };
+    }
+
+    /**
+     * Emits the currently cached token if it hasn't expired, otherwise completes empty so that
+     * {@link #getToken(TokenRequestContext, boolean)} retries the acquisition.
+     */
+    private Mono<AccessToken> validCachedToken() {
+        return Mono.defer(() -> {
+            AccessToken latest = cacheInfo.get().getCachedAccessToken();
+            return (latest == null || latest.isExpired()) ? Mono.empty() : Mono.just(latest);
+        });
     }
 
     private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
@@ -330,16 +354,16 @@ public final class AccessTokenCache {
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
                 buildTokenRefreshLog(LogLevel.VERBOSE, cache, now).log("Acquired a new access token.");
                 sinksOne.tryEmitValue(accessToken);
-                OffsetDateTime nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                OffsetDateTime nextTokenRefresh = OffsetDateTime.now(clock).plus(REFRESH_DELAY);
                 cacheInfo.set(new AccessTokenCacheInfo(accessToken, nextTokenRefresh));
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
                 buildTokenRefreshLog(LogLevel.ERROR, cache, now).log("Failed to acquire a new access token.", error);
-                OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
+                OffsetDateTime nextTokenRefresh = OffsetDateTime.now(clock);
                 cacheInfo.set(new AccessTokenCacheInfo(cache, nextTokenRefresh));
                 return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
-                sinksOne.tryEmitEmpty();
+                // Waiting callers are released by the Mono.using cleanup, once wip has been cleared.
                 return fallback;
             }
         };

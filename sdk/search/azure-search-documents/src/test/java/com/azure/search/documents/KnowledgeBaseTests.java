@@ -77,7 +77,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.PurviewSensitivityLabelInfo;
 import com.azure.search.documents.knowledgebases.models.SearchIndexKnowledgeSourceParams;
 import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.ServerSentEvent;
+import com.azure.core.util.CloseableIterableStream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -1582,7 +1582,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    public void basicRetrievalStreamSync() {
+    public void basicRetrievalStreamSync() throws IOException {
         SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
@@ -1592,9 +1592,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
             .setIncludeActivity(true);
-        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
-
-        retrievalClient.retrieveStream(request, events::add);
+        List<KnowledgeBaseRetrievalStreamEvent> events = new ArrayList<>();
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream
+            = retrievalClient.retrieveStream(request)) {
+            stream.forEach(events::add);
+        }
 
         assertSuccessfulRetrievalStream(events);
     }
@@ -1614,13 +1616,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
             .collectList()).assertNext(KnowledgeBaseTests::assertSuccessfulRetrievalStream).verifyComplete();
     }
 
-    private static void
-        assertSuccessfulRetrievalStream(List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events) {
+    private static void assertSuccessfulRetrievalStream(List<KnowledgeBaseRetrievalStreamEvent> events) {
         assertFalse(events.isEmpty());
-        assertTrue(
-            events.stream().anyMatch(event -> event.getData() instanceof KnowledgeBaseRetrievalStartedStreamEvent));
+        assertTrue(events.stream().anyMatch(event -> event instanceof KnowledgeBaseRetrievalStartedStreamEvent));
         KnowledgeBaseResponseCompletedStreamEvent completed = events.stream()
-            .map(ServerSentEvent::getData)
             .filter(KnowledgeBaseResponseCompletedStreamEvent.class::isInstance)
             .map(KnowledgeBaseResponseCompletedStreamEvent.class::cast)
             .findFirst()

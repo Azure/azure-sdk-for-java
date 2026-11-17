@@ -10,12 +10,17 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resiliencemanagement.fluent.DrillRunsClient;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillReportSummaryInner;
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunInner;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.ListReportDownloadUrlResponseInner;
+import com.azure.resourcemanager.resiliencemanagement.models.DrillReportSummary;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRun;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunFailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunReprotectRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRuns;
+import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlRequest;
+import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlResponse;
 import com.azure.resourcemanager.resiliencemanagement.models.MarkAsCompleteRequest;
 
 public final class DrillRunsImpl implements DrillRuns {
@@ -103,6 +108,50 @@ public final class DrillRunsImpl implements DrillRuns {
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body, Context context) {
         this.serviceClient().markAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, context);
+    }
+
+    public DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName) {
+        DrillReportSummaryInner inner
+            = this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName);
+        if (inner != null) {
+            return new DrillReportSummaryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, Context context) {
+        DrillReportSummaryInner inner
+            = this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName, context);
+        if (inner != null) {
+            return new DrillReportSummaryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
+        ListReportDownloadUrlResponseInner inner
+            = this.serviceClient().listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body);
+        if (inner != null) {
+            return new ListReportDownloadUrlResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context) {
+        ListReportDownloadUrlResponseInner inner = this.serviceClient()
+            .listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context);
+        if (inner != null) {
+            return new ListReportDownloadUrlResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private DrillRunsClient serviceClient() {

@@ -19,38 +19,37 @@ public final class DrillRunFailoverRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillRunFailoverRequest model = BinaryData.fromString(
-            "{\"autoFailover\":\"Enable\",\"failoverProperties\":{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"xeqoc\",\"jmygvk\",\"qkjjeokbz\",\"fezrx\"],\"selectedResourceIds\":[\"urtleipqxb\",\"wvz\",\"nzvdfbzdixzmq\",\"noda\"],\"executionConfigurations\":{\"userConsent\":\"Unspecified\"}}}}")
+            "{\"autoFailover\":\"Disable\",\"failoverProperties\":{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"bpudcdab\"],\"selectedResourceIds\":[\"pwyawbz\",\"sqbuc\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}}}")
             .toObject(DrillRunFailoverRequest.class);
-        Assertions.assertEquals(AutoFailover.ENABLE, model.autoFailover());
+        Assertions.assertEquals(AutoFailover.DISABLE, model.autoFailover());
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS,
             model.failoverProperties().failoverDirection());
-        Assertions.assertEquals("xeqoc",
+        Assertions.assertEquals("bpudcdab",
             model.failoverProperties().failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("urtleipqxb",
+        Assertions.assertEquals("pwyawbz",
             model.failoverProperties().failoverRequestProperties().selectedResourceIds().get(0));
-        Assertions.assertEquals(UserConsent.UNSPECIFIED,
+        Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverProperties().failoverRequestProperties().executionConfigurations().userConsent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillRunFailoverRequest model = new DrillRunFailoverRequest().withAutoFailover(AutoFailover.ENABLE)
-            .withFailoverProperties(
-                new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                    .withFailoverRequestProperties(new FailoverRequestProperties()
-                        .withSourceLocations(Arrays.asList("xeqoc", "jmygvk", "qkjjeokbz", "fezrx"))
-                        .withSelectedResourceIds(Arrays.asList("urtleipqxb", "wvz", "nzvdfbzdixzmq", "noda"))
-                        .withExecutionConfigurations(
-                            new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED))));
+        DrillRunFailoverRequest model = new DrillRunFailoverRequest().withAutoFailover(AutoFailover.DISABLE)
+            .withFailoverProperties(new FailoverRequest()
+                .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                .withFailoverRequestProperties(new FailoverRequestProperties()
+                    .withSourceLocations(Arrays.asList("bpudcdab"))
+                    .withSelectedResourceIds(Arrays.asList("pwyawbz", "sqbuc"))
+                    .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED))));
         model = BinaryData.fromObject(model).toObject(DrillRunFailoverRequest.class);
-        Assertions.assertEquals(AutoFailover.ENABLE, model.autoFailover());
+        Assertions.assertEquals(AutoFailover.DISABLE, model.autoFailover());
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS,
             model.failoverProperties().failoverDirection());
-        Assertions.assertEquals("xeqoc",
+        Assertions.assertEquals("bpudcdab",
             model.failoverProperties().failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("urtleipqxb",
+        Assertions.assertEquals("pwyawbz",
             model.failoverProperties().failoverRequestProperties().selectedResourceIds().get(0));
-        Assertions.assertEquals(UserConsent.UNSPECIFIED,
+        Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverProperties().failoverRequestProperties().executionConfigurations().userConsent());
     }
 }

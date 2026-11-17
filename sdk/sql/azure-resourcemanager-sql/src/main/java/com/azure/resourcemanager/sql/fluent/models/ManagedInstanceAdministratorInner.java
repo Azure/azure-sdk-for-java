@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorPrincipalType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import java.io.IOException;
 import java.util.UUID;
@@ -187,6 +188,30 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
             this.innerProperties = new ManagedInstanceAdministratorProperties();
         }
         this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
+     * Get the principalType property: Principal type of the managed instance administrator.
+     * 
+     * @return the principalType value.
+     */
+    public ManagedInstanceAdministratorPrincipalType principalType() {
+        return this.innerProperties() == null ? null : this.innerProperties().principalType();
+    }
+
+    /**
+     * Set the principalType property: Principal type of the managed instance administrator.
+     * 
+     * @param principalType the principalType value to set.
+     * @return the ManagedInstanceAdministratorInner object itself.
+     */
+    public ManagedInstanceAdministratorInner
+        withPrincipalType(ManagedInstanceAdministratorPrincipalType principalType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceAdministratorProperties();
+        }
+        this.innerProperties().withPrincipalType(principalType);
         return this;
     }
 

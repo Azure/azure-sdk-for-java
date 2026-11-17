@@ -34,21 +34,22 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
     clean_sdk_folder_succeeded = False
 
-    succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+    generate_succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url
     )
 
-    if not succeeded and fallback_generate_from_clean_folder_enabled:
+    if not generate_succeeded and fallback_generate_from_clean_folder_enabled:
         # error in emitter
         # fallback to generate from a clean folder
         clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
         if clean_sdk_folder_succeeded:
             # re-generate
-            succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+            generate_succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                 tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
             )
 
-    if succeeded:
+    compile_succeeded = False
+    if generate_succeeded:
         stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -57,8 +58,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             current_version = DEFAULT_VERSION
 
         # compile
-        succeeded = compile_package(sdk_root, GROUP_ID, module)
-        if succeeded:
+        compile_succeeded = compile_package(sdk_root, GROUP_ID, module)
+        if compile_succeeded:
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
                 GROUP_ID,
@@ -73,7 +74,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
             if clean_sdk_folder_succeeded:
                 # re-generate
-                succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+                generate_succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                     tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
                 )
                 stable_version, _ = set_or_default_version(sdk_root, GROUP_ID, module)
@@ -82,8 +83,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                     update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
                     update_root_pom(sdk_root, service)
                 # compile
-                succeeded = compile_package(sdk_root, GROUP_ID, module)
-                if succeeded:
+                compile_succeeded = compile_package(sdk_root, GROUP_ID, module)
+                if compile_succeeded:
                     breaking, changelog, breaking_change_items = compare_with_maven_package(
                         sdk_root,
                         GROUP_ID,
@@ -97,7 +98,9 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     if sdk_folder and module and service:
         artifacts = ["{0}/pom.xml".format(sdk_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(sdk_folder))]
-        result = "succeeded" if succeeded else "failed"
+        result = "succeeded" if compile_succeeded else "failed"
+        if generate_succeeded and not compile_succeeded and fallback_generate_from_clean_folder_enabled:
+            result = "warning"
 
         return {
             "packageName": module,
@@ -110,7 +113,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             ],
             "typespecProject": [tsp_project],
             "packageFolder": sdk_folder,
-            "artifacts": artifacts if succeeded else [],
+            "artifacts": artifacts if compile_succeeded else [],
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,

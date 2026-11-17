@@ -35,6 +35,13 @@ public interface ManagedComputeCapacitiesClient {
      * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
      * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
      * where the deployment is hosted rather than the best available region.
+     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
+     * omitted or blank location returns Global and both US and EU DataZone capacities.
+     * A supported location returns Global and the matching DataZone capacities; an
+     * unsupported location returns Global capacity only. With a deployment ID, a
+     * nonblank location must match the parent account location, ignoring case and
+     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
+     * returned for the deployment's backend region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,5 +50,5 @@ public interface ManagedComputeCapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedComputeCapacityInner> list(String offer, String acceleratorType, String deploymentId,
-        Context context);
+        String location, Context context);
 }

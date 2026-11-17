@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class ExportPipelinesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ExportPipelineList.json
+     * x-ms-original-file: 2026-10-15-preview/ExportPipelineList.json
      */
     /**
      * Sample code: ExportPipelineList.

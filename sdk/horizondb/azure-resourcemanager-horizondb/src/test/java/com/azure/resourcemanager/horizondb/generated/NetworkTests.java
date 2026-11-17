@@ -6,16 +6,20 @@ package com.azure.resourcemanager.horizondb.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.horizondb.models.Network;
+import com.azure.resourcemanager.horizondb.models.PublicNetworkAccessState;
+import org.junit.jupiter.api.Assertions;
 
 public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Network model = BinaryData.fromString("{\"publicNetworkAccess\":\"Disabled\"}").toObject(Network.class);
+        Network model = BinaryData.fromString("{\"publicAccess\":\"Enabled\"}").toObject(Network.class);
+        Assertions.assertEquals(PublicNetworkAccessState.ENABLED, model.publicAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model = new Network();
+        Network model = new Network().withPublicAccess(PublicNetworkAccessState.ENABLED);
         model = BinaryData.fromObject(model).toObject(Network.class);
+        Assertions.assertEquals(PublicNetworkAccessState.ENABLED, model.publicAccess());
     }
 }

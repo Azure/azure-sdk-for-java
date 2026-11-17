@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
+import java.util.Arrays;
 
 /**
  * Samples for TaskHubs CreateOrUpdate.
  */
 public final class TaskHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/TaskHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/TaskHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: TaskHubs_CreateOrUpdate.
@@ -22,7 +23,7 @@ public final class TaskHubsCreateOrUpdateSamples {
         manager.taskHubs()
             .define("testtaskhub")
             .withExistingScheduler("rgopenapi", "testscheduler")
-            .withProperties(new TaskHubProperties())
+            .withProperties(new TaskHubProperties().withCapabilities(Arrays.asList("ExampleFutureCapability")))
             .create();
     }
 }

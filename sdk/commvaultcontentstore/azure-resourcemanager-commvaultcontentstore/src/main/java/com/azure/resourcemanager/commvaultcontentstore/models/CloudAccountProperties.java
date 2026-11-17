@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Properties specific to Commvault Cloud Account resource.
@@ -37,16 +38,15 @@ public final class CloudAccountProperties implements JsonSerializable<CloudAccou
     private String ssoUrl;
 
     /*
-     * The backup administrator principal provided during CCA create. Required on create (enforced by backend), ignored
-     * on update.
+     * Optional company details for the cloud account
      */
-    private EntityInfo backupAdminOnCcaCreate;
+    private CompanyProfile company;
 
     /*
-     * The multi-person authorization (MPA) administrator principal provided during CCA create. Required on create
-     * (enforced by backend), ignored on update.
+     * Role assignments to provision during CCA creation. Each entry maps a Commvault role to its assigned Entra
+     * principals.
      */
-    private EntityInfo multiPersonAuthorizationOnCcaCreate;
+    private List<RoleAssignment> roleAssignmentsOnCcaCreate;
 
     /**
      * Creates an instance of CloudAccountProperties class.
@@ -113,47 +113,44 @@ public final class CloudAccountProperties implements JsonSerializable<CloudAccou
     }
 
     /**
-     * Get the backupAdminOnCcaCreate property: The backup administrator principal provided during CCA create. Required
-     * on create (enforced by backend), ignored on update.
+     * Get the company property: Optional company details for the cloud account.
      * 
-     * @return the backupAdminOnCcaCreate value.
+     * @return the company value.
      */
-    public EntityInfo backupAdminOnCcaCreate() {
-        return this.backupAdminOnCcaCreate;
+    public CompanyProfile company() {
+        return this.company;
     }
 
     /**
-     * Set the backupAdminOnCcaCreate property: The backup administrator principal provided during CCA create. Required
-     * on create (enforced by backend), ignored on update.
+     * Set the company property: Optional company details for the cloud account.
      * 
-     * @param backupAdminOnCcaCreate the backupAdminOnCcaCreate value to set.
+     * @param company the company value to set.
      * @return the CloudAccountProperties object itself.
      */
-    public CloudAccountProperties withBackupAdminOnCcaCreate(EntityInfo backupAdminOnCcaCreate) {
-        this.backupAdminOnCcaCreate = backupAdminOnCcaCreate;
+    public CloudAccountProperties withCompany(CompanyProfile company) {
+        this.company = company;
         return this;
     }
 
     /**
-     * Get the multiPersonAuthorizationOnCcaCreate property: The multi-person authorization (MPA) administrator
-     * principal provided during CCA create. Required on create (enforced by backend), ignored on update.
+     * Get the roleAssignmentsOnCcaCreate property: Role assignments to provision during CCA creation. Each entry maps a
+     * Commvault role to its assigned Entra principals.
      * 
-     * @return the multiPersonAuthorizationOnCcaCreate value.
+     * @return the roleAssignmentsOnCcaCreate value.
      */
-    public EntityInfo multiPersonAuthorizationOnCcaCreate() {
-        return this.multiPersonAuthorizationOnCcaCreate;
+    public List<RoleAssignment> roleAssignmentsOnCcaCreate() {
+        return this.roleAssignmentsOnCcaCreate;
     }
 
     /**
-     * Set the multiPersonAuthorizationOnCcaCreate property: The multi-person authorization (MPA) administrator
-     * principal provided during CCA create. Required on create (enforced by backend), ignored on update.
+     * Set the roleAssignmentsOnCcaCreate property: Role assignments to provision during CCA creation. Each entry maps a
+     * Commvault role to its assigned Entra principals.
      * 
-     * @param multiPersonAuthorizationOnCcaCreate the multiPersonAuthorizationOnCcaCreate value to set.
+     * @param roleAssignmentsOnCcaCreate the roleAssignmentsOnCcaCreate value to set.
      * @return the CloudAccountProperties object itself.
      */
-    public CloudAccountProperties
-        withMultiPersonAuthorizationOnCcaCreate(EntityInfo multiPersonAuthorizationOnCcaCreate) {
-        this.multiPersonAuthorizationOnCcaCreate = multiPersonAuthorizationOnCcaCreate;
+    public CloudAccountProperties withRoleAssignmentsOnCcaCreate(List<RoleAssignment> roleAssignmentsOnCcaCreate) {
+        this.roleAssignmentsOnCcaCreate = roleAssignmentsOnCcaCreate;
         return this;
     }
 
@@ -165,8 +162,9 @@ public final class CloudAccountProperties implements JsonSerializable<CloudAccou
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("marketplace", this.marketplace);
         jsonWriter.writeJsonField("user", this.user);
-        jsonWriter.writeJsonField("backupAdminOnCcaCreate", this.backupAdminOnCcaCreate);
-        jsonWriter.writeJsonField("multiPersonAuthorizationOnCcaCreate", this.multiPersonAuthorizationOnCcaCreate);
+        jsonWriter.writeJsonField("company", this.company);
+        jsonWriter.writeArrayField("roleAssignmentsOnCcaCreate", this.roleAssignmentsOnCcaCreate,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -195,11 +193,12 @@ public final class CloudAccountProperties implements JsonSerializable<CloudAccou
                         = ResourceProvisioningState.fromString(reader.getString());
                 } else if ("ssoUrl".equals(fieldName)) {
                     deserializedCloudAccountProperties.ssoUrl = reader.getString();
-                } else if ("backupAdminOnCcaCreate".equals(fieldName)) {
-                    deserializedCloudAccountProperties.backupAdminOnCcaCreate = EntityInfo.fromJson(reader);
-                } else if ("multiPersonAuthorizationOnCcaCreate".equals(fieldName)) {
-                    deserializedCloudAccountProperties.multiPersonAuthorizationOnCcaCreate
-                        = EntityInfo.fromJson(reader);
+                } else if ("company".equals(fieldName)) {
+                    deserializedCloudAccountProperties.company = CompanyProfile.fromJson(reader);
+                } else if ("roleAssignmentsOnCcaCreate".equals(fieldName)) {
+                    List<RoleAssignment> roleAssignmentsOnCcaCreate
+                        = reader.readArray(reader1 -> RoleAssignment.fromJson(reader1));
+                    deserializedCloudAccountProperties.roleAssignmentsOnCcaCreate = roleAssignmentsOnCcaCreate;
                 } else {
                     reader.skipChildren();
                 }

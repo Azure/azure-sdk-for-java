@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
@@ -23,7 +24,7 @@ public final class SchedulersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"ciwwzjuqkhr\",\"ipAllowlist\":[\"jiwkuofoskghsau\",\"imjm\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":1584034364,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"rfbyaosvexcso\",\"pclhocohslk\",\"vleggzfbuhfmvfax\",\"ffeii\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"groupIds\":[\"ur\",\"jx\",\"jnspydp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"groupIds\":[\"ucgygevqz\",\"typmrbpizcdrqjsd\",\"ydnfyhxdeoejz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"}]},\"location\":\"lpbuxwgipwhonowk\",\"tags\":{\"jeputtmrywn\":\"wankixzbi\",\"lwh\":\"zoqftiyqzrnkcqvy\",\"ryavwhheunmmqh\":\"lsicohoqqnwv\",\"noc\":\"yxzk\"},\"id\":\"koklya\",\"name\":\"uconuqszfkbey\",\"type\":\"ewrmjmwvvjektc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"endpoint\":\"jaltolmnc\",\"ipAllowlist\":[\"obqwcsdbnwdcfh\",\"cqdpfuv\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":793590133,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"t\",\"udutnco\",\"mr\",\"xqtvcofu\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"gj\",\"name\":\"bgdknnqv\",\"type\":\"aznqntoru\"}]},\"identity\":{\"principalId\":\"sahmky\",\"tenantId\":\"rauwjuetaebu\",\"type\":\"None\",\"userAssignedIdentities\":{\"kif\":{\"principalId\":\"ovsm\",\"clientId\":\"xwabmqoe\"},\"tujitcjedft\":{\"principalId\":\"tpuqujmq\",\"clientId\":\"kfbtndoaongbjc\"}}},\"location\":\"ae\",\"tags\":{\"bxarzgszufoxci\":\"jvdcpzfoqouic\",\"haz\":\"opidoamciodh\",\"toego\":\"khnzbonlw\"},\"id\":\"dwbwhkszzcmrvexz\",\"name\":\"vbtqgsfraoyzk\",\"type\":\"owtlmnguxawqald\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +34,15 @@ public final class SchedulersGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Scheduler response = manager.schedulers()
-            .getByResourceGroupWithResponse("myokacspkwlh", "dobpxjmflbvvn", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("qa", "zfeqztppri", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lpbuxwgipwhonowk", response.location());
-        Assertions.assertEquals("wankixzbi", response.tags().get("jeputtmrywn"));
-        Assertions.assertEquals("jiwkuofoskghsau", response.properties().ipAllowlist().get(0));
+        Assertions.assertEquals("ae", response.location());
+        Assertions.assertEquals("jvdcpzfoqouic", response.tags().get("bxarzgszufoxci"));
+        Assertions.assertEquals("obqwcsdbnwdcfh", response.properties().ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, response.properties().sku().name());
-        Assertions.assertEquals(1584034364, response.properties().sku().capacity());
+        Assertions.assertEquals(793590133, response.properties().sku().capacity());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

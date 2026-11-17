@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteLagsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteLagGet.json
+     * x-ms-original-file: 2026-03-01/ExpressRouteLagGet.json
      */
     /**
      * Sample code: Get express route lag.

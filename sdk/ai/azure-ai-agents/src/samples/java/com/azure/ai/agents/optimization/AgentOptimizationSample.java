@@ -4,29 +4,32 @@
 package com.azure.ai.agents.optimization;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.models.AgentOptimizationBaselineAgentConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationCandidate;
-import com.azure.ai.agents.models.AgentOptimizationEvaluatorRef;
+import com.azure.ai.agents.models.AgentOptimizationCandidateSearchConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationEvaluationConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;
+import com.azure.ai.agents.models.AgentOptimizationFoundryAgentTargetConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.AgentOptimizationJobInputs;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
-import com.azure.ai.agents.models.AgentOptimizationOptions;
-import com.azure.ai.agents.models.AgentOptimizationReferenceDatasetInput;
-import com.azure.ai.agents.models.OptimizedAgentIdentifier;
+import com.azure.ai.agents.models.AgentOptimizationModelConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationResultCandidateSummary;
+import com.azure.ai.agents.models.AgentOptimizationSpace;
+import com.azure.ai.agents.models.AgentOptimizationTargetCompletionDatasetReferenceDataSource;
+import com.azure.ai.agents.models.AgentOptimizationTargetCompletionEvaluationSet;
+import com.azure.ai.agents.models.EvaluationModelConfiguration;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
- * This sample demonstrates how to create and monitor an agent optimization job with the synchronous beta client.
+ * This sample demonstrates how to create and monitor an agent optimization job with the synchronous client.
  *
  * <p>Agent optimization is currently a preview feature. Before running the sample, set these environment variables:</p>
  * <ul>
@@ -49,15 +52,14 @@ public class AgentOptimizationSample {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
 
-        BetaAgentsClient betaAgentsClient = new AgentsClientBuilder()
+        AgentsClient agentsClient = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .beta()
-            .buildBetaAgentsClient();
+            .buildAgentsClient();
 
         AgentOptimizationJob job = createOptimizationJob(configuration);
         SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult> poller
-            = betaAgentsClient.beginCreateOptimizationJob(job);
+            = agentsClient.beginCreateOptimizationJob(job);
         poller.setPollInterval(Duration.ofSeconds(
             Integer.parseInt(configuration.get("POLL_INTERVAL_SECONDS", "10"))));
 
@@ -74,69 +76,73 @@ public class AgentOptimizationSample {
                 jobId, initialResponse.getStatus());
 
             poller.waitForCompletion(POLL_TIMEOUT);
-            printResult(poller.getFinalResult());
+            printResult(poller.getFinalResult(), agentsClient, jobId);
         } finally {
-            deleteJob(betaAgentsClient, jobId);
+            deleteJob(agentsClient, jobId);
         }
     }
 
     private static AgentOptimizationJob createOptimizationJob(Configuration configuration) {
         String evaluatorVersion = configuration.get("EVALUATOR_VERSION");
-        AgentOptimizationEvaluatorRef evaluator = new AgentOptimizationEvaluatorRef(
+        AgentOptimizationEvaluatorReference evaluator = new AgentOptimizationEvaluatorReference(
             configuration.get("EVALUATOR_NAME", "task_adherence"));
         if (evaluatorVersion != null) {
             evaluator.setVersion(evaluatorVersion);
         }
 
-        AgentOptimizationReferenceDatasetInput trainDataset = new AgentOptimizationReferenceDatasetInput(
-            configuration.get("DATASET_NAME"));
-        trainDataset.setVersion(configuration.get("DATASET_VERSION", "1"));
-
-        AgentOptimizationOptions options = new AgentOptimizationOptions()
-            .setMaxCandidates(Integer.parseInt(configuration.get("MAX_CANDIDATES", "2")))
-            .setEvalModel(configuration.get("EVAL_MODEL", "gpt-4.1-mini"))
-            .setOptimizationModel(configuration.get("OPTIMIZATION_MODEL", "gpt-5.1"));
+        AgentOptimizationTargetCompletionEvaluationSet trainingSet
+            = new AgentOptimizationTargetCompletionEvaluationSet(
+                new AgentOptimizationTargetCompletionDatasetReferenceDataSource(
+                    configuration.get("DATASET_NAME"), configuration.get("DATASET_VERSION", "1")));
+        AgentOptimizationEvaluationConfiguration evaluationConfiguration
+            = new AgentOptimizationEvaluationConfiguration(trainingSet, Collections.singletonList(evaluator),
+                new EvaluationModelConfiguration(configuration.get("EVAL_MODEL", "gpt-4.1-mini")));
+        AgentOptimizationConfiguration optimizationConfiguration = new AgentOptimizationConfiguration(
+            evaluationConfiguration,
+            new AgentOptimizationCandidateSearchConfiguration()
+                .setMaxCandidates(Integer.parseInt(configuration.get("MAX_CANDIDATES", "2"))),
+            new AgentOptimizationSpace());
 
         String systemPrompt = configuration.get("FOUNDRY_AGENT_SYSTEM_PROMPT");
         if (systemPrompt != null && !systemPrompt.isEmpty()) {
-            Map<String, BinaryData> optimizationConfig = new HashMap<>();
-            optimizationConfig.put("system_prompt", BinaryData.fromObject(systemPrompt));
-            options.setOptimizationConfig(optimizationConfig);
+            optimizationConfiguration.setBaselineAgentConfiguration(
+                new AgentOptimizationBaselineAgentConfiguration().setSystemPrompt(systemPrompt));
         }
 
-        AgentOptimizationJobInputs inputs = new AgentOptimizationJobInputs(
-            new OptimizedAgentIdentifier(configuration.get("FOUNDRY_AGENT_NAME")),
-            trainDataset,
-            Collections.singletonList(evaluator));
-        inputs.setOptions(options);
-        return new AgentOptimizationJob().setInputs(inputs);
+        return new AgentOptimizationJob(
+            new AgentOptimizationModelConfiguration(configuration.get("OPTIMIZATION_MODEL", "gpt-5.1")),
+            optimizationConfiguration)
+            .setTargetConfiguration(
+                new AgentOptimizationFoundryAgentTargetConfiguration(configuration.get("FOUNDRY_AGENT_NAME")));
     }
 
-    static void printResult(AgentOptimizationJobResult result) {
+    static void printResult(AgentOptimizationJobResult result, AgentsClient agentsClient, String jobId) {
         if (result == null) {
             System.out.println("The optimization job did not return a result.");
             return;
         }
 
-        System.out.printf("Baseline candidate: %s%n", result.getBaseline());
-        System.out.printf("Best candidate: %s%n", result.getBest());
-        List<AgentOptimizationCandidate> candidates = result.getCandidates();
-        if (candidates != null) {
-            for (AgentOptimizationCandidate candidate : candidates) {
-                System.out.printf("  %s (id: %s, score: %.4f, tokens: %.0f)%n",
-                    candidate.getName(), candidate.getCandidateId(), candidate.getAverageScore(),
-                    candidate.getAverageTokens());
-            }
+        AgentOptimizationResultCandidateSummary summary = result.getCandidateSummary();
+        if (summary != null) {
+            System.out.printf("Baseline candidate: %s (score: %s)%n",
+                summary.getBaselineId(), summary.getBaselineScore());
+            System.out.printf("Best candidate: %s (score: %s)%n", summary.getBestId(), summary.getBestScore());
+        }
+        for (AgentOptimizationCandidate candidate : agentsClient.listOptimizationCandidates(jobId)) {
+            System.out.printf("  %s (id: %s, score: %s, tokens: %s)%n",
+                candidate.getName(), candidate.getCandidateId(),
+                candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageScore(),
+                candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageTokens());
         }
     }
 
-    private static void deleteJob(BetaAgentsClient betaAgentsClient, String jobId) {
+    private static void deleteJob(AgentsClient agentsClient, String jobId) {
         if (jobId == null) {
             return;
         }
 
         try {
-            betaAgentsClient.deleteOptimizationJob(jobId);
+            agentsClient.deleteOptimizationJob(jobId);
             System.out.printf("Optimization job deleted (id: %s)%n", jobId);
         } catch (RuntimeException cleanupError) {
             System.err.printf("Failed to delete optimization job %s: %s%n", jobId, cleanupError.getMessage());

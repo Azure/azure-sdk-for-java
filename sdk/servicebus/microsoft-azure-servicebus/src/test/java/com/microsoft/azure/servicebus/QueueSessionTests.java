@@ -5,8 +5,8 @@ package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -46,16 +46,16 @@ public class QueueSessionTests extends SessionTests {
         sender.send(message);
 
         IMessage receivedMessage = this.session.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
         this.session.complete(receivedMessage.getLockToken(), transaction);
         this.factory.endTransactionAsync(transaction, true).get();
 
         receivedMessage = this.session.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message received again", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message received again");
     }
 
     @Test
@@ -70,21 +70,21 @@ public class QueueSessionTests extends SessionTests {
         sender.send(message);
 
         IMessage receivedMessage = this.session.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
         this.session.complete(receivedMessage.getLockToken(), transaction);
         this.factory.endTransactionAsync(transaction, false).get();
         this.session.close();
 
         this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.RECEIVEANDDELETE);
         receivedMessage = this.session.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
+        Assertions.assertNotNull(receivedMessage, "Message not received");
     }
 
-    @Test(expected = MessageNotFoundException.class)
+    @Test
     public void transactionalSessionDeferredDispositionCommitTest() throws ServiceBusException, InterruptedException, ExecutionException {
         String sessionId = TestUtils.getRandomString();
         this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
@@ -100,10 +100,11 @@ public class QueueSessionTests extends SessionTests {
         receivedMessage = this.session.receiveDeferredMessage(receivedMessage.getSequenceNumber());
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
         this.session.complete(receivedMessage.getLockToken(), transaction);
         this.factory.endTransactionAsync(transaction, true).get();
 
-        receivedMessage = this.session.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+        long sequenceNumber = receivedMessage.getSequenceNumber();
+        Assertions.assertThrows(MessageNotFoundException.class, () -> this.session.receiveDeferredMessage(sequenceNumber));
     }
 }

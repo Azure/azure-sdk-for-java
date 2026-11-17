@@ -11,7 +11,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +33,17 @@ public final class LocationBasedBulkCreateCustomInner extends ProxyResource {
      * Zones in which the BulkCreateCustom is available
      */
     private List<String> zones;
+
+    /*
+     * The extended location of the virtual machines created by the BulkCreateCustom operation.
+     */
+    private ExtendedLocation extendedLocation;
+
+    /*
+     * The availability zone placement constraints applied to the virtual machines created by the BulkCreateCustom
+     * operation.
+     */
+    private Placement placement;
 
     /*
      * Resource tags.
@@ -110,6 +123,50 @@ public final class LocationBasedBulkCreateCustomInner extends ProxyResource {
      */
     public LocationBasedBulkCreateCustomInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the virtual machines created by the BulkCreateCustom
+     * operation.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the virtual machines created by the BulkCreateCustom
+     * operation.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the LocationBasedBulkCreateCustomInner object itself.
+     */
+    public LocationBasedBulkCreateCustomInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the placement property: The availability zone placement constraints applied to the virtual machines created
+     * by the BulkCreateCustom operation.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: The availability zone placement constraints applied to the virtual machines created
+     * by the BulkCreateCustom operation.
+     * 
+     * @param placement the placement value to set.
+     * @return the LocationBasedBulkCreateCustomInner object itself.
+     */
+    public LocationBasedBulkCreateCustomInner withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -220,6 +277,8 @@ public final class LocationBasedBulkCreateCustomInner extends ProxyResource {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("placement", this.placement);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("plan", this.plan);
@@ -255,6 +314,10 @@ public final class LocationBasedBulkCreateCustomInner extends ProxyResource {
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedLocationBasedBulkCreateCustomInner.zones = zones;
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedLocationBasedBulkCreateCustomInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("placement".equals(fieldName)) {
+                    deserializedLocationBasedBulkCreateCustomInner.placement = Placement.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedLocationBasedBulkCreateCustomInner.tags = tags;

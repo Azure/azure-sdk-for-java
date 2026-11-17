@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.Snapshot;
+import com.azure.resourcemanager.elasticsan.models.SnapshotAccessState;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 
 public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
@@ -51,6 +52,14 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
 
     public String volumeName() {
         return this.innerModel().volumeName();
+    }
+
+    public SnapshotAccessState snapshotAccessState() {
+        return this.innerModel().snapshotAccessState();
+    }
+
+    public Double completionPercent() {
+        return this.innerModel().completionPercent();
     }
 
     public SnapshotInner innerModel() {

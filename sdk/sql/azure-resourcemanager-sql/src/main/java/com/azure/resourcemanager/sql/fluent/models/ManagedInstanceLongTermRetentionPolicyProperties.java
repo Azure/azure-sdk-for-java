@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 import java.io.IOException;
 
 /**
@@ -22,6 +24,19 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
      * The BackupStorageAccessTier for the LTR backups
      */
     private BackupStorageAccessTier backupStorageAccessTier;
+
+    /*
+     * The setting for whether to enable time-based immutability for future backups. When set, future backups will have
+     * TimeBasedImmutability enabled.
+     */
+    private TimeBasedImmutability timeBasedImmutability;
+
+    /*
+     * The setting for time-based immutability mode for future backup (Value can be either Locked or UnLocked. Only
+     * effective if TimeBasedImmutability is enabled). Caution: Immutability of LTR backup cannot be removed if
+     * TimeBasedImmutabilityMode is Locked.
+     */
+    private TimeBasedImmutabilityMode timeBasedImmutabilityMode;
 
     /*
      * The weekly retention policy for an LTR backup in an ISO 8601 format.
@@ -67,6 +82,54 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
     public ManagedInstanceLongTermRetentionPolicyProperties
         withBackupStorageAccessTier(BackupStorageAccessTier backupStorageAccessTier) {
         this.backupStorageAccessTier = backupStorageAccessTier;
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @return the timeBasedImmutability value.
+     */
+    public TimeBasedImmutability timeBasedImmutability() {
+        return this.timeBasedImmutability;
+    }
+
+    /**
+     * Set the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @param timeBasedImmutability the timeBasedImmutability value to set.
+     * @return the ManagedInstanceLongTermRetentionPolicyProperties object itself.
+     */
+    public ManagedInstanceLongTermRetentionPolicyProperties
+        withTimeBasedImmutability(TimeBasedImmutability timeBasedImmutability) {
+        this.timeBasedImmutability = timeBasedImmutability;
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @return the timeBasedImmutabilityMode value.
+     */
+    public TimeBasedImmutabilityMode timeBasedImmutabilityMode() {
+        return this.timeBasedImmutabilityMode;
+    }
+
+    /**
+     * Set the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
+     * @return the ManagedInstanceLongTermRetentionPolicyProperties object itself.
+     */
+    public ManagedInstanceLongTermRetentionPolicyProperties
+        withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode timeBasedImmutabilityMode) {
+        this.timeBasedImmutabilityMode = timeBasedImmutabilityMode;
         return this;
     }
 
@@ -166,6 +229,10 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("backupStorageAccessTier",
             this.backupStorageAccessTier == null ? null : this.backupStorageAccessTier.toString());
+        jsonWriter.writeStringField("timeBasedImmutability",
+            this.timeBasedImmutability == null ? null : this.timeBasedImmutability.toString());
+        jsonWriter.writeStringField("timeBasedImmutabilityMode",
+            this.timeBasedImmutabilityMode == null ? null : this.timeBasedImmutabilityMode.toString());
         jsonWriter.writeStringField("weeklyRetention", this.weeklyRetention);
         jsonWriter.writeStringField("monthlyRetention", this.monthlyRetention);
         jsonWriter.writeStringField("yearlyRetention", this.yearlyRetention);
@@ -192,6 +259,12 @@ public final class ManagedInstanceLongTermRetentionPolicyProperties
                 if ("backupStorageAccessTier".equals(fieldName)) {
                     deserializedManagedInstanceLongTermRetentionPolicyProperties.backupStorageAccessTier
                         = BackupStorageAccessTier.fromString(reader.getString());
+                } else if ("timeBasedImmutability".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionPolicyProperties.timeBasedImmutability
+                        = TimeBasedImmutability.fromString(reader.getString());
+                } else if ("timeBasedImmutabilityMode".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionPolicyProperties.timeBasedImmutabilityMode
+                        = TimeBasedImmutabilityMode.fromString(reader.getString());
                 } else if ("weeklyRetention".equals(fieldName)) {
                     deserializedManagedInstanceLongTermRetentionPolicyProperties.weeklyRetention = reader.getString();
                 } else if ("monthlyRetention".equals(fieldName)) {

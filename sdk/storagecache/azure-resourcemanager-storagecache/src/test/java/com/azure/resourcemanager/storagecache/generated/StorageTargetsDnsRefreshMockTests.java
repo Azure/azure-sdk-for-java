@@ -27,7 +27,7 @@ public final class StorageTargetsDnsRefreshMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.storageTargets().dnsRefresh("kwcf", "ql", "yxgtczh", com.azure.core.util.Context.NONE);
+        manager.storageTargets().dnsRefresh("fhoqca", "ewda", "mdjvlpj", com.azure.core.util.Context.NONE);
 
     }
 }

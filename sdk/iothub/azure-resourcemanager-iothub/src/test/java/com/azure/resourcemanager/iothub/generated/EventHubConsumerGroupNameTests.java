@@ -12,14 +12,14 @@ public final class EventHubConsumerGroupNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubConsumerGroupName model
-            = BinaryData.fromString("{\"name\":\"tmuwlauwzi\"}").toObject(EventHubConsumerGroupName.class);
-        Assertions.assertEquals("tmuwlauwzi", model.name());
+            = BinaryData.fromString("{\"name\":\"tibqdxbxwakb\"}").toObject(EventHubConsumerGroupName.class);
+        Assertions.assertEquals("tibqdxbxwakb", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConsumerGroupName model = new EventHubConsumerGroupName().withName("tmuwlauwzi");
+        EventHubConsumerGroupName model = new EventHubConsumerGroupName().withName("tibqdxbxwakb");
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupName.class);
-        Assertions.assertEquals("tmuwlauwzi", model.name());
+        Assertions.assertEquals("tibqdxbxwakb", model.name());
     }
 }

@@ -78,16 +78,16 @@ public final class StorageApplianceImpl
         return this.innerModel().rackId();
     }
 
+    public String storageApplianceSkuId() {
+        return this.innerModel().storageApplianceSkuId();
+    }
+
     public long rackSlot() {
         return this.innerModel().rackSlot();
     }
 
     public String serialNumber() {
         return this.innerModel().serialNumber();
-    }
-
-    public String storageApplianceSkuId() {
-        return this.innerModel().storageApplianceSkuId();
     }
 
     public CertificateInfo caCertificate() {
@@ -254,8 +254,12 @@ public final class StorageApplianceImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageApplianceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageAppliances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "resourceGroupName");
+        this.storageApplianceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "storageApplianceName");
     }
 
     public StorageAppliance refresh() {
@@ -334,6 +338,11 @@ public final class StorageApplianceImpl
         return this;
     }
 
+    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
+        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
+        return this;
+    }
+
     public StorageApplianceImpl withRackSlot(long rackSlot) {
         this.innerModel().withRackSlot(rackSlot);
         return this;
@@ -347,11 +356,6 @@ public final class StorageApplianceImpl
             this.updateStorageApplianceUpdateParameters.withSerialNumber(serialNumber);
             return this;
         }
-    }
-
-    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
-        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
-        return this;
     }
 
     public StorageApplianceImpl withTags(Map<String, String> tags) {

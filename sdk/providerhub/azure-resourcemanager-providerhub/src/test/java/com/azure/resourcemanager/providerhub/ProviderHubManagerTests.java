@@ -26,11 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class ProviderHubManagerTests extends TestProxyTestBase {
@@ -76,7 +72,6 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     @Disabled("The test subscription is not allowlisted for synthetic provider namespaces.")
-    @SuppressWarnings("rawtypes")
     public void testCreateOperation() {
         OperationsPutContent operationsContent = null;
         String spaceName = "Microsoft.Contoso" + randomPadding();
@@ -93,29 +88,17 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
                                     .withOperation("Gets/List employee resources")
                                     .withDescription("Read employees")))))));
             // @embedmeEnd
-            Assertions.assertTrue(providerHubManager.operations()
-                .listByProviderRegistration(spaceName)
+            OperationsPutContent registeredOperations
+                = providerHubManager.operations().listByProviderRegistration(spaceName);
+            Assertions.assertNotNull(registeredOperations.properties());
+            Assertions.assertNotNull(registeredOperations.properties().contents());
+            Assertions.assertTrue(registeredOperations.properties()
+                .contents()
                 .stream()
-                .anyMatch(operationsDefinition -> {
-                    if (Objects.nonNull(operationsDefinition.properties())) {
-                        LinkedHashMap properties = (LinkedHashMap) operationsDefinition.properties();
-                        if (Objects.nonNull(properties.get("contents"))) {
-                            List contents = (ArrayList) properties.get("contents");
-                            if (!contents.isEmpty()) {
-                                for (int i = 0; i < contents.size(); i++) {
-                                    LinkedHashMap content = (LinkedHashMap) contents.get(i);
-                                    LinkedHashMap display = (LinkedHashMap) content.get("display");
-                                    LinkedHashMap defaultProperty = (LinkedHashMap) display.get("default");
-                                    if (opeartionName.equals(content.get("name"))
-                                        && spaceName.equals(defaultProperty.get("provider"))) {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return false;
-                }));
+                .anyMatch(content -> opeartionName.equals(content.name())
+                    && content.display() != null
+                    && content.display().defaultProperty() != null
+                    && spaceName.equals(content.display().defaultProperty().provider())));
         } finally {
             if (operationsContent != null) {
                 providerHubManager.operations().delete(spaceName);

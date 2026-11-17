@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ public final class MosaicItemsAvailableAssetsGetAllTests extends PlanetaryComput
     @Disabled
     public void testMosaicItemsAvailableAssetsGetAllTests() {
         // method invocation
-        List<String> response = dataClient.getItemAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114", null,
-            null, null, null, null, null);
+        List<String> response = dataClient.getItemAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
     }
 }

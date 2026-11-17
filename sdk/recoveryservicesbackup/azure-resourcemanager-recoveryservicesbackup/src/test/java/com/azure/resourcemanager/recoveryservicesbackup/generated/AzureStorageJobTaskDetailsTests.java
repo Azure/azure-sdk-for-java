@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStorageJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageJobTaskDetails model
-            = BinaryData.fromString("{\"taskId\":\"hxkumasjcaacfdmm\",\"status\":\"ugmehqepvufhbze\"}")
-                .toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("hxkumasjcaacfdmm", model.taskId());
-        Assertions.assertEquals("ugmehqepvufhbze", model.status());
+        AzureStorageJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"wnrdjyibqbnaom\",\"status\":\"rmkuh\"}")
+            .toObject(AzureStorageJobTaskDetails.class);
+        Assertions.assertEquals("wnrdjyibqbnaom", model.taskId());
+        Assertions.assertEquals("rmkuh", model.status());
     }
 }

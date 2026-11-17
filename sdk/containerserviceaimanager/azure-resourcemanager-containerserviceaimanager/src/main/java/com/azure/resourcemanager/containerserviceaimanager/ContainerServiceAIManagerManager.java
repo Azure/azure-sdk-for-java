@@ -29,12 +29,14 @@ import com.azure.resourcemanager.containerserviceaimanager.implementation.AIMana
 import com.azure.resourcemanager.containerserviceaimanager.implementation.AIManagersImpl;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.AIModelsImpl;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.ContainerServiceAIManagerClientBuilder;
+import com.azure.resourcemanager.containerserviceaimanager.implementation.CustomAIModelsImpl;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.ModelDeploymentsImpl;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.ModelSourcesImpl;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerserviceaimanager.models.AIManagerNamespaces;
 import com.azure.resourcemanager.containerserviceaimanager.models.AIManagers;
 import com.azure.resourcemanager.containerserviceaimanager.models.AIModels;
+import com.azure.resourcemanager.containerserviceaimanager.models.CustomAIModels;
 import com.azure.resourcemanager.containerserviceaimanager.models.ModelDeployments;
 import com.azure.resourcemanager.containerserviceaimanager.models.ModelSources;
 import com.azure.resourcemanager.containerserviceaimanager.models.Operations;
@@ -62,6 +64,8 @@ public final class ContainerServiceAIManagerManager {
     private ModelSources modelSources;
 
     private ModelDeployments modelDeployments;
+
+    private CustomAIModels customAIModels;
 
     private final ContainerServiceAIManagerClient clientObject;
 
@@ -350,6 +354,18 @@ public final class ContainerServiceAIManagerManager {
             this.modelDeployments = new ModelDeploymentsImpl(clientObject.getModelDeployments(), this);
         }
         return modelDeployments;
+    }
+
+    /**
+     * Gets the resource collection API of CustomAIModels. It manages CustomAIModel.
+     * 
+     * @return Resource collection API of CustomAIModels.
+     */
+    public CustomAIModels customAIModels() {
+        if (this.customAIModels == null) {
+            this.customAIModels = new CustomAIModelsImpl(clientObject.getCustomAIModels(), this);
+        }
+        return customAIModels;
     }
 
     /**

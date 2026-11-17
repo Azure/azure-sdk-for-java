@@ -12,8 +12,8 @@ public final class ProvisionedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedNetworkListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"slyzrpzbchckqq\",\"networkType\":\"vsan\"},\"id\":\"xiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"zyh\",\"networkType\":\"vmotion\"},\"id\":\"mypyynpcdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"}],\"nextLink\":\"bldtlww\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"eqidbqfatpx\",\"networkType\":\"esxManagement\"},\"id\":\"cyjmoadsuvarmy\",\"name\":\"dmjsjqb\",\"type\":\"hhyxxrw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"uhpkxkgymar\",\"networkType\":\"esxReplication\"},\"id\":\"jxqugjhky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"q\",\"networkType\":\"hcxUplink\"},\"id\":\"nbyxbaaabjyv\",\"name\":\"yffimrzrtuzqogs\",\"type\":\"xnevfdnwn\"}],\"nextLink\":\"ewzsyyceuzsoib\"}")
             .toObject(ProvisionedNetworkListResult.class);
-        Assertions.assertEquals("bldtlww", model.nextLink());
+        Assertions.assertEquals("ewzsyyceuzsoib", model.nextLink());
     }
 }

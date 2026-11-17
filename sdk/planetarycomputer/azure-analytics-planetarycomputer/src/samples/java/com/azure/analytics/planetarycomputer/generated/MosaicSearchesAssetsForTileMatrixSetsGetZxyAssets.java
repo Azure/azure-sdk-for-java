@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -18,9 +19,10 @@ public class MosaicSearchesAssetsForTileMatrixSetsGetZxyAssets {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile-with-tms.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
-        List<TilerAssetGeoJson> response
-            = dataClient.getSearchAssetsForTileWithTms("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad",
-                "naip-atl", 13.0, 2174.0, 3282.0, null, null, null, null, null, null, null, null, null, null, null);
+        List<TilerAssetGeoJson> response = dataClient.getSearchAssetsForTileWithTms("ba13fc7947b9b585690d84ee61aaa653",
+            "WebMercatorQuad", "naip-atl", 13.0, 2174.0, 3282.0, (Integer) null, (Integer) null, (Integer) null,
+            (Boolean) null, (Boolean) null, (String) null, (List<Integer>) null, (String) null, (String) null,
+            (List<String>) null, (SelMethod) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile-with-tms.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
     }
 }

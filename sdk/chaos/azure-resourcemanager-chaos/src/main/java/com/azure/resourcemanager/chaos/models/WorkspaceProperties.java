@@ -23,14 +23,18 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     private ProvisioningState provisioningState;
 
     /*
-     * The communication endpoint used to connect and communicate with the workspace for fault-injection orchestration.
-     */
-    private String communicationEndpoint;
-
-    /*
      * The intended workspace-level resource scope to be used by child scenarios.
      */
     private List<String> scopes;
+
+    /*
+     * The requested customer key and service observations. Accepted creation fixes
+     * whether customerManagedKeyEncryption is present. On PUT, omission of
+     * encryption or its CMK object, or an empty encryption object, is valid for
+     * Microsoft-managed Workspaces but rejected for CMK-created Workspaces.
+     * Null is not a valid PUT value. A CMK-created Workspace can replace its key.
+     */
+    private WorkspaceEncryption encryption;
 
     /**
      * Creates an instance of WorkspaceProperties class.
@@ -45,16 +49,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the communicationEndpoint property: The communication endpoint used to connect and communicate with the
-     * workspace for fault-injection orchestration.
-     * 
-     * @return the communicationEndpoint value.
-     */
-    public String communicationEndpoint() {
-        return this.communicationEndpoint;
     }
 
     /**
@@ -78,12 +72,41 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     }
 
     /**
+     * Get the encryption property: The requested customer key and service observations. Accepted creation fixes
+     * whether customerManagedKeyEncryption is present. On PUT, omission of
+     * encryption or its CMK object, or an empty encryption object, is valid for
+     * Microsoft-managed Workspaces but rejected for CMK-created Workspaces.
+     * Null is not a valid PUT value. A CMK-created Workspace can replace its key.
+     * 
+     * @return the encryption value.
+     */
+    public WorkspaceEncryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The requested customer key and service observations. Accepted creation fixes
+     * whether customerManagedKeyEncryption is present. On PUT, omission of
+     * encryption or its CMK object, or an empty encryption object, is valid for
+     * Microsoft-managed Workspaces but rejected for CMK-created Workspaces.
+     * Null is not a valid PUT value. A CMK-created Workspace can replace its key.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withEncryption(WorkspaceEncryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -109,8 +132,8 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedWorkspaceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("communicationEndpoint".equals(fieldName)) {
-                    deserializedWorkspaceProperties.communicationEndpoint = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedWorkspaceProperties.encryption = WorkspaceEncryption.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

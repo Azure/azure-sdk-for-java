@@ -12,9 +12,9 @@ public final class FleetUpdateStrategyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"hzv\"},{\"name\":\"ytdw\"},{\"name\":\"qbrqubpaxhexiili\"},{\"name\":\"pdtii\"}]}},\"eTag\":\"tdqoaxoruzfgsq\",\"id\":\"fxrxxle\",\"name\":\"tramxjez\",\"type\":\"lwnwxuqlcvydyp\"}],\"nextLink\":\"dooaojkniodko\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"ukiscvwmzhw\"},{\"name\":\"lefaxvxilcbtgn\"},{\"name\":\"nzeyqxtjj\"}]}},\"eTag\":\"qlqhycavodg\",\"id\":\"dbeesmie\",\"name\":\"nlrariaawiuagy\",\"type\":\"wqfbylyrfgiagt\"}],\"nextLink\":\"jocqwogfnzjvusf\"}")
             .toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("hzv", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("dooaojkniodko", model.nextLink());
+        Assertions.assertEquals("ukiscvwmzhw", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("jocqwogfnzjvusf", model.nextLink());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class MetricsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Patch.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Patch.json
      */
     /**
      * Sample code: Patch metrics configuration of cluster.

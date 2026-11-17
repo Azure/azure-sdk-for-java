@@ -9,7 +9,23 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class OccurrenceExtensionListOccurrenceByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: OccurrenceExtension_ListOccurrenceByVms_MinimumSet.
+     * 
+     * @param manager Entry point to ComputeScheduleManager.
+     */
+    public static void occurrenceExtensionListOccurrenceByVmsMinimumSet(
+        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
+        manager.occurrenceExtensions()
+            .listOccurrenceByVms(
+                "subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: OccurrenceExtension_ListOccurrenceByVms_MaximumSet.
@@ -18,6 +34,9 @@ public final class OccurrenceExtensionListOccurrenceByVmsSamples {
      */
     public static void occurrenceExtensionListOccurrenceByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.occurrenceExtensions().listOccurrenceByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.occurrenceExtensions()
+            .listOccurrenceByVms(
+                "subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm",
+                com.azure.core.util.Context.NONE);
     }
 }

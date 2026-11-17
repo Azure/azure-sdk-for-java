@@ -5,8 +5,11 @@ package com.azure.ai.projects.models;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
+import com.openai.core.ObjectMappers;
 import com.openai.models.responses.Tool;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -134,6 +137,30 @@ public class AzureAIAgentTargetToolsTest {
     }
 
     // ===== Serialization tests =====
+
+    /**
+     * Tests that the typed setter preserves tool JSON without adding computed openai-java properties.
+     */
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "{\"type\":\"function\",\"name\":\"lookup\",\"strict\":false,"
+                + "\"parameters\":{\"type\":\"object\",\"properties\":{}}}",
+            "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_1\"],"
+                + "\"ranking_options\":{\"ranker\":\"auto\",\"score_threshold\":0.5}}",
+            "{\"type\":\"web_search\",\"search_context_size\":\"low\"}",
+            "{\"type\":\"mcp\",\"server_label\":\"test-mcp\",\"server_url\":\"https://mcp.example.com\"}",
+            "{\"type\":\"code_interpreter\",\"container\":{\"type\":\"auto\",\"file_ids\":[\"file_1\"]}}" })
+    public void testTypedToolRoundTripPreservesWireFormat(String toolJson) throws IOException {
+        String inputJson = "{\"name\":\"test-agent\",\"type\":\"azure_ai_agent\",\"tools\":[" + toolJson + "]}";
+        AzureAIAgentTarget target = deserializeFromJson(inputJson);
+
+        target.setToolsAsOpenAITools(target.getToolsAsOpenAITools());
+        String serialized = serializeToJson(target);
+
+        assertFalse(serialized.contains("\"isValid\""), "Computed helper methods must not become request properties");
+        assertEquals(ObjectMappers.jsonMapper().readTree(inputJson), ObjectMappers.jsonMapper().readTree(serialized));
+    }
 
     /**
      * Tests serialization after setting tools via setToolsAsOpenAITools with a function tool.

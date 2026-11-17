@@ -2410,9 +2410,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
     @Test
     public void createFileKnowledgeSourceWithStandardExtractionAndCorsSync() {
+        String sanitizedAiServicesEndpoint = "https://your-endpoint.cognitiveservices.azure.com";
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(new TestProxySanitizer("$..aiServices.uri", null,
-                "https://your-endpoint.cognitiveservices.azure.com", TestProxySanitizerType.BODY_KEY));
+                sanitizedAiServicesEndpoint, TestProxySanitizerType.BODY_KEY));
         }
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -2428,7 +2429,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals(KnowledgeSourceContentExtractionMode.STANDARD,
             created.getFileParameters().getIngestionParameters().getContentExtractionMode());
-        assertEquals(AI_SERVICES_ENDPOINT,
+        assertEquals(interceptorManager.isPlaybackMode() ? sanitizedAiServicesEndpoint : AI_SERVICES_ENDPOINT,
             created.getFileParameters().getIngestionParameters().getAiServices().getUrl());
         assertEquals(Collections.singletonList("https://app.contoso.com"),
             created.getCorsOptions().getAllowedOrigins());
@@ -2512,7 +2513,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
                     "# Version 1\n\nThe original File KS document content.", originalMetadata)))
             .flatMap(
                 uploaded -> searchIndexClient
-                    .updateKnowledgeSourceFile(uploaded.getFileId(), knowledgeSource.getName(),
+                    .updateKnowledgeSourceFile(knowledgeSource.getName(), uploaded.getFileId(),
                         new UpdateKnowledgeSourceFileRequest(
                             new FileUploadMetadata().setFileName(uploaded.getFileName()).setMetadata(updatedMetadata),
                             createFileContent("# Version 2\n\nThe updated File KS document content.",

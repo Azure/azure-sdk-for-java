@@ -51,6 +51,22 @@ public interface LocationBasedBulkCreateCustom {
     List<String> zones();
 
     /**
+     * Gets the extendedLocation property: The extended location of the virtual machines created by the BulkCreateCustom
+     * operation.
+     * 
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the placement property: The availability zone placement constraints applied to the virtual machines created
+     * by the BulkCreateCustom operation.
+     * 
+     * @return the placement value.
+     */
+    Placement placement();
+
+    /**
      * Gets the tags property: Resource tags.
      * 
      * @return the tags value.
@@ -129,7 +145,8 @@ public interface LocationBasedBulkCreateCustom {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
-            DefinitionStages.WithZones, DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
+            DefinitionStages.WithZones, DefinitionStages.WithExtendedLocation, DefinitionStages.WithPlacement,
+            DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
             /**
              * Executes the create request.
              * 
@@ -186,6 +203,36 @@ public interface LocationBasedBulkCreateCustom {
         }
 
         /**
+         * The stage of the LocationBasedBulkCreateCustom definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The extended location of the virtual machines created by the
+             * BulkCreateCustom operation..
+             * 
+             * @param extendedLocation The extended location of the virtual machines created by the BulkCreateCustom
+             * operation.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
+        /**
+         * The stage of the LocationBasedBulkCreateCustom definition allowing to specify placement.
+         */
+        interface WithPlacement {
+            /**
+             * Specifies the placement property: The availability zone placement constraints applied to the virtual
+             * machines created by the BulkCreateCustom operation..
+             * 
+             * @param placement The availability zone placement constraints applied to the virtual machines created by
+             * the BulkCreateCustom operation.
+             * @return the next definition stage.
+             */
+            WithCreate withPlacement(Placement placement);
+        }
+
+        /**
          * The stage of the LocationBasedBulkCreateCustom definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -222,8 +269,8 @@ public interface LocationBasedBulkCreateCustom {
     /**
      * The template for LocationBasedBulkCreateCustom update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithZones,
-        UpdateStages.WithIdentity, UpdateStages.WithPlan {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity, UpdateStages.WithPlan {
         /**
          * Executes the update request.
          * 
@@ -268,19 +315,6 @@ public interface LocationBasedBulkCreateCustom {
              * @return the next definition stage.
              */
             Update withProperties(BulkCreateCustomProperties properties);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreateCustom update allowing to specify zones.
-         */
-        interface WithZones {
-            /**
-             * Specifies the zones property: Zones in which the BulkCreateCustom is available.
-             * 
-             * @param zones Zones in which the BulkCreateCustom is available.
-             * @return the next definition stage.
-             */
-            Update withZones(List<String> zones);
         }
 
         /**

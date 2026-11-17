@@ -4,6 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
@@ -12,11 +13,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.ProxyType;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
@@ -24,11 +28,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builds a {@link VertxHttpClient}.
@@ -78,11 +86,40 @@ public class VertxHttpClientBuilder {
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
     private Vertx vertx;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates an instance of {@link VertxHttpClientBuilder}.
      */
     public VertxHttpClientBuilder() {
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback and enables TLS protocol negotiation
+     * through ALPN. For plain HTTP requests, Vert.x's HTTP/2 cleartext upgrade configuration applies.
+     * <p>
+     * By default, the client uses HTTP/1.1, or the protocols configured in {@link #httpClientOptions(HttpClientOptions)}.
+     * An explicit maximum overrides the protocol and ALPN settings in a copy of those options. Passing null clears the
+     * maximum and restores the original options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new VertxHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated VertxHttpClientBuilder object.
+     */
+    public VertxHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -183,9 +220,10 @@ public class VertxHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the
-     * {@link Configuration#getGlobalConfiguration() global configuration store}, use {@link Configuration#NONE} to
-     * bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store.
      * @return The updated VertxHttpClientBuilder object.
@@ -233,11 +271,15 @@ public class VertxHttpClientBuilder {
         }
 
         HttpClientOptions buildOptions = this.httpClientOptions;
+        Duration writeTimeout = Duration.ZERO;
         if (buildOptions == null) {
+            writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+                DEFAULT_WRITE_TIMEOUT);
             buildOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
-                .setConnectTimeout((int) getTimeout(this.connectTimeout, getDefaultConnectTimeout()).toMillis())
-                .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis())
-                .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis());
+                .setConnectTimeout((int) getTimeout(this.connectTimeout, configuration,
+                    PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT).toMillis())
+                .setReadIdleTimeout((int) getTimeout(this.readTimeout, configuration,
+                    PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT).toMillis());
 
             // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
             buildOptions.setMaxHeaderSize(256 * 1024);
@@ -286,8 +328,22 @@ public class VertxHttpClientBuilder {
             }
         }
 
+        if (maximumHttpVersion != null) {
+            buildOptions = new HttpClientOptions(buildOptions);
+            if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+                buildOptions.setProtocolVersion(HttpVersion.HTTP_1_1)
+                    .setUseAlpn(false)
+                    .setAlpnVersions(Collections.singletonList(HttpVersion.HTTP_1_1));
+            } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                buildOptions.setProtocolVersion(HttpVersion.HTTP_2)
+                    .setUseAlpn(true)
+                    .setAlpnVersions(Arrays.asList(HttpVersion.HTTP_2, HttpVersion.HTTP_1_1));
+            }
+        }
+
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
-        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
+        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {

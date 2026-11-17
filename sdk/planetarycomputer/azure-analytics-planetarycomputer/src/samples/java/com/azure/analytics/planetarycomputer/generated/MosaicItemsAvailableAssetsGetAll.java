@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
@@ -17,8 +18,8 @@ public class MosaicItemsAvailableAssetsGetAll {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-available-assets.mosaic-items-available-assets-get-all
-        List<String> response = dataClient.getItemAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114", null,
-            null, null, null, null, null);
+        List<String> response = dataClient.getItemAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-available-assets.mosaic-items-available-assets-get-all
     }
 }

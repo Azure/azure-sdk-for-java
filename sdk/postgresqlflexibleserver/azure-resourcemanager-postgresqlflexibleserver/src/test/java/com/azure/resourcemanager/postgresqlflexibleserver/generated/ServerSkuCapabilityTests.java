@@ -11,7 +11,7 @@ public final class ServerSkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerSkuCapability model = BinaryData.fromString(
-            "{\"name\":\"ypfcvlerchpqbmf\",\"vCores\":546695443,\"supportedIops\":1406562797,\"supportedMemoryPerVcoreMb\":8640705401011653724,\"supportedZones\":[\"xsspuunnoxyhk\",\"g\",\"ddrihpf\",\"oqcaaewdaomdj\"],\"supportedHaMode\":[\"ZoneRedundant\",\"SameZone\"],\"supportedFeatures\":[{\"name\":\"brm\",\"status\":\"Disabled\"},{\"name\":\"vsiykzkdncjdxon\",\"status\":\"Disabled\"},{\"name\":\"gculap\",\"status\":\"Enabled\"},{\"name\":\"pgogtqxepny\",\"status\":\"Enabled\"}],\"securityProfile\":\"ajlyjtlvofqzhv\",\"status\":\"Available\",\"reason\":\"yfm\"}")
+            "{\"name\":\"rmooizqse\",\"vCores\":1595822311,\"supportedIops\":145023209,\"supportedMemoryPerVcoreMb\":3090727742403939104,\"supportedZones\":[\"zhyrpeto\",\"e\"],\"supportedHaMode\":[\"SameZone\",\"Disabled\"],\"supportedFeatures\":[{\"name\":\"nhl\",\"status\":\"Disabled\"}],\"securityProfile\":\"nk\",\"status\":\"Available\",\"reason\":\"jb\"}")
             .toObject(ServerSkuCapability.class);
     }
 }

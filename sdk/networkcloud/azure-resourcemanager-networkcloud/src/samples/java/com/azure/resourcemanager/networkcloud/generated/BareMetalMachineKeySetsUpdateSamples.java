@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class BareMetalMachineKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Patch.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine key set of cluster.
