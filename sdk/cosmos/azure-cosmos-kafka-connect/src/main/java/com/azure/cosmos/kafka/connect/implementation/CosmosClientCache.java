@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
@@ -110,17 +109,16 @@ public class CosmosClientCache implements AutoCloseable {
             return new CosmosClientCacheItem(cacheConfig, metadata);
         }
 
-        CosmosAsyncClient newClient = createCosmosClient(accountConfig, context, snapshot);
-        metadata = new CosmosClientCacheMetadata(newClient, Instant.now());
-        clientCache.put(cacheConfig, metadata);
+        CosmosClientCacheMetadata newMetadata = createCosmosClient(accountConfig, context, snapshot);
+        clientCache.put(cacheConfig, newMetadata);
 
-        return new CosmosClientCacheItem(cacheConfig, metadata);
+        return new CosmosClientCacheItem(cacheConfig, newMetadata);
     }
 
     /**
      * Creates a new Cosmos client with the given configuration.
      */
-    private CosmosAsyncClient createCosmosClient(
+    private CosmosClientCacheMetadata createCosmosClient(
         CosmosAccountConfig accountConfig,
         String sourceName,
         CosmosClientMetadataCachesSnapshot snapshot) {
@@ -140,6 +138,7 @@ public class CosmosClientCache implements AutoCloseable {
             cosmosClientBuilder.gatewayMode(new GatewayConnectionConfig().setMaxConnectionPoolSize(10000));
         }
 
+        AutoCloseable credentialResource = null;
         if (accountConfig.getCosmosAuthConfig() instanceof CosmosMasterKeyAuthConfig) {
             cosmosClientBuilder.key(((CosmosMasterKeyAuthConfig) accountConfig.getCosmosAuthConfig()).getMasterKey());
         } else if (accountConfig.getCosmosAuthConfig() instanceof CosmosAadAuthConfig) {
@@ -151,6 +150,11 @@ public class CosmosClientCache implements AutoCloseable {
                 .clientSecret(aadAuthConfig.getClientSecret())
                 .build();
             cosmosClientBuilder.credential(tokenCredential);
+        } else if (accountConfig.getCosmosAuthConfig() instanceof CosmosAccessTokenProviderAuthConfig) {
+            CosmosAccessTokenProviderCredential tokenCredential = new CosmosAccessTokenProviderCredential(
+                ((CosmosAccessTokenProviderAuthConfig) accountConfig.getCosmosAuthConfig()).createProvider());
+            cosmosClientBuilder.credential(tokenCredential);
+            credentialResource = tokenCredential;
         } else {
             throw new IllegalArgumentException("Authorization type " + accountConfig.getCosmosAuthConfig().getClass() + " is not supported");
         }
@@ -161,7 +165,12 @@ public class CosmosClientCache implements AutoCloseable {
                 .setCosmosClientMetadataCachesSnapshot(cosmosClientBuilder, snapshot);
         }
 
-        return cosmosClientBuilder.buildAsyncClient();
+        try {
+            return new CosmosClientCacheMetadata(cosmosClientBuilder.buildAsyncClient(), Instant.now(), credentialResource);
+        } catch (RuntimeException e) {
+            CosmosClientCacheMetadata.closeQuietly(credentialResource);
+            throw e;
+        }
     }
 
     private String getUserAgentSuffix(CosmosAccountConfig accountConfig, String sourceName) {

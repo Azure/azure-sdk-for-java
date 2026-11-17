@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Added the `AccessTokenProvider` auth type, which takes Microsoft Entra ID access tokens from a custom `CosmosAccessTokenProvider` implementation configured with `azure.cosmos.auth.accessTokenProvider.class`. This supports identities whose tokens are issued and refreshed outside the connector, such as Fabric workspace identity.
+
 #### Breaking Changes
 
 #### Bugs Fixed
