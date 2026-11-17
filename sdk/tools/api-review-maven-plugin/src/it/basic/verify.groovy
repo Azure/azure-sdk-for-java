@@ -13,11 +13,12 @@ assert markdown.endsWith("\n") && !markdown.endsWith("\n\n")
 def hash = java.security.MessageDigest.getInstance("SHA-256").digest(bytes).encodeHex().toString()
 assert metadataFile.getText("UTF-8") == "apiHash: ${hash}\npackageVersion: '1.0.0'\npackageRelativePath: 'sdk/test/azure-widget'\n"
 
-def pluginPoms = basedir.parentFile.parentFile.listFiles().findAll {
-    it.name.startsWith("api-review-maven-plugin-") && it.name.endsWith(".pom")
+def pluginJars = basedir.parentFile.parentFile.listFiles().findAll {
+    it.name.startsWith("api-review-maven-plugin-") && it.name.endsWith(".jar")
+        && !it.name.endsWith("-sources.jar") && !it.name.endsWith("-javadoc.jar")
 }
-assert pluginPoms.size() == 1
-def pluginJar = new File(pluginPoms[0].parentFile, pluginPoms[0].name.replaceFirst(/\.pom$/, ".jar"))
+assert pluginJars.size() == 1
+def pluginJar = pluginJars[0]
 assert pluginJar.isFile()
 def standalone = new File(basedir, "target/standalone")
 java.nio.file.Files.createDirectories(standalone.toPath())
