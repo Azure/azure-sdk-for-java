@@ -1,14 +1,40 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.57.0 (2026-11-06)
+
+- Package api-version 2026-07-15.
 
 ### Features Added
 
-### Breaking Changes
+* `models.ThroughputBucketResource` was added
 
-### Bugs Fixed
+#### `models.DatabaseAccountUpdateParameters` was modified
 
-### Other Changes
+* `withPerPartitionAutomaticFailoverEnabled(java.lang.Boolean)` was added
+* `perPartitionAutomaticFailoverEnabled()` was added
+
+#### `models.PeriodicModeBackupPolicy` was modified
+
+* `withBackupRetentionLockExpirationTimestamp(java.time.OffsetDateTime)` was added
+
+#### `models.ContinuousModeBackupPolicy` was modified
+
+* `withBackupRetentionLockExpirationTimestamp(java.time.OffsetDateTime)` was added
+
+#### `models.DatabaseAccountCreateUpdateParameters` was modified
+
+* `perPartitionAutomaticFailoverEnabled()` was added
+* `withPerPartitionAutomaticFailoverEnabled(java.lang.Boolean)` was added
+
+#### `models.BackupPolicy` was modified
+
+* `withBackupRetentionLockExpirationTimestamp(java.time.OffsetDateTime)` was added
+* `backupRetentionLockExpirationTimestamp()` was added
+
+#### `models.ThroughputSettingsResource` was modified
+
+* `throughputBuckets()` was added
+* `withThroughputBuckets(java.util.List)` was added
 
 ## 2.56.1 (2026-11-02)
 

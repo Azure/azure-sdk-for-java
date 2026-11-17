@@ -712,32 +712,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
-     * Cosmos DB Account.
-     * 
-     * @return the diagnosticLogSettings value.
-     */
-    public DiagnosticLogSettings diagnosticLogSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
-    }
-
-    /**
-     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
-     * Cosmos DB Account.
-     * 
-     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters
-        withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
-        return this;
-    }
-
-    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -807,54 +781,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
         this.innerProperties().withCapacity(capacity);
-        return this;
-    }
-
-    /**
-     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
-     * 
-     * @return the capacityMode value.
-     */
-    public CapacityMode capacityMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
-    }
-
-    /**
-     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
-     * 
-     * @param capacityMode the capacityMode value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withCapacityMode(CapacityMode capacityMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withCapacityMode(capacityMode);
-        return this;
-    }
-
-    /**
-     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
-     * account.
-     * 
-     * @return the enableMaterializedViews value.
-     */
-    public Boolean enableMaterializedViews() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
-    }
-
-    /**
-     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
-     * account.
-     * 
-     * @param enableMaterializedViews the enableMaterializedViews value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withEnableMaterializedViews(Boolean enableMaterializedViews) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
         return this;
     }
 
@@ -1046,56 +972,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
-     * feature is enabled on the account.
-     * 
-     * @return the enableAllVersionsAndDeletesChangeFeed value.
-     */
-    public Boolean enableAllVersionsAndDeletesChangeFeed() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
-    }
-
-    /**
-     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
-     * feature is enabled on the account.
-     * 
-     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters
-        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
-        return this;
-    }
-
-    /**
-     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
-     * 
-     * @return the softDeleteConfiguration value.
-     */
-    public SoftDeleteConfiguration softDeleteConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().softDeleteConfiguration();
-    }
-
-    /**
-     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
-     * 
-     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters
-        withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withSoftDeleteConfiguration(softDeleteConfiguration);
-        return this;
-    }
-
-    /**
      * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
      * partition key ID last level enforcement on the account.
      * 
@@ -1121,6 +997,34 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
         }
         this.innerProperties()
             .withEnforceHierarchicalPartitionKeyIdLastLevel(enforceHierarchicalPartitionKeyIdLastLevel);
+        return this;
+    }
+
+    /**
+     * Get the perPartitionAutomaticFailoverEnabled property: Flag to indicate enabling/disabling of per-partition
+     * automatic failover on the account, which automatically fails over individual partitions to available regions
+     * during a regional outage. Opt-in; defaults to false.
+     * 
+     * @return the perPartitionAutomaticFailoverEnabled value.
+     */
+    public Boolean perPartitionAutomaticFailoverEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().perPartitionAutomaticFailoverEnabled();
+    }
+
+    /**
+     * Set the perPartitionAutomaticFailoverEnabled property: Flag to indicate enabling/disabling of per-partition
+     * automatic failover on the account, which automatically fails over individual partitions to available regions
+     * during a regional outage. Opt-in; defaults to false.
+     * 
+     * @param perPartitionAutomaticFailoverEnabled the perPartitionAutomaticFailoverEnabled value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withPerPartitionAutomaticFailoverEnabled(Boolean perPartitionAutomaticFailoverEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withPerPartitionAutomaticFailoverEnabled(perPartitionAutomaticFailoverEnabled);
         return this;
     }
 

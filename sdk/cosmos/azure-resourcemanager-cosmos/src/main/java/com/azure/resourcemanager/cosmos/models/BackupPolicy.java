@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The object representing the policy for taking backups on an account.
@@ -25,6 +28,12 @@ public class BackupPolicy implements JsonSerializable<BackupPolicy> {
      * The object representing the state of the migration between the backup policies.
      */
     private BackupPolicyMigrationState migrationState;
+
+    /*
+     * The UTC timestamp until which changes that reduce backup retention are locked.
+     * While active, this timestamp can only be extended.
+     */
+    private OffsetDateTime backupRetentionLockExpirationTimestamp;
 
     /**
      * Creates an instance of BackupPolicy class.
@@ -62,6 +71,31 @@ public class BackupPolicy implements JsonSerializable<BackupPolicy> {
     }
 
     /**
+     * Get the backupRetentionLockExpirationTimestamp property: The UTC timestamp until which changes that reduce backup
+     * retention are locked.
+     * While active, this timestamp can only be extended.
+     * 
+     * @return the backupRetentionLockExpirationTimestamp value.
+     */
+    public OffsetDateTime backupRetentionLockExpirationTimestamp() {
+        return this.backupRetentionLockExpirationTimestamp;
+    }
+
+    /**
+     * Set the backupRetentionLockExpirationTimestamp property: The UTC timestamp until which changes that reduce backup
+     * retention are locked.
+     * While active, this timestamp can only be extended.
+     * 
+     * @param backupRetentionLockExpirationTimestamp the backupRetentionLockExpirationTimestamp value to set.
+     * @return the BackupPolicy object itself.
+     */
+    public BackupPolicy
+        withBackupRetentionLockExpirationTimestamp(OffsetDateTime backupRetentionLockExpirationTimestamp) {
+        this.backupRetentionLockExpirationTimestamp = backupRetentionLockExpirationTimestamp;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +114,10 @@ public class BackupPolicy implements JsonSerializable<BackupPolicy> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("migrationState", this.migrationState);
+        jsonWriter.writeStringField("backupRetentionLockExpirationTimestamp",
+            this.backupRetentionLockExpirationTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.backupRetentionLockExpirationTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +167,9 @@ public class BackupPolicy implements JsonSerializable<BackupPolicy> {
                     deserializedBackupPolicy.type = BackupPolicyType.fromString(reader.getString());
                 } else if ("migrationState".equals(fieldName)) {
                     deserializedBackupPolicy.migrationState = BackupPolicyMigrationState.fromJson(reader);
+                } else if ("backupRetentionLockExpirationTimestamp".equals(fieldName)) {
+                    deserializedBackupPolicy.backupRetentionLockExpirationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

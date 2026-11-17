@@ -16,11 +16,13 @@ public final class BackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicy model = BinaryData.fromString(
-            "{\"type\":\"BackupPolicy\",\"migrationState\":{\"status\":\"Failed\",\"targetType\":\"Continuous\",\"startTime\":\"2021-12-06T12:44:04Z\"}}")
+            "{\"type\":\"BackupPolicy\",\"migrationState\":{\"status\":\"Failed\",\"targetType\":\"Continuous\",\"startTime\":\"2021-12-06T12:44:04Z\"},\"backupRetentionLockExpirationTimestamp\":\"2021-01-18T00:54:48Z\"}")
             .toObject(BackupPolicy.class);
         Assertions.assertEquals(BackupPolicyMigrationStatus.FAILED, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.CONTINUOUS, model.migrationState().targetType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T12:44:04Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T00:54:48Z"),
+            model.backupRetentionLockExpirationTimestamp());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,10 +30,13 @@ public final class BackupPolicyTests {
         BackupPolicy model = new BackupPolicy()
             .withMigrationState(new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.FAILED)
                 .withTargetType(BackupPolicyType.CONTINUOUS)
-                .withStartTime(OffsetDateTime.parse("2021-12-06T12:44:04Z")));
+                .withStartTime(OffsetDateTime.parse("2021-12-06T12:44:04Z")))
+            .withBackupRetentionLockExpirationTimestamp(OffsetDateTime.parse("2021-01-18T00:54:48Z"));
         model = BinaryData.fromObject(model).toObject(BackupPolicy.class);
         Assertions.assertEquals(BackupPolicyMigrationStatus.FAILED, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.CONTINUOUS, model.migrationState().targetType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T12:44:04Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T00:54:48Z"),
+            model.backupRetentionLockExpirationTimestamp());
     }
 }

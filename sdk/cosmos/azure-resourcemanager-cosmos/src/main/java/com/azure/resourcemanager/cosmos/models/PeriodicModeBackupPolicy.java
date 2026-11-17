@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The object representing periodic mode backup policy.
@@ -71,6 +74,16 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PeriodicModeBackupPolicy
+        withBackupRetentionLockExpirationTimestamp(OffsetDateTime backupRetentionLockExpirationTimestamp) {
+        super.withBackupRetentionLockExpirationTimestamp(backupRetentionLockExpirationTimestamp);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -92,6 +105,10 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("migrationState", migrationState());
+        jsonWriter.writeStringField("backupRetentionLockExpirationTimestamp",
+            backupRetentionLockExpirationTimestamp() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(backupRetentionLockExpirationTimestamp()));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("periodicModeProperties", this.periodicModeProperties);
         return jsonWriter.writeEndObject();
@@ -115,6 +132,9 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
                 if ("migrationState".equals(fieldName)) {
                     deserializedPeriodicModeBackupPolicy
                         .withMigrationState(BackupPolicyMigrationState.fromJson(reader));
+                } else if ("backupRetentionLockExpirationTimestamp".equals(fieldName)) {
+                    deserializedPeriodicModeBackupPolicy.withBackupRetentionLockExpirationTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("type".equals(fieldName)) {
                     deserializedPeriodicModeBackupPolicy.type = BackupPolicyType.fromString(reader.getString());
                 } else if ("periodicModeProperties".equals(fieldName)) {

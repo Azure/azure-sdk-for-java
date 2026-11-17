@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraDataCentersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterDelete.json
+     * x-ms-original-file: 2026-07-15/CosmosDBManagedCassandraDataCenterDelete.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterDelete.

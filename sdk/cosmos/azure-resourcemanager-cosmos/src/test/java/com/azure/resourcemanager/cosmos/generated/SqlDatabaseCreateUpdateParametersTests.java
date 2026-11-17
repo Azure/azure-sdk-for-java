@@ -23,49 +23,46 @@ public final class SqlDatabaseCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"ngwfqatm\",\"restoreParameters\":{\"restoreSource\":\"tmdvypgikdgs\",\"restoreTimestampInUtc\":\"2021-07-11T10:33:14Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":574847492,\"autoscaleSettings\":{\"maxThroughput\":421118351}}},\"id\":\"kj\",\"name\":\"rvqqaatj\",\"type\":\"rv\",\"location\":\"upmfiibfg\",\"tags\":{\"rwxkvtkkgl\":\"ool\",\"vblm\":\"qwjygvja\",\"byrqufeg\":\"vkzuhbxvvyhgso\",\"mctlpdngitv\":\"uvwzfbnh\"},\"identity\":{\"principalId\":\"hrixkwmy\",\"tenantId\":\"ejvegrhbpnaixex\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tpwijnh\":{\"principalId\":\"ax\",\"clientId\":\"exdrrvqahqkg\"},\"qp\":{\"principalId\":\"svfycxzbfv\",\"clientId\":\"wvrvmtg\"},\"ekrrjr\":{\"principalId\":\"ostronz\",\"clientId\":\"hgfipnsxkmcw\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"wosytxitcskf\",\"restoreParameters\":{\"restoreSource\":\"qumiek\",\"restoreTimestampInUtc\":\"2021-09-07T12:58:28Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1307171109,\"autoscaleSettings\":{\"maxThroughput\":202591470}}},\"id\":\"qgge\",\"name\":\"unygaeqid\",\"type\":\"fatpxllrxcyjmoa\",\"location\":\"uvarmywdmjsjq\",\"tags\":{\"kgymareqnajxqug\":\"hyxxrwlycoduhpk\",\"ubeddg\":\"hky\"},\"identity\":{\"principalId\":\"fwqmzqalkrmn\",\"tenantId\":\"jpxac\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"xnevfdnwn\":{\"principalId\":\"byxbaaabjy\",\"clientId\":\"yffimrzrtuzqogs\"}}}}")
             .toObject(SqlDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("upmfiibfg", model.location());
-        Assertions.assertEquals("ool", model.tags().get("rwxkvtkkgl"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngwfqatm", model.resource().id());
-        Assertions.assertEquals("tmdvypgikdgs", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:33:14Z"),
+        Assertions.assertEquals("uvarmywdmjsjq", model.location());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.tags().get("kgymareqnajxqug"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wosytxitcskf", model.resource().id());
+        Assertions.assertEquals("qumiek", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T12:58:28Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(574847492, model.options().throughput());
-        Assertions.assertEquals(421118351, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1307171109, model.options().throughput());
+        Assertions.assertEquals(202591470, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlDatabaseCreateUpdateParameters model = new SqlDatabaseCreateUpdateParameters().withLocation("upmfiibfg")
-            .withTags(
-                mapOf("rwxkvtkkgl", "ool", "vblm", "qwjygvja", "byrqufeg", "vkzuhbxvvyhgso", "mctlpdngitv", "uvwzfbnh"))
-            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("tpwijnh", new ManagedServiceIdentityUserAssignedIdentities(), "qp",
-                    new ManagedServiceIdentityUserAssignedIdentities(), "ekrrjr",
-                    new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new SqlDatabaseResource().withId("ngwfqatm")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("tmdvypgikdgs")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-07-11T10:33:14Z"))
-                    .withRestoreWithTtlDisabled(true))
+        SqlDatabaseCreateUpdateParameters model = new SqlDatabaseCreateUpdateParameters().withLocation("uvarmywdmjsjq")
+            .withTags(mapOf("kgymareqnajxqug", "hyxxrwlycoduhpk", "ubeddg", "hky"))
+            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xnevfdnwn", new ManagedServiceIdentityUserAssignedIdentities())))
+            .withResource(new SqlDatabaseResource().withId("wosytxitcskf")
+                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("qumiek")
+                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-09-07T12:58:28Z"))
+                    .withRestoreWithTtlDisabled(false))
                 .withCreateMode(CreateMode.RESTORE))
-            .withOptions(new CreateUpdateOptions().withThroughput(574847492)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(421118351)));
+            .withOptions(new CreateUpdateOptions().withThroughput(1307171109)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(202591470)));
         model = BinaryData.fromObject(model).toObject(SqlDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("upmfiibfg", model.location());
-        Assertions.assertEquals("ool", model.tags().get("rwxkvtkkgl"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngwfqatm", model.resource().id());
-        Assertions.assertEquals("tmdvypgikdgs", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:33:14Z"),
+        Assertions.assertEquals("uvarmywdmjsjq", model.location());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.tags().get("kgymareqnajxqug"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wosytxitcskf", model.resource().id());
+        Assertions.assertEquals("qumiek", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T12:58:28Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(574847492, model.options().throughput());
-        Assertions.assertEquals(421118351, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1307171109, model.options().throughput());
+        Assertions.assertEquals(202591470, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,7 @@ public final class NotebookWorkspaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotebookWorkspaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"notebookServerEndpoint\":\"uxcjkcoqwczsyiq\",\"status\":\"z\"},\"id\":\"ihvaang\",\"name\":\"tnhjrfdmfd\",\"type\":\"bbaex\"}")
+            "{\"properties\":{\"notebookServerEndpoint\":\"wilzzhnijmriprlk\",\"status\":\"eyttlrcxiv\"},\"id\":\"kutpu\",\"name\":\"ltw\",\"type\":\"fluxynbpvz\"}")
             .toObject(NotebookWorkspaceInner.class);
     }
 }

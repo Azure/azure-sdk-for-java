@@ -14,21 +14,21 @@ public final class AutoscaleSettingsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoscaleSettingsResource model = BinaryData.fromString(
-            "{\"maxThroughput\":674255307,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":false,\"incrementPercent\":2090411231}},\"targetMaxThroughput\":1678517219}")
+            "{\"maxThroughput\":48409211,\"autoUpgradePolicy\":{\"throughputPolicy\":{\"isEnabled\":true,\"incrementPercent\":298074003}},\"targetMaxThroughput\":2127288077}")
             .toObject(AutoscaleSettingsResource.class);
-        Assertions.assertEquals(674255307, model.maxThroughput());
-        Assertions.assertFalse(model.autoUpgradePolicy().throughputPolicy().isEnabled());
-        Assertions.assertEquals(2090411231, model.autoUpgradePolicy().throughputPolicy().incrementPercent());
+        Assertions.assertEquals(48409211, model.maxThroughput());
+        Assertions.assertTrue(model.autoUpgradePolicy().throughputPolicy().isEnabled());
+        Assertions.assertEquals(298074003, model.autoUpgradePolicy().throughputPolicy().incrementPercent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleSettingsResource model = new AutoscaleSettingsResource().withMaxThroughput(674255307)
+        AutoscaleSettingsResource model = new AutoscaleSettingsResource().withMaxThroughput(48409211)
             .withAutoUpgradePolicy(new AutoUpgradePolicyResource().withThroughputPolicy(
-                new ThroughputPolicyResource().withIsEnabled(false).withIncrementPercent(2090411231)));
+                new ThroughputPolicyResource().withIsEnabled(true).withIncrementPercent(298074003)));
         model = BinaryData.fromObject(model).toObject(AutoscaleSettingsResource.class);
-        Assertions.assertEquals(674255307, model.maxThroughput());
-        Assertions.assertFalse(model.autoUpgradePolicy().throughputPolicy().isEnabled());
-        Assertions.assertEquals(2090411231, model.autoUpgradePolicy().throughputPolicy().incrementPercent());
+        Assertions.assertEquals(48409211, model.maxThroughput());
+        Assertions.assertTrue(model.autoUpgradePolicy().throughputPolicy().isEnabled());
+        Assertions.assertEquals(298074003, model.autoUpgradePolicy().throughputPolicy().incrementPercent());
     }
 }

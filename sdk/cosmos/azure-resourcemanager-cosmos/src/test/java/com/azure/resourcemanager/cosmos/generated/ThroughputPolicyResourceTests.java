@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ThroughputPolicyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThroughputPolicyResource model = BinaryData.fromString("{\"isEnabled\":false,\"incrementPercent\":1956413749}")
+        ThroughputPolicyResource model = BinaryData.fromString("{\"isEnabled\":true,\"incrementPercent\":1811586286}")
             .toObject(ThroughputPolicyResource.class);
-        Assertions.assertFalse(model.isEnabled());
-        Assertions.assertEquals(1956413749, model.incrementPercent());
+        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals(1811586286, model.incrementPercent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThroughputPolicyResource model
-            = new ThroughputPolicyResource().withIsEnabled(false).withIncrementPercent(1956413749);
+            = new ThroughputPolicyResource().withIsEnabled(true).withIncrementPercent(1811586286);
         model = BinaryData.fromObject(model).toObject(ThroughputPolicyResource.class);
-        Assertions.assertFalse(model.isEnabled());
-        Assertions.assertEquals(1956413749, model.incrementPercent());
+        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals(1811586286, model.incrementPercent());
     }
 }

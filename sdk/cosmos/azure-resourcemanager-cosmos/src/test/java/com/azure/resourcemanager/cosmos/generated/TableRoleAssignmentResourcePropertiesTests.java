@@ -12,22 +12,22 @@ public final class TableRoleAssignmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableRoleAssignmentResourceProperties model = BinaryData.fromString(
-            "{\"roleDefinitionId\":\"ijjcea\",\"scope\":\"ijjj\",\"principalId\":\"va\",\"provisioningState\":\"a\"}")
+            "{\"roleDefinitionId\":\"spxklu\",\"scope\":\"clf\",\"principalId\":\"annnoytzposewx\",\"provisioningState\":\"pxvkqma\"}")
             .toObject(TableRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("ijjcea", model.roleDefinitionId());
-        Assertions.assertEquals("ijjj", model.scope());
-        Assertions.assertEquals("va", model.principalId());
+        Assertions.assertEquals("spxklu", model.roleDefinitionId());
+        Assertions.assertEquals("clf", model.scope());
+        Assertions.assertEquals("annnoytzposewx", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TableRoleAssignmentResourceProperties model
-            = new TableRoleAssignmentResourceProperties().withRoleDefinitionId("ijjcea")
-                .withScope("ijjj")
-                .withPrincipalId("va");
+            = new TableRoleAssignmentResourceProperties().withRoleDefinitionId("spxklu")
+                .withScope("clf")
+                .withPrincipalId("annnoytzposewx");
         model = BinaryData.fromObject(model).toObject(TableRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("ijjcea", model.roleDefinitionId());
-        Assertions.assertEquals("ijjj", model.scope());
-        Assertions.assertEquals("va", model.principalId());
+        Assertions.assertEquals("spxklu", model.roleDefinitionId());
+        Assertions.assertEquals("clf", model.scope());
+        Assertions.assertEquals("annnoytzposewx", model.principalId());
     }
 }

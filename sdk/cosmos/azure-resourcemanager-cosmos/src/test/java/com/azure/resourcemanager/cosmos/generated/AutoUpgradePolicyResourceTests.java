@@ -13,18 +13,18 @@ public final class AutoUpgradePolicyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoUpgradePolicyResource model
-            = BinaryData.fromString("{\"throughputPolicy\":{\"isEnabled\":true,\"incrementPercent\":1887864479}}")
+            = BinaryData.fromString("{\"throughputPolicy\":{\"isEnabled\":false,\"incrementPercent\":306781812}}")
                 .toObject(AutoUpgradePolicyResource.class);
-        Assertions.assertTrue(model.throughputPolicy().isEnabled());
-        Assertions.assertEquals(1887864479, model.throughputPolicy().incrementPercent());
+        Assertions.assertFalse(model.throughputPolicy().isEnabled());
+        Assertions.assertEquals(306781812, model.throughputPolicy().incrementPercent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoUpgradePolicyResource model = new AutoUpgradePolicyResource()
-            .withThroughputPolicy(new ThroughputPolicyResource().withIsEnabled(true).withIncrementPercent(1887864479));
+            .withThroughputPolicy(new ThroughputPolicyResource().withIsEnabled(false).withIncrementPercent(306781812));
         model = BinaryData.fromObject(model).toObject(AutoUpgradePolicyResource.class);
-        Assertions.assertTrue(model.throughputPolicy().isEnabled());
-        Assertions.assertEquals(1887864479, model.throughputPolicy().incrementPercent());
+        Assertions.assertFalse(model.throughputPolicy().isEnabled());
+        Assertions.assertEquals(306781812, model.throughputPolicy().incrementPercent());
     }
 }

@@ -8,13 +8,10 @@ import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.cosmos.models.Capacity;
-import com.azure.resourcemanager.cosmos.models.CapacityMode;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
-import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
-import com.azure.resourcemanager.cosmos.models.EnableFullTextQuery;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
@@ -24,6 +21,7 @@ import com.azure.resourcemanager.cosmos.models.PeriodicModeBackupPolicy;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeProperties;
 import com.azure.resourcemanager.cosmos.models.ResourceIdentityType;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +31,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: 2026-07-15/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
@@ -65,23 +63,22 @@ public final class DatabaseAccountsUpdateSamples {
                 .withAnalyticalStorageConfiguration(
                     new AnalyticalStorageConfiguration().withSchemaType(AnalyticalStorageSchemaType.WELL_DEFINED))
                 .withBackupPolicy(new PeriodicModeBackupPolicy()
+                    .withBackupRetentionLockExpirationTimestamp(OffsetDateTime.parse("2030-06-01T00:00:00Z"))
                     .withPeriodicModeProperties(new PeriodicModeProperties().withBackupIntervalInMinutes(240)
                         .withBackupRetentionIntervalInHours(720)
-                        .withBackupStorageRedundancy(BackupStorageRedundancy.GEO)))
+                        .withBackupStorageRedundancy(BackupStorageRedundancy.LOCAL)))
                 .withNetworkAclBypass(NetworkAclBypass.AZURE_SERVICES)
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
-                .withDiagnosticLogSettings(
-                    new DiagnosticLogSettings().withEnableFullTextQuery(EnableFullTextQuery.TRUE))
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                .withCapacityMode(CapacityMode.PROVISIONED)
                 .withEnablePartitionMerge(true)
                 .withEnableBurstCapacity(true)
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS)
                 .withEnablePriorityBasedExecution(true)
                 .withDefaultPriorityLevel(DefaultPriorityLevel.LOW)
                 .withEnablePerRegionPerPartitionAutoscale(true)
-                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false)
+                .withPerPartitionAutomaticFailoverEnabled(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -12,27 +12,27 @@ public final class CorsPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CorsPolicy model = BinaryData.fromString(
-            "{\"allowedOrigins\":\"xjnspy\",\"allowedMethods\":\"tko\",\"allowedHeaders\":\"kouknvudwtiu\",\"exposedHeaders\":\"ldngkpoci\",\"maxAgeInSeconds\":852588596327636327}")
+            "{\"allowedOrigins\":\"ptkoenkoukn\",\"allowedMethods\":\"dwtiukbldngkp\",\"allowedHeaders\":\"ipazyxoegukgjnpi\",\"exposedHeaders\":\"gygev\",\"maxAgeInSeconds\":7286292196519696494}")
             .toObject(CorsPolicy.class);
-        Assertions.assertEquals("xjnspy", model.allowedOrigins());
-        Assertions.assertEquals("tko", model.allowedMethods());
-        Assertions.assertEquals("kouknvudwtiu", model.allowedHeaders());
-        Assertions.assertEquals("ldngkpoci", model.exposedHeaders());
-        Assertions.assertEquals(852588596327636327L, model.maxAgeInSeconds());
+        Assertions.assertEquals("ptkoenkoukn", model.allowedOrigins());
+        Assertions.assertEquals("dwtiukbldngkp", model.allowedMethods());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.allowedHeaders());
+        Assertions.assertEquals("gygev", model.exposedHeaders());
+        Assertions.assertEquals(7286292196519696494L, model.maxAgeInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CorsPolicy model = new CorsPolicy().withAllowedOrigins("xjnspy")
-            .withAllowedMethods("tko")
-            .withAllowedHeaders("kouknvudwtiu")
-            .withExposedHeaders("ldngkpoci")
-            .withMaxAgeInSeconds(852588596327636327L);
+        CorsPolicy model = new CorsPolicy().withAllowedOrigins("ptkoenkoukn")
+            .withAllowedMethods("dwtiukbldngkp")
+            .withAllowedHeaders("ipazyxoegukgjnpi")
+            .withExposedHeaders("gygev")
+            .withMaxAgeInSeconds(7286292196519696494L);
         model = BinaryData.fromObject(model).toObject(CorsPolicy.class);
-        Assertions.assertEquals("xjnspy", model.allowedOrigins());
-        Assertions.assertEquals("tko", model.allowedMethods());
-        Assertions.assertEquals("kouknvudwtiu", model.allowedHeaders());
-        Assertions.assertEquals("ldngkpoci", model.exposedHeaders());
-        Assertions.assertEquals(852588596327636327L, model.maxAgeInSeconds());
+        Assertions.assertEquals("ptkoenkoukn", model.allowedOrigins());
+        Assertions.assertEquals("dwtiukbldngkp", model.allowedMethods());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.allowedHeaders());
+        Assertions.assertEquals("gygev", model.exposedHeaders());
+        Assertions.assertEquals(7286292196519696494L, model.maxAgeInSeconds());
     }
 }

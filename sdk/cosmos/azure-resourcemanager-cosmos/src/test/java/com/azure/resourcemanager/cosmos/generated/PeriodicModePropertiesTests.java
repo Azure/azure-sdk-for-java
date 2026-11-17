@@ -13,21 +13,21 @@ public final class PeriodicModePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PeriodicModeProperties model = BinaryData.fromString(
-            "{\"backupIntervalInMinutes\":2122365511,\"backupRetentionIntervalInHours\":516508763,\"backupStorageRedundancy\":\"Local\"}")
+            "{\"backupIntervalInMinutes\":1190455395,\"backupRetentionIntervalInHours\":63743502,\"backupStorageRedundancy\":\"Local\"}")
             .toObject(PeriodicModeProperties.class);
-        Assertions.assertEquals(2122365511, model.backupIntervalInMinutes());
-        Assertions.assertEquals(516508763, model.backupRetentionIntervalInHours());
+        Assertions.assertEquals(1190455395, model.backupIntervalInMinutes());
+        Assertions.assertEquals(63743502, model.backupRetentionIntervalInHours());
         Assertions.assertEquals(BackupStorageRedundancy.LOCAL, model.backupStorageRedundancy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeriodicModeProperties model = new PeriodicModeProperties().withBackupIntervalInMinutes(2122365511)
-            .withBackupRetentionIntervalInHours(516508763)
+        PeriodicModeProperties model = new PeriodicModeProperties().withBackupIntervalInMinutes(1190455395)
+            .withBackupRetentionIntervalInHours(63743502)
             .withBackupStorageRedundancy(BackupStorageRedundancy.LOCAL);
         model = BinaryData.fromObject(model).toObject(PeriodicModeProperties.class);
-        Assertions.assertEquals(2122365511, model.backupIntervalInMinutes());
-        Assertions.assertEquals(516508763, model.backupRetentionIntervalInHours());
+        Assertions.assertEquals(1190455395, model.backupIntervalInMinutes());
+        Assertions.assertEquals(63743502, model.backupRetentionIntervalInHours());
         Assertions.assertEquals(BackupStorageRedundancy.LOCAL, model.backupStorageRedundancy());
     }
 }

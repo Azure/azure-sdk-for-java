@@ -18,31 +18,36 @@ public final class PeriodicModeBackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PeriodicModeBackupPolicy model = BinaryData.fromString(
-            "{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":750094319,\"backupRetentionIntervalInHours\":943693980,\"backupStorageRedundancy\":\"Zone\"},\"migrationState\":{\"status\":\"InProgress\",\"targetType\":\"Periodic\",\"startTime\":\"2021-02-27T12:32:19Z\"}}")
+            "{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":943693980,\"backupRetentionIntervalInHours\":517393984,\"backupStorageRedundancy\":\"Geo\"},\"migrationState\":{\"status\":\"Invalid\",\"targetType\":\"Periodic\",\"startTime\":\"2021-08-05T17:04:54Z\"},\"backupRetentionLockExpirationTimestamp\":\"2021-11-07T07:40:57Z\"}")
             .toObject(PeriodicModeBackupPolicy.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.IN_PROGRESS, model.migrationState().status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.PERIODIC, model.migrationState().targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:32:19Z"), model.migrationState().startTime());
-        Assertions.assertEquals(750094319, model.periodicModeProperties().backupIntervalInMinutes());
-        Assertions.assertEquals(943693980, model.periodicModeProperties().backupRetentionIntervalInHours());
-        Assertions.assertEquals(BackupStorageRedundancy.ZONE, model.periodicModeProperties().backupStorageRedundancy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T17:04:54Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T07:40:57Z"),
+            model.backupRetentionLockExpirationTimestamp());
+        Assertions.assertEquals(943693980, model.periodicModeProperties().backupIntervalInMinutes());
+        Assertions.assertEquals(517393984, model.periodicModeProperties().backupRetentionIntervalInHours());
+        Assertions.assertEquals(BackupStorageRedundancy.GEO, model.periodicModeProperties().backupStorageRedundancy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PeriodicModeBackupPolicy model = new PeriodicModeBackupPolicy()
-            .withMigrationState(new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.IN_PROGRESS)
+            .withMigrationState(new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.INVALID)
                 .withTargetType(BackupPolicyType.PERIODIC)
-                .withStartTime(OffsetDateTime.parse("2021-02-27T12:32:19Z")))
-            .withPeriodicModeProperties(new PeriodicModeProperties().withBackupIntervalInMinutes(750094319)
-                .withBackupRetentionIntervalInHours(943693980)
-                .withBackupStorageRedundancy(BackupStorageRedundancy.ZONE));
+                .withStartTime(OffsetDateTime.parse("2021-08-05T17:04:54Z")))
+            .withBackupRetentionLockExpirationTimestamp(OffsetDateTime.parse("2021-11-07T07:40:57Z"))
+            .withPeriodicModeProperties(new PeriodicModeProperties().withBackupIntervalInMinutes(943693980)
+                .withBackupRetentionIntervalInHours(517393984)
+                .withBackupStorageRedundancy(BackupStorageRedundancy.GEO));
         model = BinaryData.fromObject(model).toObject(PeriodicModeBackupPolicy.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.IN_PROGRESS, model.migrationState().status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.migrationState().status());
         Assertions.assertEquals(BackupPolicyType.PERIODIC, model.migrationState().targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:32:19Z"), model.migrationState().startTime());
-        Assertions.assertEquals(750094319, model.periodicModeProperties().backupIntervalInMinutes());
-        Assertions.assertEquals(943693980, model.periodicModeProperties().backupRetentionIntervalInHours());
-        Assertions.assertEquals(BackupStorageRedundancy.ZONE, model.periodicModeProperties().backupStorageRedundancy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T17:04:54Z"), model.migrationState().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T07:40:57Z"),
+            model.backupRetentionLockExpirationTimestamp());
+        Assertions.assertEquals(943693980, model.periodicModeProperties().backupIntervalInMinutes());
+        Assertions.assertEquals(517393984, model.periodicModeProperties().backupRetentionIntervalInHours());
+        Assertions.assertEquals(BackupStorageRedundancy.GEO, model.periodicModeProperties().backupStorageRedundancy());
     }
 }
