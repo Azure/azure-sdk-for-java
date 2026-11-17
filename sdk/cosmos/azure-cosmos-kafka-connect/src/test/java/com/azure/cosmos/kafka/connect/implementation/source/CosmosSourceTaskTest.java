@@ -50,6 +50,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
     private static final long NO_CHANGES_POLL_MAX_MS = 500;
+    private static final long RECORDS_POLL_TIMEOUT_MS = 30_000;
 
     @Test(groups = "unit")
     public void pollDelayOnlyAppliesWhenChangeFeedHasNoChanges() {
@@ -248,6 +249,16 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         return sourceRecords;
     }
 
+    // poll() returns empty after 1s while the in-flight poll keeps running, so accumulate until all records arrive.
+    private static List<SourceRecord> pollUntilRecordCount(CosmosSourceTask sourceTask, int expectedCount, long timeoutInMs) {
+        long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutInMs);
+        List<SourceRecord> sourceRecords = new ArrayList<>(sourceTask.poll());
+        while (sourceRecords.size() < expectedCount && System.nanoTime() < deadlineNanos) {
+            sourceRecords.addAll(sourceTask.poll());
+        }
+        return sourceRecords;
+    }
+
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
@@ -319,11 +330,11 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             List<TestItem> createdItems =
                 this.createItems(clientItem.getClient(), databaseName, testContainerName, 10);
 
-            List<SourceRecord> sourceRecords = sourceTask.poll();
+            List<SourceRecord> sourceRecords = pollUntilRecords(sourceTask, RECORDS_POLL_TIMEOUT_MS);
             // Since there are metadata task unit being defined, we expected to get the metadata records first.
             validateMetadataRecords(sourceRecords, metadataTaskUnit);
 
-            sourceRecords = sourceTask.poll();
+            sourceRecords = pollUntilRecordCount(sourceTask, createdItems.size(), RECORDS_POLL_TIMEOUT_MS);
             validateFeedRangeRecords(sourceRecords, createdItems);
 
             logger.info("Testing split...");
@@ -353,13 +364,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             }
 
             createdItems = this.createItems(clientItem.getClient(), databaseName, testContainerName, 10);
-            sourceRecords = new ArrayList<>();
-            // the first poll will return 0 records as it will be the first time the task detect split happened
-            // internally it will create two new feedRange task units
-            // so here we will need to poll 3 times to get all newly created items
-            for (int i = 0; i < 3; i++) {
-                sourceRecords.addAll(sourceTask.poll());
-            }
+            // the first poll after the split returns 0 records and creates two new feedRange task units
+            sourceRecords = pollUntilRecordCount(sourceTask, createdItems.size(), RECORDS_POLL_TIMEOUT_MS);
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
             if (sourceTask != null) {
@@ -426,13 +432,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             List<TestItem> createdItems =
                 this.createItems(clientItem.getClient(), databaseName, testContainerName, 10);
 
-            List<SourceRecord> sourceRecords = new ArrayList<>();
-            // the first poll will return 0 records as it will be the first time the task detect split happened
-            // internally it will create two new feedRange task units
-            // so here we will need to poll 3 times to get all newly created items
-            for (int i = 0; i < 3; i++) {
-                sourceRecords.addAll(sourceTask.poll());
-            }
+            // the first poll detects the split, returns 0 records and creates two new feedRange task units
+            List<SourceRecord> sourceRecords =
+                pollUntilRecordCount(sourceTask, createdItems.size(), RECORDS_POLL_TIMEOUT_MS);
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
             if (sourceTask != null) {
@@ -494,11 +496,6 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             // first creating few items in the container
             this.createItems(clientItem.getClient(), databaseName, multiPartitionContainer.getId(), 10);
 
-            List<SourceRecord> sourceRecords = new ArrayList<>();
-            for (int i = 0; i < 3; i++) { // poll few times
-                sourceRecords.addAll(sourceTask.poll());
-            }
-
             // get all items belong to feed range 0
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             queryRequestOptions.setFeedRange(feedRanges.get(0));
@@ -512,6 +509,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 .collectList()
                 .block();
 
+            List<SourceRecord> sourceRecords =
+                pollUntilRecordCount(sourceTask, expectedItems.size(), RECORDS_POLL_TIMEOUT_MS);
             validateFeedRangeRecords(sourceRecords, expectedItems);
         } finally {
             if (sourceTask != null) {
@@ -581,11 +580,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             List<TestItem> createdItems =
                 this.createItems(clientCacheItem.getClient(), databaseName, singlePartitionContainer.getId(), 10);
 
-            List<SourceRecord> sourceRecords = new ArrayList<>();
-            for (int i = 0; i < 3; i++) { // poll few times
-                sourceRecords.addAll(sourceTask.poll());
-            }
-
+            List<SourceRecord> sourceRecords =
+                pollUntilRecordCount(sourceTask, createdItems.size(), RECORDS_POLL_TIMEOUT_MS);
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
             if (sourceTask != null) {
@@ -799,7 +795,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 .map(testItem -> testItem.getId())
                 .collect(Collectors.toList());
         assertThat(idsReceived.size()).isEqualTo(expectedItems.size());
-        assertThat(idsReceived.containsAll(expectedIds));
+        assertThat(idsReceived.containsAll(expectedIds)).isTrue();
     }
 
     private List<TestItem> createItems(
