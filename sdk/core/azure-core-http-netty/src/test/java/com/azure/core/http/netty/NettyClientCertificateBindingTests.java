@@ -5,10 +5,14 @@ package com.azure.core.http.netty;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.ClientCertificateBinding;
+import com.azure.core.credential.ProofOfPossessionOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -42,6 +46,7 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -153,6 +158,55 @@ public class NettyClientCertificateBindingTests {
     }
 
     @Test
+    public void boundTokenIsReusedForConcurrentRequestsToDifferentUrls() {
+        AtomicInteger credentialCalls = new AtomicInteger();
+        AccessToken token = new AccessToken("token", OffsetDateTime.now().plusHours(1), null, "mtls_pop", BINDING_A);
+        // The delay keeps the token request in flight while the other requests ask for a token for their own URL.
+        HttpPipeline pipeline = createProofOfPossessionPipeline(createClient(), request -> Mono.defer(() -> {
+            credentialCalls.incrementAndGet();
+            return Mono.just(token).delayElement(Duration.ofMillis(200));
+        }));
+        List<String> paths = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            paths.add(createPath());
+        }
+
+        StepVerifier.create(Flux.fromIterable(paths).flatMap(path -> send(pipeline, path)))
+            .expectNextCount(10)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
+
+        assertEquals(1, credentialCalls.get());
+        for (String path : paths) {
+            ReceivedRequest received = RECEIVED.get(path).peek();
+            assertEquals(subject(BINDING_A), received.certificate);
+            assertEquals("mtls_pop token", received.authorization);
+        }
+    }
+
+    @Test
+    public void signedRequestTokenIsReplacedForAnotherUrl() throws SSLException {
+        AtomicInteger credentialCalls = new AtomicInteger();
+        HttpPipeline pipeline = createProofOfPossessionPipeline(createClientTrustingServers(),
+            request -> Mono.fromSupplier(() -> new AccessToken("token-" + credentialCalls.incrementAndGet(),
+                OffsetDateTime.now().plusHours(1), null, "PoP")));
+        String path = createPath();
+        String otherPath = createPath();
+
+        for (String requestPath : Arrays.asList(path, path, otherPath)) {
+            StepVerifier.create(send(pipeline, requestPath))
+                .expectNext(200)
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
+        }
+
+        // The token isn't bound to a certificate, so the requests go over connections that don't present one.
+        assertEquals(Arrays.asList("PoP token-1", "PoP token-1"), getAuthorizations(path));
+        assertEquals(Collections.singletonList("PoP token-2"), getAuthorizations(otherPath));
+        assertEquals(Arrays.asList(NO_CERTIFICATE, NO_CERTIFICATE), getPresentedCertificates(path));
+    }
+
+    @Test
     public void boundRequestIsNotSentWhenServerDoesNotRequestCertificate() {
         String path = createPath();
 
@@ -238,12 +292,7 @@ public class NettyClientCertificateBindingTests {
 
     @Test
     public void reactorClientPassedToBuilderSendsBoundAndUnboundRequests() throws SSLException {
-        SslContext sslContext
-            = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
-        HttpClient client = new NettyAsyncHttpClientBuilder(
-            reactor.netty.http.client.HttpClient.create().secure(spec -> spec.sslContext(sslContext)))
-                .clientCertificateBindingTrustManagerFactory(InsecureTrustManagerFactory.INSTANCE)
-                .build();
+        HttpClient client = createClientTrustingServers();
         String path = createPath();
 
         for (ClientCertificateBinding binding : Arrays.asList(null, BINDING_A, null)) {
@@ -260,6 +309,43 @@ public class NettyClientCertificateBindingTests {
         return new NettyAsyncHttpClientBuilder()
             .clientCertificateBindingTrustManagerFactory(InsecureTrustManagerFactory.INSTANCE)
             .build();
+    }
+
+    // Creates a client from a Reactor Netty client that trusts the local servers, so that requests that aren't bound to
+    // a certificate can reach them too.
+    private static HttpClient createClientTrustingServers() throws SSLException {
+        SslContext sslContext
+            = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        return new NettyAsyncHttpClientBuilder(
+            reactor.netty.http.client.HttpClient.create().secure(spec -> spec.sslContext(sslContext)))
+                .clientCertificateBindingTrustManagerFactory(InsecureTrustManagerFactory.INSTANCE)
+                .build();
+    }
+
+    // Creates a pipeline whose authentication policy asks for a proof-of-possession token for each request's URL and
+    // method.
+    private static HttpPipeline createProofOfPossessionPipeline(HttpClient client, TokenCredential credential) {
+        BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy(credential, "scope") {
+            @Override
+            public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+                HttpRequest request = context.getHttpRequest();
+                return setAuthorizationHeader(context,
+                    new TokenRequestContext().addScopes("scope")
+                        .setProofOfPossessionOptions(new ProofOfPossessionOptions().setRequestUrl(request.getUrl())
+                            .setRequestMethod(request.getHttpMethod())));
+            }
+        };
+
+        return new HttpPipelineBuilder().policies(policy).httpClient(client).build();
+    }
+
+    // Sends a GET request through the pipeline to the server that requests a client certificate, and emits the
+    // response status code.
+    private static Mono<Integer> send(HttpPipeline pipeline, String path) {
+        return pipeline.send(new HttpRequest(HttpMethod.GET, requestingServer.getHttpsUri() + path))
+            .flatMap(response -> response.getBodyAsByteArray()
+                .then(Mono.fromSupplier(response::getStatusCode))
+                .doFinally(ignored -> response.close()));
     }
 
     // Sends a GET request bound to the certificate, or unbound if it's null, and emits the response status code.
@@ -281,6 +367,15 @@ public class NettyClientCertificateBindingTests {
         }
 
         return certificates;
+    }
+
+    private static List<String> getAuthorizations(String path) {
+        List<String> authorizations = new ArrayList<>();
+        for (ReceivedRequest request : RECEIVED.getOrDefault(path, new ConcurrentLinkedQueue<>())) {
+            authorizations.add(request.authorization);
+        }
+
+        return authorizations;
     }
 
     private static String createPath() {
