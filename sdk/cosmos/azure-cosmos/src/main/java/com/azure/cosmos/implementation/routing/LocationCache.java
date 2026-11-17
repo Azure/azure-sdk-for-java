@@ -49,7 +49,9 @@ public class LocationCache {
     private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
 
     private final boolean enableEndpointDiscovery;
-    private final RegionalRoutingContext defaultRoutingContext;
+    // A new instance is published on each topology refresh. Requests pin the instance in
+    // requestContext.regionalRoutingContextToRoute, so the published instances must be immutable.
+    private volatile RegionalRoutingContext defaultRoutingContext;
     private final boolean useMultipleWriteLocations;
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
@@ -194,52 +196,76 @@ public class LocationCache {
      * @param databaseAccount READ DatabaseAccount
      */
     public void onDatabaseAccountRead(DatabaseAccount databaseAccount) {
+        Iterable<DatabaseAccountLocation> gatewayWriteLocations = databaseAccount.getWritableLocations();
+        Iterable<DatabaseAccountLocation> gatewayReadLocations = databaseAccount.getReadableLocations();
+        Iterable<DatabaseAccountLocation> thinClientWriteLocations = databaseAccount.getThinClientWritableLocations();
+        Iterable<DatabaseAccountLocation> thinClientReadLocations = databaseAccount.getThinClientReadableLocations();
+
+        // Publish a fresh context before rebuilding the routing lists so the new fallback is used by
+        // subsequent requests. The previously published instances are never mutated: in-flight requests
+        // pin them in requestContext.regionalRoutingContextToRoute.
+        this.defaultRoutingContext = createDefaultRoutingContext(
+                gatewayWriteLocations,
+                gatewayReadLocations,
+                thinClientWriteLocations,
+                thinClientReadLocations);
+
         this.updateLocationCache(
-                databaseAccount.getWritableLocations(),
-                databaseAccount.getReadableLocations(),
-                databaseAccount.getThinClientWritableLocations(),
-                databaseAccount.getThinClientReadableLocations(),
+                gatewayWriteLocations,
+                gatewayReadLocations,
+                thinClientWriteLocations,
+                thinClientReadLocations,
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
-
-        this.updateDefaultRoutingContextThinClientEndpoint(
-                databaseAccount.getWritableLocations(),
-                databaseAccount.getThinClientWritableLocations(),
-                databaseAccount.getThinClientReadableLocations());
     }
 
     /**
-     * Keeps the thin-client endpoint of {@link #defaultRoutingContext} in sync with the account topology.
+     * Creates the fallback routing context for the new account topology.
      *
      * <p>The default routing context is the fallback when no preferred region is available (for example, when the
      * configured preferred regions do not match any account region). Unlike the regional routing contexts, it is not
      * built by {@link #getEndpointsByLocation}, so its thin-client endpoint was never populated. Requests routed
      * through the thin-client store model then received a {@code null} root URI.</p>
      *
-     * <p>The default endpoint is the global write endpoint, so the preferred thin-client endpoint is the one for the
-     * account's primary write region. This matters for single-master accounts, where sending a write to a read
-     * region's thin-client endpoint would be rejected. Falls back to any available thin-client endpoint.</p>
+     * <p>When the client was configured with a regional endpoint, the thin-client endpoint of that same region is
+     * used, so traffic is not sent outside the configured region. For a global default endpoint the primary write
+     * region's thin-client endpoint is used, because writes must reach the write region (single-master accounts).
+     * Other thin-client endpoints are only used as a last resort for global defaults.</p>
      */
-    private void updateDefaultRoutingContextThinClientEndpoint(
+    private RegionalRoutingContext createDefaultRoutingContext(
             Iterable<DatabaseAccountLocation> gatewayWriteLocations,
+            Iterable<DatabaseAccountLocation> gatewayReadLocations,
             Iterable<DatabaseAccountLocation> thinClientWriteLocations,
             Iterable<DatabaseAccountLocation> thinClientReadLocations) {
 
-        String primaryWriteRegion = firstLocationName(gatewayWriteLocations);
-
-        URI thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, primaryWriteRegion);
-        if (thinClientEndpoint == null) {
-            thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, primaryWriteRegion);
-        }
-        if (thinClientEndpoint == null) {
-            thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, null);
-        }
-        if (thinClientEndpoint == null) {
-            thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, null);
+        URI defaultGatewayEndpoint = this.defaultRoutingContext.getGatewayRegionalEndpoint();
+        String defaultEndpointRegion = findRegionNameForEndpoint(gatewayWriteLocations, defaultGatewayEndpoint);
+        if (defaultEndpointRegion == null) {
+            defaultEndpointRegion = findRegionNameForEndpoint(gatewayReadLocations, defaultGatewayEndpoint);
         }
 
-        // Passing null clears a stale endpoint when the account no longer has thin-client locations.
-        this.defaultRoutingContext.setThinclientRegionalEndpoint(thinClientEndpoint);
+        URI thinClientEndpoint;
+        if (defaultEndpointRegion != null) {
+            // Do not fall back to a different region for a regional default endpoint.
+            thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, defaultEndpointRegion);
+            if (thinClientEndpoint == null) {
+                thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, defaultEndpointRegion);
+            }
+        } else {
+            String primaryWriteRegion = firstLocationName(gatewayWriteLocations);
+            thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, primaryWriteRegion);
+            if (thinClientEndpoint == null) {
+                thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, primaryWriteRegion);
+            }
+            if (thinClientEndpoint == null) {
+                thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, null);
+            }
+            if (thinClientEndpoint == null) {
+                thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, null);
+            }
+        }
+
+        return new RegionalRoutingContext(defaultGatewayEndpoint, thinClientEndpoint);
     }
 
     private static String firstLocationName(Iterable<DatabaseAccountLocation> locations) {
@@ -278,6 +304,36 @@ public class LocationCache {
                 return new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
             } catch (Exception e) {
                 logger.warn("Skipping thin-client endpoint [{}] due to exception [{}]",
+                    location.getEndpoint(), e.getMessage());
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the region whose gateway endpoint matches {@code endpoint}, or null when the endpoint is the
+     * global account endpoint (or is not part of the account topology).
+     */
+    private static String findRegionNameForEndpoint(
+            Iterable<DatabaseAccountLocation> locations,
+            URI endpoint) {
+
+        if (locations == null || endpoint == null) {
+            return null;
+        }
+
+        for (DatabaseAccountLocation location : locations) {
+            if (location == null || Strings.isNullOrEmpty(location.getName()) || Strings.isNullOrEmpty(location.getEndpoint())) {
+                continue;
+            }
+
+            try {
+                if (endpoint.equals(new URI(location.getEndpoint().toLowerCase(Locale.ROOT)))) {
+                    return location.getName();
+                }
+            } catch (Exception e) {
+                logger.warn("Skipping gateway endpoint [{}] due to exception [{}]",
                     location.getEndpoint(), e.getMessage());
             }
         }
