@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.aot.test.generate.TestGenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -34,6 +35,7 @@ import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.C
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Isolated("AOT compilation uses a forked class loader")
 class AzureGlobalPropertiesAutoConfigurationTests {
 
     private static final String CLIENT_ID_PROPERTY = "spring.cloud.azure.credential.client-id";

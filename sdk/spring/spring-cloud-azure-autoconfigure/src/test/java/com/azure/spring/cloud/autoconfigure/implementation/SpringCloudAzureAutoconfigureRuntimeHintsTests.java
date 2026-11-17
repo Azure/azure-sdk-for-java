@@ -3,17 +3,27 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.identity.AzureIdentityEnvVars;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.storage.queue.QueueMessageEncoding;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
@@ -26,6 +36,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +50,36 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
     @Test
     void registersHintsForPasswordlessBinding() throws NoSuchMethodException {
         assertPasswordlessBindingHints(loadHints(getClass().getClassLoader()));
+    }
+
+    @Test
+    void registersHintsForJdbcPasswordlessBinding() throws NoSuchMethodException {
+        assertJdbcPasswordlessBindingHints(loadHints(getClass().getClassLoader()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("connectionDetailsBindingCases")
+    void registersHintsForConnectionDetailsBinding(String sdkPackage, Class<?> propertiesType,
+        String methodName, Class<?>[] parameterTypes) throws NoSuchMethodException {
+        RuntimeHints hints = loadHints(getClass().getClassLoader());
+
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onConstructorInvocation(propertiesType.getDeclaredConstructor())).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(propertiesType.getMethod(methodName, parameterTypes))).accepts(hints);
+    }
+
+    @ParameterizedTest
+    @MethodSource("connectionDetailsBindingCases")
+    void skipsConnectionDetailsBindingHintsWithoutSdk(String sdkPackage, Class<?> propertiesType,
+        String methodName, Class<?>[] parameterTypes) throws IOException, NoSuchMethodException {
+        try (FilteredClassLoader classLoader = new FilteredClassLoader(sdkPackage)) {
+            RuntimeHints hints = loadHints(classLoader);
+
+            assertThat(hints.reflection().getTypeHint(propertiesType)).isNull();
+            assertGlobalBindingHints(hints);
+            assertJdbcPasswordlessBindingHints(hints);
+        }
     }
 
     @Test
@@ -125,6 +166,21 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
         }
     }
 
+    private static Stream<Arguments> connectionDetailsBindingCases() {
+        return Stream.of(
+            Arguments.of("com.azure.cosmos", AzureCosmosProperties.class,
+                "setConsistencyLevel", new Class<?>[] {ConsistencyLevel.class}),
+            Arguments.of("com.azure.messaging.eventhubs", AzureEventHubsProperties.class,
+                "getConsumer", new Class<?>[0]),
+            Arguments.of("com.azure.messaging.servicebus", AzureServiceBusProperties.class,
+                "getConsumer", new Class<?>[0]),
+            Arguments.of("com.azure.storage.blob", AzureStorageBlobProperties.class,
+                "setBlobName", new Class<?>[] {String.class}),
+            Arguments.of("com.azure.storage.queue", AzureStorageQueueProperties.class,
+                "setMessageEncoding", new Class<?>[] {QueueMessageEncoding.class})
+        );
+    }
+
     private RuntimeHints loadHints(ClassLoader classLoader) {
         List<RuntimeHintsRegistrar> registrars =
             SpringFactoriesLoader.forResourceLocation("META-INF/spring/aot.factories", classLoader)
@@ -155,5 +211,14 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
             .onMethodInvocation(AzurePasswordlessProperties.class, "setPasswordlessEnabled")).accepts(hints);
         assertThat(RuntimeHintsPredicates.reflection()
             .onMethodInvocation(AzurePasswordlessProperties.class, "setScopes")).accepts(hints);
+    }
+
+    private void assertJdbcPasswordlessBindingHints(RuntimeHints hints) throws NoSuchMethodException {
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onConstructorInvocation(AzureJdbcPasswordlessProperties.class.getDeclaredConstructor())).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(AzureJdbcPasswordlessProperties.class, "setPasswordlessEnabled")).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(AzureJdbcPasswordlessProperties.class, "setScopes")).accepts(hints);
     }
 }
