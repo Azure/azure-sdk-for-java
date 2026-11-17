@@ -554,6 +554,80 @@ public class LocationCacheTest {
         closeEndpointManager();
     }
 
+    @Test(groups = "unit")
+    public void resolveServiceEndpointWithUnmatchedPreferredRegionUsesDefaultThinClientEndpoint() {
+        URI defaultEndpoint = createUrl("https://acct.documents.azure.com:443/");
+        URI primaryWriteRegionThinClientEndpoint = createUrl("https://acct-westcentralus.documents.azure.com:10250/");
+
+        DatabaseAccount account = createThinClientAccount(
+            primaryWriteRegionThinClientEndpoint,
+            createUrl("https://acct-eastus3.documents.azure.com:10250/"));
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
+
+        LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
+        cache.onDatabaseAccountRead(account);
+
+        // No preferred region matches the account, so both reads and writes fall back to the
+        // default (global) routing context. Its thin-client endpoint must be populated.
+        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        RegionalRoutingContext readContext = cache.resolveServiceEndpoint(readRequest);
+        assertThat(readContext.getGatewayRegionalEndpoint()).isEqualTo(defaultEndpoint);
+        assertThat(readContext.getThinclientRegionalEndpoint()).isEqualTo(primaryWriteRegionThinClientEndpoint);
+
+        RxDocumentServiceRequest writeRequest = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
+        RegionalRoutingContext writeContext = cache.resolveServiceEndpoint(writeRequest);
+        assertThat(writeContext.getGatewayRegionalEndpoint()).isEqualTo(defaultEndpoint);
+        assertThat(writeContext.getThinclientRegionalEndpoint()).isEqualTo(primaryWriteRegionThinClientEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void onDatabaseAccountReadWithoutThinClientLocationsClearsDefaultThinClientEndpoint() {
+        URI defaultEndpoint = createUrl("https://acct.documents.azure.com:443/");
+        DatabaseAccount thinClientAccount = createThinClientAccount(
+            createUrl("https://acct-westcentralus.documents.azure.com:10250/"),
+            createUrl("https://acct-eastus3.documents.azure.com:10250/"));
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
+
+        LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        cache.onDatabaseAccountRead(thinClientAccount);
+        assertThat(cache.resolveServiceEndpoint(request).getThinclientRegionalEndpoint()).isNotNull();
+
+        cache.onDatabaseAccountRead(createDatabaseAccount(true));
+        assertThat(cache.resolveServiceEndpoint(request).getThinclientRegionalEndpoint()).isNull();
+    }
+
+    private static DatabaseAccount createThinClientAccount(URI primaryThinClientEndpoint, URI secondaryThinClientEndpoint) {
+        DatabaseAccount account = new DatabaseAccount();
+        account.setEnableMultipleWriteLocations(true);
+
+        List<DatabaseAccountLocation> gatewayLocations = Arrays.asList(
+            createDatabaseAccountLocation("West Central US", "https://acct-westcentralus.documents.azure.com:443/"),
+            createDatabaseAccountLocation("East US 3", "https://acct-eastus3.documents.azure.com:443/"));
+        account.setReadableLocations(gatewayLocations);
+        account.setWritableLocations(gatewayLocations);
+
+        List<DatabaseAccountLocation> thinClientLocations = Arrays.asList(
+            createDatabaseAccountLocation("West Central US", primaryThinClientEndpoint.toString()),
+            createDatabaseAccountLocation("East US 3", secondaryThinClientEndpoint.toString()));
+        account.set(com.azure.cosmos.implementation.Constants.Properties.THINCLIENT_READABLE_LOCATIONS, thinClientLocations);
+        account.set(com.azure.cosmos.implementation.Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, thinClientLocations);
+
+        return account;
+    }
+
     private void closeEndpointManager() {
         LifeCycleUtils.closeQuietly(this.endpointManager);
         this.endpointManager = null;

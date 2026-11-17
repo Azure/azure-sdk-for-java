@@ -201,6 +201,88 @@ public class LocationCache {
                 databaseAccount.getThinClientReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
+
+        this.updateDefaultRoutingContextThinClientEndpoint(
+                databaseAccount.getWritableLocations(),
+                databaseAccount.getThinClientWritableLocations(),
+                databaseAccount.getThinClientReadableLocations());
+    }
+
+    /**
+     * Keeps the thin-client endpoint of {@link #defaultRoutingContext} in sync with the account topology.
+     *
+     * <p>The default routing context is the fallback when no preferred region is available (for example, when the
+     * configured preferred regions do not match any account region). Unlike the regional routing contexts, it is not
+     * built by {@link #getEndpointsByLocation}, so its thin-client endpoint was never populated. Requests routed
+     * through the thin-client store model then received a {@code null} root URI.</p>
+     *
+     * <p>The default endpoint is the global write endpoint, so the preferred thin-client endpoint is the one for the
+     * account's primary write region. This matters for single-master accounts, where sending a write to a read
+     * region's thin-client endpoint would be rejected. Falls back to any available thin-client endpoint.</p>
+     */
+    private void updateDefaultRoutingContextThinClientEndpoint(
+            Iterable<DatabaseAccountLocation> gatewayWriteLocations,
+            Iterable<DatabaseAccountLocation> thinClientWriteLocations,
+            Iterable<DatabaseAccountLocation> thinClientReadLocations) {
+
+        String primaryWriteRegion = firstLocationName(gatewayWriteLocations);
+
+        URI thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, primaryWriteRegion);
+        if (thinClientEndpoint == null) {
+            thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, primaryWriteRegion);
+        }
+        if (thinClientEndpoint == null) {
+            thinClientEndpoint = findThinClientEndpoint(thinClientWriteLocations, null);
+        }
+        if (thinClientEndpoint == null) {
+            thinClientEndpoint = findThinClientEndpoint(thinClientReadLocations, null);
+        }
+
+        // Passing null clears a stale endpoint when the account no longer has thin-client locations.
+        this.defaultRoutingContext.setThinclientRegionalEndpoint(thinClientEndpoint);
+    }
+
+    private static String firstLocationName(Iterable<DatabaseAccountLocation> locations) {
+        if (locations == null) {
+            return null;
+        }
+
+        for (DatabaseAccountLocation location : locations) {
+            if (location != null && !Strings.isNullOrEmpty(location.getName())) {
+                return location.getName();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds a thin-client endpoint by region name, or the first available one when {@code regionName} is null.
+     */
+    private static URI findThinClientEndpoint(
+            Iterable<DatabaseAccountLocation> locations,
+            String regionName) {
+
+        if (locations == null) {
+            return null;
+        }
+
+        for (DatabaseAccountLocation location : locations) {
+            if (location == null
+                    || Strings.isNullOrEmpty(location.getEndpoint())
+                    || (!Strings.isNullOrEmpty(regionName) && !regionName.equalsIgnoreCase(location.getName()))) {
+                continue;
+            }
+
+            try {
+                return new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
+            } catch (Exception e) {
+                logger.warn("Skipping thin-client endpoint [{}] due to exception [{}]",
+                    location.getEndpoint(), e.getMessage());
+            }
+        }
+
+        return null;
     }
 
     /**

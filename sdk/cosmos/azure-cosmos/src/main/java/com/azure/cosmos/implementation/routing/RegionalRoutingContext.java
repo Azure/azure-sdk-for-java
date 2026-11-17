@@ -29,7 +29,9 @@ public class RegionalRoutingContext {
 
     public void setThinclientRegionalEndpoint(URI thinclientRegionalEndpoint) {
         this.thinclientRegionalEndpoint = thinclientRegionalEndpoint;
-        this.thinclientRegionalEndpointAsString = thinclientRegionalEndpoint.toString();
+        this.thinclientRegionalEndpointAsString = thinclientRegionalEndpoint == null
+            ? null
+            : thinclientRegionalEndpoint.toString();
     }
 
     public URI getThinclientRegionalEndpoint() {
