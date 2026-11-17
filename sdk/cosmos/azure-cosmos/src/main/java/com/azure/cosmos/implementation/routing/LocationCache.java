@@ -329,7 +329,7 @@ public class LocationCache {
             }
 
             try {
-                if (endpoint.equals(new URI(location.getEndpoint().toLowerCase(Locale.ROOT)))) {
+                if (areEquivalentGatewayEndpoints(endpoint, new URI(location.getEndpoint().toLowerCase(Locale.ROOT)))) {
                     return location.getName();
                 }
             } catch (Exception e) {
@@ -339,6 +339,44 @@ public class LocationCache {
         }
 
         return null;
+    }
+
+    /**
+     * Compares two gateway endpoints by scheme, host, port and path instead of using {@link URI#equals(Object)}.
+     *
+     * <p>An omitted default port (443 for HTTPS) and an empty or root path are equivalent to their explicit
+     * forms, so a client configured with {@code https://host} is recognized as the regional endpoint advertised
+     * as {@code https://host:443/}. Non-default ports remain significant.</p>
+     */
+    private static boolean areEquivalentGatewayEndpoints(URI first, URI second) {
+        if (first == null || second == null) {
+            return false;
+        }
+
+        return first.getScheme() != null && first.getScheme().equalsIgnoreCase(second.getScheme())
+            && first.getHost() != null && first.getHost().equalsIgnoreCase(second.getHost())
+            && normalizePort(first) == normalizePort(second)
+            && normalizePath(first).equals(normalizePath(second));
+    }
+
+    private static int normalizePort(URI endpoint) {
+        int port = endpoint.getPort();
+        if (port != -1) {
+            return port;
+        }
+
+        if ("https".equalsIgnoreCase(endpoint.getScheme())) {
+            return 443;
+        }
+        if ("http".equalsIgnoreCase(endpoint.getScheme())) {
+            return 80;
+        }
+        return -1;
+    }
+
+    private static String normalizePath(URI endpoint) {
+        String path = endpoint.getPath();
+        return Strings.isNullOrEmpty(path) || "/".equals(path) ? "/" : path;
     }
 
     /**
