@@ -69,7 +69,4 @@ The plugin includes the shared processor sources and resources from `sdk/tools/a
 
 Verification also runs SDK Checkstyle, Spotless formatting, and Codesnippet checks. Checkstyle covers plugin sources and tests; the processor module checks its own sources. Narrow exceptions allow Maven-injected fields and tool-specific exception handling.
 
-## Release
-
-Run `release.yml` manually from `main` in the internal project, opting into `publishDevFeed`. It builds and tests on Linux, then ESRP-signs all three JARs and GPG-signs/publishes the plugin JAR, POM, sources, and Javadoc to the Java dev feed on Windows. Existing versions cannot be overwritten.
-The pipeline uses the EngSys-approved Java signing and publishing configuration. Register `eng/pipelines/api-review-java.yml` as `tools - api-review-maven-plugin - ci` and this module's `release.yml` as an internal release pipeline.
+Register `eng/pipelines/api-review-java.yml` as `tools - api-review-maven-plugin - ci` for validation. This repository's ARH integration builds the tool from source and does not publish it.
