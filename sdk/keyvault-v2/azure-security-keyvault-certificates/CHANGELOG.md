@@ -10,4 +10,6 @@
 
 ### Bugs Fixed
 
+- Fixed a challenge resource verification error message that referenced `SecretClientBuilder`, which is not part of this package. The message now points to the client builder's `disableChallengeResourceVerification()` method.
+
 ### Other Changes

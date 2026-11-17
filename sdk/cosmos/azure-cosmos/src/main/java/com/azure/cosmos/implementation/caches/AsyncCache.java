@@ -108,14 +108,14 @@ public class AsyncCache<TKey, TValue> {
     }
 
     /**
-     * Remove value from cache and return it if present
-     * @param key
-     * @return Value if present, default value if not present
+     * Removes the value from the cache and returns it if present.
+     *
+     * @param key the key to remove.
+     * @return the removed value, or an empty {@link Mono} when the key is not present.
      */
     public Mono<TValue> removeAsync(TKey key) {
         AsyncLazy<TValue> lazy = values.remove(key);
-        return lazy.single();
-        // TODO: .Net returns default value on failure of single why?
+        return lazy != null ? lazy.single() : Mono.empty();
     }
 
     public void clear() {
