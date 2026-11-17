@@ -158,6 +158,9 @@ public class BlobAsyncClientBase {
     private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(
         new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
 
+    // Largest array the JVM reliably allocates. Larger downloads can't be collected into a single array.
+    private static final long MAX_BUFFERED_CONTENT_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
+
     /**
      * Backing REST client for the blob client.
      */
@@ -1109,8 +1112,7 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadContent() {
-        return downloadWithResponse(null, null, null, false)
-            .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+        return downloadWithResponse(null, null, null, false).flatMap(BlobAsyncClientBase::bufferDownloadContent);
     }
 
     /**
@@ -1270,10 +1272,9 @@ public class BlobAsyncClientBase {
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
                 // TODO: Re-enable when getLayout and setDataLocalityEndpoint are made public.
                 // StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
-                context)
-                    .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                        .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
-                            r.getHeaders(), data, r.getDeserializedHeaders()))));
+                context).flatMap(
+                    r -> bufferDownloadContent(r).map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(),
+                        r.getStatusCode(), r.getHeaders(), data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1364,6 +1365,23 @@ public class BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
                 context);
+    }
+
+    /*
+     * Buffers a download for the downloadContent APIs. When Content-Length fits in an array, the body is collected
+     * straight into an array of that size, so the BinaryData holds one copy of the content that toBytes(), toStream()
+     * and toByteBuffer() return without copying. BinaryData.fromFlux(Flux) would instead copy every network buffer into
+     * a list, and the first of those reads would copy the list into a growing array, holding the content twice.
+     * Without a usable Content-Length the body is buffered with BinaryData.fromFlux(Flux), as before.
+     */
+    static Mono<BinaryData> bufferDownloadContent(BlobDownloadAsyncResponse response) {
+        Long contentLength = response.getDeserializedHeaders().getContentLength();
+        if (contentLength == null || contentLength <= 0 || contentLength > MAX_BUFFERED_CONTENT_ARRAY_LENGTH) {
+            return BinaryData.fromFlux(response.getValue());
+        }
+
+        return FluxUtil.collectBytesInByteBufferStream(response.getValue(), contentLength.intValue())
+            .map(BinaryData::fromBytes);
     }
 
     /**

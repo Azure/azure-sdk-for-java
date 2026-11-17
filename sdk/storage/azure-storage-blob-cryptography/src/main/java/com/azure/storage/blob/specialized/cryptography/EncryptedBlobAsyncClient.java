@@ -730,8 +730,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public Mono<BinaryData> downloadContent() {
-        return downloadContentWithResponse(null, null)
-            .flatMap(response -> BinaryData.fromFlux(response.getValue().toFluxByteBuffer()));
+        return downloadContentWithResponse(null, null).map(Response::getValue);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

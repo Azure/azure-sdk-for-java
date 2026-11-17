@@ -31,6 +31,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -101,6 +103,8 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -110,6 +114,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -287,6 +293,52 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
+    }
+
+    /**
+     * Asserts that content returned by a downloadContent API is fully buffered: it holds exactly {@code expected} and
+     * can be read again, in every form, without going back to the network. Safe to call on an event loop.
+     *
+     * @param expected The expected content.
+     * @param content The content returned by downloadContent or downloadContentWithResponse.
+     */
+    protected static void assertBufferedDownloadContent(byte[] expected, BinaryData content) {
+        assertTrue(content.isReplayable());
+        assertEquals((long) expected.length, content.getLength());
+        TestUtils.assertArraysEqual(expected, content.toBytes());
+        TestUtils.assertArraysEqual(expected, StorageCommonTestUtils.convertInputStreamToByteArray(content.toStream()));
+        ByteArrayOutputStream fluxContent = new ByteArrayOutputStream();
+        for (ByteBuffer buffer : readBufferedContent(content)) {
+            byte[] bytes = new byte[buffer.remaining()];
+            buffer.get(bytes);
+            fluxContent.write(bytes, 0, bytes.length);
+        }
+        TestUtils.assertArraysEqual(expected, fluxContent.toByteArray());
+        TestUtils.assertArraysEqual(expected, content.toBytes());
+    }
+
+    /**
+     * Asserts that a downloadContent API collected the content into one array of exactly the response's Content-Length,
+     * which every read then returns without copying. Safe to call on an event loop.
+     *
+     * @param content The content returned by downloadContent or downloadContentWithResponse.
+     */
+    protected static void assertDownloadContentInOneArray(BinaryData content) {
+        assertEquals(1, readBufferedContent(content).size());
+        assertSame(content.toBytes(), content.toBytes());
+    }
+
+    /*
+     * Reads toFluxByteBuffer() without blocking: buffered content is emitted, and completes, while subscribing.
+     */
+    private static List<ByteBuffer> readBufferedContent(BinaryData content) {
+        List<ByteBuffer> buffers = new ArrayList<>();
+        AtomicReference<Throwable> error = new AtomicReference<>();
+        AtomicBoolean completed = new AtomicBoolean();
+        content.toFluxByteBuffer().subscribe(buffers::add, error::set, () -> completed.set(true));
+        assertNull(error.get());
+        assertTrue(completed.get(), "Reading the content didn't complete while subscribing, so it isn't buffered.");
+        return buffers;
     }
 
     protected String getAuthToken() {

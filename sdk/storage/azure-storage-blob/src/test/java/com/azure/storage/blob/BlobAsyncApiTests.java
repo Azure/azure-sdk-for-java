@@ -54,6 +54,7 @@ import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -106,6 +107,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -448,6 +450,49 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.downloadContent())
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r.toBytes()))
             .verifyComplete();
+    }
+
+    // The content is read inside the reactive chain, as the downloadContent samples do. That is only safe because the
+    // content is fully buffered before it's emitted; reading lazily loaded content there would block the event loop
+    // that has to deliver it, so the verification is bounded.
+    @Test
+    public void downloadBinaryDataMultipleNetworkBuffers() {
+        byte[] data = getRandomByteArray(32 * Constants.KB + 1);
+
+        StepVerifier.create(bc.upload(BinaryData.fromBytes(data), true).then(bc.downloadContent()))
+            .assertNext(content -> {
+                assertBufferedDownloadContent(data, content);
+                assertDownloadContentInOneArray(content);
+            })
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
+
+        StepVerifier.create(bc.downloadContentWithResponse(new BlobDownloadContentOptions())).assertNext(response -> {
+            assertBufferedDownloadContent(data, response.getValue());
+            assertDownloadContentInOneArray(response.getValue());
+        }).expectComplete().verify(Duration.ofMinutes(1));
+    }
+
+    @ParameterizedTest
+    @MethodSource("downloadRangeSupplier")
+    public void downloadBinaryDataRange(long offset, Long count, String expectedData) {
+        BlobRange range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, count);
+
+        StepVerifier.create(bc.downloadContentWithResponse(new BlobDownloadContentOptions().setRange(range)))
+            .assertNext(response -> {
+                assertBufferedDownloadContent(expectedData.getBytes(StandardCharsets.UTF_8), response.getValue());
+                assertDownloadContentInOneArray(response.getValue());
+            })
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
+    }
+
+    @Test
+    public void downloadBinaryDataEmptyBlob() {
+        StepVerifier.create(bc.upload(BinaryData.fromBytes(new byte[0]), true).then(bc.downloadContent()))
+            .assertNext(content -> assertBufferedDownloadContent(new byte[0], content))
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     @ParameterizedTest
