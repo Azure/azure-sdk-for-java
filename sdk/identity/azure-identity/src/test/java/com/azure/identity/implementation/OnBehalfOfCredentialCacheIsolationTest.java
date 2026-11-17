@@ -69,8 +69,9 @@ public class OnBehalfOfCredentialCacheIsolationTest {
         assertTokenForUser(createCredential(ASSERTION_B, cache, httpClient).getTokenSync(request), USER_B);
         assertEquals(2, httpClient.getTokenRequestCount());
 
+        // Each assertion keeps its own cache entry, so user A's token is still cached.
         assertTokenForUser(createCredential(ASSERTION_A, cache, httpClient).getTokenSync(request), USER_A);
-        assertEquals(3, httpClient.getTokenRequestCount());
+        assertEquals(2, httpClient.getTokenRequestCount());
     }
 
     @ParameterizedTest(name = "async cache isolation with CAE enabled: {0}")
@@ -90,8 +91,9 @@ public class OnBehalfOfCredentialCacheIsolationTest {
         verifyTokenForUser(createCredential(ASSERTION_B, cache, httpClient), request, USER_B);
         assertEquals(2, httpClient.getTokenRequestCount());
 
+        // Each assertion keeps its own cache entry, so user A's token is still cached.
         verifyTokenForUser(createCredential(ASSERTION_A, cache, httpClient), request, USER_A);
-        assertEquals(3, httpClient.getTokenRequestCount());
+        assertEquals(2, httpClient.getTokenRequestCount());
     }
 
     @Test

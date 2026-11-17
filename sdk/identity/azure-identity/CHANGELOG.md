@@ -15,6 +15,12 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.61.0` to version `1.62.0-beta.1`.
+- Upgraded `azure-core-http-netty` from `1.17.0` to version `1.18.0-beta.1`.
+- Upgraded `msal4j` from `1.26.0` to version `1.26.1-preview1`.
+
 ## 1.19.0 (2026-10-29)
 
 ### Features Added
