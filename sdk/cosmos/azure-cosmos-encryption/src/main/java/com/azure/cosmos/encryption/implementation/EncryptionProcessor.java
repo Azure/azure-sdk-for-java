@@ -533,10 +533,18 @@ public class EncryptionProcessor {
                 JsonNode nodeInArray = arrayNode.get(i);
                 if (nodeInArray.isObject() || nodeInArray.isArray()) {
                     decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
-                        StringUtils.EMPTY);
+                        propertyName);
                 } else if (!nodeInArray.isNull()) {
-                    arrayNode.set(i, decryptAndSerializeValue(encryptionSettings, null, nodeInArray,
-                        StringUtils.EMPTY));
+                    try {
+                        arrayNode.set(i, decryptAndSerializeValue(encryptionSettings, null, nodeInArray,
+                            StringUtils.EMPTY));
+                    } catch (MicrosoftDataEncryptionException | IOException | IllegalArgumentException ex) {
+                        throw new IllegalStateException("Unable to decrypt array element at index " + i
+                            + " in encrypted property '/" + propertyName + "'. Mixed-type arrays written by previous "
+                            + "SDK versions may contain unencrypted scalar values. If this is legacy data, read the "
+                            + "item using the SDK version that wrote it and rewrite the decrypted item using the "
+                            + "current SDK. Otherwise, check the encryption key and ciphertext integrity.", ex);
+                    }
                 }
             }
         } else {
@@ -555,6 +563,9 @@ public class EncryptionProcessor {
             cipherTextWithTypeMarker = convertFromBase64UriSafeString(propertyValueHolder.asText());
         } else {
             cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
+        }
+        if (cipherTextWithTypeMarker == null || cipherTextWithTypeMarker.length == 0) {
+            throw new IllegalArgumentException("Expected a non-empty ciphertext value.");
         }
         cipherText = new byte[cipherTextWithTypeMarker.length - 1];
         System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,

@@ -151,6 +151,29 @@ However, because Azure Cosmos DB is accessed via network calls there are client-
 
 - [Troubleshooting Guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts.
 
+### Legacy mixed-type arrays
+
+Earlier SDK versions could leave scalar array elements unencrypted inside an encrypted property when the first
+array element was an object or another array. For example, with `/sensitive` included in the encryption policy,
+writing `[{"label":"secret"},42]` encrypted `"secret"` but left `42` in plaintext. This can occur in nested arrays
+as well. The old reader skipped the same scalar elements, so reads could succeed despite the missing encryption.
+
+The corrected reader decrypts every non-null scalar array element. If an element cannot be decrypted, it throws
+`IllegalStateException` with the encrypted property name, the array-local index, migration guidance, and the original
+exception as its cause. It does not silently return the value as plaintext. This failure can also indicate incorrect
+keys or damaged ciphertext; it is not proof that the item was written by an older SDK.
+
+If you confirm that an item contains legacy mixed-type arrays:
+
+1. Coordinate a migration so old clients do not read rewritten items or write more legacy items during the cutover.
+2. Read the affected items with the SDK version that wrote them to recover their decrypted values.
+3. Rewrite the complete decrypted items using the corrected SDK's encryption-enabled writer. Use ETags to prevent
+   overwriting concurrent changes; do not first read the legacy items through the corrected reader.
+4. Resume normal access using the corrected SDK after the affected items have been migrated.
+
+These items are partially encrypted, not wholly unencrypted: existing encrypted fields still require decryption.
+Do not treat authentication failures as plaintext or assume that raw stored items can be rewritten without decryption.
+
 ### Enable Client Logging
 Azure Cosmos DB Java SDK v4 uses SLF4j as the logging facade that supports logging into popular logging frameworks such as log4j and logback.
 

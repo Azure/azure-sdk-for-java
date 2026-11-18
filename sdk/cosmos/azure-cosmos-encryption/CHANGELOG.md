@@ -5,6 +5,7 @@
 #### Features Added
 
 #### Breaking Changes
+* Reading legacy mixed-type arrays containing unencrypted scalar elements now fails with `IllegalStateException` and migration guidance. These items must be read with the SDK version that wrote them and rewritten with the corrected writer. See [Legacy mixed-type arrays](README.md#legacy-mixed-type-arrays).
 
 #### Bugs Fixed
 * Fixed client-side encryption and decryption of mixed-type arrays in item and patch serialization.

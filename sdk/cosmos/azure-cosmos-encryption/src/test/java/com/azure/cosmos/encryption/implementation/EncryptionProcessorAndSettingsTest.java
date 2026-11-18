@@ -8,7 +8,9 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -22,13 +24,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
@@ -37,6 +42,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionProcessorAndSettingsTest {
@@ -276,20 +282,7 @@ public class EncryptionProcessorAndSettingsTest {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void encryptPatchMixedArray() throws Exception {
-        CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        Mockito.when(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolver()).thenReturn(keyEncryptionKeyResolver);
-        Mockito.when(cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(cosmosEncryptionAsyncClient,
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
-        Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
-            Mockito.anyString(),
-            Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
-        EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
-        Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
-
-        EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
-            cosmosEncryptionAsyncClient);
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor();
         JsonNode patchValue = OBJECT_MAPPER.readTree(
             "[{\"label\":\"patched\"},\"PATCH_SECRET\",[\"NESTED_SECRET\"],null,42,{\"tail\":\"TAIL_SECRET\"}]");
         JsonNode expectedValue = patchValue.deepCopy();
@@ -320,5 +313,75 @@ public class EncryptionProcessorAndSettingsTest {
         JsonNode decryptedDocument = encryptionProcessor.decrypt(encryptedDocumentBytes,
             CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
         assertThat(decryptedDocument.get("sensitiveString").toString()).isEqualTo(expectedValue.toString());
+    }
+
+    @DataProvider(name = "legacyMixedArrays")
+    public Object[][] legacyMixedArrays() {
+        return new Object[][] {
+            {"[{\"label\":\"secret\"},42]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},true]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},\"LEGACY_SECRET!\"]", IOException.class},
+            {"[{\"label\":\"secret\"},\"\"]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},\"YWJjZA==\"]", MicrosoftDataEncryptionException.class},
+            {"[[\"secret\"],42]", IllegalArgumentException.class}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "legacyMixedArrays", timeOut = TIMEOUT)
+    public void decryptLegacyMixedArrayReportsMigration(String arrayJson,
+                                                       Class<? extends Throwable> expectedCause) throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor();
+        ArrayNode legacyArray = (ArrayNode) OBJECT_MAPPER.readTree(arrayJson);
+        // Old writers encrypted the leading container but skipped subsequent scalar elements.
+        legacyArray.set(0, encryptionProcessor.encryptPatchNode(legacyArray.get(0), "/sensitiveString/0").block());
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "legacyItem");
+        document.set("sensitiveString", legacyArray);
+        byte[] storedDocument = OBJECT_MAPPER.writeValueAsBytes(document);
+
+        assertThatThrownBy(() -> encryptionProcessor.decrypt(storedDocument,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block())
+            .isInstanceOf(IllegalStateException.class)
+            .hasCauseInstanceOf(expectedCause)
+            .hasMessageContaining("index 1")
+            .hasMessageContaining("encrypted property '/sensitiveString'")
+            .hasMessageContaining("SDK version that wrote it")
+            .hasMessageContaining("rewrite the decrypted item")
+            .hasMessageNotContaining("secret")
+            .hasMessageNotContaining("LEGACY_SECRET!")
+            .hasMessageNotContaining("YWJjZA==");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void decryptArrayPreservesAuthenticationFailure() throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor();
+        EncryptionSettings settings = Mockito.mock(EncryptionSettings.class);
+        AeadAes256CbcHmac256EncryptionAlgorithm algorithm = Mockito.mock(AeadAes256CbcHmac256EncryptionAlgorithm.class);
+        Mockito.when(settings.getAeadAes256CbcHmac256EncryptionAlgorithm()).thenReturn(algorithm);
+        MicrosoftDataEncryptionException authenticationFailure =
+            new MicrosoftDataEncryptionException("Authentication failed");
+        Mockito.when(algorithm.decrypt(Mockito.any(byte[].class))).thenThrow(authenticationFailure);
+        JsonNode array = OBJECT_MAPPER.readTree("[\"AQID\"]");
+
+        assertThatThrownBy(() -> encryptionProcessor.decryptAndSerializeProperty(settings, null, array,
+            "sensitiveString"))
+            .isInstanceOf(IllegalStateException.class)
+            .hasCause(authenticationFailure)
+            .hasMessageContaining("check the encryption key and ciphertext integrity");
+    }
+
+    private EncryptionProcessor createEncryptionProcessor() throws JsonProcessingException {
+        CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
+        Mockito.when(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolver()).thenReturn(keyEncryptionKeyResolver);
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+        EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
+        return new EncryptionProcessor(cosmosAsyncContainer, cosmosEncryptionAsyncClient);
     }
 }
