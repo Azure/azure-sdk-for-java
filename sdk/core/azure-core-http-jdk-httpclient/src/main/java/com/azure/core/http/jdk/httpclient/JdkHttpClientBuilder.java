@@ -6,11 +6,14 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.jdk.httpclient.implementation.ClientCertificateBinder;
+import com.azure.core.http.jdk.httpclient.implementation.ClientCertificateBoundClients;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
@@ -20,12 +23,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
@@ -45,6 +50,18 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
  * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
  * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
+ * <p>
+ * <strong>Requests bound to a TLS client certificate</strong>
+ * <p>
+ * Clients built by this builder support mutual TLS (mTLS) proof-of-possession (see
+ * {@link HttpClient#supportsClientCertificateBinding()}). A request whose access token is bound to a client certificate
+ * goes through a JDK HTTP client used only for that certificate, with the HTTP version, connection timeout, proxy,
+ * authenticator, cookie handler and executor of the JDK client the builder builds. It uses the JDK's TLS implementation,
+ * TLS 1.2 and the JVM's default trust, doesn't follow redirects, and is only sent once its connection has presented the
+ * certificate, so a request to an {@code http} URL isn't sent. The SSL context and parameters of a JDK builder passed to
+ * {@link #JdkHttpClientBuilder(java.net.http.HttpClient.Builder)} don't apply to it. A certificate's JDK client is
+ * retired when the certificate expires, or when more than 16 certificates are in use, least recently used first. On
+ * Java 21 and later, a retired client is shut down once its requests have been submitted, which lets them complete.
  */
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
@@ -75,6 +92,8 @@ public class JdkHttpClientBuilder {
     private Duration responseTimeout;
     private Duration readTimeout;
     private HttpProtocolVersion maximumHttpVersion;
+    private TrustManagerFactory clientCertificateBindingTrustManagerFactory;
+    private Supplier<Instant> clientCertificateBindingClock = Instant::now;
 
     /**
      * Creates JdkHttpClientBuilder.
@@ -273,6 +292,18 @@ public class JdkHttpClientBuilder {
         return this;
     }
 
+    // Sets the trust for the connections of requests bound to a TLS client certificate, for tests against a local server.
+    JdkHttpClientBuilder clientCertificateBindingTrustManagerFactory(TrustManagerFactory trustManagerFactory) {
+        this.clientCertificateBindingTrustManagerFactory = trustManagerFactory;
+        return this;
+    }
+
+    // Sets the clock used to retire the clients of TLS client certificates that expired, for tests.
+    JdkHttpClientBuilder clientCertificateBindingClock(Supplier<Instant> clock) {
+        this.clientCertificateBindingClock = clock;
+        return this;
+    }
+
     /**
      * Build a HttpClient with current configurations.
      *
@@ -328,8 +359,15 @@ public class JdkHttpClientBuilder {
                     buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
-        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
-            writeTimeout, responseTimeout, readTimeout, httpVersion);
+
+        java.net.http.HttpClient jdkHttpClient = httpClientBuilder.build();
+        TrustManagerFactory trustManagerFactory = this.clientCertificateBindingTrustManagerFactory;
+        ClientCertificateBoundClients boundClients = new ClientCertificateBoundClients(
+            binding -> ClientCertificateBinder.bindToCertificate(jdkHttpClient, binding, trustManagerFactory),
+            clientCertificateBindingClock, ClientCertificateBoundClients.DEFAULT_MAXIMUM_CLIENTS);
+
+        return new JdkHttpClient(jdkHttpClient, Collections.unmodifiableSet(getRestrictedHeaders()), writeTimeout,
+            responseTimeout, readTimeout, httpVersion, boundClients);
     }
 
     Set<String> getRestrictedHeaders() {

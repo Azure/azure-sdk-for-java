@@ -18,11 +18,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
@@ -116,6 +118,21 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  *
+ * <p>
+ * <strong>Requests bound to a TLS client certificate</strong>
+ * </p>
+ *
+ * <p>
+ * Clients built by this builder support mutual TLS (mTLS) proof-of-possession (see
+ * {@link HttpClient#supportsClientCertificateBinding()}). A request whose access token is bound to a client certificate
+ * goes through an OkHttp client used only for that certificate, configured like the builder's. It shares the connection
+ * pool and dispatcher, but not connections, with the client's other requests. It uses the JDK's TLS implementation and
+ * TLS 1.2, with the client's trust manager, hostname verifier and certificate pinner, doesn't follow redirects, and is
+ * only sent once its connection has presented the certificate. A certificate's OkHttp client is dropped when the
+ * certificate expires, or when more than 16 certificates are in use, least recently used first, and the connection pool
+ * closes its connections once they've been idle for the pool's keep-alive duration.
+ * </p>
+ *
  * @see HttpClient
  * @see OkHttpAsyncHttpClient
  */
@@ -134,6 +151,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private Configuration configuration;
     private boolean followRedirects;
     private HttpProtocolVersion maximumHttpVersion;
+    private Supplier<Instant> clientCertificateBindingClock = Instant::now;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
@@ -373,11 +391,19 @@ public class OkHttpAsyncHttpClientBuilder {
      * <p>If this is set to 'true' redirects will be followed automatically, and
      * if your HTTP pipeline is configured with a redirect policy it will not be called.</p>
      *
+     * <p>Requests whose access token is bound to a TLS client certificate never follow redirects automatically.</p>
+     *
      * @param followRedirects The followRedirects value to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder followRedirects(boolean followRedirects) {
         this.followRedirects = followRedirects;
+        return this;
+    }
+
+    // Sets the clock used to retire the clients of TLS client certificates that expired, for tests.
+    OkHttpAsyncHttpClientBuilder clientCertificateBindingClock(Supplier<Instant> clock) {
+        this.clientCertificateBindingClock = clock;
         return this;
     }
 
@@ -449,6 +475,6 @@ public class OkHttpAsyncHttpClientBuilder {
         httpClientBuilder.followRedirects(this.followRedirects);
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build(), getTimeout(responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT));
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), clientCertificateBindingClock);
     }
 }

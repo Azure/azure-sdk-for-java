@@ -7,6 +7,9 @@
 - Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback without changing defaults or mutating
   caller-supplied Vert.x options.
 - Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
+- Added support for requests whose access token is bound to a TLS client certificate, for mutual TLS (mTLS)
+  proof-of-possession. Each certificate gets its own Vert.x HTTP client, using the JDK's SSL engine and TLS 1.2 with the
+  client's trust settings, and a bound request is only sent over a connection that presented its certificate.
 
 ### Breaking Changes
 
