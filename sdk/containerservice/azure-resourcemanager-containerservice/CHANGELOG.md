@@ -1,14 +1,8 @@
 # Release History
 
-## 2.68.0-beta.2 (Unreleased)
+## 2.68.0-beta.2 (2026-11-18)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Package api-version 2026-09-02-preview.
 
 ## 2.68.0-beta.1 (2026-11-17)
 
