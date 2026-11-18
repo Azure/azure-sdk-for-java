@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.Inherited;
+import com.azure.resourcemanager.security.models.OriginatedFrom;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
 import java.io.IOException;
@@ -287,6 +288,49 @@ public final class PricingInner extends ProxyResource {
      */
     public List<String> replacedBy() {
         return this.innerProperties() == null ? null : this.innerProperties().replacedBy();
+    }
+
+    /**
+     * Get the securityOperatorResourceId property: Resource ID of the security operator associated with the pricing
+     * configuration.
+     * 
+     * @return the securityOperatorResourceId value.
+     */
+    public String securityOperatorResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityOperatorResourceId();
+    }
+
+    /**
+     * Set the securityOperatorResourceId property: Resource ID of the security operator associated with the pricing
+     * configuration.
+     * 
+     * @param securityOperatorResourceId the securityOperatorResourceId value to set.
+     * @return the PricingInner object itself.
+     */
+    public PricingInner withSecurityOperatorResourceId(String securityOperatorResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PricingProperties();
+        }
+        this.innerProperties().withSecurityOperatorResourceId(securityOperatorResourceId);
+        return this;
+    }
+
+    /**
+     * Get the originatedFrom property: Indicates the origin of the most recent configuration change.
+     * 
+     * @return the originatedFrom value.
+     */
+    public OriginatedFrom originatedFrom() {
+        return this.innerProperties() == null ? null : this.innerProperties().originatedFrom();
+    }
+
+    /**
+     * Get the managedBy property: Indicates who exclusively manages the pricing configuration.
+     * 
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
     }
 
     /**

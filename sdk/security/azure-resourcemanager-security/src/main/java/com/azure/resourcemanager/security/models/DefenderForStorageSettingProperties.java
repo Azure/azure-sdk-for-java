@@ -38,6 +38,15 @@ public final class DefenderForStorageSettingProperties
      */
     private Boolean overrideSubscriptionLevelSettings;
 
+    /*
+     * Indicates whether this resource's Defender for Storage settings are managed by a higher MDC enforcement scope and
+     * which component is managing them. When set to a value other than 'None', the resource-level settings become
+     * read-only and can only be modified by the managing component. Possible values: 'None' (not managed),
+     * 'MicrosoftDefenderXDR' (managed by Microsoft Defender XDR), 'SubscriptionSettingsEnforcer' (managed by
+     * subscription-level settings enforcer).
+     */
+    private ManagedByType managedBy;
+
     /**
      * Creates an instance of DefenderForStorageSettingProperties class.
      */
@@ -129,6 +138,19 @@ public final class DefenderForStorageSettingProperties
     }
 
     /**
+     * Get the managedBy property: Indicates whether this resource's Defender for Storage settings are managed by a
+     * higher MDC enforcement scope and which component is managing them. When set to a value other than 'None', the
+     * resource-level settings become read-only and can only be modified by the managing component. Possible values:
+     * 'None' (not managed), 'MicrosoftDefenderXDR' (managed by Microsoft Defender XDR), 'SubscriptionSettingsEnforcer'
+     * (managed by subscription-level settings enforcer).
+     * 
+     * @return the managedBy value.
+     */
+    public ManagedByType managedBy() {
+        return this.managedBy;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -183,6 +205,9 @@ public final class DefenderForStorageSettingProperties
                 } else if ("overrideSubscriptionLevelSettings".equals(fieldName)) {
                     deserializedDefenderForStorageSettingProperties.overrideSubscriptionLevelSettings
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedDefenderForStorageSettingProperties.managedBy
+                        = ManagedByType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class PricingsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/DeleteResourcePricing_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/DeleteResourcePricing_example.json
      */
     /**
      * Sample code: Delete a pricing on resource.
@@ -24,7 +24,7 @@ public final class PricingsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/DeleteResourcePricingByNameContainers_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/DeleteResourcePricingByNameContainers_example.json
      */
     /**
      * Sample code: Delete a pricing on resource (example for Containers plan).

@@ -37,7 +37,7 @@ public final class OnUploadFilters implements JsonSerializable<OnUploadFilters> 
      * Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive
      * integer value. Blobs larger than this value will be excluded from scanning.
      */
-    private Object excludeBlobsLargerThan;
+    private Long excludeBlobsLargerThan;
 
     /**
      * Creates an instance of OnUploadFilters class.
@@ -102,7 +102,7 @@ public final class OnUploadFilters implements JsonSerializable<OnUploadFilters> 
      * 
      * @return the excludeBlobsLargerThan value.
      */
-    public Object excludeBlobsLargerThan() {
+    public Long excludeBlobsLargerThan() {
         return this.excludeBlobsLargerThan;
     }
 
@@ -114,7 +114,7 @@ public final class OnUploadFilters implements JsonSerializable<OnUploadFilters> 
      * @param excludeBlobsLargerThan the excludeBlobsLargerThan value to set.
      * @return the OnUploadFilters object itself.
      */
-    public OnUploadFilters withExcludeBlobsLargerThan(Object excludeBlobsLargerThan) {
+    public OnUploadFilters withExcludeBlobsLargerThan(Long excludeBlobsLargerThan) {
         this.excludeBlobsLargerThan = excludeBlobsLargerThan;
         return this;
     }
@@ -137,9 +137,7 @@ public final class OnUploadFilters implements JsonSerializable<OnUploadFilters> 
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("excludeBlobsWithSuffix", this.excludeBlobsWithSuffix,
             (writer, element) -> writer.writeString(element));
-        if (this.excludeBlobsLargerThan != null) {
-            jsonWriter.writeUntypedField("excludeBlobsLargerThan", this.excludeBlobsLargerThan);
-        }
+        jsonWriter.writeNumberField("excludeBlobsLargerThan", this.excludeBlobsLargerThan);
         return jsonWriter.writeEndObject();
     }
 
@@ -165,7 +163,7 @@ public final class OnUploadFilters implements JsonSerializable<OnUploadFilters> 
                     List<String> excludeBlobsWithSuffix = reader.readArray(reader1 -> reader1.getString());
                     deserializedOnUploadFilters.excludeBlobsWithSuffix = excludeBlobsWithSuffix;
                 } else if ("excludeBlobsLargerThan".equals(fieldName)) {
-                    deserializedOnUploadFilters.excludeBlobsLargerThan = reader.readUntyped();
+                    deserializedOnUploadFilters.excludeBlobsLargerThan = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

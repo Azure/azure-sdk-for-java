@@ -15,7 +15,7 @@ import com.azure.resourcemanager.security.fluent.models.MalwareScanInner;
 import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
 import com.azure.resourcemanager.security.models.DefenderForStorages;
 import com.azure.resourcemanager.security.models.MalwareScan;
-import com.azure.resourcemanager.security.models.SettingName;
+import com.azure.resourcemanager.security.models.StartMalwareScanRequest;
 
 public final class DefenderForStoragesImpl implements DefenderForStorages {
     private static final ClientLogger LOGGER = new ClientLogger(DefenderForStoragesImpl.class);
@@ -30,15 +30,14 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
         this.serviceManager = serviceManager;
     }
 
-    public Response<DefenderForStorageSetting> getWithResponse(String resourceId, SettingName settingName,
-        Context context) {
+    public Response<DefenderForStorageSetting> getWithResponse(String resourceId, String settingName, Context context) {
         Response<DefenderForStorageSettingInner> inner
             = this.serviceClient().getWithResponse(resourceId, settingName, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new DefenderForStorageSettingImpl(inner.getValue(), this.manager()));
     }
 
-    public DefenderForStorageSetting get(String resourceId, SettingName settingName) {
+    public DefenderForStorageSetting get(String resourceId, String settingName) {
         DefenderForStorageSettingInner inner = this.serviceClient().get(resourceId, settingName);
         if (inner != null) {
             return new DefenderForStorageSettingImpl(inner, this.manager());
@@ -57,32 +56,15 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DefenderForStorageSettingImpl(inner1, this.manager()));
     }
 
-    public Response<MalwareScan> startMalwareScanWithResponse(String resourceId, SettingName settingName,
+    public Response<MalwareScan> cancelMalwareScanWithResponse(String resourceId, String settingName, String scanId,
         Context context) {
-        Response<MalwareScanInner> inner
-            = this.serviceClient().startMalwareScanWithResponse(resourceId, settingName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MalwareScanImpl(inner.getValue(), this.manager()));
-    }
-
-    public MalwareScan startMalwareScan(String resourceId, SettingName settingName) {
-        MalwareScanInner inner = this.serviceClient().startMalwareScan(resourceId, settingName);
-        if (inner != null) {
-            return new MalwareScanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<MalwareScan> cancelMalwareScanWithResponse(String resourceId, SettingName settingName,
-        String scanId, Context context) {
         Response<MalwareScanInner> inner
             = this.serviceClient().cancelMalwareScanWithResponse(resourceId, settingName, scanId, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new MalwareScanImpl(inner.getValue(), this.manager()));
     }
 
-    public MalwareScan cancelMalwareScan(String resourceId, SettingName settingName, String scanId) {
+    public MalwareScan cancelMalwareScan(String resourceId, String settingName, String scanId) {
         MalwareScanInner inner = this.serviceClient().cancelMalwareScan(resourceId, settingName, scanId);
         if (inner != null) {
             return new MalwareScanImpl(inner, this.manager());
@@ -91,7 +73,24 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
         }
     }
 
-    public Response<MalwareScan> getMalwareScanWithResponse(String resourceId, SettingName settingName, String scanId,
+    public Response<MalwareScan> startMalwareScanWithResponse(String resourceId, String settingName,
+        StartMalwareScanRequest body, Context context) {
+        Response<MalwareScanInner> inner
+            = this.serviceClient().startMalwareScanWithResponse(resourceId, settingName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MalwareScanImpl(inner.getValue(), this.manager()));
+    }
+
+    public MalwareScan startMalwareScan(String resourceId, String settingName) {
+        MalwareScanInner inner = this.serviceClient().startMalwareScan(resourceId, settingName);
+        if (inner != null) {
+            return new MalwareScanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MalwareScan> getMalwareScanWithResponse(String resourceId, String settingName, String scanId,
         Context context) {
         Response<MalwareScanInner> inner
             = this.serviceClient().getMalwareScanWithResponse(resourceId, settingName, scanId, context);
@@ -99,7 +98,7 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
             new MalwareScanImpl(inner.getValue(), this.manager()));
     }
 
-    public MalwareScan getMalwareScan(String resourceId, SettingName settingName, String scanId) {
+    public MalwareScan getMalwareScan(String resourceId, String settingName, String scanId) {
         MalwareScanInner inner = this.serviceClient().getMalwareScan(resourceId, settingName, scanId);
         if (inner != null) {
             return new MalwareScanImpl(inner, this.manager());
@@ -115,13 +114,12 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String settingNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName");
-        if (settingNameLocal == null) {
+        if (settingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'defenderForStorageSettings'.", id)));
         }
-        SettingName settingName = SettingName.fromString(settingNameLocal);
         return this.getWithResponse(resourceId, settingName, Context.NONE).getValue();
     }
 
@@ -132,13 +130,12 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String settingNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}", "settingName");
-        if (settingNameLocal == null) {
+        if (settingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'defenderForStorageSettings'.", id)));
         }
-        SettingName settingName = SettingName.fromString(settingNameLocal);
         return this.getWithResponse(resourceId, settingName, context);
     }
 
@@ -150,7 +147,7 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
         return this.serviceManager;
     }
 
-    public DefenderForStorageSettingImpl define(SettingName name) {
+    public DefenderForStorageSettingImpl define(String name) {
         return new DefenderForStorageSettingImpl(name, this.manager());
     }
 }

@@ -17,39 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class DefenderCspmAwsOfferingCiem implements JsonSerializable<DefenderCspmAwsOfferingCiem> {
     /*
-     * Defender CSPM Permissions Management discovery configuration
-     */
-    private DefenderCspmAwsOfferingCiemDiscovery ciemDiscovery;
-
-    /*
      * AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
      */
     private DefenderCspmAwsOfferingCiemOidc ciemOidc;
+
+    /*
+     * The AWS log collection OIDC (open id connect) connection configuration
+     */
+    private DefenderCspmAwsOfferingCiemLogCollectionOidc logCollectionOidc;
+
+    /*
+     * The CloudTrail audit log ingestion configuration
+     */
+    private AwsCloudTrailConfiguration cloudTrailAuditLogIngestion;
 
     /**
      * Creates an instance of DefenderCspmAwsOfferingCiem class.
      */
     public DefenderCspmAwsOfferingCiem() {
-    }
-
-    /**
-     * Get the ciemDiscovery property: Defender CSPM Permissions Management discovery configuration.
-     * 
-     * @return the ciemDiscovery value.
-     */
-    public DefenderCspmAwsOfferingCiemDiscovery ciemDiscovery() {
-        return this.ciemDiscovery;
-    }
-
-    /**
-     * Set the ciemDiscovery property: Defender CSPM Permissions Management discovery configuration.
-     * 
-     * @param ciemDiscovery the ciemDiscovery value to set.
-     * @return the DefenderCspmAwsOfferingCiem object itself.
-     */
-    public DefenderCspmAwsOfferingCiem withCiemDiscovery(DefenderCspmAwsOfferingCiemDiscovery ciemDiscovery) {
-        this.ciemDiscovery = ciemDiscovery;
-        return this;
     }
 
     /**
@@ -75,16 +60,61 @@ public final class DefenderCspmAwsOfferingCiem implements JsonSerializable<Defen
     }
 
     /**
+     * Get the logCollectionOidc property: The AWS log collection OIDC (open id connect) connection configuration.
+     * 
+     * @return the logCollectionOidc value.
+     */
+    public DefenderCspmAwsOfferingCiemLogCollectionOidc logCollectionOidc() {
+        return this.logCollectionOidc;
+    }
+
+    /**
+     * Set the logCollectionOidc property: The AWS log collection OIDC (open id connect) connection configuration.
+     * 
+     * @param logCollectionOidc the logCollectionOidc value to set.
+     * @return the DefenderCspmAwsOfferingCiem object itself.
+     */
+    public DefenderCspmAwsOfferingCiem
+        withLogCollectionOidc(DefenderCspmAwsOfferingCiemLogCollectionOidc logCollectionOidc) {
+        this.logCollectionOidc = logCollectionOidc;
+        return this;
+    }
+
+    /**
+     * Get the cloudTrailAuditLogIngestion property: The CloudTrail audit log ingestion configuration.
+     * 
+     * @return the cloudTrailAuditLogIngestion value.
+     */
+    public AwsCloudTrailConfiguration cloudTrailAuditLogIngestion() {
+        return this.cloudTrailAuditLogIngestion;
+    }
+
+    /**
+     * Set the cloudTrailAuditLogIngestion property: The CloudTrail audit log ingestion configuration.
+     * 
+     * @param cloudTrailAuditLogIngestion the cloudTrailAuditLogIngestion value to set.
+     * @return the DefenderCspmAwsOfferingCiem object itself.
+     */
+    public DefenderCspmAwsOfferingCiem
+        withCloudTrailAuditLogIngestion(AwsCloudTrailConfiguration cloudTrailAuditLogIngestion) {
+        this.cloudTrailAuditLogIngestion = cloudTrailAuditLogIngestion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ciemDiscovery() != null) {
-            ciemDiscovery().validate();
-        }
         if (ciemOidc() != null) {
             ciemOidc().validate();
+        }
+        if (logCollectionOidc() != null) {
+            logCollectionOidc().validate();
+        }
+        if (cloudTrailAuditLogIngestion() != null) {
+            cloudTrailAuditLogIngestion().validate();
         }
     }
 
@@ -94,8 +124,9 @@ public final class DefenderCspmAwsOfferingCiem implements JsonSerializable<Defen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("ciemDiscovery", this.ciemDiscovery);
         jsonWriter.writeJsonField("ciemOidc", this.ciemOidc);
+        jsonWriter.writeJsonField("logCollectionOidc", this.logCollectionOidc);
+        jsonWriter.writeJsonField("cloudTrailAuditLogIngestion", this.cloudTrailAuditLogIngestion);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,11 +145,14 @@ public final class DefenderCspmAwsOfferingCiem implements JsonSerializable<Defen
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("ciemDiscovery".equals(fieldName)) {
-                    deserializedDefenderCspmAwsOfferingCiem.ciemDiscovery
-                        = DefenderCspmAwsOfferingCiemDiscovery.fromJson(reader);
-                } else if ("ciemOidc".equals(fieldName)) {
+                if ("ciemOidc".equals(fieldName)) {
                     deserializedDefenderCspmAwsOfferingCiem.ciemOidc = DefenderCspmAwsOfferingCiemOidc.fromJson(reader);
+                } else if ("logCollectionOidc".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOfferingCiem.logCollectionOidc
+                        = DefenderCspmAwsOfferingCiemLogCollectionOidc.fromJson(reader);
+                } else if ("cloudTrailAuditLogIngestion".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOfferingCiem.cloudTrailAuditLogIngestion
+                        = AwsCloudTrailConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

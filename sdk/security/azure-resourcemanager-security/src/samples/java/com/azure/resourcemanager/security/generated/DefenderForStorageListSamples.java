@@ -9,7 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DefenderForStorageListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/DefenderForStorage/ListDefenderForStorageSettings_example.json
+     * x-ms-original-file: 2026-09-01/DefenderForStorage/ListDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Lists the Defender for Storage settings for the specified storage account.

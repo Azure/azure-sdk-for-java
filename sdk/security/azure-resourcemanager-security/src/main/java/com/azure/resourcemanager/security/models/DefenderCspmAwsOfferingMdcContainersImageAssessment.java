@@ -27,6 +27,11 @@ public final class DefenderCspmAwsOfferingMdcContainersImageAssessment
      */
     private String cloudRoleArn;
 
+    /*
+     * Is security findings enabled for container image assessment
+     */
+    private Boolean securityFindingsEnabled;
+
     /**
      * Creates an instance of DefenderCspmAwsOfferingMdcContainersImageAssessment class.
      */
@@ -74,6 +79,27 @@ public final class DefenderCspmAwsOfferingMdcContainersImageAssessment
     }
 
     /**
+     * Get the securityFindingsEnabled property: Is security findings enabled for container image assessment.
+     * 
+     * @return the securityFindingsEnabled value.
+     */
+    public Boolean securityFindingsEnabled() {
+        return this.securityFindingsEnabled;
+    }
+
+    /**
+     * Set the securityFindingsEnabled property: Is security findings enabled for container image assessment.
+     * 
+     * @param securityFindingsEnabled the securityFindingsEnabled value to set.
+     * @return the DefenderCspmAwsOfferingMdcContainersImageAssessment object itself.
+     */
+    public DefenderCspmAwsOfferingMdcContainersImageAssessment
+        withSecurityFindingsEnabled(Boolean securityFindingsEnabled) {
+        this.securityFindingsEnabled = securityFindingsEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -89,6 +115,7 @@ public final class DefenderCspmAwsOfferingMdcContainersImageAssessment
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("cloudRoleArn", this.cloudRoleArn);
+        jsonWriter.writeBooleanField("securityFindingsEnabled", this.securityFindingsEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,6 +141,9 @@ public final class DefenderCspmAwsOfferingMdcContainersImageAssessment
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("cloudRoleArn".equals(fieldName)) {
                     deserializedDefenderCspmAwsOfferingMdcContainersImageAssessment.cloudRoleArn = reader.getString();
+                } else if ("securityFindingsEnabled".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOfferingMdcContainersImageAssessment.securityFindingsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

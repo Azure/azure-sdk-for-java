@@ -37,6 +37,7 @@ import com.azure.resourcemanager.security.fluent.AutomationsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsOrgsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsProjectsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsReposClient;
+import com.azure.resourcemanager.security.fluent.BatchPricingsClient;
 import com.azure.resourcemanager.security.fluent.ComplianceResultsClient;
 import com.azure.resourcemanager.security.fluent.CompliancesClient;
 import com.azure.resourcemanager.security.fluent.CustomRecommendationsClient;
@@ -279,6 +280,20 @@ public final class SecurityCenterImpl implements SecurityCenter {
      */
     public SecurityContactsClient getSecurityContacts() {
         return this.securityContacts;
+    }
+
+    /**
+     * The BatchPricingsClient object to access its operations.
+     */
+    private final BatchPricingsClient batchPricings;
+
+    /**
+     * Gets the BatchPricingsClient object to access its operations.
+     * 
+     * @return the BatchPricingsClient object.
+     */
+    public BatchPricingsClient getBatchPricings() {
+        return this.batchPricings;
     }
 
     /**
@@ -1257,6 +1272,7 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.assessmentsMetadatas = new AssessmentsMetadatasClientImpl(this);
         this.automations = new AutomationsClientImpl(this);
         this.securityContacts = new SecurityContactsClientImpl(this);
+        this.batchPricings = new BatchPricingsClientImpl(this);
         this.complianceResults = new ComplianceResultsClientImpl(this);
         this.governanceAssignments = new GovernanceAssignmentsClientImpl(this);
         this.governanceRules = new GovernanceRulesClientImpl(this);

@@ -32,6 +32,11 @@ public final class DefenderCspmGcpOfferingMdcContainersImageAssessment
      */
     private String serviceAccountEmailAddress;
 
+    /*
+     * Is security findings enabled for container image assessment
+     */
+    private Boolean securityFindingsEnabled;
+
     /**
      * Creates an instance of DefenderCspmGcpOfferingMdcContainersImageAssessment class.
      */
@@ -101,6 +106,27 @@ public final class DefenderCspmGcpOfferingMdcContainersImageAssessment
     }
 
     /**
+     * Get the securityFindingsEnabled property: Is security findings enabled for container image assessment.
+     * 
+     * @return the securityFindingsEnabled value.
+     */
+    public Boolean securityFindingsEnabled() {
+        return this.securityFindingsEnabled;
+    }
+
+    /**
+     * Set the securityFindingsEnabled property: Is security findings enabled for container image assessment.
+     * 
+     * @param securityFindingsEnabled the securityFindingsEnabled value to set.
+     * @return the DefenderCspmGcpOfferingMdcContainersImageAssessment object itself.
+     */
+    public DefenderCspmGcpOfferingMdcContainersImageAssessment
+        withSecurityFindingsEnabled(Boolean securityFindingsEnabled) {
+        this.securityFindingsEnabled = securityFindingsEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +143,7 @@ public final class DefenderCspmGcpOfferingMdcContainersImageAssessment
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("workloadIdentityProviderId", this.workloadIdentityProviderId);
         jsonWriter.writeStringField("serviceAccountEmailAddress", this.serviceAccountEmailAddress);
+        jsonWriter.writeBooleanField("securityFindingsEnabled", this.securityFindingsEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -146,6 +173,9 @@ public final class DefenderCspmGcpOfferingMdcContainersImageAssessment
                 } else if ("serviceAccountEmailAddress".equals(fieldName)) {
                     deserializedDefenderCspmGcpOfferingMdcContainersImageAssessment.serviceAccountEmailAddress
                         = reader.getString();
+                } else if ("securityFindingsEnabled".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOfferingMdcContainersImageAssessment.securityFindingsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
