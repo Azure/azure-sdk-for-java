@@ -17,7 +17,7 @@ import java.io.IOException;
 @Immutable
 public class AdditionalAuthenticationProperties implements JsonSerializable<AdditionalAuthenticationProperties> {
     /*
-     * Authentication type discriminator.
+     * Authentication type discriminator. The authentication type cannot change once configured.
      */
     private AdditionalAuthenticationType authenticationType
         = AdditionalAuthenticationType.fromString("AdditionalAuthenticationProperties");
@@ -29,7 +29,8 @@ public class AdditionalAuthenticationProperties implements JsonSerializable<Addi
     }
 
     /**
-     * Get the authenticationType property: Authentication type discriminator.
+     * Get the authenticationType property: Authentication type discriminator. The authentication type cannot change
+     * once configured.
      * 
      * @return the authenticationType value.
      */
@@ -82,6 +83,10 @@ public class AdditionalAuthenticationProperties implements JsonSerializable<Addi
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("GoogleArtifactRegistry".equals(discriminatorValue)) {
                     return GarAuthenticationProperties.fromJson(readerToUse.reset());
+                } else if ("AwsElasticContainerRegistry".equals(discriminatorValue)) {
+                    return EcrAuthenticationProperties.fromJson(readerToUse.reset());
+                } else if ("EntraFederatedIdentityCredential".equals(discriminatorValue)) {
+                    return EntraFederatedIdentityCredentialAuthenticationProperties.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -195,7 +195,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
     private final List<DataGenerationJobSource> sources;
 
     /*
-     * The generation configuration for the data generation job.
+     * The effective generation configuration for the data generation job.
      */
     @Generated
     private final DataGenerationJobConfiguration generationConfiguration;
@@ -279,7 +279,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
     }
 
     /**
-     * Get the generationConfiguration property: The generation configuration for the data generation job.
+     * Get the generationConfiguration property: The effective generation configuration for the data generation job.
      *
      * @return the generationConfiguration value.
      */

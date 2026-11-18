@@ -645,7 +645,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginCreate(String resourceGroupName, String monitorName, DatadogMonitorResourceInner body) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, body);
         return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
@@ -882,7 +882,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+    private SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginUpdate(String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, body);
         return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,

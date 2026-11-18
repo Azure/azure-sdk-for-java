@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.models.RaiAcsEmptyObject;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsAnnotationBinding;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmCategory;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmConfiguration;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsModerationBindingExtension;
@@ -16,51 +16,68 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTargetKind
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolInterventionPoint;
 import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolNameSelector;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class RaiAcsToolInterventionPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsToolInterventionPoint model = BinaryData.fromString(
-            "{\"policy_target\":\"$snap.tool_result.value\",\"policy_target_kind\":\"assistant_output\",\"policy\":{\"id\":\"hvv\",\"query\":\"rxjjstoqbeitpk\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"bklftidgfcwqmpim\"}]}},\"annotations\":{},\"tool_name_from\":\"$snap.tool_call.name\"}")
+            "{\"policy_target\":\"$snap.input\",\"policy_target_kind\":\"messages\",\"policy\":{\"id\":\"fhbzffovwmbjlzq\",\"query\":\"zpgvdwnapfd\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"Violence\",\"harm_config_id\":\"ptnuwjtkschgc\"}]}},\"annotations\":{\"qaqkuea\":{\"from\":\"hleseyqrh\",\"ukjtasbvwispkxk\":\"\\\"dataldotjvdkwisws\\\"\",\"knvgmmbugtywat\":\"\\\"datatxfkndlqvt\\\"\"}},\"tool_name_from\":\"$.tool_call.name\"}")
             .toObject(RaiAcsToolInterventionPoint.class);
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_RESULT, model.policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.policyTargetKind());
-        Assertions.assertEquals("hvv", model.policy().id());
-        Assertions.assertEquals("rxjjstoqbeitpk", model.policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
+        Assertions.assertEquals(RaiAcsPolicyTarget.INPUT, model.policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.policyTargetKind());
+        Assertions.assertEquals("fhbzffovwmbjlzq", model.policy().id());
+        Assertions.assertEquals("zpgvdwnapfd", model.policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+            model.policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.VIOLENCE,
             model.policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("bklftidgfcwqmpim",
-            model.policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.toolNameFrom());
+        Assertions.assertEquals("ptnuwjtkschgc", model.policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("hleseyqrh", model.annotations().get("qaqkuea").from());
+        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS, model.toolNameFrom());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsToolInterventionPoint model
-            = new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_RESULT)
-                .withPolicyTargetKind(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT)
-                .withPolicy(
-                    new RaiAcsPolicyBinding().withId("hvv")
-                        .withQuery("rxjjstoqbeitpk")
-                        .withAacsModeration(
-                            new RaiAcsModerationBindingExtension().withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
-                                .withHarmConfigs(Arrays.asList(new RaiAcsHarmConfiguration()
-                                    .withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
-                                    .withHarmConfigId("bklftidgfcwqmpim")))))
-                .withAnnotations(new RaiAcsEmptyObject())
-                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME);
+        RaiAcsToolInterventionPoint model = new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.INPUT)
+            .withPolicyTargetKind(RaiAcsPolicyTargetKind.MODEL_MESSAGES)
+            .withPolicy(new RaiAcsPolicyBinding().withId("fhbzffovwmbjlzq")
+                .withQuery("zpgvdwnapfd")
+                .withAacsModeration(new RaiAcsModerationBindingExtension()
+                    .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
+                    .withHarmConfigs(
+                        Arrays.asList(new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.VIOLENCE)
+                            .withHarmConfigId("ptnuwjtkschgc")))))
+            .withAnnotations(mapOf("qaqkuea",
+                new RaiAcsAnnotationBinding().withFrom("hleseyqrh")
+                    .withAdditionalProperties(
+                        mapOf("ukjtasbvwispkxk", "\"dataldotjvdkwisws\"", "knvgmmbugtywat", "\"datatxfkndlqvt\""))))
+            .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS);
         model = BinaryData.fromObject(model).toObject(RaiAcsToolInterventionPoint.class);
-        Assertions.assertEquals(RaiAcsPolicyTarget.TOOL_RESULT, model.policyTarget());
-        Assertions.assertEquals(RaiAcsPolicyTargetKind.ASSISTANT_OUTPUT, model.policyTargetKind());
-        Assertions.assertEquals("hvv", model.policy().id());
-        Assertions.assertEquals("rxjjstoqbeitpk", model.policy().query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.policy().aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
+        Assertions.assertEquals(RaiAcsPolicyTarget.INPUT, model.policyTarget());
+        Assertions.assertEquals(RaiAcsPolicyTargetKind.MODEL_MESSAGES, model.policyTargetKind());
+        Assertions.assertEquals("fhbzffovwmbjlzq", model.policy().id());
+        Assertions.assertEquals("zpgvdwnapfd", model.policy().query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON,
+            model.policy().aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.VIOLENCE,
             model.policy().aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("bklftidgfcwqmpim",
-            model.policy().aacsModeration().harmConfigs().get(0).harmConfigId());
-        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME, model.toolNameFrom());
+        Assertions.assertEquals("ptnuwjtkschgc", model.policy().aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("hleseyqrh", model.annotations().get("qaqkuea").from());
+        Assertions.assertEquals(RaiAcsToolNameSelector.TOOL_CALL_NAME_ALIAS, model.toolNameFrom());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

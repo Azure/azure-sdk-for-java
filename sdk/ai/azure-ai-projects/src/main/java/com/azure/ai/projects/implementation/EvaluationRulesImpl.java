@@ -196,12 +196,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -241,12 +248,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -323,12 +337,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -346,12 +367,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -392,12 +420,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -415,12 +450,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -451,14 +493,15 @@ public final class EvaluationRulesImpl {
     /**
      * List evaluation rules
      *
-     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
-     * enabled state.
+     * Returns the evaluation rules configured for the project, including scheduled trace and dataset evaluations,
+     * optionally filtered by action type, agent name, or enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
+     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by action type. When omitted, rules of all action
+     * types are returned. Allowed values: "continuousEvaluation", "humanEvaluationPreview", "traceEvaluation",
+     * "datasetEvaluation".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -472,12 +515,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -507,14 +557,15 @@ public final class EvaluationRulesImpl {
     /**
      * List evaluation rules
      *
-     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
-     * enabled state.
+     * Returns the evaluation rules configured for the project, including scheduled trace and dataset evaluations,
+     * optionally filtered by action type, agent name, or enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
+     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by action type. When omitted, rules of all action
+     * types are returned. Allowed values: "continuousEvaluation", "humanEvaluationPreview", "traceEvaluation",
+     * "datasetEvaluation".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -528,12 +579,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -561,14 +619,15 @@ public final class EvaluationRulesImpl {
     /**
      * List evaluation rules
      *
-     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
-     * enabled state.
+     * Returns the evaluation rules configured for the project, including scheduled trace and dataset evaluations,
+     * optionally filtered by action type, agent name, or enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
+     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by action type. When omitted, rules of all action
+     * types are returned. Allowed values: "continuousEvaluation", "humanEvaluationPreview", "traceEvaluation",
+     * "datasetEvaluation".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -582,12 +641,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -615,14 +681,15 @@ public final class EvaluationRulesImpl {
     /**
      * List evaluation rules
      *
-     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
-     * enabled state.
+     * Returns the evaluation rules configured for the project, including scheduled trace and dataset evaluations,
+     * optionally filtered by action type, agent name, or enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
+     * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by action type. When omitted, rules of all action
+     * types are returned. Allowed values: "continuousEvaluation", "humanEvaluationPreview", "traceEvaluation",
+     * "datasetEvaluation".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -636,12 +703,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -679,12 +753,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)
@@ -726,12 +807,19 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview/traceEvaluation/datasetEvaluation) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
      *     }
-     *     eventType: String(responseCompleted/manual) (Required)
+     *     eventType: String(responseCompleted/manual/timerTrigger) (Required)
+     *     schedule (Optional): {
+     *         type: String(Cron/Recurrence/OneTime) (Required)
+     *     }
+     *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
      *     enabled: boolean (Required)
      *     systemData (Required): {
      *         String: String (Required)

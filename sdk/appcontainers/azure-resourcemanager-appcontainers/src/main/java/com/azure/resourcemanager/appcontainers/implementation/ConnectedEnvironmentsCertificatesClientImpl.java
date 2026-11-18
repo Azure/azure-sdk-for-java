@@ -398,7 +398,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
             certificateName, certificateEnvelope);

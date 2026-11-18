@@ -34,7 +34,6 @@ public final class SearchUtils {
             .setHighlightPostTag(options.getHighlightPostTag())
             .setHighlightPreTag(options.getHighlightPreTag())
             .setMinimumCoverage(options.getMinimumCoverage())
-            .setMoreLikeThis(options.getMoreLikeThis())
             .setOrderBy(options.getOrderBy())
             .setQueryType(options.getQueryType())
             .setScoringStatistics(options.getScoringStatistics())
@@ -55,7 +54,14 @@ public final class SearchUtils {
             .setAnswers(options.getAnswers())
             .setCaptions(options.getCaptions())
             .setVectorQueries(options.getVectorQueries())
-            .setVectorFilterMode(options.getVectorFilterMode());
+            .setVectorFilterMode(options.getVectorFilterMode())
+            .setQueryLanguage(options.getQueryLanguage())
+            .setQuerySpeller(options.getQuerySpeller())
+            .setQueryRewrites(options.getQueryRewrites())
+            .setSemanticFields(options.getSemanticFields())
+            .setHybridSearch(options.getHybridSearch())
+            .setMoreLikeThis(options.getMoreLikeThis())
+            .setAgenticOptions(options.getAgenticOptions());
     }
 
     /**
@@ -66,21 +72,20 @@ public final class SearchUtils {
      * @return The updated {@link RequestOptions}.
      */
     public static RequestOptions addSearchHeaders(RequestOptions requestOptions, SearchOptions searchOptions) {
+
         if (searchOptions == null) {
             return requestOptions;
         }
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
-        }
+        RequestOptions options = requestOptions == null ? new RequestOptions() : requestOptions;
         if (searchOptions.getQuerySourceAuthorization() != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+            options.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
                 searchOptions.getQuerySourceAuthorization());
         }
         if (searchOptions.isEnableElevatedRead() != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+            options.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
                 searchOptions.isEnableElevatedRead().toString());
         }
-        return requestOptions;
+        return options;
     }
 
     /**

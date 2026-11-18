@@ -687,7 +687,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUndo(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginUndo(String resourceGroupName, String clusterName,
         MigrationUndoRequest body) {
         Response<BinaryData> response = undoWithResponse(resourceGroupName, clusterName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

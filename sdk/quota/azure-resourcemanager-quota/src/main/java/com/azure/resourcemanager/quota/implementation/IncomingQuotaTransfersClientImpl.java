@@ -662,7 +662,7 @@ public final class IncomingQuotaTransfersClientImpl implements IncomingQuotaTran
      * @return the {@link SyncPoller} for polling of recipient-side projection of a quota transfer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner> beginApprove(
+    private SyncPoller<PollResult<IncomingQuotaTransferInner>, IncomingQuotaTransferInner> beginApprove(
         String targetProvider, String region, String transferId, String ifMatch,
         IncomingQuotaTransferApproveRequest body) {
         Response<BinaryData> response = approveWithResponse(targetProvider, region, transferId, ifMatch, body);

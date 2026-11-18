@@ -13,11 +13,11 @@ public final class RaiRegoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiRegoListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"fqsfa\",\"value\":[{\"properties\":{\"encoding\":\"None\",\"rego\":\"e\"},\"etag\":\"q\",\"tags\":{\"qqnobpudcd\":\"jkmfxapjwo\"},\"id\":\"tqwpwya\",\"name\":\"bzasqbucljgkyexa\",\"type\":\"guyaip\"},{\"properties\":{\"encoding\":\"Base64\",\"rego\":\"ault\"},\"etag\":\"jjum\",\"tags\":{\"bjwgnyfus\":\"azlnqnmcjngzqdqx\"},\"id\":\"svtui\",\"name\":\"zh\",\"type\":\"jqg\"}]}")
+            "{\"nextLink\":\"ratqxmbjro\",\"value\":[{\"properties\":{\"encoding\":\"None\",\"rego\":\"valqjrhuzgfxo\"},\"etag\":\"tpusllywp\",\"tags\":{\"pdbollg\":\"otz\",\"owsocnequygdjbo\":\"yfqiuasig\",\"evadrmmwiu\":\"grmtqjk\",\"kxiidisczskoswo\":\"wvcmj\"},\"id\":\"qazu\",\"name\":\"am\",\"type\":\"zkrrcoiisba\"},{\"properties\":{\"encoding\":\"Base64\",\"rego\":\"ccek\"},\"etag\":\"tdsbezax\",\"tags\":{\"y\":\"kzxuiz\",\"etiarxqiubxdukec\":\"nepk\"},\"id\":\"dazvdhctm\",\"name\":\"koszu\",\"type\":\"blnsntrpcaqk\"},{\"properties\":{\"encoding\":\"None\",\"rego\":\"btfmhklbnldpvcbh\"},\"etag\":\"zyqu\",\"tags\":{\"vlm\":\"qxutrpbrruyuua\",\"lbnwtpcpahp\":\"jwcolbm\"},\"id\":\"rvxhmtfhocnxzcm\",\"name\":\"hngxnoqrxtd\",\"type\":\"sn\"},{\"properties\":{\"encoding\":\"Base64\",\"rego\":\"d\"},\"etag\":\"ydidwhepfwwtjf\",\"tags\":{\"wcdbckyoik\":\"sxxh\",\"rbhtmeplvukaobr\":\"kxhnegknj\",\"jhgem\":\"bpgsnbagnc\",\"ywalhjymxcg\":\"owa\"},\"id\":\"agdrcls\",\"name\":\"ol\",\"type\":\"omevtfycn\"}]}")
             .toObject(RaiRegoListResult.class);
-        Assertions.assertEquals("fqsfa", model.nextLink());
+        Assertions.assertEquals("ratqxmbjro", model.nextLink());
         Assertions.assertEquals(RaiRegoEncoding.NONE, model.value().get(0).properties().encoding());
-        Assertions.assertEquals("e", model.value().get(0).properties().rego());
-        Assertions.assertEquals("jkmfxapjwo", model.value().get(0).tags().get("qqnobpudcd"));
+        Assertions.assertEquals("valqjrhuzgfxo", model.value().get(0).properties().rego());
+        Assertions.assertEquals("otz", model.value().get(0).tags().get("pdbollg"));
     }
 }

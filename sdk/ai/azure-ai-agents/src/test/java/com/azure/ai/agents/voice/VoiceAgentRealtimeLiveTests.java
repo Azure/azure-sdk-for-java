@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
-import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentsWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -87,8 +87,8 @@ public class VoiceAgentRealtimeLiveTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition(scenario)));
             created = true;
-            try (BetaVoiceAgentWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession(agentName)) {
+            try (VoiceAgentsWebSocketSessionClient session
+                = builder.buildVoiceAgentsWebSocketClient().openWebSocketSession(agentName)) {
                 Turn turn = new Turn(scenario);
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(EVENT_TIMEOUT).iterator();
                 turn.accept(events.next()).forEach(session::sendEvent);
@@ -118,7 +118,7 @@ public class VoiceAgentRealtimeLiveTests {
                 .block(EVENT_TIMEOUT);
             created = true;
             Turn turn = new Turn(scenario);
-            Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().openWebSocketSession(agentName),
+            Mono.usingWhen(builder.buildVoiceAgentsWebSocketAsyncClient().openWebSocketSession(agentName),
                 session -> session.receiveEvents()
                     .timeout(EVENT_TIMEOUT)
                     .concatMap(event -> Flux.fromIterable(turn.accept(event))
@@ -130,8 +130,8 @@ public class VoiceAgentRealtimeLiveTests {
                     .timeout(RESPONSE_TIMEOUT)
                     .doOnNext(ignored -> turn.assertComplete())
                     .then(),
-                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
-                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
+                VoiceAgentsWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
         } finally {
             if (created) {
                 agents.deleteAgent(agentName).block(EVENT_TIMEOUT);

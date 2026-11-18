@@ -23,7 +23,7 @@ public final class NeuroShieldProtectedResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"targetResourceId\":\"lzpswiydm\",\"targetIdentity\":{\"principalId\":\"hzdxssadbzm\",\"tenantId\":\"dfznudaodv\",\"type\":\"None\",\"userAssignedIdentities\":{\"blylpstdbh\":{},\"xsrz\":{},\"zucerscdntnev\":{},\"iwjmygtdssls\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-11-18T19:07:40Z\"},\"inventoryUploadRequest\":{\"requestId\":\"riofzpyqse\",\"requestedAt\":\"2021-06-06T05:20:48Z\",\"expiresAt\":\"2021-11-29T17:12:24Z\"}},\"id\":\"n\",\"name\":\"tshhszhedp\",\"type\":\"vwiwubmwmbesld\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"targetResourceId\":\"icokpv\",\"targetIdentity\":{\"principalId\":\"qtmldgxo\",\"tenantId\":\"irclnpk\",\"type\":\"None\",\"userAssignedIdentities\":{\"riykhyawfvjlbox\":{},\"vkjlmxhom\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-02-16T04:09:13Z\"},\"inventoryUploadRequest\":{\"requestId\":\"wdigumbnraauz\",\"requestedAt\":\"2021-03-20T09:02:59Z\",\"expiresAt\":\"2021-06-11T04:36:53Z\"}},\"id\":\"a\",\"name\":\"ysdzhez\",\"type\":\"wva\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NeuroShieldProtectedResourcesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NeuroShieldProtectedResource> response = manager.neuroShieldProtectedResources()
-            .list("aolps", "lqlfm", 219002993, "n", com.azure.core.util.Context.NONE);
+            .list("aawzqadfl", "z", 1828408441, "iglaecx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lzpswiydm", response.iterator().next().properties().targetResourceId());
-        Assertions.assertEquals("hzdxssadbzm", response.iterator().next().properties().targetIdentity().principalId());
-        Assertions.assertEquals("dfznudaodv", response.iterator().next().properties().targetIdentity().tenantId());
+        Assertions.assertEquals("icokpv", response.iterator().next().properties().targetResourceId());
+        Assertions.assertEquals("qtmldgxo", response.iterator().next().properties().targetIdentity().principalId());
+        Assertions.assertEquals("irclnpk", response.iterator().next().properties().targetIdentity().tenantId());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE,
             response.iterator().next().properties().targetIdentity().type());
     }
