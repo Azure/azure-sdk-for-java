@@ -91,9 +91,9 @@ public class Diagnostics {
         add(new NoPublicFieldsDiagnosticRule());
         add(new UpperCaseNamingDiagnosticRule("URL", "HTTP", "XML", "JSON", "SAS", "CPK", "API"));
         add(new ConsiderFinalClassDiagnosticRule());
-        add(new IllegalMethodNamesDiagnosticRule(new Rule("Builder$", "tokenCredential"), // it should just be 'credential'
-            new Rule("Builder$", "^set"),            // we shouldn't have setters in the builder
-            new Rule("^isHas"), new Rule("^setHas")));
+        add(new IllegalMethodNamesDiagnosticRule(new Rule(".*Builder$", "tokenCredential"), // it should just be 'credential'
+            new Rule(".*Builder$", "^set.*"),            // we shouldn't have setters in the builder
+            new Rule("^isHas.*"), new Rule("^setHas.*")));
         add(new MissingJavaDocDiagnosticRule());
         add(new MissingJavadocCodeSnippetsRule());
         add(new NoLocalesInJavadocUrlDiagnosticRule());

@@ -35,6 +35,39 @@ import static org.mockito.Mockito.mock;
 
 public class JavaASTAnalyserTests {
     @ParameterizedTest
+    @CsvSource(
+        value = {
+            "WidgetBuilder,tokenCredential,true",
+            "WidgetBuilder,setEndpoint,true",
+            "WidgetClient,isHasValue,true",
+            "WidgetClient,setHasValue,true",
+            "WidgetBuilder,credential,false",
+            "WidgetBuilder,endpoint,false",
+            "WidgetClient,setEndpoint,false",
+            "WidgetClient,tokenCredential,false",
+            "WidgetBuilder,tokenCredentialProvider,false",
+            "WidgetBuilderFactory,setEndpoint,false",
+            "WidgetClient,hasValue,false",
+            "WidgetClient,getHasValue,false" })
+    public void reportsMethodNamingDiagnostics(String className, String methodName, boolean illegalName,
+        @TempDir Path tempDir) throws IOException {
+        Path sourceFile = tempDir.resolve(className + ".java");
+        String source
+            = "package com.azure.test; public class " + className + " { public void " + methodName + "() {} }";
+        Files.write(sourceFile, source.getBytes(StandardCharsets.UTF_8));
+        ApiListing listing = new ApiListing();
+        listing.setPackageName("com.azure:test");
+        listing.setMavenPom(mock(Pom.class));
+
+        new JavaASTAnalyser(listing).analyse(Collections.singletonList(sourceFile));
+
+        assertEquals(illegalName,
+            listing.getDiagnostics()
+                .stream()
+                .anyMatch(diagnostic -> diagnostic.getText().contains("is using an illegal method name")));
+    }
+
+    @ParameterizedTest
     @CsvSource({ "com.azure.test,true,false", "com.azure.InvalidPackage,false,true", "com.azure.test,false,false" })
     public void reportsImportAndPackageDiagnostics(String packageName, boolean prohibitedImport, boolean invalidPackage,
         @TempDir Path tempDir) throws IOException {
