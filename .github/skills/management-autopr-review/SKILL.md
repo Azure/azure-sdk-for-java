@@ -66,8 +66,8 @@ Ignore the fourth and later segments when comparing the module with its
 Report whenever the folder `<service>` differs from the module's third segment.
 Explain that the likely source is the `service-dir` configuration in the
 upstream `tspconfig.yaml`, without accessing that repository.
-An upstream `service-dir` matching the incorrect folder reinforces the likely
-cause; it does not exempt or downgrade the mismatch.
+An upstream `service-dir` selecting the incorrect folder is the cause of the
+mismatch, not an exception. A confirmed mismatch must remain Blocking.
 
 ### `MGMT-VERSION`: stable package on a preview API
 

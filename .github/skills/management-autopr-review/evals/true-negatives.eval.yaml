@@ -7,8 +7,8 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: gpt-5.6-terra
-  judge_model: gpt-5.6-terra
+  model: gpt-6.1-sol
+  judge_model: gpt-6.1-sol
 
 scoring:
   threshold: 0.8
@@ -268,6 +268,10 @@ stimuli:
         name: "concern carried forward"
         config:
           pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*Carried forward"
+      - type: output-matches
+        name: "carried-forward blocker requests changes"
+        config:
+          pattern: 'Decision: `changes requested`'
       - type: output-not-matches
         name: "not marked new"
         config:
@@ -276,6 +280,43 @@ stimuli:
     rubric:
       - The existing MGMT-API-VERSION-OVERLAP concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.
+      - The unresolved carried-forward blocker must keep Decision at changes requested.
+
+  - name: resolved-folder-blocker-clears-decision
+    tags:
+      rule: prior-state
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-resolved-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to update the review state from
+      review-input.md, the authoritative synthetic snapshot at the current
+      head. Return the replacement current-state review comment as the final
+      response. Do not query live GitHub or another repository.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "folder blocker resolved"
+        config:
+          pattern: '\[MGMT-FOLDER\]`[ \t]+Resolved\b'
+      - type: output-matches
+        name: "resolved blocker no longer escalates decision"
+        config:
+          pattern: 'Decision: `no high-confidence concerns`'
+      - type: output-not-matches
+        name: "no lingering action decision"
+        config:
+          pattern: 'Decision: `(?:changes requested|human attention requested)`'
+      - type: prompt
+    rubric:
+      - The module now belongs to sdk/aigateway, matching its third segment aigateway.
+      - The prior MGMT-FOLDER must be reported once as Resolved.
+      - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
 
   - name: standard-manager-name-is-clean
     environment:

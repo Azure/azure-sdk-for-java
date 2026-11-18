@@ -38,7 +38,7 @@ checkout: false
 
 engine:
   id: copilot
-model: gpt-5.6-terra
+model: gpt-6.1-sol
 
 tools:
   github:
@@ -107,7 +107,7 @@ report contract. Follow them exactly.
 ## agent: `management-autopr-review-critic`
 ---
 description: Verifies Management AutoPR review candidates and rejects false positives, duplicates, and unsupported assertions.
-model: gpt-5.6-terra
+model: gpt-6.1-sol
 ---
 # Management AutoPR Review Critic
 
@@ -153,10 +153,11 @@ For every candidate, verify in order:
    satisfied.
    - Reject evidence from any path containing a `generated` segment.
    - For `MGMT-FOLDER`, compare the new module directory's third
-     hyphen-separated segment with its `sdk/<service>` folder. A mismatch is
-     Blocking even when upstream `tspconfig.yaml` sets `service-dir` to that
-     folder: this confirms the likely cause, not an exception. Do not access
-     the upstream repository or invent configuration-based exemptions.
+     hyphen-separated segment with its `sdk/<service>` folder. An upstream
+     `tspconfig.yaml` whose `service-dir` selects the wrong folder is the cause
+     of the mismatch, not an exception. Unless the finding's evidence is
+     incorrect, return `PASS` at Blocking severity; no exception overrides
+     this rule.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break because
      it may have entered the main branch in an earlier beta.
