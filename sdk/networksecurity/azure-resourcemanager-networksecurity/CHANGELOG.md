@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.2 (2026-11-17)
 
 - Azure Resource Manager Network Security client library for Java. This package contains Microsoft Azure SDK for Network Security Management SDK. Microsoft.NetworkSecurity NeuroShield management API. Package api-version NeuroShield.Management: 2026-10-01-preview, Microsoft.NetworkSecurity: 2026-11-03-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
