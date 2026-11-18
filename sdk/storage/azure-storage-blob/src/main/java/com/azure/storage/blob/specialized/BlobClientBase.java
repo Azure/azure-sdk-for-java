@@ -1458,7 +1458,7 @@ public class BlobClientBase {
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
                 options.getContentValidationAlgorithm(), context)
-            .flatMap(r -> BinaryData.fromFlux(r.getValue())
+            .flatMap(r -> BlobAsyncClientBase.bufferDownloadContent(r)
                 .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                     data, r.getDeserializedHeaders())))
             .map(BlobDownloadContentResponse::new);

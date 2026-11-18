@@ -58,6 +58,7 @@ import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -614,6 +615,40 @@ public class BlobApiTests extends BlobTestBase {
     public void downloadBinaryDataMin() {
         BinaryData result = bc.downloadContent();
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result.toBytes());
+    }
+
+    @Test
+    public void downloadBinaryDataMultipleNetworkBuffers() {
+        byte[] data = getRandomByteArray(32 * Constants.KB + 1);
+        bc.upload(BinaryData.fromBytes(data), true);
+
+        BinaryData content = bc.downloadContent();
+        assertBufferedDownloadContent(data, content);
+        assertDownloadContentInOneArray(content);
+
+        BinaryData responseContent
+            = bc.downloadContentWithResponse(new BlobDownloadContentOptions(), null, null).getValue();
+        assertBufferedDownloadContent(data, responseContent);
+        assertDownloadContentInOneArray(responseContent);
+    }
+
+    @ParameterizedTest
+    @MethodSource("downloadRangeSupplier")
+    public void downloadBinaryDataRange(long offset, Long count, String expectedData) {
+        BlobRange range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, count);
+
+        BinaryData content
+            = bc.downloadContentWithResponse(new BlobDownloadContentOptions().setRange(range), null, null).getValue();
+
+        assertBufferedDownloadContent(expectedData.getBytes(StandardCharsets.UTF_8), content);
+        assertDownloadContentInOneArray(content);
+    }
+
+    @Test
+    public void downloadBinaryDataEmptyBlob() {
+        bc.upload(BinaryData.fromBytes(new byte[0]), true);
+
+        assertBufferedDownloadContent(new byte[0], bc.downloadContent());
     }
 
     @ParameterizedTest
