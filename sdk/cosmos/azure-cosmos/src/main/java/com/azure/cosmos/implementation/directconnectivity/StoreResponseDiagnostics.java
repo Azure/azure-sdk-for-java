@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -82,9 +83,8 @@ public class StoreResponseDiagnostics {
     }
 
     private StoreResponseDiagnostics(StoreResponse storeResponse, RxDocumentServiceRequest rxDocumentServiceRequest) {
-        String rspPkRangeId = storeResponse.getPartitionKeyRangeId();
-        this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
-            rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        this.partitionKeyRangeId = resolvePartitionKeyRangeId(
+            storeResponse.getPartitionKeyRangeId(), rxDocumentServiceRequest);
         this.activityId = storeResponse.getActivityId();
         this.correlatedActivityId = storeResponse.getCorrelatedActivityId();
         this.requestCharge = storeResponse.getRequestCharge();
@@ -116,8 +116,10 @@ public class StoreResponseDiagnostics {
         CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest, Tag serviceEndpointMetricTag) {
         this.serviceEndpointMetricTag = serviceEndpointMetricTag;
         String rspPkRangeId = BridgeInternal.getPartitionKeyRangeId(e);
-        this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
-            rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        if (Strings.isNullOrWhiteSpace(rspPkRangeId)) {
+            rspPkRangeId = e.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        }
+        this.partitionKeyRangeId = resolvePartitionKeyRangeId(rspPkRangeId, rxDocumentServiceRequest);
         this.activityId = e.getActivityId();
         this.correlatedActivityId = e.getResponseHeaders().get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);;
         this.requestCharge = e.getRequestCharge();
@@ -147,6 +149,22 @@ public class StoreResponseDiagnostics {
         this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
         this.requestThroughputControlGroupConfig =
             rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
+    }
+
+    private static String resolvePartitionKeyRangeId(
+        String responsePartitionKeyRangeId, RxDocumentServiceRequest request) {
+
+        if (!Strings.isNullOrWhiteSpace(responsePartitionKeyRangeId)) {
+            return responsePartitionKeyRangeId;
+        }
+
+        String requestPartitionKeyRangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        if (!Strings.isNullOrWhiteSpace(requestPartitionKeyRangeId)) {
+            return requestPartitionKeyRangeId;
+        }
+
+        PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+        return resolvedPartitionKeyRange != null ? resolvedPartitionKeyRange.getId() : requestPartitionKeyRangeId;
     }
 
     public int getStatusCode() {
