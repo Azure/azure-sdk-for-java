@@ -10,6 +10,7 @@
 
 ### Bugs Fixed
 
+- Fixed configuration refresh blocking the calling thread by running refresh checks asynchronously on subscription.
 - Fixed an issue where startup retries could report success without loading configuration when all clients were in backoff. Startup now waits for client availability until the startup timeout and preserves the last load failure. Refresh also reports failure when no clients are available.
 - Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
 

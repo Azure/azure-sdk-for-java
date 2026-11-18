@@ -234,9 +234,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldsGetByResourceGroupResponse> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String neuroShieldName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -279,9 +280,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsGetByResourceGroupResponse getByResourceGroupWithResponse(String resourceGroupName,
         String neuroShieldName, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, accept, context);
+        return service.getByResourceGroupSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, accept, context);
     }
 
     /**
@@ -321,10 +323,11 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
         String neuroShieldName, NeuroShieldResourceInner resource, String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, ifMatch, contentType, accept,
                 resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -370,11 +373,11 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
         String neuroShieldName, NeuroShieldResourceInner resource, String ifMatch, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, ifMatch, contentType, accept, resource,
-            context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, ifMatch, contentType, accept, resource, context);
     }
 
     /**
@@ -416,12 +419,13 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String neuroShieldName,
         NeuroShieldPatch properties, String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, ifMatch, contentType, accept,
-                properties, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, ifMatch, contentType, accept, properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -465,11 +469,11 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldsUpdateResponse updateWithResponse(String resourceGroupName, String neuroShieldName,
         NeuroShieldPatch properties, String ifMatch, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, ifMatch, contentType, accept,
-            properties, context);
+        return service.updateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, ifMatch, contentType, accept, properties, context);
     }
 
     /**
@@ -506,8 +510,9 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String neuroShieldName) {
+        final String apiVersion = "2026-10-01-preview";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -544,8 +549,9 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String neuroShieldName, Context context) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, context);
+        final String apiVersion = "2026-10-01-preview";
+        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, context);
     }
 
     /**
@@ -581,9 +587,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -645,10 +652,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
+        Response<NeuroShieldResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            apiVersion, this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -670,10 +677,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
+        Response<NeuroShieldResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            apiVersion, this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -733,10 +740,11 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldResourceInner>> listSinglePageAsync(Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), top, skipToken, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -791,9 +799,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listSinglePage(Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
+        Response<NeuroShieldResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -813,9 +822,10 @@ public final class NeuroShieldsClientImpl implements NeuroShieldsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldResourceInner> listSinglePage(Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, skipToken, accept, context);
+        Response<NeuroShieldResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

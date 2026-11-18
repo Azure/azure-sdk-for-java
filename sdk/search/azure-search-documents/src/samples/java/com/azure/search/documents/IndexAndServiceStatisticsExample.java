@@ -3,7 +3,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -14,6 +13,7 @@ import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
 import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
@@ -117,15 +117,18 @@ public class IndexAndServiceStatisticsExample {
         System.out.println("document Count:" + documentCount);
         System.out.println("storage Size:" + storageSize);
 
-        client.listIndexStatsSummary(new RequestOptions().addQueryParam("search", index.getName())
-            .addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1"))
-            .forEach(statistics -> System.out.printf("Index %s: %d documents, %d storage bytes, %d vector bytes%n",
-                statistics.getName(), statistics.getDocumentCount(), statistics.getStorageSize(),
-                statistics.getVectorIndexSize()));
+        listIndexStatistics(client, index.getName());
 
         // Output:
         // document Count:0
         // storage Size:0
+    }
+
+    static void listIndexStatistics(SearchIndexClient client, String indexName) {
+        client.listIndexStatsSummary(indexName, 1, ListingSearchType.PREFIX).iterableByPage().forEach(page ->
+            page.getValue().forEach(statistics -> System.out.printf(
+                "Index %s: %d documents, %d storage bytes, %d vector bytes%n", statistics.getName(),
+                statistics.getDocumentCount(), statistics.getStorageSize(), statistics.getVectorIndexSize())));
     }
 
     /**

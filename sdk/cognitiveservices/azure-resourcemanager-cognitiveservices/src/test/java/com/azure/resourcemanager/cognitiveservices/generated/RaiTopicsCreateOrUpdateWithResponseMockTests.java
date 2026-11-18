@@ -24,7 +24,7 @@ public final class RaiTopicsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"topicId\":\"q\",\"topicName\":\"jk\",\"description\":\"xxr\",\"sampleBlobUrl\":\"obuzmsxga\",\"status\":\"dtkwppth\",\"failedReason\":\"dprmimrljdpoqf\",\"createdAt\":\"2021-09-01T20:57:54Z\",\"lastModifiedAt\":\"2021-02-10T04:49:18Z\"},\"etag\":\"ftb\",\"tags\":{\"fmxtllf\":\"htecloa\",\"bgamklilirwd\":\"tymqcnrrfijhggab\",\"qrxqwqnjx\":\"ffhsdpzouhk\",\"zcxdfweapyfmlxrl\":\"dfddtullygtav\"},\"id\":\"h\",\"name\":\"aspiflei\",\"type\":\"ixlmdbgic\"}";
+            = "{\"properties\":{\"topicId\":\"ymnrtvq\",\"topicName\":\"mavyotpcvp\",\"description\":\"hpk\",\"sampleBlobUrl\":\"qpvzxxzndw\",\"status\":\"mi\",\"failedReason\":\"ufqqauyga\",\"createdAt\":\"2021-11-14T04:25:23Z\",\"lastModifiedAt\":\"2021-03-20T14:20:05Z\"},\"etag\":\"v\",\"tags\":{\"atxvuzccaliry\":\"q\",\"qpjohlcbn\":\"ytc\",\"qfrpanteqiw\":\"vxyyhhsisz\"},\"id\":\"ukaa\",\"name\":\"imkjzcx\",\"type\":\"sj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,28 +34,29 @@ public final class RaiTopicsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiTopic response = manager.raiTopics()
-            .define("xhnzlslekcttgzkj")
-            .withExistingAccount("ufqizjvppw", "oajeyyjmjjxizx")
-            .withTags(mapOf("kwepwo", "kkderfrswq", "d", "ggicwnxhtfmcqbs", "djxh", "pgchzpgfqum", "v", "ghgodkynrceq"))
-            .withProperties(new RaiTopicProperties().withTopicId("p")
-                .withTopicName("adeghztldsvc")
-                .withDescription("jiahuqy")
-                .withSampleBlobUrl("zucwwmejjqhd")
-                .withStatus("vmqxi")
-                .withFailedReason("okyfoz")
-                .withCreatedAt(OffsetDateTime.parse("2021-12-01T18:01:45Z"))
-                .withLastModifiedAt(OffsetDateTime.parse("2021-04-07T16:33:25Z")))
+            .define("gxgdpivjkhcos")
+            .withExistingAccount("vgicxt", "llqgnsydksvj")
+            .withTags(mapOf("zowgmmixf", "ku", "jnpahzhpqscuyil", "aupgblna", "ebmuiongmndwohoe", "qjzri",
+                "uxfvbjimzwynsm", "s"))
+            .withProperties(new RaiTopicProperties().withTopicId("jjh")
+                .withTopicName("gzooefzs")
+                .withDescription("tbqkaqdvwoj")
+                .withSampleBlobUrl("vfvhrqxrqgh")
+                .withStatus("ingzickgygawyh")
+                .withFailedReason("mdkyfgyelvyhvvpu")
+                .withCreatedAt(OffsetDateTime.parse("2021-11-27T03:32:14Z"))
+                .withLastModifiedAt(OffsetDateTime.parse("2021-03-08T00:03:31Z")))
             .create();
 
-        Assertions.assertEquals("q", response.properties().topicId());
-        Assertions.assertEquals("jk", response.properties().topicName());
-        Assertions.assertEquals("xxr", response.properties().description());
-        Assertions.assertEquals("obuzmsxga", response.properties().sampleBlobUrl());
-        Assertions.assertEquals("dtkwppth", response.properties().status());
-        Assertions.assertEquals("dprmimrljdpoqf", response.properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T20:57:54Z"), response.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T04:49:18Z"), response.properties().lastModifiedAt());
-        Assertions.assertEquals("htecloa", response.tags().get("fmxtllf"));
+        Assertions.assertEquals("ymnrtvq", response.properties().topicId());
+        Assertions.assertEquals("mavyotpcvp", response.properties().topicName());
+        Assertions.assertEquals("hpk", response.properties().description());
+        Assertions.assertEquals("qpvzxxzndw", response.properties().sampleBlobUrl());
+        Assertions.assertEquals("mi", response.properties().status());
+        Assertions.assertEquals("ufqqauyga", response.properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T04:25:23Z"), response.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T14:20:05Z"), response.properties().lastModifiedAt());
+        Assertions.assertEquals("q", response.tags().get("atxvuzccaliry"));
     }
 
     // Use "Map.of" if available

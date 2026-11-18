@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ProjectsGetSamples {
     /*
-     * x-ms-original-file: 2026-11-01/GetProject.json
+     * x-ms-original-file: 2026-11-15-preview/GetProject.json
      */
     /**
      * Sample code: Get Project.

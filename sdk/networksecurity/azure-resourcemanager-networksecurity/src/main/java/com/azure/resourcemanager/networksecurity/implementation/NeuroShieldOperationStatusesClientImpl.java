@@ -89,10 +89,11 @@ public final class NeuroShieldOperationStatusesClientImpl implements NeuroShield
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String location, String operationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, operationId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -124,9 +125,10 @@ public final class NeuroShieldOperationStatusesClientImpl implements NeuroShield
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            location, operationId, accept, context);
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            operationId, accept, context);
     }
 
     /**

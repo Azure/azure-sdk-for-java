@@ -44,6 +44,12 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
     private Integer count;
 
     /*
+     * Statistics about image serving for this retrieval activity
+     */
+    @Generated
+    private ImageServingStatistics imageServing;
+
+    /*
      * The azure blob arguments for the retrieval activity.
      */
     @Generated
@@ -102,6 +108,16 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
     }
 
     /**
+     * Get the imageServing property: Statistics about image serving for this retrieval activity.
+     *
+     * @return the imageServing value.
+     */
+    @Generated
+    public ImageServingStatistics getImageServing() {
+        return this.imageServing;
+    }
+
+    /**
      * Get the azureBlobArguments property: The azure blob arguments for the retrieval activity.
      *
      * @return the azureBlobArguments value.
@@ -131,6 +147,7 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
         jsonWriter.writeStringField("queryTime",
             this.queryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queryTime));
         jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("azureBlobArguments", this.azureBlobArguments);
         return jsonWriter.writeEndObject();
     }
@@ -157,6 +174,7 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
             String knowledgeSourceName = null;
             OffsetDateTime queryTime = null;
             Integer count = null;
+            ImageServingStatistics imageServing = null;
             KnowledgeBaseAzureBlobActivityArguments azureBlobArguments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,6 +202,8 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("count".equals(fieldName)) {
                     count = reader.getNullable(JsonReader::getInt);
+                } else if ("imageServing".equals(fieldName)) {
+                    imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("azureBlobArguments".equals(fieldName)) {
                     azureBlobArguments = KnowledgeBaseAzureBlobActivityArguments.fromJson(reader);
                 } else {
@@ -201,6 +221,7 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
             deserializedKnowledgeBaseAzureBlobActivityRecord.knowledgeSourceName = knowledgeSourceName;
             deserializedKnowledgeBaseAzureBlobActivityRecord.queryTime = queryTime;
             deserializedKnowledgeBaseAzureBlobActivityRecord.count = count;
+            deserializedKnowledgeBaseAzureBlobActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseAzureBlobActivityRecord.azureBlobArguments = azureBlobArguments;
             return deserializedKnowledgeBaseAzureBlobActivityRecord;
         });

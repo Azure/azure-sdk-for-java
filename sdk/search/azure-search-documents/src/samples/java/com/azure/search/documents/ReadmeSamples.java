@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CloseableIterableStream;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -22,10 +21,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
@@ -33,8 +29,8 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,21 +47,6 @@ public class ReadmeSamples {
     private static final SearchIndexClient SEARCH_INDEX_CLIENT = new SearchIndexClientBuilder().buildClient();
     private static final SearchClient SEARCH_CLIENT = new SearchClientBuilder().buildClient();
     private static final SearchAsyncClient SEARCH_ASYNC_CLIENT = new SearchClientBuilder().buildAsyncClient();
-
-    public void retrieveKnowledgeBaseStream(KnowledgeBaseRetrievalClient client,
-        KnowledgeBaseRetrievalOptions request) throws IOException {
-        // BEGIN: readme-sample-retrieveKnowledgeBaseStream
-        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
-            for (KnowledgeBaseRetrievalStreamEvent event : events) {
-                System.out.println(event.getEventName());
-                if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
-                    KnowledgeBaseAnswerCompletedStreamEvent answer = (KnowledgeBaseAnswerCompletedStreamEvent) event;
-                    System.out.println(answer.getValue().getMessage());
-                }
-            }
-        }
-        // END: readme-sample-retrieveKnowledgeBaseStream
-    }
 
     public void createSearchClient() {
         // BEGIN: readme-sample-createSearchClient
@@ -195,24 +176,6 @@ public class ReadmeSamples {
         // END: readme-sample-searchWithStronglyType
     }
 
-    public void searchMoreLikeThis() {
-        // BEGIN: readme-sample-searchMoreLikeThis
-        SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1")
-            .setSearchFields("HotelName", "Description")
-            .setTop(5);
-        SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
-        // END: readme-sample-searchMoreLikeThis
-    }
-
-    public void searchWithDocumentPermissions(String querySourceToken) {
-        // BEGIN: readme-sample-searchWithDocumentPermissions
-        SearchOptions options = new SearchOptions().setSearchText("hotel")
-            .setQuerySourceAuthorization(querySourceToken)
-            .setEnableElevatedRead(false);
-        SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
-        // END: readme-sample-searchWithDocumentPermissions
-    }
-
     public void searchWithSearchOptions() {
         // BEGIN: readme-sample-searchWithSearchOptions
         SearchOptions options = new SearchOptions().setSearchText("luxury")
@@ -239,6 +202,18 @@ public class ReadmeSamples {
         Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
         // END: readme-sample-retrieveDocuments
+    }
+
+    public void retrieveDocumentWithOptions(String querySourceToken) {
+        // BEGIN: readme-sample-retrieveDocumentWithOptions
+        GetDocumentOptions options = new GetDocumentOptions()
+            .setQuerySourceAuthorization(querySourceToken)
+            .setEnableElevatedRead(false)
+            .setSelectedFields(Arrays.asList("Id", "Name"));
+        Map<String, Object> hotel = SEARCH_CLIENT.getDocumentWithResponse("1", options, null)
+            .getValue().getAdditionalProperties();
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+        // END: readme-sample-retrieveDocumentWithOptions
     }
 
     public void batchDocumentsOperations() {

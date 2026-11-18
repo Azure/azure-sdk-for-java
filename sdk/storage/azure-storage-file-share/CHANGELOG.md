@@ -6,12 +6,26 @@
 
 ### Breaking Changes
 
+- File and directory rename operations now treat percent-encoded-looking source paths literally instead of decoding
+  them. For example, a client path of `a%20b` now renames the literal `a%20b` resource, not `a b`.
+  Applications that supplied pre-encoded source paths, including through `ShareFileClientBuilder.endpoint`, must
+  instead supply the raw path using `resourcePath("a b")`, `getFileClient("a b")`, or `getDirectoryClient("a b")`.
+
 ### Bugs Fixed
+- Fixed `ShareFileAsyncClient.rename`/`renameWithResponse` and `ShareDirectoryAsyncClient.rename`/`renameWithResponse`
+  returning a client whose path was URL-encoded a second time, so paths containing `/` or characters that need
+  encoding addressed the wrong resource.
 - Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
   of emitting them through the returned `PollerFlux`.
 - Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
   `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
   request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
+- Fixed `ShareFileClient` and `ShareFileAsyncClient` rename operations for files whose names contain a literal `%`.
+  Previously the source path was decoded before being encoded, so such renames could fail or move a different file
+  (for example, a file named `a%20b` was treated as `a b`). The source path is now encoded once, without decoding.
+- Fixed `ShareDirectoryClient` and `ShareDirectoryAsyncClient` rename operations for directories whose names contain
+  `#`, a `%` sequence, or non-ASCII characters. Previously the rename-source header was sent unencoded, so such
+  renames could fail or move a different directory. The source path is now URL-encoded in the header.
 
 ### Other Changes
 

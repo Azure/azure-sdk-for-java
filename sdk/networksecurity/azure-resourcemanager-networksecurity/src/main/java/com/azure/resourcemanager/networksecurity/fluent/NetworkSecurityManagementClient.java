@@ -19,13 +19,6 @@ public interface NetworkSecurityManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Version parameter.
-     * 
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
@@ -94,4 +87,46 @@ public interface NetworkSecurityManagementClient {
      * @return the NeuroShieldMitigationsClient object.
      */
     NeuroShieldMitigationsClient getNeuroShieldMitigations();
+
+    /**
+     * Gets the AgentFabricsClient object to access its operations.
+     * 
+     * @return the AgentFabricsClient object.
+     */
+    AgentFabricsClient getAgentFabrics();
+
+    /**
+     * Gets the MembersClient object to access its operations.
+     * 
+     * @return the MembersClient object.
+     */
+    MembersClient getMembers();
+
+    /**
+     * Gets the PolicyGroupsClient object to access its operations.
+     * 
+     * @return the PolicyGroupsClient object.
+     */
+    PolicyGroupsClient getPolicyGroups();
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     * 
+     * @return the OperationStatusClient object.
+     */
+    OperationStatusClient getOperationStatus();
+
+    /**
+     * Gets the ClusterAssociationsClient object to access its operations.
+     * 
+     * @return the ClusterAssociationsClient object.
+     */
+    ClusterAssociationsClient getClusterAssociations();
+
+    /**
+     * Gets the EgressTrustBundlesClient object to access its operations.
+     * 
+     * @return the EgressTrustBundlesClient object.
+     */
+    EgressTrustBundlesClient getEgressTrustBundles();
 }

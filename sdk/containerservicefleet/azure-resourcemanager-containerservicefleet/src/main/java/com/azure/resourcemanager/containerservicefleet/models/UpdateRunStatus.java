@@ -33,6 +33,11 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
      */
     private NodeImageSelectionStatus nodeImageSelection;
 
+    /*
+     * Total member upgrade failures across the entire UpdateRun.
+     */
+    private Integer failureCount;
+
     /**
      * Creates an instance of UpdateRunStatus class.
      */
@@ -68,6 +73,15 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
     }
 
     /**
+     * Get the failureCount property: Total member upgrade failures across the entire UpdateRun.
+     * 
+     * @return the failureCount value.
+     */
+    public Integer failureCount() {
+        return this.failureCount;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -98,6 +112,8 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
                     deserializedUpdateRunStatus.stages = stages;
                 } else if ("nodeImageSelection".equals(fieldName)) {
                     deserializedUpdateRunStatus.nodeImageSelection = NodeImageSelectionStatus.fromJson(reader);
+                } else if ("failureCount".equals(fieldName)) {
+                    deserializedUpdateRunStatus.failureCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
