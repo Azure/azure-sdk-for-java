@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class HourlySchedule implements JsonSerializable<HourlySchedule> {
     /*
+     * 
      * Interval at which backup needs to be triggered. For hourly the value
      * can be 4/6/8/12
      */
@@ -42,7 +43,8 @@ public final class HourlySchedule implements JsonSerializable<HourlySchedule> {
     }
 
     /**
-     * Get the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * Get the interval property:
+     * Interval at which backup needs to be triggered. For hourly the value
      * can be 4/6/8/12.
      * 
      * @return the interval value.
@@ -52,7 +54,8 @@ public final class HourlySchedule implements JsonSerializable<HourlySchedule> {
     }
 
     /**
-     * Set the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * Set the interval property:
+     * Interval at which backup needs to be triggered. For hourly the value
      * can be 4/6/8/12.
      * 
      * @param interval the interval value to set.

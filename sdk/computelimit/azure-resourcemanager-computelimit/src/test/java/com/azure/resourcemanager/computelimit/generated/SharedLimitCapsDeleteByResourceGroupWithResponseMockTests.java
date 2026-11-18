@@ -28,7 +28,7 @@ public final class SharedLimitCapsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.sharedLimitCaps()
-            .deleteByResourceGroupWithResponse("vpnazzm", "jrunmpxtt", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("xnkjzkdesl", "vlopwiyighx", com.azure.core.util.Context.NONE);
 
     }
 }

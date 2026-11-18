@@ -12,10 +12,10 @@ public final class WorkloadNetworkDhcpListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"cokpv\",\"segments\":[\"qtmldgxo\",\"firclnpkciayz\",\"iykhy\"],\"provisioningState\":\"Deleting\",\"revision\":2742500697219897698},\"id\":\"oxqvkjlmxhomdynh\",\"name\":\"wdigumbnraauz\",\"type\":\"p\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zysdzh\",\"segments\":[\"wva\",\"qyuvvfonkp\",\"hqyikvy\",\"auy\"],\"provisioningState\":\"Building\",\"revision\":3059262516431263157},\"id\":\"csttijfybvpoekr\",\"name\":\"gsgbdhuzq\",\"type\":\"njdgkynscliq\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"h\",\"segments\":[\"omtkub\",\"tppn\",\"dxzxhi\"],\"provisioningState\":\"Updating\",\"revision\":107685473629648091},\"id\":\"vqagtltdhlf\",\"name\":\"qojpy\",\"type\":\"vgtrdcnifmzzs\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"gkfmins\",\"segments\":[\"zfttsttktlahb\"],\"provisioningState\":\"Deleting\",\"revision\":8616212085400187990},\"id\":\"zukxitmmqtgqq\",\"name\":\"x\",\"type\":\"rnxrxcpj\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"av\",\"segments\":[\"dzf\",\"azivjlfrqttbajl\",\"atnwxyiopi\",\"kqqfk\"],\"provisioningState\":\"Building\",\"revision\":8694268558248664798},\"id\":\"mligov\",\"name\":\"brxk\",\"type\":\"mloazuru\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"goorbteo\",\"segments\":[\"hjxa\",\"vvjgslor\",\"il\"],\"provisioningState\":\"Canceled\",\"revision\":986449058772129435},\"id\":\"kxn\",\"name\":\"edabgyvudtjue\",\"type\":\"bcihxuuwhc\"}],\"nextLink\":\"xccybvpa\"}")
             .toObject(WorkloadNetworkDhcpList.class);
-        Assertions.assertEquals("cokpv", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(2742500697219897698L, model.value().get(0).properties().revision());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals("gkfmins", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(8616212085400187990L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("xccybvpa", model.nextLink());
     }
 }

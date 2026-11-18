@@ -16,25 +16,29 @@ public final class GatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"qiby\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"owx\",\"allowedFeatures\":[\"djrkvfgbvfvpd\",\"odacizs\",\"q\",\"hkr\"]},\"location\":\"bdeibqipqk\",\"tags\":{\"refajpjorwkqnyh\":\"xndzwm\",\"j\":\"b\"},\"id\":\"jivfxzsjabib\",\"name\":\"ystawfsdjpvkvp\",\"type\":\"jxbkzbzkdvn\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"gatewayId\":\"qg\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"irtx\",\"allowedFeatures\":[\"x\",\"ejnt\",\"sewgioilqukr\"],\"gatewayBypass\":[\"tqmieox\",\"rgguf\",\"yaomtb\"]},\"location\":\"havgrvk\",\"tags\":{\"jmfxumvf\":\"vjzhpjbib\",\"cy\":\"luyovwxnbkfezzx\",\"vzzbtdcq\":\"wzdgirujbzbo\",\"dshf\":\"pniyujviyl\"},\"id\":\"snrbgyefrymsgao\",\"name\":\"fmwncotmrfh\",\"type\":\"rctym\"}")
             .toObject(GatewayInner.class);
-        Assertions.assertEquals("bdeibqipqk", model.location());
-        Assertions.assertEquals("xndzwm", model.tags().get("refajpjorwkqnyh"));
+        Assertions.assertEquals("havgrvk", model.location());
+        Assertions.assertEquals("vjzhpjbib", model.tags().get("jmfxumvf"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("djrkvfgbvfvpd", model.allowedFeatures().get(0));
+        Assertions.assertEquals("x", model.allowedFeatures().get(0));
+        Assertions.assertEquals("tqmieox", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayInner model = new GatewayInner().withLocation("bdeibqipqk")
-            .withTags(mapOf("refajpjorwkqnyh", "xndzwm", "j", "b"))
+        GatewayInner model = new GatewayInner().withLocation("havgrvk")
+            .withTags(mapOf("jmfxumvf", "vjzhpjbib", "cy", "luyovwxnbkfezzx", "vzzbtdcq", "wzdgirujbzbo", "dshf",
+                "pniyujviyl"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("djrkvfgbvfvpd", "odacizs", "q", "hkr"));
+            .withAllowedFeatures(Arrays.asList("x", "ejnt", "sewgioilqukr"))
+            .withGatewayBypass(Arrays.asList("tqmieox", "rgguf", "yaomtb"));
         model = BinaryData.fromObject(model).toObject(GatewayInner.class);
-        Assertions.assertEquals("bdeibqipqk", model.location());
-        Assertions.assertEquals("xndzwm", model.tags().get("refajpjorwkqnyh"));
+        Assertions.assertEquals("havgrvk", model.location());
+        Assertions.assertEquals("vjzhpjbib", model.tags().get("jmfxumvf"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("djrkvfgbvfvpd", model.allowedFeatures().get(0));
+        Assertions.assertEquals("x", model.allowedFeatures().get(0));
+        Assertions.assertEquals("tqmieox", model.gatewayBypass().get(0));
     }
 
     // Use "Map.of" if available

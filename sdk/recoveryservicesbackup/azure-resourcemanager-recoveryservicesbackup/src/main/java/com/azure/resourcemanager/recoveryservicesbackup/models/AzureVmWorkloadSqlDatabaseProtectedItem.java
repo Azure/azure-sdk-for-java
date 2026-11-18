@@ -463,6 +463,8 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlDatabaseProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

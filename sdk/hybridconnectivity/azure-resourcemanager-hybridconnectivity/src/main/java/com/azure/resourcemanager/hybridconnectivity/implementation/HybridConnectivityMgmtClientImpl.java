@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hybridconnectivity.fluent.EndpointsClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
+import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateGcpTemplatesClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.HybridConnectivityMgmtClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.InventoriesClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.OperationsClient;
@@ -190,6 +191,20 @@ public final class HybridConnectivityMgmtClientImpl implements HybridConnectivit
     }
 
     /**
+     * The GenerateGcpTemplatesClient object to access its operations.
+     */
+    private final GenerateGcpTemplatesClient generateGcpTemplates;
+
+    /**
+     * Gets the GenerateGcpTemplatesClient object to access its operations.
+     * 
+     * @return the GenerateGcpTemplatesClient object.
+     */
+    public GenerateGcpTemplatesClient getGenerateGcpTemplates() {
+        return this.generateGcpTemplates;
+    }
+
+    /**
      * The PublicCloudConnectorsClient object to access its operations.
      */
     private final PublicCloudConnectorsClient publicCloudConnectors;
@@ -262,11 +277,12 @@ public final class HybridConnectivityMgmtClientImpl implements HybridConnectivit
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-12-01";
+        this.apiVersion = "2027-01-01";
         this.operations = new OperationsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.serviceConfigurations = new ServiceConfigurationsClientImpl(this);
         this.generateAwsTemplates = new GenerateAwsTemplatesClientImpl(this);
+        this.generateGcpTemplates = new GenerateGcpTemplatesClientImpl(this);
         this.publicCloudConnectors = new PublicCloudConnectorsClientImpl(this);
         this.solutionConfigurations = new SolutionConfigurationsClientImpl(this);
         this.inventories = new InventoriesClientImpl(this);

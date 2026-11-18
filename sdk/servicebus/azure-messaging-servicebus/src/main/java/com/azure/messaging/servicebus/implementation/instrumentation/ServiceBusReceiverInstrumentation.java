@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation.instrumentation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -145,6 +146,29 @@ public final class ServiceBusReceiverInstrumentation {
 
     public ServiceBusTracer getTracer() {
         return tracer;
+    }
+
+    /**
+     * Traces the complete reactive processor operation without keeping a thread-local scope open across signals.
+     * @param message The message being processed.
+     * @param processing The handler and its settlement operation.
+     * @return The instrumented operation.
+     */
+    public Mono<Void> instrumentProcessAsync(ServiceBusReceivedMessage message, Mono<Void> processing) {
+        return Mono.defer(() -> {
+            Context span = startProcessInstrumentation("ServiceBus.process", message.getApplicationProperties(),
+                message.getEnqueuedTime(), Context.NONE);
+            ContextAccessor.setContext(message, span);
+            return processing.doOnEach(signal -> {
+                if (signal.isOnComplete() || signal.isOnError()) {
+                    tracer.endSpan(signal.getThrowable(), span, null);
+                }
+            }).doOnCancel(() -> {
+                if (tracer.isEnabled()) {
+                    tracer.cancelSpan(span);
+                }
+            }).contextWrite(FluxUtil.toReactorContext(span));
+        });
     }
 
     private static String getSettlementSpanName(DispositionStatus status) {

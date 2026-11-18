@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionStat
  */
 public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
      */
     /**
      * Sample code: approve a Private Endpoint Connection under a disk access resource.

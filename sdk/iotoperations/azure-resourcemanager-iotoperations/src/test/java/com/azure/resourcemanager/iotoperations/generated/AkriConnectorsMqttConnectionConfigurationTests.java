@@ -16,35 +16,35 @@ public final class AkriConnectorsMqttConnectionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorsMqttConnectionConfiguration model = BinaryData.fromString(
-            "{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"npirgnepttw\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1901745406,\"maxInflightMessages\":1579066306,\"sessionExpirySeconds\":584179057,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"ojlpijnkrxf\"}}")
+            "{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"omvzzbtd\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1359383511,\"maxInflightMessages\":1622829877,\"sessionExpirySeconds\":602738724,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"wdsh\"}}")
             .toObject(AkriConnectorsMqttConnectionConfiguration.class);
-        Assertions.assertEquals("npirgnepttw", model.host());
+        Assertions.assertEquals("omvzzbtd", model.host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT, model.protocol());
-        Assertions.assertEquals(1901745406, model.keepAliveSeconds());
-        Assertions.assertEquals(1579066306, model.maxInflightMessages());
-        Assertions.assertEquals(584179057, model.sessionExpirySeconds());
+        Assertions.assertEquals(1359383511, model.keepAliveSeconds());
+        Assertions.assertEquals(1622829877, model.maxInflightMessages());
+        Assertions.assertEquals(602738724, model.sessionExpirySeconds());
         Assertions.assertEquals(OperationalMode.DISABLED, model.tls().mode());
-        Assertions.assertEquals("ojlpijnkrxf", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("wdsh", model.tls().trustedCaCertificateConfigMapRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AkriConnectorsMqttConnectionConfiguration model
-            = new AkriConnectorsMqttConnectionConfiguration().withAuthentication(new AkriConnectorsMqttAuthentication())
-                .withHost("npirgnepttw")
-                .withProtocol(AkriConnectorsMqttProtocolType.MQTT)
-                .withKeepAliveSeconds(1901745406)
-                .withMaxInflightMessages(1579066306)
-                .withSessionExpirySeconds(584179057)
-                .withTls(new TlsProperties().withMode(OperationalMode.DISABLED)
-                    .withTrustedCaCertificateConfigMapRef("ojlpijnkrxf"));
+        AkriConnectorsMqttConnectionConfiguration model = new AkriConnectorsMqttConnectionConfiguration()
+            .withAuthentication(new AkriConnectorsMqttAuthentication())
+            .withHost("omvzzbtd")
+            .withProtocol(AkriConnectorsMqttProtocolType.MQTT)
+            .withKeepAliveSeconds(1359383511)
+            .withMaxInflightMessages(1622829877)
+            .withSessionExpirySeconds(602738724)
+            .withTls(
+                new TlsProperties().withMode(OperationalMode.DISABLED).withTrustedCaCertificateConfigMapRef("wdsh"));
         model = BinaryData.fromObject(model).toObject(AkriConnectorsMqttConnectionConfiguration.class);
-        Assertions.assertEquals("npirgnepttw", model.host());
+        Assertions.assertEquals("omvzzbtd", model.host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT, model.protocol());
-        Assertions.assertEquals(1901745406, model.keepAliveSeconds());
-        Assertions.assertEquals(1579066306, model.maxInflightMessages());
-        Assertions.assertEquals(584179057, model.sessionExpirySeconds());
+        Assertions.assertEquals(1359383511, model.keepAliveSeconds());
+        Assertions.assertEquals(1622829877, model.maxInflightMessages());
+        Assertions.assertEquals(602738724, model.sessionExpirySeconds());
         Assertions.assertEquals(OperationalMode.DISABLED, model.tls().mode());
-        Assertions.assertEquals("ojlpijnkrxf", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("wdsh", model.tls().trustedCaCertificateConfigMapRef());
     }
 }

@@ -17,34 +17,34 @@ public final class VmHostPlacementPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmHostPlacementPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"VmHost\",\"vmMembers\":[\"lwptfdy\",\"pfqbuaceopzf\"],\"hostMembers\":[\"hhuao\",\"ppcqeqxolz\",\"ahzxctobgbk\",\"moizpos\"],\"affinityType\":\"Affinity\",\"affinityStrength\":\"Should\",\"azureHybridBenefitType\":\"None\",\"state\":\"Disabled\",\"displayName\":\"rmfqjhhkxbpvj\",\"provisioningState\":\"Succeeded\"}")
+            "{\"type\":\"VmHost\",\"vmMembers\":[\"lpstdbhhxsrzdz\",\"cers\",\"dntnevf\",\"wjmy\"],\"hostMembers\":[\"dsslswt\"],\"affinityType\":\"AntiAffinity\",\"affinityStrength\":\"Must\",\"azureHybridBenefitType\":\"SqlHost\",\"state\":\"Disabled\",\"displayName\":\"yqsemwa\",\"provisioningState\":\"Failed\"}")
             .toObject(VmHostPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.displayName());
-        Assertions.assertEquals("lwptfdy", model.vmMembers().get(0));
-        Assertions.assertEquals("hhuao", model.hostMembers().get(0));
-        Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
-        Assertions.assertEquals(AffinityStrength.SHOULD, model.affinityStrength());
-        Assertions.assertEquals(AzureHybridBenefitType.NONE, model.azureHybridBenefitType());
+        Assertions.assertEquals("yqsemwa", model.displayName());
+        Assertions.assertEquals("lpstdbhhxsrzdz", model.vmMembers().get(0));
+        Assertions.assertEquals("dsslswt", model.hostMembers().get(0));
+        Assertions.assertEquals(AffinityType.ANTI_AFFINITY, model.affinityType());
+        Assertions.assertEquals(AffinityStrength.MUST, model.affinityStrength());
+        Assertions.assertEquals(AzureHybridBenefitType.SQL_HOST, model.azureHybridBenefitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmHostPlacementPolicyProperties model
             = new VmHostPlacementPolicyProperties().withState(PlacementPolicyState.DISABLED)
-                .withDisplayName("rmfqjhhkxbpvj")
-                .withVmMembers(Arrays.asList("lwptfdy", "pfqbuaceopzf"))
-                .withHostMembers(Arrays.asList("hhuao", "ppcqeqxolz", "ahzxctobgbk", "moizpos"))
-                .withAffinityType(AffinityType.AFFINITY)
-                .withAffinityStrength(AffinityStrength.SHOULD)
-                .withAzureHybridBenefitType(AzureHybridBenefitType.NONE);
+                .withDisplayName("yqsemwa")
+                .withVmMembers(Arrays.asList("lpstdbhhxsrzdz", "cers", "dntnevf", "wjmy"))
+                .withHostMembers(Arrays.asList("dsslswt"))
+                .withAffinityType(AffinityType.ANTI_AFFINITY)
+                .withAffinityStrength(AffinityStrength.MUST)
+                .withAzureHybridBenefitType(AzureHybridBenefitType.SQL_HOST);
         model = BinaryData.fromObject(model).toObject(VmHostPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.displayName());
-        Assertions.assertEquals("lwptfdy", model.vmMembers().get(0));
-        Assertions.assertEquals("hhuao", model.hostMembers().get(0));
-        Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
-        Assertions.assertEquals(AffinityStrength.SHOULD, model.affinityStrength());
-        Assertions.assertEquals(AzureHybridBenefitType.NONE, model.azureHybridBenefitType());
+        Assertions.assertEquals("yqsemwa", model.displayName());
+        Assertions.assertEquals("lpstdbhhxsrzdz", model.vmMembers().get(0));
+        Assertions.assertEquals("dsslswt", model.hostMembers().get(0));
+        Assertions.assertEquals(AffinityType.ANTI_AFFINITY, model.affinityType());
+        Assertions.assertEquals(AffinityStrength.MUST, model.affinityStrength());
+        Assertions.assertEquals(AzureHybridBenefitType.SQL_HOST, model.azureHybridBenefitType());
     }
 }

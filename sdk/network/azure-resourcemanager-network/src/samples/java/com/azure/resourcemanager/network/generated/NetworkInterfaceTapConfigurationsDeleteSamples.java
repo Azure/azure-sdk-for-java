@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkInterfaceTapConfigurationDelete.json
+     * x-ms-original-file: 2026-03-01/NetworkInterfaceTapConfigurationDelete.json
      */
     /**
      * Sample code: Delete tap configuration.

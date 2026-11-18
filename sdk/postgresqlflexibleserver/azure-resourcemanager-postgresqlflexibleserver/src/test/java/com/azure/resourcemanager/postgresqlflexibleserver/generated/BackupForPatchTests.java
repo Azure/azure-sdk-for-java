@@ -6,21 +6,25 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ImmutableBackup;
 import org.junit.jupiter.api.Assertions;
 
 public final class BackupForPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupForPatch model = BinaryData.fromString(
-            "{\"backupRetentionDays\":1712324120,\"geoRedundantBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-05-05T06:10:43Z\"}")
+            "{\"backupRetentionDays\":1712324120,\"geoRedundantBackup\":\"Enabled\",\"immutableBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-05-30T14:02:28Z\"}")
             .toObject(BackupForPatch.class);
         Assertions.assertEquals(1712324120, model.backupRetentionDays());
+        Assertions.assertEquals(ImmutableBackup.ENABLED, model.immutableBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupForPatch model = new BackupForPatch().withBackupRetentionDays(1712324120);
+        BackupForPatch model
+            = new BackupForPatch().withBackupRetentionDays(1712324120).withImmutableBackup(ImmutableBackup.ENABLED);
         model = BinaryData.fromObject(model).toObject(BackupForPatch.class);
         Assertions.assertEquals(1712324120, model.backupRetentionDays());
+        Assertions.assertEquals(ImmutableBackup.ENABLED, model.immutableBackup());
     }
 }

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ConsolesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Create.json
+     * x-ms-original-file: 2026-07-01/Consoles_Create.json
      */
     /**
      * Sample code: Create or update virtual machine console.

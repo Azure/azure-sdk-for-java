@@ -101,6 +101,8 @@ public final class FabricDataAgentKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("fabricDataAgentParameters", this.fabricDataAgentParameters);
@@ -122,6 +124,7 @@ public final class FabricDataAgentKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             FabricDataAgentKnowledgeSourceParameters fabricDataAgentParameters = null;
@@ -133,6 +136,8 @@ public final class FabricDataAgentKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -148,10 +153,21 @@ public final class FabricDataAgentKnowledgeSource extends KnowledgeSource {
             FabricDataAgentKnowledgeSource deserializedFabricDataAgentKnowledgeSource
                 = new FabricDataAgentKnowledgeSource(name, fabricDataAgentParameters);
             deserializedFabricDataAgentKnowledgeSource.setDescription(description);
+            deserializedFabricDataAgentKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedFabricDataAgentKnowledgeSource.setETag(eTag);
             deserializedFabricDataAgentKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedFabricDataAgentKnowledgeSource.kind = kind;
             return deserializedFabricDataAgentKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FabricDataAgentKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

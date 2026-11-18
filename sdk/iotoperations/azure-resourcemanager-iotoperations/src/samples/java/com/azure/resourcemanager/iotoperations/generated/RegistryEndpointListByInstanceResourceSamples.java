@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class RegistryEndpointListByInstanceResourceSamples {
     /*
-     * x-ms-original-file: 2026-03-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_ListByInstanceResource_MaximumSet.

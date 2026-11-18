@@ -42,7 +42,7 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
     private MetricAggregationType aggregationType;
 
     /*
-     * Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
+     * Optional: Dimension filter to apply to the dimension.
      */
     private String dimensionFilter;
 
@@ -143,8 +143,7 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
     }
 
     /**
-     * Get the dimensionFilter property: Optional: Dimension filter to apply to the dimension. Must only be set if also
-     * Dimension is set.
+     * Get the dimensionFilter property: Optional: Dimension filter to apply to the dimension.
      * 
      * @return the dimensionFilter value.
      */
@@ -153,8 +152,7 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
     }
 
     /**
-     * Set the dimensionFilter property: Optional: Dimension filter to apply to the dimension. Must only be set if also
-     * Dimension is set.
+     * Set the dimensionFilter property: Optional: Dimension filter to apply to the dimension.
      * 
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the ResourceMetricSignalDefinitionProperties object itself.

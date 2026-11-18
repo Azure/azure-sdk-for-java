@@ -20,7 +20,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
     @Test
     public void testExecutionDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"type\":\"havpmhbrbqgvg\",\"id\":\"pbbttefjoknss\",\"name\":\"zqedikdfrdbi\",\"properties\":{\"status\":\"jgeihfqlggwfi\",\"startedAt\":\"2021-11-27T16:20:17Z\",\"stoppedAt\":\"2021-03-10T16:18:21Z\",\"provisioningState\":\"Running\",\"failureReason\":\"yephmgtvljvrcmyf\",\"lastActionAt\":\"2021-07-04T14:58:40Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"pomyqwcabvnuile\",\"stepId\":\"aswlp\",\"status\":\"gm\",\"branches\":[{},{},{}]}]}}}";
+            = "{\"type\":\"kondcb\",\"id\":\"imuvqejosovyrrl\",\"name\":\"esi\",\"properties\":{\"status\":\"tljqobbpih\",\"startedAt\":\"2021-06-04T21:54:47Z\",\"stoppedAt\":\"2021-11-03T13:16:28Z\",\"provisioningState\":\"Succeeded\",\"failureReason\":\"rqbrjbbmpxdlvyk\",\"lastActionAt\":\"2021-04-26T14:49:09Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"eqwjksgh\",\"stepId\":\"gzhxog\",\"status\":\"gsv\",\"branches\":[{},{}]},{\"stepName\":\"xibdafhrkmdyo\",\"stepId\":\"xfbvfb\",\"status\":\"y\",\"branches\":[{},{},{},{}]},{\"stepName\":\"wpg\",\"stepId\":\"eimawzovgkkumui\",\"status\":\"cjc\",\"branches\":[{}]},{\"stepName\":\"wsnsqowx\",\"stepId\":\"omlik\",\"status\":\"wvczcswkacve\",\"branches\":[{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecutionDetails response = manager.experiments()
-            .executionDetailsWithResponse("gniiprglvaw", "wzdufypivlsbb", "pmcubkmifoxxkub",
+            .executionDetailsWithResponse("dgycxnmskwhqjjy", "lurlpshhkvp", "dwqslsrhmpqvw",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

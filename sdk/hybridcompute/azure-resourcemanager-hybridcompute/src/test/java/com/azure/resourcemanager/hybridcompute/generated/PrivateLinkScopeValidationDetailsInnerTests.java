@@ -13,8 +13,8 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"onbzoggculapzwy\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"qxepnylbfuaj\",\"privateIpAddress\":\"jtlvofqzhvfciby\",\"linkIdentifier\":\"owuxrkjpvdwx\",\"groupId\":\"wiivwzjbhyzsx\",\"memberName\":\"kambtrnegvmnvuqe\"},{\"id\":\"lds\",\"privateIpAddress\":\"stjbkkdmfl\",\"linkIdentifier\":\"stmjlxrri\",\"groupId\":\"zapeewchpx\",\"memberName\":\"twkuziycs\"}]}")
+            "{\"id\":\"wasqvdaeyyg\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"qzhzbezkgimsi\",\"privateIpAddress\":\"asi\",\"linkIdentifier\":\"dyvvjskgfmocwahp\",\"groupId\":\"atjeaahh\",\"memberName\":\"hhnakzybbj\"},{\"id\":\"dj\",\"privateIpAddress\":\"yxkyxvx\",\"linkIdentifier\":\"blbjedn\",\"groupId\":\"lageuaulxun\",\"memberName\":\"jbnkpp\"},{\"id\":\"nenlsvxeizzg\",\"privateIpAddress\":\"lnsrmffe\",\"linkIdentifier\":\"xcktpiymerteeamm\",\"groupId\":\"iekkkzddrtkgdojb\",\"memberName\":\"vavrefdees\"}]}")
             .toObject(PrivateLinkScopeValidationDetailsInner.class);
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
 }

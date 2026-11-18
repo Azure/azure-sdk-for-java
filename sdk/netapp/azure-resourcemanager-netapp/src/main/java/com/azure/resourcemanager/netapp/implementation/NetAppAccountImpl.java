@@ -9,11 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
@@ -78,10 +77,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public EntraIdConfig entraIdConfig() {
-        return this.innerModel().entraIdConfig();
     }
 
     public AccountEncryption encryption() {
@@ -177,8 +172,12 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}",
+            "accountName");
     }
 
     public NetAppAccount refresh() {
@@ -277,19 +276,9 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        this.innerModel().withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
-        if (isInCreateMode()) {
-            this.innerModel().withEncryption(encryption);
-            return this;
-        } else {
-            this.updateBody.withEncryption(encryption);
-            return this;
-        }
+        this.innerModel().withEncryption(encryption);
+        return this;
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
@@ -307,8 +296,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this;
     }
 
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.updateBody.withEntraIdConfig(entraIdConfig);
+    public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
+        this.updateBody.withEncryption(encryption);
         return this;
     }
 

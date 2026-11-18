@@ -34,9 +34,9 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Mirrors the {@code StartC2CJobWithPrivateSourceTest} scenario (row #31 of
- * the cross-language matrix). Drives the full 12-step private-source
- * Cloud-to-Cloud flow end-to-end:
+ * Exercises public and private S3 Cloud-to-Cloud transfers, including
+ * {@code StartC2CJobWithPrivateSourceTest} (row #31 of the cross-language matrix).
+ * Drives the full 12-step private-source flow end-to-end:
  *
  * <ol>
  *   <li>Self-provision storage mover + project in {@code westcentralus} (the
@@ -46,7 +46,7 @@ import java.util.Set;
  *       {@link #TEST_STORAGE_ACCOUNT_NAME} so parallel runs do not race over
  *       the same container.</li>
  *   <li>Create the Storage Mover {@link Connection} referencing
- *       {@link #PRIVATE_LINK_SERVICE_ID}; capture the auto-created PE id.</li>
+ *       {@link #privateLinkServiceId}; capture the auto-created PE id.</li>
  *   <li>Locate the matching PE-connection on the PLS (poll up to 150s).</li>
  *   <li>PATCH the PE-connection {@code Approved}.</li>
  *   <li>Poll the Storage Mover Connection until {@code connectionStatus =
@@ -58,7 +58,7 @@ import java.util.Set;
  *   <li>Assign {@code Storage Blob Data Contributor} to the MSI on the
  *       container scope (retry on {@code PrincipalNotFound}).</li>
  *   <li>Create the source MCC endpoint over
- *       {@link #AWS_PRIVATE_S3_BUCKET_ID}.</li>
+ *       {@link #awsPrivateS3BucketId}.</li>
  *   <li>Create the C2C {@link JobDefinition}
  *       (copyMode={@link CopyMode#ADDITIVE}, agentless, with the connection in
  *       {@code connections}).</li>
@@ -73,7 +73,7 @@ import java.util.Set;
  * <p>Lives in its own class (separate from {@link JobDefinitionJobRunTests}) so
  * the per-test resource group can be pinned to {@code westcentralus} via
  * {@link #testRegion()}; the other job-definition test runs in
- * {@link #DEFAULT_REGION}.
+ * {@link #defaultRegion}.
  */
 public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestBase {
 
@@ -83,11 +83,20 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
 
     @Override
     protected Region testRegion() {
-        return WEST_CENTRAL_US;
+        return c2cRegion;
     }
 
     @Test
     public void startC2CJobWithPrivateSource() {
+        startC2CJob(true);
+    }
+
+    @Test
+    public void startC2CJobWithPublicSource() {
+        startC2CJob(false);
+    }
+
+    private void startC2CJob(boolean privateSource) {
         String storageMoverName = generateRandomResourceName("stomover-c2cps-", 24);
         String projectName = generateRandomResourceName("project-c2cps-", 24);
         String connectionName = generateRandomResourceName("conn-c2cps-", 24);
@@ -114,7 +123,7 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
 
         try {
             // Step 2: per-test target container in cpmoveraccount.
-            BlobContainer container = storageManager(XDATAMOVE_SYNTHETICS_SUB_ID).blobContainers()
+            BlobContainer container = storageManager(syntheticsSubscriptionId).blobContainers()
                 .defineContainer(containerName)
                 .withExistingBlobService(TEST_STORAGE_ACCOUNT_RG, TEST_STORAGE_ACCOUNT_NAME)
                 .withPublicAccess(PublicAccess.NONE)
@@ -122,34 +131,36 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
             containerCreated = true;
             String containerScope = container.id();
 
-            // Step 3: create the Storage Mover Connection bound to the PLS.
-            Connection connection = storageMoverManager.connections()
-                .define(connectionName)
-                .withExistingStorageMover(resourceGroupName, sm.name())
-                .withProperties(new ConnectionProperties().withDescription("C2C private source")
-                    .withPrivateLinkServiceId(PRIVATE_LINK_SERVICE_ID))
-                .create();
-            Assertions.assertNotNull(connection.properties());
-            String privateEndpointResourceId = connection.properties().privateEndpointResourceId();
-            Assertions.assertNotNull(privateEndpointResourceId,
-                "Storage Mover RP did not return privateEndpointResourceId on the Connection create response");
+            String connectionId = null;
+            if (privateSource) {
+                Connection connection = storageMoverManager.connections()
+                    .define(connectionName)
+                    .withExistingStorageMover(resourceGroupName, sm.name())
+                    .withProperties(new ConnectionProperties().withDescription("C2C private source")
+                        .withPrivateLinkServiceId(privateLinkServiceId))
+                    .create();
+                Assertions.assertNotNull(connection.properties());
+                String privateEndpointResourceId = connection.properties().privateEndpointResourceId();
+                Assertions.assertNotNull(privateEndpointResourceId,
+                    "Storage Mover RP did not return privateEndpointResourceId on the Connection create response");
 
-            // Steps 4-5: locate the PE on the PLS and approve it.
-            PrivateEndpointConnectionInner peConnection = findPrivateEndpointConnection(privateEndpointResourceId);
-            approvePrivateEndpointConnection(peConnection.name());
+                PrivateEndpointConnectionInner peConnection = findPrivateEndpointConnection(privateEndpointResourceId);
+                approvePrivateEndpointConnection(peConnection.name());
 
-            // Step 6: wait for the Storage Mover Connection to flip Approved.
-            waitForConnectionApproved(sm.name(), connectionName);
+                waitForConnectionApproved(sm.name(), connectionName);
+                connectionId = connection.id();
+            }
 
             // Step 7: target Blob endpoint with explicit SystemAssigned MSI.
-            Endpoint blobEndpoint = storageMoverManager.endpoints()
-                .define(targetEndpointName)
-                .withExistingStorageMover(resourceGroupName, sm.name())
-                .withProperties(new AzureStorageBlobContainerEndpointProperties()
-                    .withStorageAccountResourceId(TEST_STORAGE_ACCOUNT_ID)
-                    .withBlobContainerName(containerName))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
-                .create();
+            Endpoint blobEndpoint
+                = storageMoverManager.endpoints()
+                    .define(targetEndpointName)
+                    .withExistingStorageMover(resourceGroupName, sm.name())
+                    .withProperties(new AzureStorageBlobContainerEndpointProperties()
+                        .withStorageAccountResourceId(testStorageAccountId)
+                        .withBlobContainerName(containerName))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+                    .create();
             Assertions.assertNotNull(blobEndpoint.identity(), "blob endpoint create did not return an identity block");
             String principalId = blobEndpoint.identity().principalId();
             Assertions.assertNotNull(principalId, "blob endpoint identity.principalId was null");
@@ -157,31 +168,33 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
             // Step 8: RBAC assignment with PrincipalNotFound retry.
             roleAssignmentName = assignBlobDataContributorWithRetry(principalId, containerScope);
 
-            // Step 9: source MCC endpoint over the private bucket.
+            // Both paths use the real shared S3 fixtures; only the private bucket needs a Connection.
             Endpoint mccEndpoint
                 = storageMoverManager.endpoints()
                     .define(sourceEndpointName)
                     .withExistingStorageMover(resourceGroupName, sm.name())
                     .withProperties(new AzureMultiCloudConnectorEndpointProperties()
-                        .withMultiCloudConnectorId(MULTI_CLOUD_CONNECTOR_ID)
-                        .withAwsS3BucketId(AWS_PRIVATE_S3_BUCKET_ID)
+                        .withMultiCloudConnectorId(multiCloudConnectorId)
+                        .withAwsS3BucketId(privateSource ? awsPrivateS3BucketId : awsS3BucketId)
                         .withEndpointKind(EndpointKind.SOURCE))
                     .create();
 
             // Step 10: C2C JobDefinition (agentless, with the connection).
-            JobDefinition jobDefinition = storageMoverManager.jobDefinitions()
+            JobDefinition.DefinitionStages.WithCreate definition = storageMoverManager.jobDefinitions()
                 .define(jobDefinitionName)
                 .withExistingProject(resourceGroupName, sm.name(), project.name())
                 .withCopyMode(CopyMode.ADDITIVE)
                 .withSourceName(mccEndpoint.name())
                 .withTargetName(blobEndpoint.name())
-                .withDescription("C2C with private source")
+                .withDescription(privateSource ? "C2C with private source" : "C2C with public source")
                 .withJobType(JobType.CLOUD_TO_CLOUD)
                 .withSourceSubpath("/")
                 .withTargetSubpath("/")
-                .withConnections(Collections.singletonList(connection.id()))
-                .withDataIntegrityValidation(DataIntegrityValidation.NONE)
-                .create();
+                .withDataIntegrityValidation(DataIntegrityValidation.NONE);
+            if (connectionId != null) {
+                definition.withConnections(Collections.singletonList(connectionId));
+            }
+            JobDefinition jobDefinition = definition.create();
             Assertions.assertEquals(jobDefinitionName, jobDefinition.name());
             Assertions.assertEquals(CopyMode.ADDITIVE, jobDefinition.copyMode());
 
@@ -210,8 +223,8 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
             // failure does not mask the underlying test error.
             if (roleAssignmentName != null) {
                 try {
-                    authorizationManager(XDATAMOVE_SYNTHETICS_SUB_ID).roleAssignments()
-                        .deleteById("/subscriptions/" + XDATAMOVE_SYNTHETICS_SUB_ID + "/resourceGroups/"
+                    authorizationManager(syntheticsSubscriptionId).roleAssignments()
+                        .deleteById("/subscriptions/" + syntheticsSubscriptionId + "/resourceGroups/"
                             + TEST_STORAGE_ACCOUNT_RG + "/providers/Microsoft.Storage/storageAccounts/"
                             + TEST_STORAGE_ACCOUNT_NAME + "/blobServices/default/containers/" + containerName
                             + "/providers/Microsoft.Authorization/roleAssignments/" + roleAssignmentName);
@@ -219,17 +232,17 @@ public class JobDefinitionPrivateSourceTests extends StorageMoverManagementTestB
                     // best effort
                 }
             }
-            try {
-                storageMoverManager.connections().delete(resourceGroupName, sm.name(), connectionName);
-            } catch (RuntimeException ignored) {
-                // best effort — RG deletion in cleanUpResources will pick up stragglers
+            if (privateSource) {
+                try {
+                    storageMoverManager.connections().delete(resourceGroupName, sm.name(), connectionName);
+                } catch (RuntimeException ignored) {
+                    // RG deletion in cleanUpResources will pick up stragglers.
+                }
+                sleep(Duration.ofSeconds(60));
             }
-            // Give the PLS time to release the slot before the next test claims
-            // it. .NET hit NoValidConnectionFound on back-to-back runs without this.
-            sleep(Duration.ofSeconds(60));
             if (containerCreated) {
                 try {
-                    storageManager(XDATAMOVE_SYNTHETICS_SUB_ID).blobContainers()
+                    storageManager(syntheticsSubscriptionId).blobContainers()
                         .delete(TEST_STORAGE_ACCOUNT_RG, TEST_STORAGE_ACCOUNT_NAME, containerName);
                 } catch (RuntimeException ignored) {
                     // best effort

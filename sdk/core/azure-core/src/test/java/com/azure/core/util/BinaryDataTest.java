@@ -82,6 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -565,6 +566,24 @@ public class BinaryDataTest {
         StepVerifier.create(binaryDataMono)
             .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
             .verifyComplete();
+    }
+
+    @Test
+    public void nonReplayableFluxToStreamReadsWithoutWaitingForCompletion() {
+        byte[] expected = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicBoolean cancelled = new AtomicBoolean();
+        Flux<ByteBuffer> content
+            = Flux.concat(Flux.just(ByteBuffer.wrap(expected)), Flux.never()).doOnCancel(() -> cancelled.set(true));
+        BinaryData data = BinaryData.fromFlux(content, null, false).block();
+
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            try (InputStream stream = data.toStream()) {
+                byte[] actual = new byte[expected.length];
+                assertEquals(expected.length, stream.read(actual));
+                assertTrue(Arrays.equals(expected, actual));
+            }
+        });
+        assertTrue(cancelled.get());
     }
 
     @Test

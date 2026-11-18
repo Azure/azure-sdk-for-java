@@ -1,0 +1,16 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+index b615863..0af1319 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+@@ -1,3 +1,11 @@
+ # Release History
++
++## 2.0.0-beta.3 (Unreleased)
++
++### Breaking Changes
++
++#### `models.Widget` was modified
++
++- `java.lang.String status()` changed to `models.WidgetStatus status()`.
+ 
+ ## 2.0.0-beta.2 (2026-06-01)

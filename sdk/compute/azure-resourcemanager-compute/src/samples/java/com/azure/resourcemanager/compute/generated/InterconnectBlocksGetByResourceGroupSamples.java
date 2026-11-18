@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.InterconnectBlockExpandTypes;
  */
 public final class InterconnectBlocksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Get.json
+     * x-ms-original-file: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Get.json
      */
     /**
      * Sample code: Get an Interconnect Block.
@@ -26,7 +26,7 @@ public final class InterconnectBlocksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Get_InstanceView.json
+     * x-ms-original-file: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Get_InstanceView.json
      */
     /**
      * Sample code: Get an Interconnect Block with instance view.

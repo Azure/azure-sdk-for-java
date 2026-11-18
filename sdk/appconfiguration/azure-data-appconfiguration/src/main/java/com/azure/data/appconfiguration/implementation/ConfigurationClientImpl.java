@@ -901,6 +901,12 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -938,6 +944,12 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1297,6 +1309,13 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1351,6 +1370,13 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1415,6 +1441,17 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1481,6 +1518,17 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1559,6 +1607,15 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1646,6 +1703,15 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param key The key of the key-value to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1707,6 +1773,15 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param key The key of the key-value to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1764,6 +1839,15 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param key The key of the key-value to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1810,6 +1894,13 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1856,6 +1947,13 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2175,6 +2273,12 @@ public final class ConfigurationClientImpl {
      * requests.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2208,6 +2312,12 @@ public final class ConfigurationClientImpl {
      * requests.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2276,6 +2386,18 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param name The name of the snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2346,6 +2468,18 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param name The name of the snapshot.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2881,6 +3015,16 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param contentType Content-Type header. Allowed values: "application/merge-patch+json", "application/json".
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
@@ -2957,6 +3101,16 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param contentType Content-Type header. Allowed values: "application/merge-patch+json", "application/json".
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
@@ -2992,6 +3146,14 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * </table>
      * 
      * @param name The name of the key-value snapshot to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3023,6 +3185,14 @@ public final class ConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Link</td><td>String</td><td>Includes links to related resources.</td></tr>
+     * </table>
      * 
      * @param name The name of the key-value snapshot to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3268,6 +3438,12 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3307,6 +3483,12 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3363,6 +3545,15 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to lock.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3423,6 +3614,15 @@ public final class ConfigurationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
+     * 
      * @param key The key of the key-value to lock.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3480,6 +3680,15 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to unlock.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3539,6 +3748,15 @@ public final class ConfigurationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>Content-Type header</td></tr>
+     * </table>
      * 
      * @param key The key of the key-value to unlock.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3855,6 +4073,13 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3900,6 +4125,13 @@ public final class ConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>Used to guarantee real-time consistency between requests.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>A value representing the current state of the resource.</td></tr>
+     * </table>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4431,20 +4663,26 @@ public final class ConfigurationClientImpl {
             getValues(res.getValue(), "items"), getNextLink(res.getValue(), "@nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

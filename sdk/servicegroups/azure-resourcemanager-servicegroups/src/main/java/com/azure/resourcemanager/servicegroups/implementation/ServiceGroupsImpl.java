@@ -9,10 +9,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicegroups.fluent.ServiceGroupsClient;
-import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupCollectionResponseInner;
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroup;
-import com.azure.resourcemanager.servicegroups.models.ServiceGroupCollectionResponse;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroups;
 
 public final class ServiceGroupsImpl implements ServiceGroups {
@@ -38,23 +36,6 @@ public final class ServiceGroupsImpl implements ServiceGroups {
         ServiceGroupInner inner = this.serviceClient().get(serviceGroupName);
         if (inner != null) {
             return new ServiceGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ServiceGroupCollectionResponse> listAncestorsWithResponse(String serviceGroupName,
-        Context context) {
-        Response<ServiceGroupCollectionResponseInner> inner
-            = this.serviceClient().listAncestorsWithResponse(serviceGroupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ServiceGroupCollectionResponseImpl(inner.getValue(), this.manager()));
-    }
-
-    public ServiceGroupCollectionResponse listAncestors(String serviceGroupName) {
-        ServiceGroupCollectionResponseInner inner = this.serviceClient().listAncestors(serviceGroupName);
-        if (inner != null) {
-            return new ServiceGroupCollectionResponseImpl(inner, this.manager());
         } else {
             return null;
         }

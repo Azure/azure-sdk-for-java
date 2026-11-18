@@ -10,8 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -186,6 +188,7 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
             SynchronizationState currentSynchronizationState = null;
             CompletedSynchronizationState lastSynchronizationState = null;
             KnowledgeSourceStatistics statistics = null;
+            KnowledgeSourceFileCapacity fileCapacity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -194,14 +197,16 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("synchronizationInterval".equals(fieldName)) {
-                    synchronizationInterval
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    synchronizationInterval = reader
+                        .getNullable(nonNullReader -> KnowledgeSourceDurationParser.parse(nonNullReader.getString()));
                 } else if ("currentSynchronizationState".equals(fieldName)) {
                     currentSynchronizationState = SynchronizationState.fromJson(reader);
                 } else if ("lastSynchronizationState".equals(fieldName)) {
                     lastSynchronizationState = CompletedSynchronizationState.fromJson(reader);
                 } else if ("statistics".equals(fieldName)) {
                     statistics = KnowledgeSourceStatistics.fromJson(reader);
+                } else if ("fileCapacity".equals(fieldName)) {
+                    fileCapacity = KnowledgeSourceFileCapacity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -212,6 +217,7 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
             deserializedKnowledgeSourceStatus.currentSynchronizationState = currentSynchronizationState;
             deserializedKnowledgeSourceStatus.lastSynchronizationState = lastSynchronizationState;
             deserializedKnowledgeSourceStatus.statistics = statistics;
+            deserializedKnowledgeSourceStatus.fileCapacity = fileCapacity;
             return deserializedKnowledgeSourceStatus;
         });
     }
@@ -255,5 +261,22 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
     public KnowledgeSourceStatus setSynchronizationInterval(Duration synchronizationInterval) {
         this.synchronizationInterval = synchronizationInterval;
         return this;
+    }
+
+    /*
+     * File upload capacity for a File knowledge source. Omitted for other knowledge source kinds.
+     */
+    @Generated
+    private KnowledgeSourceFileCapacity fileCapacity;
+
+    /**
+     * Get the fileCapacity property: File upload capacity for a File knowledge source. Omitted for other knowledge
+     * source kinds.
+     *
+     * @return the fileCapacity value.
+     */
+    @Generated
+    public KnowledgeSourceFileCapacity getFileCapacity() {
+        return this.fileCapacity;
     }
 }

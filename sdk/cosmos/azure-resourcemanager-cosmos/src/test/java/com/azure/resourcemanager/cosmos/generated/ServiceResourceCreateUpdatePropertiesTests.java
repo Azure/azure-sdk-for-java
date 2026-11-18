@@ -13,19 +13,19 @@ public final class ServiceResourceCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceCreateUpdateProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"ServiceResourceCreateUpdateProperties\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":1678865876}")
+            "{\"serviceType\":\"ServiceResourceCreateUpdateProperties\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":1686986385}")
             .toObject(ServiceResourceCreateUpdateProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(1678865876, model.instanceCount());
+        Assertions.assertEquals(1686986385, model.instanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceResourceCreateUpdateProperties model
             = new ServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
-                .withInstanceCount(1678865876);
+                .withInstanceCount(1686986385);
         model = BinaryData.fromObject(model).toObject(ServiceResourceCreateUpdateProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(1678865876, model.instanceCount());
+        Assertions.assertEquals(1686986385, model.instanceCount());
     }
 }

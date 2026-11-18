@@ -390,7 +390,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
      * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginCreateOrUpdate(
         String managementGroupId, String groupQuotaName, GroupQuotasEntityInner groupQuotaPutRequestBody) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(managementGroupId, groupQuotaName, groupQuotaPutRequestBody);
@@ -697,7 +697,7 @@ public final class GroupQuotasClientImpl implements GroupQuotasClient {
      * @return the {@link SyncPoller} for polling of properties and filters for ShareQuota.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginUpdate(String managementGroupId,
+    private SyncPoller<PollResult<GroupQuotasEntityInner>, GroupQuotasEntityInner> beginUpdate(String managementGroupId,
         String groupQuotaName, GroupQuotasEntityPatch groupQuotasPatchRequestBody) {
         Response<BinaryData> response
             = updateWithResponse(managementGroupId, groupQuotaName, groupQuotasPatchRequestBody);

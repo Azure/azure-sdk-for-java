@@ -28,7 +28,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
     @Test
     public void testTestAllRoutesWithResponse() throws Exception {
         String responseStr
-            = "{\"routes\":[{\"properties\":{\"name\":\"mfpgv\",\"source\":\"DeviceMessages\",\"condition\":\"paslthaqfxssmwu\",\"endpointNames\":[\"bdsrez\",\"drhneuyow\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"wyt\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"bi\",\"endpointNames\":[\"gpikpzimejza\",\"lfzxiavrmbzonoki\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"q\",\"source\":\"TwinChangeEvents\",\"condition\":\"gzpfrla\",\"endpointNames\":[\"zrnw\",\"iin\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"wp\",\"source\":\"MqttBrokerMessages\",\"condition\":\"wbtlhflsjcdh\",\"endpointNames\":[\"fjvfbgofeljagr\",\"mqhldvrii\",\"ojnal\"],\"isEnabled\":true}}]}";
+            = "{\"routes\":[{\"properties\":{\"name\":\"mfpgv\",\"source\":\"TwinChangeEvents\",\"condition\":\"paslthaqfxssmwu\",\"endpointNames\":[\"bdsrez\",\"drhneuyow\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"wyt\",\"source\":\"TwinChangeEvents\",\"condition\":\"bi\",\"endpointNames\":[\"gpikpzimejza\",\"lfzxiavrmbzonoki\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"q\",\"source\":\"TwinChangeEvents\",\"condition\":\"gzpfrla\",\"endpointNames\":[\"zrnw\",\"iin\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"wp\",\"source\":\"DeviceMessages\",\"condition\":\"wbtlhflsjcdh\",\"endpointNames\":[\"fjvfbgofeljagr\",\"mqhldvrii\",\"ojnal\"],\"isEnabled\":true}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,7 +39,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
 
         TestAllRoutesResult response = manager.iotHubResources()
             .testAllRoutesWithResponse("xnavvwxq", "byqunyow",
-                new TestAllRoutesInput().withRoutingSource(RoutingSource.MQTT_BROKER_MESSAGES)
+                new TestAllRoutesInput().withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
                     .withMessage(new RoutingMessage().withBody("jrkvfgbvfvpdbo")
                         .withAppProperties(mapOf("bdeibqipqk", "izsjqlhkrr", "rwkq", "hvxndzwmkrefajpj", "sjabibs",
                             "yhgbijtjivfx", "bjxbkzbzk", "stawfsdjpvkv"))
@@ -51,7 +51,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
             .getValue();
 
         Assertions.assertEquals("mfpgv", response.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, response.routes().get(0).properties().source());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, response.routes().get(0).properties().source());
         Assertions.assertEquals("paslthaqfxssmwu", response.routes().get(0).properties().condition());
         Assertions.assertEquals("bdsrez", response.routes().get(0).properties().endpointNames().get(0));
         Assertions.assertFalse(response.routes().get(0).properties().isEnabled());

@@ -14,19 +14,19 @@ public final class DefaultRolloutSpecificationRestOfTheWorldGroupTwoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
-            = BinaryData.fromString("{\"waitDuration\":\"PT210H3M32S\",\"regions\":[\"vrehmrnjhvsujzt\"]}")
+            = BinaryData.fromString("{\"waitDuration\":\"PT146H5M58S\",\"regions\":[\"ejnhlbkpb\",\"pcpil\"]}")
                 .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("vrehmrnjhvsujzt", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT210H3M32S"), model.waitDuration());
+        Assertions.assertEquals("ejnhlbkpb", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT146H5M58S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
-            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withRegions(Arrays.asList("vrehmrnjhvsujzt"))
-                .withWaitDuration(Duration.parse("PT210H3M32S"));
+            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withRegions(Arrays.asList("ejnhlbkpb", "pcpil"))
+                .withWaitDuration(Duration.parse("PT146H5M58S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("vrehmrnjhvsujzt", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT210H3M32S"), model.waitDuration());
+        Assertions.assertEquals("ejnhlbkpb", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT146H5M58S"), model.waitDuration());
     }
 }

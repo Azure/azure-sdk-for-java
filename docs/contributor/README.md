@@ -28,7 +28,9 @@ If you are a **consumer** of the SDK looking for usage guidance, start at the [U
 | [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) | `version_client.txt`, dependency tags, incrementing versions |
 | [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md) | Create a new SDK module: dir structure, POM, versioning, CODEOWNERS |
 | [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md) | End-to-end workflow: generate → build → test → release |
+| [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-java-customization.md) | Customize generated Java code when TypeSpec cannot express the required behavior |
 | [Writing Performance Tests](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-tests.md) | Set up and run `perf-test-core` benchmarks |
+| [Core Multi-Release JAR Performance](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/multi-release-jar-performance.md) | Runtime layers, JMH throughput/allocation findings, limitations, and reproduction |
 | [JavaDoc & Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md) | Javadoc standards and codesnippet-maven-plugin workflow |
 | [Access Helpers](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/access-helpers.md) | Cross-package internal access without public APIs |
 | [BOM Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/bom-guidelines.md) | How the Azure SDK BOM is structured, released, and validated |

@@ -7,6 +7,12 @@ import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -121,6 +127,64 @@ public class ImplUtilsTests {
                 Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
     }
 
+    @ParameterizedTest
+    @MethodSource("timeoutPrecedenceSupplier")
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    public void timeoutPrecedence(Duration explicit, String local, String global, long expectedMillis) {
+        String property = "ImplUtilsTests.timeout";
+        String previous = System.getProperty(property);
+        try {
+            System.setProperty(property, global == null ? "" : global);
+            Configuration configuration = local == null
+                ? Configuration.none()
+                : Configuration.from(new TestConfigurationSource().put(property, local));
+            assertEquals(Duration.ofMillis(expectedMillis),
+                ImplUtils.getTimeout(explicit, configuration, property, Duration.ofSeconds(10)));
+        } finally {
+            if (previous == null) {
+                System.clearProperty(property);
+            } else {
+                System.setProperty(property, previous);
+            }
+        }
+    }
+
+    private static Stream<Arguments> timeoutPrecedenceSupplier() {
+        return Stream.of(Arguments.of(Duration.ofSeconds(3), "2000", "1000", 3000),
+            Arguments.of(Duration.ZERO, "2000", "1000", 0), Arguments.of(Duration.ofNanos(-1), "2000", "1000", 0),
+            Arguments.of(Duration.ofNanos(1), "2000", "1000", 1), Arguments.of(null, "2000", "1000", 2000),
+            Arguments.of(null, "0", "1000", 0), Arguments.of(null, "-1", "1000", 0),
+            Arguments.of(null, null, "1000", 1000), Arguments.of(null, "", "1000", 1000),
+            Arguments.of(null, "invalid", "1000", 1000), Arguments.of(null, null, "0", 0),
+            Arguments.of(null, null, "-1", 0), Arguments.of(null, null, "invalid", 10000),
+            Arguments.of(null, null, null, 10000));
+    }
+
+    @Test
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    public void globalTimeoutIsResolvedOnEachCall() {
+        String property = "ImplUtilsTests.timeout";
+        String previous = System.getProperty(property);
+        try {
+            for (String value : new String[] { "1000", "2000" }) {
+                System.setProperty(property, value);
+                for (Configuration configuration : new Configuration[] {
+                    null,
+                    Configuration.getGlobalConfiguration(),
+                    Configuration.none() }) {
+                    assertEquals(Duration.ofMillis(Long.parseLong(value)),
+                        ImplUtils.getTimeout(null, configuration, property, Duration.ofSeconds(10)));
+                }
+            }
+        } finally {
+            if (previous == null) {
+                System.clearProperty(property);
+            } else {
+                System.setProperty(property, previous);
+            }
+        }
+    }
+
     @Test
     public void parseNullQueryParameters() {
         assertFalse(new ImplUtils.QueryParameterIterator(null).hasNext());
@@ -210,5 +274,49 @@ public class ImplUtilsTests {
 
             // direct buffer
             Arguments.of(ByteBuffer.allocateDirect(BYTES.length).put(BYTES).position(0), BYTES));
+    }
+
+    /**
+     * {@link Runtime#addShutdownHook(Thread)} and {@link Runtime#removeShutdownHook(Thread)} throw
+     * {@link IllegalStateException} once the JVM is shutting down. The JVM cannot be put into that state from a
+     * test, so the registration is passed in here the same way the production overloads pass the real one.
+     */
+    @Test
+    public void addShutdownHookReturnsNullWhenJvmIsShuttingDown() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertNull(ImplUtils.addShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalStateException("Shutdown in progress");
+        }));
+    }
+
+    @Test
+    public void addShutdownHookDoesNotSwallowOtherFailures() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> ImplUtils.addShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalArgumentException("Hook previously registered");
+        }));
+    }
+
+    @Test
+    public void removeShutdownHookDoesNotThrowWhenJvmIsShuttingDown() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertDoesNotThrow(() -> ImplUtils.removeShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalStateException("Shutdown in progress");
+        }));
+    }
+
+    @Test
+    public void shutdownHookRoundTripIsUnchanged() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertSame(shutdownThread, ImplUtils.addShutdownHookSafely(shutdownThread));
+        assertDoesNotThrow(() -> ImplUtils.removeShutdownHookSafely(shutdownThread));
     }
 }

@@ -12,16 +12,16 @@ public final class AzureMonitorWorkspaceMetricsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorWorkspaceMetrics model = BinaryData.fromString(
-            "{\"prometheusQueryEndpoint\":\"fqpte\",\"internalId\":\"zzvypyqrimzinp\",\"enableAccessUsingResourcePermissions\":false}")
+            "{\"prometheusQueryEndpoint\":\"gmbmbexppbh\",\"internalId\":\"qrolfpf\",\"enableAccessUsingResourcePermissions\":true}")
             .toObject(AzureMonitorWorkspaceMetrics.class);
-        Assertions.assertFalse(model.enableAccessUsingResourcePermissions());
+        Assertions.assertTrue(model.enableAccessUsingResourcePermissions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMonitorWorkspaceMetrics model
-            = new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(false);
+            = new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true);
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceMetrics.class);
-        Assertions.assertFalse(model.enableAccessUsingResourcePermissions());
+        Assertions.assertTrue(model.enableAccessUsingResourcePermissions());
     }
 }

@@ -21,7 +21,7 @@ public final class BackupPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupPolicyId\":\"epfwwt\",\"provisioningState\":\"doesxxhmwcdb\",\"dailyBackupsToKeep\":502825513,\"weeklyBackupsToKeep\":174439516,\"monthlyBackupsToKeep\":2072250749,\"volumesAssigned\":588101197,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"njzrbhtmeplvu\",\"volumeResourceId\":\"obrl\",\"backupsCount\":644011427,\"policyEnabled\":false},{\"volumeName\":\"agnchjhgemuowaky\",\"volumeResourceId\":\"lhjym\",\"backupsCount\":1348277844,\"policyEnabled\":false}]},\"etag\":\"gdrclssolj\",\"location\":\"evtf\",\"tags\":{\"dkkgjiiytssikizb\":\"lbvgjc\",\"mqso\":\"ufqbvntnr\",\"cpwzv\":\"hcekxgnlykm\"},\"id\":\"doksqdtiwlwxlbon\",\"name\":\"qba\",\"type\":\"qicqchygt\"}";
+            = "{\"properties\":{\"backupPolicyId\":\"uuybnchrsz\",\"provisioningState\":\"oyuelyetn\",\"dailyBackupsToKeep\":428404939,\"weeklyBackupsToKeep\":1979503095,\"monthlyBackupsToKeep\":1699550993,\"volumesAssigned\":1064887368,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"gm\",\"volumeResourceId\":\"wahzjmucftbyr\",\"backupsCount\":826638799,\"policyEnabled\":true},{\"volumeName\":\"pigqfusuckzmkw\",\"volumeResourceId\":\"snoxaxmqeqa\",\"backupsCount\":1706604371,\"policyEnabled\":false},{\"volumeName\":\"gwydyy\",\"volumeResourceId\":\"svkhgbv\",\"backupsCount\":2020150927,\"policyEnabled\":true},{\"volumeName\":\"fdlpukhpyr\",\"volumeResourceId\":\"izjcpeog\",\"backupsCount\":758863003,\"policyEnabled\":true}]},\"etag\":\"ro\",\"location\":\"ddbhf\",\"tags\":{\"zoyw\":\"paz\",\"htuevrhrljy\":\"xhpdulontacnpqwt\",\"reur\":\"ogwxhnsduugwb\",\"fuarenlvhht\":\"q\"},\"id\":\"lnvnafvvkyfedev\",\"name\":\"bo\",\"type\":\"lcqxypokk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class BackupPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupPolicy response = manager.backupPolicies()
-            .getWithResponse("rxtd", "sn", "evhdlmydid", com.azure.core.util.Context.NONE)
+            .getWithResponse("ikczvvitacgxmf", "sserxhtvsoxhlwn", "sjgqrsxyp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("evtf", response.location());
-        Assertions.assertEquals("lbvgjc", response.tags().get("dkkgjiiytssikizb"));
-        Assertions.assertEquals(502825513, response.dailyBackupsToKeep());
-        Assertions.assertEquals(174439516, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(2072250749, response.monthlyBackupsToKeep());
-        Assertions.assertTrue(response.enabled());
+        Assertions.assertEquals("ddbhf", response.location());
+        Assertions.assertEquals("paz", response.tags().get("zoyw"));
+        Assertions.assertEquals(428404939, response.dailyBackupsToKeep());
+        Assertions.assertEquals(1979503095, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(1699550993, response.monthlyBackupsToKeep());
+        Assertions.assertFalse(response.enabled());
     }
 }

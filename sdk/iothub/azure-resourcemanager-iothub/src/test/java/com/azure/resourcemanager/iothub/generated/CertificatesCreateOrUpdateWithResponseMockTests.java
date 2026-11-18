@@ -22,7 +22,7 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"quwrbehwag\",\"expiry\":\"Mon, 18 Oct 2021 14:47:31 GMT\",\"thumbprint\":\"f\",\"isVerified\":true,\"created\":\"Sat, 07 Aug 2021 03:42:37 GMT\",\"updated\":\"Fri, 12 Nov 2021 21:50:06 GMT\",\"certificate\":\"vhmxtdrjfu\",\"policyResourceId\":\"coebjvewzcj\"},\"etag\":\"m\",\"id\":\"pmguaadraufac\",\"name\":\"kahzo\",\"type\":\"ajjziuxxpshne\"}";
+            = "{\"properties\":{\"subject\":\"quwrbehwag\",\"expiry\":\"Mon, 18 Oct 2021 14:47:31 GMT\",\"thumbprint\":\"f\",\"isVerified\":true,\"created\":\"Sat, 07 Aug 2021 03:42:37 GMT\",\"updated\":\"Fri, 12 Nov 2021 21:50:06 GMT\",\"certificate\":\"vhmxtdrjfu\",\"certificateAuthorityResourceId\":\"coebjvewzcj\"},\"etag\":\"m\",\"id\":\"pmguaadraufac\",\"name\":\"kahzo\",\"type\":\"ajjziuxxpshne\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,12 +36,12 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
             .withExistingIotHub("zedqbcvhzlhplo", "qkdlw")
             .withProperties(new CertificateProperties().withIsVerified(true)
                 .withCertificate("ubskhudygoookkq")
-                .withPolicyResourceId("jb"))
+                .withCertificateAuthorityResourceId("jb"))
             .withIfMatch("cbhernntiewdj")
             .create();
 
         Assertions.assertTrue(response.properties().isVerified());
         Assertions.assertEquals("vhmxtdrjfu", response.properties().certificate());
-        Assertions.assertEquals("coebjvewzcj", response.properties().policyResourceId());
+        Assertions.assertEquals("coebjvewzcj", response.properties().certificateAuthorityResourceId());
     }
 }

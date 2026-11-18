@@ -414,6 +414,16 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       logDebug(endOffsetDebug.toString)
     }
 
+    createLatestOffset(startOffset, inputPartitions)
+  }
+  // scalastyle:on method.length
+  // scalastyle:on parameter.number
+
+  private[spark] def createLatestOffset
+  (
+    startOffset: ChangeFeedOffset,
+    inputPartitions: Array[CosmosInputPartition]
+  ): ChangeFeedOffset = {
     val changeFeedStateJson = SparkBridgeImplementationInternal
       .createChangeFeedStateJson(
         startOffset.changeFeedState,
@@ -421,10 +431,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
-  // scalastyle:on method.length
-  // scalastyle:on parameter.number
 
-  private[this] def getOrderedPartitionMetadataWithStartLsn
+  private[spark] def getOrderedPartitionMetadataWithStartLsn
   (
     stateJson: String,
     latestPartitionMetadata: Array[PartitionMetadata]
@@ -834,12 +842,48 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                   0,
                   None,
                   new AtomicLong(0),
-                  new AtomicLong(0)
+                  new AtomicLong(0),
+                  None
                 ))
               })
           .collectSeq()
+          .map(metadata =>
+            filterPartitionMetadataByFeedRanges(
+              expandPartitionMetadataByLatestLsn(metadata, isChangeFeed),
+              partitionConfig.feedRangeFiler))
       })
       .block()
       .toArray
+  }
+
+  private[spark] def expandPartitionMetadataByLatestLsn(
+    metadata: Seq[PartitionMetadata],
+    isChangeFeed: Boolean
+  ): Seq[PartitionMetadata] = {
+    if (isChangeFeed) {
+      metadata.foreach(partitionMetadata => {
+        if (partitionMetadata.fromNowContinuationState.isEmpty && partitionMetadata.latestLsn > 0) {
+          logWarning(
+            s"Change-feed metadata for range '${partitionMetadata.feedRange}' is missing the FromNow continuation " +
+              "state; composite split expansion cannot be performed.")
+        }
+      })
+      metadata.flatMap(_.splitByLatestLsn())
+    } else {
+      metadata
+    }
+  }
+
+  private[spark] def filterPartitionMetadataByFeedRanges(
+    metadata: Seq[PartitionMetadata],
+    feedRangeFilter: Option[Array[NormalizedRange]]
+  ): Seq[PartitionMetadata] = {
+    feedRangeFilter match {
+      case Some(epkRangesInScope) =>
+        metadata.filter(partitionMetadata =>
+          epkRangesInScope.exists(epk =>
+            SparkBridgeImplementationInternal.doRangesOverlap(epk, partitionMetadata.feedRange)))
+      case None => metadata
+    }
   }
 }

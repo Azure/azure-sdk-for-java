@@ -21,6 +21,7 @@ import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
@@ -371,6 +372,16 @@ public final class MachineInner extends Resource {
         }
         this.innerProperties().withLicenseProfile(licenseProfile);
         return this;
+    }
+
+    /**
+     * Get the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    public MachineStatusReason statusReason() {
+        return this.innerProperties() == null ? null : this.innerProperties().statusReason();
     }
 
     /**

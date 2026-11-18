@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-03/Operations_List.json
+     * x-ms-original-file: 2026-09-03-preview/Operations_List.json
      */
     /**
      * Sample code: Lists the Microsoft.Monitor resource provider operations.

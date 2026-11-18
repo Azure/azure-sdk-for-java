@@ -247,7 +247,7 @@ public interface CredentialsClient {
     PagedIterable<CredentialInner> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -260,7 +260,7 @@ public interface CredentialsClient {
     SyncPoller<PollResult<Void>, Void> beginSynchronize(String resourceGroupName, String namespaceName);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -275,7 +275,7 @@ public interface CredentialsClient {
         Context context);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -287,7 +287,7 @@ public interface CredentialsClient {
     void synchronize(String resourceGroupName, String namespaceName);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

@@ -13,15 +13,15 @@ public final class BackupEngineExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupEngineExtendedInfo model = BinaryData.fromString(
-            "{\"databaseName\":\"lt\",\"protectedItemsCount\":2014703272,\"protectedServersCount\":727856496,\"diskCount\":2065272697,\"usedDiskSpace\":3.1509477622720605,\"availableDiskSpace\":78.63524984778307,\"refreshedAt\":\"2021-04-09T12:26:29Z\",\"azureProtectedInstances\":495815281}")
+            "{\"databaseName\":\"xomeikjclwzacn\",\"protectedItemsCount\":86975584,\"protectedServersCount\":586433470,\"diskCount\":520009324,\"usedDiskSpace\":98.4379138582011,\"availableDiskSpace\":55.150817027642454,\"refreshedAt\":\"2021-02-03T02:28:57Z\",\"azureProtectedInstances\":958730236}")
             .toObject(BackupEngineExtendedInfo.class);
-        Assertions.assertEquals("lt", model.databaseName());
-        Assertions.assertEquals(2014703272, model.protectedItemsCount());
-        Assertions.assertEquals(727856496, model.protectedServersCount());
-        Assertions.assertEquals(2065272697, model.diskCount());
-        Assertions.assertEquals(3.1509477622720605D, model.usedDiskSpace());
-        Assertions.assertEquals(78.63524984778307D, model.availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T12:26:29Z"), model.refreshedAt());
-        Assertions.assertEquals(495815281, model.azureProtectedInstances());
+        Assertions.assertEquals("xomeikjclwzacn", model.databaseName());
+        Assertions.assertEquals(86975584, model.protectedItemsCount());
+        Assertions.assertEquals(586433470, model.protectedServersCount());
+        Assertions.assertEquals(520009324, model.diskCount());
+        Assertions.assertEquals(98.4379138582011D, model.usedDiskSpace());
+        Assertions.assertEquals(55.150817027642454D, model.availableDiskSpace());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:28:57Z"), model.refreshedAt());
+        Assertions.assertEquals(958730236, model.azureProtectedInstances());
     }
 }

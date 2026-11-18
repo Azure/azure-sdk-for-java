@@ -11,6 +11,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 import java.io.IOException;
 
 /**
@@ -118,6 +120,60 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
             this.innerProperties = new ManagedInstanceLongTermRetentionPolicyProperties();
         }
         this.innerProperties().withBackupStorageAccessTier(backupStorageAccessTier);
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @return the timeBasedImmutability value.
+     */
+    public TimeBasedImmutability timeBasedImmutability() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutability();
+    }
+
+    /**
+     * Set the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @param timeBasedImmutability the timeBasedImmutability value to set.
+     * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
+     */
+    public ManagedInstanceLongTermRetentionPolicyInner
+        withTimeBasedImmutability(TimeBasedImmutability timeBasedImmutability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withTimeBasedImmutability(timeBasedImmutability);
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @return the timeBasedImmutabilityMode value.
+     */
+    public TimeBasedImmutabilityMode timeBasedImmutabilityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutabilityMode();
+    }
+
+    /**
+     * Set the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
+     * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
+     */
+    public ManagedInstanceLongTermRetentionPolicyInner
+        withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode timeBasedImmutabilityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withTimeBasedImmutabilityMode(timeBasedImmutabilityMode);
         return this;
     }
 

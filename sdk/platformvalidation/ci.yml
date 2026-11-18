@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/platformvalidation/ci.yml
+      - sdk/platformvalidation/azure-resourcemanager-platformvalidation/
+    exclude:
+      - sdk/platformvalidation/pom.xml
+      - sdk/platformvalidation/azure-resourcemanager-platformvalidation/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/platformvalidation/ci.yml
+      - sdk/platformvalidation/azure-resourcemanager-platformvalidation/
+    exclude:
+      - sdk/platformvalidation/pom.xml
+      - sdk/platformvalidation/azure-resourcemanager-platformvalidation/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerplatformvalidation
+    displayName: azure-resourcemanager-platformvalidation
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: platformvalidation
+    Artifacts:
+      - name: azure-resourcemanager-platformvalidation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerplatformvalidation
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerplatformvalidation }}

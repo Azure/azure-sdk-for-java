@@ -24,6 +24,13 @@ public final class IdentityBindingInner extends ProxyResource {
     private IdentityBindingProperties properties;
 
     /*
+     * The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed
+     * by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is
+     * removed from the template since it is managed by another resource.
+     */
+    private String managedBy;
+
+    /*
      * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
      * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
@@ -74,6 +81,30 @@ public final class IdentityBindingInner extends ProxyResource {
      */
     public IdentityBindingInner withProperties(IdentityBindingProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
+     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
+     * delete the resource if it is removed from the template since it is managed by another resource.
+     * 
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.managedBy;
+    }
+
+    /**
+     * Set the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
+     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
+     * delete the resource if it is removed from the template since it is managed by another resource.
+     * 
+     * @param managedBy the managedBy value to set.
+     * @return the IdentityBindingInner object itself.
+     */
+    public IdentityBindingInner withManagedBy(String managedBy) {
+        this.managedBy = managedBy;
         return this;
     }
 
@@ -146,6 +177,7 @@ public final class IdentityBindingInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,6 +205,8 @@ public final class IdentityBindingInner extends ProxyResource {
                     deserializedIdentityBindingInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedIdentityBindingInner.properties = IdentityBindingProperties.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedIdentityBindingInner.managedBy = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
                     deserializedIdentityBindingInner.eTag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

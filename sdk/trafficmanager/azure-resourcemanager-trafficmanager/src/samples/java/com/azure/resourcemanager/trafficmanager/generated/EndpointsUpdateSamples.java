@@ -12,7 +12,7 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
  */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
+     * x-ms-original-file: 2026-09-01/Endpoint-PATCH-External-Target.json
      */
     /**
      * Sample code: Endpoint-PATCH-External-Target.

@@ -22,6 +22,11 @@ public final class AppLinkUpdate implements JsonSerializable<AppLinkUpdate> {
      */
     private Map<String, String> tags;
 
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentityUpdate identity;
+
     /**
      * Creates an instance of AppLinkUpdate class.
      */
@@ -49,12 +54,33 @@ public final class AppLinkUpdate implements JsonSerializable<AppLinkUpdate> {
     }
 
     /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentityUpdate identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the AppLinkUpdate object itself.
+     */
+    public AppLinkUpdate withIdentity(ManagedServiceIdentityUpdate identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,6 +102,8 @@ public final class AppLinkUpdate implements JsonSerializable<AppLinkUpdate> {
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAppLinkUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppLinkUpdate.identity = ManagedServiceIdentityUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

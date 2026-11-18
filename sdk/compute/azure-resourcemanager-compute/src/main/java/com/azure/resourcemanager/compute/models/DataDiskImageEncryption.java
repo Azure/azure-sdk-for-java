@@ -16,6 +16,11 @@ import java.io.IOException;
 @Fluent
 public final class DataDiskImageEncryption extends DiskImageEncryption {
     /*
+     * This property specifies the security profile of a data disk image.
+     */
+    private DataDiskImageSecurityProfile securityProfile;
+
+    /*
      * This property specifies the logical unit number of the data disk. This value is used to identify data disks
      * within the Virtual Machine and therefore must be unique for each data disk attached to the Virtual Machine.
      */
@@ -25,6 +30,26 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
      * Creates an instance of DataDiskImageEncryption class.
      */
     public DataDiskImageEncryption() {
+    }
+
+    /**
+     * Get the securityProfile property: This property specifies the security profile of a data disk image.
+     * 
+     * @return the securityProfile value.
+     */
+    public DataDiskImageSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: This property specifies the security profile of a data disk image.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the DataDiskImageEncryption object itself.
+     */
+    public DataDiskImageEncryption withSecurityProfile(DataDiskImageSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
     }
 
     /**
@@ -67,6 +92,9 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
      */
     @Override
     public void validate() {
+        if (securityProfile() != null) {
+            securityProfile().validate();
+        }
     }
 
     /**
@@ -77,6 +105,7 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("diskEncryptionSetId", diskEncryptionSetId());
         jsonWriter.writeIntField("lun", this.lun);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,6 +129,8 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
                     deserializedDataDiskImageEncryption.withDiskEncryptionSetId(reader.getString());
                 } else if ("lun".equals(fieldName)) {
                     deserializedDataDiskImageEncryption.lun = reader.getInt();
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedDataDiskImageEncryption.securityProfile = DataDiskImageSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

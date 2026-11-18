@@ -28,9 +28,15 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.monitor.workspaces.fluent.AzureMonitorWorkspacesClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.IssuesClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.MetricConfigurationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.MetricNamespacesClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.MetricsContainersClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.MonitorWorkspacesManagementClient;
 import com.azure.resourcemanager.monitor.workspaces.fluent.OperationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsAtResourceGroupsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsAtSubscriptionsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceAssociationsClient;
+import com.azure.resourcemanager.monitor.workspaces.fluent.TraceContainersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -186,6 +192,90 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
     }
 
     /**
+     * The MetricNamespacesClient object to access its operations.
+     */
+    private final MetricNamespacesClient metricNamespaces;
+
+    /**
+     * Gets the MetricNamespacesClient object to access its operations.
+     * 
+     * @return the MetricNamespacesClient object.
+     */
+    public MetricNamespacesClient getMetricNamespaces() {
+        return this.metricNamespaces;
+    }
+
+    /**
+     * The MetricConfigurationsClient object to access its operations.
+     */
+    private final MetricConfigurationsClient metricConfigurations;
+
+    /**
+     * Gets the MetricConfigurationsClient object to access its operations.
+     * 
+     * @return the MetricConfigurationsClient object.
+     */
+    public MetricConfigurationsClient getMetricConfigurations() {
+        return this.metricConfigurations;
+    }
+
+    /**
+     * The TraceContainersClient object to access its operations.
+     */
+    private final TraceContainersClient traceContainers;
+
+    /**
+     * Gets the TraceContainersClient object to access its operations.
+     * 
+     * @return the TraceContainersClient object.
+     */
+    public TraceContainersClient getTraceContainers() {
+        return this.traceContainers;
+    }
+
+    /**
+     * The TraceAssociationsAtResourceGroupsClient object to access its operations.
+     */
+    private final TraceAssociationsAtResourceGroupsClient traceAssociationsAtResourceGroups;
+
+    /**
+     * Gets the TraceAssociationsAtResourceGroupsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtResourceGroupsClient object.
+     */
+    public TraceAssociationsAtResourceGroupsClient getTraceAssociationsAtResourceGroups() {
+        return this.traceAssociationsAtResourceGroups;
+    }
+
+    /**
+     * The TraceAssociationsAtSubscriptionsClient object to access its operations.
+     */
+    private final TraceAssociationsAtSubscriptionsClient traceAssociationsAtSubscriptions;
+
+    /**
+     * Gets the TraceAssociationsAtSubscriptionsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtSubscriptionsClient object.
+     */
+    public TraceAssociationsAtSubscriptionsClient getTraceAssociationsAtSubscriptions() {
+        return this.traceAssociationsAtSubscriptions;
+    }
+
+    /**
+     * The TraceAssociationsClient object to access its operations.
+     */
+    private final TraceAssociationsClient traceAssociations;
+
+    /**
+     * Gets the TraceAssociationsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsClient object.
+     */
+    public TraceAssociationsClient getTraceAssociations() {
+        return this.traceAssociations;
+    }
+
+    /**
      * Initializes an instance of MonitorWorkspacesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -202,11 +292,17 @@ public final class MonitorWorkspacesManagementClientImpl implements MonitorWorks
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-03";
+        this.apiVersion = "2026-09-03-preview";
         this.operations = new OperationsClientImpl(this);
         this.azureMonitorWorkspaces = new AzureMonitorWorkspacesClientImpl(this);
         this.issues = new IssuesClientImpl(this);
         this.metricsContainers = new MetricsContainersClientImpl(this);
+        this.metricNamespaces = new MetricNamespacesClientImpl(this);
+        this.metricConfigurations = new MetricConfigurationsClientImpl(this);
+        this.traceContainers = new TraceContainersClientImpl(this);
+        this.traceAssociationsAtResourceGroups = new TraceAssociationsAtResourceGroupsClientImpl(this);
+        this.traceAssociationsAtSubscriptions = new TraceAssociationsAtSubscriptionsClientImpl(this);
+        this.traceAssociations = new TraceAssociationsClientImpl(this);
     }
 
     /**

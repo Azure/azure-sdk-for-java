@@ -24,7 +24,7 @@ public final class AccountConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"MongoDbV2\",\"createdByWorkspaceArmId\":\"eqvhskbmpw\",\"error\":\"lajggfzgae\",\"expiryTime\":\"2021-08-16T17:13:53Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"wi\":\"y\",\"vj\":\"rnicupdyttqmi\",\"s\":\"l\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"qmtxynoflqobf\",\"xngxebihexhnkin\",\"iqcdolrpg\"],\"target\":\"sjlbsmndaf\",\"useWorkspaceManagedIdentity\":true},\"id\":\"yjeykcnhpplzhc\",\"name\":\"zxjziuu\",\"type\":\"rlnewnuwkkfzzetl\"}";
+            = "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"PythonFeed\",\"createdByWorkspaceArmId\":\"qztqrnreyj\",\"error\":\"nrweevtu\",\"expiryTime\":\"2021-11-21T14:51:15Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"xhiwmkljhk\":\"jfpsyqvgaaymfk\",\"ktcr\":\"xcewzgoxz\"},\"peRequirement\":\"Required\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"yzbvsj\",\"thsysefilncyqnkp\"],\"target\":\"fmpz\",\"useWorkspaceManagedIdentity\":true},\"id\":\"jckzx\",\"name\":\"lupgtptmndzbf\",\"type\":\"iavpgln\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class AccountConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConnectionPropertiesV2BasicResource response = manager.accountConnections()
-            .getWithResponse("zfaxskdvu", "lumodpegqxsorc", "azrqoxz", com.azure.core.util.Context.NONE)
+            .getWithResponse("nithxnainssv", "kzslylioguwshrmc", "bmyghqtthsb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ConnectionCategory.MONGO_DB_V2, response.properties().category());
-        Assertions.assertEquals("lajggfzgae", response.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T17:13:53Z"), response.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.PYTHON_FEED, response.properties().category());
+        Assertions.assertEquals("nrweevtu", response.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T14:51:15Z"), response.properties().expiryTime());
         Assertions.assertTrue(response.properties().isSharedToAll());
-        Assertions.assertEquals("y", response.properties().metadata().get("wi"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, response.properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.ACTIVE, response.properties().peStatus());
-        Assertions.assertEquals("qmtxynoflqobf", response.properties().sharedUserList().get(0));
-        Assertions.assertEquals("sjlbsmndaf", response.properties().target());
+        Assertions.assertEquals("jfpsyqvgaaymfk", response.properties().metadata().get("xhiwmkljhk"));
+        Assertions.assertEquals(ManagedPERequirement.REQUIRED, response.properties().peRequirement());
+        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, response.properties().peStatus());
+        Assertions.assertEquals("yzbvsj", response.properties().sharedUserList().get(0));
+        Assertions.assertEquals("fmpz", response.properties().target());
         Assertions.assertTrue(response.properties().useWorkspaceManagedIdentity());
     }
 }

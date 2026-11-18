@@ -137,8 +137,12 @@ public final class DbSystemImpl implements DbSystem, DbSystem.Definition, DbSyst
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dbSystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dbSystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "resourceGroupName");
+        this.dbSystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "dbSystemName");
     }
 
     public DbSystem refresh() {

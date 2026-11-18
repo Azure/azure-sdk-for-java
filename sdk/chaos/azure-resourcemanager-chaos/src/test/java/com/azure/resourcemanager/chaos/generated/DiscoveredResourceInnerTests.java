@@ -11,7 +11,7 @@ public final class DiscoveredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"namespace\":\"jh\",\"resourceName\":\"mgixhcmavmqfou\",\"resourceType\":\"or\",\"fullyQualifiedIdentifier\":\"cgyypro\",\"discoveredAt\":\"2021-06-17T04:22:53Z\",\"scope\":\"ypundmbxhugc\"},\"id\":\"k\",\"name\":\"vlgo\",\"type\":\"bmftpmdt\"}")
+            "{\"properties\":{\"namespace\":\"tj\",\"resourceName\":\"zysdzh\",\"resourceType\":\"zwwva\",\"fullyQualifiedIdentifier\":\"qyuvvfonkp\",\"discoveredAt\":\"2021-04-14T05:32:39Z\",\"scope\":\"qyikvy\",\"location\":\"uyav\",\"zones\":[\"mncsttijfybvp\"]},\"id\":\"krsgsgb\",\"name\":\"huzqgn\",\"type\":\"dgkynscliqhzvhxn\"}")
             .toObject(DiscoveredResourceInner.class);
     }
 }

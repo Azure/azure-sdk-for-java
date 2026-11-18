@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageApplianceExpansionShelfTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageApplianceExpansionShelf model
-            = BinaryData.fromString("{\"model\":\"mxmcuqudtcvclxy\",\"version\":\"dkvgfabuiyjibuzp\"}")
-                .toObject(StorageApplianceExpansionShelf.class);
-        Assertions.assertEquals("mxmcuqudtcvclxy", model.model());
-        Assertions.assertEquals("dkvgfabuiyjibuzp", model.version());
+        StorageApplianceExpansionShelf model = BinaryData.fromString("{\"model\":\"whslwkoj\",\"version\":\"l\"}")
+            .toObject(StorageApplianceExpansionShelf.class);
+        Assertions.assertEquals("whslwkoj", model.model());
+        Assertions.assertEquals("l", model.version());
     }
 }

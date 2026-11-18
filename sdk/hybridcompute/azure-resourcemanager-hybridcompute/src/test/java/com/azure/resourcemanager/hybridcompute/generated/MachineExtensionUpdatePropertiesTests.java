@@ -14,34 +14,34 @@ public final class MachineExtensionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineExtensionUpdateProperties model = BinaryData.fromString(
-            "{\"forceUpdateTag\":\"tdwkqbrq\",\"publisher\":\"paxh\",\"type\":\"iilivpdtiirqtd\",\"typeHandlerVersion\":\"axoruzfgsquy\",\"enableAutomaticUpgrade\":false,\"autoUpgradeMinorVersion\":true,\"settings\":{\"zwl\":\"\\\"dataptramxj\\\"\",\"tdooaoj\":\"\\\"datanwxuqlcvydyp\\\"\"},\"protectedSettings\":{\"ebwnujhe\":\"\\\"dataodko\\\"\",\"jlfltkacjvefkdlf\":\"\\\"datamsbvdkcrodtjinf\\\"\",\"owpulpq\":\"\\\"dataakggkfpag\\\"\",\"xkqjnsjervt\":\"\\\"datalyls\\\"\"}}")
+            "{\"forceUpdateTag\":\"r\",\"publisher\":\"fgsqu\",\"type\":\"xrxxlep\",\"typeHandlerVersion\":\"amxjezwlw\",\"enableAutomaticUpgrade\":true,\"autoUpgradeMinorVersion\":false,\"settings\":{\"ojknio\":\"\\\"datavydypatdoo\\\"\",\"hemms\":\"\\\"datakooebwnu\\\"\",\"nfwjlfltkacjvefk\":\"\\\"datavdkcrodtj\\\"\"},\"protectedSettings\":{\"owpulpq\":\"\\\"dataoakggkfpag\\\"\",\"xkqjnsjervt\":\"\\\"datalyls\\\"\"}}")
             .toObject(MachineExtensionUpdateProperties.class);
-        Assertions.assertEquals("tdwkqbrq", model.forceUpdateTag());
-        Assertions.assertEquals("paxh", model.publisher());
-        Assertions.assertEquals("iilivpdtiirqtd", model.type());
-        Assertions.assertEquals("axoruzfgsquy", model.typeHandlerVersion());
-        Assertions.assertFalse(model.enableAutomaticUpgrade());
-        Assertions.assertTrue(model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("r", model.forceUpdateTag());
+        Assertions.assertEquals("fgsqu", model.publisher());
+        Assertions.assertEquals("xrxxlep", model.type());
+        Assertions.assertEquals("amxjezwlw", model.typeHandlerVersion());
+        Assertions.assertTrue(model.enableAutomaticUpgrade());
+        Assertions.assertFalse(model.autoUpgradeMinorVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineExtensionUpdateProperties model = new MachineExtensionUpdateProperties().withForceUpdateTag("tdwkqbrq")
-            .withPublisher("paxh")
-            .withType("iilivpdtiirqtd")
-            .withTypeHandlerVersion("axoruzfgsquy")
-            .withEnableAutomaticUpgrade(false)
-            .withAutoUpgradeMinorVersion(true)
-            .withSettings(mapOf("zwl", "\"dataptramxj\"", "tdooaoj", "\"datanwxuqlcvydyp\""))
-            .withProtectedSettings(mapOf("ebwnujhe", "\"dataodko\"", "jlfltkacjvefkdlf", "\"datamsbvdkcrodtjinf\"",
-                "owpulpq", "\"dataakggkfpag\"", "xkqjnsjervt", "\"datalyls\""));
+        MachineExtensionUpdateProperties model = new MachineExtensionUpdateProperties().withForceUpdateTag("r")
+            .withPublisher("fgsqu")
+            .withType("xrxxlep")
+            .withTypeHandlerVersion("amxjezwlw")
+            .withEnableAutomaticUpgrade(true)
+            .withAutoUpgradeMinorVersion(false)
+            .withSettings(mapOf("ojknio", "\"datavydypatdoo\"", "hemms", "\"datakooebwnu\"", "nfwjlfltkacjvefk",
+                "\"datavdkcrodtj\""))
+            .withProtectedSettings(mapOf("owpulpq", "\"dataoakggkfpag\"", "xkqjnsjervt", "\"datalyls\""));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpdateProperties.class);
-        Assertions.assertEquals("tdwkqbrq", model.forceUpdateTag());
-        Assertions.assertEquals("paxh", model.publisher());
-        Assertions.assertEquals("iilivpdtiirqtd", model.type());
-        Assertions.assertEquals("axoruzfgsquy", model.typeHandlerVersion());
-        Assertions.assertFalse(model.enableAutomaticUpgrade());
-        Assertions.assertTrue(model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("r", model.forceUpdateTag());
+        Assertions.assertEquals("fgsqu", model.publisher());
+        Assertions.assertEquals("xrxxlep", model.type());
+        Assertions.assertEquals("amxjezwlw", model.typeHandlerVersion());
+        Assertions.assertTrue(model.enableAutomaticUpgrade());
+        Assertions.assertFalse(model.autoUpgradeMinorVersion());
     }
 
     // Use "Map.of" if available

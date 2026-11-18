@@ -381,8 +381,9 @@ public final class LoadBalancingRuleInner extends SubResourceModel {
     }
 
     /**
-     * Get the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
-     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * Get the enableConnectionTracking property: Enables UDP flow tracking for the load balancing rule. This property
+     * is retained for rule-level configuration compatibility. When enableConnectionTracking is specified on the
+     * associated frontend IP configuration, the frontend setting takes precedence.
      * 
      * @return the enableConnectionTracking value.
      */
@@ -391,8 +392,9 @@ public final class LoadBalancingRuleInner extends SubResourceModel {
     }
 
     /**
-     * Set the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
-     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * Set the enableConnectionTracking property: Enables UDP flow tracking for the load balancing rule. This property
+     * is retained for rule-level configuration compatibility. When enableConnectionTracking is specified on the
+     * associated frontend IP configuration, the frontend setting takes precedence.
      * 
      * @param enableConnectionTracking the enableConnectionTracking value to set.
      * @return the LoadBalancingRuleInner object itself.

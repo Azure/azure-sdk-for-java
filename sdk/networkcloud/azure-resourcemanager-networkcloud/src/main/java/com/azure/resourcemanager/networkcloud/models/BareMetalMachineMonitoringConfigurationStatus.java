@@ -21,12 +21,12 @@ public final class BareMetalMachineMonitoringConfigurationStatus
     /*
      * The log level for the monitoring configuration status of the bare metal machine.
      */
-    private BareMetalMachineMetricsConfigurationStatusLogLevel logLevel;
+    private BareMetalMachineMonitoringConfigurationStatusLogLevel logLevel;
 
     /*
      * The metrics level for the monitoring configuration status of the bare metal machine.
      */
-    private BareMetalMachineMetricsConfigurationStatusMetricsLevel metricsLevel;
+    private BareMetalMachineMonitoringConfigurationStatusMetricsLevel metricsLevel;
 
     /**
      * Creates an instance of BareMetalMachineMonitoringConfigurationStatus class.
@@ -39,7 +39,7 @@ public final class BareMetalMachineMonitoringConfigurationStatus
      * 
      * @return the logLevel value.
      */
-    public BareMetalMachineMetricsConfigurationStatusLogLevel logLevel() {
+    public BareMetalMachineMonitoringConfigurationStatusLogLevel logLevel() {
         return this.logLevel;
     }
 
@@ -49,7 +49,7 @@ public final class BareMetalMachineMonitoringConfigurationStatus
      * 
      * @return the metricsLevel value.
      */
-    public BareMetalMachineMetricsConfigurationStatusMetricsLevel metricsLevel() {
+    public BareMetalMachineMonitoringConfigurationStatusMetricsLevel metricsLevel() {
         return this.metricsLevel;
     }
 
@@ -82,10 +82,10 @@ public final class BareMetalMachineMonitoringConfigurationStatus
 
                 if ("logLevel".equals(fieldName)) {
                     deserializedBareMetalMachineMonitoringConfigurationStatus.logLevel
-                        = BareMetalMachineMetricsConfigurationStatusLogLevel.fromString(reader.getString());
+                        = BareMetalMachineMonitoringConfigurationStatusLogLevel.fromString(reader.getString());
                 } else if ("metricsLevel".equals(fieldName)) {
                     deserializedBareMetalMachineMonitoringConfigurationStatus.metricsLevel
-                        = BareMetalMachineMetricsConfigurationStatusMetricsLevel.fromString(reader.getString());
+                        = BareMetalMachineMonitoringConfigurationStatusMetricsLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

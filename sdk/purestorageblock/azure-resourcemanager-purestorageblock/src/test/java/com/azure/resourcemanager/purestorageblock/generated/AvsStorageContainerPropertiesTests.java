@@ -12,8 +12,8 @@ public final class AvsStorageContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsStorageContainerProperties model = BinaryData.fromString(
-            "{\"space\":{\"totalUsed\":5857746514092669802,\"unique\":7583753681353365970,\"snapshots\":1880030215956318451,\"shared\":6124178728244060008},\"resourceName\":\"kwyfzqwhxxbuyqax\",\"provisionedLimit\":3336688530797945721,\"datastore\":\"tpp\",\"mounted\":false}")
+            "{\"space\":{\"totalUsed\":2589593210312984687,\"unique\":5101958694614146939,\"snapshots\":7028872436182293033,\"shared\":1601146204745815323},\"resourceName\":\"lewyhmlwpaz\",\"provisionedLimit\":7583753681353365970,\"datastore\":\"ncckw\",\"mounted\":true}")
             .toObject(AvsStorageContainerProperties.class);
-        Assertions.assertEquals(3336688530797945721L, model.provisionedLimit());
+        Assertions.assertEquals(7583753681353365970L, model.provisionedLimit());
     }
 }

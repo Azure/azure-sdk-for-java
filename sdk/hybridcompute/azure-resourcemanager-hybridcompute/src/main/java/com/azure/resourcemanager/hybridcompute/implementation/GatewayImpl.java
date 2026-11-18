@@ -75,6 +75,15 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
         }
     }
 
+    public List<String> gatewayBypass() {
+        List<String> inner = this.innerModel().gatewayBypass();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -150,8 +159,12 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
     GatewayImpl(GatewayInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.gatewayName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "gateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/gateways/{gatewayName}",
+            "resourceGroupName");
+        this.gatewayName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/gateways/{gatewayName}",
+            "gatewayName");
     }
 
     public Gateway refresh() {
@@ -201,6 +214,16 @@ public final class GatewayImpl implements Gateway, Gateway.Definition, Gateway.U
             return this;
         } else {
             this.updateParameters.withAllowedFeatures(allowedFeatures);
+            return this;
+        }
+    }
+
+    public GatewayImpl withGatewayBypass(List<String> gatewayBypass) {
+        if (isInCreateMode()) {
+            this.innerModel().withGatewayBypass(gatewayBypass);
+            return this;
+        } else {
+            this.updateParameters.withGatewayBypass(gatewayBypass);
             return this;
         }
     }

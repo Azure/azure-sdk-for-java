@@ -53,7 +53,9 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
     }
 
     public AutoProvisioningSetting getById(String id) {
-        String settingName = ResourceManagerUtils.getValueFromIdByName(id, "autoProvisioningSettings");
+        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}",
+            "settingName");
         if (settingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'autoProvisioningSettings'.", id)));
@@ -62,7 +64,9 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
     }
 
     public Response<AutoProvisioningSetting> getByIdWithResponse(String id, Context context) {
-        String settingName = ResourceManagerUtils.getValueFromIdByName(id, "autoProvisioningSettings");
+        String settingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}",
+            "settingName");
         if (settingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'autoProvisioningSettings'.", id)));

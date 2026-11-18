@@ -3,15 +3,20 @@
 
 package com.azure.ai.agents.implementation;
 
-import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.serializer.TypeReference;
+import java.util.Map;
 
 /**
  * Shared polling helpers for the Agents SDK.
@@ -23,44 +28,108 @@ import com.azure.core.util.polling.PollingStrategyOptions;
  * <p>This class is package-private; it is <b>not</b> part of the public API.</p>
  */
 final class AgentsServicePollUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(AgentsServicePollUtils.class);
+    private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("Operation-Id");
+    private static final String CAMPAIGN_OPERATION_ID = "campaignOperationId";
 
-    /** Required preview-feature header for Memory Stores operations. */
-    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
-    private static final String FOUNDRY_FEATURES_VALUE = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
+    private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE
+        = new TypeReference<Map<String, Object>>() {
+        };
 
     private AgentsServicePollUtils() {
     }
 
-    /**
-     * Adds the {@code Foundry-Features} header to the given {@link PollingStrategyOptions}'s
-     * {@link Context}.  If the context already carries {@link HttpHeaders} under the
-     * {@link AddHeadersFromContextPolicy} key they are preserved; the {@code Foundry-Features}
-     * entry is merged in.  Because the pipeline already contains
-     * {@link AddHeadersFromContextPolicy}, the header is automatically added to every HTTP
-     * request the parent strategy makes (initial, poll, and final-result GETs).
-     *
-     * <p><strong>Note:</strong> this method mutates and returns the same
-     * {@code PollingStrategyOptions} instance.</p>
-     */
-    static PollingStrategyOptions withFoundryFeatures(PollingStrategyOptions options) {
-        Context context = options.getContext() != null ? options.getContext() : Context.NONE;
-        Object existing = context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null);
-        HttpHeaders headers
-            = (existing instanceof HttpHeaders) ? new HttpHeaders((HttpHeaders) existing) : new HttpHeaders();
-        headers.set(FOUNDRY_FEATURES, FOUNDRY_FEATURES_VALUE);
-        return options.setContext(context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+    static String getOptimizationPollingUrl(Object initialResponse, String endpoint) {
+        if (!(initialResponse instanceof BinaryData)) {
+            throw new IllegalStateException("The optimization create response did not contain a response body.");
+        }
+        Map<String, Object> job = ((BinaryData) initialResponse).toObject(MAP_TYPE_REFERENCE);
+        Object jobId = job.get("id");
+        if (jobId == null || jobId.toString().isEmpty()) {
+            throw new IllegalStateException("The optimization create response did not contain a job ID.");
+        }
+        return endpoint + (endpoint.endsWith("/") ? "" : "/") + "agent_optimization_jobs/" + jobId;
+    }
+
+    static boolean canPollCampaign(Response<?> response) {
+        int statusCode = response.getStatusCode();
+        return statusCode == 200
+            || statusCode == 201
+            || statusCode == 202
+            || (statusCode == 204 && response.getRequest().getHttpMethod() == HttpMethod.DELETE);
+    }
+
+    static boolean initializeCampaignPollingContext(Response<?> response, PollingContext<?> pollingContext) {
+        HttpMethod method = response.getRequest().getHttpMethod();
+        pollingContext.setData(PollingUtils.HTTP_METHOD, method.name());
+        if (method == HttpMethod.DELETE && response.getStatusCode() == 204) {
+            return true;
+        }
+        int statusCode = response.getStatusCode();
+        if (statusCode != 200 && statusCode != 201 && statusCode != 202) {
+            throw LOGGER.logExceptionAsError(
+                new AzureException("Campaign operation failed with HTTP status " + statusCode + "."));
+        }
+        String pollingUrl = response.getHeaders().getValue(PollingUtils.OPERATION_LOCATION_HEADER);
+        if (pollingUrl == null || pollingUrl.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Campaign operation response is missing Operation-Location."));
+        }
+        if (method != HttpMethod.DELETE) {
+            String operationId = response.getHeaders().getValue(OPERATION_ID);
+            if (operationId == null || operationId.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Campaign operation response is missing Operation-Id."));
+            }
+            pollingContext.setData(CAMPAIGN_OPERATION_ID, operationId);
+        }
+        return false;
+    }
+
+    static boolean isCompletedCampaignDeletion(PollingContext<?> pollingContext) {
+        LongRunningOperationStatus status = pollingContext.getLatestResponse().getStatus();
+        if (status == LongRunningOperationStatus.FAILED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
+        } else if (status == LongRunningOperationStatus.USER_CANCELLED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation cancelled."));
+        } else if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Campaign operation has not completed successfully."));
+        }
+        return HttpMethod.DELETE.name().equals(pollingContext.getData(PollingUtils.HTTP_METHOD));
+    }
+
+    static RequestOptions getCampaignFinalRequestOptions(PollingContext<?> pollingContext, Context context) {
+        String operationId = pollingContext.getData(CAMPAIGN_OPERATION_ID);
+        if (operationId == null || operationId.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Campaign polling context is missing the original Operation-Id."));
+        }
+        return new RequestOptions().setContext(context).addQueryParam("operation_id", operationId);
+    }
+
+    static BinaryData getCampaignResponseBody(Response<BinaryData> response) {
+        BinaryData body = response.getValue();
+        if (body == null || (body.getLength() != null && body.getLength() == 0)) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Campaign final GET did not contain a response body."));
+        }
+        return body;
     }
 
     /**
      * Remaps a {@link PollResponse} whose status may contain a custom service terminal state
-     * ({@code "completed"}, {@code "superseded"}) that the base {@code OperationResourcePollingStrategy}
+     * ({@code "completed"}, {@code "superseded"}, {@code "cancelled"}, {@code "skipped"})
+     * that the base {@code OperationResourcePollingStrategy}
      * cannot recognize.  If no remapping is needed the original response is returned as-is.
      *
-     * <p>The Memory Stores Azure core defines:</p>
+     * <p>The Memory Stores service defines:</p>
      * <ul>
-     *   <li>{@code "completed"} {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
-     *   <li>{@code "superseded"}  {@link LongRunningOperationStatus#USER_CANCELLED}</li>
+     *   <li>{@code "completed"}  {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
+     *   <li>{@code "superseded"} {@link LongRunningOperationStatus#USER_CANCELLED}</li>
      * </ul>
+     * <p>Optimization jobs that are {@code "skipped"} map to {@link LongRunningOperationStatus#FAILED},
+     * because they terminate without completing the requested optimization.</p>
      */
     static <T> PollResponse<T> remapStatus(PollResponse<T> response) {
         LongRunningOperationStatus status = response.getStatus();
@@ -77,8 +146,12 @@ final class AgentsServicePollUtils {
         String name = status.toString();
         if (MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)) {
+        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)
+            // Optimization jobs and telephony use "cancelled"; MemoryStoreUpdateStatus intentionally has no CANCELLED.
+            || "cancelled".equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.USER_CANCELLED;
+        } else if ("skipped".equalsIgnoreCase(name)) {
+            return LongRunningOperationStatus.FAILED;
         }
         return status;
     }

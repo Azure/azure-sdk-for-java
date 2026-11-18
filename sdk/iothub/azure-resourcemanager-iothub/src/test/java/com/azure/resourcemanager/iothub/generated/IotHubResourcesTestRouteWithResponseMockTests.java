@@ -51,7 +51,7 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
                             .withSystemProperties(mapOf("tnvyqiatkzwp", "bvkayh", "vvsccyajguq", "npwzcjaes", "lvdnkfx",
                                 "hwyg", "apfcqdpsq", "semdwzrmu")))
                         .withRoute(new RouteProperties().withName("qvpsvuoymg")
-                            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
+                            .withSource(RoutingSource.INVALID)
                             .withCondition("lvez")
                             .withEndpointNames(Arrays.asList("pqlmfe"))
                             .withIsEnabled(false))

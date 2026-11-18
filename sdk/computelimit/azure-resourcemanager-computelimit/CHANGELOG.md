@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2026-07-17)
+
+- Azure Resource Manager ComputeLimit client library for Java. This package contains Microsoft Azure SDK for ComputeLimit Management SDK. Microsoft Azure Compute Limit Resource Provider. Package api-version 2026-07-31. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.TrustedHostSubscription$DefinitionStages` was added
+
+* `models.TrustedHostSubscriptions` was added
+
+* `models.TrustedHostSubscription` was added
+
+* `models.TrustedHostSubscription$Definition` was added
+
+#### `ComputeLimitManager` was modified
+
+* `trustedHostSubscriptions()` was added
 
 ## 1.3.0 (2026-07-07)
 

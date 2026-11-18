@@ -22,7 +22,7 @@ public final class SharedLimitCapsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"defaultMemberCap\":258578871,\"isBoundedCap\":false,\"provisioningState\":\"Succeeded\"},\"id\":\"b\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"}";
+            = "{\"properties\":{\"defaultMemberCap\":776466755,\"isBoundedCap\":true,\"provisioningState\":\"Canceled\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class SharedLimitCapsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SharedLimitCap response = manager.sharedLimitCaps()
-            .define("zjancuxr")
-            .withExistingLocation("qwalmuzyoxaepd")
-            .withProperties(new SharedLimitCapProperties().withDefaultMemberCap(1400002261).withIsBoundedCap(true))
+            .define("phoxus")
+            .withExistingLocation("vjtoqnermclfp")
+            .withProperties(new SharedLimitCapProperties().withDefaultMemberCap(1022629586).withIsBoundedCap(false))
             .create();
 
-        Assertions.assertEquals(258578871, response.properties().defaultMemberCap());
-        Assertions.assertFalse(response.properties().isBoundedCap());
+        Assertions.assertEquals(776466755, response.properties().defaultMemberCap());
+        Assertions.assertTrue(response.properties().isBoundedCap());
     }
 }

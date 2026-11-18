@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class DedicatedHsmCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM with management profile.
@@ -46,7 +46,7 @@ public final class DedicatedHsmCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing dedicated HSM.
@@ -70,7 +70,7 @@ public final class DedicatedHsmCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM.

@@ -11,10 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class DpmErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DpmErrorInfo model = BinaryData.fromString(
-            "{\"errorString\":\"nabaobnslujd\",\"recommendations\":[\"ymkmvguihyw\",\"rtspphkixkykxds\",\"j\",\"emmucfxh\"]}")
+        DpmErrorInfo model = BinaryData
+            .fromString(
+                "{\"errorString\":\"blxpkkwjdjodq\",\"recommendations\":[\"incnr\",\"mehllizhceu\",\"oqodkadpp\"]}")
             .toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("nabaobnslujd", model.errorString());
-        Assertions.assertEquals("ymkmvguihyw", model.recommendations().get(0));
+        Assertions.assertEquals("blxpkkwjdjodq", model.errorString());
+        Assertions.assertEquals("incnr", model.recommendations().get(0));
     }
 }

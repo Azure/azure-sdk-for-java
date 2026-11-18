@@ -4,11 +4,15 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
-import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.implementation.telemetry.GenAiInstrumentation;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -22,6 +26,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -37,6 +42,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -47,27 +53,35 @@ import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaVoiceAgentsTelephonyClient.class,
+        BetaVoiceAgentsLiveConversationsClient.class,
         BetaMemoryStoresClient.class,
-        BetaAgentsClient.class,
+        VoiceAgentsConversationsClient.class,
+        VoiceAgentsTelephonyClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
+        BetaVoiceAgentsTelephonyAsyncClient.class,
+        BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
-        BetaAgentsAsyncClient.class,
+        VoiceAgentsConversationsAsyncClient.class,
+        VoiceAgentsTelephonyAsyncClient.class,
         AgentsAsyncClient.class,
-        ToolboxesAsyncClient.class })
+        ToolboxesAsyncClient.class,
+        VoiceAgentsWebSocketClient.class,
+        VoiceAgentsWebSocketAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -84,13 +98,17 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
+
+    private static final String VOICE_AGENTS_PREVIEW_FEATURES
+        = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
+
+    private static final String PIPELINE_AUTHENTICATION_PLACEHOLDER = "pipeline-authentication";
 
     private boolean allowPreview;
 
@@ -378,7 +396,21 @@ public final class AgentsClientBuilder
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
-        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures));
+    }
+
+    private HttpPipeline resolveOpenAIHttpPipeline(String foundryFeatures) {
+        HttpPipeline localPipeline = resolvePipeline(foundryFeatures);
+        if (pipeline != null && tokenCredential != null) {
+            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
+                new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
+        return localPipeline;
+    }
+
+    private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures,
+        OpenAITracingContextBridge contextBridge) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures), contextBridge);
     }
 
     /**
@@ -387,8 +419,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        return new ResponsesClient(getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        return new ResponsesClient(
+            getOpenAIClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -397,8 +433,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        return new ResponsesAsyncClient(
+            getOpenAIAsyncClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -469,8 +509,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -487,8 +526,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -511,7 +549,8 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsAsyncClient.
      */
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            new GenAiAgentTracing(createInstrumentation()));
     }
 
     /**
@@ -520,7 +559,42 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsClient.
      */
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            new GenAiAgentTracing(createInstrumentation()));
+    }
+
+    /**
+     * Builds the azure-core {@link com.azure.core.util.tracing.Tracer} for the agents clients from the configured
+     * {@link ClientOptions#getTracingOptions()}. The tracer is a no-op unless an OpenTelemetry implementation is
+     * present and tracing is enabled for the process.
+     *
+     * @return the tracer instance.
+     */
+    private com.azure.core.util.tracing.Tracer createTracer() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.LibraryTelemetryOptions telemetryOptions
+            = new com.azure.core.util.LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace("Microsoft.CognitiveServices")
+                .setSchemaUrl(GenAiInstrumentation.OTEL_SCHEMA_URL);
+        final com.azure.core.util.TracingOptions tracingOptions
+            = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
+        return com.azure.core.util.tracing.TracerProvider.getDefaultProvider()
+            .createTracer(telemetryOptions, tracingOptions);
+    }
+
+    private GenAiInstrumentation createInstrumentation() {
+        return createInstrumentation(createTracer());
+    }
+
+    private GenAiInstrumentation createInstrumentation(com.azure.core.util.tracing.Tracer tracer) {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.MetricsOptions metricsOptions
+            = this.clientOptions == null ? null : this.clientOptions.getMetricsOptions();
+        final com.azure.core.util.metrics.Meter meter = com.azure.core.util.metrics.MeterProvider.getDefaultProvider()
+            .createMeter(clientName, clientVersion, metricsOptions);
+        return new GenAiInstrumentation(this.endpoint, this.configuration, tracer, meter);
     }
 
     /**
@@ -528,8 +602,10 @@ public final class AgentsClientBuilder
      * <p>
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
      * policies, retry settings, logging options, client options, and service version. Use this method
-     * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
-     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, or {@link BetaMemoryStoresAsyncClient}.
+     * when you want to build a client whose type is prefixed with {@code Beta}, such as
+     * {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
+     * {@link BetaVoiceAgentsTelephonyClient}, {@link BetaVoiceAgentsTelephonyAsyncClient},
+     * {@link BetaVoiceAgentsLiveConversationsClient}, or {@link BetaVoiceAgentsLiveConversationsAsyncClient}.
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -552,31 +628,20 @@ public final class AgentsClientBuilder
     @Beta
     @ServiceClientBuilder(
         serviceClients = {
-            BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class })
+            BetaVoiceAgentsLiveWebSocketClient.class,
+            BetaVoiceAgentsTelephonyClient.class,
+            BetaVoiceAgentsLiveConversationsClient.class,
+            BetaMemoryStoresAsyncClient.class,
+            BetaVoiceAgentsLiveWebSocketAsyncClient.class,
+            BetaVoiceAgentsTelephonyAsyncClient.class,
+            BetaVoiceAgentsLiveConversationsAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
          * Creates a new instance of BetaAgentsClientBuilder. Use {@link AgentsClientBuilder#beta()} to get an instance.
          */
         private BetaAgentsClientBuilder() {
-        }
-
-        /**
-         * Builds an asynchronous beta Agents client for preview agent optimization operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for beta agent operations, so
-         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaAgentsAsyncClient.
-         */
-        @Beta
-        public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-            return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
 
         /**
@@ -596,18 +661,33 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * Builds an asynchronous beta client for preview voice-agent telephony operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for beta agent operations, so
+         * {@code Foundry-Features} header required for voice-agent preview operations, so
          * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
-         * @return an instance of BetaAgentsClient.
+         * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
          */
         @Beta
-        public BetaAgentsClient buildBetaAgentsClient() {
-            return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        public BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
+            return new BetaVoiceAgentsTelephonyAsyncClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsTelephonies());
+        }
+
+        /**
+         * Builds an asynchronous beta client for persisted Live voice-agent conversations.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsLiveConversationsAsyncClient.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveConversationsAsyncClient buildBetaVoiceAgentsLiveConversationsAsyncClient() {
+            return new BetaVoiceAgentsLiveConversationsAsyncClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsLiveConversations());
         }
 
         /**
@@ -624,15 +704,66 @@ public final class AgentsClientBuilder
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
-    }
 
-    /**
-     * Builds an instance of BetaAgentsAsyncClient class.
-     *
-     * @return an instance of BetaAgentsAsyncClient.
-     */
-    private BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-        return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        /**
+         * Builds an asynchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return an asynchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketAsyncClient buildBetaVoiceAgentsLiveWebSocketAsyncClient() {
+            return new BetaVoiceAgentsLiveWebSocketAsyncClient(
+                createVoiceAgentWebSocketConfiguration(VOICE_AGENTS_PREVIEW_FEATURES));
+        }
+
+        /**
+         * Builds a synchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return a synchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveWebSocketClient buildBetaVoiceAgentsLiveWebSocketClient() {
+            return new BetaVoiceAgentsLiveWebSocketClient(
+                createVoiceAgentWebSocketConfiguration(VOICE_AGENTS_PREVIEW_FEATURES));
+        }
+
+        /**
+         * Builds a synchronous beta client for preview voice-agent telephony operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for voice-agent preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
+         *
+         * @return an instance of BetaVoiceAgentsTelephonyClient.
+         */
+        @Beta
+        public BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
+            return new BetaVoiceAgentsTelephonyClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsTelephonies());
+        }
+
+        /**
+         * Builds a synchronous beta client for persisted Live voice-agent conversations.
+         * <p>
+         * Uses the enclosing builder's configuration and automatically adds the voice-agent
+         * {@code Foundry-Features} header. {@link AgentsClientBuilder#allowPreview(boolean)} is not required.
+         *
+         * @return an instance of BetaVoiceAgentsLiveConversationsClient.
+         */
+        @Beta
+        public BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
+            return new BetaVoiceAgentsLiveConversationsClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsLiveConversations());
+        }
     }
 
     /**
@@ -642,15 +773,6 @@ public final class AgentsClientBuilder
      */
     private BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
         return new BetaMemoryStoresAsyncClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
-    }
-
-    /**
-     * Builds an instance of BetaAgentsClient class.
-     *
-     * @return an instance of BetaAgentsClient.
-     */
-    private BetaAgentsClient buildBetaAgentsClient() {
-        return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
@@ -680,5 +802,173 @@ public final class AgentsClientBuilder
     @Generated
     public ToolboxesClient buildToolboxesClient() {
         return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsTelephonyAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
+     */
+    private BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
+        return new BetaVoiceAgentsTelephonyAsyncClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsTelephonyClient class.
+     *
+     * @return an instance of BetaVoiceAgentsTelephonyClient.
+     */
+    private BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
+        return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Creates the parallel configuration path required by the native WebSocket transports. Azure Core's
+     * {@link HttpClient} and {@link HttpPipeline} abstractions don't expose WebSocket session operations, so these
+     * clients can't reuse the generated HTTP pipeline directly. Compatible builder settings are adapted for the
+     * WebSocket handshake and must remain aligned with {@code createHttpPipeline()} when the TypeSpec emitter changes.
+     * HTTP transport, pipeline, policy, and retry settings are rejected rather than silently ignored.
+     *
+     * @param previewFeatures the preview feature header value, or {@code null} for no preview opt-in.
+     * @return the voice-agent WebSocket client configuration.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
+    private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration(String previewFeatures) {
+        validateClient();
+        Objects.requireNonNull(tokenCredential,
+            "'credential' must be configured to build a voice-agent WebSocket client.");
+        List<String> unsupportedSettings = new ArrayList<>();
+        if (httpClient != null) {
+            unsupportedSettings.add("httpClient");
+        }
+        if (pipeline != null) {
+            unsupportedSettings.add("pipeline");
+        }
+        if (!pipelinePolicies.isEmpty()) {
+            unsupportedSettings.add("addPolicy");
+        }
+        if (retryOptions != null) {
+            unsupportedSettings.add("retryOptions");
+        }
+        if (retryPolicy != null) {
+            unsupportedSettings.add("retryPolicy");
+        }
+        if (!unsupportedSettings.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Voice-agent WebSocket clients do not support these HTTP builder settings: "
+                    + String.join(", ", unsupportedSettings) + "."));
+        }
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        ClientOptions localClientOptions = clientOptions == null ? new ClientOptions() : clientOptions;
+        HttpLogOptions localLogOptions = httpLogOptions == null ? new HttpLogOptions() : httpLogOptions;
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "azure-ai-agents");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "unknown");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localLogOptions);
+        String userAgent
+            = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion, buildConfiguration);
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(buildConfiguration);
+        AgentsServiceVersion localServiceVersion
+            = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
+        return new VoiceAgentWebSocketClientConfiguration(URI.create(endpoint), tokenCredential,
+            localServiceVersion.getVersion(), userAgent, headers, proxyOptions, previewFeatures);
+    }
+
+    /**
+     * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+     * <p>
+     * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+     * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+     * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+     * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return an asynchronous voice-agent WebSocket client.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
+    public VoiceAgentsWebSocketAsyncClient buildVoiceAgentsWebSocketAsyncClient() {
+        return new VoiceAgentsWebSocketAsyncClient(
+            createVoiceAgentWebSocketConfiguration(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null));
+    }
+
+    /**
+     * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+     * <p>
+     * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+     * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+     * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+     * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return a synchronous voice-agent WebSocket client.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
+    public VoiceAgentsWebSocketClient buildVoiceAgentsWebSocketClient() {
+        return new VoiceAgentsWebSocketClient(
+            createVoiceAgentWebSocketConfiguration(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null));
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsAsyncClient.
+     */
+    private BetaVoiceAgentsLiveConversationsAsyncClient buildBetaVoiceAgentsLiveConversationsAsyncClient() {
+        return new BetaVoiceAgentsLiveConversationsAsyncClient(
+            buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsClient.
+     */
+    private BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
+        return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsConversationsAsyncClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return an instance of VoiceAgentsConversationsAsyncClient.
+     */
+    public VoiceAgentsConversationsAsyncClient buildVoiceAgentsConversationsAsyncClient() {
+        return new VoiceAgentsConversationsAsyncClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsTelephonyAsyncClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return an instance of VoiceAgentsTelephonyAsyncClient.
+     */
+    public VoiceAgentsTelephonyAsyncClient buildVoiceAgentsTelephonyAsyncClient() {
+        return new VoiceAgentsTelephonyAsyncClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsConversationsClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return an instance of VoiceAgentsConversationsClient.
+     */
+    public VoiceAgentsConversationsClient buildVoiceAgentsConversationsClient() {
+        return new VoiceAgentsConversationsClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentsTelephonyClient class.
+     * The voice-agent preview feature header is added only when {@link #allowPreview(boolean)} is enabled.
+     *
+     * @return an instance of VoiceAgentsTelephonyClient.
+     */
+    public VoiceAgentsTelephonyClient buildVoiceAgentsTelephonyClient() {
+        return new VoiceAgentsTelephonyClient(
+            buildInnerClient(allowPreview ? VOICE_AGENTS_PREVIEW_FEATURES : null).getVoiceAgentsTelephonies());
     }
 }

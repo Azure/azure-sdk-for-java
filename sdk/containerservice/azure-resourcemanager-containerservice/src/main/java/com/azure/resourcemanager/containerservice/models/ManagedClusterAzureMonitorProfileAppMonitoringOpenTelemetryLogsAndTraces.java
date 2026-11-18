@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of the
+ * Application Monitoring OpenTelemetry logs and traces profile for AKS. Collects OpenTelemetry logs and traces of the
  * application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
  * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
  */
@@ -20,17 +20,17 @@ import java.io.IOException;
 public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces
     implements JsonSerializable<ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces> {
     /*
-     * Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+     * Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
      */
     private Boolean enabled;
 
     /*
-     * The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
+     * The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
      */
     private Long httpPort;
 
     /*
-     * The host port for Open Telemetry GRPC logs and traces. If not specified, the default port is 28332.
+     * The host port for OpenTelemetry GRPC logs and traces. If not specified, the default port is 28332.
      */
     private Long grpcPort;
 
@@ -41,7 +41,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Get the enabled property: Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+     * Get the enabled property: Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
      * 
      * @return the enabled value.
      */
@@ -50,7 +50,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Set the enabled property: Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+     * Set the enabled property: Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces object itself.
@@ -61,7 +61,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Get the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the
+     * Get the httpPort property: The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the
      * default port is 28331.
      * 
      * @return the httpPort value.
@@ -71,7 +71,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Set the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the
+     * Set the httpPort property: The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the
      * default port is 28331.
      * 
      * @param httpPort the httpPort value to set.
@@ -83,7 +83,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Get the grpcPort property: The host port for Open Telemetry GRPC logs and traces. If not specified, the default
+     * Get the grpcPort property: The host port for OpenTelemetry GRPC logs and traces. If not specified, the default
      * port is 28332.
      * 
      * @return the grpcPort value.
@@ -93,7 +93,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLo
     }
 
     /**
-     * Set the grpcPort property: The host port for Open Telemetry GRPC logs and traces. If not specified, the default
+     * Set the grpcPort property: The host port for OpenTelemetry GRPC logs and traces. If not specified, the default
      * port is 28332.
      * 
      * @param grpcPort the grpcPort value to set.

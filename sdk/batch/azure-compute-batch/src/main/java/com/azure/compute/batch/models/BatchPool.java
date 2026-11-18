@@ -104,7 +104,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize
-     * operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
+     * operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes. The
+     * time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration resizeTimeout;
@@ -158,7 +159,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * The time interval at which to automatically adjust the Pool size according to the autoscale formula. This
-     * property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
+     * property is set only if the Pool automatically scales, i.e. enableAutoScale is true. The time duration is
+     * specified in ISO 8601 format.
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
@@ -387,7 +389,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     /**
      * Get the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This is the timeout for
      * the most recent resize operation. (The initial sizing when the Pool is created counts as a resize.) The default
-     * value is 15 minutes.
+     * value is 15 minutes. The time duration is specified in ISO 8601 format.
      *
      * @return the resizeTimeout value.
      */
@@ -475,7 +477,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     /**
      * Get the autoScaleEvaluationInterval property: The time interval at which to automatically adjust the Pool size
      * according to the autoscale formula. This property is set only if the Pool automatically scales, i.e.
-     * enableAutoScale is true.
+     * enableAutoScale is true. The time duration is specified in ISO 8601 format.
      *
      * @return the autoScaleEvaluationInterval value.
      */

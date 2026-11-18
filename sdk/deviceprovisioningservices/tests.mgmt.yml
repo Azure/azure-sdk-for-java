@@ -10,3 +10,6 @@ extends:
       - name: azure-resourcemanager-deviceprovisioningservices
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceprovisioningservices
+    # Only run tests on Windows to avoid duplicating quota-sensitive resource deployment.
+    MatrixFilters:
+      - pool=.*(win).*

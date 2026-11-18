@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -135,11 +136,31 @@ public final class ActivityProtocolConfiguration implements JsonSerializable<Act
                 if ("enable_m365_public_endpoint".equals(fieldName)) {
                     deserializedActivityProtocolConfiguration.enableM365PublicEndpoint
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("access_boundaries".equals(fieldName)) {
+                    List<ActivityProtocolAccessBoundary> accessBoundaries
+                        = reader.readArray(reader1 -> ActivityProtocolAccessBoundary.fromString(reader1.getString()));
+                    deserializedActivityProtocolConfiguration.accessBoundaries = accessBoundaries;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedActivityProtocolConfiguration;
         });
+    }
+
+    /*
+     * The access boundaries for the activity protocol.
+     */
+    @Generated
+    private List<ActivityProtocolAccessBoundary> accessBoundaries;
+
+    /**
+     * Get the accessBoundaries property: The access boundaries for the activity protocol.
+     *
+     * @return the accessBoundaries value.
+     */
+    @Generated
+    public List<ActivityProtocolAccessBoundary> getAccessBoundaries() {
+        return this.accessBoundaries;
     }
 }

@@ -22,7 +22,7 @@ public final class BatchContainerConfiguration implements JsonSerializable<Batch
      * The container technology to be used.
      */
     @Generated
-    private final ContainerType type;
+    private final BatchContainerType type;
 
     /*
      * The collection of container Image names. This is the full Image reference, as would be specified to
@@ -40,22 +40,12 @@ public final class BatchContainerConfiguration implements JsonSerializable<Batch
     private List<ContainerRegistryReference> containerRegistries;
 
     /**
-     * Creates an instance of BatchContainerConfiguration class.
-     *
-     * @param type the type value to set.
-     */
-    @Generated
-    public BatchContainerConfiguration(ContainerType type) {
-        this.type = type;
-    }
-
-    /**
      * Get the type property: The container technology to be used.
      *
      * @return the type value.
      */
     @Generated
-    public ContainerType getType() {
+    public BatchContainerType getType() {
         return this.type;
     }
 
@@ -138,14 +128,14 @@ public final class BatchContainerConfiguration implements JsonSerializable<Batch
     @Generated
     public static BatchContainerConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerType type = null;
+            BatchContainerType type = null;
             List<String> containerImageNames = null;
             List<ContainerRegistryReference> containerRegistries = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    type = ContainerType.fromString(reader.getString());
+                    type = BatchContainerType.fromString(reader.getString());
                 } else if ("containerImageNames".equals(fieldName)) {
                     containerImageNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("containerRegistries".equals(fieldName)) {
@@ -159,5 +149,15 @@ public final class BatchContainerConfiguration implements JsonSerializable<Batch
             deserializedBatchContainerConfiguration.containerRegistries = containerRegistries;
             return deserializedBatchContainerConfiguration;
         });
+    }
+
+    /**
+     * Creates an instance of BatchContainerConfiguration class.
+     *
+     * @param type the type value to set.
+     */
+    @Generated
+    public BatchContainerConfiguration(BatchContainerType type) {
+        this.type = type;
     }
 }

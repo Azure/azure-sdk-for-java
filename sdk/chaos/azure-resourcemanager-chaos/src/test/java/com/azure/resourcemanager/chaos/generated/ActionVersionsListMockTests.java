@@ -21,7 +21,7 @@ public final class ActionVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"canonicalId\":\"ujcngo\",\"displayName\":\"yedmzrgj\",\"description\":\"knubnoitp\",\"actionName\":\"ztrgdgxvcoq\",\"version\":\"sw\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"itweialwvskbuh\",\"requiredPermissions\":[\"aq\"]},{\"targetType\":\"ltcoqc\",\"requiredPermissions\":[\"dsxzakuejkmvb\",\"ztjofqcvovjufyc\",\"jmlbemyejiriux\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"ortudawlpjfel\",\"erppt\"]},\"id\":\"gqnzm\",\"name\":\"h\",\"type\":\"ilialwcjgc\"}]}";
+            = "{\"value\":[{\"properties\":{\"canonicalId\":\"tnjuhpsprkzyaupi\",\"displayName\":\"cxnafbwqrooh\",\"description\":\"ovmaonurjtum\",\"actionName\":\"ihpvecmslclblyj\",\"version\":\"tbsjuscvsf\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"gxuupbezqccydrtc\",\"requiredPermissions\":[\"d\",\"kkyihzt\",\"eq\"]},{\"targetType\":\"qzgwldoychil\",\"requiredPermissions\":[\"cfehuwaoagu\",\"icq\"]},{\"targetType\":\"izs\",\"requiredPermissions\":[\"sjvh\",\"weftkwq\",\"jp\"]},{\"targetType\":\"sse\",\"requiredPermissions\":[\"pwamcxtczhupeuk\",\"ijdu\",\"yespydjfbocyv\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"rtywi\",\"dmhlakuflgbhgau\",\"cdixmx\",\"f\"]},\"id\":\"ryjqgdkf\",\"name\":\"ozo\",\"type\":\"oqbvjhvefgwbmqj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ActionVersionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ActionVersion> response = manager.actionVersions()
-            .list("dgglmepjpfs", "ykgsangpszng", "fpgylkve", com.azure.core.util.Context.NONE);
+        PagedIterable<ActionVersion> response
+            = manager.actionVersions().list("ewdogiyetesy", "vidbztjhqtfb", "vnynkb", com.azure.core.util.Context.NONE);
 
     }
 }

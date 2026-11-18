@@ -13,16 +13,16 @@ public final class AzureVmWorkloadSapHanaSystemWorkloadItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmWorkloadSapHanaSystemWorkloadItem model = BinaryData.fromString(
-            "{\"workloadItemType\":\"SAPHanaSystem\",\"parentName\":\"ypxiutcxap\",\"serverName\":\"y\",\"isAutoProtectable\":false,\"subinquireditemcount\":182458575,\"subWorkloadItemCount\":26791348,\"backupManagementType\":\"joxslhvnhla\",\"workloadType\":\"q\",\"friendlyName\":\"kzjcjbtrgae\",\"protectionState\":\"Protected\"}")
+            "{\"workloadItemType\":\"SAPHanaSystem\",\"parentName\":\"zkatb\",\"serverName\":\"mznnbsoqeqalarvl\",\"isAutoProtectable\":false,\"subinquireditemcount\":1544125726,\"subWorkloadItemCount\":2144619087,\"backupManagementType\":\"ebwlnbmhyreeudzq\",\"workloadType\":\"bpdqmjxlyy\",\"friendlyName\":\"lgouwtlmjj\",\"protectionState\":\"ProtectionFailed\"}")
             .toObject(AzureVmWorkloadSapHanaSystemWorkloadItem.class);
-        Assertions.assertEquals("joxslhvnhla", model.backupManagementType());
-        Assertions.assertEquals("q", model.workloadType());
-        Assertions.assertEquals("kzjcjbtrgae", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
-        Assertions.assertEquals("ypxiutcxap", model.parentName());
-        Assertions.assertEquals("y", model.serverName());
+        Assertions.assertEquals("ebwlnbmhyreeudzq", model.backupManagementType());
+        Assertions.assertEquals("bpdqmjxlyy", model.workloadType());
+        Assertions.assertEquals("lgouwtlmjj", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals("zkatb", model.parentName());
+        Assertions.assertEquals("mznnbsoqeqalarvl", model.serverName());
         Assertions.assertFalse(model.isAutoProtectable());
-        Assertions.assertEquals(182458575, model.subinquireditemcount());
-        Assertions.assertEquals(26791348, model.subWorkloadItemCount());
+        Assertions.assertEquals(1544125726, model.subinquireditemcount());
+        Assertions.assertEquals(2144619087, model.subWorkloadItemCount());
     }
 }

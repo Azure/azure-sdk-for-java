@@ -17,6 +17,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -53,7 +54,9 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobOutputStreamOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -205,6 +208,21 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the page blob.
+     *
+     * @param options {@link PageBlobOutputStreamOptions}
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(PageBlobOutputStreamOptions options) {
+        if (options == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
+        }
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, options.getPageRange(),
+            options.getRequestConditions(), options.getContentValidationAlgorithm());
     }
 
     /**
@@ -531,16 +549,62 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
+     * @deprecated Use {@link #uploadPagesWithResponse(PageBlobUploadPagesOptions, Duration,
+     * Context)}. The data and optional parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also
+     * forward-compatible with future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
+        StorageImplUtils.assertNotNull("pageRange", pageRange);
+        StorageImplUtils.assertNotNull("body", body);
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
+        Mono<Response<PageBlobItem>> response = BinaryData.fromFlux(fbb, length, false)
+            .flatMap(binaryData -> pageBlobAsyncClient.uploadPagesWithResponseInternal(
+                new PageBlobUploadPagesOptions(pageRange, binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(pageBlobRequestConditions),
+                context));
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, fbb, contentMd5,
-            pageBlobRequestConditions, context);
+    /**
+     * Writes one or more pages to the page blob with options.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     * The length of the data must match the length of the specified page range.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * BinaryData data = BinaryData.fromBytes&#40;new byte[512]&#41;;
+     * PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions&#40;pageRange, data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem item = client.uploadPagesWithResponse&#40;options, timeout, context&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;, item.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context -->
+     *
+     * @param options {@link PageBlobUploadPagesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the uploaded pages.
+     * @throws UnexpectedLengthException If the length of the data read from the provided {@code BinaryData} does not
+     * match the expected length based on the specified page range.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponseInternal(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtensionPublisherInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionPublisherInner model = BinaryData.fromString("{\"id\":\"exrxzbujrtrhq\",\"name\":\"revkhgnlnzo\"}")
+        ExtensionPublisherInner model = BinaryData.fromString("{\"id\":\"ixokffqyin\",\"name\":\"qepqwhixmon\"}")
             .toObject(ExtensionPublisherInner.class);
-        Assertions.assertEquals("exrxzbujrtrhq", model.id());
-        Assertions.assertEquals("revkhgnlnzo", model.name());
+        Assertions.assertEquals("ixokffqyin", model.id());
+        Assertions.assertEquals("qepqwhixmon", model.name());
     }
 }

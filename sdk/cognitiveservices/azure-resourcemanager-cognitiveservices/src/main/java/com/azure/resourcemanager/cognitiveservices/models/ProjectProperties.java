@@ -42,6 +42,19 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      */
     private Boolean isDefault;
 
+    /*
+     * Effective agent capability settings for the project. Optional partial override of the account defaults; omitted
+     * fields inherit from the parent account when present. Settable only at create time.
+     */
+    private CapabilitySettings capabilitySettings;
+
+    /*
+     * The project-level tool access policy. Omitting this property in a PUT request clears the policy. In PATCH
+     * requests, omission preserves the policy and an explicit null clears it. Responses omit this property when no
+     * policy is configured.
+     */
+    private ToolControls toolControls;
+
     /**
      * Creates an instance of ProjectProperties class.
      */
@@ -117,6 +130,54 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
     }
 
     /**
+     * Get the capabilitySettings property: Effective agent capability settings for the project. Optional partial
+     * override of the account defaults; omitted fields inherit from the parent account when present. Settable only at
+     * create time.
+     * 
+     * @return the capabilitySettings value.
+     */
+    public CapabilitySettings capabilitySettings() {
+        return this.capabilitySettings;
+    }
+
+    /**
+     * Set the capabilitySettings property: Effective agent capability settings for the project. Optional partial
+     * override of the account defaults; omitted fields inherit from the parent account when present. Settable only at
+     * create time.
+     * 
+     * @param capabilitySettings the capabilitySettings value to set.
+     * @return the ProjectProperties object itself.
+     */
+    public ProjectProperties withCapabilitySettings(CapabilitySettings capabilitySettings) {
+        this.capabilitySettings = capabilitySettings;
+        return this;
+    }
+
+    /**
+     * Get the toolControls property: The project-level tool access policy. Omitting this property in a PUT request
+     * clears the policy. In PATCH requests, omission preserves the policy and an explicit null clears it. Responses
+     * omit this property when no policy is configured.
+     * 
+     * @return the toolControls value.
+     */
+    public ToolControls toolControls() {
+        return this.toolControls;
+    }
+
+    /**
+     * Set the toolControls property: The project-level tool access policy. Omitting this property in a PUT request
+     * clears the policy. In PATCH requests, omission preserves the policy and an explicit null clears it. Responses
+     * omit this property when no policy is configured.
+     * 
+     * @param toolControls the toolControls value to set.
+     * @return the ProjectProperties object itself.
+     */
+    public ProjectProperties withToolControls(ToolControls toolControls) {
+        this.toolControls = toolControls;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -124,6 +185,8 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("capabilitySettings", this.capabilitySettings);
+        jsonWriter.writeJsonField("toolControls", this.toolControls);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +216,10 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
                     deserializedProjectProperties.endpoints = endpoints;
                 } else if ("isDefault".equals(fieldName)) {
                     deserializedProjectProperties.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capabilitySettings".equals(fieldName)) {
+                    deserializedProjectProperties.capabilitySettings = CapabilitySettings.fromJson(reader);
+                } else if ("toolControls".equals(fieldName)) {
+                    deserializedProjectProperties.toolControls = ToolControls.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

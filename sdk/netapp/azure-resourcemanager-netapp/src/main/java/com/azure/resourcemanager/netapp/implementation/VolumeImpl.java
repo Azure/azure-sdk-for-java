@@ -18,12 +18,10 @@ import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
-import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.LargeVolumeType;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
@@ -40,9 +38,9 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -223,6 +221,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().smbContinuouslyAvailable();
     }
 
+    public SmbOplocks smbOplocks() {
+        return this.innerModel().smbOplocks();
+    }
+
     public Float throughputMibps() {
         return this.innerModel().throughputMibps();
     }
@@ -337,10 +339,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
-    public EnableSubvolumes enableSubvolumes() {
-        return this.innerModel().enableSubvolumes();
-    }
-
     public String provisionedAvailabilityZone() {
         return this.innerModel().provisionedAvailabilityZone();
     }
@@ -349,20 +347,12 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().isLargeVolume();
     }
 
-    public LargeVolumeType largeVolumeType() {
-        return this.innerModel().largeVolumeType();
-    }
-
     public String originatingResourceId() {
         return this.innerModel().originatingResourceId();
     }
 
     public Long inheritedSizeInBytes() {
         return this.innerModel().inheritedSizeInBytes();
-    }
-
-    public VolumeLanguage language() {
-        return this.innerModel().language();
     }
 
     public BreakthroughMode breakthroughMode() {
@@ -448,10 +438,18 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "poolName");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}",
+            "volumeName");
     }
 
     public Volume refresh() {
@@ -812,6 +810,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withSmbOplocks(SmbOplocks smbOplocks) {
+        if (isInCreateMode()) {
+            this.innerModel().withSmbOplocks(smbOplocks);
+            return this;
+        } else {
+            this.updateBody.withSmbOplocks(smbOplocks);
+            return this;
+        }
+    }
+
     public VolumeImpl withThroughputMibps(Float throughputMibps) {
         if (isInCreateMode()) {
             this.innerModel().withThroughputMibps(throughputMibps);
@@ -947,23 +955,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
-        this.innerModel().withEnableSubvolumes(enableSubvolumes);
-        return this;
-    }
-
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
-        return this;
-    }
-
-    public VolumeImpl withLargeVolumeType(LargeVolumeType largeVolumeType) {
-        this.innerModel().withLargeVolumeType(largeVolumeType);
-        return this;
-    }
-
-    public VolumeImpl withLanguage(VolumeLanguage language) {
-        this.innerModel().withLanguage(language);
         return this;
     }
 

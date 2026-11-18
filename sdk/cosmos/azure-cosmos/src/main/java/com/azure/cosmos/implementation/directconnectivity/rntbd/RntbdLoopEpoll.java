@@ -4,7 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.epoll.EpollIoHandler;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.socket.SocketChannel;
 
@@ -19,7 +20,7 @@ public class RntbdLoopEpoll implements RntbdLoop {
 
     @Override
     public EventLoopGroup newEventLoopGroup(int threads, ThreadFactory threadFactory) {
-        return new EpollEventLoopGroup(threads, threadFactory);
+        return new MultiThreadIoEventLoopGroup(threads, threadFactory, EpollIoHandler.newFactory());
     }
 
     @Override

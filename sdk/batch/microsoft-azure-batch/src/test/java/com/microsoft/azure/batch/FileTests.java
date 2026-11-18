@@ -4,7 +4,10 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.apache.commons.io.IOUtils;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -19,17 +22,17 @@ public class FileTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
     private static String poolId;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
             livePool = createIfNotExistIaaSPool(poolId);
-            Assert.assertNotNull(livePool);
+            Assertions.assertNotNull(livePool);
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws Exception {
         try {
             //batchClient.poolOperations().deletePool(livePool.id());
@@ -66,12 +69,12 @@ public class FileTests extends BatchIntegrationTestBase {
                         break;
                     }
                 }
-                Assert.assertTrue(found);
+                Assertions.assertTrue(found);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals("hello\n", fileContent);
+                Assertions.assertEquals("hello\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromTaskAsync(jobId, taskId, "stdout.txt").map(new Func1<InputStream, String>() {
@@ -84,13 +87,13 @@ public class FileTests extends BatchIntegrationTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals("hello\n", output);
+                Assertions.assertEquals("hello\n", output);
 
                 // Temporarily disabling this test due to issue with how Java SDK handles casing mismatches between
                 // the swagger definition ("Content-Length") and the actual API response ("content-length")
                 /* if(isRecordMode()) {
                     FileProperties properties = batchClient.fileOperations().getFilePropertiesFromTask(jobId, taskId, "stdout.txt");
-                    Assert.assertEquals(6, properties.contentLength());
+                    Assertions.assertEquals(6, properties.contentLength());
                 } */
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");
@@ -134,13 +137,13 @@ public class FileTests extends BatchIntegrationTestBase {
                         break;
                     }
                 }
-                Assert.assertNotNull(fileName);
+                Assertions.assertNotNull(fileName);
 
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromComputeNode(poolId, nodeId, fileName, stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals("hello\n", fileContent);
+                Assertions.assertEquals("hello\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromComputeNodeAsync(poolId, nodeId, fileName).map(new Func1<InputStream, String>() {
@@ -153,13 +156,13 @@ public class FileTests extends BatchIntegrationTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals("hello\n", output);
+                Assertions.assertEquals("hello\n", output);
 
                 // Temporarily disabling this test due to issue with how Java SDK handles casing mismatches between
                 // the swagger definition ("Content-Length") and the actual API response ("content-length")
                 /* if(isRecordMode()) {
                     FileProperties properties = batchClient.fileOperations().getFilePropertiesFromComputeNode(poolId, nodeId, fileName);
-                    Assert.assertEquals(6, properties.contentLength());
+                    Assertions.assertEquals(6, properties.contentLength());
                 } */
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");

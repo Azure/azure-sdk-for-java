@@ -29,7 +29,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -105,7 +104,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         syncPoller1.waitForCompletion();
 
         StepVerifier.create(client.deleteModelWithResponse(modelId, null))
-            .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }

@@ -138,4 +138,52 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
      */
     @Generated
     public static final AzureOpenAIModelName GPT54 = fromString("gpt-5.4");
+
+    /**
+     * Gpt55 model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT55 = fromString("gpt-5.5");
+
+    /**
+     * Gpt56Sol model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT56SOL = fromString("gpt-5.6-sol");
+
+    /**
+     * Gpt56Terra model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT56TERRA = fromString("gpt-5.6-terra");
+
+    /**
+     * Gpt56Luna model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT56LUNA = fromString("gpt-5.6-luna");
+
+    /**
+     * Gpt6Astra model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6ASTRA = fromString("gpt-6-astra");
+
+    /**
+     * Gpt6Sol model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6SOL = fromString("gpt-6-sol");
+
+    /**
+     * Gpt6Luna model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6LUNA = fromString("gpt-6-luna");
+
+    /**
+     * Gpt61Sol model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT61SOL = fromString("gpt-6.1-sol");
 }

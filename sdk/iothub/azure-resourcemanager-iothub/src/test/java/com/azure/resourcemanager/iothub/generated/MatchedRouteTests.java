@@ -13,10 +13,10 @@ public final class MatchedRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MatchedRoute model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"lnjixisxya\",\"source\":\"DeviceMessages\",\"condition\":\"yaqcslyjpkiidz\",\"endpointNames\":[\"xznelixhnrztf\",\"lhbnxkna\",\"aulppggd\"],\"isEnabled\":true}}")
+            "{\"properties\":{\"name\":\"lnjixisxya\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"yaqcslyjpkiidz\",\"endpointNames\":[\"xznelixhnrztf\",\"lhbnxkna\",\"aulppggd\"],\"isEnabled\":true}}")
             .toObject(MatchedRoute.class);
         Assertions.assertEquals("lnjixisxya", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.properties().source());
+        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.properties().source());
         Assertions.assertEquals("yaqcslyjpkiidz", model.properties().condition());
         Assertions.assertEquals("xznelixhnrztf", model.properties().endpointNames().get(0));
         Assertions.assertTrue(model.properties().isEnabled());

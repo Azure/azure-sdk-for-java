@@ -1173,7 +1173,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serverName,
+    private SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serverName,
         RestartParameter parameters) {
         Response<BinaryData> response = restartWithResponse(resourceGroupName, serverName, parameters);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

@@ -13,11 +13,11 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"pndzaapmudqmeq\",\"value\":[{\"properties\":{\"name\":\"bu\",\"isMultiLevelFilter\":true,\"source\":\"Prompt\"},\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}]}")
+            "{\"nextLink\":\"falkzazm\",\"value\":[{\"properties\":{\"name\":\"gjqafkmkrokzr\",\"isMultiLevelFilter\":true,\"source\":\"PreToolCall\"},\"id\":\"pqrtvaoznqni\",\"name\":\"iezeagm\",\"type\":\"eituugedhfpjs\"},{\"properties\":{\"name\":\"mbl\",\"isMultiLevelFilter\":true,\"source\":\"PostToolCall\"},\"id\":\"lctaeb\",\"name\":\"syrled\",\"type\":\"cust\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pndzaapmudqmeq", model.nextLink());
-        Assertions.assertEquals("bu", model.value().get(0).properties().name());
+        Assertions.assertEquals("falkzazm", model.nextLink());
+        Assertions.assertEquals("gjqafkmkrokzr", model.value().get(0).properties().name());
         Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.value().get(0).properties().source());
     }
 }

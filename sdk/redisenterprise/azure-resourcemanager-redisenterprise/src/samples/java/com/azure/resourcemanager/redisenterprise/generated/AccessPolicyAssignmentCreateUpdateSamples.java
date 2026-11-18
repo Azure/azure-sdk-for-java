@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPr
 public final class AccessPolicyAssignmentCreateUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
+     * 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.
@@ -31,7 +31,7 @@ public final class AccessPolicyAssignmentCreateUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdate.

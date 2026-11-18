@@ -12,10 +12,10 @@ public final class ManagedCassandraReaperStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedCassandraReaperStatus model = BinaryData.fromString(
-            "{\"healthy\":true,\"repairRunIds\":{\"qtvkh\":\"htmhobcyanrf\",\"aqymhcctopuowyr\":\"voogxkfna\",\"hajpxecxqnwhsc\":\"skbyhquhczygx\",\"npwirfljf\":\"zawmvgxsmp\"},\"repairSchedules\":{\"nmckaprhkn\":\"qouoxu\"}}")
+            "{\"healthy\":true,\"repairRunIds\":{\"nrnjrcuf\":\"scdx\",\"fdtncmspsanma\":\"bgacnr\",\"hlq\":\"eubkqiqmlf\",\"uugkw\":\"skkqjmxptuei\"},\"repairSchedules\":{\"kxukguehvvpxjoe\":\"mrpahuuonj\",\"lleuidpmtonvhgn\":\"cjo\",\"apmumm\":\"tmeplhbpj\"}}")
             .toObject(ManagedCassandraReaperStatus.class);
         Assertions.assertTrue(model.healthy());
-        Assertions.assertEquals("htmhobcyanrf", model.repairRunIds().get("qtvkh"));
-        Assertions.assertEquals("qouoxu", model.repairSchedules().get("nmckaprhkn"));
+        Assertions.assertEquals("scdx", model.repairRunIds().get("nrnjrcuf"));
+        Assertions.assertEquals("mrpahuuonj", model.repairSchedules().get("kxukguehvvpxjoe"));
     }
 }

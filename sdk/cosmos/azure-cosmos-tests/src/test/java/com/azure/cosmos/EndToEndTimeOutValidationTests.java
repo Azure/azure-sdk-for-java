@@ -362,7 +362,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         FaultInjectionRule queryItemFaultInjectionRule = null;
         CosmosAsyncClient setupClient = null;
         CosmosAsyncClient cosmosAsyncClient = null;
-        String dbname = "db_" + UUID.randomUUID();
+        String dbname = CosmosDatabaseForTest.generateId("endToEndTimeout");
 
         try {
             setupClient = copyCosmosClientBuilder(getClientBuilder()).buildAsyncClient();

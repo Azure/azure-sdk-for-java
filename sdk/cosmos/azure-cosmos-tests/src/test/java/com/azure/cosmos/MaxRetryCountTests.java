@@ -2112,7 +2112,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("maxRetryCount");
         return createTestContainer(clientWithPreferredRegions, dbId);
     }
 

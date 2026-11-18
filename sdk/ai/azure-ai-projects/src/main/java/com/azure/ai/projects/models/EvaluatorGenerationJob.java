@@ -4,8 +4,8 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.projects.implementation.utils.Beta;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 /**
  * Evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions from source
  * materials. On success, the result is the persisted EvaluatorVersion.
  */
-@Fluent
-@Beta(warningText = "Preview API. Evaluations=V1Preview")
+@Immutable
 public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorGenerationJob> {
 
     /*
@@ -28,12 +28,6 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
      */
     @Generated
     private String id;
-
-    /*
-     * Caller-supplied inputs.
-     */
-    @Generated
-    private EvaluatorGenerationInputs inputs;
 
     /*
      * Result produced on success.
@@ -72,13 +66,6 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
     private EvaluatorGenerationTokenUsage usage;
 
     /**
-     * Creates an instance of EvaluatorGenerationJob class.
-     */
-    @Generated
-    public EvaluatorGenerationJob() {
-    }
-
-    /**
      * Get the id property: Server-assigned unique identifier.
      *
      * @return the id value.
@@ -86,28 +73,6 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the inputs property: Caller-supplied inputs.
-     *
-     * @return the inputs value.
-     */
-    @Generated
-    public EvaluatorGenerationInputs getInputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: Caller-supplied inputs.
-     *
-     * @param inputs the inputs value to set.
-     * @return the EvaluatorGenerationJob object itself.
-     */
-    @Generated
-    public EvaluatorGenerationJob setInputs(EvaluatorGenerationInputs inputs) {
-        this.inputs = inputs;
-        return this;
     }
 
     /**
@@ -182,7 +147,11 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("inputs", this.inputs);
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("evaluator_name", this.evaluatorName);
+        jsonWriter.writeStringField("evaluator_display_name", this.evaluatorDisplayName);
+        jsonWriter.writeStringField("evaluator_description", this.evaluatorDescription);
         return jsonWriter.writeEndObject();
     }
 
@@ -198,31 +167,297 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
     @Generated
     public static EvaluatorGenerationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EvaluatorGenerationJob deserializedEvaluatorGenerationJob = new EvaluatorGenerationJob();
+            String id = null;
+            JobStatus status = null;
+            List<EvaluatorGenerationJobSource> sources = null;
+            String model = null;
+            String evaluatorName = null;
+            long createdAt = 0L;
+            EvaluatorVersion result = null;
+            ApiError error = null;
+            EvaluatorGenerationCategory category = null;
+            String evaluatorDisplayName = null;
+            String evaluatorDescription = null;
+            RubricScoring scoring = null;
+            Double passThreshold = null;
+            List<Dimension> dimensions = null;
+            Long finishedAt = null;
+            EvaluatorGenerationTokenUsage usage = null;
+            List<RubricGenerationInputQualityWarning> inputQualityWarnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.id = reader.getString();
+                    id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.status = JobStatus.fromString(reader.getString());
+                    status = JobStatus.fromString(reader.getString());
+                } else if ("sources".equals(fieldName)) {
+                    sources = reader.readArray(reader1 -> EvaluatorGenerationJobSource.fromJson(reader1));
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("evaluator_name".equals(fieldName)) {
+                    evaluatorName = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.createdAt = reader.getLong();
-                } else if ("inputs".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.inputs = EvaluatorGenerationInputs.fromJson(reader);
+                    createdAt = reader.getLong();
                 } else if ("result".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.result = EvaluatorVersion.fromJson(reader);
+                    result = EvaluatorVersion.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.error = ApiError.fromJson(reader);
+                    error = ApiError.fromJson(reader);
+                } else if ("category".equals(fieldName)) {
+                    category = EvaluatorGenerationCategory.fromString(reader.getString());
+                } else if ("evaluator_display_name".equals(fieldName)) {
+                    evaluatorDisplayName = reader.getString();
+                } else if ("evaluator_description".equals(fieldName)) {
+                    evaluatorDescription = reader.getString();
+                } else if ("scoring".equals(fieldName)) {
+                    scoring = RubricScoring.fromJson(reader);
+                } else if ("pass_threshold".equals(fieldName)) {
+                    passThreshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("dimensions".equals(fieldName)) {
+                    dimensions = reader.readArray(reader1 -> Dimension.fromJson(reader1));
                 } else if ("finished_at".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.finishedAt = reader.getNullable(JsonReader::getLong);
+                    finishedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("usage".equals(fieldName)) {
-                    deserializedEvaluatorGenerationJob.usage = EvaluatorGenerationTokenUsage.fromJson(reader);
+                    usage = EvaluatorGenerationTokenUsage.fromJson(reader);
+                } else if ("input_quality_warnings".equals(fieldName)) {
+                    inputQualityWarnings
+                        = reader.readArray(reader1 -> RubricGenerationInputQualityWarning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
+            EvaluatorGenerationJob deserializedEvaluatorGenerationJob
+                = new EvaluatorGenerationJob(sources, model, evaluatorName);
+            deserializedEvaluatorGenerationJob.id = id;
+            deserializedEvaluatorGenerationJob.status = status;
+            deserializedEvaluatorGenerationJob.createdAt = createdAt;
+            deserializedEvaluatorGenerationJob.result = result;
+            deserializedEvaluatorGenerationJob.error = error;
+            deserializedEvaluatorGenerationJob.category = category;
+            deserializedEvaluatorGenerationJob.evaluatorDisplayName = evaluatorDisplayName;
+            deserializedEvaluatorGenerationJob.evaluatorDescription = evaluatorDescription;
+            deserializedEvaluatorGenerationJob.scoring = scoring;
+            deserializedEvaluatorGenerationJob.passThreshold = passThreshold;
+            deserializedEvaluatorGenerationJob.dimensions = dimensions;
+            deserializedEvaluatorGenerationJob.finishedAt = finishedAt;
+            deserializedEvaluatorGenerationJob.usage = usage;
+            deserializedEvaluatorGenerationJob.inputQualityWarnings = inputQualityWarnings;
             return deserializedEvaluatorGenerationJob;
         });
+    }
+
+    /*
+     * Non-fatal input-quality advisories produced by the generation pipeline. Read-only; service-generated; populated
+     * only on terminal jobs when advisories fired. Omitted when generation was clean. Cleared when a subsequent `PATCH`
+     * to the paired `EvaluatorVersion.definition` invalidates the advisories.
+     */
+    @Generated
+    private List<RubricGenerationInputQualityWarning> inputQualityWarnings;
+
+    /**
+     * Get the inputQualityWarnings property: Non-fatal input-quality advisories produced by the generation pipeline.
+     * Read-only; service-generated; populated only on terminal jobs when advisories fired. Omitted when generation was
+     * clean. Cleared when a subsequent `PATCH` to the paired `EvaluatorVersion.definition` invalidates the advisories.
+     *
+     * @return the inputQualityWarnings value.
+     */
+    @Generated
+    public List<RubricGenerationInputQualityWarning> getInputQualityWarnings() {
+        return this.inputQualityWarnings;
+    }
+
+    /*
+     * Source materials for generation — agent descriptions, prompts, traces, or datasets. Each entry is an
+     * `EvaluatorGenerationJobSource` variant discriminated by `type`.
+     */
+    @Generated
+    private final List<EvaluatorGenerationJobSource> sources;
+
+    /*
+     * The LLM model used for quality rubric generation (e.g., 'gpt-4o'). Empty when safety generation uses centrally
+     * managed simulation capacity.
+     */
+    @Generated
+    private final String model;
+
+    /*
+     * The evaluator name (immutable identifier). 1-256 characters; allowed characters are ASCII letters, digits,
+     * underscore (`_`), period (`.`), tilde (`~`), and hyphen (`-`). The prefix `builtin.` is reserved for
+     * system-managed evaluators and is rejected by the service. If an evaluator with this name already exists in the
+     * project (and is rubric-subtype), the service creates a new version under the same name and uses the prior
+     * version's `dimensions` as context for incremental improvement (foundation of the post-//build adaptive loop). Old
+     * versions remain queryable via `get_version(name, version)`. If the existing evaluator is not a rubric-subtype
+     * evaluator (built-in, prompt-based, code-based), the request is rejected with `400 Bad Request`.
+     */
+    @Generated
+    private final String evaluatorName;
+
+    /*
+     * Optional human-friendly display name for the resulting evaluator. Surfaced as `EvaluatorVersion.display_name` on
+     * the persisted evaluator. When omitted, the service uses `evaluator_name` as the display name. The `evaluator_`
+     * prefix disambiguates this from the immutable `evaluator_name` identifier.
+     */
+    @Generated
+    private String evaluatorDisplayName;
+
+    /*
+     * Optional human-friendly description for the resulting evaluator. Surfaced as `EvaluatorVersion.description` on
+     * the persisted evaluator. Typically collected from the UI alongside `evaluator_display_name`. The `evaluator_`
+     * prefix disambiguates this from any other description fields on related models.
+     */
+    @Generated
+    private String evaluatorDescription;
+
+    /**
+     * Creates an instance of EvaluatorGenerationJob class.
+     *
+     * @param sources the sources value to set.
+     * @param model the model value to set.
+     * @param evaluatorName the evaluatorName value to set.
+     */
+    @Generated
+    private EvaluatorGenerationJob(List<EvaluatorGenerationJobSource> sources, String model, String evaluatorName) {
+        this.sources = sources;
+        this.model = model;
+        this.evaluatorName = evaluatorName;
+    }
+
+    /**
+     * Get the sources property: Source materials for generation — agent descriptions, prompts, traces, or datasets.
+     * Each entry is an `EvaluatorGenerationJobSource` variant discriminated by `type`.
+     *
+     * @return the sources value.
+     */
+    @Generated
+    public List<EvaluatorGenerationJobSource> getSources() {
+        return this.sources;
+    }
+
+    /**
+     * Get the model property: The LLM model used for quality rubric generation (e.g., 'gpt-4o'). Empty when safety
+     * generation uses centrally managed simulation capacity.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public String getModel() {
+        return this.model;
+    }
+
+    /**
+     * Get the evaluatorName property: The evaluator name (immutable identifier). 1-256 characters; allowed characters
+     * are ASCII letters, digits, underscore (`_`), period (`.`), tilde (`~`), and hyphen (`-`). The prefix `builtin.`
+     * is reserved for system-managed evaluators and is rejected by the service. If an evaluator with this name already
+     * exists in the project (and is rubric-subtype), the service creates a new version under the same name and uses the
+     * prior version's `dimensions` as context for incremental improvement (foundation of the post-//build adaptive
+     * loop). Old versions remain queryable via `get_version(name, version)`. If the existing evaluator is not a
+     * rubric-subtype evaluator (built-in, prompt-based, code-based), the request is rejected with `400 Bad Request`.
+     *
+     * @return the evaluatorName value.
+     */
+    @Generated
+    public String getEvaluatorName() {
+        return this.evaluatorName;
+    }
+
+    /**
+     * Get the evaluatorDisplayName property: Optional human-friendly display name for the resulting evaluator. Surfaced
+     * as `EvaluatorVersion.display_name` on the persisted evaluator. When omitted, the service uses `evaluator_name` as
+     * the display name. The `evaluator_` prefix disambiguates this from the immutable `evaluator_name` identifier.
+     *
+     * @return the evaluatorDisplayName value.
+     */
+    @Generated
+    public String getEvaluatorDisplayName() {
+        return this.evaluatorDisplayName;
+    }
+
+    /**
+     * Get the evaluatorDescription property: Optional human-friendly description for the resulting evaluator. Surfaced
+     * as `EvaluatorVersion.description` on the persisted evaluator. Typically collected from the UI alongside
+     * `evaluator_display_name`. The `evaluator_` prefix disambiguates this from any other description fields on related
+     * models.
+     *
+     * @return the evaluatorDescription value.
+     */
+    @Generated
+    public String getEvaluatorDescription() {
+        return this.evaluatorDescription;
+    }
+
+    /*
+     * Generation intent selected or inherited for this generation attempt. Omitted when no category was supplied.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
+    private EvaluatorGenerationCategory category;
+
+    /*
+     * Rubric scoring selected for this generation attempt, including an inherited saved mode. Omitted for legacy
+     * generation.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
+    private RubricScoring scoring;
+
+    /*
+     * Normalized pass threshold supplied or inherited for this generation attempt. Omitted when no threshold was
+     * supplied or saved. Boolean scoring always uses an effective threshold of 1.
+     */
+    @Generated
+    private Double passThreshold;
+
+    /*
+     * Caller-approved dimensions fixed for this generation attempt, not the complete generated result. Omission retains
+     * normal regeneration ownership handling; an empty list explicitly clears the fixed set.
+     */
+    @Generated
+    private List<Dimension> dimensions;
+
+    /**
+     * Get the category property: Generation intent selected or inherited for this generation attempt. Omitted when no
+     * category was supplied.
+     *
+     * @return the category value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
+    public EvaluatorGenerationCategory getCategory() {
+        return this.category;
+    }
+
+    /**
+     * Get the scoring property: Rubric scoring selected for this generation attempt, including an inherited saved mode.
+     * Omitted for legacy generation.
+     *
+     * @return the scoring value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Evaluations=V1Preview")
+    public RubricScoring getScoring() {
+        return this.scoring;
+    }
+
+    /**
+     * Get the passThreshold property: Normalized pass threshold supplied or inherited for this generation attempt.
+     * Omitted when no threshold was supplied or saved. Boolean scoring always uses an effective threshold of 1.
+     *
+     * @return the passThreshold value.
+     */
+    @Generated
+    public Double getPassThreshold() {
+        return this.passThreshold;
+    }
+
+    /**
+     * Get the dimensions property: Caller-approved dimensions fixed for this generation attempt, not the complete
+     * generated result. Omission retains normal regeneration ownership handling; an empty list explicitly clears the
+     * fixed set.
+     *
+     * @return the dimensions value.
+     */
+    @Generated
+    public List<Dimension> getDimensions() {
+        return this.dimensions;
     }
 }

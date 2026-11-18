@@ -15,7 +15,7 @@ import java.io.IOException;
  * A recurring cron-based routine trigger.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class ScheduleRoutineTrigger extends RoutineTrigger {
 
     /*

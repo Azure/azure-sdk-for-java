@@ -29,9 +29,6 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
      */
     @Override
     public void validate() {
-        if (serviceTreeInfos() != null) {
-            serviceTreeInfos().forEach(e -> e.validate());
-        }
         if (resourceAccessRoles() != null) {
             resourceAccessRoles().forEach(e -> e.validate());
         }
@@ -57,8 +54,6 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
         jsonWriter.writeStringField("incidentRoutingService", incidentRoutingService());
         jsonWriter.writeStringField("incidentRoutingTeam", incidentRoutingTeam());
         jsonWriter.writeStringField("incidentContactEmail", incidentContactEmail());
-        jsonWriter.writeArrayField("serviceTreeInfos", serviceTreeInfos(),
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourceAccessPolicy",
             resourceAccessPolicy() == null ? null : resourceAccessPolicy().toString());
         jsonWriter.writeArrayField("resourceAccessRoles", resourceAccessRoles(),
@@ -71,6 +66,8 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("pcCode", pcCode());
         jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
+        jsonWriter.writeArrayField("featureManagementOwners", featureManagementOwners(),
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -105,10 +102,6 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
                     deserializedResourceProviderManifestManagement.withIncidentRoutingTeam(reader.getString());
                 } else if ("incidentContactEmail".equals(fieldName)) {
                     deserializedResourceProviderManifestManagement.withIncidentContactEmail(reader.getString());
-                } else if ("serviceTreeInfos".equals(fieldName)) {
-                    List<ServiceTreeInfo> serviceTreeInfos
-                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
-                    deserializedResourceProviderManifestManagement.withServiceTreeInfos(serviceTreeInfos);
                 } else if ("resourceAccessPolicy".equals(fieldName)) {
                     deserializedResourceProviderManifestManagement
                         .withResourceAccessPolicy(ResourceAccessPolicy.fromString(reader.getString()));
@@ -133,6 +126,9 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
                     deserializedResourceProviderManifestManagement.withPcCode(reader.getString());
                 } else if ("profitCenterProgramId".equals(fieldName)) {
                     deserializedResourceProviderManifestManagement.withProfitCenterProgramId(reader.getString());
+                } else if ("featureManagementOwners".equals(fieldName)) {
+                    List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestManagement.withFeatureManagementOwners(featureManagementOwners);
                 } else {
                     reader.skipChildren();
                 }

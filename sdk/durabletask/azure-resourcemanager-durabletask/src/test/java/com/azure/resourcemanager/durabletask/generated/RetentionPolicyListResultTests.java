@@ -13,12 +13,12 @@ public final class RetentionPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"retentionPolicies\":[{\"retentionPeriodInDays\":904416760,\"orchestrationState\":\"Completed\"}]},\"id\":\"upfh\",\"name\":\"hltrpmopjmcmatuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1447641859,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":466984415,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":402102325,\"orchestrationState\":\"Canceled\"}]},\"id\":\"xbezyiuokktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":908271116,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1510965337,\"orchestrationState\":\"Canceled\"}]},\"id\":\"ys\",\"name\":\"kiiuxhqyudxor\",\"type\":\"qn\"}],\"nextLink\":\"oczvy\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":2001921074,\"orchestrationState\":\"Canceled\"}]},\"id\":\"e\",\"name\":\"iipfpubj\",\"type\":\"bwwift\"}],\"nextLink\":\"qkvpuvksgplsakn\"}")
             .toObject(RetentionPolicyListResult.class);
-        Assertions.assertEquals(904416760,
+        Assertions.assertEquals(2001921074,
             model.value().get(0).properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
+        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
             model.value().get(0).properties().retentionPolicies().get(0).orchestrationState());
-        Assertions.assertEquals("oczvy", model.nextLink());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.nextLink());
     }
 }

@@ -21,7 +21,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsHeaders;
@@ -91,10 +90,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
         super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
-            PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo(),
-            dataLakePathAsyncClient.isTokenCredentialAuthenticated());
+            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName, PathResourceType.DIRECTORY,
+            dataLakePathAsyncClient.getBlockBlobAsyncClient(), dataLakePathAsyncClient.getSasToken(),
+            dataLakePathAsyncClient.getCpkInfo(), dataLakePathAsyncClient.isTokenCredentialAuthenticated());
     }
 
     /**

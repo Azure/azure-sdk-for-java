@@ -13,36 +13,36 @@ public final class MarketplaceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceDetails model = BinaryData.fromString(
-            "{\"subscriptionId\":\"heotusiv\",\"subscriptionStatus\":\"PendingFulfillmentStart\",\"saasResourceId\":\"ciqihnhung\",\"offerDetails\":{\"publisherId\":\"wjzrnfygxgisp\",\"offerId\":\"mvtzfkufub\",\"planId\":\"ofx\",\"planName\":\"ofjaeqjhqjb\",\"termUnit\":\"v\",\"termId\":\"mjqulngsn\"}}")
+            "{\"subscriptionId\":\"ufubl\",\"subscriptionStatus\":\"Subscribed\",\"saasResourceId\":\"qeof\",\"offerDetails\":{\"publisherId\":\"aeqjhqjbasvms\",\"offerId\":\"jqul\",\"planId\":\"sntnbybkzgcw\",\"planName\":\"clxxwrljdo\",\"termUnit\":\"kcqvkocrc\",\"termId\":\"kwt\"}}")
             .toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("heotusiv", model.subscriptionId());
-        Assertions.assertEquals("ciqihnhung", model.saasResourceId());
-        Assertions.assertEquals("wjzrnfygxgisp", model.offerDetails().publisherId());
-        Assertions.assertEquals("mvtzfkufub", model.offerDetails().offerId());
-        Assertions.assertEquals("ofx", model.offerDetails().planId());
-        Assertions.assertEquals("ofjaeqjhqjb", model.offerDetails().planName());
-        Assertions.assertEquals("v", model.offerDetails().termUnit());
-        Assertions.assertEquals("mjqulngsn", model.offerDetails().termId());
+        Assertions.assertEquals("ufubl", model.subscriptionId());
+        Assertions.assertEquals("qeof", model.saasResourceId());
+        Assertions.assertEquals("aeqjhqjbasvms", model.offerDetails().publisherId());
+        Assertions.assertEquals("jqul", model.offerDetails().offerId());
+        Assertions.assertEquals("sntnbybkzgcw", model.offerDetails().planId());
+        Assertions.assertEquals("clxxwrljdo", model.offerDetails().planName());
+        Assertions.assertEquals("kcqvkocrc", model.offerDetails().termUnit());
+        Assertions.assertEquals("kwt", model.offerDetails().termId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceDetails model = new MarketplaceDetails().withSubscriptionId("heotusiv")
-            .withSaasResourceId("ciqihnhung")
-            .withOfferDetails(new OfferDetails().withPublisherId("wjzrnfygxgisp")
-                .withOfferId("mvtzfkufub")
-                .withPlanId("ofx")
-                .withPlanName("ofjaeqjhqjb")
-                .withTermUnit("v")
-                .withTermId("mjqulngsn"));
+        MarketplaceDetails model = new MarketplaceDetails().withSubscriptionId("ufubl")
+            .withSaasResourceId("qeof")
+            .withOfferDetails(new OfferDetails().withPublisherId("aeqjhqjbasvms")
+                .withOfferId("jqul")
+                .withPlanId("sntnbybkzgcw")
+                .withPlanName("clxxwrljdo")
+                .withTermUnit("kcqvkocrc")
+                .withTermId("kwt"));
         model = BinaryData.fromObject(model).toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("heotusiv", model.subscriptionId());
-        Assertions.assertEquals("ciqihnhung", model.saasResourceId());
-        Assertions.assertEquals("wjzrnfygxgisp", model.offerDetails().publisherId());
-        Assertions.assertEquals("mvtzfkufub", model.offerDetails().offerId());
-        Assertions.assertEquals("ofx", model.offerDetails().planId());
-        Assertions.assertEquals("ofjaeqjhqjb", model.offerDetails().planName());
-        Assertions.assertEquals("v", model.offerDetails().termUnit());
-        Assertions.assertEquals("mjqulngsn", model.offerDetails().termId());
+        Assertions.assertEquals("ufubl", model.subscriptionId());
+        Assertions.assertEquals("qeof", model.saasResourceId());
+        Assertions.assertEquals("aeqjhqjbasvms", model.offerDetails().publisherId());
+        Assertions.assertEquals("jqul", model.offerDetails().offerId());
+        Assertions.assertEquals("sntnbybkzgcw", model.offerDetails().planId());
+        Assertions.assertEquals("clxxwrljdo", model.offerDetails().planName());
+        Assertions.assertEquals("kcqvkocrc", model.offerDetails().termUnit());
+        Assertions.assertEquals("kwt", model.offerDetails().termId());
     }
 }

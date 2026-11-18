@@ -16,6 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayEffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
@@ -1512,6 +1513,106 @@ public interface VirtualNetworkGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     GatewayRouteListResultInner getAdvertisedRoutes(String resourceGroupName, String virtualNetworkGatewayName,
         String peer, Context context);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway effective routes along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getEffectiveRoutesWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of virtual network gateway effective routes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayEffectiveRouteListResultInner>, GatewayEffectiveRouteListResultInner>
+        beginGetEffectiveRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of virtual network gateway effective routes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayEffectiveRouteListResultInner>, GatewayEffectiveRouteListResultInner>
+        beginGetEffectiveRoutes(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of virtual network gateway effective routes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayEffectiveRouteListResultInner>, GatewayEffectiveRouteListResultInner>
+        beginGetEffectiveRoutes(String resourceGroupName, String virtualNetworkGatewayName, Context context);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway effective routes on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayEffectiveRouteListResultInner> getEffectiveRoutesAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway effective routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayEffectiveRouteListResultInner getEffectiveRoutes(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of effective routes for the virtual network gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway effective routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayEffectiveRouteListResultInner getEffectiveRoutes(String resourceGroupName, String virtualNetworkGatewayName,
+        Context context);
 
     /**
      * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current

@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"ikcdgfhbssd\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"derzmwnto\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CheckAvailabilityResponse response
-            = manager.netAppResources()
-                .checkQuotaAvailabilityWithResponse("dmmazdnc", new QuotaAvailabilityRequest().withName("idb")
-                    .withType(
-                        CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-                    .withResourceGroup("glhzqp"), com.azure.core.util.Context.NONE)
-                .getValue();
+        CheckAvailabilityResponse response = manager.netAppResources()
+            .checkQuotaAvailabilityWithResponse("bqxvhcsyhzlwxae",
+                new QuotaAvailabilityRequest().withName("ov")
+                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+                    .withResourceGroup("exdnd"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertTrue(response.isAvailable());
+        Assertions.assertFalse(response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("ikcdgfhbssd", response.message());
+        Assertions.assertEquals("derzmwnto", response.message());
     }
 }

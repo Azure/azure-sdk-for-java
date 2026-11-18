@@ -21,13 +21,14 @@ import com.azure.resourcemanager.kusto.models.Cluster;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
 public class KustoManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private KustoManager kustoManager;
     private ResourceManager resourceManager;
@@ -67,6 +68,7 @@ public class KustoManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("Provisioning a Kusto cluster requires a paid minimum capacity.")
     public void testCreateCluster() {
         Cluster cluster = null;
         try {
@@ -76,9 +78,9 @@ public class KustoManagerTests extends TestProxyTestBase {
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new AzureSku().withName(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4)
-                    .withCapacity(1)
-                    .withTier(AzureSkuTier.BASIC))
+                .withSku(new AzureSku().withName(AzureSkuName.STANDARD_E2ADS_V5)
+                    .withCapacity(2)
+                    .withTier(AzureSkuTier.STANDARD))
                 .create();
             // @embedmeEnd
             cluster.refresh();
@@ -90,6 +92,12 @@ public class KustoManagerTests extends TestProxyTestBase {
                 kustoManager.clusters().deleteById(cluster.id());
             }
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void testListClusters() {
+        kustoManager.clusters().list().stream().findFirst();
     }
 
     private static String randomPadding() {

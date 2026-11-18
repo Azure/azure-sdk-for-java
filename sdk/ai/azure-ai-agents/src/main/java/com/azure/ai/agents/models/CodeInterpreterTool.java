@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +28,12 @@ public final class CodeInterpreterTool extends Tool {
     private ToolType type = ToolType.CODE_INTERPRETER;
 
     /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /*
      * The code interpreter container. Can be a container ID or an object that
      * specifies uploaded file IDs to make available to your code, along with an
      * optional `memory_limit` setting.
@@ -34,6 +41,31 @@ public final class CodeInterpreterTool extends Tool {
      */
     @Generated
     private BinaryData container;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Creates an instance of CodeInterpreterTool class.
+     */
+    @Generated
+    public CodeInterpreterTool() {
+    }
 
     /**
      * Get the type property: The type property.
@@ -47,6 +79,28 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    @Generated
+    public CodeInterpreterTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
+    }
+
+    /**
      * Get the container property: The code interpreter container. Can be a container ID or an object that
      * specifies uploaded file IDs to make available to your code, along with an
      * optional `memory_limit` setting.
@@ -57,66 +111,6 @@ public final class CodeInterpreterTool extends Tool {
     BinaryData getContainer() {
         // AI Tooling: union type
         return this.container;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        if (this.container != null) {
-            jsonWriter.writeFieldName("container");
-            this.container.writeTo(jsonWriter);
-        }
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CodeInterpreterTool from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CodeInterpreterTool if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CodeInterpreterTool.
-     */
-    @Generated
-    public static CodeInterpreterTool fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CodeInterpreterTool deserializedCodeInterpreterTool = new CodeInterpreterTool();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedCodeInterpreterTool.type = ToolType.fromString(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    deserializedCodeInterpreterTool.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedCodeInterpreterTool.description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedCodeInterpreterTool.toolConfigs = toolConfigs;
-                } else if ("container".equals(fieldName)) {
-                    deserializedCodeInterpreterTool.container
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedCodeInterpreterTool;
-        });
-    }
-
-    /**
-     * Creates an instance of CodeInterpreterTool class.
-     */
-    @Generated
-    public CodeInterpreterTool() {
     }
 
     /**
@@ -196,24 +190,6 @@ public final class CodeInterpreterTool extends Tool {
         return this.container.toObject(AutoCodeInterpreterToolParameter.class);
     }
 
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
     /**
      * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
@@ -278,5 +254,64 @@ public final class CodeInterpreterTool extends Tool {
     public CodeInterpreterTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        if (this.container != null) {
+            jsonWriter.writeFieldName("container");
+            this.container.writeTo(jsonWriter);
+        }
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodeInterpreterTool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodeInterpreterTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodeInterpreterTool.
+     */
+    @Generated
+    public static CodeInterpreterTool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodeInterpreterTool deserializedCodeInterpreterTool = new CodeInterpreterTool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.type = ToolType.fromString(reader.getString());
+                } else if ("allowed_callers".equals(fieldName)) {
+                    List<CallableToolAllowedCaller> allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
+                    deserializedCodeInterpreterTool.allowedCallers = allowedCallers;
+                } else if ("container".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.container
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedCodeInterpreterTool.toolConfigs = toolConfigs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCodeInterpreterTool;
+        });
     }
 }

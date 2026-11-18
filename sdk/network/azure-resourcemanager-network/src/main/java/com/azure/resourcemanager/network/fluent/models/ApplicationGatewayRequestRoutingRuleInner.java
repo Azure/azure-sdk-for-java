@@ -9,9 +9,11 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAuthConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Request routing rule of an application gateway.
@@ -239,6 +241,29 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
+     * Get the advancedRoutingMap property: Advanced routing map resource of the application gateway.
+     * 
+     * @return the advancedRoutingMap value.
+     */
+    public SubResource advancedRoutingMap() {
+        return this.innerProperties() == null ? null : this.innerProperties().advancedRoutingMap();
+    }
+
+    /**
+     * Set the advancedRoutingMap property: Advanced routing map resource of the application gateway.
+     * 
+     * @param advancedRoutingMap the advancedRoutingMap value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withAdvancedRoutingMap(SubResource advancedRoutingMap) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withAdvancedRoutingMap(advancedRoutingMap);
+        return this;
+    }
+
+    /**
      * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
      * 
      * @return the rewriteRuleSet value.
@@ -330,6 +355,35 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
             this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
         }
         this.innerProperties().withEntraJWTValidationConfig(entraJWTValidationConfig);
+        return this;
+    }
+
+    /**
+     * Get the authConfigs property: Authentication configuration bindings of the request routing rule. Only one
+     * authentication configuration is supported. Authentication configuration names must be unique across the
+     * Application Gateway, and an Application Gateway can reference at most 100 distinct authentication policies.
+     * Authentication policies can only be bound to Application Gateways using the Standard_v2 or WAF_v2 SKU.
+     * 
+     * @return the authConfigs value.
+     */
+    public List<ApplicationGatewayAuthConfig> authConfigs() {
+        return this.innerProperties() == null ? null : this.innerProperties().authConfigs();
+    }
+
+    /**
+     * Set the authConfigs property: Authentication configuration bindings of the request routing rule. Only one
+     * authentication configuration is supported. Authentication configuration names must be unique across the
+     * Application Gateway, and an Application Gateway can reference at most 100 distinct authentication policies.
+     * Authentication policies can only be bound to Application Gateways using the Standard_v2 or WAF_v2 SKU.
+     * 
+     * @param authConfigs the authConfigs value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withAuthConfigs(List<ApplicationGatewayAuthConfig> authConfigs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withAuthConfigs(authConfigs);
         return this;
     }
 

@@ -18,36 +18,35 @@ public final class LicenseProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseProfileUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"softwareAssurance\":{\"softwareAssuranceCustomer\":true},\"esuProfile\":{\"assignedLicense\":\"xxmueedn\"},\"productProfile\":{\"subscriptionStatus\":\"Enable\",\"productType\":\"WindowsIoTEnterprise\",\"productFeatures\":[{\"name\":\"qtc\",\"subscriptionStatus\":\"Enable\"}]}},\"tags\":{\"ohgwxrtfudxepxg\":\"fmtdaaygdvwvgp\",\"pkukghi\":\"qagvrvm\",\"wi\":\"dblx\"}}")
+            "{\"properties\":{\"softwareAssurance\":{\"softwareAssuranceCustomer\":true},\"esuProfile\":{\"assignedLicense\":\"qreyfkzi\"},\"productProfile\":{\"subscriptionStatus\":\"Enable\",\"productType\":\"WindowsServer\",\"productFeatures\":[{\"name\":\"vxwc\",\"subscriptionStatus\":\"Disable\"}]}},\"tags\":{\"eae\":\"irels\"}}")
             .toObject(LicenseProfileUpdate.class);
-        Assertions.assertEquals("fmtdaaygdvwvgp", model.tags().get("ohgwxrtfudxepxg"));
+        Assertions.assertEquals("irels", model.tags().get("eae"));
         Assertions.assertTrue(model.softwareAssuranceCustomer());
-        Assertions.assertEquals("xxmueedn", model.assignedLicense());
+        Assertions.assertEquals("qreyfkzi", model.assignedLicense());
         Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
-        Assertions.assertEquals(LicenseProfileProductType.WINDOWS_IO_TENTERPRISE, model.productType());
-        Assertions.assertEquals("qtc", model.productFeatures().get(0).name());
-        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE,
+        Assertions.assertEquals(LicenseProfileProductType.WINDOWS_SERVER, model.productType());
+        Assertions.assertEquals("vxwc", model.productFeatures().get(0).name());
+        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.DISABLE,
             model.productFeatures().get(0).subscriptionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LicenseProfileUpdate model = new LicenseProfileUpdate()
-            .withTags(mapOf("ohgwxrtfudxepxg", "fmtdaaygdvwvgp", "pkukghi", "qagvrvm", "wi", "dblx"))
+        LicenseProfileUpdate model = new LicenseProfileUpdate().withTags(mapOf("eae", "irels"))
             .withSoftwareAssuranceCustomer(true)
-            .withAssignedLicense("xxmueedn")
+            .withAssignedLicense("qreyfkzi")
             .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE)
-            .withProductType(LicenseProfileProductType.WINDOWS_IO_TENTERPRISE)
-            .withProductFeatures(Arrays.asList(new ProductFeatureUpdate().withName("qtc")
-                .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE)));
+            .withProductType(LicenseProfileProductType.WINDOWS_SERVER)
+            .withProductFeatures(Arrays.asList(new ProductFeatureUpdate().withName("vxwc")
+                .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.DISABLE)));
         model = BinaryData.fromObject(model).toObject(LicenseProfileUpdate.class);
-        Assertions.assertEquals("fmtdaaygdvwvgp", model.tags().get("ohgwxrtfudxepxg"));
+        Assertions.assertEquals("irels", model.tags().get("eae"));
         Assertions.assertTrue(model.softwareAssuranceCustomer());
-        Assertions.assertEquals("xxmueedn", model.assignedLicense());
+        Assertions.assertEquals("qreyfkzi", model.assignedLicense());
         Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
-        Assertions.assertEquals(LicenseProfileProductType.WINDOWS_IO_TENTERPRISE, model.productType());
-        Assertions.assertEquals("qtc", model.productFeatures().get(0).name());
-        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE,
+        Assertions.assertEquals(LicenseProfileProductType.WINDOWS_SERVER, model.productType());
+        Assertions.assertEquals("vxwc", model.productFeatures().get(0).name());
+        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.DISABLE,
             model.productFeatures().get(0).subscriptionStatus());
     }
 

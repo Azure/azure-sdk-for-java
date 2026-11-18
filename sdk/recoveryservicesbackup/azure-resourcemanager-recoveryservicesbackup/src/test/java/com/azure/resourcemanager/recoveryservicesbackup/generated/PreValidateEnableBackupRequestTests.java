@@ -13,25 +13,25 @@ public final class PreValidateEnableBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreValidateEnableBackupRequest model = BinaryData.fromString(
-            "{\"resourceType\":\"SystemState\",\"resourceId\":\"iw\",\"vaultId\":\"m\",\"properties\":\"zhzzwvywrg\"}")
+            "{\"resourceType\":\"Invalid\",\"resourceId\":\"gfredmlscg\",\"vaultId\":\"lccnaovjowaz\",\"properties\":\"abacomlyotgkws\"}")
             .toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SYSTEM_STATE, model.resourceType());
-        Assertions.assertEquals("iw", model.resourceId());
-        Assertions.assertEquals("m", model.vaultId());
-        Assertions.assertEquals("zhzzwvywrg", model.properties());
+        Assertions.assertEquals(DataSourceType.INVALID, model.resourceType());
+        Assertions.assertEquals("gfredmlscg", model.resourceId());
+        Assertions.assertEquals("lccnaovjowaz", model.vaultId());
+        Assertions.assertEquals("abacomlyotgkws", model.properties());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreValidateEnableBackupRequest model
-            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SYSTEM_STATE)
-                .withResourceId("iw")
-                .withVaultId("m")
-                .withProperties("zhzzwvywrg");
+            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.INVALID)
+                .withResourceId("gfredmlscg")
+                .withVaultId("lccnaovjowaz")
+                .withProperties("abacomlyotgkws");
         model = BinaryData.fromObject(model).toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SYSTEM_STATE, model.resourceType());
-        Assertions.assertEquals("iw", model.resourceId());
-        Assertions.assertEquals("m", model.vaultId());
-        Assertions.assertEquals("zhzzwvywrg", model.properties());
+        Assertions.assertEquals(DataSourceType.INVALID, model.resourceType());
+        Assertions.assertEquals("gfredmlscg", model.resourceId());
+        Assertions.assertEquals("lccnaovjowaz", model.vaultId());
+        Assertions.assertEquals("abacomlyotgkws", model.properties());
     }
 }

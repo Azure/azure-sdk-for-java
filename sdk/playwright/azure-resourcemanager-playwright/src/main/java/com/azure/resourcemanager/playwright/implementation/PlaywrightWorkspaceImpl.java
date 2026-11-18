@@ -135,9 +135,12 @@ public final class PlaywrightWorkspaceImpl
         com.azure.resourcemanager.playwright.PlaywrightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.playwrightWorkspaceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "playwrightWorkspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
+            "resourceGroupName");
+        this.playwrightWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}",
+            "playwrightWorkspaceName");
     }
 
     public PlaywrightWorkspace refresh() {

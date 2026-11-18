@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0-beta.2 (Unreleased)
+## 12.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,206 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.3.0-beta.1 (2026-11-14)
+
+### Features Added
+
+- Added support for `2026-11-01-preview`, now the default service version. Previously supported GA service versions remain available.
+- Added synchronous and asynchronous graph queries, typed results, query planning, diagnostics, statistics, and provenance models.
+- Added `GraphQueryError` for opt-in typed parsing of graph error bodies without changing existing exceptions.
+- Added `listIndexesWithMetadata` and `listIndexStatsSummaryWithMetadata` to read optional service-supplied total counts while preserving existing listing APIs. The preview contract does not define a count-request parameter.
+- Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
+- Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
+- Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
+- Carried forward the October GA knowledge base retrieval APIs: closeable synchronous and direct typed asynchronous event streams, query-source authorization options and overloads, and nullable numeric completion status codes. Work IQ authorization remains available in the November preview.
+- Added typed `RequestOptions` listing overloads and aligned `KnowledgeBaseIndexedSqlReference` with the GA `getDocumentUrl()` getter.
+- Carried forward the final October GA `GetDocumentOptions` and synchronous/asynchronous document lookup overloads, including authorization headers, elevated read, selected fields, and caller `RequestOptions` precedence.
+
+### Breaking Changes
+
+- Removed `SearchServiceVersion.V2026_08_01_PREVIEW`; `V2026_11_01_PREVIEW` is now the only supported preview service version.
+- Removed preview `queryHints` from `AzureBlobKnowledgeSourceParameters` and `IndexedSharePointKnowledgeSourceParameters`, and `queryHintOverrides` from their runtime parameter models, to match the November contract in [spec PR #47300](https://github.com/Azure/azure-rest-api-specs/pull/47300). These properties remain supported on `SearchIndexKnowledgeSourceParameters` and `SearchIndexKnowledgeSourceParams`, respectively; `topicGraph` is not a replacement for query hints.
+- Removed preview query hints and query hint overrides from other non-SearchIndex knowledge sources, and their query hint processing activity properties, to match the service contract.
+- Aligned preview streaming APIs with the October GA signatures: synchronous `retrieveStream` returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` instead of accepting a callback, and asynchronous `retrieveStream` emits typed events directly instead of `ServerSentEvent` envelopes.
+- Removed preview-only `ServerSentEvent`, `ServerSentEventListener`, `UnknownKnowledgeBaseRetrievalStreamEvent`, and `KnowledgeBaseRetrievalStatusCode` types. As in GA, stream event wrappers have SDK-only constructors and are not JSON models; unknown events expose only their names. SQL references expose `getDocumentUrl()` instead of `getDocUrl()`.
+
+### Bugs Fixed
+
+- Forwarded topic graph profile and organization access expiration settings from field-builder annotations.
+- Added field-builder annotations for sensitivity label IDs and names, source document IDs, and SharePoint site URLs, and forwarded permission filter settings to generated search fields.
+- Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
+- Carried forward SSE decoding, cancellation, backpressure, buffer ownership, and response-cleanup fixes.
+- Aligned file delete and update argument order with GA: knowledge source `name` precedes `fileId`.
+- Corrected file update and delete argument order in the File knowledge source preview sample, including cleanup.
+- Updated the preview retrieval response parsing sample to use an existing knowledge base without modifying or deleting resources.
+- Preserved HTTP status, headers, and error bodies when polling preview file ingestion operations fails, instead of throwing an unrelated exception.
+
+### Other Changes
+
+- Restored the opt-in Content Understanding skillset sample and index statistics pagination and indexer-runtime examples.
+- Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
+
+#### Dependency Updates
+
+- Carried forward the GA dependency baselines: `azure-core` 1.61.0 and `azure-core-http-netty` 1.17.0.
+
+## 12.2.0 (2026-11-13)
+
+These release notes compare `12.2.0` with the previous GA release, `12.1.1`. Changes that apply only when upgrading
+from a preview release are not included.
+
+### Features Added
+
+- Added support for the `2026-10-01` GA service version, which is now the default service version.
+- Added `SearchOptions.moreLikeThis` to find documents similar to an existing document.
+- Added `GetDocumentOptions` and three-argument `getDocumentWithResponse` overloads on `SearchClient` and
+  `SearchAsyncClient` to group document lookup authorization, elevated-read, and selected-field options while
+  preserving existing overloads, including `getDocument(key, null)`.
+- Added query-source authorization and elevated-read controls to `SearchOptions` and document lookup overloads, and
+  query-source authorization overloads and a header-only `KnowledgeBaseRetrievalOptions.querySourceAuthorization`
+  option to knowledge base retrieval. Non-null explicit authorization arguments override the option; null falls
+  back to the option.
+- Added document-level permission configuration through `SearchField.permissionFilter`, `organizationAccessExpiration`,
+  and `sharepointSiteUrl`, `SearchIndex.permissionFilterOption`, and `SharePointConnectorAppRegistration`.
+- Added `SearchIndexerDataSourceConnection.indexerPermissionOptions`,
+  `IndexingParametersConfiguration.refreshAllAcls`, and
+  `SearchIndexerDataUserAssignedIdentity.federatedIdentityClientId` for permission ingestion and federated identity.
+- Added `SearchIndexerClient.resync` and `SearchIndexerAsyncClient.resync` to resynchronize indexed permissions.
+- Added `SearchIndexerStatus.runtime` and `SearchServiceStatistics.indexersRuntime`, including used and remaining
+  runtime and the reporting period.
+- Added service-driven pagination and name-prefix filtering for resource listings, with `ListingSearchType` and
+  `search`, `searchType`, and `pageSize` query parameters. Added typed request-options overloads for synonym maps,
+  indexers, data sources, skillsets, and indexes with selected properties.
+- Added pageable index statistics through `listIndexStatsSummary` and `IndexStatisticsSummary`.
+- Added file knowledge sources and multipart file upload, update, listing, and deletion APIs on `SearchIndexClient`
+  and `SearchIndexAsyncClient`, with file metadata, directory-like prefixes, parsing and extraction modes, and
+  retrieval parameter, reference, and activity models.
+- Added `KnowledgeSourceFileCapacity` and `KnowledgeSourceStatus.fileCapacity` for maximum file size, maximum file
+  count, and remaining file count.
+- Added indexed SQL and indexed SharePoint knowledge sources, their retrieval parameter, reference, and activity
+  models, SQL content and embedding column mappings, and SharePoint container selection.
+- Added knowledge source ingestion permission options and network access mode, and
+  `SearchIndexKnowledgeSourceParameters.baseFilter`.
+- Added low and medium retrieval reasoning effort, answer-synthesis and extractive-data output modes, retrieval and
+  answer instructions, and CORS configuration on knowledge bases.
+- Added model-based `createOrUpdateKnowledgeBase` and typed knowledge base/source update response overloads on
+  `SearchIndexAsyncClient`.
+- Added conversation messages, reasoning effort, output mode, and maximum output document counts to knowledge
+  retrieval requests. Added constructors for message content and image URLs, and a writable message role.
+- Added `alwaysQuerySource`, `failOnError`, and `maxOutputDocuments` to knowledge source retrieval parameters, and
+  `language`, `market`, `count`, and `freshness` to web knowledge source configuration.
+- Added typed source, query-planning, and answer-synthesis activity records, activity timestamps and warnings, model
+  and deployment details, and citation URLs on search-index, Azure Blob, and indexed OneLake references.
+- Added typed `retrieveStream` APIs returning `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` on the
+  synchronous retrieval client and `Flux<KnowledgeBaseRetrievalStreamEvent>` on the asynchronous client. Events
+  include retrieval start, activity start and completion, answers, references, errors, and response completion.
+  Response-completion events expose their numeric status code as `Integer`, including unknown status values.
+- Added `modelName` and `modelDeployment` to `ContentUnderstandingSkill`, fixed-size and semantic chunking method
+  selection, and token-based chunking units.
+- Added `GPT54`, `GPT55`, `GPT56SOL`, `GPT56TERRA`, and `GPT56LUNA` to `AzureOpenAIModelName`.
+
+### Breaking Changes
+
+These removals correct preview-only APIs accidentally exposed by the GA specification. The corresponding features
+were not supported by the previous GA service API. The specification correction was signed off as a bug fix in
+[Azure/azure-rest-api-specs#47112](https://github.com/Azure/azure-rest-api-specs/pull/47112).
+Removing these published Java APIs remains a source and binary compatibility break, despite the lack of supported
+service behavior.
+
+The following APIs were public in GA `12.1.1` and have been removed in `12.2.0`:
+
+- Removed `AIFoundryModelCatalogName`, `AzureMachineLearningParameters`, and `AzureMachineLearningVectorizer`.
+- Removed `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery`, along with `VectorQueryKind.IMAGE_BINARY`
+  and `VectorQueryKind.IMAGE_URL`.
+- Removed `VectorFilterMode.STRICT_POST_FILTER`.
+- Removed `KnowledgeBaseAgenticReasoningActivityRecord.getRetrievalReasoningEffort()`. For streaming retrieval,
+  the effective reasoning effort is available through
+  `KnowledgeBaseRetrievalStartedStreamEvent.getValue().getReasoningEffort()`.
+
+### Bugs Fixed
+
+- Fixed knowledge source status deserialization for compact synchronization intervals such as `1d`, while
+  preserving the existing Java `Duration` API.
+
+## 12.1.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.0.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.1.0-beta.2 (2026-08-28)
+
+### Features Added
+
+- Added support for the `2026-08-01-Preview` service version, which is now the default service version.
+- Added File knowledge source file management APIs on `SearchIndexClient`/`SearchIndexAsyncClient`, including
+  `uploadKnowledgeSourceFileMultipart` and `updateKnowledgeSourceFile`, along with the supporting models
+  `FileUploadMetadata`, `ContentFileDetails`, `UploadKnowledgeSourceFileMultipartRequest`,
+  `UpdateKnowledgeSourceFileRequest`, and `FileKnowledgeSourceExtractionMode`.
+- Added knowledge source query hint and boosting models: `SearchIndexKnowledgeSourceQueryHints`,
+  `SearchIndexKnowledgeSourceBoost`, `SearchIndexKnowledgeSourceBoostKind`,
+  `SearchIndexKnowledgeSourceFieldValueBoost`, `SearchIndexKnowledgeSourceMultiWordExpressionBoost`,
+  `SearchIndexKnowledgeSourceFilterHint`, and `KnowledgeSourceResultsProcessing`.
+- Added knowledge base retrieval models `KnowledgeBaseActivityRecordModel`, `KnowledgeBaseQueryHintProcessing`,
+  `KnowledgeBaseRetrieveDefaults`, and `KnowledgeRetrievalAutoReasoningEffort`.
+- Added `EntraAppAuthentication`, `KnowledgeSourceNetworkAccessMode`, `ServedImage`, and `ListingSearchType` models.
+- Added typed server-sent event `retrieveStream` APIs to `KnowledgeBaseRetrievalClient` and
+  `KnowledgeBaseRetrievalAsyncClient`, reusable `ServerSentEvent` and `ServerSentEventListener` models, and event
+  wrappers derived from `KnowledgeBaseRetrievalStreamEvent`, including `UnknownKnowledgeBaseRetrievalStreamEvent` for
+  forward-compatible handling of unrecognized event names.
+
+### Breaking Changes
+
+- `WorkIQKnowledgeSource` now takes a
+  `com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters`.
+- Removed the offset-based `listIndexesWithSelectedProperties(List<String> select, Integer top, Integer skip, Boolean count)`
+  overload from `SearchIndexClient`/`SearchIndexAsyncClient`. Use `listIndexesWithSelectedProperties()` or
+  `listIndexesWithSelectedProperties(List<String> select)`.
+- Changed `listIndexStatsSummary` overload parameters from `(Integer top, Integer skip, Boolean count)` to
+  `(String search, Integer pageSize, ListingSearchType searchType)`.
+- Changed the `KnowledgeBaseRetrievalClient`/`KnowledgeBaseRetrievalAsyncClient` `retrieve` overload from
+  `retrieve(KnowledgeBaseRetrievalOptions, String)` to
+  `retrieve(KnowledgeBaseRetrievalOptions, String querySourceAuthorization, String queryWorkIQSourceAuthorization)`.
+- Replaced `getModelName()` with `getModel().getModelName()` on `KnowledgeBaseModelAnswerSynthesisActivityRecord`,
+  `KnowledgeBaseModelQueryPlanningActivityRecord`, and `KnowledgeBaseModelWebSummarizationActivityRecord`.
+- Removed the `McpServerToolInclusionMode` and `WorkIQAttribution` models.
+
+### Bugs Fixed
+
+- Fixed knowledge source status deserialization for compact synchronization intervals such as `1d` while preserving
+  the existing Java `Duration` API.
+
+## 12.0.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+
+## 12.0.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
 
 ## 12.1.0-beta.1 (2026-05-28)
 

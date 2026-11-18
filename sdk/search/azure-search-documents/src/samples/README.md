@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0</version>
+    <version>12.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -91,6 +91,7 @@ The following sections provide several code snippets covering some of the most c
 - [Search queries options with sync client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SearchOptionsExample.java)
 - [Retrieving Index and Service statistics](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/IndexAndServiceStatisticsExample.java)
 - [Setup datasource, indexer, index and skillset](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/LifecycleSetupExample.java)
+- [List indexes using server-driven pagination](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/ListIndexesExample.java)
 - [List indexers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/ListIndexersExample.java)
 - [Add Synonym and custom skillset](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/RefineSearchCapabilitiesExample.java)
 - [Execute a search solution - run indexer and issue search queries](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/RunningSearchSolutionExample.java)
@@ -101,6 +102,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Knowledge Base & Knowledge Source Preview Samples
 - [Knowledge Base configuration (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBasePreviewConfigurationExample.java)
+- [Streaming knowledge base retrieval with server-sent events (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
 - [Knowledge Base retrieval response parsing (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalPreviewResponseExample.java)
 - [Knowledge service statistics (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeServiceStatsPreviewExample.java)
 - [Knowledge Source freshness and defaults (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFreshnessPreviewExample.java)
@@ -109,6 +111,10 @@ The following sections provide several code snippets covering some of the most c
 - [Work IQ Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceWorkIqPreviewExample.java)
 - [Fabric Ontology Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricOntologyPreviewExample.java)
 - [Fabric Data Agent Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricDataAgentPreviewExample.java)
+
+The preview retrieval response parsing sample uses an existing knowledge base configured through
+`SEARCH_ENDPOINT`, `SEARCH_API_KEY`, and `KNOWLEDGE_BASE_NAME`. The knowledge base must have a model configured
+for answer synthesis. This sample does not create, update, or delete knowledge bases or knowledge sources.
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -127,5 +133,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azsearch_docs]: https://learn.microsoft.com/azure/search
-
 

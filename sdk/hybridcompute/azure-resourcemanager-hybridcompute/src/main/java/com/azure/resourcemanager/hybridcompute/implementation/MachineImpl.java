@@ -26,6 +26,7 @@ import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.MachineUpdate;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -134,6 +135,10 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         } else {
             return null;
         }
+    }
+
+    public MachineStatusReason statusReason() {
+        return this.innerModel().statusReason();
     }
 
     public String provisioningState() {
@@ -344,8 +349,12 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     MachineImpl(MachineInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}",
+            "resourceGroupName");
+        this.machineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}",
+            "machineName");
     }
 
     public Machine refresh() {
@@ -462,8 +471,13 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
     }
 
     public MachineImpl withClientPublicKey(String clientPublicKey) {
-        this.innerModel().withClientPublicKey(clientPublicKey);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClientPublicKey(clientPublicKey);
+            return this;
+        } else {
+            this.updateParameters.withClientPublicKey(clientPublicKey);
+            return this;
+        }
     }
 
     public MachineImpl withIdentityKeyStore(IdentityKeyStore identityKeyStore) {

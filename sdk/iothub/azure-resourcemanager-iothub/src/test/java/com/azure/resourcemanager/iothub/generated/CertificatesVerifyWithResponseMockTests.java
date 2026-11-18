@@ -22,7 +22,7 @@ public final class CertificatesVerifyWithResponseMockTests {
     @Test
     public void testVerifyWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"sdshmkxmaehvb\",\"expiry\":\"Tue, 19 Oct 2021 14:45:47 GMT\",\"thumbprint\":\"iplt\",\"isVerified\":false,\"created\":\"Thu, 08 Jul 2021 01:08:27 GMT\",\"updated\":\"Fri, 03 Sep 2021 15:46:46 GMT\",\"certificate\":\"gx\",\"policyResourceId\":\"rc\"},\"etag\":\"yklyhpluodpvruud\",\"id\":\"zibt\",\"name\":\"ostgkts\",\"type\":\"vdxec\"}";
+            = "{\"properties\":{\"subject\":\"sdshmkxmaehvb\",\"expiry\":\"Tue, 19 Oct 2021 14:45:47 GMT\",\"thumbprint\":\"iplt\",\"isVerified\":false,\"created\":\"Thu, 08 Jul 2021 01:08:27 GMT\",\"updated\":\"Fri, 03 Sep 2021 15:46:46 GMT\",\"certificate\":\"gx\",\"certificateAuthorityResourceId\":\"rc\"},\"etag\":\"yklyhpluodpvruud\",\"id\":\"zibt\",\"name\":\"ostgkts\",\"type\":\"vdxec\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,6 +39,6 @@ public final class CertificatesVerifyWithResponseMockTests {
 
         Assertions.assertFalse(response.properties().isVerified());
         Assertions.assertEquals("gx", response.properties().certificate());
-        Assertions.assertEquals("rc", response.properties().policyResourceId());
+        Assertions.assertEquals("rc", response.properties().certificateAuthorityResourceId());
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_Delete.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Delete.json
      */
     /**
      * Sample code: AuthorizedApplications_Delete.

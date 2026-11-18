@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appnetwork.models.AppLink;
 import com.azure.resourcemanager.appnetwork.models.AppLinkProperties;
 import com.azure.resourcemanager.appnetwork.models.AppLinkUpdate;
 import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -130,8 +131,12 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     AppLinkImpl(AppLinkInner innerObject, com.azure.resourcemanager.appnetwork.AppnetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.appLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "resourceGroupName");
+        this.appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}",
+            "appLinkName");
     }
 
     public AppLink refresh() {
@@ -177,6 +182,11 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
 
     public AppLinkImpl withIdentity(ManagedServiceIdentity identity) {
         this.innerModel().withIdentity(identity);
+        return this;
+    }
+
+    public AppLinkImpl withIdentity(ManagedServiceIdentityUpdate identity) {
+        this.updateProperties.withIdentity(identity);
         return this;
     }
 

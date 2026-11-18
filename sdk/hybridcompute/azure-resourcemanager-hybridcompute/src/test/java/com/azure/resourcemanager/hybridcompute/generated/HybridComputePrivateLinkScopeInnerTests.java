@@ -20,35 +20,31 @@ public final class HybridComputePrivateLinkScopeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridComputePrivateLinkScopeInner model = BinaryData.fromString(
-            "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"vtoepryutnw\",\"privateLinkScopeId\":\"pzdm\",\"privateEndpointConnections\":[{\"id\":\"fvaawzqa\",\"name\":\"lgzurig\",\"type\":\"ecxn\",\"properties\":{\"privateEndpoint\":{\"id\":\"okpvzm\"},\"privateLinkServiceConnectionState\":{\"status\":\"t\",\"description\":\"ld\",\"actionsRequired\":\"obfirclnpk\"},\"provisioningState\":\"ayzri\",\"groupIds\":[\"yawfvjlboxq\"]}},{\"id\":\"jlmxhomdynhd\",\"name\":\"igu\",\"type\":\"nraauzz\",\"properties\":{\"privateEndpoint\":{\"id\":\"zysdzh\"},\"privateLinkServiceConnectionState\":{\"status\":\"wwvaiqyuvvfonk\",\"description\":\"hhqyi\",\"actionsRequired\":\"y\"},\"provisioningState\":\"uyav\",\"groupIds\":[\"mncsttijfybvp\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datasgsgbdhu\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"dataj\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"}]},\"location\":\"nscliqhzvhxnk\",\"tags\":{\"hihfrbbcevqagtlt\":\"kubotppnvdxz\",\"vgtrdcnifmzzs\":\"hlfkqojpy\",\"g\":\"ymbrnysuxmpraf\"},\"id\":\"khocxvdfffwaf\",\"name\":\"roud\",\"type\":\"spave\"}")
+            "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"acbslhhxu\",\"privateLinkScopeId\":\"xvodhtnsir\",\"privateEndpointConnections\":[{\"id\":\"m\",\"name\":\"sckdlp\",\"type\":\"zrcxfailcfxwmdbo\",\"properties\":{\"privateEndpoint\":{\"id\":\"sftufqobrjlna\"},\"privateLinkServiceConnectionState\":{\"status\":\"cc\",\"description\":\"knh\",\"actionsRequired\":\"izvy\"},\"provisioningState\":\"rzvul\",\"groupIds\":[\"aeranokqgukkjqnv\",\"roylaxxu\",\"cdisd\",\"sfjbjsvg\"]}},{\"id\":\"whryvycytdcl\",\"name\":\"ccknfnwmbtmvp\",\"type\":\"jdhttzaefedxi\",\"properties\":{\"privateEndpoint\":{\"id\":\"phkmcrjdqnsdfz\"},\"privateLinkServiceConnectionState\":{\"status\":\"gtgkylkdghr\",\"description\":\"euutlwxezwzh\",\"actionsRequired\":\"vbwnhhtq\"},\"provisioningState\":\"ehgpp\",\"groupIds\":[\"fhpfeoajvgcxtx\",\"csheafidltugsr\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datassjhoiftxfkf\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]},\"location\":\"rhptilluc\",\"tags\":{\"tpwb\":\"tgdqohmcwsldriz\",\"llibphbqzmizak\":\"a\",\"jpdn\":\"kan\"},\"id\":\"zhajoylhjlmuo\",\"name\":\"xprimrsop\",\"type\":\"eecjmeis\"}")
             .toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("nscliqhzvhxnk", model.location());
-        Assertions.assertEquals("kubotppnvdxz", model.tags().get("hihfrbbcevqagtlt"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
+        Assertions.assertEquals("rhptilluc", model.location());
+        Assertions.assertEquals("tgdqohmcwsldriz", model.tags().get("tpwb"));
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.ENABLED,
             model.properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HybridComputePrivateLinkScopeInner model = new HybridComputePrivateLinkScopeInner()
-            .withLocation("nscliqhzvhxnk")
-            .withTags(mapOf("hihfrbbcevqagtlt", "kubotppnvdxz", "vgtrdcnifmzzs", "hlfkqojpy", "g", "ymbrnysuxmpraf"))
-            .withProperties(new HybridComputePrivateLinkScopeProperties()
-                .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)
-                .withServiceExtensions(Arrays.asList(
-                    new ServiceExtension()
+        HybridComputePrivateLinkScopeInner model
+            = new HybridComputePrivateLinkScopeInner().withLocation("rhptilluc")
+                .withTags(mapOf("tpwb", "tgdqohmcwsldriz", "llibphbqzmizak", "a", "jpdn", "kan"))
+                .withProperties(new HybridComputePrivateLinkScopeProperties()
+                    .withPublicNetworkAccess(PublicNetworkAccessType.DISABLED)
+                    .withServiceExtensions(Arrays.asList(new ServiceExtension()
                         .withServiceExtensionType(
-                            BinaryData.fromBytes("\"datasgsgbdhu\"".getBytes(StandardCharsets.UTF_8)))
-                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
-                    new ServiceExtension()
-                        .withServiceExtensionType(BinaryData.fromBytes("\"dataj\"".getBytes(StandardCharsets.UTF_8)))
-                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED))));
+                            BinaryData.fromBytes("\"datassjhoiftxfkf\"".getBytes(StandardCharsets.UTF_8)))
+                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.ENABLED))));
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("nscliqhzvhxnk", model.location());
-        Assertions.assertEquals("kubotppnvdxz", model.tags().get("hihfrbbcevqagtlt"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
+        Assertions.assertEquals("rhptilluc", model.location());
+        Assertions.assertEquals("tgdqohmcwsldriz", model.tags().get("tpwb"));
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.ENABLED,
             model.properties().serviceExtensions().get(0).serviceExtensionPublicNetworkAccess());
     }
 

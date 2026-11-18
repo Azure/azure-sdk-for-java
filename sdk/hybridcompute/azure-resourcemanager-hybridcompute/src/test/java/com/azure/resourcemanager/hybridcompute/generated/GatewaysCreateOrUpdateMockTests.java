@@ -25,7 +25,7 @@ public final class GatewaysCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"kbr\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"l\",\"allowedFeatures\":[\"kutvlxhrpqhv\"]},\"location\":\"lcouqehbhbcdszir\",\"tags\":{\"pmbltoormkfql\":\"ndo\"},\"id\":\"xldykalsygaolnjp\",\"name\":\"nbmjksibjgsjjxxa\",\"type\":\"mr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"qhzvb\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"banf\",\"allowedFeatures\":[\"scxmxeat\"],\"gatewayBypass\":[\"mwnrdj\",\"ibqbnaomhjrm\",\"u\"]},\"location\":\"axljal\",\"tags\":{\"exxqcwg\":\"cjmobcanc\",\"vaknokzwjj\":\"xf\"},\"id\":\"r\",\"name\":\"tixldzyyfytpqs\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,20 @@ public final class GatewaysCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gateway response = manager.gateways()
-            .define("ryjqgdkf")
-            .withRegion("hxsgxj")
-            .withExistingResourceGroup("ufr")
-            .withTags(mapOf("wsdrnpxqwodif", "zrrscub", "jogjonmc", "jxcjrmmuabwib", "oyzbamwineofvf", "e", "lz",
-                "akpoldtvevbo"))
+            .define("rspxklur")
+            .withRegion("krxwet")
+            .withExistingResourceGroup("myltj")
+            .withTags(mapOf("dqumoenodnai", "rcyrucpcunnu", "skndnelqkaadlknw", "nhq", "cnrly", "oanniyopetxi"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("mqkyojwyvfkmbts"))
+            .withAllowedFeatures(Arrays.asList("xigpxvkqmaupxvpi", "dfaifyzyzeyuube"))
+            .withGatewayBypass(Arrays.asList("zlfytoit", "gygvfltgvdiho"))
             .create();
 
-        Assertions.assertEquals("lcouqehbhbcdszir", response.location());
-        Assertions.assertEquals("ndo", response.tags().get("pmbltoormkfql"));
+        Assertions.assertEquals("axljal", response.location());
+        Assertions.assertEquals("cjmobcanc", response.tags().get("exxqcwg"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("kutvlxhrpqhv", response.allowedFeatures().get(0));
+        Assertions.assertEquals("scxmxeat", response.allowedFeatures().get(0));
+        Assertions.assertEquals("mwnrdj", response.gatewayBypass().get(0));
     }
 
     // Use "Map.of" if available

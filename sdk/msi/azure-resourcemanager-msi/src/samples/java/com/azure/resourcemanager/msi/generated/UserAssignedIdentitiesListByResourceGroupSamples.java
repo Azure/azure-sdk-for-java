@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class UserAssignedIdentitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/IdentityListByResourceGroup.json
+     * x-ms-original-file: 2024-11-30/IdentityListByResourceGroup.json
      */
     /**
      * Sample code: IdentityListByResourceGroup.

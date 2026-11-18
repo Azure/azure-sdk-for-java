@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * Known source paths that can produce a routine run.
  */
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class RoutineAttemptSource extends ExpandableStringEnum<RoutineAttemptSource> {
 
     /**

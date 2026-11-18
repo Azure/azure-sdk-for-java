@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterKey model = BinaryData.fromString("{\"name\":\"lqqbtnyjpylxdbfv\",\"orderBy\":\"mvmsxbae\"}")
-            .toObject(ClusterKey.class);
-        Assertions.assertEquals("lqqbtnyjpylxdbfv", model.name());
-        Assertions.assertEquals("mvmsxbae", model.orderBy());
+        ClusterKey model
+            = BinaryData.fromString("{\"name\":\"thzodubtlmjtgbl\",\"orderBy\":\"skkfmk\"}").toObject(ClusterKey.class);
+        Assertions.assertEquals("thzodubtlmjtgbl", model.name());
+        Assertions.assertEquals("skkfmk", model.orderBy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterKey model = new ClusterKey().withName("lqqbtnyjpylxdbfv").withOrderBy("mvmsxbae");
+        ClusterKey model = new ClusterKey().withName("thzodubtlmjtgbl").withOrderBy("skkfmk");
         model = BinaryData.fromObject(model).toObject(ClusterKey.class);
-        Assertions.assertEquals("lqqbtnyjpylxdbfv", model.name());
-        Assertions.assertEquals("mvmsxbae", model.orderBy());
+        Assertions.assertEquals("thzodubtlmjtgbl", model.name());
+        Assertions.assertEquals("skkfmk", model.orderBy());
     }
 }

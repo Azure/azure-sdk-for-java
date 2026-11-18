@@ -6,6 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdate;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdateProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
@@ -19,26 +21,34 @@ public final class FabricCapacityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityUpdate model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"to\",\"tier\":\"Fabric\"},\"tags\":{\"kfo\":\"ouajpsqucmpoyf\"},\"properties\":{\"administration\":{\"members\":[\"gjofjd\",\"eqsrdeupewnwreit\"]}}}")
+            "{\"sku\":{\"name\":\"rifkwm\",\"tier\":\"Fabric\"},\"tags\":{\"ipa\":\"siznto\",\"poyfdkfogkn\":\"uajpsquc\",\"eqsrdeupewnwreit\":\"gjofjd\",\"usarhmofc\":\"zyf\"},\"properties\":{\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":2032289729},\"administration\":{\"members\":[\"tmlxhekuksjtx\",\"kc\",\"mparcryuanzw\",\"xzdxtayrlhmwh\"]}}}")
             .toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("to", model.sku().name());
+        Assertions.assertEquals("rifkwm", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("gjofjd", model.properties().administration().members().get(0));
+        Assertions.assertEquals("siznto", model.tags().get("ipa"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(2032289729, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tmlxhekuksjtx", model.properties().administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricCapacityUpdate model
-            = new FabricCapacityUpdate().withSku(new RpSku().withName("to").withTier(RpSkuTier.FABRIC))
-                .withTags(mapOf("kfo", "ouajpsqucmpoyf"))
-                .withProperties(new FabricCapacityUpdateProperties().withAdministration(
-                    new CapacityAdministration().withMembers(Arrays.asList("gjofjd", "eqsrdeupewnwreit"))));
+            = new FabricCapacityUpdate().withSku(new RpSku().withName("rifkwm").withTier(RpSkuTier.FABRIC))
+                .withTags(
+                    mapOf("ipa", "siznto", "poyfdkfogkn", "uajpsquc", "eqsrdeupewnwreit", "gjofjd", "usarhmofc", "zyf"))
+                .withProperties(new FabricCapacityUpdateProperties()
+                    .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
+                        .withThresholdCapacityUnitHours(2032289729))
+                    .withAdministration(new CapacityAdministration()
+                        .withMembers(Arrays.asList("tmlxhekuksjtx", "kc", "mparcryuanzw", "xzdxtayrlhmwh"))));
         model = BinaryData.fromObject(model).toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("to", model.sku().name());
+        Assertions.assertEquals("rifkwm", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("gjofjd", model.properties().administration().members().get(0));
+        Assertions.assertEquals("siznto", model.tags().get("ipa"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(2032289729, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tmlxhekuksjtx", model.properties().administration().members().get(0));
     }
 
     // Use "Map.of" if available

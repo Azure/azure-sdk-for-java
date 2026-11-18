@@ -19,7 +19,7 @@ import java.util.Map;
 public final class DiskEncryptionSetsUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.
+     * 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.
      * json
      */
     /**
@@ -42,7 +42,7 @@ public final class DiskEncryptionSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
+     * 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
      */
     /**
      * Sample code: update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Succeeded.
@@ -63,7 +63,7 @@ public final class DiskEncryptionSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
      */
     /**
      * Sample code: update a disk encryption set.

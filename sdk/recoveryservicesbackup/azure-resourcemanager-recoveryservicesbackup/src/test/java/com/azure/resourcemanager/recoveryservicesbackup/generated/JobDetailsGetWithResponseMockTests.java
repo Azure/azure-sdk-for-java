@@ -22,7 +22,7 @@ public final class JobDetailsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"bwzjnufzrf\",\"backupManagementType\":\"AzureSql\",\"operation\":\"gnnbzrtf\",\"status\":\"dzuubjtvgjsxm\",\"startTime\":\"2021-09-12T11:20:26Z\",\"endTime\":\"2021-10-04T17:55:49Z\",\"activityId\":\"vdpwwobtdphti\"},\"tags\":{\"hks\":\"fofwan\",\"riwgybjp\":\"auwazcgwd\"},\"location\":\"ok\",\"eTag\":\"vgllixdgby\",\"id\":\"wewqkj\",\"name\":\"xprwpxs\",\"type\":\"ohutxlcsk\"}";
+            = "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"rbzkuastaxk\",\"backupManagementType\":\"AzureStorage\",\"operation\":\"ulhgltoiz\",\"status\":\"vscksgfyys\",\"startTime\":\"2021-11-06T10:49:20Z\",\"endTime\":\"2021-04-27T10:19:04Z\",\"activityId\":\"fxcz\"},\"tags\":{\"ety\":\"ckwrtw\",\"lhpdhwynctaczcnj\":\"eszr\",\"x\":\"mbbfnv\"},\"location\":\"zovnkrtiklsm\",\"eTag\":\"hql\",\"id\":\"qksyiibhyxwbgbu\",\"name\":\"avqdorbccqcd\",\"type\":\"thojvlirknucos\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,18 @@ public final class JobDetailsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobResource response = manager.jobDetails()
-            .getWithResponse("rf", "bdxzfxnxmlbmu", "swkjmdihdcyyyz", com.azure.core.util.Context.NONE)
+            .getWithResponse("ucumlddauqml", "feothxu", "rigrjdljlkq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bwzjnufzrf", response.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, response.properties().backupManagementType());
-        Assertions.assertEquals("gnnbzrtf", response.properties().operation());
-        Assertions.assertEquals("dzuubjtvgjsxm", response.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T11:20:26Z"), response.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T17:55:49Z"), response.properties().endTime());
-        Assertions.assertEquals("vdpwwobtdphti", response.properties().activityId());
-        Assertions.assertEquals("fofwan", response.tags().get("hks"));
-        Assertions.assertEquals("ok", response.location());
-        Assertions.assertEquals("vgllixdgby", response.etag());
+        Assertions.assertEquals("rbzkuastaxk", response.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, response.properties().backupManagementType());
+        Assertions.assertEquals("ulhgltoiz", response.properties().operation());
+        Assertions.assertEquals("vscksgfyys", response.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T10:49:20Z"), response.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-27T10:19:04Z"), response.properties().endTime());
+        Assertions.assertEquals("fxcz", response.properties().activityId());
+        Assertions.assertEquals("ckwrtw", response.tags().get("ety"));
+        Assertions.assertEquals("zovnkrtiklsm", response.location());
+        Assertions.assertEquals("hql", response.etag());
     }
 }

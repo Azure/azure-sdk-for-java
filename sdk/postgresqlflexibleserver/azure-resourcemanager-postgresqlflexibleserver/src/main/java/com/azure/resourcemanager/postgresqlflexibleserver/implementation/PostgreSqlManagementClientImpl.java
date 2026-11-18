@@ -517,7 +517,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-01-preview";
+        this.apiVersion = "2026-10-01";
         this.operations = new OperationsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);
         this.servers = new ServersClientImpl(this);

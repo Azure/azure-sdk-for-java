@@ -11,12 +11,13 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -42,10 +43,11 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     private volatile Iterator<ByteBuffer> currentListItr;
     private volatile ByteBuffer currentBuffer;
 
+    // TODO (alzimmer): This needs better handling before GA.
+    private final Timer timer = new Timer(true);
     private final Semaphore semaphore = new Semaphore(1);
-
     private final long readTimeout;
-    private ScheduledFuture<?> currentTimeout;
+    private TimerTask currentTimeout;
 
     /**
      * Creates a response body subscriber that emits the response body as a {@link InputStream} while tracking a timeout
@@ -233,7 +235,7 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     @Override
     public void onNext(List<ByteBuffer> t) {
         // Cancel the timeout as the next element has been received.
-        currentTimeout.cancel(false);
+        currentTimeout.cancel();
         Objects.requireNonNull(t);
         if (!buffers.offer(t)) {
             IllegalStateException ex = new IllegalStateException("queue is full");
@@ -246,7 +248,7 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     @Override
     public void onError(Throwable throwable) {
         // Cancel the timeout as we're in an error state.
-        currentTimeout.cancel(true);
+        currentTimeout.cancel();
         subscription = null;
 
         // If we've already received a failure, add the new error as a suppressed exception.
@@ -265,7 +267,7 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     @Override
     public void onComplete() {
         // Cancel the timeout as we're done.
-        currentTimeout.cancel(true);
+        currentTimeout.cancel();
         subscription = null;
 
         // Offer to the queue the sentinel value. If the stream was waiting on the queue this will unblock it and allow
@@ -283,6 +285,11 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
             }
 
             closed = true;
+            if (currentTimeout != null) {
+                currentTimeout.cancel();
+            }
+            timer.cancel();
+            timer.purge();
             s = subscription;
             subscription = null;
         } finally {
@@ -299,14 +306,19 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
         }
     }
 
-    private ScheduledFuture<?> createTimeout() {
-        return JdkHttpUtils.scheduleTimeoutTask(() -> {
-            // Set the failed exception before cancelling. Cancelling the subscription causes an error to be emitted
-            // about the subscription being cancelled which we don't want to propagate as we are explicitly doing
-            // it.
-            failed = new HttpTimeoutException("Timeout reading response body.");
-            subscription.cancel();
-            close();
-        }, readTimeout);
+    private TimerTask createTimeout() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                // Set the failed exception before cancelling. Cancelling the subscription causes an error to be emitted
+                // about the subscription being canceled which we don't want to propagate as we are explicitly doing
+                // it.
+                failed = new HttpTimeoutException("Timeout reading response body.");
+                subscription.cancel();
+                close();
+            }
+        };
+        timer.schedule(task, readTimeout);
+        return task;
     }
 }

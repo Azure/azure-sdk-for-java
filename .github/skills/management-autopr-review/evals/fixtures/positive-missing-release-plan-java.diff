@@ -1,0 +1,10 @@
+diff --git a/sdk/contoso/azure-resourcemanager-contoso/src/main/java/com/azure/resourcemanager/contoso/NetworkLinks.java b/sdk/contoso/azure-resourcemanager-contoso/src/main/java/com/azure/resourcemanager/contoso/NetworkLinks.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contoso/azure-resourcemanager-contoso/src/main/java/com/azure/resourcemanager/contoso/NetworkLinks.java
+@@ -0,0 +1,5 @@
++package com.azure.resourcemanager.contoso;
++
++public interface NetworkLinks {
++    NetworkLink get(String resourceGroupName, String linkName);
++}

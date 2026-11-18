@@ -7,11 +7,12 @@ package com.azure.resourcemanager.cognitiveservices.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiPolicyInner;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPoliciesGetResponse;
 
 /**
  * An instance of this class provides access to all the operations defined in RaiPoliciesClient.
@@ -27,10 +28,10 @@ public interface RaiPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response}.
+     * @return the specified Content Filters associated with the Azure OpenAI account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RaiPolicyInner> getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
+    RaiPoliciesGetResponse getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
         Context context);
 
     /**
@@ -54,15 +55,17 @@ public interface RaiPoliciesClient {
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
      * @param raiPolicy Properties describing the Content Filters.
+     * @param ifMatch Proceed only when the current resource ETag matches this value.
+     * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiPolicy along with {@link Response}.
+     * @return cognitive Services RaiPolicy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RaiPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
-        String raiPolicyName, RaiPolicyInner raiPolicy, Context context);
+    RaiPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String raiPolicyName, RaiPolicyInner raiPolicy, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Update the state of specified Content Filters associated with the Azure OpenAI account.
@@ -100,6 +103,7 @@ public interface RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
+     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +112,7 @@ public interface RaiPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String raiPolicyName,
-        Context context);
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Content Filters associated with the Azure OpenAI account.
@@ -129,13 +133,14 @@ public interface RaiPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
+     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String raiPolicyName, Context context);
+    void delete(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch, Context context);
 
     /**
      * Gets the content filters associated with the Azure OpenAI account.

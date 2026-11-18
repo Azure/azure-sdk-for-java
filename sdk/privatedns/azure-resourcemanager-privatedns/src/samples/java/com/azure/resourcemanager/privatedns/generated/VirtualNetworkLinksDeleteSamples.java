@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class VirtualNetworkLinksDeleteSamples {
     /*
-     * x-ms-original-file: 2024-06-01/VirtualNetworkLinkDelete.json
+     * x-ms-original-file: 2026-06-01-preview/VirtualNetworkLinkDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone Virtual Network Link.

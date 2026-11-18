@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -43,10 +44,24 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * GeoJSON geometry for spatial filtering.
      */
     @Generated
-    private Geometry intersects;
+    private GeoJsonGeometry intersects;
 
     /*
-     * Temporal filter in RFC 3339 format, can be a single time or range.
+     * Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      */
     @Generated
     private String datetime;
@@ -63,7 +78,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * Overrides datetime validation from the base request model.
      */
     @Generated
-    private Map<String, Object> conformanceClass;
+    private Map<String, BinaryData> conformanceClass;
 
     /*
      * STAC Query
@@ -71,7 +86,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * See the [STAC Query Extension](https://github.com/stac-api-extensions/query).
      */
     @Generated
-    private Map<String, Object> query;
+    private Map<String, BinaryData> query;
 
     /*
      * Sort criteria for the search results.
@@ -95,7 +110,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * See the [STAC Filter Extension](https://github.com/stac-api-extensions/filter).
      */
     @Generated
-    private Map<String, Object> filter;
+    private Map<String, BinaryData> filter;
 
     /*
      * Coordinate reference system for the filter.
@@ -194,7 +209,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the intersects value.
      */
     @Generated
-    public Geometry getIntersects() {
+    public GeoJsonGeometry getIntersects() {
         return this.intersects;
     }
 
@@ -205,13 +220,27 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setIntersects(Geometry intersects) {
+    public StacSearchParameters setIntersects(GeoJsonGeometry intersects) {
         this.intersects = intersects;
         return this;
     }
 
     /**
-     * Get the datetime property: Temporal filter in RFC 3339 format, can be a single time or range.
+     * Get the datetime property: Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      * 
      * @return the datetime value.
      */
@@ -221,7 +250,21 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
     }
 
     /**
-     * Set the datetime property: Temporal filter in RFC 3339 format, can be a single time or range.
+     * Set the datetime property: Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      * 
      * @param datetime the datetime value to set.
      * @return the StacSearchParameters object itself.
@@ -262,7 +305,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the conformanceClass value.
      */
     @Generated
-    public Map<String, Object> getConformanceClass() {
+    public Map<String, BinaryData> getConformanceClass() {
         return this.conformanceClass;
     }
 
@@ -275,7 +318,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setConformanceClass(Map<String, Object> conformanceClass) {
+    public StacSearchParameters setConformanceClass(Map<String, BinaryData> conformanceClass) {
         this.conformanceClass = conformanceClass;
         return this;
     }
@@ -288,7 +331,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the query value.
      */
     @Generated
-    public Map<String, Object> getQuery() {
+    public Map<String, BinaryData> getQuery() {
         return this.query;
     }
 
@@ -301,7 +344,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setQuery(Map<String, Object> query) {
+    public StacSearchParameters setQuery(Map<String, BinaryData> query) {
         this.query = query;
         return this;
     }
@@ -366,7 +409,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the filter value.
      */
     @Generated
-    public Map<String, Object> getFilter() {
+    public Map<String, BinaryData> getFilter() {
         return this.filter;
     }
 
@@ -379,7 +422,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setFilter(Map<String, Object> filter) {
+    public StacSearchParameters setFilter(Map<String, BinaryData> filter) {
         this.filter = filter;
         return this;
     }
@@ -463,11 +506,29 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
         jsonWriter.writeJsonField("intersects", this.intersects);
         jsonWriter.writeStringField("datetime", this.datetime);
         jsonWriter.writeNumberField("limit", this.limit);
-        jsonWriter.writeMapField("conf", this.conformanceClass, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeMapField("query", this.query, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("conf", this.conformanceClass, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("query", this.query, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("sortby", this.sortBy, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("filter-crs", this.filterCoordinateReferenceSystem);
         jsonWriter.writeStringField("filter-lang", this.filterLang == null ? null : this.filterLang.toString());
         jsonWriter.writeStringField("token", this.token);
@@ -500,16 +561,18 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
                     List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedStacSearchParameters.boundingBox = boundingBox;
                 } else if ("intersects".equals(fieldName)) {
-                    deserializedStacSearchParameters.intersects = Geometry.fromJson(reader);
+                    deserializedStacSearchParameters.intersects = GeoJsonGeometry.fromJson(reader);
                 } else if ("datetime".equals(fieldName)) {
                     deserializedStacSearchParameters.datetime = reader.getString();
                 } else if ("limit".equals(fieldName)) {
                     deserializedStacSearchParameters.limit = reader.getNullable(JsonReader::getInt);
                 } else if ("conf".equals(fieldName)) {
-                    Map<String, Object> conformanceClass = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> conformanceClass = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedStacSearchParameters.conformanceClass = conformanceClass;
                 } else if ("query".equals(fieldName)) {
-                    Map<String, Object> query = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> query = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedStacSearchParameters.query = query;
                 } else if ("sortby".equals(fieldName)) {
                     List<StacSortExtension> sortBy = reader.readArray(reader1 -> StacSortExtension.fromJson(reader1));
@@ -519,7 +582,8 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
                         = reader.readArray(reader1 -> SearchOptionsFields.fromJson(reader1));
                     deserializedStacSearchParameters.fields = fields;
                 } else if ("filter".equals(fieldName)) {
-                    Map<String, Object> filter = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> filter = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedStacSearchParameters.filter = filter;
                 } else if ("filter-crs".equals(fieldName)) {
                     deserializedStacSearchParameters.filterCoordinateReferenceSystem = reader.getString();

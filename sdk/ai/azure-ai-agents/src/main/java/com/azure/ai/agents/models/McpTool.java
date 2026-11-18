@@ -17,7 +17,7 @@ import java.util.Map;
  * MCP tool
  *
  * Give the model access to additional tools via remote Model Context Protocol
- * (MCP) servers. [Learn more about MCP](/docs/guides/tools-remote-mcp).
+ * (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
  */
 @Fluent
 public final class McpTool extends Tool {
@@ -35,16 +35,19 @@ public final class McpTool extends Tool {
     private final String serverLabel;
 
     /*
-     * The URL for the MCP server. One of `server_url` or `connector_id` must be
-     * provided.
+     * The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      */
     @Generated
     private String serverUrl;
 
     /*
      * Identifier for service connectors, like those available in ChatGPT. One of
-     * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -129,8 +132,8 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Get the serverUrl property: The URL for the MCP server. One of `server_url` or `connector_id` must be
-     * provided.
+     * Get the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @return the serverUrl value.
      */
@@ -140,8 +143,8 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Set the serverUrl property: The URL for the MCP server. One of `server_url` or `connector_id` must be
-     * provided.
+     * Set the serverUrl property: The URL for the MCP server. One of `server_url`, `connector_id`, or
+     * `tunnel_id` must be provided.
      *
      * @param serverUrl the serverUrl value to set.
      * @return the McpTool object itself.
@@ -154,8 +157,11 @@ public final class McpTool extends Tool {
 
     /**
      * Get the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
-     * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -423,6 +429,7 @@ public final class McpTool extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("connector_id", this.connectorType == null ? null : this.connectorType.toString());
+        jsonWriter.writeStringField("tunnel_id", this.tunnelId);
         jsonWriter.writeStringField("authorization", this.authorization);
         jsonWriter.writeStringField("server_description", this.serverDescription);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
@@ -430,6 +437,8 @@ public final class McpTool extends Tool {
             jsonWriter.writeFieldName("allowed_tools");
             this.allowedTools.writeTo(jsonWriter);
         }
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         if (this.requireApproval != null) {
             jsonWriter.writeFieldName("require_approval");
             this.requireApproval.writeTo(jsonWriter);
@@ -456,10 +465,12 @@ public final class McpTool extends Tool {
             ToolType type = ToolType.MCP;
             String serverUrl = null;
             McpToolConnectorId connectorType = null;
+            String tunnelId = null;
             String authorization = null;
             String serverDescription = null;
             Map<String, String> headers = null;
             BinaryData allowedTools = null;
+            List<CallableToolAllowedCaller> allowedCallers = null;
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
@@ -475,6 +486,8 @@ public final class McpTool extends Tool {
                     serverUrl = reader.getString();
                 } else if ("connector_id".equals(fieldName)) {
                     connectorType = McpToolConnectorId.fromString(reader.getString());
+                } else if ("tunnel_id".equals(fieldName)) {
+                    tunnelId = reader.getString();
                 } else if ("authorization".equals(fieldName)) {
                     authorization = reader.getString();
                 } else if ("server_description".equals(fieldName)) {
@@ -484,6 +497,9 @@ public final class McpTool extends Tool {
                 } else if ("allowed_tools".equals(fieldName)) {
                     allowedTools
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("allowed_callers".equals(fieldName)) {
+                    allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
                 } else if ("require_approval".equals(fieldName)) {
                     requireApproval
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -501,10 +517,12 @@ public final class McpTool extends Tool {
             deserializedMcpTool.type = type;
             deserializedMcpTool.serverUrl = serverUrl;
             deserializedMcpTool.connectorType = connectorType;
+            deserializedMcpTool.tunnelId = tunnelId;
             deserializedMcpTool.authorization = authorization;
             deserializedMcpTool.serverDescription = serverDescription;
             deserializedMcpTool.headers = headers;
             deserializedMcpTool.allowedTools = allowedTools;
+            deserializedMcpTool.allowedCallers = allowedCallers;
             deserializedMcpTool.requireApproval = requireApproval;
             deserializedMcpTool.deferLoading = deferLoading;
             deserializedMcpTool.projectConnectionId = projectConnectionId;
@@ -515,8 +533,11 @@ public final class McpTool extends Tool {
 
     /**
      * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
-     * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
+     * about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+     * This field is deprecated for models released after September 1, 2026.
+     * Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+     * connect through a Secure MCP Tunnel.
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -589,6 +610,65 @@ public final class McpTool extends Tool {
     @Generated
     public McpTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
+        return this;
+    }
+
+    /*
+     * The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided.
+     */
+    @Generated
+    private String tunnelId;
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the tunnelId property: The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided.
+     *
+     * @return the tunnelId value.
+     */
+    @Generated
+    public String getTunnelId() {
+        return this.tunnelId;
+    }
+
+    /**
+     * Set the tunnelId property: The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+     * `server_url`, `connector_id`, or `tunnel_id` must be provided.
+     *
+     * @param tunnelId the tunnelId value to set.
+     * @return the McpTool object itself.
+     */
+    @Generated
+    public McpTool setTunnelId(String tunnelId) {
+        this.tunnelId = tunnelId;
+        return this;
+    }
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the McpTool object itself.
+     */
+    @Generated
+    public McpTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
         return this;
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class ConnectedPartnerResourcesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ConnectedPartnerResources_List.json
+     * x-ms-original-file: 2026-06-01/ConnectedPartnerResources_List.json
      */
     /**
      * Sample code: ConnectedPartnerResources_List.

@@ -22,6 +22,11 @@ public final class GatewayUpdateProperties implements JsonSerializable<GatewayUp
      */
     private List<String> allowedFeatures;
 
+    /*
+     * Specifies the list of domain names that should bypass the gateway. Each entry must be a valid DNS hostname.
+     */
+    private List<String> gatewayBypass;
+
     /**
      * Creates an instance of GatewayUpdateProperties class.
      */
@@ -49,12 +54,36 @@ public final class GatewayUpdateProperties implements JsonSerializable<GatewayUp
     }
 
     /**
+     * Get the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @return the gatewayBypass value.
+     */
+    public List<String> gatewayBypass() {
+        return this.gatewayBypass;
+    }
+
+    /**
+     * Set the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @param gatewayBypass the gatewayBypass value to set.
+     * @return the GatewayUpdateProperties object itself.
+     */
+    public GatewayUpdateProperties withGatewayBypass(List<String> gatewayBypass) {
+        this.gatewayBypass = gatewayBypass;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("allowedFeatures", this.allowedFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("gatewayBypass", this.gatewayBypass,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -77,6 +106,9 @@ public final class GatewayUpdateProperties implements JsonSerializable<GatewayUp
                 if ("allowedFeatures".equals(fieldName)) {
                     List<String> allowedFeatures = reader.readArray(reader1 -> reader1.getString());
                     deserializedGatewayUpdateProperties.allowedFeatures = allowedFeatures;
+                } else if ("gatewayBypass".equals(fieldName)) {
+                    List<String> gatewayBypass = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayUpdateProperties.gatewayBypass = gatewayBypass;
                 } else {
                     reader.skipChildren();
                 }

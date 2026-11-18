@@ -22,20 +22,25 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
+import com.azure.search.documents.implementation.MultipartFormDataHelper;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.IndexListingPagedFlux;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileIngestionOperation;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -43,6 +48,8 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
+import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -59,6 +66,40 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
+
+    /**
+     * Lists matching synonym maps, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching synonym maps as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
+        return serviceClient.listSynonymMapsAsync(requestOptions).mapPage(value -> value.toObject(SynonymMap.class));
+    }
+
+    /**
+     * Lists matching indexes with selected properties, following service-provided continuation links.
+     *
+     * @param select The top-level properties to retrieve, or {@code null} to use the service default.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexes as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select,
+        RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listIndexesWithSelectedPropertiesAsync(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexResponse.class));
+    }
 
     @Generated
     private final SearchIndexClientImpl serviceClient;
@@ -346,63 +387,6 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             format: String (Required)
-     *             synonyms (Required): [
-     *                 String (Required)
-     *             ]
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
-     *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSynonymMapsWithResponseAsync(requestOptions);
-    }
-
-    /**
      * Creates a new search index or updates an index if it already exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -442,7 +426,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -453,6 +438,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -462,6 +448,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -473,8 +487,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -581,7 +593,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -597,6 +609,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -604,6 +625,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -628,7 +653,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -639,6 +665,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -648,6 +675,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -659,8 +714,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -767,7 +820,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -783,6 +836,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -790,6 +852,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -1018,14 +1084,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -1042,6 +1130,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -1050,6 +1141,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -1067,14 +1159,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -1091,6 +1205,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -1099,6 +1216,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -1166,6 +1284,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1192,6 +1311,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1401,77 +1521,22 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSynonymMapsResult> getSynonymMaps() {
-        // Generated convenience method for getSynonymMapsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListSynonymMapsResult.class));
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all synonym maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions())
-            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().getSynonymMaps(), null, null)));
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return mapResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
+        return getSynonymMaps(null, null, null, null);
     }
 
     /**
      * Lists the names of all synonym maps available for a search service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the names of all synonym maps as paginated response with {@link PagedFlux}.
+     * @return the names of all synonym maps as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSynonymMapNames() {
-        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList()),
-                null, null)));
+        return getSynonymMaps(java.util.Collections.singletonList("name"), null, null, null)
+            .mapPage(SynonymMap::getName);
     }
 
     /**
@@ -1669,9 +1734,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndex>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1940,9 +2012,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListAliases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchAlias>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2117,9 +2196,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeBases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeBase>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2310,9 +2396,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSource>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -2896,7 +2989,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2907,6 +3001,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2916,6 +3011,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2927,8 +3050,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3035,7 +3156,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3051,6 +3172,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3058,6 +3188,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3085,11 +3219,12 @@ public final class SearchIndexAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3110,7 +3245,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3121,6 +3257,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3130,6 +3267,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3141,8 +3306,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3249,7 +3412,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3265,6 +3428,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3272,6 +3444,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3311,7 +3487,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3322,6 +3499,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3331,6 +3509,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3342,8 +3548,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3450,7 +3654,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3466,6 +3670,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3473,6 +3686,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3497,7 +3714,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3508,6 +3726,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3517,6 +3736,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3528,8 +3775,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3636,7 +3881,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3652,6 +3897,15 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3659,6 +3913,10 @@ public final class SearchIndexAsyncClient {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3797,6 +4055,18 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3884,14 +4154,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -3908,6 +4200,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3916,6 +4211,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -3937,6 +4233,18 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3950,14 +4258,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -3974,6 +4304,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3982,6 +4315,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -4014,14 +4348,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -4038,6 +4394,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -4046,6 +4405,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -4063,14 +4423,36 @@ public final class SearchIndexAsyncClient {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -4087,6 +4469,9 @@ public final class SearchIndexAsyncClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -4095,6 +4480,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -4125,6 +4511,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4161,6 +4548,18 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4169,6 +4568,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4210,6 +4610,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4236,6 +4637,7 @@ public final class SearchIndexAsyncClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4281,6 +4683,10 @@ public final class SearchIndexAsyncClient {
      *     synchronizationStatus: String(creating/active/deleting) (Required)
      *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
+     *         graphStatistics (Optional): {
+     *             ontologyName: String (Optional)
+     *             triplesWritten: long (Required)
+     *         }
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
      *         itemsUpdatesFailed: int (Required)
@@ -4297,6 +4703,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *     }
      *     lastSynchronizationState (Optional): {
+     *         graphStatistics (Optional): (recursive schema, see graphStatistics above)
      *         startTime: OffsetDateTime (Required)
      *         endTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -4307,6 +4714,11 @@ public final class SearchIndexAsyncClient {
      *         totalSynchronization: int (Required)
      *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
+     *     }
+     *     fileCapacity (Optional): {
+     *         maxFileCount: int (Required)
+     *         remainingFileCount: int (Required)
+     *         maxFileSizeBytes: long (Required)
      *     }
      * }
      * }
@@ -4358,8 +4770,9 @@ public final class SearchIndexAsyncClient {
      *         maxComplexObjectsInCollectionsPerDocument: Integer (Optional)
      *         maxStoragePerIndex: Long (Optional)
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
+     *         maxVectorIndexSizePerIndexInBytes: Long (Optional)
      *     }
-     *     indexersRuntime (Required): {
+     *     indexersRuntime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -4392,11 +4805,12 @@ public final class SearchIndexAsyncClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4417,7 +4831,8 @@ public final class SearchIndexAsyncClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -4428,6 +4843,7 @@ public final class SearchIndexAsyncClient {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4437,6 +4853,34 @@ public final class SearchIndexAsyncClient {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4448,8 +4892,6 @@ public final class SearchIndexAsyncClient {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4556,7 +4998,7 @@ public final class SearchIndexAsyncClient {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4572,9 +5014,27 @@ public final class SearchIndexAsyncClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4610,9 +5070,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4641,15 +5108,6 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
-        return listIndexesWithSelectedProperties(select, null, null, null);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSynonymMapsResult> getSynonymMaps(List<String> select) {
-        // Generated convenience method for getSynonymMapsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -4658,8 +5116,53 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getSynonymMapsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListSynonymMapsResult.class));
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve.
+     * @param search A string used to narrow down the listing.
+     * @param pageSize The maximum number of items to return in a single page.
+     * @param searchType Specifies how the search parameter is interpreted.
+     * @return all matching synonym maps as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SynonymMap> getSynonymMaps(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listSynonymMapsAsync(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
     }
 
     /**
@@ -4668,11 +5171,12 @@ public final class SearchIndexAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4703,105 +5207,6 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all indexes available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
-     * @param skip The number of items to skip.
-     * @param count A value that specifies whether to fetch the total count of items. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select, Integer top,
-        Integer skip, Boolean count) {
-        // Generated convenience method for hiddenGeneratedListIndexesWithSelectedProperties
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (top != null) {
-            requestOptions.addQueryParam("$top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
-        }
-        if (count != null) {
-            requestOptions.addQueryParam("$count", String.valueOf(count), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieves a summary of statistics for all indexes in the search service.
-     *
-     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
-     * @param skip The number of items to skip.
-     * @param count A value that specifies whether to fetch the total count of items. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a request to retrieve stats summary of all indexes as paginated response with
-     * {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(Integer top, Integer skip, Boolean count) {
-        // Generated convenience method for hiddenGeneratedListIndexStatsSummary
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("$top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
-        }
-        if (count != null) {
-            requestOptions.addQueryParam("$count", String.valueOf(count), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(IndexStatisticsSummary.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
      * Retrieves a summary of statistics for all indexes in the search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4819,9 +5224,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4835,6 +5247,20 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all files in a File knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>prefix</td><td>String</td><td>No</td><td>Optional prefix to filter files by their directory-like
+     * path.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4846,6 +5272,12 @@ public final class SearchIndexAsyncClient {
      *     createdAt: OffsetDateTime (Optional)
      *     lastUpdatedAt: OffsetDateTime (Optional)
      *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
      * }
      * }
      * </pre>
@@ -4867,8 +5299,8 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      *
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4877,9 +5309,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponse(String name, String fileId,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteKnowledgeSourceFileWithResponseAsync(fileId, name, requestOptions);
+        return this.serviceClient.deleteKnowledgeSourceFileWithResponseAsync(name, fileId, requestOptions);
     }
 
     /**
@@ -4901,9 +5333,16 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -4918,8 +5357,8 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      *
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4929,83 +5368,10 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeSourceFile(String fileId, String name) {
+    public Mono<Void> deleteKnowledgeSourceFile(String name, String fileId) {
         // Generated convenience method for deleteKnowledgeSourceFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteKnowledgeSourceFileWithResponse(fileId, name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     fileId: String (Optional)
-     *     fileName: String (Optional)
-     *     fileSizeBytes: Long (Optional)
-     *     createdAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
-     *     errorMessage: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String contentDisposition,
-        String name, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.uploadKnowledgeSourceFileWithResponseAsync(contentDisposition, name, file,
-            requestOptions);
-    }
-
-    /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFile(String contentDisposition, String name,
-        BinaryData file) {
-        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
+        return deleteKnowledgeSourceFileWithResponse(name, fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5045,5 +5411,879 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions) {
         return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync(knowledgeSource.getName(),
             BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
+
+    /**
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFileMultipart(String name,
+        UploadKnowledgeSourceFileMultipartRequest body) {
+        // Generated convenience method for uploadKnowledgeSourceFileMultipartWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadKnowledgeSourceFileMultipartWithResponseInternal(name,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param prefix Optional prefix to filter files by their directory-like path.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Files request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, String prefix, String search,
+        Integer pageSize, ListingSearchType searchType) {
+        // Generated convenience method for hiddenGeneratedListKnowledgeSourceFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSourceFiles(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFile>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
+     *
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceFile> updateKnowledgeSourceFile(String name, String fileId,
+        UpdateKnowledgeSourceFileRequest body) {
+        // Generated convenience method for updateKnowledgeSourceFileWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return updateKnowledgeSourceFileWithResponseInternal(name, fileId,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for hiddenGeneratedListIndexStatsSummary
+        RequestOptions requestOptions = new RequestOptions();
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IndexStatisticsSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
+     * @param file The file content to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String name,
+        String contentDisposition, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.uploadKnowledgeSourceFileWithResponseAsync(name, contentDisposition, file,
+            requestOptions);
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     *
+     * @param name The name of the knowledge source.
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
+     * @param file The file content to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFile(String contentDisposition, String name,
+        BinaryData file) {
+        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(name, contentDisposition, file, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> uploadKnowledgeSourceFileMultipartWithResponseInternal(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        // Operation 'uploadKnowledgeSourceFileMultipart' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
+        return this.serviceClient.uploadKnowledgeSourceFileMultipartWithResponseInternalAsync(name, body,
+            requestOptions);
+    }
+
+    /**
+     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternal(String name, String fileId,
+        BinaryData body, RequestOptions requestOptions) {
+        // Operation 'updateKnowledgeSourceFile' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.updateKnowledgeSourceFileWithResponseInternalAsync(name, fileId, body,
+            requestOptions);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.listSynonymMapsAsync(requestOptions);
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<BinaryData, BinaryData> beginIngestKnowledgeSourceFileMultipartInternal(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        // Operation 'ingestKnowledgeSourceFileMultipart' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
+        return this.serviceClient.beginIngestKnowledgeSourceFileMultipartInternalAsync(name, body, requestOptions);
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<BinaryData, BinaryData> beginIngestKnowledgeSourceFileReplacementInternal(String name, String fileId,
+        BinaryData body, RequestOptions requestOptions) {
+        // Operation 'ingestKnowledgeSourceFileReplacement' is of content-type 'multipart/form-data'. Protocol API is
+        // not usable and hence not generated.
+        return this.serviceClient.beginIngestKnowledgeSourceFileReplacementInternalAsync(name, fileId, body,
+            requestOptions);
+    }
+
+    /**
+     * Gets the status and, when successful, the result of a file ingestion operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>The suggested delay in seconds before polling a nonterminal operation
+     * again.</td></tr>
+     * </table>
+     *
+     * @param name The name of the knowledge source.
+     * @param operationId The server-generated identifier returned when ingestion was accepted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status and, when successful, the result of a file ingestion operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedGetKnowledgeSourceFileIngestionOperationWithResponse(String name,
+        String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getKnowledgeSourceFileIngestionOperationWithResponseAsync(name, operationId,
+            requestOptions);
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of operations to return.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>An opaque continuation token returned by the
+     * service.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source as paginated response with
+     * {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListKnowledgeSourceFileIngestionOperations(String name,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFileIngestionOperationsAsync(name, requestOptions);
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileMultipart(String name, UploadKnowledgeSourceFileMultipartRequest body) {
+        // Generated convenience method for beginIngestKnowledgeSourceFileMultipartWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginIngestKnowledgeSourceFileMultipartWithModelAsync(name,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions);
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     *
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileReplacement(String name, String fileId, UpdateKnowledgeSourceFileRequest body) {
+        // Generated convenience method for beginIngestKnowledgeSourceFileReplacementWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginIngestKnowledgeSourceFileReplacementWithModelAsync(name, fileId,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions);
+    }
+
+    /**
+     * Gets the status and, when successful, the result of a file ingestion operation.
+     *
+     * @param name The name of the knowledge source.
+     * @param operationId The server-generated identifier returned when ingestion was accepted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and, when successful, the result of a file ingestion operation on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceFileIngestionOperation> getKnowledgeSourceFileIngestionOperation(String name,
+        String operationId) {
+        // Generated convenience method for hiddenGeneratedGetKnowledgeSourceFileIngestionOperationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedGetKnowledgeSourceFileIngestionOperationWithResponse(name, operationId, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFileIngestionOperation.class));
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param pageSize The maximum number of operations to return.
+     * @param continuationToken An opaque continuation token returned by the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of retained ingestion operations belonging to a knowledge source as paginated response with
+     * {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFileIngestionOperation> listKnowledgeSourceFileIngestionOperations(String name,
+        Integer pageSize, String continuationToken) {
+        // Generated convenience method for hiddenGeneratedListKnowledgeSourceFileIngestionOperations
+        RequestOptions requestOptions = new RequestOptions();
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse
+            = hiddenGeneratedListKnowledgeSourceFileIngestionOperations(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFileIngestionOperation>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFileIngestionOperation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of retained ingestion operations belonging to a knowledge source as paginated response with
+     * {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFileIngestionOperation> listKnowledgeSourceFileIngestionOperations(String name) {
+        // Generated convenience method for hiddenGeneratedListKnowledgeSourceFileIngestionOperations
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse
+            = hiddenGeneratedListKnowledgeSourceFileIngestionOperations(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSourceFileIngestionOperation>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFileIngestionOperation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFilesAsync(name, requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Lists indexes with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedFlux<SearchIndex> listIndexesWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedFlux<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexesSinglePageWithMetadataAsync(requestOptions, SearchIndex.class)
+                : serviceClient.listIndexesNextSinglePageWithMetadataAsync(token, nextOptions, SearchIndex.class))
+                    .flux());
+    }
+
+    /**
+     * Lists index statistics with HTTP and optional total-count metadata on each page.
+     * Counts are null when not returned by the service. This method does not add a count-request parameter, which is
+     * not defined by the preview listing contract.
+     * Continuation links control subsequent requests; the initial request's context is retained.
+     *
+     * @param requestOptions options for the initial HTTP request, or null for defaults.
+     * @return the lazy listing with typed pages and optional total counts.
+     * @throws com.azure.core.exception.HttpResponseException if a request is rejected.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IndexListingPagedFlux<IndexStatisticsSummary>
+        listIndexStatsSummaryWithMetadata(RequestOptions requestOptions) {
+        RequestOptions nextOptions = new RequestOptions().setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new IndexListingPagedFlux<>(() -> (token,
+            pageSize) -> (token == null
+                ? serviceClient.listIndexStatsSummarySinglePageWithMetadataAsync(requestOptions,
+                    IndexStatisticsSummary.class)
+                : serviceClient.listIndexStatsSummaryNextSinglePageWithMetadataAsync(token, nextOptions,
+                    IndexStatisticsSummary.class)).flux());
     }
 }

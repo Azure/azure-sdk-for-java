@@ -37,6 +37,7 @@ import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -52,6 +53,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_NONCE_VALIDATOR_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -62,6 +64,9 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * <p> Please refer to the
  * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
+ *
+ * <p>Layout-aware routing is not supported for client-side encrypted downloads. Downloads use the client's configured
+ * endpoint and log a warning when {@link LayoutAwareRouting#ENABLED} is requested.</p>
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
@@ -485,12 +490,18 @@ public class EncryptedBlobClient extends BlobClient {
         return range != null && (range.getOffset() != 0 || range.getCount() != null);
     }
 
+    static BlobRequestConditions applyETagLock(BlobRequestConditions requestConditions, String eTag) {
+        BlobRequestConditions finalConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        return finalConditions.setIfMatch(StorageImplUtils.toETagHeaderValue(eTag));
+    }
+
     private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
         BlobProperties initialProperties
             = this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
-        requestConditions.setIfMatch(initialProperties.getETag());
+        applyETagLock(requestConditions, initialProperties.getETag());
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
@@ -498,6 +509,7 @@ public class EncryptedBlobClient extends BlobClient {
                 encryptedBlobAsyncClient.isEncryptionRequired());
 
             context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
+                .addData(GCM_NONCE_VALIDATOR_KEY, new CseV2NonceOrderValidator())
                 .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
                     EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, initialProperties.getBlobSize()));
         }

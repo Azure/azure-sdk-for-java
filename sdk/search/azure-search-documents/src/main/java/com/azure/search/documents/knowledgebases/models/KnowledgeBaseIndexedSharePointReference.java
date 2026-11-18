@@ -91,6 +91,7 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docUrl", this.documentUrl);
         jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
+        jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +114,7 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_SHARE_POINT;
             String documentUrl = null;
             PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
+            String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -130,6 +132,8 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
                     documentUrl = reader.getString();
                 } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
                     searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
+                } else if ("citationUrl".equals(fieldName)) {
+                    citationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -141,7 +145,25 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
             deserializedKnowledgeBaseIndexedSharePointReference.type = type;
             deserializedKnowledgeBaseIndexedSharePointReference.documentUrl = documentUrl;
             deserializedKnowledgeBaseIndexedSharePointReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
+            deserializedKnowledgeBaseIndexedSharePointReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseIndexedSharePointReference;
         });
+    }
+
+    /*
+     * A Search-owned URL that points at the backing document for this reference, usable as a citation target.
+     */
+    @Generated
+    private String citationUrl;
+
+    /**
+     * Get the citationUrl property: A Search-owned URL that points at the backing document for this reference, usable
+     * as a citation target.
+     *
+     * @return the citationUrl value.
+     */
+    @Generated
+    public String getCitationUrl() {
+        return this.citationUrl;
     }
 }
