@@ -241,6 +241,9 @@ public final class BlobServiceClient {
      *
      * @param containerName Name of the container to create
      * @return The {@link BlobContainerClient} used to interact with the container created.
+     * @throws BlobStorageException If the container could not be created for any other reason than that it already
+     * exists, for example when a container with the same name is still being deleted (status code 409, error code
+     * ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerClient createBlobContainerIfNotExists(String containerName) {
@@ -277,6 +280,9 @@ public final class BlobServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
      * to interact with the container created. If {@link Response}'s status code is 201, a new container was
      * successfully created. If status code is 409, a container with the same name already existed at this location.
+     * @throws BlobStorageException If the container could not be created for any other reason than that it already
+     * exists, for example when a container with the same name is still being deleted (status code 409, error code
+     * ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerClient> createBlobContainerIfNotExistsWithResponse(String containerName,

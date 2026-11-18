@@ -41,6 +41,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -438,6 +439,8 @@ public final class BlobContainerClient {
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
      *
      * @return {@code true} if container is successfully created, {@code false} if container already exists.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
@@ -471,6 +474,8 @@ public final class BlobContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
      * container was successfully created. If status code is 409, a container already existed at this location.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
@@ -481,7 +486,7 @@ public final class BlobContainerClient {
                 = createWithResponse(finalOptions.getMetadata(), finalOptions.getPublicAccessType(), timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (BlobContainerAsyncClient.isContainerAlreadyExistsError(e)) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {

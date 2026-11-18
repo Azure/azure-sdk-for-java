@@ -202,10 +202,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createIfNotExistsOnContainerBeingDeleted() {
-        BlobContainerAsyncClient cc
-            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-
-        StepVerifier.create(cc.create().then(cc.delete()).then(cc.createIfNotExists()))
+        StepVerifier.create(ccAsync.delete().then(ccAsync.createIfNotExists()))
             .verifyErrorSatisfies(
                 r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
     }
@@ -215,20 +212,16 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void createIfNotExistsAfterContainerDeleteCompletes() {
-        BlobContainerAsyncClient cc
-            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-
         StepVerifier
-            .create(cc.create()
-                .then(cc.delete())
-                .then(createAfterContainerDeleteCompletes(cc.createIfNotExistsWithResponse(null))))
+            .create(
+                ccAsync.delete().then(createAfterContainerDeleteCompletes(ccAsync.createIfNotExistsWithResponse(null))))
             .assertNext(response -> {
-                assertEquals(201, response.getStatusCode());
+                assertResponseStatusCode(response, 201);
                 assertTrue(response.getValue());
             })
             .verifyComplete();
 
-        StepVerifier.create(cc.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(ccAsync.exists()).expectNext(true).verifyComplete();
     }
 
     @Test

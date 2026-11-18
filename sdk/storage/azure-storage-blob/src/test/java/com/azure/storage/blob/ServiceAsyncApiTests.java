@@ -1100,7 +1100,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .then(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName))
                 .then(createAfterContainerDeleteCompletes(
                     primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null))))
-            .assertNext(response -> assertEquals(201, response.getStatusCode()))
+            .assertNext(response -> assertResponseStatusCode(response, 201))
             .verifyComplete();
 
         StepVerifier.create(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName).exists())

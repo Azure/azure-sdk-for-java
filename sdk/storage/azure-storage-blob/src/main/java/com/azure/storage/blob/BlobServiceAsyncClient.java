@@ -26,6 +26,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -273,6 +274,9 @@ public final class BlobServiceAsyncClient {
      *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     * Errors with a {@link BlobStorageException} if the container could not be created for any other reason than that
+     * it already exists, for example when a container with the same name is still being deleted (status code 409, error
+     * code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
@@ -306,7 +310,9 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created. If {@link Response}'s status code is 201,
      * a new container was successfully created. If status code is 409, a container with the same name already existed
-     * at this location.
+     * at this location. Errors with a {@link BlobStorageException} if the container could not be created for any other
+     * reason than that it already exists, for example when a container with the same name is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
@@ -323,11 +329,12 @@ public final class BlobServiceAsyncClient {
         try {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
-                context).onErrorResume(BlobContainerAsyncClient::isContainerAlreadyExistsError, t -> {
-                    HttpResponse response = ((BlobStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
-                });
+                context).onErrorResume(
+                    t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_ALREADY_EXISTS), t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

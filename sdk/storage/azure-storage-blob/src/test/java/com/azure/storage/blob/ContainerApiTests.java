@@ -304,8 +304,6 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void createIfNotExistsOnContainerBeingDeleted() {
-        BlobContainerClient cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc.create();
         cc.delete();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, cc::createIfNotExists);
@@ -317,8 +315,6 @@ public class ContainerApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void createIfNotExistsAfterContainerDeleteCompletes() {
-        BlobContainerClient cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc.create();
         cc.delete();
 
         Response<Boolean> response
