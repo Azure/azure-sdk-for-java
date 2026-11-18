@@ -447,6 +447,13 @@ public class GraphPreviewSamplesTests {
         KnowledgeBaseRetrievalResult result
             = retrieval.retrieve(GraphExtractionCachePreviewExample.retrievalOptions("owned-source"));
         assertDoesNotThrow(() -> GraphExtractionCachePreviewExample.validateGraphRetrieval(result));
+        KnowledgeBaseRetrievalResult mismatchedActivity = BinaryData
+            .fromString("{\"references\":[{\"id\":\"0\",\"type\":\"graphSearch\",\"activitySource\":99}],"
+                + "\"activity\":[{\"id\":1,\"type\":\"graphSearch\","
+                + "\"graphSearchArguments\":{\"gql\":\"MATCH (h:Hotel) RETURN h\"}}]}")
+            .toObject(KnowledgeBaseRetrievalResult.class);
+        assertThrows(IllegalStateException.class,
+            () -> GraphExtractionCachePreviewExample.validateGraphRetrieval(mismatchedActivity));
         KnowledgeBaseRetrievalResult empty
             = BinaryData.fromString("{\"response\":[],\"references\":[],\"activity\":[]}")
                 .toObject(KnowledgeBaseRetrievalResult.class);

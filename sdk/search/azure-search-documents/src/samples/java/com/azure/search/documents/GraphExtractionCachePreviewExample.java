@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cspell:words rdfs
+
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -53,6 +55,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -359,15 +362,18 @@ public class GraphExtractionCachePreviewExample {
     }
 
     static void validateGraphRetrieval(KnowledgeBaseRetrievalResult result) {
-        boolean references = result.getReferences() != null
-            && result.getReferences().stream()
-                .anyMatch(reference -> reference instanceof KnowledgeBaseGraphSearchReference);
-        boolean gql = result.getActivity() != null && result.getActivity().stream()
+        Set<Integer> graphActivityIds = result.getActivity() == null ? Collections.emptySet() : result.getActivity().stream()
             .filter(activity -> activity instanceof KnowledgeBaseGraphSearchActivityRecord)
             .map(activity -> (KnowledgeBaseGraphSearchActivityRecord) activity)
-            .anyMatch(activity -> activity.getGraphSearchArguments() != null
+            .filter(activity -> activity.getError() == null && activity.getGraphSearchArguments() != null
                 && activity.getGraphSearchArguments().getGql() != null
-                && !activity.getGraphSearchArguments().getGql().trim().isEmpty());
+                && !activity.getGraphSearchArguments().getGql().trim().isEmpty())
+            .map(activity -> activity.getId()).collect(Collectors.toSet());
+        boolean references = result.getReferences() != null
+            && result.getReferences().stream()
+                .anyMatch(reference -> reference instanceof KnowledgeBaseGraphSearchReference
+                    && graphActivityIds.contains(reference.getActivitySource()));
+        boolean gql = !graphActivityIds.isEmpty();
         if (!references || !gql || result.getActivity().stream().anyMatch(activity -> activity.getError() != null)) {
             String activities = result.getActivity() == null ? "none" : result.getActivity().stream()
                 .map(activity -> activity.getType() + (activity.getError() == null

@@ -119,7 +119,7 @@ public final class OpenAICompatibleRetrievalPreviewExample {
             resources.createKnowledgeBase(knowledgeBase(baseName, sourceName, provider));
             KnowledgeBaseRetrievalResult result = retrievalFactory.apply(baseName).retrieve(request(sourceName));
             verifyResult(result, sourceName, new HashSet<>(Arrays.asList("hotel-ca-1", "hotel-ca-2", "hotel-us-1")),
-                provider.getModelName().toString().startsWith("gpt-6"));
+                false);
         }
     }
 

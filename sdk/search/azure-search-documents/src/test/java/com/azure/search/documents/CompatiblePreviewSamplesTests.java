@@ -115,8 +115,8 @@ public class CompatiblePreviewSamplesTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void retrievalFlowCreatesResourcesAndChecksScopedEvidenceBeforeReverseCleanup(boolean badReference) {
+    @ValueSource(strings = { "success", "bad-reference", "missing-usage", "negative-usage" })
+    public void retrievalFlowCreatesResourcesAndChecksScopedEvidenceBeforeReverseCleanup(String outcome) {
         AtomicReference<String> sourceName = new AtomicReference<>();
         List<String> operations = new ArrayList<>();
         HttpClient http = request -> {
@@ -164,8 +164,13 @@ public class CompatiblePreviewSamplesTests {
                 Map<?, ?> source = (Map<?, ?>) ((List<?>) body.get("knowledgeSourceParams")).get(0);
                 assertEquals(sourceName.get(), source.get("knowledgeSourceName"));
                 assertEquals(true, source.get("includeReferenceSourceData"));
-                return response(request, 200,
-                    retrievalResponse(sourceName.get(), badReference ? "other-document" : "hotel-ca-1", "3"));
+                String result = retrievalResponse(sourceName.get(),
+                    "bad-reference".equals(outcome) ? "other-document" : "hotel-ca-1",
+                    "negative-usage".equals(outcome) ? "-1" : "3");
+                if ("missing-usage".equals(outcome)) {
+                    result = result.replace(",\"reasoningTokens\":3", "");
+                }
+                return response(request, 200, result);
             }
             throw new AssertionError("Unexpected mock request: " + request.getHttpMethod() + " " + path);
         };
@@ -173,7 +178,7 @@ public class CompatiblePreviewSamplesTests {
             = OpenAICompatibleRetrievalPreviewExample.provider(RESPONSES_URI, "gpt-6-sol", HEADERS, null);
         Runnable run
             = () -> OpenAICompatibleRetrievalPreviewExample.run(indexes(http), name -> retrieval(http, name), provider);
-        if (badReference) {
+        if ("bad-reference".equals(outcome) || "negative-usage".equals(outcome)) {
             assertThrows(IllegalStateException.class, run::run);
         } else {
             run.run();

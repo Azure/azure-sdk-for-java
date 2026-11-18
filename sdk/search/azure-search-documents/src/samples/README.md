@@ -124,7 +124,7 @@ Run individual classes in your IDE with the sample/test dependency classpath. Ea
 create-only operations and deletes only successfully created resources, even when the main operation fails.
 Cleanup runs in reverse order and preserves the original exception. No sample enables paid features, changes
 permissions, deploys models, or configures companion services.
-The contract is the TypeSpec revision pinned by [`tsp-location.yaml`](../../tsp-location.yaml);
+The contract is the TypeSpec revision pinned by [`tsp-location.yaml`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/tsp-location.yaml);
 design drafts or HTTP walkthroughs are not authoritative when they differ from that revision.
 
 | Class in `com.azure.search.documents` | Scenario | Additional prerequisites |
