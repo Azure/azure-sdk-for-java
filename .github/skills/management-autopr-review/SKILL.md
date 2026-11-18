@@ -231,6 +231,12 @@ When a new head SHA passes the Java gate, include each still-applicable prior
 item as `Carried forward` in the replacement current-state comment; do not
 restate its question as `New`.
 
+Before raising a Warning, check relevant earlier resolutions and author
+replies, not only the latest workflow comment. A verified reply remains
+effective for the same rule, release, affected symbols, and verification
+question after the visible `Resolved` item is omitted. Do not revive that
+unchanged finding. Changed evidence requires fresh verification.
+
 Set Decision from the unresolved (`New` or `Carried forward`) findings after
 critic verification, using the first matching condition:
 

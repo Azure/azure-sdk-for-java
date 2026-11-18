@@ -59,7 +59,9 @@ For every candidate, verify in order:
 6. `Carried forward` retains the same prior ID and action; it is not a
    duplicate. `Resolved` matches a prior unresolved concern. Reject duplicate
    entries or a prior unchanged concern presented as `New`, even under another
-   ID.
+   ID. Check relevant earlier resolutions and author replies: a verified
+   Warning resolution remains effective for unchanged evidence even after the
+   latest comment omits it. Changed evidence requires fresh verification.
 7. An unresolved Blocking or Warning requested action is concrete and does not
    require this workflow to edit code or another repository. Resolved and
    Informational items request no action.

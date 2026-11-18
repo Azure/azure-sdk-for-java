@@ -8,6 +8,7 @@ The reviewer dispatches the critic once after self-verification.
 - Session SHA: full 40-character PR head SHA
 - Package and release type
 - Prior workflow comment, or `none`
+- Relevant earlier resolutions and author replies, if any
 - Candidate concerns, including ID, severity, state, cited file, affected
   symbol or release entry, evidence, explanation, and requested action for
   unresolved Blocking or Warning items; Resolved items supply resolution
@@ -62,6 +63,10 @@ Release type: <stable|beta>
 ## Prior workflow comment
 
 <comment or none>
+
+## Relevant resolution history
+
+<earlier resolutions and author replies, or none>
 
 ## Candidate concerns
 

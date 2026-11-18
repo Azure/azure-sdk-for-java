@@ -397,6 +397,100 @@ stimuli:
       - The resolved item cites the author reply without asking for confirmation again.
       - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
 
+  - name: confirmed-warning-stays-resolved-across-heads
+    tags:
+      rule: prior-state
+      case: resolution-history
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-confirmed-warning-later-head.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
+      review-input.md, the authoritative synthetic snapshot and comment
+      history through the fourth head. Use these local snapshots, not live
+      GitHub. Apply the reviewer sequence, including critic dispatch when
+      candidates survive self-verification. Return noop if no state changes.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "no review-state change"
+        config:
+          pattern: '(?i)^\s*`?noop`?\s*$'
+      - type: output-not-matches
+        name: "confirmed warning not revived or resolved twice"
+        config:
+          pattern: '\[MGMT-BREAKING\]'
+      - type: prompt
+    rubric:
+      - The Warning was raised at the first head, confirmed by its author and reported Resolved at the second, and omitted at the third.
+      - At the fourth head the breaking-change evidence and author confirmation still match.
+      - The reviewer must consult earlier resolution history rather than revive the Warning merely because the latest comment omits it.
+      - No other review state changes, so noop is correct.
+
+  - name: confirmed-warning-does-not-exempt-new-break
+    tags:
+      rule: prior-state
+      case: resolution-history
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-confirmed-warning-later-head.md"
+          dest: "review-input.md"
+        - src: "fixtures/positive-confirmed-warning-new-break.diff"
+          dest: "current-head.diff"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. The authoritative synthetic snapshot is
+      review-input.md plus current-head.diff, which adds further changes at
+      the fourth head. Update the review state and dispatch the Management
+      AutoPR Review Critic before returning the final review. Require it to
+      read its agent file and protocol; include every dispatch field, relevant
+      resolution history, and full candidates. Tell it to verify against both
+      local snapshot files, not live GitHub.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "changed breaking evidence needs verification"
+        config:
+          pattern: '(?ms)^### Warning[ \t]*\r?\n(?:(?!^#{1,3} ).)*?^-[ \t]+`\[MGMT-BREAKING\]`[ \t]+New\b'
+      - type: output-matches
+        name: "new break requests human attention"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?human attention requested`?[ \t]*\r?$'
+      - type: output-matches
+        name: "newly removed method identified"
+        config:
+          pattern: 'withAuditMode'
+      - type: prompt
+    rubric:
+      - The historical reply confirms only removal of withLegacyMode, not the newly removed withAuditMode method.
+      - Changed breaking-change evidence requires fresh verification; an old resolution must not exempt it.
+      - The reviewer must dispatch the critic and retain a New MGMT-BREAKING Warning for the additional removal.
+      - Decision must be human attention requested, not changes requested or no high-confidence concerns.
+
   - name: standard-manager-name-is-clean
     environment:
       skills:
