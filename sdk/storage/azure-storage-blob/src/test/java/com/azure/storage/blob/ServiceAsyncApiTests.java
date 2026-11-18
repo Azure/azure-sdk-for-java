@@ -1088,6 +1088,18 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
     }
 
+    @Test
+    public void createContainerOnContainerBeingDeleted() {
+        String containerName = generateContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
+                .then(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName))
+                .then(primaryBlobServiceAsyncClient.createBlobContainer(containerName)))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
     // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
     // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
     @LiveOnly
