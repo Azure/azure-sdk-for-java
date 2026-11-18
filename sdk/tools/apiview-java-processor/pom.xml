@@ -6,9 +6,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.tools</groupId>
   <artifactId>apiview-java-processor</artifactId>
-  <version>1.34.0</version> <!-- {x-version-update;com.azure:apiview-java-processor;current} -->
+  <version>1.34.0</version> <!-- {x-version-update;com.azure.tools:apiview-java-processor;current} -->
 
   <name>Java APIView Processor</name>
   <description>Generates JSON and Markdown API reviews from Java source JARs.</description>

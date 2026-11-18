@@ -75,7 +75,7 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
       - name: apiview-java-processor
-        groupId: com.azure
+        groupId: com.azure.tools
         safeName: apiviewjavaprocessor
         releaseInBatch: false
         skipPublishDocGithubIo: true

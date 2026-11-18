@@ -161,7 +161,6 @@ com.azure:azure-monitor-query-logs;1.1.1;1.2.0-beta.1
 com.azure:azure-monitor-query-metrics;1.1.1;1.2.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
-com.azure:apiview-java-processor;1.34.0;1.34.0
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-planetarycomputer;1.0.0;1.1.0-beta.1
 com.azure:azure-search-documents;12.2.0;12.3.0-beta.2
@@ -532,6 +531,7 @@ com.azure.resourcemanager:azure-resourcemanager-sovereign;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-aiinfraoptimization;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-networksecurity;1.0.0-beta.2;1.0.0-beta.3
 com.azure.tools:api-review-maven-plugin;1.0.0-beta.1;1.0.0-beta.1
+com.azure.tools:apiview-java-processor;1.34.0;1.34.0
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2
