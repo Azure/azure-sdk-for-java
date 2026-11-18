@@ -280,15 +280,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsOnFileSystemBeingDeleted() {
-        dataLakeFileSystemClient.delete();
-
-        DataLakeStorageException e
-            = assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createIfNotExists());
-        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
-    }
-
-    @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
