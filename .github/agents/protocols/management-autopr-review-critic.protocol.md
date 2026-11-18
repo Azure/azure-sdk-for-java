@@ -31,7 +31,7 @@ the cited content at the session SHA.
 
 | Verdict | Meaning | Reviewer action |
 | --- | --- | --- |
-| `PASS` | Independently verified and properly calibrated | Keep |
+| `PASS` | Finding or resolution independently verified and properly calibrated | Keep |
 | `DOWNGRADE` | Evidence supports verification, not an assertion | Convert to a concise Warning question |
 | `FAIL` | Unsupported, duplicate, out of scope, or pre-existing | Drop |
 

@@ -1,14 +1,14 @@
 # Pull request snapshot
 
-Title: `[AutoPR azure-resourcemanager-aigateway]-generated-from-SDK Generation`
+Title: `[AutoPR azure-resourcemanager-compute]-generated-from-SDK Generation`
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release Plan link: https://example.com/release-plan/12345
+Release Plan link: https://example.com/
 
 PR: `Azure/azure-sdk-for-java#12345`
 Head SHA: `2222222222222222222222222222222222222222`
-Package: `azure-resourcemanager-aigateway`
+Package: `azure-resourcemanager-compute`
 Package version: `1.0.0-beta.1`
 
 ## Latest workflow comment
@@ -19,43 +19,43 @@ Decision: `changes requested`
 
 ### Blocking
 
-- `[MGMT-FOLDER]` New — `sdk/apimanagement/azure-resourcemanager-aigateway/pom.xml`
-  places the new module under `apimanagement` instead of `aigateway`. Correct
-  upstream `service-dir` to `sdk/aigateway` and regenerate before merging.
+- `[MGMT-FOLDER]` New — `sdk/apimanagement/azure-resourcemanager-compute/pom.xml`
+  places the new module under `apimanagement` instead of `compute`. Correct
+  upstream `service-dir` to `sdk/compute` and regenerate before merging.
 
 ## Current PR diff and head
 
-The base branch has no `azure-resourcemanager-aigateway` module. The current PR
-adds it under `sdk/aigateway`; there are no files left under
-`sdk/apimanagement/azure-resourcemanager-aigateway`.
+The base branch has no `azure-resourcemanager-compute` module. The current PR
+adds it under `sdk/compute`; there are no files left under
+`sdk/apimanagement/azure-resourcemanager-compute`.
 
-New file `sdk/aigateway/azure-resourcemanager-aigateway/pom.xml`:
+New file `sdk/compute/azure-resourcemanager-compute/pom.xml`:
 
 ```xml
 <project>
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-aigateway</artifactId>
+  <artifactId>azure-resourcemanager-compute</artifactId>
   <version>1.0.0-beta.1</version>
 </project>
 ```
 
-New file `sdk/aigateway/azure-resourcemanager-aigateway/CHANGELOG.md`:
+New file `sdk/compute/azure-resourcemanager-compute/CHANGELOG.md`:
 
 ```markdown
 # Release History
 
 ## 1.0.0-beta.1 (2026-10-13)
 
-- Azure Resource Manager AI Gateway client library for Java.
+- Azure Resource Manager Compute client library for Java.
 - Package api-version 2026-09-01-preview.
 ```
 
 New file
-`sdk/aigateway/azure-resourcemanager-aigateway/src/main/java/com/azure/resourcemanager/aigateway/AIGatewayManager.java`:
+`sdk/compute/azure-resourcemanager-compute/src/main/java/com/azure/resourcemanager/compute/ComputeManager.java`:
 
 ```java
-package com.azure.resourcemanager.aigateway;
+package com.azure.resourcemanager.compute;
 
-public final class AIGatewayManager {
+public final class ComputeManager {
 }
 ```

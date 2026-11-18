@@ -7,8 +7,8 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: gpt-6.1-sol
-  judge_model: gpt-6.1-sol
+  model: gpt-5.6-sol
+  judge_model: gpt-5.6-sol
 
 scoring:
   threshold: 0.8
@@ -61,7 +61,7 @@ stimuli:
       - type: output-matches
         name: "warning requests human attention, not changes"
         config:
-          pattern: 'Decision: `human attention requested`'
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?human attention requested`?[ \t]*\r?$'
       - type: prompt
     rubric:
       - The reviewer must invoke the critic rather than self-approving its candidate.
@@ -121,7 +121,7 @@ stimuli:
 
       PR: Azure/azure-sdk-for-java#12345
       Session SHA: 2222222222222222222222222222222222222222
-      Package: azure-resourcemanager-contosowidgets
+      Package: azure-resourcemanager-widgets
       Release type: beta
 
       ## Prior workflow comment
@@ -173,7 +173,7 @@ stimuli:
 
       PR: Azure/azure-sdk-for-java#12345
       Session SHA: 2222222222222222222222222222222222222222
-      Package: azure-resourcemanager-aigateway
+      Package: azure-resourcemanager-compute
       Release type: beta
 
       ## Prior workflow comment
@@ -185,13 +185,13 @@ stimuli:
       - ID: MGMT-FOLDER
       - Severity: Blocking
       - State: New
-      - Cited file: sdk/apimanagement/azure-resourcemanager-aigateway/pom.xml
-      - Affected symbol: newly added module azure-resourcemanager-aigateway
-      - Evidence: The module's third segment is aigateway; its service folder
+      - Cited file: sdk/apimanagement/azure-resourcemanager-compute/pom.xml
+      - Affected symbol: newly added module azure-resourcemanager-compute
+      - Evidence: The module's third segment is compute; its service folder
         is apimanagement. The PR description shows upstream service-dir is
         sdk/apimanagement.
       - Explanation: The new module's folder differs from its service identity.
-      - Requested action: Correct upstream service-dir to sdk/aigateway and
+      - Requested action: Correct upstream service-dir to sdk/compute and
         regenerate before merging.
     constraints:
       expect_skills:
@@ -244,9 +244,64 @@ stimuli:
       - type: output-matches
         name: "blocking finding requests changes"
         config:
-          pattern: 'Decision: `changes requested`'
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?changes requested`?[ \t]*\r?$'
       - type: prompt
     rubric:
       - The folder mismatch must survive critic verification and remain Blocking.
       - Decision must be changes requested, not human attention requested or no high-confidence concerns.
       - The requested action must correct upstream service-dir and regenerate before merge without accessing the upstream repository.
+
+  - name: critic-rejects-folder-mismatch-without-action
+    tags:
+      rule: folder
+      case: missing-action
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/positive-folder-upstream-config.md"
+          dest: "review-input.md"
+    prompt: |
+      First read and follow
+      .github/agents/management-autopr-review-critic.agent.md and
+      .github/agents/protocols/management-autopr-review-critic.protocol.md.
+      Treat review-input.md as the authoritative synthetic snapshot at the
+      session SHA. Verify against that file, not live GitHub or another
+      repository. Verify only the candidate below and return the critic table.
+
+      PR: Azure/azure-sdk-for-java#12345
+      Session SHA: 2222222222222222222222222222222222222222
+      Package: azure-resourcemanager-compute
+      Release type: beta
+
+      ## Prior workflow comment
+
+      none
+
+      ## Candidate concerns
+
+      - ID: MGMT-FOLDER
+      - Severity: Blocking
+      - State: New
+      - Cited file: sdk/apimanagement/azure-resourcemanager-compute/pom.xml
+      - Affected symbol: newly added module azure-resourcemanager-compute
+      - Evidence: The module's third segment is compute; its service folder
+        is apimanagement. The upstream service-dir is sdk/apimanagement.
+      - Explanation: The new module's folder differs from its service identity.
+      - Requested action: none
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "missing-action folder candidate rejected"
+        config:
+          pattern: '(?m)\|[ `]*MGMT-FOLDER[ `]*\|[ `]*Blocking[ `]*\|[ `]*FAIL[ `]*\|[ `]*no-action[ `]*\|'
+      - type: prompt
+    rubric:
+      - The folder mismatch is real, but the candidate has no concrete requested action.
+      - The critic must finish verification and return FAIL with reason no-action, not PASS merely because the folder evidence is correct.

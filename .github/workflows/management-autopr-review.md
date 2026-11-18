@@ -38,7 +38,7 @@ checkout: false
 
 engine:
   id: copilot
-model: gpt-6.1-sol
+model: gpt-5.6-sol
 
 tools:
   github:
@@ -107,7 +107,7 @@ report contract. Follow them exactly.
 ## agent: `management-autopr-review-critic`
 ---
 description: Verifies Management AutoPR review candidates and rejects false positives, duplicates, and unsupported assertions.
-model: gpt-6.1-sol
+model: gpt-5.6-sol
 ---
 # Management AutoPR Review Critic
 
@@ -141,23 +141,26 @@ Missing PR, SHA, or candidates returns `FAIL / missing-inputs`.
 
 For every candidate, verify in order:
 
-1. The cited file and symbol or release entry exist at the session SHA.
-   `MGMT-RELEASE-PLAN` instead cites the PR description and verifies that no
-   accepted release-plan URL is present.
-2. The evidence was introduced by this PR.
+1. For unresolved candidates, the cited file and symbol or release entry exist
+   at the session SHA. For `Resolved`, verify the prior concern against the
+   current head or an authoritative author reply; removal of the cited path
+   may be the resolution, not a citation mismatch.
+   An unresolved `MGMT-RELEASE-PLAN` instead cites the PR description and
+   verifies that no accepted release-plan URL is present.
+2. Unresolved evidence was introduced by this PR, not necessarily its latest
+   push. For `Resolved`, confirm the original condition no longer applies.
 3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-API-VERSION`,
    `MGMT-LRO`, `MGMT-LIST-RETURN`, `MGMT-MANAGER-NAME`,
    `MGMT-API-VERSION-OVERLAP`, `MGMT-BREAKING`, `MGMT-NEW-MODULE`, or
    `MGMT-RELEASE-PLAN`.
-4. Every condition and exception in the imported management review rules is
-   satisfied.
+4. An unresolved pattern satisfies every condition and exception in the
+   imported management review rules. For `Resolved`, verify resolution instead
+   of requiring the offending pattern to persist.
    - Reject evidence from any path containing a `generated` segment.
    - For `MGMT-FOLDER`, compare the new module directory's third
-     hyphen-separated segment with its `sdk/<service>` folder. An upstream
-     `tspconfig.yaml` whose `service-dir` selects the wrong folder is the cause
-     of the mismatch, not an exception. Unless the finding's evidence is
-     incorrect, return `PASS` at Blocking severity; no exception overrides
-     this rule.
+     hyphen-separated segment with its `sdk/<service>` folder. An incorrect
+     upstream `service-dir` causes the mismatch and does not change its
+     Blocking severity.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break because
      it may have entered the main branch in an earlier beta.
@@ -174,11 +177,13 @@ For every candidate, verify in order:
    `MGMT-API-VERSION-OVERLAP` are Blocking; `MGMT-RELEASE-PLAN`, `MGMT-LRO`,
    `MGMT-LIST-RETURN`, `MGMT-MANAGER-NAME`, and `MGMT-BREAKING` are Warning;
    `MGMT-API-VERSION` and `MGMT-NEW-MODULE` are Informational.
-6. The prior workflow comment does not already contain the concern under
-   another ID or as an unchanged question.
-7. A Blocking or Warning requested action is concrete and does not ask the
-   workflow to modify code or another repository. Informational items request
-   no action.
+6. `Carried forward` retains the same prior ID and action; it is not a
+   duplicate. `Resolved` matches a prior unresolved concern. Reject duplicate
+   entries or a prior unchanged concern presented as `New`, even under another
+   ID.
+7. An unresolved Blocking or Warning requested action is concrete and does not
+   ask the workflow to modify code or another repository. Resolved and
+   Informational items request no action.
 8. The evidence supports an assertion. Otherwise return `DOWNGRADE`.
 
 Verdicts:

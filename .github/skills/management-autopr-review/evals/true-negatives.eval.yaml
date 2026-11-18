@@ -7,8 +7,8 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: gpt-6.1-sol
-  judge_model: gpt-6.1-sol
+  model: gpt-5.6-sol
+  judge_model: gpt-5.6-sol
 
 scoring:
   threshold: 0.8
@@ -242,10 +242,17 @@ stimuli:
   - name: prior-concern-is-carried-once
     tags:
       rule: prior-state
+      case: carried-forward
     environment:
       skills:
         - ".."
       files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
         - src: "fixtures/tn-prior-concern-pr.json"
           dest: "github-responses/get-pull-request.json"
         - src: "fixtures/tn-prior-concern-comments.json"
@@ -255,14 +262,19 @@ stimuli:
         - src: "fixtures/tn-prior-concern-java.diff"
           dest: "pr-diff/046-WidgetManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to update the review state for the
-      synthetic PR. GitHub responses are materialized under github-responses
-      and per-file patches under pr-diff. Return the replacement current-state
-      review comment as the final response; do not modify the materialized
-      GitHub responses.
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the synthetic PR review using
+      github-responses and pr-diff as the authoritative pinned snapshot.
+      Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment, and
+      full candidates. Tell it to verify against these local snapshots, not
+      live GitHub. Do not modify the materialized responses.
     constraints:
       expect_skills:
         - management-autopr-review
+      expect_tools:
+        - task
     graders:
       - type: output-matches
         name: "concern carried forward"
@@ -271,7 +283,7 @@ stimuli:
       - type: output-matches
         name: "carried-forward blocker requests changes"
         config:
-          pattern: 'Decision: `changes requested`'
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?changes requested`?[ \t]*\r?$'
       - type: output-not-matches
         name: "not marked new"
         config:
@@ -281,6 +293,7 @@ stimuli:
       - The existing MGMT-API-VERSION-OVERLAP concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.
       - The unresolved carried-forward blocker must keep Decision at changes requested.
+      - The reviewer must dispatch the critic, which must retain the same-ID carried-forward item rather than rejecting it as a duplicate.
 
   - name: resolved-folder-blocker-clears-decision
     tags:
@@ -289,16 +302,28 @@ stimuli:
       skills:
         - ".."
       files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
         - src: "fixtures/tn-resolved-folder.md"
           dest: "review-input.md"
     prompt: >
-      Use the management-autopr-review skill to update the review state from
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
       review-input.md, the authoritative synthetic snapshot at the current
-      head. Return the replacement current-state review comment as the final
-      response. Do not query live GitHub or another repository.
+      head. Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment, and
+      full candidates. Tell it to verify against review-input.md, not live
+      GitHub or another repository.
     constraints:
       expect_skills:
         - management-autopr-review
+      expect_tools:
+        - task
     graders:
       - type: output-matches
         name: "folder blocker resolved"
@@ -307,16 +332,17 @@ stimuli:
       - type: output-matches
         name: "resolved blocker no longer escalates decision"
         config:
-          pattern: 'Decision: `no high-confidence concerns`'
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?no high-confidence concerns`?[ \t]*\r?$'
       - type: output-not-matches
         name: "no lingering action decision"
         config:
-          pattern: 'Decision: `(?:changes requested|human attention requested)`'
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?(?:changes requested|human attention requested)`?[ \t]*\r?$'
       - type: prompt
     rubric:
-      - The module now belongs to sdk/aigateway, matching its third segment aigateway.
+      - The module now belongs to sdk/compute, matching its third segment compute.
       - The prior MGMT-FOLDER must be reported once as Resolved.
       - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
+      - The reviewer must dispatch the critic, which must accept the verified resolution even though the old cited path no longer exists.
 
   - name: standard-manager-name-is-clean
     environment:
