@@ -438,7 +438,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
      * deployment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AdapterDeploymentInner>, AdapterDeploymentInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<AdapterDeploymentInner>, AdapterDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String adapterDeploymentName, AdapterDeploymentInner resource,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName,
@@ -862,7 +862,7 @@ public final class AdapterDeploymentsClientImpl implements AdapterDeploymentsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String adapterDeploymentName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, accountName, adapterDeploymentName, ifMatch);

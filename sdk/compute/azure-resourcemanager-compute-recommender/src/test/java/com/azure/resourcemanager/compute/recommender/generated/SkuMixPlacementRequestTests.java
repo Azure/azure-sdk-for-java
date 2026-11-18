@@ -24,72 +24,70 @@ public final class SkuMixPlacementRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementRequest model = BinaryData.fromString(
-            "{\"zones\":[\"umjgrtfwvuk\",\"gaudcc\",\"nhsjcnyej\"],\"capacityProfile\":{\"capacity\":1661150390,\"capacityType\":\"VCpu\",\"priority\":\"Spot\",\"spotPriorityProfile\":{\"maxPricePerVm\":67.72184402052227},\"allocationStrategy\":\"Prioritized\",\"osType\":\"Windows\",\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortBalanced\",\"zonePreferences\":[{\"zone\":\"emkkvnipjox\",\"rank\":1539160915,\"targetMaxCapacity\":275440549},{\"zone\":\"gejspodmailzyde\",\"rank\":1876925756,\"targetMaxCapacity\":1254785420},{\"zone\":\"ahuxinpm\",\"rank\":79874551,\"targetMaxCapacity\":185328444}]}},\"instanceDescription\":{\"vmSizes\":[{\"name\":\"ixjsprozvcputeg\",\"rank\":1903590590},{\"name\":\"mfdatscmdvpj\",\"rank\":1912381604},{\"name\":\"suuv\",\"rank\":838914749}]}}")
+            "{\"zones\":[\"akeqs\",\"xybz\"],\"capacityProfile\":{\"capacity\":1683307088,\"capacityType\":\"VM\",\"priority\":\"Spot\",\"spotPriorityProfile\":{\"maxPricePerVm\":74.25909432049728},\"allocationStrategy\":\"Prioritized\",\"osType\":\"Linux\",\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortBalanced\",\"zonePreferences\":[{\"zone\":\"mnkzsmod\",\"rank\":1891413641,\"targetMaxCapacity\":1490924581},{\"zone\":\"gpbkwtmut\",\"rank\":1581209984,\"targetMaxCapacity\":289494577},{\"zone\":\"ap\",\"rank\":1035420183,\"targetMaxCapacity\":1593608704}]}},\"instanceDescription\":{\"vmSizes\":[{\"name\":\"ertumkdo\",\"rank\":398629650},{\"name\":\"whbmd\",\"rank\":609393619}]}}")
             .toObject(SkuMixPlacementRequest.class);
-        Assertions.assertEquals("umjgrtfwvuk", model.zones().get(0));
-        Assertions.assertEquals(1661150390, model.capacityProfile().capacity());
-        Assertions.assertEquals(SkuMixPlacementCapacityType.VCPU, model.capacityProfile().capacityType());
+        Assertions.assertEquals("akeqs", model.zones().get(0));
+        Assertions.assertEquals(1683307088, model.capacityProfile().capacity());
+        Assertions.assertEquals(SkuMixPlacementCapacityType.VM, model.capacityProfile().capacityType());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.capacityProfile().priority());
-        Assertions.assertEquals(67.72184402052227D, model.capacityProfile().spotPriorityProfile().maxPricePerVm());
+        Assertions.assertEquals(74.25909432049728D, model.capacityProfile().spotPriorityProfile().maxPricePerVm());
         Assertions.assertEquals(SkuMixPlacementAllocationStrategy.PRIORITIZED,
             model.capacityProfile().allocationStrategy());
-        Assertions.assertEquals(SkuMixPlacementOSType.WINDOWS, model.capacityProfile().osType());
+        Assertions.assertEquals(SkuMixPlacementOSType.LINUX, model.capacityProfile().osType());
         Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_BALANCED,
             model.capacityProfile().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("emkkvnipjox",
+        Assertions.assertEquals("mnkzsmod",
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1539160915,
+        Assertions.assertEquals(1891413641,
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(275440549,
+        Assertions.assertEquals(1490924581,
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
-        Assertions.assertEquals("ixjsprozvcputeg", model.instanceDescription().vmSizes().get(0).name());
-        Assertions.assertEquals(1903590590, model.instanceDescription().vmSizes().get(0).rank());
+        Assertions.assertEquals("ertumkdo", model.instanceDescription().vmSizes().get(0).name());
+        Assertions.assertEquals(398629650, model.instanceDescription().vmSizes().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuMixPlacementRequest model = new SkuMixPlacementRequest()
-            .withZones(Arrays.asList("umjgrtfwvuk", "gaudcc", "nhsjcnyej"))
-            .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(1661150390)
-                .withCapacityType(SkuMixPlacementCapacityType.VCPU)
+        SkuMixPlacementRequest model = new SkuMixPlacementRequest().withZones(Arrays.asList("akeqs", "xybz"))
+            .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(1683307088)
+                .withCapacityType(SkuMixPlacementCapacityType.VM)
                 .withPriority(SkuMixPlacementPriority.SPOT)
-                .withSpotPriorityProfile(new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(67.72184402052227D))
+                .withSpotPriorityProfile(new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(74.25909432049728D))
                 .withAllocationStrategy(SkuMixPlacementAllocationStrategy.PRIORITIZED)
-                .withOsType(SkuMixPlacementOSType.WINDOWS)
+                .withOsType(SkuMixPlacementOSType.LINUX)
                 .withZoneAllocationPolicy(new SkuMixPlacementZoneAllocationPolicy()
                     .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_BALANCED)
                     .withZonePreferences(Arrays.asList(
-                        new SkuMixPlacementZonePreference().withZone("emkkvnipjox")
-                            .withRank(1539160915)
-                            .withTargetMaxCapacity(275440549),
-                        new SkuMixPlacementZonePreference().withZone("gejspodmailzyde")
-                            .withRank(1876925756)
-                            .withTargetMaxCapacity(1254785420),
-                        new SkuMixPlacementZonePreference().withZone("ahuxinpm")
-                            .withRank(79874551)
-                            .withTargetMaxCapacity(185328444)))))
+                        new SkuMixPlacementZonePreference().withZone("mnkzsmod")
+                            .withRank(1891413641)
+                            .withTargetMaxCapacity(1490924581),
+                        new SkuMixPlacementZonePreference().withZone("gpbkwtmut")
+                            .withRank(1581209984)
+                            .withTargetMaxCapacity(289494577),
+                        new SkuMixPlacementZonePreference().withZone("ap")
+                            .withRank(1035420183)
+                            .withTargetMaxCapacity(1593608704)))))
             .withInstanceDescription(new SkuMixPlacementInstanceDescription()
-                .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("ixjsprozvcputeg").withRank(1903590590),
-                    new SkuMixPlacementVMSize().withName("mfdatscmdvpj").withRank(1912381604),
-                    new SkuMixPlacementVMSize().withName("suuv").withRank(838914749))));
+                .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("ertumkdo").withRank(398629650),
+                    new SkuMixPlacementVMSize().withName("whbmd").withRank(609393619))));
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementRequest.class);
-        Assertions.assertEquals("umjgrtfwvuk", model.zones().get(0));
-        Assertions.assertEquals(1661150390, model.capacityProfile().capacity());
-        Assertions.assertEquals(SkuMixPlacementCapacityType.VCPU, model.capacityProfile().capacityType());
+        Assertions.assertEquals("akeqs", model.zones().get(0));
+        Assertions.assertEquals(1683307088, model.capacityProfile().capacity());
+        Assertions.assertEquals(SkuMixPlacementCapacityType.VM, model.capacityProfile().capacityType());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.capacityProfile().priority());
-        Assertions.assertEquals(67.72184402052227D, model.capacityProfile().spotPriorityProfile().maxPricePerVm());
+        Assertions.assertEquals(74.25909432049728D, model.capacityProfile().spotPriorityProfile().maxPricePerVm());
         Assertions.assertEquals(SkuMixPlacementAllocationStrategy.PRIORITIZED,
             model.capacityProfile().allocationStrategy());
-        Assertions.assertEquals(SkuMixPlacementOSType.WINDOWS, model.capacityProfile().osType());
+        Assertions.assertEquals(SkuMixPlacementOSType.LINUX, model.capacityProfile().osType());
         Assertions.assertEquals(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_BALANCED,
             model.capacityProfile().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("emkkvnipjox",
+        Assertions.assertEquals("mnkzsmod",
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1539160915,
+        Assertions.assertEquals(1891413641,
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(275440549,
+        Assertions.assertEquals(1490924581,
             model.capacityProfile().zoneAllocationPolicy().zonePreferences().get(0).targetMaxCapacity());
-        Assertions.assertEquals("ixjsprozvcputeg", model.instanceDescription().vmSizes().get(0).name());
-        Assertions.assertEquals(1903590590, model.instanceDescription().vmSizes().get(0).rank());
+        Assertions.assertEquals("ertumkdo", model.instanceDescription().vmSizes().get(0).name());
+        Assertions.assertEquals(398629650, model.instanceDescription().vmSizes().get(0).rank());
     }
 }

@@ -412,7 +412,6 @@ public class DataLakeFileSystemAsyncClient {
             BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
                 .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
             return blobContainerAsyncClient.createIfNotExistsWithResponse(options)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -566,7 +565,6 @@ public class DataLakeFileSystemAsyncClient {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return blobContainerAsyncClient
                 .deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

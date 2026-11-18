@@ -647,7 +647,7 @@ public final class ServerEndpointsClientImpl implements ServerEndpointsClient {
      * @return the {@link SyncPoller} for polling of server Endpoint object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerEndpointInner>, ServerEndpointInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ServerEndpointInner>, ServerEndpointInner> beginUpdate(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String serverEndpointName,
         ServerEndpointUpdateParameters parameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,

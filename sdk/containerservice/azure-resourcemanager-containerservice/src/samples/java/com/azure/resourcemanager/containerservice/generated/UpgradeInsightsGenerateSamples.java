@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerservice.models.NodeImageGenerateUpgrad
  */
 public final class UpgradeInsightsGenerateSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlane.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlane.json
      */
     /**
      * Sample code: Generate a control plane upgrade insight.
@@ -31,7 +31,7 @@ public final class UpgradeInsightsGenerateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImageLatest.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImageLatest.json
      */
     /**
      * Sample code: Generate a node OS image upgrade insight using the latest available image.
@@ -48,7 +48,7 @@ public final class UpgradeInsightsGenerateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_AgentPool.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_AgentPool.json
      */
     /**
      * Sample code: Generate a single agent pool Kubernetes version upgrade insight.
@@ -66,7 +66,7 @@ public final class UpgradeInsightsGenerateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImage.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImage.json
      */
     /**
      * Sample code: Generate a node OS image upgrade insight.
@@ -84,7 +84,7 @@ public final class UpgradeInsightsGenerateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlaneAndAgentPools.json
+     * x-ms-original-file: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlaneAndAgentPools.json
      */
     /**
      * Sample code: Generate a combined control plane and agent pools upgrade insight.

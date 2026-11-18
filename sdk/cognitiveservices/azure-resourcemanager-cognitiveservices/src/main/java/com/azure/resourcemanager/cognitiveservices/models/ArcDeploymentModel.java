@@ -17,14 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentModel> {
     /*
-     * Deployment model format.
+     * Read-only. Deployment model format resolved from the model asset.
      */
     private String format;
 
     /*
-     * Deployment model name.
+     * Read-only. Deployment model name resolved from the model asset.
      */
     private String name;
+
+    /*
+     * Read-only. Deployment model version resolved from the model asset.
+     */
+    private String version;
+
+    /*
+     * AzureML Registry model asset URI.
+     */
+    private String assetId;
 
     /**
      * Creates an instance of ArcDeploymentModel class.
@@ -33,7 +43,7 @@ public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentM
     }
 
     /**
-     * Get the format property: Deployment model format.
+     * Get the format property: Read-only. Deployment model format resolved from the model asset.
      * 
      * @return the format value.
      */
@@ -42,18 +52,7 @@ public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentM
     }
 
     /**
-     * Set the format property: Deployment model format.
-     * 
-     * @param format the format value to set.
-     * @return the ArcDeploymentModel object itself.
-     */
-    public ArcDeploymentModel withFormat(String format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the name property: Deployment model name.
+     * Get the name property: Read-only. Deployment model name resolved from the model asset.
      * 
      * @return the name value.
      */
@@ -62,13 +61,31 @@ public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentM
     }
 
     /**
-     * Set the name property: Deployment model name.
+     * Get the version property: Read-only. Deployment model version resolved from the model asset.
      * 
-     * @param name the name value to set.
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Get the assetId property: AzureML Registry model asset URI.
+     * 
+     * @return the assetId value.
+     */
+    public String assetId() {
+        return this.assetId;
+    }
+
+    /**
+     * Set the assetId property: AzureML Registry model asset URI.
+     * 
+     * @param assetId the assetId value to set.
      * @return the ArcDeploymentModel object itself.
      */
-    public ArcDeploymentModel withName(String name) {
-        this.name = name;
+    public ArcDeploymentModel withAssetId(String assetId) {
+        this.assetId = assetId;
         return this;
     }
 
@@ -78,8 +95,7 @@ public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentM
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("format", this.format);
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("assetId", this.assetId);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +119,10 @@ public final class ArcDeploymentModel implements JsonSerializable<ArcDeploymentM
                     deserializedArcDeploymentModel.format = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedArcDeploymentModel.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedArcDeploymentModel.version = reader.getString();
+                } else if ("assetId".equals(fieldName)) {
+                    deserializedArcDeploymentModel.assetId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

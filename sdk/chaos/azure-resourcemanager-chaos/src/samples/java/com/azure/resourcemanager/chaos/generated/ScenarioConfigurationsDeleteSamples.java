@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Delete.json
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_Delete.json
      */
     /**
      * Sample code: Delete a scenario configuration.

@@ -22,7 +22,7 @@ public final class ConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"Csfi\",\"targetResourceId\":\"k\",\"principalId\":\"syaowuzowp\",\"tenantId\":\"hdkcprgu\",\"certificateSubjectName\":\"rztiochlutixmqr\",\"certificateIssuer\":\"jizcbfzmcrunfhiu\",\"dstsPrincipal\":\"mfbcpaqktkrum\",\"dataPlaneEndpoint\":\"ed\",\"status\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"xo\",\"name\":\"qkxiuxqggvqrn\",\"type\":\"yhlwcjsqg\"}";
+            = "{\"properties\":{\"kind\":\"ChaosAgent\",\"targetResourceId\":\"tdisnjevhdlmyd\",\"principalId\":\"whepfww\",\"tenantId\":\"f\",\"certificateSubjectName\":\"esxxhmwcdbckyoi\",\"certificateIssuer\":\"kxhnegknj\",\"dataPlaneEndpoint\":\"bhtmeplvuk\",\"status\":\"Connected\",\"provisioningState\":\"Creating\"},\"id\":\"pgsn\",\"name\":\"agnchjhgemuowaky\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,14 @@ public final class ConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Connection response = manager.connections()
-            .getWithResponse("bmqimi", "mqruqguhfupe", "asvvoqsbpkfl", com.azure.core.util.Context.NONE)
+            .getWithResponse("ocnxz", "mj", "ngxno", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ConnectionKind.CSFI, response.properties().kind());
-        Assertions.assertEquals("k", response.properties().targetResourceId());
-        Assertions.assertEquals("syaowuzowp", response.properties().principalId());
-        Assertions.assertEquals("hdkcprgu", response.properties().tenantId());
-        Assertions.assertEquals("rztiochlutixmqr", response.properties().certificateSubjectName());
-        Assertions.assertEquals("jizcbfzmcrunfhiu", response.properties().certificateIssuer());
-        Assertions.assertEquals("mfbcpaqktkrum", response.properties().dstsPrincipal());
+        Assertions.assertEquals(ConnectionKind.CHAOS_AGENT, response.properties().kind());
+        Assertions.assertEquals("tdisnjevhdlmyd", response.properties().targetResourceId());
+        Assertions.assertEquals("whepfww", response.properties().principalId());
+        Assertions.assertEquals("f", response.properties().tenantId());
+        Assertions.assertEquals("esxxhmwcdbckyoi", response.properties().certificateSubjectName());
+        Assertions.assertEquals("kxhnegknj", response.properties().certificateIssuer());
     }
 }

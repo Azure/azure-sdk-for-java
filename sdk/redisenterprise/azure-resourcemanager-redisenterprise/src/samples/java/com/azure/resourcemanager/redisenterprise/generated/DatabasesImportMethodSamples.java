@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesImport.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesImport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesImport.

@@ -4,8 +4,10 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
+import com.azure.core.util.BinaryData;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.testingmodels.HotelAnalyzerException;
@@ -157,6 +159,117 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("ByteArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("ByteList"));
 
+    }
+
+    @Test
+    public void previewFieldAnnotationsAreForwardedAndSerialized() {
+        Map<String, SearchField> fields = SearchIndexClient.buildSearchFields(PreviewFields.class)
+            .stream()
+            .collect(Collectors.toMap(SearchField::getName, field -> field));
+
+        assertEquals(Boolean.TRUE, fields.get("expiration").isOrganizationAccessExpiration());
+        assertEquals(Boolean.FALSE, fields.get("nonExpiration").isOrganizationAccessExpiration());
+        assertEquals("topics", fields.get("embedding").getTopicGraphProfile());
+        assertEquals(Boolean.TRUE,
+            BinaryData.fromObject(fields.get("expiration")).toObject(Map.class).get("organizationAccessExpiration"));
+        assertEquals(Boolean.FALSE,
+            BinaryData.fromObject(fields.get("nonExpiration")).toObject(Map.class).get("organizationAccessExpiration"));
+        assertEquals("topics",
+            BinaryData.fromObject(fields.get("embedding")).toObject(Map.class).get("topicGraphProfile"));
+    }
+
+    @Test
+    public void previewFieldAnnotationsDefaultToServiceDefaults() {
+        for (SearchField field : SearchIndexClient.buildSearchFields(AllSupportedFields.class)) {
+            assertNull(field.isOrganizationAccessExpiration());
+            assertNull(field.getTopicGraphProfile());
+            assertNull(field.getPermissionFilter());
+            assertNull(field.isSensitivityLabelId());
+            assertNull(field.isSensitivityLabelName());
+            assertNull(field.isSourceDocumentId());
+            assertNull(field.isSharepointSiteUrl());
+        }
+    }
+
+    @Test
+    public void securityFieldAnnotationsAreForwardedAndSerialized() {
+        Map<String, SearchField> fields = SearchIndexClient.buildSearchFields(SecurityFields.class)
+            .stream()
+            .collect(Collectors.toMap(SearchField::getName, field -> field));
+
+        assertEquals(PermissionFilter.USER_IDS, fields.get("users").getPermissionFilter());
+        assertEquals("userIds", BinaryData.fromObject(fields.get("users")).toObject(Map.class).get("permissionFilter"));
+        assertEquals(PermissionFilter.ONE_LAKE_PARENT_FOLDERS, fields.get("folders").getPermissionFilter());
+        assertEquals("oneLakeParentFolders",
+            BinaryData.fromObject(fields.get("folders")).toObject(Map.class).get("permissionFilter"));
+
+        for (String property : Arrays.asList("sensitivityLabelId", "sensitivityLabelName", "sourceDocumentId",
+            "sharepointSiteUrl")) {
+            assertEquals(Boolean.TRUE, BinaryData.fromObject(fields.get(property)).toObject(Map.class).get(property));
+            assertEquals(Boolean.FALSE,
+                BinaryData.fromObject(fields.get("non" + property)).toObject(Map.class).get(property));
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private static final class SecurityFields {
+        @BasicField(name = "users", permissionFilter = "userIds")
+        private List<String> users;
+
+        @BasicField(name = "sensitivityLabelId", isSensitivityLabelId = BasicField.BooleanHelper.TRUE)
+        private String sensitivityLabelId;
+
+        @BasicField(name = "sensitivityLabelName", isSensitivityLabelName = BasicField.BooleanHelper.TRUE)
+        private String sensitivityLabelName;
+
+        @BasicField(name = "sourceDocumentId", isSourceDocumentId = BasicField.BooleanHelper.TRUE)
+        private String sourceDocumentId;
+
+        @BasicField(name = "sharepointSiteUrl", isSharepointSiteUrl = BasicField.BooleanHelper.TRUE)
+        private String sharepointSiteUrl;
+
+        @BasicField(name = "folders", permissionFilter = "oneLakeParentFolders")
+        public List<String> getFolders() {
+            return null;
+        }
+
+        @BasicField(name = "nonsensitivityLabelId", isSensitivityLabelId = BasicField.BooleanHelper.FALSE)
+        public String getNonSensitivityLabelId() {
+            return null;
+        }
+
+        @BasicField(name = "nonsensitivityLabelName", isSensitivityLabelName = BasicField.BooleanHelper.FALSE)
+        public String getNonSensitivityLabelName() {
+            return null;
+        }
+
+        @BasicField(name = "nonsourceDocumentId", isSourceDocumentId = BasicField.BooleanHelper.FALSE)
+        public String getNonSourceDocumentId() {
+            return null;
+        }
+
+        @BasicField(name = "nonsharepointSiteUrl", isSharepointSiteUrl = BasicField.BooleanHelper.FALSE)
+        public String getNonSharepointSiteUrl() {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private static final class PreviewFields {
+        @BasicField(name = "expiration", isOrganizationAccessExpiration = BasicField.BooleanHelper.TRUE)
+        private OffsetDateTime expiration;
+
+        @BasicField(
+            name = "embedding",
+            vectorSearchDimensions = 3,
+            vectorSearchProfileName = "vectors",
+            topicGraphProfile = "topics")
+        private float[] embedding;
+
+        @BasicField(name = "nonExpiration", isOrganizationAccessExpiration = BasicField.BooleanHelper.FALSE)
+        public OffsetDateTime getNonExpiration() {
+            return null;
+        }
     }
 
     @SuppressWarnings({ "unused", "UseOfObsoleteDateTimeApi" })

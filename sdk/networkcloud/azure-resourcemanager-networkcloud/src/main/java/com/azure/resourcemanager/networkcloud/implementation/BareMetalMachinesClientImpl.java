@@ -695,7 +695,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, bareMetalMachineName,
@@ -992,7 +992,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
         String bareMetalMachineName, String ifMatch, String ifNoneMatch,
         BareMetalMachinePatchParameters bareMetalMachineUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, bareMetalMachineName, ifMatch,
@@ -1268,7 +1268,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch);
@@ -1793,7 +1793,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginCordon(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginCordon(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineCordonParameters bareMetalMachineCordonParameters) {
         Response<BinaryData> response
             = cordonWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters);
@@ -2028,7 +2028,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters) {
         Response<BinaryData> response
             = powerOffWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters);
@@ -2258,7 +2258,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReimage(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReimage(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReimageParameters body) {
         Response<BinaryData> response = reimageWithResponse(resourceGroupName, bareMetalMachineName, body);
         return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
@@ -2488,7 +2488,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReplace(String resourceGroupName,
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReplace(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters) {
         Response<BinaryData> response
             = replaceWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters);

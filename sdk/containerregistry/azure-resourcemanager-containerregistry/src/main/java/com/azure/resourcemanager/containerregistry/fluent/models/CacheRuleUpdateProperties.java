@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationProperties;
+import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationUpdateProperties;
 import java.io.IOException;
 
 /**
@@ -24,8 +24,11 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
 
     /*
      * Authentication configuration used by the cache rule to access the upstream source repository.
+     * Omitted fields retain their current values. When authentication is first configured, all
+     * required fields of the selected authentication type must be supplied. Changing an existing
+     * authentication type is not supported.
      */
-    private AdditionalAuthenticationProperties additionalAuthenticationProperties;
+    private AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties;
 
     /**
      * Creates an instance of CacheRuleUpdateProperties class.
@@ -58,22 +61,28 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
     /**
      * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
      * access the upstream source repository.
+     * Omitted fields retain their current values. When authentication is first configured, all
+     * required fields of the selected authentication type must be supplied. Changing an existing
+     * authentication type is not supported.
      * 
      * @return the additionalAuthenticationProperties value.
      */
-    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+    public AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties() {
         return this.additionalAuthenticationProperties;
     }
 
     /**
      * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
      * access the upstream source repository.
+     * Omitted fields retain their current values. When authentication is first configured, all
+     * required fields of the selected authentication type must be supplied. Changing an existing
+     * authentication type is not supported.
      * 
      * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
      * @return the CacheRuleUpdateProperties object itself.
      */
-    public CacheRuleUpdateProperties
-        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+    public CacheRuleUpdateProperties withAdditionalAuthenticationProperties(
+        AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties) {
         this.additionalAuthenticationProperties = additionalAuthenticationProperties;
         return this;
     }
@@ -119,7 +128,7 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
                     deserializedCacheRuleUpdateProperties.credentialSetResourceId = reader.getString();
                 } else if ("additionalAuthenticationProperties".equals(fieldName)) {
                     deserializedCacheRuleUpdateProperties.additionalAuthenticationProperties
-                        = AdditionalAuthenticationProperties.fromJson(reader);
+                        = AdditionalAuthenticationUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

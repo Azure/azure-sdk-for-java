@@ -15,31 +15,31 @@ public final class EnvironmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentProperties model = BinaryData.fromString(
-            "{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"iuaod\",\"resourceName\":\"cpkvxodp\",\"createdTimestamp\":\"zmyzydagf\",\"updatedTimestamp\":\"xbezyiuokktwh\",\"deletedTimestamp\":\"xw\"}}")
+            "{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"xxjnspydptk\",\"resourceName\":\"nkoukn\",\"createdTimestamp\":\"dwtiukbldngkp\",\"updatedTimestamp\":\"ipazyxoegukgjnpi\",\"deletedTimestamp\":\"gygev\"}}")
             .toObject(EnvironmentProperties.class);
-        Assertions.assertEquals(Package.ADVANCED, model.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("iuaod", model.metadata().self());
-        Assertions.assertEquals("cpkvxodp", model.metadata().resourceName());
-        Assertions.assertEquals("zmyzydagf", model.metadata().createdTimestamp());
-        Assertions.assertEquals("xbezyiuokktwh", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("xw", model.metadata().deletedTimestamp());
+        Assertions.assertEquals(Package.ESSENTIALS, model.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("xxjnspydptk", model.metadata().self());
+        Assertions.assertEquals("nkoukn", model.metadata().resourceName());
+        Assertions.assertEquals("dwtiukbldngkp", model.metadata().createdTimestamp());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("gygev", model.metadata().deletedTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentProperties model = new EnvironmentProperties()
-            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ADVANCED))
-            .withMetadata(new SCMetadataEntity().withSelf("iuaod")
-                .withResourceName("cpkvxodp")
-                .withCreatedTimestamp("zmyzydagf")
-                .withUpdatedTimestamp("xbezyiuokktwh")
-                .withDeletedTimestamp("xw"));
+            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ESSENTIALS))
+            .withMetadata(new SCMetadataEntity().withSelf("xxjnspydptk")
+                .withResourceName("nkoukn")
+                .withCreatedTimestamp("dwtiukbldngkp")
+                .withUpdatedTimestamp("ipazyxoegukgjnpi")
+                .withDeletedTimestamp("gygev"));
         model = BinaryData.fromObject(model).toObject(EnvironmentProperties.class);
-        Assertions.assertEquals(Package.ADVANCED, model.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("iuaod", model.metadata().self());
-        Assertions.assertEquals("cpkvxodp", model.metadata().resourceName());
-        Assertions.assertEquals("zmyzydagf", model.metadata().createdTimestamp());
-        Assertions.assertEquals("xbezyiuokktwh", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("xw", model.metadata().deletedTimestamp());
+        Assertions.assertEquals(Package.ESSENTIALS, model.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("xxjnspydptk", model.metadata().self());
+        Assertions.assertEquals("nkoukn", model.metadata().resourceName());
+        Assertions.assertEquals("dwtiukbldngkp", model.metadata().createdTimestamp());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("gygev", model.metadata().deletedTimestamp());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Connection string for the mongo cluster.
+ * Connection string for the DocumentDB cluster.
  */
 @Immutable
 public final class ConnectionString implements JsonSerializable<ConnectionString> {

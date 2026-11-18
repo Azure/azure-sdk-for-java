@@ -431,7 +431,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @return the {@link SyncPoller} for polling of backup Vault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters, xMsDeletedVaultId);

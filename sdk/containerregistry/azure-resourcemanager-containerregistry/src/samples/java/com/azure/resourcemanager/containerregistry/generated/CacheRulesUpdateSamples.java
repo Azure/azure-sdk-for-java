@@ -5,13 +5,87 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.models.CacheRuleUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.EcrAuthenticationUpdateProperties;
+import com.azure.resourcemanager.containerregistry.models.EntraFederatedIdentityCredentialAuthenticationUpdateProperties;
+import com.azure.resourcemanager.containerregistry.models.GarAuthenticationUpdateProperties;
+import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
+import com.azure.resourcemanager.containerregistry.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerregistry.models.UserIdentityProperties;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for CacheRules Update.
  */
 public final class CacheRulesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/CacheRuleUpdate.json
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateAwsAuthentication.json
+     */
+    /**
+     * Sample code: Update AWS authentication while preserving omitted fields.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void updateAWSAuthenticationWhilePreservingOmittedFields(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule",
+                new CacheRuleUpdateParameters().withAdditionalAuthenticationProperties(
+                    new EcrAuthenticationUpdateProperties().withRoleName("updated-ecr-pull-role")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateConfigureAwsAuthentication.json
+     */
+    /**
+     * Sample code: Configure AWS authentication on an existing cache rule.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void configureAWSAuthenticationOnAnExistingCacheRule(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleUpdateParameters()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(
+                    new EcrAuthenticationUpdateProperties().withAccountNumber("123456789012")
+                        .withRegion("us-west-2")
+                        .withRoleName("my-ecr-pull-role")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateConfigureEntraAuthentication.json
+     */
+    /**
+     * Sample code: Configure Entra authentication on an existing cache rule.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void configureEntraAuthenticationOnAnExistingCacheRule(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleUpdateParameters()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(
+                    new EntraFederatedIdentityCredentialAuthenticationUpdateProperties()
+                        .withSourceTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                        .withFederatedApplicationClientId("abcdef12-3456-7890-abcd-ef1234567890")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdate.json
      */
     /**
      * Sample code: CacheRuleUpdate.
@@ -24,5 +98,78 @@ public final class CacheRulesUpdateSamples {
             .update("myResourceGroup", "myRegistry", "myCacheRule",
                 new CacheRuleUpdateParameters().withCredentialSetResourceId("fakeTokenPlaceholder"),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateConfigureGoogleAuthentication.json
+     */
+    /**
+     * Sample code: Configure Google authentication on an existing cache rule.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void configureGoogleAuthenticationOnAnExistingCacheRule(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleUpdateParameters()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(
+                    new GarAuthenticationUpdateProperties().withProjectNumber("123456789012")
+                        .withWorkloadIdentityPool("my-workload-identity-pool")
+                        .withWorkloadIdentityProvider("my-workload-identity-provider")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateEntraAuthentication.json
+     */
+    /**
+     * Sample code: Update Entra authentication while preserving omitted fields.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void updateEntraAuthenticationWhilePreservingOmittedFields(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule",
+                new CacheRuleUpdateParameters().withAdditionalAuthenticationProperties(
+                    new EntraFederatedIdentityCredentialAuthenticationUpdateProperties()
+                        .withFederatedApplicationClientId("fedcba98-7654-3210-abcd-ef1234567890")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-15-preview/CacheRuleUpdateGoogleAuthentication.json
+     */
+    /**
+     * Sample code: Update Google authentication while preserving omitted fields.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void updateGoogleAuthenticationWhilePreservingOmittedFields(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .update("myResourceGroup", "myRegistry", "myCacheRule",
+                new CacheRuleUpdateParameters().withAdditionalAuthenticationProperties(
+                    new GarAuthenticationUpdateProperties().withWorkloadIdentityProvider("updated-identity-provider")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -72,4 +72,10 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     public static Collection<JobStatus> values() {
         return values(JobStatus.class);
     }
+
+    /**
+     * Job was skipped.
+     */
+    @Generated
+    public static final JobStatus SKIPPED = fromString("skipped");
 }

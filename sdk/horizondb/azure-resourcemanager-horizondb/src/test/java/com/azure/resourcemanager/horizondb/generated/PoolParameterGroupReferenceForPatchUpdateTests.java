@@ -13,19 +13,19 @@ public final class PoolParameterGroupReferenceForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolParameterGroupReferenceForPatchUpdate model
-            = BinaryData.fromString("{\"parameterGroupResourceId\":\"vuhrhcffcyddgl\",\"applyMethod\":\"Immediate\"}")
+            = BinaryData.fromString("{\"parameterGroupResourceId\":\"vmclw\",\"applyMethod\":\"Immediate\"}")
                 .toObject(PoolParameterGroupReferenceForPatchUpdate.class);
-        Assertions.assertEquals("vuhrhcffcyddgl", model.parameterGroupResourceId());
+        Assertions.assertEquals("vmclw", model.parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.applyMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolParameterGroupReferenceForPatchUpdate model
-            = new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("vuhrhcffcyddgl")
+            = new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("vmclw")
                 .withApplyMethod(ParameterApplyMethod.IMMEDIATE);
         model = BinaryData.fromObject(model).toObject(PoolParameterGroupReferenceForPatchUpdate.class);
-        Assertions.assertEquals("vuhrhcffcyddgl", model.parameterGroupResourceId());
+        Assertions.assertEquals("vmclw", model.parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.applyMethod());
     }
 }

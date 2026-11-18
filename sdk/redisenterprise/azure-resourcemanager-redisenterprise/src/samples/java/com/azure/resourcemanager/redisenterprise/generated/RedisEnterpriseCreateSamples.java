@@ -8,6 +8,7 @@ import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncrypt
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.redisenterprise.models.CmkIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.FirewallRule;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceDayOfWeek;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindow;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseCreate.json
      */
     /**
      * Sample code: RedisEnterpriseCreate.
@@ -41,14 +42,14 @@ public final class RedisEnterpriseCreateSamples {
             .define("cache1")
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
-            .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(3))
+            .withSku(new Sku().withName(SkuName.BALANCED_B10))
             .withTags(mapOf("tag1", "value1"))
             .withZones(Arrays.asList("1", "2", "3"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity",
                     new UserAssignedIdentity())))
-            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withEncryption(new ClusterPropertiesEncryption().withCustomerManagedKeyEncryption(
                 new ClusterPropertiesEncryptionCustomerManagedKeyEncryption().withKeyEncryptionKeyIdentity(
@@ -70,6 +71,9 @@ public final class RedisEnterpriseCreateSamples {
                     .withDuration("PT6H")
                     .withStartHourUtc(3)
                     .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)))))
+            .withFirewallRules(
+                Arrays.asList(new FirewallRule().withName("allowOfficeNetwork").withSourceAddressPrefix("10.0.0.0/24"),
+                    new FirewallRule().withName("allowPartnerNetwork").withSourceAddressPrefix("192.168.1.0/24")))
             .create();
     }
 

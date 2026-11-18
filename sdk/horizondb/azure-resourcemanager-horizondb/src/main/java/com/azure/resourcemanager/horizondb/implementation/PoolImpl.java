@@ -11,8 +11,6 @@ import com.azure.resourcemanager.horizondb.models.Pool;
 import com.azure.resourcemanager.horizondb.models.PoolForPatchUpdate;
 import com.azure.resourcemanager.horizondb.models.PoolProperties;
 import com.azure.resourcemanager.horizondb.models.PoolPropertiesForPatchUpdate;
-import java.util.Collections;
-import java.util.Map;
 
 public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     private PoolInner innerObject;
@@ -33,15 +31,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public SystemData systemData() {
@@ -167,16 +156,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return serviceManager.pools().restart(resourceGroupName, clusterName, poolName, context);
     }
 
-    public PoolImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
-    }
-
     public PoolImpl withProperties(PoolProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
@@ -185,9 +164,5 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     public PoolImpl withProperties(PoolPropertiesForPatchUpdate properties) {
         this.updateProperties.withProperties(properties);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

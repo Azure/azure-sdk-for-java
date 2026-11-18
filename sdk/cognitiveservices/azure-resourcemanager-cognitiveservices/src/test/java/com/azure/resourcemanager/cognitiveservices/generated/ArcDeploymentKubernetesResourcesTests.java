@@ -14,27 +14,26 @@ public final class ArcDeploymentKubernetesResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentKubernetesResources model = BinaryData.fromString(
-            "{\"requests\":{\"cpu\":\"xcpwzvmdok\",\"memory\":\"qdtiwlwxlb\"},\"limits\":{\"cpu\":\"qba\",\"memory\":\"icqchygtv\",\"gpu\":324303179}}")
+            "{\"requests\":{\"cpu\":\"dve\",\"memory\":\"elsbfvd\"},\"limits\":{\"cpu\":\"kzx\",\"memory\":\"tznsvl\",\"gpu\":1578470926}}")
             .toObject(ArcDeploymentKubernetesResources.class);
-        Assertions.assertEquals("xcpwzvmdok", model.requests().cpu());
-        Assertions.assertEquals("qdtiwlwxlb", model.requests().memory());
-        Assertions.assertEquals("qba", model.limits().cpu());
-        Assertions.assertEquals("icqchygtv", model.limits().memory());
-        Assertions.assertEquals(324303179, model.limits().gpu());
+        Assertions.assertEquals("dve", model.requests().cpu());
+        Assertions.assertEquals("elsbfvd", model.requests().memory());
+        Assertions.assertEquals("kzx", model.limits().cpu());
+        Assertions.assertEquals("tznsvl", model.limits().memory());
+        Assertions.assertEquals(1578470926, model.limits().gpu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcDeploymentKubernetesResources model = new ArcDeploymentKubernetesResources()
-            .withRequests(
-                new ArcDeploymentCpuMemoryResourceRequirements().withCpu("xcpwzvmdok").withMemory("qdtiwlwxlb"))
+            .withRequests(new ArcDeploymentCpuMemoryResourceRequirements().withCpu("dve").withMemory("elsbfvd"))
             .withLimits(
-                new ArcDeploymentResourceRequirements().withCpu("qba").withMemory("icqchygtv").withGpu(324303179));
+                new ArcDeploymentResourceRequirements().withCpu("kzx").withMemory("tznsvl").withGpu(1578470926));
         model = BinaryData.fromObject(model).toObject(ArcDeploymentKubernetesResources.class);
-        Assertions.assertEquals("xcpwzvmdok", model.requests().cpu());
-        Assertions.assertEquals("qdtiwlwxlb", model.requests().memory());
-        Assertions.assertEquals("qba", model.limits().cpu());
-        Assertions.assertEquals("icqchygtv", model.limits().memory());
-        Assertions.assertEquals(324303179, model.limits().gpu());
+        Assertions.assertEquals("dve", model.requests().cpu());
+        Assertions.assertEquals("elsbfvd", model.requests().memory());
+        Assertions.assertEquals("kzx", model.limits().cpu());
+        Assertions.assertEquals("tznsvl", model.limits().memory());
+        Assertions.assertEquals(1578470926, model.limits().gpu());
     }
 }

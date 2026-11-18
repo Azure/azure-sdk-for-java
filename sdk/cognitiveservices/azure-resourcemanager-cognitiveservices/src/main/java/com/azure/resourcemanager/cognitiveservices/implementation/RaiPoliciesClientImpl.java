@@ -448,7 +448,7 @@ public final class RaiPoliciesClientImpl implements RaiPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiPolicyName, String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiPolicyName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

@@ -166,7 +166,8 @@ public interface Workspace {
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithIfNoneMatch, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              * 
@@ -208,6 +209,52 @@ public interface Workspace {
              */
             WithCreate withIdentity(ResourceIdentity identity);
         }
+
+        /**
+         * The stage of the Workspace definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Use '*' to create the resource only if it does not exist. If the
+             * resource exists, the request fails with HTTP 412 and error code PreconditionFailed in the standard Azure
+             * error body. A failed condition starts no resource change or asynchronous operation. Omit both condition
+             * headers for an unconditional create or update. Other effective conditions must be honored if supported or
+             * rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+             * introduce entity-tag matching..
+             * 
+             * @param ifNoneMatch Use '*' to create the resource only if it does not exist. If the resource exists, the
+             * request fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed
+             * condition starts no resource change or asynchronous operation. Omit both condition headers for an
+             * unconditional create or update. Other effective conditions must be honored if supported or rejected with
+             * 412 if they cannot be verified; they must not be silently ignored. This contract does not introduce
+             * entity-tag matching.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
+
+        /**
+         * The stage of the Workspace definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: Use '*' to update the resource only if it exists. If the resource does
+             * not exist, the request fails with HTTP 412 and error code PreconditionFailed in the standard Azure error
+             * body. A failed condition starts no resource change or asynchronous operation. Omit both condition headers
+             * for an unconditional create or update. Other effective conditions must be honored if supported or
+             * rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+             * introduce entity-tag matching..
+             * 
+             * @param ifMatch Use '*' to update the resource only if it exists. If the resource does not exist, the
+             * request fails with HTTP 412 and error code PreconditionFailed in the standard Azure error body. A failed
+             * condition starts no resource change or asynchronous operation. Omit both condition headers for an
+             * unconditional create or update. Other effective conditions must be honored if supported or rejected with
+             * 412 if they cannot be verified; they must not be silently ignored. This contract does not introduce
+             * entity-tag matching.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
     }
 
     /**
@@ -220,7 +267,7 @@ public interface Workspace {
     /**
      * The template for Workspace update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -266,6 +313,19 @@ public interface Workspace {
              */
             Update withIdentity(ResourceIdentity identity);
         }
+
+        /**
+         * The stage of the Workspace update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific fields to update. Omitted fields are unchanged..
+             * 
+             * @param properties The resource-specific fields to update. Omitted fields are unchanged.
+             * @return the next definition stage.
+             */
+            Update withProperties(WorkspaceUpdateProperties properties);
+        }
     }
 
     /**
@@ -284,42 +344,64 @@ public interface Workspace {
     Workspace refresh(Context context);
 
     /**
-     * Triggers resource discovery for the workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace discovery result and its accepted coverage facts.
      */
     WorkspaceDiscovery discover();
 
     /**
-     * Triggers resource discovery for the workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace discovery result and its accepted coverage facts.
      */
     WorkspaceDiscovery discover(Context context);
 
     /**
-     * Triggers scenario evaluation for the workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions.
      */
     WorkspaceEvaluation evaluate();
 
     /**
-     * Triggers scenario evaluation for the workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions.
      */
     WorkspaceEvaluation evaluate(Context context);
 }

@@ -424,7 +424,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, ConsoleInner consoleParameters, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, virtualMachineName, consoleName,
@@ -734,7 +734,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName,
         String virtualMachineName, String consoleName, String ifMatch, String ifNoneMatch,
         ConsolePatchParameters consoleUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch,
@@ -1024,7 +1024,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
         String consoleName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, virtualMachineName, consoleName, ifMatch, ifNoneMatch);

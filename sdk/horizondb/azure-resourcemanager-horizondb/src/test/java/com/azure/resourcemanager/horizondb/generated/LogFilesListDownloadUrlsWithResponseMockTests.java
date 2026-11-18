@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class LogFilesListDownloadUrlsWithResponseMockTests {
     @Test
     public void testListDownloadUrlsWithResponse() throws Exception {
-        String responseStr = "{\"downloadUri\":\"huxy\",\"expiresAtUtc\":\"2021-03-25T12:19:33Z\"}";
+        String responseStr = "{\"downloadUri\":\"xofvcjk\",\"expiresAtUtc\":\"2021-09-28T16:04:02Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,10 @@ public final class LogFilesListDownloadUrlsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogFileDownloadUrl response = manager.logFiles()
-            .listDownloadUrlsWithResponse("rpddouifamo", "aziynknlqwzdv", "iwhxqszdtmaajq",
-                com.azure.core.util.Context.NONE)
+            .listDownloadUrlsWithResponse("eiookjbsah", "tdtpdelqacslmo", "oebn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("huxy", response.downloadUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T12:19:33Z"), response.expiresAtUtc());
+        Assertions.assertEquals("xofvcjk", response.downloadUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T16:04:02Z"), response.expiresAtUtc());
     }
 }

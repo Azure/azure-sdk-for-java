@@ -65,4 +65,11 @@ public final class QueryType extends ExpandableStringEnum<QueryType> {
     public static Collection<QueryType> values() {
         return values(QueryType.class);
     }
+
+    /**
+     * Uses an agentic model to generate queries and rerank search results within one index. Requires nonempty
+     * natural-language search text.
+     */
+    @Generated
+    public static final QueryType AGENTIC = fromString("agentic");
 }
