@@ -134,8 +134,9 @@ Required dispatch inputs:
 - package and release type
 - prior workflow comment, or `none`
 - candidate concerns with ID, severity, state, cited file, affected symbol or
-  release entry, evidence, explanation, and requested action when Blocking or
-  Warning
+  release entry, evidence, explanation, and requested action for unresolved
+  Blocking or Warning items; Resolved items supply resolution evidence without
+  requesting action
 
 Missing PR, SHA, or candidates returns `FAIL / missing-inputs`.
 
@@ -143,12 +144,13 @@ For every candidate, verify in order:
 
 1. For unresolved candidates, the cited file and symbol or release entry exist
    at the session SHA. For `Resolved`, verify the prior concern against the
-   current head or an authoritative author reply; removal of the cited path
-   may be the resolution, not a citation mismatch.
+   current head or, for Warnings, an authoritative author reply. Removal of
+   the cited path may be the resolution, not a citation mismatch.
    An unresolved `MGMT-RELEASE-PLAN` instead cites the PR description and
    verifies that no accepted release-plan URL is present.
 2. Unresolved evidence was introduced by this PR, not necessarily its latest
-   push. For `Resolved`, confirm the original condition no longer applies.
+   push. For `Resolved`, confirm the original condition no longer applies or a
+   verified authoritative reply answers the Warning's verification request.
 3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-API-VERSION`,
    `MGMT-LRO`, `MGMT-LIST-RETURN`, `MGMT-MANAGER-NAME`,
    `MGMT-API-VERSION-OVERLAP`, `MGMT-BREAKING`, `MGMT-NEW-MODULE`, or

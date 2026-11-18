@@ -298,6 +298,7 @@ stimuli:
   - name: resolved-folder-blocker-clears-decision
     tags:
       rule: prior-state
+      case: resolved-folder
     environment:
       skills:
         - ".."
@@ -343,6 +344,58 @@ stimuli:
       - The prior MGMT-FOLDER must be reported once as Resolved.
       - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
       - The reviewer must dispatch the critic, which must accept the verified resolution even though the old cited path no longer exists.
+      - The resolved item cites resolution evidence without requesting further corrective action.
+
+  - name: author-reply-resolves-warning-with-pattern-unchanged
+    tags:
+      rule: prior-state
+      case: author-reply
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-resolved-author-reply.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
+      review-input.md, the authoritative synthetic snapshot at the current
+      head. Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment,
+      author reply, and full candidates. Tell it to verify against
+      review-input.md, not live GitHub or another repository.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "author-confirmed warning resolved"
+        config:
+          pattern: '(?ms)^### Warning[ \t]*\r?\n(?:(?!^#{1,3} ).)*?^-[ \t]+`\[MGMT-BREAKING\]`[ \t]+Resolved\b'
+      - type: output-matches
+        name: "resolved warning no longer escalates decision"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?no high-confidence concerns`?[ \t]*\r?$'
+      - type: output-not-matches
+        name: "confirmed warning not carried forward or new"
+        config:
+          pattern: '\[MGMT-BREAKING\]`[ \t]+(?:New|Carried forward)\b'
+      - type: prompt
+    rubric:
+      - The current GA CHANGELOG still lists the removed public method; the triggering pattern has not disappeared.
+      - The authoritative PR author reply confirms that this breaking change is intended and resolves the Warning's verification request.
+      - The reviewer must dispatch the critic, which must accept the confirmed resolution rather than require a code or CHANGELOG change.
+      - The resolved item cites the author reply without asking for confirmation again.
+      - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
 
   - name: standard-manager-name-is-clean
     environment:

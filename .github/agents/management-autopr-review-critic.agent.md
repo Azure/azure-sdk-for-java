@@ -25,12 +25,13 @@ For every candidate, verify in order:
 
 1. For unresolved candidates, the cited file and symbol or release entry exist
    at the session SHA. For `Resolved`, verify the prior concern against the
-   current head or an authoritative author reply; removal of the cited path
-   may be the resolution, not a citation mismatch.
+   current head or, for Warnings, an authoritative author reply. Removal of
+   the cited path may be the resolution, not a citation mismatch.
    An unresolved `MGMT-RELEASE-PLAN` instead cites the PR description and
    verifies that it contains no accepted release-plan URL.
 2. Unresolved evidence was introduced by this PR, not necessarily its latest
-   push. For `Resolved`, confirm the original condition no longer applies.
+   push. For `Resolved`, confirm the original condition no longer applies or a
+   verified authoritative reply answers the Warning's verification request.
 3. The concern matches one rule ID defined by the management review skill.
 4. An unresolved pattern satisfies every condition of that rule, including
    documented exceptions and false-positive defenses. For `Resolved`, verify

@@ -9,8 +9,9 @@ The reviewer dispatches the critic once after self-verification.
 - Package and release type
 - Prior workflow comment, or `none`
 - Candidate concerns, including ID, severity, state, cited file, affected
-  symbol or release entry, evidence, explanation, and requested action when
-  Blocking or Warning
+  symbol or release entry, evidence, explanation, and requested action for
+  unresolved Blocking or Warning items; Resolved items supply resolution
+  evidence without requesting action
 
 Missing PR, SHA, or candidate concerns produces one report-level
 `FAIL / missing-inputs`.
@@ -64,7 +65,8 @@ Release type: <stable|beta>
 
 ## Candidate concerns
 
-<candidates including declared severity>
+<candidates with state, severity, evidence, and action for unresolved
+Blocking or Warning items; resolution evidence without action for Resolved>
 ```
 
 If the critic returns additional concerns, ignore them. If dispatch fails or

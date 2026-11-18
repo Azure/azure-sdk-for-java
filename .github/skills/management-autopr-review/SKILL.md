@@ -222,8 +222,9 @@ Use only these severity levels:
 
 Every item must cite a repository-relative file and affected symbol or release
 entry and state whether it is `New`, `Carried forward`, or `Resolved`.
-Blocking and Warning items request one concrete human action or verification.
-Informational items provide context without requesting action.
+Unresolved Blocking and Warning items request one concrete human action or
+verification. Resolved items cite resolution evidence without requesting
+action. Informational items provide context without requesting action.
 `MGMT-RELEASE-PLAN` cites the PR description. Reuse stable IDs across commits,
 except that a changed `MGMT-API-VERSION` value is emitted again as `New`.
 When a new head SHA passes the Java gate, include each still-applicable prior
@@ -261,11 +262,13 @@ Output:
 
 ### Blocking
 
-- `[MGMT-...]` New|Carried forward|Resolved — evidence and requested action
+- `[MGMT-...]` New|Carried forward — evidence and requested action
+- `[MGMT-...]` Resolved — resolution evidence
 
 ### Warning
 
-- `[MGMT-...]` New|Carried forward|Resolved — evidence and verification request
+- `[MGMT-...]` New|Carried forward — evidence and verification request
+- `[MGMT-...]` Resolved — resolution evidence
 
 ### Informational
 
