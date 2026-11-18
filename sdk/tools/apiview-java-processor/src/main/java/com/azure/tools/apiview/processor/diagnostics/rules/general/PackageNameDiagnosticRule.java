@@ -8,9 +8,10 @@ import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.Diagnostic;
 import com.github.javaparser.ast.CompilationUnit;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getClassName;
+import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getNodeFullyQualifiedName;
 import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getPackageName;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.ERROR;
 
@@ -33,7 +34,7 @@ public class PackageNameDiagnosticRule implements DiagnosticRule {
     public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         getPackageName(cu).ifPresent(packageName -> {
             // we need to map the issue to the class id, because package text isn't printed in the APIView output
-            getClassName(cu).map(listing.getKnownTypes()::get).ifPresent(typeId -> {
+            Optional.ofNullable(listing.getKnownTypes().get(getNodeFullyQualifiedName(cu))).ifPresent(typeId -> {
                 if (!regex.matcher(packageName).matches()) {
                     listing.addDiagnostic(
                         new Diagnostic(ERROR, typeId, "Package name match the following regex: " + regex.pattern()));

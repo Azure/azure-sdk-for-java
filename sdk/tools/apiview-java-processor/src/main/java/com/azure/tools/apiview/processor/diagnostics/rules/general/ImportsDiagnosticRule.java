@@ -11,8 +11,8 @@ import com.github.javaparser.ast.CompilationUnit;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static com.azure.tools.apiview.processor.analysers.util.ASTUtils.getClassName;
 import static com.azure.tools.apiview.processor.model.DiagnosticKind.WARNING;
 
 /**
@@ -38,7 +38,7 @@ public class ImportsDiagnosticRule implements DiagnosticRule {
     @Override
     public void scanIndividual(final CompilationUnit cu, final ApiListing listing) {
         // we need to map the issue to the class id, because import text isn't printed in the APIView output
-        getClassName(cu).map(listing.getKnownTypes()::get)
+        Optional.ofNullable(listing.getKnownTypes().get(ASTUtils.getNodeFullyQualifiedName(cu)))
             .ifPresent(typeId -> ASTUtils.getImports(cu).forEach(importStr -> {
                 for (String illegalPackage : illegalPackages) {
                     if (importStr.contains(illegalPackage)) {

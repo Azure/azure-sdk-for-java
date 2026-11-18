@@ -50,17 +50,28 @@ public class IllegalPackageApiExportsDiagnosticRule implements DiagnosticRule {
         getPublicOrProtectedMethods(cu).forEach(methodDecl -> {
             final String methodId = makeId(methodDecl);
 
-            if (methodDecl.getType() instanceof ClassOrInterfaceType) {
-                ClassOrInterfaceType returnType = (ClassOrInterfaceType) methodDecl.getType();
-                validateType(methodId, returnType, listing);
-            }
+            validateType(methodId, methodDecl.getType(), listing);
 
             validateParameters(methodDecl, methodId, listing);
         });
     }
 
-    private void validateType(String methodName, ClassOrInterfaceType type, final ApiListing listing) {
-        String typeAsString = type.getNameWithScope();
+    private void validateType(String methodName, Type type, final ApiListing listing) {
+        if (type.isArrayType()) {
+            validateType(methodName, type.asArrayType().getComponentType(), listing);
+            return;
+        }
+        if (type.isWildcardType()) {
+            type.asWildcardType().getExtendedType().ifPresent(bound -> validateType(methodName, bound, listing));
+            type.asWildcardType().getSuperType().ifPresent(bound -> validateType(methodName, bound, listing));
+            return;
+        }
+        if (!type.isClassOrInterfaceType()) {
+            return;
+        }
+
+        ClassOrInterfaceType classType = type.asClassOrInterfaceType();
+        String typeAsString = classType.getNameWithScope();
 
         if (typeAsString.contains(".")) {
             // the type is fully-qualified, e.g. 'com.azure.storage.implementation.models.BlobOptions'.
@@ -72,20 +83,14 @@ public class IllegalPackageApiExportsDiagnosticRule implements DiagnosticRule {
         }
 
         // we must also inspect the generic types
-        type.getTypeArguments().ifPresent(types -> {
-            types.stream()
-                .filter(Type::isClassOrInterfaceType)
-                .map(Type::asClassOrInterfaceType)
-                .forEach(genericType -> validateType(methodName, genericType, listing));
-        });
+        classType.getTypeArguments()
+            .ifPresent(types -> types.forEach(genericType -> validateType(methodName, genericType, listing)));
     }
 
     private void validateParameters(CallableDeclaration<?> methodDecl, String methodId, ApiListing listing) {
         methodDecl.getParameters()
             .stream()
             .map(Parameter::getType)
-            .filter(Type::isClassOrInterfaceType)
-            .map(Type::asClassOrInterfaceType)
             .forEach(parameter -> validateType(methodId, parameter, listing));
     }
 

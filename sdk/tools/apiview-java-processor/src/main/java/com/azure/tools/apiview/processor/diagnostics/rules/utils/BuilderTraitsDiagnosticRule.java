@@ -60,7 +60,7 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                 // is protocol-agnostic
                 if (!traitClass.builderProtocol.equals(TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE)) {
                     AnnotationExpr annotationExpr = serviceClientBuilderAnnotation.get();
-                    String builderProtocol = TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE;
+                    String builderProtocol = TraitClass.BUILDER_PROTOCOL_HTTP;
                     if (annotationExpr.isNormalAnnotationExpr()) {
                         builderProtocol = annotationExpr.asNormalAnnotationExpr()
                             .getPairs()
@@ -68,10 +68,13 @@ public abstract class BuilderTraitsDiagnosticRule implements DiagnosticRule {
                             .filter(mvp -> "protocol".equals(mvp.getNameAsString()))
                             .map(mvp -> mvp.getValue().toString())
                             .findFirst()
-                            .orElse(TraitClass.BUILDER_PROTOCOL_NOT_APPLICABLE);
+                            .orElse(TraitClass.BUILDER_PROTOCOL_HTTP);
                     }
 
-                    if (!builderProtocol.equals(traitClass.builderProtocol)) {
+                    String protocolName = builderProtocol.substring(builderProtocol.lastIndexOf('.') + 1);
+                    String traitProtocolName
+                        = traitClass.builderProtocol.substring(traitClass.builderProtocol.lastIndexOf('.') + 1);
+                    if (!protocolName.equals(traitProtocolName)) {
                         continue;
                     }
                 }

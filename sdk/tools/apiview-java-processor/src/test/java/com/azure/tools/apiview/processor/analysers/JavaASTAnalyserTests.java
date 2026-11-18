@@ -7,11 +7,14 @@ import com.azure.tools.apiview.processor.model.ApiListing;
 import com.azure.tools.apiview.processor.model.MarkdownRenderer;
 import com.azure.tools.apiview.processor.model.ReviewLine;
 import com.azure.tools.apiview.processor.model.TokenKind;
+import com.azure.tools.apiview.processor.model.maven.Pom;
 import com.github.javaparser.ast.type.ArrayType;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -25,10 +28,36 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class JavaASTAnalyserTests {
+    @ParameterizedTest
+    @CsvSource({ "com.azure.test,true,false", "com.azure.InvalidPackage,false,true", "com.azure.test,false,false" })
+    public void reportsImportAndPackageDiagnostics(String packageName, boolean prohibitedImport, boolean invalidPackage,
+        @TempDir Path tempDir) throws IOException {
+        Path sourceFile = tempDir.resolve("TestClient.java");
+        String source = "package " + packageName + ";"
+            + (prohibitedImport ? "import com.sun.example.InternalType;" : "") + "public class TestClient {}";
+        Files.write(sourceFile, source.getBytes(StandardCharsets.UTF_8));
+        ApiListing listing = new ApiListing();
+        listing.setPackageName("com.azure:test");
+        listing.setMavenPom(mock(Pom.class));
+
+        new JavaASTAnalyser(listing).analyse(Collections.singletonList(sourceFile));
+
+        assertEquals(prohibitedImport,
+            listing.getDiagnostics()
+                .stream()
+                .anyMatch(diagnostic -> diagnostic.getText().contains("Do not add dependencies")));
+        assertEquals(invalidPackage,
+            listing.getDiagnostics()
+                .stream()
+                .anyMatch(diagnostic -> diagnostic.getText().contains("Package name match")));
+    }
+
     @Test
     public void keepsTypeSpacingLocalDuringOverlappingRendering() throws Exception {
         CountDownLatch entered = new CountDownLatch(1);
