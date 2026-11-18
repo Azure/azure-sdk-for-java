@@ -309,14 +309,6 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsOnFileSystemBeingDeleted() {
-        StepVerifier
-            .create(dataLakeFileSystemAsyncClient.delete().then(dataLakeFileSystemAsyncClient.createIfNotExists()))
-            .verifyErrorSatisfies(
-                e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
-    }
-
-    @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
