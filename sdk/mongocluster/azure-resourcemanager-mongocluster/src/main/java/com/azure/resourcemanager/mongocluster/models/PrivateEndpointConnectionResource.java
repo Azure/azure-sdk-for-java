@@ -80,7 +80,7 @@ public interface PrivateEndpointConnectionResource {
              * Specifies resourceGroupName, mongoClusterName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param mongoClusterName The name of the mongo cluster.
+             * @param mongoClusterName The name of the DocumentDB cluster.
              * @return the next definition stage.
              */
             WithCreate withExistingMongoCluster(String resourceGroupName, String mongoClusterName);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteLagAuthorizationsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteLagAuthorizationGet.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteLagAuthorizationGet.json
      */
     /**
      * Sample code: Get ExpressRouteLag Authorization.

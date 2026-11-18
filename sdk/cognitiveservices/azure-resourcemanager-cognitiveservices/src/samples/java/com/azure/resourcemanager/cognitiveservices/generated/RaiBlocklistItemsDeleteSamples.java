@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiBlocklistItemsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-11-01/DeleteRaiBlocklistItem.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteRaiBlocklistItem.json
      */
     /**
      * Sample code: DeleteRaiBlocklistItem.

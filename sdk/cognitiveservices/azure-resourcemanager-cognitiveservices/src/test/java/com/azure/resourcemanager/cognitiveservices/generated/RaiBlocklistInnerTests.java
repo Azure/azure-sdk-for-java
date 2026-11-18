@@ -15,21 +15,20 @@ public final class RaiBlocklistInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"wfscjfn\"},\"etag\":\"szqujizdvoq\",\"tags\":{\"hjoxo\":\"byowbblgyavutp\",\"pi\":\"smsks\",\"xkcgxxlxsffgcvi\":\"lqol\",\"gfbkjubdyh\":\"qzdwlvwlyoup\"},\"id\":\"fminsgowzf\",\"name\":\"tsttktlahbq\",\"type\":\"ctxtgzukxi\"}")
+            "{\"properties\":{\"description\":\"qdcadwvps\"},\"etag\":\"j\",\"tags\":{\"rz\":\"jriyb\",\"wnjkgvfn\":\"epnxwd\"},\"id\":\"aursqftibtyi\",\"name\":\"uyvpirf\",\"type\":\"jpnqnoowsbeden\"}")
             .toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("wfscjfn", model.properties().description());
-        Assertions.assertEquals("byowbblgyavutp", model.tags().get("hjoxo"));
+        Assertions.assertEquals("qdcadwvps", model.properties().description());
+        Assertions.assertEquals("jriyb", model.tags().get("rz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistInner model
-            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("wfscjfn"))
-                .withTags(mapOf("hjoxo", "byowbblgyavutp", "pi", "smsks", "xkcgxxlxsffgcvi", "lqol", "gfbkjubdyh",
-                    "qzdwlvwlyoup"));
+            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("qdcadwvps"))
+                .withTags(mapOf("rz", "jriyb", "wnjkgvfn", "epnxwd"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("wfscjfn", model.properties().description());
-        Assertions.assertEquals("byowbblgyavutp", model.tags().get("hjoxo"));
+        Assertions.assertEquals("qdcadwvps", model.properties().description());
+        Assertions.assertEquals("jriyb", model.tags().get("rz"));
     }
 
     // Use "Map.of" if available

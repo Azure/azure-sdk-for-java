@@ -1134,8 +1134,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void createContainerIfNotExistsOnContainerBeingDeleted() {
-        String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        String containerName = cc.getBlobContainerName();
         primaryBlobServiceClient.deleteBlobContainer(containerName);
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
@@ -1145,8 +1144,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void createContainerOnContainerBeingDeleted() {
-        String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        String containerName = cc.getBlobContainerName();
         primaryBlobServiceClient.deleteBlobContainer(containerName);
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
@@ -1159,8 +1157,7 @@ public class ServiceApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void createContainerIfNotExistsAfterContainerDeleteCompletes() {
-        String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        String containerName = cc.getBlobContainerName();
         primaryBlobServiceClient.deleteBlobContainer(containerName);
 
         Response<BlobContainerClient> response = createAfterContainerDeleteCompletes(

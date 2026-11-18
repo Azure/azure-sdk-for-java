@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiContentFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiContentFilterProperties model = BinaryData
-            .fromString("{\"name\":\"ukkjqnvbroyla\",\"isMultiLevelFilter\":true,\"source\":\"Completion\"}")
-            .toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("ukkjqnvbroyla", model.name());
-        Assertions.assertTrue(model.isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        RaiContentFilterProperties model
+            = BinaryData.fromString("{\"name\":\"skdchmaiubavl\",\"isMultiLevelFilter\":false,\"source\":\"PostRun\"}")
+                .toObject(RaiContentFilterProperties.class);
+        Assertions.assertEquals("skdchmaiubavl", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_RUN, model.source());
     }
 }

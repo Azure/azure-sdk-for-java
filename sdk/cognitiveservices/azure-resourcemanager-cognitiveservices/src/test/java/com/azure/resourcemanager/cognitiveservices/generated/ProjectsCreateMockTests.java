@@ -10,13 +10,19 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.Project;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlEntry;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControls;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
 import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +33,7 @@ public final class ProjectsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ggrunozfvualjt\",\"description\":\"ivsdw\",\"endpoints\":{\"kmhzbh\":\"krfihscjv\",\"fbwih\":\"a\"},\"isDefault\":false},\"tags\":{\"auratni\":\"mvynuqqko\"},\"location\":\"pfzsclefyrl\",\"etag\":\"ndqlmfdggnbbuy\",\"identity\":{\"type\":\"None\",\"tenantId\":\"vsfleevnoqayr\",\"principalId\":\"juqwvap\",\"userAssignedIdentities\":{\"fdbgmkfwm\":{\"principalId\":\"hpzihacenqqzlx\",\"clientId\":\"zubfo\"},\"amkaepl\":{\"principalId\":\"wtewf\",\"clientId\":\"wyrkbrehzlrynjpc\"},\"oklf\":{\"principalId\":\"jub\",\"clientId\":\"uywevtjrieikmwl\"}}},\"id\":\"syx\",\"name\":\"ucb\",\"type\":\"tredscnnstjc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"grddi\",\"description\":\"a\",\"endpoints\":{\"gexp\":\"yrbvmb\",\"pjpsbcx\":\"phtqw\",\"ugnrzowc\":\"iyapifcjl\"},\"isDefault\":false,\"capabilitySettings\":{\"documentStore\":\"q\",\"vectorStore\":\"zawqxnhlva\",\"blobStore\":\"gwxd\"},\"toolControls\":{\"defaultAction\":\"Deny\",\"allowedTools\":[{\"type\":\"web_iq_preview\",\"serverUrl\":\"zplhaljom\",\"connectorId\":\"orprrapt\"},{\"type\":\"memory_search_preview\",\"serverUrl\":\"enylg\",\"connectorId\":\"rsnvofuyzvbploa\"},{\"type\":\"code_interpreter\",\"serverUrl\":\"ghgermmadkbxuips\",\"connectorId\":\"wxugpubeqkwxz\"},{\"type\":\"fabric_iq_preview\",\"serverUrl\":\"gueuygp\",\"connectorId\":\"auhejmsw\"}]}},\"tags\":{\"qzxyyl\":\"gxxzxwrnqwdjvl\"},\"location\":\"fxqcmejez\",\"etag\":\"bciuagakmxgww\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"pfjguzsyfwamhmeo\",\"principalId\":\"bzagwnompvyis\",\"userAssignedIdentities\":{\"ridipw\":{\"principalId\":\"ufysalbjfkjex\",\"clientId\":\"zmh\"},\"upfpllo\":{\"principalId\":\"jnn\",\"clientId\":\"ifjqhjenb\"},\"mny\":{\"principalId\":\"djffllrsfghyyeok\",\"clientId\":\"zuddccclsnflcxx\"},\"hzfec\":{\"principalId\":\"tgslkokq\",\"clientId\":\"gzcojgdq\"}}},\"id\":\"pjnydkkgbvsqks\",\"name\":\"gkvga\",\"type\":\"nrhrqqiwfysujcv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,21 +43,37 @@ public final class ProjectsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .define("jba")
-            .withExistingAccount("xjoegcjojlleuidp", "tonvhgnhtmeplhb")
-            .withRegion("d")
-            .withTags(mapOf("vrqoemwsi", "s", "deotmfx", "eailwdqmqf"))
-            .withProperties(new ProjectProperties().withDisplayName("mkvavucgjiuaiqpm").withDescription("fzhrchx"))
+            .define("smc")
+            .withExistingAccount("vruuhyncppmmwh", "erlurgipvnbxle")
+            .withRegion("wedj")
+            .withTags(mapOf("gaxmhaszjie", "bsec", "rjtkreiso", "fstdwqdvzcnlkv", "mqpaalwidt", "huswmgrbkobmgwav"))
+            .withProperties(new ProjectProperties().withDisplayName("xgcqmguv")
+                .withDescription("oiihrfcowlas")
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore("hmar")
+                    .withVectorStore("wyfcenkbfxqcap")
+                    .withBlobStore("eciradmxokbu"))
+                .withToolControls(new ToolControls().withDefaultAction(ToolControlsDefaultAction.DENY)
+                    .withAllowedTools(Arrays.asList(new ToolControlEntry().withType(ToolControlType.WEB_SEARCH)
+                        .withServerUrl("yvcsejdhrodyiitr")
+                        .withConnectorId("djtgo")))))
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ntaumd", new UserAssignedIdentity(), "zqvabmhvsexd",
-                    new UserAssignedIdentity(), "a", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(
+                    mapOf("nfgzmx", new UserAssignedIdentity(), "sffrpjfxsyx", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("ggrunozfvualjt", response.properties().displayName());
-        Assertions.assertEquals("ivsdw", response.properties().description());
-        Assertions.assertEquals("mvynuqqko", response.tags().get("auratni"));
-        Assertions.assertEquals("pfzsclefyrl", response.location());
-        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("grddi", response.properties().displayName());
+        Assertions.assertEquals("a", response.properties().description());
+        Assertions.assertEquals("q", response.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("zawqxnhlva", response.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("gwxd", response.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, response.properties().toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.WEB_IQ_PREVIEW,
+            response.properties().toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("zplhaljom", response.properties().toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("orprrapt", response.properties().toolControls().allowedTools().get(0).connectorId());
+        Assertions.assertEquals("gxxzxwrnqwdjvl", response.tags().get("qzxyyl"));
+        Assertions.assertEquals("fxqcmejez", response.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

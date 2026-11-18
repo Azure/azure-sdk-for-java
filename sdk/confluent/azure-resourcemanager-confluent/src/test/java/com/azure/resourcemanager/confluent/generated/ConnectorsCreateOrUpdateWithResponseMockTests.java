@@ -27,7 +27,7 @@ public final class ConnectorsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"owxih\",\"connectorId\":\"nxw\",\"connectorState\":\"RUNNING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"zw\",\"name\":\"klsbsbqqqagw\",\"type\":\"rxaomzisglrrcze\"}";
+            = "{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"xmxufrsryjqgdk\",\"connectorId\":\"ozo\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"h\",\"name\":\"efgwbmqjc\",\"type\":\"ntasfaymxbu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,21 +37,21 @@ public final class ConnectorsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConnectorResource response = manager.connectors()
-            .define("aurkihcirlde")
-            .withExistingCluster("mkoisqcssf", "xuifmcsypobkdqz", "dzsylollgtrczz", "dmxzjijpv")
-            .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SINK)
-                .withConnectorClass(ConnectorClass.AZURECOSMOSV2SOURCE)
-                .withConnectorName("nbkkjanurnnq")
-                .withConnectorId("q")
+            .define("mcxtczhu")
+            .withExistingCluster("uwaoaguhicqlli", "stacsjvhrweftkwq", "jp", "vssehaepw")
+            .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SOURCE)
+                .withConnectorClass(ConnectorClass.AZUREBLOBSOURCE)
+                .withConnectorName("d")
+                .withConnectorId("yespydjfbocyv")
                 .withConnectorState(ConnectorStatus.PAUSED))
             .withConnectorServiceTypeInfo(new ConnectorServiceTypeInfoBase())
             .withPartnerConnectorInfo(new PartnerInfoBase())
             .create();
 
-        Assertions.assertEquals(ConnectorType.SOURCE, response.connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE, response.connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("owxih", response.connectorBasicInfo().connectorName());
-        Assertions.assertEquals("nxw", response.connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.RUNNING, response.connectorBasicInfo().connectorState());
+        Assertions.assertEquals(ConnectorType.SINK, response.connectorBasicInfo().connectorType());
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SOURCE, response.connectorBasicInfo().connectorClass());
+        Assertions.assertEquals("xmxufrsryjqgdk", response.connectorBasicInfo().connectorName());
+        Assertions.assertEquals("ozo", response.connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.PROVISIONING, response.connectorBasicInfo().connectorState());
     }
 }

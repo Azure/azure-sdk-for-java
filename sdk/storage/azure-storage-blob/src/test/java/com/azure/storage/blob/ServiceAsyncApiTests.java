@@ -1078,11 +1078,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createContainerIfNotExistsOnContainerBeingDeleted() {
-        String containerName = generateContainerName();
+        String containerName = cc.getBlobContainerName();
 
         StepVerifier
-            .create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
-                .then(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName))
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
                 .then(primaryBlobServiceAsyncClient.createBlobContainerIfNotExists(containerName)))
             .verifyErrorSatisfies(
                 r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
@@ -1090,11 +1089,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createContainerOnContainerBeingDeleted() {
-        String containerName = generateContainerName();
+        String containerName = cc.getBlobContainerName();
 
         StepVerifier
-            .create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
-                .then(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName))
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
                 .then(primaryBlobServiceAsyncClient.createBlobContainer(containerName)))
             .verifyErrorSatisfies(
                 r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
@@ -1105,11 +1103,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void createContainerIfNotExistsAfterContainerDeleteCompletes() {
-        String containerName = generateContainerName();
+        String containerName = cc.getBlobContainerName();
 
         StepVerifier
-            .create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
-                .then(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName))
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
                 .then(createAfterContainerDeleteCompletes(
                     primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null))))
             .assertNext(response -> assertResponseStatusCode(response, 201))

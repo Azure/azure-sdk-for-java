@@ -21,7 +21,7 @@ public final class NeuroShieldFindingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"cveId\":\"ocmbqfqvmkcxoza\",\"virtualMachineArmId\":\"vhelxprglyatdd\",\"severity\":\"High\",\"description\":\"cbcuejrjxgciqi\",\"reason\":\"rhos\",\"detectedTime\":\"2021-06-01T12:21:20Z\",\"status\":\"Mitigated\"},\"id\":\"hzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"cveId\":\"owcluqo\",\"virtualMachineArmId\":\"ekqvgqouwif\",\"severity\":\"Critical\",\"description\":\"pjwyiv\",\"reason\":\"ikf\",\"detectedTime\":\"2021-05-10T21:47:58Z\",\"status\":\"Active\"},\"id\":\"fsphuagrttikt\",\"name\":\"usqczkvy\",\"type\":\"lxubyj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NeuroShieldFindingsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NeuroShieldFinding> response = manager.neuroShieldFindings()
-            .list("wiyzvqtmnubexkp", "ksmond", "mquxvypo", 2111065372, "kopkwhojvpajqgx",
+            .list("ojyqdhcuplcplcw", "hihihlhzdsqtzbsr", "nowc", 994844547, "fgmvecactxmwo",
                 com.azure.core.util.Context.NONE);
 
     }
