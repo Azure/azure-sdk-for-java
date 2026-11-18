@@ -314,7 +314,8 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                 .meterRegistry(registry)
                 .setEnabled(true)
                 .setMetricCategories(CosmosMetricCategory.DEFAULT)
-                .configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)
+                .configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT,
+                    CosmosMetricTagName.PARTITION_KEY_RANGE_ID)
                 .applyDiagnosticThresholdsForTransportLevelMeters(false);
             try (CosmosClient client = gatewayBuilder(gatewayV2)
                 .clientTelemetryConfig(new CosmosClientTelemetryConfig().metricsOptions(metricsOptions))
@@ -322,7 +323,16 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                 awaitGatewayV2Readiness(client, gatewayV2);
                 CosmosContainer container = client.getDatabase(database.getId()).getContainer(CONTAINER_ID);
                 PartitionKey partitionKey = new PartitionKey(id);
-                container.readItem(id, partitionKey, ObjectNode.class);
+                CosmosItemResponse<ObjectNode> warmup = container.readItem(id, partitionKey, ObjectNode.class);
+                List<ClientSideRequestStatistics.GatewayStatistics> successfulAttempts = warmup.getDiagnostics()
+                    .getClientSideRequestStatistics().stream()
+                    .flatMap(statistics -> statistics.getGatewayStatisticsList().stream())
+                    .filter(attempt -> attempt.getResourceType() == ResourceType.Document
+                        && attempt.getOperationType() == OperationType.Read && attempt.getStatusCode() == 200)
+                    .collect(Collectors.toList());
+                assertThat(successfulAttempts).hasSize(1);
+                String expectedRangeId = successfulAttempts.get(0).getPartitionKeyRangeId();
+                assertThat(expectedRangeId).isNotBlank().isNotEqualTo("NONE");
                 CosmosFaultInjectionHelper.configureFaultInjectionRules(
                     client.asyncClient().getDatabase(database.getId()).getContainer(CONTAINER_ID),
                     Collections.singletonList(rule)).block();
@@ -355,6 +365,10 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
 
                 Tag correlationTag = client.asyncClient().getClientCorrelationTag();
                 Map<Tags, Long> expectedCounts = attempts.stream().collect(Collectors.groupingBy(attempt -> {
+                    assertThat(attempt.getPartitionKeyRangeId())
+                        .as("Partition range on gateway attempt %s/%s",
+                            attempt.getStatusCode(), attempt.getSubStatusCode())
+                        .isEqualTo(expectedRangeId);
                     URI endpoint = attempt.getRequestUri();
                     assertThat(endpoint).isNotNull();
                     int port = endpoint.getPort() == -1 ? 443 : endpoint.getPort();
@@ -365,6 +379,7 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                     assertThat(endpointTag).isNotNull();
                     assertThat(endpointTag.getValue()).isEqualTo(endpoint.getHost() + "_" + port);
                     return Tags.of(correlationTag, endpointTag,
+                        Tag.of(TagName.PartitionKeyRangeId.toString(), expectedRangeId),
                         Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
                         Tag.of(TagName.RequestStatusCode.toString(),
                             attempt.getStatusCode() + "/" + attempt.getSubStatusCode()));
