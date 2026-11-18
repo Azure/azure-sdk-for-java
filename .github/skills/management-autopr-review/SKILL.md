@@ -66,6 +66,8 @@ Ignore the fourth and later segments when comparing the module with its
 Report whenever the folder `<service>` differs from the module's third segment.
 Explain that the likely source is the `service-dir` configuration in the
 upstream `tspconfig.yaml`, without accessing that repository.
+An upstream `service-dir` matching the incorrect folder reinforces the likely
+cause; it does not exempt or downgrade the mismatch.
 
 ### `MGMT-VERSION`: stable package on a preview API
 
@@ -228,6 +230,17 @@ When a new head SHA passes the Java gate, include each still-applicable prior
 item as `Carried forward` in the replacement current-state comment; do not
 restate its question as `New`.
 
+Set Decision from the unresolved (`New` or `Carried forward`) findings after
+critic verification, using the first matching condition:
+
+- Any Blocking finding: `changes requested`; the PR must be fixed before merge.
+- Otherwise, any Warning finding: `human attention requested`; human
+  verification is needed, but a defect is not established.
+- Otherwise: `no high-confidence concerns`.
+
+Resolved findings do not escalate the decision. These labels are advisory
+comment text, not GitHub review submissions or enforced merge gates.
+
 Code-format the complete bracketed concern ID, including the square brackets,
 for example `[MGMT-LIST-RETURN]`. Do not wrap the complete finding in
 backticks, because evidence may contain its own inline code spans.
@@ -244,7 +257,7 @@ Output:
 - CHANGELOG: `<release and date>`
 - Java changes reviewed: `<summary>`
 - Breaking changes: `<none|summary>`
-- Decision: `<no high-confidence concerns|human attention requested>`
+- Decision: `<changes requested|human attention requested|no high-confidence concerns>`
 
 ### Blocking
 
