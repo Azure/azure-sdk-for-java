@@ -370,6 +370,10 @@ public final class BlobContainerClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.create -->
@@ -384,6 +388,10 @@ public final class BlobContainerClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.create -->
+     *
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
@@ -394,6 +402,10 @@ public final class BlobContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -414,6 +426,9 @@ public final class BlobContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -428,6 +443,10 @@ public final class BlobContainerClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -450,6 +469,10 @@ public final class BlobContainerClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

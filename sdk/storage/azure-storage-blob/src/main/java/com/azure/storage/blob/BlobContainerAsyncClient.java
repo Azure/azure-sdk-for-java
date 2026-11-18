@@ -378,6 +378,10 @@ public final class BlobContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.create -->
@@ -389,6 +393,9 @@ public final class BlobContainerAsyncClient {
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.create -->
      *
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
@@ -399,6 +406,10 @@ public final class BlobContainerAsyncClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -415,6 +426,9 @@ public final class BlobContainerAsyncClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
@@ -436,6 +450,10 @@ public final class BlobContainerAsyncClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -464,6 +482,10 @@ public final class BlobContainerAsyncClient {
     /**
      * Creates a new container within a storage account if it does not exist.  For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container can't be created again right after it is deleted. For at least 30 seconds, and sometimes longer,
+     * the service refuses to create a container with the same name, answering with status code 409 and error code
+     * ContainerBeingDeleted. Retry later, or use a different name. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
