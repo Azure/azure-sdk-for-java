@@ -136,7 +136,7 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  * Clients built by this builder support mutual TLS (mTLS) proof-of-possession (see
  * {@link com.azure.core.http.HttpClient#supportsClientCertificateBinding()}). A request whose access token is bound to a
  * client certificate goes over a connection pool used only for that certificate, configured like the builder's. It uses
- * the JDK's TLS implementation, TLS 1.2 and the JVM's default trust, doesn't follow redirects, and is only sent once its
+ * the JDK's TLS implementation and the JVM's default trust, doesn't follow redirects, and is only sent once its
  * connection has presented the certificate. A certificate's pool is closed when the certificate expires, or when more
  * than 16 certificates are in use, least recently used first. When the builder is created from a Reactor Netty
  * {@link HttpClient}, these requests share that client's connection pool, and its SSL configuration doesn't apply to
@@ -279,8 +279,7 @@ public class NettyAsyncHttpClientBuilder {
 
     /*
      * Creates the Reactor Netty clients for requests whose access token is bound to a TLS client certificate. Each
-     * client presents only that certificate, using the JDK's TLS implementation and TLS 1.2, and doesn't follow
-     * redirects.
+     * client presents only that certificate, using the JDK's TLS implementation, and doesn't follow redirects.
      */
     private Function<ClientCertificateBinding, BoundClient> createBoundClientFactory(ClientSettings settings,
         HttpClient configuredClient) {
@@ -317,9 +316,9 @@ public class NettyAsyncHttpClientBuilder {
     private static HttpClient bindToCertificate(HttpClient client, ClientCertificateBinding binding,
         TrustManagerFactory trustManagerFactory) {
         Consumer<SslContextBuilder> configureSslContext = sslContextBuilder -> {
-            sslContextBuilder.sslProvider(io.netty.handler.ssl.SslProvider.JDK)
-                .protocols("TLSv1.2")
-                .keyManager(binding.getKeyManager());
+            // The private key may only be usable through the Java Cryptography Architecture, so this uses the JDK's TLS
+            // implementation.
+            sslContextBuilder.sslProvider(io.netty.handler.ssl.SslProvider.JDK).keyManager(binding.getKeyManager());
             if (trustManagerFactory != null) {
                 sslContextBuilder.trustManager(trustManagerFactory);
             }

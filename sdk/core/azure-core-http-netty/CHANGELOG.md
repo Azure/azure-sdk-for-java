@@ -7,10 +7,9 @@
 - Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback while preserving existing defaults.
 - Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
 - Added support for requests whose access token is bound to a TLS client certificate, for mutual TLS (mTLS)
-  proof-of-possession. Each certificate gets its own connection pool, using the JDK's TLS implementation and TLS 1.2,
-  and a bound request is only sent over a connection that presented its certificate. When the client is built from a
-  Reactor Netty `HttpClient`, bound requests share that client's connection pool, and its SSL configuration doesn't
-  apply to them.
+  proof-of-possession. Each certificate gets its own connection pool, using the JDK's TLS implementation, and a bound
+  request is only sent over a connection that presented its certificate. When the client is built from a Reactor Netty
+  `HttpClient`, bound requests share that client's connection pool, and its SSL configuration doesn't apply to them.
 
 ### Breaking Changes
 

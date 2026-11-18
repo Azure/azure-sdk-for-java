@@ -56,8 +56,8 @@ public interface HttpClient {
      * certificate:
      * <ul>
      * <li>Build the TLS context from {@link com.azure.core.credential.ClientCertificateBinding#getKeyManager()}, using
-     * the JDK's TLS implementation and TLS 1.2. The private key may only be usable through the Java Cryptography
-     * Architecture, and mTLS proof-of-possession currently requires TLS 1.2.</li>
+     * the JDK's TLS implementation, since the private key may only be usable through the Java Cryptography
+     * Architecture.</li>
      * <li>Never share a connection between requests bound to different certificates, or between bound and unbound
      * requests.</li>
      * <li>Where the client can inspect the TLS connection before sending, fail the request without sending it unless

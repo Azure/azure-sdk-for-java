@@ -165,14 +165,25 @@ public class LocalTestServer {
     }
 
     /**
+     * Gets the TLS session of the connection a request came on.
+     *
+     * @param request The request.
+     * @return The TLS session, or null if the request didn't come over TLS.
+     */
+    public static SSLSession getTlsSession(HttpServletRequest request) {
+        Object session = request.getAttribute("org.eclipse.jetty.servlet.request.ssl_session");
+        return session instanceof SSLSession ? (SSLSession) session : null;
+    }
+
+    /**
      * Gets the TLS protocol of the connection a request came on.
      *
      * @param request The request.
      * @return The TLS protocol, such as {@code "TLSv1.3"}, or null if the request didn't come over TLS.
      */
     public static String getTlsProtocol(HttpServletRequest request) {
-        Object session = request.getAttribute("org.eclipse.jetty.servlet.request.ssl_session");
-        return session instanceof SSLSession ? ((SSLSession) session).getProtocol() : null;
+        SSLSession session = getTlsSession(request);
+        return session == null ? null : session.getProtocol();
     }
 
     private LocalTestServer(RequestHandler requestHandler, int maxThreads, HttpProtocolVersion maximumHttpVersion,

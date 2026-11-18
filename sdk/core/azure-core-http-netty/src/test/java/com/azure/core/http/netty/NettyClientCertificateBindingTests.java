@@ -28,11 +28,14 @@ import org.eclipse.jetty.util.Callback;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.Instant;
@@ -48,6 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -62,47 +66,71 @@ public class NettyClientCertificateBindingTests {
     private static final ClientCertificateBinding BINDING_B
         = MtlsTestCertificates.loadBinding(MtlsTestCertificates.CLIENT_B);
     private static final String NO_CERTIFICATE = "none";
+    private static final String TLS_1_2 = "TLSv1.2";
+    private static final String TLS_1_3 = "TLSv1.3";
+
+    // The servers close the connection after responding to requests whose path starts with this prefix.
+    private static final String CLOSE_CONNECTION_PATH = "/close/";
 
     // The requests the servers received, by path.
     private static final Map<String, Queue<ReceivedRequest>> RECEIVED = new ConcurrentHashMap<>();
 
+    // Requests a client certificate, and accepts TLS 1.2 and TLS 1.3.
     private static LocalTestServer requestingServer;
-    private static LocalTestServer nonRequestingServer;
-    private static LocalTestServer http2Server;
+
+    // Servers that only accept one TLS protocol, by protocol.
+    private static final Map<String, LocalTestServer> REQUESTING_SERVERS = new ConcurrentHashMap<>();
+    private static final Map<String, LocalTestServer> NON_REQUESTING_SERVERS = new ConcurrentHashMap<>();
+    private static final Map<String, LocalTestServer> HTTP2_SERVERS = new ConcurrentHashMap<>();
 
     @BeforeAll
     public static void startServers() {
         LocalTestServer.RequestHandler handler = (request, response, body) -> {
             X509Certificate certificate = LocalTestServer.getClientCertificate(request);
+            SSLSession session = LocalTestServer.getTlsSession(request);
             RECEIVED.computeIfAbsent(request.getRequestURI(), path -> new ConcurrentLinkedQueue<>())
                 .add(new ReceivedRequest(certificate == null ? NO_CERTIFICATE : subject(certificate),
-                    request.getHeader("Authorization"), request.getProtocol()));
+                    request.getHeader("Authorization"), request.getProtocol(),
+                    session == null ? null : session.getProtocol(), session == null ? 0 : session.getCreationTime(),
+                    request.getRemotePort()));
 
+            if (request.getRequestURI().startsWith(CLOSE_CONNECTION_PATH)) {
+                response.setHeader("Connection", "close");
+            }
             response.setStatus(200);
             response.setContentLength(0);
             response.getHttpOutput().flush();
             response.getHttpOutput().complete(Callback.NOOP);
         };
 
-        requestingServer = LocalTestServer.createMutualTlsServer(handler, true);
-        requestingServer.start();
-        nonRequestingServer = LocalTestServer.createMutualTlsServer(handler, false);
-        nonRequestingServer.start();
-        http2Server = LocalTestServer.createMutualTlsServer(handler, true, HttpProtocolVersion.HTTP_2);
-        http2Server.start();
+        requestingServer = start(LocalTestServer.createMutualTlsServer(handler, true));
+        for (String tlsProtocol : Arrays.asList(TLS_1_2, TLS_1_3)) {
+            REQUESTING_SERVERS.put(tlsProtocol,
+                start(LocalTestServer.createMutualTlsServer(handler, true, HttpProtocolVersion.HTTP_1_1, tlsProtocol)));
+            NON_REQUESTING_SERVERS.put(tlsProtocol, start(
+                LocalTestServer.createMutualTlsServer(handler, false, HttpProtocolVersion.HTTP_1_1, tlsProtocol)));
+            HTTP2_SERVERS.put(tlsProtocol,
+                start(LocalTestServer.createMutualTlsServer(handler, true, HttpProtocolVersion.HTTP_2, tlsProtocol)));
+        }
     }
 
     @AfterAll
     public static void stopServers() {
-        for (LocalTestServer server : Arrays.asList(requestingServer, nonRequestingServer, http2Server)) {
+        List<LocalTestServer> servers = new ArrayList<>();
+        servers.add(requestingServer);
+        servers.addAll(REQUESTING_SERVERS.values());
+        servers.addAll(NON_REQUESTING_SERVERS.values());
+        servers.addAll(HTTP2_SERVERS.values());
+        for (LocalTestServer server : servers) {
             if (server != null) {
                 server.stop();
             }
         }
     }
 
-    @Test
-    public void boundTokenIsSentWithItsCertificate() {
+    @ParameterizedTest
+    @ValueSource(strings = { TLS_1_2, TLS_1_3 })
+    public void boundTokenIsSentWithItsCertificate(String tlsProtocol) {
         AccessToken token = new AccessToken("token", OffsetDateTime.now().plusHours(1), null, "mtls_pop", BINDING_A);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new BearerTokenAuthenticationPolicy(request -> Mono.just(token), "scope"))
@@ -110,32 +138,59 @@ public class NettyClientCertificateBindingTests {
             .build();
         String path = createPath();
 
-        try (HttpResponse response
-            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, requestingServer.getHttpsUri() + path), Context.NONE)) {
+        try (HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, REQUESTING_SERVERS.get(tlsProtocol).getHttpsUri() + path), Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
 
         ReceivedRequest received = RECEIVED.get(path).peek();
         assertEquals(subject(BINDING_A), received.certificate);
         assertEquals("mtls_pop token", received.authorization);
+        assertEquals(tlsProtocol, received.tlsProtocol);
     }
 
-    @Test
-    public void boundRequestIsSentOverHttp2() {
+    @ParameterizedTest
+    @ValueSource(strings = { TLS_1_2, TLS_1_3 })
+    public void boundRequestIsSentOverHttp2(String tlsProtocol) {
         // With HTTP/2, the request is sent on a stream whose parent connection presented the certificate.
         HttpClient client = new NettyAsyncHttpClientBuilder().maximumHttpVersion(HttpProtocolVersion.HTTP_2)
             .clientCertificateBindingTrustManagerFactory(InsecureTrustManagerFactory.INSTANCE)
             .build();
         String path = createPath();
 
-        StepVerifier.create(send(client, http2Server, path, BINDING_A))
+        StepVerifier.create(send(client, HTTP2_SERVERS.get(tlsProtocol), path, BINDING_A))
             .expectNext(200)
             .expectComplete()
             .verify(Duration.ofSeconds(30));
 
         ReceivedRequest received = RECEIVED.get(path).peek();
         assertEquals(subject(BINDING_A), received.certificate);
-        assertEquals("HTTP/2.0", received.protocol);
+        assertEquals("HTTP/2.0", received.httpProtocol);
+        assertEquals(tlsProtocol, received.tlsProtocol);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { TLS_1_2, TLS_1_3 })
+    public void boundRequestIsSentOverResumedTlsSession(String tlsProtocol) {
+        // The server closes each connection, so each request opens a new one, which resumes the TLS session. A resumed
+        // session doesn't present the client certificate again, but keeps the one presented when it was created.
+        HttpClient client = createClient();
+        String path = CLOSE_CONNECTION_PATH + UUID.randomUUID();
+
+        for (int i = 0; i < 3; i++) {
+            StepVerifier.create(send(client, REQUESTING_SERVERS.get(tlsProtocol), path, BINDING_A))
+                .expectNext(200)
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
+        }
+
+        List<ReceivedRequest> received = new ArrayList<>(RECEIVED.get(path));
+        assertEquals(Collections.nCopies(3, subject(BINDING_A)), getPresentedCertificates(path));
+        assertEquals(Collections.nCopies(3, tlsProtocol),
+            received.stream().map(request -> request.tlsProtocol).collect(Collectors.toList()));
+        // Three connections, which all used the session the first one created.
+        assertEquals(3, received.stream().mapToInt(request -> request.remotePort).distinct().count());
+        assertEquals(1, received.stream().mapToLong(request -> request.sessionCreationTime).distinct().count());
     }
 
     @Test
@@ -206,25 +261,27 @@ public class NettyClientCertificateBindingTests {
         assertEquals(Arrays.asList(NO_CERTIFICATE, NO_CERTIFICATE), getPresentedCertificates(path));
     }
 
-    @Test
-    public void boundRequestIsNotSentWhenServerDoesNotRequestCertificate() {
+    @ParameterizedTest
+    @ValueSource(strings = { TLS_1_2, TLS_1_3 })
+    public void boundRequestIsNotSentWhenServerDoesNotRequestCertificate(String tlsProtocol) {
         String path = createPath();
 
-        StepVerifier.create(send(createClient(), nonRequestingServer, path, BINDING_A))
+        StepVerifier.create(send(createClient(), NON_REQUESTING_SERVERS.get(tlsProtocol), path, BINDING_A))
             .expectErrorMatches(error -> error instanceof IllegalStateException
                 && error.getMessage().contains("didn't present a client certificate"))
             .verify(Duration.ofSeconds(30));
         assertNull(RECEIVED.get(path));
     }
 
-    @Test
-    public void boundRequestIsNotSentWhenConnectionPresentsDifferentCertificate() {
+    @ParameterizedTest
+    @ValueSource(strings = { TLS_1_2, TLS_1_3 })
+    public void boundRequestIsNotSentWhenConnectionPresentsDifferentCertificate(String tlsProtocol) {
         // The key manager presents certificate B, but the token is bound to certificate A.
         ClientCertificateBinding mismatched = new ClientCertificateBinding(BINDING_A.getCertificate(),
             MtlsTestCertificates.loadKeyManager(MtlsTestCertificates.CLIENT_B));
         String path = createPath();
 
-        StepVerifier.create(send(createClient(), requestingServer, path, mismatched))
+        StepVerifier.create(send(createClient(), REQUESTING_SERVERS.get(tlsProtocol), path, mismatched))
             .expectErrorMatches(error -> error instanceof IllegalStateException
                 && error.getMessage().contains("presented a different client certificate"))
             .verify(Duration.ofSeconds(30));
@@ -311,6 +368,11 @@ public class NettyClientCertificateBindingTests {
             .build();
     }
 
+    private static LocalTestServer start(LocalTestServer server) {
+        server.start();
+        return server;
+    }
+
     // Creates a client from a Reactor Netty client that trusts the local servers, so that requests that aren't bound to
     // a certificate can reach them too.
     private static HttpClient createClientTrustingServers() throws SSLException {
@@ -393,12 +455,19 @@ public class NettyClientCertificateBindingTests {
     private static final class ReceivedRequest {
         private final String certificate;
         private final String authorization;
-        private final String protocol;
+        private final String httpProtocol;
+        private final String tlsProtocol;
+        private final long sessionCreationTime;
+        private final int remotePort;
 
-        ReceivedRequest(String certificate, String authorization, String protocol) {
+        ReceivedRequest(String certificate, String authorization, String httpProtocol, String tlsProtocol,
+            long sessionCreationTime, int remotePort) {
             this.certificate = certificate;
             this.authorization = authorization;
-            this.protocol = protocol;
+            this.httpProtocol = httpProtocol;
+            this.tlsProtocol = tlsProtocol;
+            this.sessionCreationTime = sessionCreationTime;
+            this.remotePort = remotePort;
         }
     }
 }

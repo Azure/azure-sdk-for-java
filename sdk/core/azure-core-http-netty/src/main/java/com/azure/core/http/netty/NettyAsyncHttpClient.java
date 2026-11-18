@@ -301,8 +301,8 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Checks that the connection presented the client certificate the request's access token is bound to during its
-     * TLS handshake. Returns the error to fail the request with, or null if the request can be sent.
+     * Checks that the connection's TLS session presented the client certificate the request's access token is bound
+     * to. Returns the error to fail the request with, or null if the request can be sent.
      */
     private static RuntimeException checkClientCertificate(Connection connection, ClientCertificateBinding binding,
         HttpRequest request) {
@@ -318,8 +318,9 @@ class NettyAsyncHttpClient implements HttpClient {
             + binding.getKeyId() + "', so the request wasn't sent."));
     }
 
-    // Gets the client certificate the connection presented during its TLS handshake. With HTTP/2, the TLS handler is on
-    // the parent connection of the stream.
+    // Gets the client certificate the connection's TLS session presented. A resumed session keeps the certificate
+    // presented when the session was created, since the client doesn't present it again. With HTTP/2, the TLS handler
+    // is on the parent connection of the stream.
     private static Certificate getPresentedClientCertificate(Channel channel) {
         for (Channel current = channel; current != null; current = current.parent()) {
             SslHandler sslHandler = current.pipeline().get(SslHandler.class);
