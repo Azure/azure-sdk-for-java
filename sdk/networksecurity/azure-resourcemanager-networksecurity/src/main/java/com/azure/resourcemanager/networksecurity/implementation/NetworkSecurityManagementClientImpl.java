@@ -26,6 +26,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.networksecurity.fluent.AgentFabricsClient;
+import com.azure.resourcemanager.networksecurity.fluent.ClusterAssociationsClient;
+import com.azure.resourcemanager.networksecurity.fluent.EgressTrustBundlesClient;
+import com.azure.resourcemanager.networksecurity.fluent.MembersClient;
 import com.azure.resourcemanager.networksecurity.fluent.NetworkSecurityManagementClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldFindingsClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldMitigationsClient;
@@ -33,7 +37,9 @@ import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldOperationStat
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldProtectedResourcesClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldSummariesClient;
 import com.azure.resourcemanager.networksecurity.fluent.NeuroShieldsClient;
+import com.azure.resourcemanager.networksecurity.fluent.OperationStatusClient;
 import com.azure.resourcemanager.networksecurity.fluent.OperationsClient;
+import com.azure.resourcemanager.networksecurity.fluent.PolicyGroupsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -60,20 +66,6 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Version parameter.
-     */
-    private final String apiVersion;
-
-    /**
-     * Gets Version parameter.
-     * 
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /**
@@ -231,6 +223,90 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
     }
 
     /**
+     * The AgentFabricsClient object to access its operations.
+     */
+    private final AgentFabricsClient agentFabrics;
+
+    /**
+     * Gets the AgentFabricsClient object to access its operations.
+     * 
+     * @return the AgentFabricsClient object.
+     */
+    public AgentFabricsClient getAgentFabrics() {
+        return this.agentFabrics;
+    }
+
+    /**
+     * The MembersClient object to access its operations.
+     */
+    private final MembersClient members;
+
+    /**
+     * Gets the MembersClient object to access its operations.
+     * 
+     * @return the MembersClient object.
+     */
+    public MembersClient getMembers() {
+        return this.members;
+    }
+
+    /**
+     * The PolicyGroupsClient object to access its operations.
+     */
+    private final PolicyGroupsClient policyGroups;
+
+    /**
+     * Gets the PolicyGroupsClient object to access its operations.
+     * 
+     * @return the PolicyGroupsClient object.
+     */
+    public PolicyGroupsClient getPolicyGroups() {
+        return this.policyGroups;
+    }
+
+    /**
+     * The OperationStatusClient object to access its operations.
+     */
+    private final OperationStatusClient operationStatus;
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     * 
+     * @return the OperationStatusClient object.
+     */
+    public OperationStatusClient getOperationStatus() {
+        return this.operationStatus;
+    }
+
+    /**
+     * The ClusterAssociationsClient object to access its operations.
+     */
+    private final ClusterAssociationsClient clusterAssociations;
+
+    /**
+     * Gets the ClusterAssociationsClient object to access its operations.
+     * 
+     * @return the ClusterAssociationsClient object.
+     */
+    public ClusterAssociationsClient getClusterAssociations() {
+        return this.clusterAssociations;
+    }
+
+    /**
+     * The EgressTrustBundlesClient object to access its operations.
+     */
+    private final EgressTrustBundlesClient egressTrustBundles;
+
+    /**
+     * Gets the EgressTrustBundlesClient object to access its operations.
+     * 
+     * @return the EgressTrustBundlesClient object.
+     */
+    public EgressTrustBundlesClient getEgressTrustBundles() {
+        return this.egressTrustBundles;
+    }
+
+    /**
      * Initializes an instance of NetworkSecurityManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -247,7 +323,6 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.neuroShieldOperationStatuses = new NeuroShieldOperationStatusesClientImpl(this);
         this.neuroShields = new NeuroShieldsClientImpl(this);
@@ -255,6 +330,12 @@ public final class NetworkSecurityManagementClientImpl implements NetworkSecurit
         this.neuroShieldProtectedResources = new NeuroShieldProtectedResourcesClientImpl(this);
         this.neuroShieldFindings = new NeuroShieldFindingsClientImpl(this);
         this.neuroShieldMitigations = new NeuroShieldMitigationsClientImpl(this);
+        this.agentFabrics = new AgentFabricsClientImpl(this);
+        this.members = new MembersClientImpl(this);
+        this.policyGroups = new PolicyGroupsClientImpl(this);
+        this.operationStatus = new OperationStatusClientImpl(this);
+        this.clusterAssociations = new ClusterAssociationsClientImpl(this);
+        this.egressTrustBundles = new EgressTrustBundlesClientImpl(this);
     }
 
     /**
