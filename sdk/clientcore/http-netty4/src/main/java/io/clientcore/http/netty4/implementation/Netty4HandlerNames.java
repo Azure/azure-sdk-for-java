@@ -49,6 +49,8 @@ public final class Netty4HandlerNames {
      */
     public static final String HTTP_CODEC = "clientcore.httpcodec";
 
+    static final String EXPECT_CONTINUE = "clientcore.expectcontinue";
+
     /**
      * Name for the {@link Netty4ProgressAndTimeoutHandler}.
      */

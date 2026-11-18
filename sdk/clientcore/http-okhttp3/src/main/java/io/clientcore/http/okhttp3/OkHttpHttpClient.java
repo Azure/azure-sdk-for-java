@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
+import io.clientcore.core.implementation.http.ExpectContinueUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.ServerSentResult;
@@ -76,10 +77,22 @@ class OkHttpHttpClient implements HttpClient {
         Request.Builder requestBuilder = new Request.Builder().url(request.getUri().toString());
 
         if (request.getHeaders() != null) {
+            boolean hasContinueExpectation = ExpectContinueUtils.isExpected(request.getHeaders());
             request.getHeaders().stream().forEach(hdr -> {
-                // OkHttp allows for headers with multiple values, but it treats them as separate headers,
-                // therefore, we must call rb.addHeader for each value, using the same key for all of them
-                hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName().toString(), value));
+                if (hasContinueExpectation && HttpHeaderName.EXPECT.equals(hdr.getName())) {
+                    ExpectContinueUtils.otherExpectations(request.getHeaders())
+                        .forEach(value -> requestBuilder.addHeader(hdr.getName().toString(), value));
+                    BinaryData body = request.getBody();
+                    if (request.getHttpMethod() != HttpMethod.GET
+                        && request.getHttpMethod() != HttpMethod.HEAD
+                        && body != null
+                        && !Long.valueOf(0).equals(body.getLength())) {
+                        // OkHttp checks the last Expect field value for this exact expectation.
+                        requestBuilder.addHeader(hdr.getName().toString(), "100-continue");
+                    }
+                } else {
+                    hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName().toString(), value));
+                }
             });
         }
 

@@ -45,6 +45,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
     private ScheduledFuture<?> readTimeoutWatcher;
 
     private volatile boolean closed;
+    private boolean finalResponseReceived;
 
     /**
      * Constructs a channel that watches write, response, and reads and handles timing out the operation and tracking
@@ -104,7 +105,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        if (!trackingWriteTimeout) {
+        if (!finalResponseReceived && !trackingWriteTimeout) {
             startWriteTracking(ctx);
         }
 
@@ -123,9 +124,18 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
             lastWriteMillis = System.currentTimeMillis();
             if (msg instanceof LastHttpContent) {
                 endWriteTracking();
-                startResponseTracking(ctx);
+                if (!finalResponseReceived) {
+                    startResponseTracking(ctx);
+                }
             }
         });
+    }
+
+    void finalResponseReceived(ChannelHandlerContext ctx) {
+        finalResponseReceived = true;
+        endWriteTracking();
+        endResponseTracking();
+        startReadTracking(ctx);
     }
 
     void writeTimeoutRunnable(ChannelHandlerContext ctx, boolean trackingWriteTimeout) {

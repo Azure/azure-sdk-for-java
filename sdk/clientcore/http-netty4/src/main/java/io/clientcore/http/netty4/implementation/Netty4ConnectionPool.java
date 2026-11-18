@@ -202,7 +202,9 @@ public class Netty4ConnectionPool implements Closeable {
             ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
 
             // After setting the protocol, fulfill the promise to signal the channel is ready.
-            promise.setSuccess(ctx.channel());
+            if (!promise.trySuccess(ctx.channel())) {
+                ctx.close();
+            }
 
             ctx.pipeline().remove(this);
         }
@@ -210,7 +212,7 @@ public class Netty4ConnectionPool implements Closeable {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             // If an error happens during negotiation, fail the promise.
-            promise.setFailure(cause);
+            promise.tryFailure(cause);
             ctx.fireExceptionCaught(cause);
         }
     }
@@ -607,11 +609,19 @@ public class Netty4ConnectionPool implements Closeable {
                 }
             });
 
-            newConnectionBootstrap.connect(route).addListener(future -> {
+            ChannelFuture connectFuture = newConnectionBootstrap.connect(route);
+            promise.addListener(future -> {
+                if (future.isCancelled()) {
+                    connectFuture.channel().close();
+                }
+            });
+            connectFuture.addListener(future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atError().setThrowable(future.cause()).log("Failed to connect to the route.");
+                    if (!promise.isCancelled()) {
+                        LOGGER.atError().setThrowable(future.cause()).log("Failed to connect to the route.");
+                    }
                     handleConnectionClosure();
-                    promise.setFailure(future.cause());
+                    promise.tryFailure(future.cause());
                     return;
                 }
 
@@ -620,7 +630,9 @@ public class Netty4ConnectionPool implements Closeable {
 
                 Runnable connectionSuccessRunner = () -> {
                     if (!isHttps) {
-                        promise.trySuccess(newChannel);
+                        if (!promise.trySuccess(newChannel)) {
+                            newChannel.close();
+                        }
                     }
                     // If it IS https, we do nothing. The ConnectionPoolAlpnHandler is in charge.
                 };

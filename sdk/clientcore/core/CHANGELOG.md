@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for `Expect: 100-continue` to the JDK HTTP client.
+
 ### Breaking Changes
 
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a

@@ -33,6 +33,7 @@ import io.clientcore.http.netty4.implementation.ResponseStateInfo;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -164,7 +165,16 @@ class NettyHttpClient implements HttpClient {
             }
         });
 
-        awaitLatch(latch);
+        try {
+            awaitLatch(latch);
+        } catch (CoreException ex) {
+            channelFuture.cancel(false);
+            Channel channel = channelFuture.getNow();
+            if (channel != null) {
+                channel.close();
+            }
+            throw ex;
+        }
 
         ResponseStateInfo info = responseReference.get();
         if (info != null) {
@@ -230,7 +240,8 @@ class NettyHttpClient implements HttpClient {
             }
         });
 
-        bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
+        ChannelFuture connectFuture = bootstrap.connect(host, port);
+        connectFuture.addListener((ChannelFutureListener) connectListener -> {
             if (!connectListener.isSuccess()) {
                 LOGGER.atError().setThrowable(connectListener.cause()).log("Failed connection.");
                 errorReference.set(connectListener.cause());
@@ -308,7 +319,12 @@ class NettyHttpClient implements HttpClient {
             }
         });
 
-        awaitLatch(latch);
+        try {
+            awaitLatch(latch);
+        } catch (CoreException ex) {
+            connectFuture.channel().close();
+            throw ex;
+        }
 
         ResponseStateInfo info = responseReference.get();
         if (info == null) {

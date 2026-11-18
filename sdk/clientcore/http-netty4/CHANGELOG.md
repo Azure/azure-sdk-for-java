@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for `Expect: 100-continue` over HTTP/1.1 and HTTP/2.
+
 ### Breaking Changes
 
 ### Bugs Fixed

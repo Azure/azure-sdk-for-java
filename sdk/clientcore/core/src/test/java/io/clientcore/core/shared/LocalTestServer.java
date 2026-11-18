@@ -52,6 +52,17 @@ public class LocalTestServer {
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(HttpProtocolVersion supportedProtocol, boolean includeTls, RequestHandler requestHandler) {
+        this(supportedProtocol, includeTls, new CoreTestHttpServlet(requestHandler));
+    }
+
+    /**
+     * Creates a server that dispatches directly to the given servlet without reading the request body first.
+     *
+     * @param supportedProtocol The protocol supported by this server.
+     * @param includeTls Whether to enable TLS.
+     * @param servlet The servlet handling incoming requests.
+     */
+    LocalTestServer(HttpProtocolVersion supportedProtocol, boolean includeTls, HttpServlet servlet) {
         this.server = new Server(new ExecutorThreadPool());
 
         HttpConfiguration httpConfig = new HttpConfiguration();
@@ -104,7 +115,7 @@ public class LocalTestServer {
         servletContextHandler.setContextPath("/");
         server.setHandler(servletContextHandler);
 
-        ServletHolder servletHolder = new ServletHolder(new CoreTestHttpServlet(requestHandler));
+        ServletHolder servletHolder = new ServletHolder(servlet);
         servletContextHandler.addServlet(servletHolder, "/");
     }
 
