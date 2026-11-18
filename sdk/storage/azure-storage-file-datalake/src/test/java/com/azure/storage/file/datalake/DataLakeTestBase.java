@@ -43,11 +43,13 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import reactor.util.retry.Retry;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -812,6 +814,48 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
             sleepIfLiveTesting(delayMillis);
         }
+    }
+
+    // After a delete the service refuses to create a file system with the same name (409 ContainerBeingDeleted) for
+    // about 30 seconds with container soft delete enabled, and about 60 seconds without it. Only for @LiveOnly tests.
+    private static final Duration FILE_SYSTEM_DELETE_INITIAL_WAIT = Duration.ofSeconds(30);
+    private static final Duration FILE_SYSTEM_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
+    private static final int FILE_SYSTEM_DELETE_MAX_RETRIES = 12;
+
+    private static boolean isFileSystemBeingDeleted(Throwable t) {
+        return t instanceof DataLakeStorageException
+            && ((DataLakeStorageException) t).getStatusCode() == 409
+            && BlobErrorCode.CONTAINER_BEING_DELETED.toString().equals(((DataLakeStorageException) t).getErrorCode());
+    }
+
+    /**
+     * Runs a create operation once the service has finished deleting a file system. Waits quietly for the typical
+     * delete duration, then retries every few seconds while the service still reports the file system as being
+     * deleted. Blocks, so use it only from {@code @LiveOnly} tests.
+     */
+    protected static <T> T createAfterFileSystemDeleteCompletes(Supplier<T> create) {
+        sleepIfLiveTesting(FILE_SYSTEM_DELETE_INITIAL_WAIT.toMillis());
+        for (int i = 0;; i++) {
+            try {
+                return create.get();
+            } catch (DataLakeStorageException ex) {
+                if (!isFileSystemBeingDeleted(ex) || i >= FILE_SYSTEM_DELETE_MAX_RETRIES) {
+                    throw ex;
+                }
+                sleepIfLiveTesting(FILE_SYSTEM_DELETE_RETRY_INTERVAL.toMillis());
+            }
+        }
+    }
+
+    /**
+     * Async equivalent of {@link #createAfterFileSystemDeleteCompletes(Supplier)}. Use it only from {@code @LiveOnly}
+     * tests.
+     */
+    protected static <T> Mono<T> createAfterFileSystemDeleteCompletes(Mono<T> create) {
+        return Mono.delay(FILE_SYSTEM_DELETE_INITIAL_WAIT)
+            .then(create.retryWhen(Retry.fixedDelay(FILE_SYSTEM_DELETE_MAX_RETRIES, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
+                .filter(DataLakeTestBase::isFileSystemBeingDeleted)
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
     }
 
     protected Map<String, String> getTags() {

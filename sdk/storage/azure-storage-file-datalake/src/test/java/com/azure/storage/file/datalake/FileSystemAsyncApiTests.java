@@ -325,6 +325,31 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
                 e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
     }
 
+    // Live only: it waits for the service to finish deleting the file system, typically 30 to 60 seconds. The recorded
+    // tests above cover the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterFileSystemDeleteCompletes() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete()
+                .then(createAfterFileSystemDeleteCompletes(dataLakeFileSystemAsyncClient.createIfNotExists())))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsWithResponseAfterFileSystemDeleteCompletes() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.delete()
+            .then(createAfterFileSystemDeleteCompletes(
+                dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null))))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertTrue(r.getValue());
+            })
+            .verifyComplete();
+    }
+
     @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
