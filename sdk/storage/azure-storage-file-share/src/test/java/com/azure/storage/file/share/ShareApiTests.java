@@ -303,6 +303,51 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnShareBeingDeleted() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        client.create();
+        client.delete();
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, client::createIfNotExists);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 409, ShareErrorCode.SHARE_BEING_DELETED);
+    }
+
+    // Live only: it waits for the service to finish deleting the share, about 30 seconds (see
+    // createAfterShareDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createAfterShareDeleteCompletes() {
+        ShareClient client = primaryFileServiceClient.getShareClient(generateShareName());
+        client.create();
+        client.delete();
+
+        assertEquals(201,
+            createAfterShareDeleteCompletes(() -> client.createWithResponse(null, null, null)).getStatusCode());
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterShareDeleteCompletes() {
+        ShareClient client = primaryFileServiceClient.getShareClient(generateShareName());
+        client.create();
+        client.delete();
+
+        assertEquals(201, createAfterShareDeleteCompletes(() -> client.createIfNotExistsWithResponse(null, null, null))
+            .getStatusCode());
+    }
+
+    @Test
+    public void createDirectoryIfNotExistsOnAFile() {
+        String name = generatePathName();
+        primaryShareClient.create();
+        primaryShareClient.getFileClient(name).create(1024);
+
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> primaryShareClient.createDirectoryIfNotExists(name));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 409, ShareErrorCode.RESOURCE_TYPE_MISMATCH);
+    }
+
+    @Test
     public void createIfNotExistsShareThatAlreadyExists() {
         ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
         Response<ShareInfo> initialResponse

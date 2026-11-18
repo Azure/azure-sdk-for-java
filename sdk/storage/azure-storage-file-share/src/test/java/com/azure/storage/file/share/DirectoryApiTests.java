@@ -550,6 +550,16 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsDirectoryOnAFile() {
+        String name = generatePathName();
+        shareClient.getFileClient(name).create(1024);
+
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> shareClient.getDirectoryClient(name).createIfNotExists());
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 409, ShareErrorCode.RESOURCE_TYPE_MISMATCH);
+    }
+
+    @Test
     public void createIfNotExistsDirectoryThatAlreadyExists() {
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions();
         ShareDirectoryClient primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName());
