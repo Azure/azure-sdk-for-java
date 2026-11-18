@@ -3337,11 +3337,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
 
         StepVerifier.create(dc.createSubdirectory(pathName).then(dc.createFileIfNotExists(pathName)))
-            .verifyErrorSatisfies(e -> {
-                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
-                assertEquals(409, ex.getStatusCode());
-                assertEquals("PathConflict", ex.getErrorCode());
-            });
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @Test
@@ -3349,11 +3345,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
 
         StepVerifier.create(dc.createFile(pathName).then(dc.createSubdirectoryIfNotExists(pathName)))
-            .verifyErrorSatisfies(e -> {
-                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
-                assertEquals(409, ex.getStatusCode());
-                assertEquals("PathConflict", ex.getErrorCode());
-            });
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @Test

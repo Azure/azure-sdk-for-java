@@ -356,7 +356,10 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file system within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}): after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if the service is still processing the request.</p>
+     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system
+     * is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}):
+     * after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if
+     * the service is still processing the request.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -385,7 +388,10 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file system within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}): after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if the service is still processing the request.</p>
+     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system
+     * is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}):
+     * after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if
+     * the service is still processing the request.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1044,7 +1050,9 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file within a file system if it does not exist. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1067,7 +1075,9 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file within a file system if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1109,8 +1119,9 @@ public class DataLakeFileSystemAsyncClient {
         options.setRequestConditions(
             new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            return createFileWithResponse(fileName, options)
-                .onErrorResume(DataLakePathAsyncClient::isPathAlreadyExistsError, t -> {
+            return createFileWithResponse(fileName, options).onErrorResume(
+                t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
+                t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), getFileAsyncClient(fileName)));
@@ -1407,7 +1418,9 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new directory within a file system if it does not exist.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1432,7 +1445,9 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new directory within a file system if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1474,8 +1489,9 @@ public class DataLakeFileSystemAsyncClient {
         options.setRequestConditions(
             new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            return createDirectoryWithResponse(directoryName, options)
-                .onErrorResume(DataLakePathAsyncClient::isPathAlreadyExistsError, t -> {
+            return createDirectoryWithResponse(directoryName, options).onErrorResume(
+                t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
+                t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), getDirectoryAsyncClient(directoryName)));

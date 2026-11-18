@@ -3017,8 +3017,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         DataLakeStorageException e
             = assertThrows(DataLakeStorageException.class, () -> dc.createFileIfNotExists(pathName));
-        assertEquals(409, e.getStatusCode());
-        assertEquals("PathConflict", e.getErrorCode());
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
     }
 
     @Test
@@ -3028,8 +3027,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         DataLakeStorageException e
             = assertThrows(DataLakeStorageException.class, () -> dc.createSubdirectoryIfNotExists(pathName));
-        assertEquals(409, e.getStatusCode());
-        assertEquals("PathConflict", e.getErrorCode());
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
     }
 
     @Test

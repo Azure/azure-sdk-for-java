@@ -528,11 +528,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient file = dataLakeFileSystemAsyncClient.getFileAsyncClient(pathName);
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectory(pathName).then(file.createIfNotExists()))
-            .verifyErrorSatisfies(e -> {
-                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
-                assertEquals(409, ex.getStatusCode());
-                assertEquals("PathConflict", ex.getErrorCode());
-            });
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @ParameterizedTest

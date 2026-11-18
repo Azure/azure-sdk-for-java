@@ -459,7 +459,9 @@ public class DataLakePathClient {
     /**
      * Creates a resource if a path does not exist.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -475,8 +477,8 @@ public class DataLakePathClient {
      * Docs</a></p>
      *
      * @return {@link PathInfo} that contains information about the created resource.
-     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path of a
-     * different type already exists at this location (status code 409, error code PathConflict).
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
@@ -486,7 +488,9 @@ public class DataLakePathClient {
     /**
      * Creates a resource if a path does not exist.
      *
-     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -524,8 +528,8 @@ public class DataLakePathClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link PathInfo} containing information about the resource. If {@link Response}'s status code is 201, a new
      * resource was successfully created. If status code is 409, a resource already existed at this location.
-     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path of a
-     * different type already exists at this location (status code 409, error code PathConflict).
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout,
@@ -537,7 +541,7 @@ public class DataLakePathClient {
 
             return createWithResponse(options, timeout, context);
         } catch (DataLakeStorageException e) {
-            if (DataLakePathAsyncClient.isPathAlreadyExistsError(e)) {
+            if (DataLakeImplUtils.isConflictWithErrorCode(e, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {

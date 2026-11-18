@@ -10,7 +10,12 @@
 - Fixed `DataLakeFileSystemAsyncClient.createIfNotExists` and `createIfNotExistsWithResponse` to return `false` when the file system already exists.
   `deleteIfExists` and `deleteIfExistsWithResponse` now return `false` when the file system does not exist.
 - Fixed `createIfNotExists` and `createIfNotExistsWithResponse` on `DataLakeFileSystemClient` and `DataLakeFileSystemAsyncClient` treating every 409 as "already exists". They now return `false` only for `ContainerAlreadyExists`; a 409 `ContainerBeingDeleted` (the file system was just deleted and the service has not finished) throws `DataLakeStorageException`.
-- Fixed `createIfNotExists` on paths, `createFileIfNotExists`, `createDirectoryIfNotExists` and `createSubdirectoryIfNotExists` treating every 409 as "already exists". They now treat only `PathAlreadyExists` that way; other conflicts, such as `PathConflict` when the path exists with a different type, throw `DataLakeStorageException`.
+- Fixed `createIfNotExists` and `createIfNotExistsWithResponse` on `DataLakePathClient`, `DataLakeFileClient` and
+  `DataLakeDirectoryClient` (and their async counterparts), `createFileIfNotExists` and `createDirectoryIfNotExists` on
+  `DataLakeFileSystemClient` and `DataLakeFileSystemAsyncClient`, and `createFileIfNotExists` and
+  `createSubdirectoryIfNotExists` on `DataLakeDirectoryClient` and `DataLakeDirectoryAsyncClient` (including their
+  `WithResponse` variants) treating every 409 as "already exists". They now treat only `PathAlreadyExists` that way;
+  other conflicts, such as `PathConflict` when the path exists with a different type, throw `DataLakeStorageException`.
 
 ### Other Changes
 

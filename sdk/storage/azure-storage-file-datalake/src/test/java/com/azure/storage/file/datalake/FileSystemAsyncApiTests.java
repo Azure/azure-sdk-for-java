@@ -1742,24 +1742,20 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void createIfNotExistsFileOnDir() {
         String pathName = generatePathName();
 
-        StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .then(dataLakeFileSystemAsyncClient.createFileIfNotExists(pathName))).verifyErrorSatisfies(e -> {
-                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
-                assertEquals(409, ex.getStatusCode());
-                assertEquals("PathConflict", ex.getErrorCode());
-            });
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.createDirectory(pathName)
+                .then(dataLakeFileSystemAsyncClient.createFileIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @Test
     public void createIfNotExistsDirOnFile() {
         String pathName = generatePathName();
 
-        StepVerifier.create(dataLakeFileSystemAsyncClient.createFile(pathName)
-            .then(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(pathName))).verifyErrorSatisfies(e -> {
-                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
-                assertEquals(409, ex.getStatusCode());
-                assertEquals("PathConflict", ex.getErrorCode());
-            });
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.createFile(pathName)
+                .then(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
     }
 
     @Test

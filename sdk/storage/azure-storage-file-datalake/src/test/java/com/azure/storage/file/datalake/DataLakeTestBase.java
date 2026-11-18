@@ -29,6 +29,7 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
@@ -41,9 +42,10 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-
 import reactor.util.retry.Retry;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,6 +123,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
     private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
     private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
+
+    // After a file system is deleted, the service answers a create of the same name with 409 ContainerBeingDeleted for
+    // at least 30 seconds (30 to 60 measured, depending on the account's container soft delete setting). Live tests
+    // wait out the minimum, then retry slowly, so each test sends only a few requests.
+    private static final Duration FILE_SYSTEM_DELETE_MIN_WAIT = Duration.ofSeconds(30);
+    private static final Duration FILE_SYSTEM_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration FILE_SYSTEM_DELETE_TIMEOUT = Duration.ofMinutes(2);
 
     protected String prefix;
 
@@ -762,9 +771,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         BlobErrorCode errMessage) {
+        assertExceptionStatusCodeAndMessage(throwable, expectedStatusCode, errMessage.toString());
+    }
+
+    protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
+        String errorCode) {
         DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, throwable);
         assertEquals(expectedStatusCode, exception.getStatusCode());
-        assertEquals(errMessage.toString(), exception.getErrorCode());
+        assertEquals(errorCode, exception.getErrorCode());
     }
 
     protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
@@ -816,46 +830,38 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
-    // After a delete the service refuses to create a file system with the same name (409 ContainerBeingDeleted) for
-    // about 30 seconds with container soft delete enabled, and about 60 seconds without it. Only for @LiveOnly tests.
-    private static final Duration FILE_SYSTEM_DELETE_INITIAL_WAIT = Duration.ofSeconds(30);
-    private static final Duration FILE_SYSTEM_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
-    private static final int FILE_SYSTEM_DELETE_MAX_RETRIES = 12;
-
-    private static boolean isFileSystemBeingDeleted(Throwable t) {
-        return t instanceof DataLakeStorageException
-            && ((DataLakeStorageException) t).getStatusCode() == 409
-            && BlobErrorCode.CONTAINER_BEING_DELETED.toString().equals(((DataLakeStorageException) t).getErrorCode());
-    }
-
     /**
-     * Runs a create operation once the service has finished deleting a file system. Waits quietly for the typical
-     * delete duration, then retries every few seconds while the service still reports the file system as being
-     * deleted. Blocks, so use it only from {@code @LiveOnly} tests.
-     */
-    protected static <T> T createAfterFileSystemDeleteCompletes(Supplier<T> create) {
-        sleepIfLiveTesting(FILE_SYSTEM_DELETE_INITIAL_WAIT.toMillis());
-        for (int i = 0;; i++) {
-            try {
-                return create.get();
-            } catch (DataLakeStorageException ex) {
-                if (!isFileSystemBeingDeleted(ex) || i >= FILE_SYSTEM_DELETE_MAX_RETRIES) {
-                    throw ex;
-                }
-                sleepIfLiveTesting(FILE_SYSTEM_DELETE_RETRY_INTERVAL.toMillis());
-            }
-        }
-    }
-
-    /**
-     * Async equivalent of {@link #createAfterFileSystemDeleteCompletes(Supplier)}. Use it only from {@code @LiveOnly}
-     * tests.
+     * Creates a file system whose name was just deleted, once the service has finished the delete. Waits
+     * {@link #FILE_SYSTEM_DELETE_MIN_WAIT} without sending anything, then retries every
+     * {@link #FILE_SYSTEM_DELETE_RETRY_INTERVAL} while the service answers 409 ContainerBeingDeleted, up to
+     * {@link #FILE_SYSTEM_DELETE_TIMEOUT}. For {@code @LiveOnly} tests: it really waits.
+     *
+     * @param create Creates the file system when subscribed to.
+     * @param <T> The result of the create.
+     * @return A {@link Mono} of the first create that the service does not refuse as ContainerBeingDeleted.
      */
     protected static <T> Mono<T> createAfterFileSystemDeleteCompletes(Mono<T> create) {
-        return Mono.delay(FILE_SYSTEM_DELETE_INITIAL_WAIT)
-            .then(create.retryWhen(Retry.fixedDelay(FILE_SYSTEM_DELETE_MAX_RETRIES, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
-                .filter(DataLakeTestBase::isFileSystemBeingDeleted)
+        long maxRetries = FILE_SYSTEM_DELETE_TIMEOUT.minus(FILE_SYSTEM_DELETE_MIN_WAIT).toMillis()
+            / FILE_SYSTEM_DELETE_RETRY_INTERVAL.toMillis();
+
+        return Mono.delay(FILE_SYSTEM_DELETE_MIN_WAIT)
+            .then(create.retryWhen(Retry.fixedDelay(maxRetries, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
+                .filter(
+                    t -> DataLakeImplUtils.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_BEING_DELETED.toString()))
                 .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
+    }
+
+    /**
+     * Synchronous form of {@link #createAfterFileSystemDeleteCompletes(Mono)}. The create runs on
+     * {@link Schedulers#boundedElastic()} because synchronous clients block, which Reactor's timer threads forbid.
+     *
+     * @param create Creates the file system; may throw {@link DataLakeStorageException}.
+     * @param <T> The result of the create.
+     * @return The result of the first create that the service does not refuse as ContainerBeingDeleted.
+     */
+    protected static <T> T createAfterFileSystemDeleteCompletes(Supplier<T> create) {
+        return createAfterFileSystemDeleteCompletes(Mono.fromSupplier(create).subscribeOn(Schedulers.boundedElastic()))
+            .block();
     }
 
     protected Map<String, String> getTags() {
