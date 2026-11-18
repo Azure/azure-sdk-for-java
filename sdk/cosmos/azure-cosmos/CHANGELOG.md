@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed the `RegionName` tag on Gateway request metrics to identify each request attempt's destination rather than the operation's aggregate contacted regions. Gateway request diagnostics now also include the region name. - See [PR 51321](https://github.com/Azure/azure-sdk-for-java/pull/51321)
 * Fixed missing partition key range IDs in request diagnostics and client metrics for gateway failures, including fault-injected errors. - See [PR 51321](https://github.com/Azure/azure-sdk-for-java/pull/51321)
 * Fixed compound session token handling for requests routed to GatewayV2. - See [PR 51102](https://github.com/Azure/azure-sdk-for-java/pull/51102)
 * Fixed concurrent response parsing throwing decoder state exceptions when fallback UTF-8 decoding is enabled. - See [Issue 51084](https://github.com/Azure/azure-sdk-for-java/issues/51084) and [PR 51151](https://github.com/Azure/azure-sdk-for-java/pull/51151)
