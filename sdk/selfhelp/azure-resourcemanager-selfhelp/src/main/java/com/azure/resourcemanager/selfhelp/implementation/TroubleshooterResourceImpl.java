@@ -28,6 +28,10 @@ public final class TroubleshooterResourceImpl implements TroubleshooterResource,
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
+        this.troubleshooterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
     }
 
     public String id() {

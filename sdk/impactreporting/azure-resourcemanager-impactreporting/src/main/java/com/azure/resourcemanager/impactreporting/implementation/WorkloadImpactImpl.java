@@ -19,6 +19,9 @@ public final class WorkloadImpactImpl implements WorkloadImpact, WorkloadImpact.
         com.azure.resourcemanager.impactreporting.ImpactReportingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}",
+            "workloadImpactName");
     }
 
     public String id() {
