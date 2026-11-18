@@ -13,8 +13,8 @@
   such as `ContainerBeingDeleted`. (#51281)
 - Fixed `createIfNotExists` and `createIfNotExistsWithResponse` on `AppendBlobClient`, `AppendBlobAsyncClient`,
   `PageBlobClient`, and `PageBlobAsyncClient` suppressing every 409 response. They now suppress only
-  `BlobAlreadyExists`, and throw `BlobStorageException` for other conflicts, such as `InvalidBlobType` when a blob
-  of a different type already exists.
+  `BlobAlreadyExists`, and throw `BlobStorageException` for other conflicts, such as `InvalidBlobType` when a 
+  blob of a different type already exists. 
 
 ### Other Changes
 
