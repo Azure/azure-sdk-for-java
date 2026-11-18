@@ -309,6 +309,23 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnFileSystemBeingDeleted() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete().then(dataLakeFileSystemAsyncClient.createIfNotExists()))
+            .verifyErrorSatisfies(
+                e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
+    public void createIfNotExistsWithResponseOnFileSystemBeingDeleted() {
+        StepVerifier
+            .create(dataLakeFileSystemAsyncClient.delete()
+                .then(dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null)))
+            .verifyErrorSatisfies(
+                e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
@@ -1694,6 +1711,30 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void createIfNotExistsDirMin() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(generatePathName())
             .flatMap(DataLakePathAsyncClient::exists)).expectNext(true).verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFileOnDir() {
+        String pathName = generatePathName();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectory(pathName)
+            .then(dataLakeFileSystemAsyncClient.createFileIfNotExists(pathName))).verifyErrorSatisfies(e -> {
+                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals("PathConflict", ex.getErrorCode());
+            });
+    }
+
+    @Test
+    public void createIfNotExistsDirOnFile() {
+        String pathName = generatePathName();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createFile(pathName)
+            .then(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(pathName))).verifyErrorSatisfies(e -> {
+                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals("PathConflict", ex.getErrorCode());
+            });
     }
 
     @Test

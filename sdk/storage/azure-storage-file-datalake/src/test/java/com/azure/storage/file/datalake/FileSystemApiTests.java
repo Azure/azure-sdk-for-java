@@ -280,6 +280,24 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnFileSystemBeingDeleted() {
+        dataLakeFileSystemClient.delete();
+
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createIfNotExists());
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
+    public void createIfNotExistsWithResponseOnFileSystemBeingDeleted() {
+        dataLakeFileSystemClient.delete();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, null));
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
     public void createIfNotExistsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
@@ -1543,6 +1561,28 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsDirMin() {
         assertTrue(dataLakeFileSystemClient.createDirectoryIfNotExists(generatePathName()).exists());
+    }
+
+    @Test
+    public void createIfNotExistsFileOnDir() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createFileIfNotExists(pathName));
+        assertEquals(409, e.getStatusCode());
+        assertEquals("PathConflict", e.getErrorCode());
+    }
+
+    @Test
+    public void createIfNotExistsDirOnFile() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.createDirectoryIfNotExists(pathName));
+        assertEquals(409, e.getStatusCode());
+        assertEquals("PathConflict", e.getErrorCode());
     }
 
     @Test

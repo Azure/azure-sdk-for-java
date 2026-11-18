@@ -3333,6 +3333,30 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsFileOnSubDir() {
+        String pathName = generatePathName();
+
+        StepVerifier.create(dc.createSubdirectory(pathName).then(dc.createFileIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> {
+                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals("PathConflict", ex.getErrorCode());
+            });
+    }
+
+    @Test
+    public void createIfNotExistsSubDirOnFile() {
+        String pathName = generatePathName();
+
+        StepVerifier.create(dc.createFile(pathName).then(dc.createSubdirectoryIfNotExists(pathName)))
+            .verifyErrorSatisfies(e -> {
+                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals("PathConflict", ex.getErrorCode());
+            });
+    }
+
+    @Test
     public void createIfNotExistsSubDirDefaults() {
         StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null)).assertNext(r -> {
             assertEquals(201, r.getStatusCode());

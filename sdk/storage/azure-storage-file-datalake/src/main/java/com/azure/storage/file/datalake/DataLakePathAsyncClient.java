@@ -93,6 +93,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class DataLakePathAsyncClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakePathAsyncClient.class);
+    private static final String PATH_ALREADY_EXISTS_ERROR_CODE = "PathAlreadyExists";
 
     final AzureDataLakeStorageRestAPIImpl dataLakeStorage;
     final AzureDataLakeStorageRestAPIImpl fileSystemDataLakeStorage;
@@ -483,6 +484,8 @@ public class DataLakePathAsyncClient {
     /**
      * Creates a resource if it does not exist.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
@@ -505,6 +508,8 @@ public class DataLakePathAsyncClient {
 
     /**
      * Creates a resource if it does not exist.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as {@code PathConflict} when a path of a different type exists at the location, fails with a {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -550,13 +555,22 @@ public class DataLakePathAsyncClient {
         }
     }
 
+    /**
+     * Whether the error is the service reporting that the path already exists. Other 409s, such as a path of a
+     * different type or a file system that is being deleted, are not treated as the path existing.
+     */
+    static boolean isPathAlreadyExistsError(Throwable t) {
+        return t instanceof DataLakeStorageException
+            && ((DataLakeStorageException) t).getStatusCode() == 409
+            && PATH_ALREADY_EXISTS_ERROR_CODE.equals(((DataLakeStorageException) t).getErrorCode());
+    }
+
     Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Context context) {
         try {
             options = options == null ? new DataLakePathCreateOptions() : options;
             options.setRequestConditions(
                 new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+            return createWithResponse(options, context).onErrorResume(DataLakePathAsyncClient::isPathAlreadyExistsError,
                 t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
