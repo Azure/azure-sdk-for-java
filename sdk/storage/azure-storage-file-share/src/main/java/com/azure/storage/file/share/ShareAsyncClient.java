@@ -34,6 +34,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
@@ -486,8 +487,8 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareCreateOptions() : options;
-            return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+            return createWithResponse(options, context)
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.SHARE_ALREADY_EXISTS), t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));
@@ -1558,8 +1559,7 @@ public class ShareAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
                 options.getMetadata(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), getDirectoryClient(directoryName)));

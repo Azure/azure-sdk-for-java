@@ -871,4 +871,20 @@ public class ModelHelper {
         }
         return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
     }
+
+    /**
+     * Determines whether the throwable is a 409 {@link ShareStorageException} carrying the given error code, which is
+     * how the service reports that a resource already exists.
+     *
+     * @param throwable The throwable to inspect.
+     * @param errorCode The expected error code.
+     * @return {@code true} if the throwable is a 409 with the given error code.
+     */
+    public static boolean isConflictWithErrorCode(Throwable throwable, ShareErrorCode errorCode) {
+        if (!(throwable instanceof ShareStorageException)) {
+            return false;
+        }
+        ShareStorageException e = (ShareStorageException) throwable;
+        return e.getStatusCode() == 409 && errorCode.equals(e.getErrorCode());
+    }
 }

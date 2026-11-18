@@ -43,6 +43,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
@@ -484,8 +485,7 @@ public class ShareDirectoryAsyncClient {
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
                 options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
                 options.getFilePropertySemantics(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null));
