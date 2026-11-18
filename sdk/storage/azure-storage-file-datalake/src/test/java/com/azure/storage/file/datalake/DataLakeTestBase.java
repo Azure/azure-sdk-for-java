@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -124,9 +125,9 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
     private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
 
-    // After a file system is deleted, the service answers a create of the same name with 409 ContainerBeingDeleted for
-    // at least 30 seconds (30 to 60 measured, depending on the account's container soft delete setting). Live tests
-    // wait out the minimum, then retry slowly, so each test sends only a few requests.
+    // After a file system is deleted, the service refuses a create or undelete of the same name with 409
+    // ContainerBeingDeleted for at least 30 seconds (30 to 60 measured, depending on the account's container soft delete
+    // setting). Live tests wait out the minimum, then retry slowly, so each test sends only a few requests.
     private static final Duration FILE_SYSTEM_DELETE_MIN_WAIT = Duration.ofSeconds(30);
     private static final Duration FILE_SYSTEM_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
     private static final Duration FILE_SYSTEM_DELETE_TIMEOUT = Duration.ofMinutes(2);
@@ -831,36 +832,42 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Creates a file system whose name was just deleted, once the service has finished the delete. Waits
-     * {@link #FILE_SYSTEM_DELETE_MIN_WAIT} without sending anything, then retries every
+     * Runs an operation that needs a just-deleted file system name, such as a create or an undelete, once the service
+     * has finished the delete. Waits {@link #FILE_SYSTEM_DELETE_MIN_WAIT} without sending anything, then retries every
      * {@link #FILE_SYSTEM_DELETE_RETRY_INTERVAL} while the service answers 409 ContainerBeingDeleted, up to
-     * {@link #FILE_SYSTEM_DELETE_TIMEOUT}. For {@code @LiveOnly} tests: it really waits.
+     * {@link #FILE_SYSTEM_DELETE_TIMEOUT}. Playback replays the recorded responses without waiting.
      *
-     * @param create Creates the file system when subscribed to.
-     * @param <T> The result of the create.
-     * @return A {@link Mono} of the first create that the service does not refuse as ContainerBeingDeleted.
+     * @param operation The operation, run when subscribed to.
+     * @param <T> The result of the operation.
+     * @return A {@link Mono} of the first attempt that the service does not refuse as ContainerBeingDeleted.
      */
-    protected static <T> Mono<T> createAfterFileSystemDeleteCompletes(Mono<T> create) {
+    protected static <T> Mono<T> runAfterFileSystemDeleteCompletes(Mono<T> operation) {
         long maxRetries = FILE_SYSTEM_DELETE_TIMEOUT.minus(FILE_SYSTEM_DELETE_MIN_WAIT).toMillis()
             / FILE_SYSTEM_DELETE_RETRY_INTERVAL.toMillis();
+        Predicate<Throwable> beingDeleted
+            = t -> DataLakeImplUtils.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_BEING_DELETED.toString());
+
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            return operation.retryWhen(
+                Retry.max(maxRetries).filter(beingDeleted).onRetryExhaustedThrow((spec, signal) -> signal.failure()));
+        }
 
         return Mono.delay(FILE_SYSTEM_DELETE_MIN_WAIT)
-            .then(create.retryWhen(Retry.fixedDelay(maxRetries, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
-                .filter(
-                    t -> DataLakeImplUtils.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_BEING_DELETED.toString()))
+            .then(operation.retryWhen(Retry.fixedDelay(maxRetries, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
+                .filter(beingDeleted)
                 .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
     }
 
     /**
-     * Synchronous form of {@link #createAfterFileSystemDeleteCompletes(Mono)}. The create runs on
+     * Synchronous form of {@link #runAfterFileSystemDeleteCompletes(Mono)}. The operation runs on
      * {@link Schedulers#boundedElastic()} because synchronous clients block, which Reactor's timer threads forbid.
      *
-     * @param create Creates the file system; may throw {@link DataLakeStorageException}.
-     * @param <T> The result of the create.
-     * @return The result of the first create that the service does not refuse as ContainerBeingDeleted.
+     * @param operation The operation; may throw {@link DataLakeStorageException}.
+     * @param <T> The result of the operation.
+     * @return The result of the first attempt that the service does not refuse as ContainerBeingDeleted.
      */
-    protected static <T> T createAfterFileSystemDeleteCompletes(Supplier<T> create) {
-        return createAfterFileSystemDeleteCompletes(Mono.fromSupplier(create).subscribeOn(Schedulers.boundedElastic()))
+    protected static <T> T runAfterFileSystemDeleteCompletes(Supplier<T> operation) {
+        return runAfterFileSystemDeleteCompletes(Mono.fromSupplier(operation).subscribeOn(Schedulers.boundedElastic()))
             .block();
     }
 

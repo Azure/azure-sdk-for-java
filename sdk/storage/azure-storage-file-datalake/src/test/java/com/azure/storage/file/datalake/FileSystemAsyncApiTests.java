@@ -332,7 +332,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void createIfNotExistsAfterFileSystemDeleteCompletes() {
         StepVerifier
             .create(dataLakeFileSystemAsyncClient.delete()
-                .then(createAfterFileSystemDeleteCompletes(dataLakeFileSystemAsyncClient.createIfNotExists())))
+                .then(runAfterFileSystemDeleteCompletes(dataLakeFileSystemAsyncClient.createIfNotExists())))
             .expectNext(true)
             .verifyComplete();
     }
@@ -341,7 +341,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsWithResponseAfterFileSystemDeleteCompletes() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.delete()
-            .then(createAfterFileSystemDeleteCompletes(
+            .then(runAfterFileSystemDeleteCompletes(
                 dataLakeFileSystemAsyncClient.createIfNotExistsWithResponse(null, null))))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());

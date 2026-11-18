@@ -304,7 +304,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     public void createIfNotExistsAfterFileSystemDeleteCompletes() {
         dataLakeFileSystemClient.delete();
 
-        assertTrue(createAfterFileSystemDeleteCompletes(() -> dataLakeFileSystemClient.createIfNotExists()));
+        assertTrue(runAfterFileSystemDeleteCompletes(() -> dataLakeFileSystemClient.createIfNotExists()));
     }
 
     @LiveOnly
@@ -312,7 +312,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     public void createIfNotExistsWithResponseAfterFileSystemDeleteCompletes() {
         dataLakeFileSystemClient.delete();
 
-        Response<Boolean> response = createAfterFileSystemDeleteCompletes(
+        Response<Boolean> response = runAfterFileSystemDeleteCompletes(
             () -> dataLakeFileSystemClient.createIfNotExistsWithResponse(null, null, null, Context.NONE));
         assertEquals(201, response.getStatusCode());
         assertTrue(response.getValue());
