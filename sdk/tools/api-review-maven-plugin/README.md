@@ -45,11 +45,10 @@ Resolve released versions through the Azure SDK Java dev feed using the SDK repo
 | --- | --- |
 | `api-review.sourcesJar` | Attached sources artifact, otherwise `target/${project.build.finalName}-sources.jar` |
 | `api-review.outputDirectory` | `${project.build.directory}/api-review` |
-| `api-review.packageRelativePath` | Module path relative to the nearest ancestor containing `.git` |
-| `api-review.repositoryRoot` | Optional root override for exported sources without Git metadata |
+| `api-review.packageRelativePath` | `sdk/<area>/<package>` derived from the module directory; required for other layouts |
 | `api-review.skip` | `false`; aggregator POMs are skipped automatically |
 
-For an explicit module path, including sparse or exported checkouts:
+No Git metadata or repository-root setting is needed. To override the derived module path:
 
 ```shell
 mvn com.azure.tools:api-review-maven-plugin:1.0.0-beta.1:generate -Dapi-review.packageRelativePath=sdk/serialization/azure-json

@@ -7,7 +7,6 @@ import com.azure.tools.apiview.processor.Main;
 import com.azure.tools.apiview.processor.model.ApiListing;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -33,10 +32,6 @@ public class GenerateMojo extends AbstractMojo {
     /** Build-artifact destination, never the package root. */
     @Parameter(property = "api-review.outputDirectory", defaultValue = "${project.build.directory}/api-review")
     private File outputDirectory;
-
-    /** Repository root for exported sources without Git metadata. */
-    @Parameter(property = "api-review.repositoryRoot")
-    private File repositoryRoot;
 
     /** Explicit repository-relative module path, using forward slashes. */
     @Parameter(property = "api-review.packageRelativePath")
@@ -99,7 +94,7 @@ public class GenerateMojo extends AbstractMojo {
         return new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-sources.jar");
     }
 
-    private String resolvePackagePath(Path packageDirectory) throws IOException, MojoFailureException {
+    private String resolvePackagePath(Path packageDirectory) throws MojoFailureException {
         if (packageRelativePath != null) {
             try {
                 return ReviewBundleWriter.normalizePackagePath(packageRelativePath);
@@ -108,27 +103,12 @@ public class GenerateMojo extends AbstractMojo {
                     exception);
             }
         }
-        Path root = repositoryRoot == null ? findGitRoot(packageDirectory) : resolve(packageDirectory, repositoryRoot);
-        if (root == null) {
-            throw new MojoFailureException("Cannot locate the repository root. Set api-review.repositoryRoot"
-                + " or api-review.packageRelativePath.");
+        int count = packageDirectory.getNameCount();
+        if (count < 3 || !"sdk".equals(packageDirectory.getName(count - 3).toString())) {
+            throw new MojoFailureException("The package directory must have the layout sdk/<area>/<package>."
+                + " Set api-review.packageRelativePath for other layouts.");
         }
-        root = root.toRealPath();
-        Path directory = packageDirectory.toRealPath();
-        if (!directory.startsWith(root)) {
-            throw new MojoFailureException("The package directory is outside api-review.repositoryRoot.");
-        }
-        String result = root.relativize(directory).toString().replace('\\', '/');
-        return result.isEmpty() ? "." : result;
-    }
-
-    private static Path findGitRoot(Path directory) {
-        for (Path current = directory; current != null; current = current.getParent()) {
-            if (Files.exists(current.resolve(".git"))) {
-                return current;
-            }
-        }
-        return null;
+        return packageDirectory.subpath(count - 3, count).toString().replace('\\', '/');
     }
 
     private static Path resolve(Path packageDirectory, File file) {

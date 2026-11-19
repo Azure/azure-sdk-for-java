@@ -34,8 +34,7 @@ public class GenerateMojoTests {
     Path directory;
 
     @Test
-    public void generatesBundleWithGitRelativePathAndNormalizedHash() throws Exception {
-        Files.createDirectory(directory.resolve(".git"));
+    public void generatesBundleWithoutGitWithModulePathAndNormalizedHash() throws Exception {
         GenerateMojo mojo = mojo("public class Widget { public String name() { return null; } }");
         mojo.execute();
 
@@ -59,7 +58,7 @@ public class GenerateMojoTests {
 
     @Test
     public void supportsExplicitPathWithoutGitAndExternalOutput() throws Exception {
-        GenerateMojo mojo = mojo("public class Widget {}");
+        GenerateMojo mojo = mojo("public class Widget {}", "exported-widget");
         set(mojo, "packageRelativePath", "sdk\\test\\azure-widget");
         Path output = directory.resolve("artifacts");
         set(mojo, "outputDirectory", output.toFile());
@@ -68,9 +67,11 @@ public class GenerateMojoTests {
             .contains("packageRelativePath: 'sdk/test/azure-widget'"));
     }
 
-    @Test
-    public void failsWithoutRepositoryContextRatherThanGuessing() throws Exception {
-        GenerateMojo mojo = mojo("public class Widget {}");
+    @ParameterizedTest
+    @ValueSource(strings = { "exported-widget", "sdk/test/azure-widget/nested" })
+    public void requiresExplicitPathForNonstandardLayout(String modulePath) throws Exception {
+        Files.createDirectory(directory.resolve(".git"));
+        GenerateMojo mojo = mojo("public class Widget {}", modulePath);
         MojoFailureException failure = assertThrows(MojoFailureException.class, mojo::execute);
         assertTrue(failure.getMessage().contains("api-review.packageRelativePath"));
     }
@@ -151,7 +152,11 @@ public class GenerateMojoTests {
     }
 
     private GenerateMojo mojo(String source) throws Exception {
-        Path module = directory.resolve("sdk/test/azure-widget");
+        return mojo(source, "sdk/test/azure-widget");
+    }
+
+    private GenerateMojo mojo(String source, String modulePath) throws Exception {
+        Path module = directory.resolve(modulePath);
         Path target = module.resolve("target");
         Files.createDirectories(target);
         String pom = "<project><modelVersion>4.0.0</modelVersion><groupId>com.azure</groupId>"
