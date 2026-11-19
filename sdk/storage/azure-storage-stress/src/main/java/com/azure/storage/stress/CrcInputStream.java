@@ -43,31 +43,60 @@ public class CrcInputStream extends InputStream {
     @Override
     public synchronized int read() throws IOException {
         int b = inputStream.read();
-        if (b >= 0) {
-            crc.update(b);
-            if (head.hasRemaining()) {
-                head.put((byte) b);
-            }
-            length++;
-        } else {
-            sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        if (b < 0) {
+            emitContentInfo();
+            return b;
         }
+
+        crc.update(b);
+        if (head.hasRemaining()) {
+            head.put((byte) b);
+        }
+        length++;
         return b;
     }
 
     @Override
     public synchronized int read(byte buf[], int off, int len) throws IOException {
         int read = inputStream.read(buf, off, len);
-        if (read >= 0) {
-            length += read;
-            crc.update(buf, off, read);
-            if (head.hasRemaining()) {
-                head.put(buf, off, Math.min(read, head.remaining()));
-            }
-        } else {
-            sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        if (read < 0) {
+            emitContentInfo();
+            return read;
         }
+
+        crc.update(buf, off, read);
+        if (head.hasRemaining()) {
+            head.put(buf, off, Math.min(read, head.remaining()));
+        }
+        length += read;
         return read;
+    }
+
+    // Uses tryEmitValue instead of emitValue(FAIL_FAST) so that resubscriptions
+    // (SDK retries, verification passes) don't throw on the second EOF.
+    private void emitContentInfo() {
+        String baseErrorMessage = "Failed to emit content because ";
+        Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
+        switch (emitResult) {
+            case OK:
+            case FAIL_TERMINATED:
+                // No action needed for successful or already-terminated emissions.
+                break;
+            case FAIL_CANCELLED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    " the sink was previously interrupted by its consumer: " + emitResult));
+            case FAIL_OVERFLOW:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the buffer is full: " + emitResult));
+            case FAIL_NON_SERIALIZED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "two threads called emit at " +
+                    "once: " + emitResult));
+            case FAIL_ZERO_SUBSCRIBER:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
+                    "subscriber:" + emitResult));
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "unexpected emit result: "
+                    + emitResult));
+        }
     }
 
     @Override
@@ -135,6 +164,12 @@ public class CrcInputStream extends InputStream {
             } catch (IOException e) {
                 return FluxUtil.fluxError(LOGGER, new UncheckedIOException(e));
             }
+
+            // Reset CRC tracking state so resubscriptions (SDK retries or verification)
+            // compute the correct checksum from scratch.
+            crc.reset();
+            length = 0;
+            head.clear();
 
             final long[] currentTotalLength = new long[1];
             return Flux.generate(() -> inputStream, (is, sink) -> {

@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
@@ -182,6 +183,14 @@ public class DataLakeServiceClient {
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String -->
@@ -206,6 +215,14 @@ public class DataLakeServiceClient {
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -462,7 +479,8 @@ public class DataLakeServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+        return getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start),
+            null, Context.NONE).getValue();
     }
 
     /**
@@ -487,9 +505,26 @@ public class DataLakeServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
+        return getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start),
+            timeout, context);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link DataLakeGetUserDelegationKeyOptions options} to configure the request.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(DataLakeGetUserDelegationKeyOptions options,
+        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<com.azure.storage.blob.models.UserDelegationKey> response
-                = blobServiceClient.getUserDelegationKeyWithResponse(start, expiry, timeout, context);
+                = blobServiceClient.getUserDelegationKeyWithResponse(
+                    Transforms.toBlobGetUserDelegationKeyOptions(options), timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
         }, LOGGER);
     }

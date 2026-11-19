@@ -7,6 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.SasImplUtils;
 import org.junit.jupiter.api.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -358,5 +360,20 @@ public class StorageConnectionStringTest {
         assertTrue(blobEndpoint.getPrimaryUri()
             .equalsIgnoreCase(String.format("http://%s.blob.%s", // http protocol
                 ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
+    }
+
+    @Test
+    public void parseIPv6ConnectionString() throws MalformedURLException {
+        String accountName = "storagesample";
+        String blobEndpoint = "https://" + accountName + ".blob.core.windows.net";
+        String connectionString = String.format(
+            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=123=;BlobEndpoint=%s;EndpointSuffix=core.windows.net",
+            accountName, blobEndpoint);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
+
+        assertNotNull(storageConnectionString);
+        assertEquals(accountName, storageConnectionString.getAccountName());
+        assertEquals((new URL(blobEndpoint)).toString(), storageConnectionString.getBlobEndpoint().getPrimaryUri());
+
     }
 }

@@ -19,11 +19,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Classes;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Cpu;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.GarbageCollector;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.MemoryPools;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Threads;
+import io.opentelemetry.instrumentation.runtimetelemetry.RuntimeTelemetry;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.LinkData;
@@ -120,11 +116,7 @@ public class TelemetryHelper {
             .setResultAsGlobal()
             .build()
             .getOpenTelemetrySdk();
-        Classes.registerObservers(otel);
-        Cpu.registerObservers(otel);
-        MemoryPools.registerObservers(otel);
-        Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel);
+        RuntimeTelemetry.create(otel);
         OpenTelemetryAppender.install(otel);
         return otel;
     }
@@ -142,7 +134,9 @@ public class TelemetryHelper {
             oneRun.run(ctx);
             trackSuccess(start, span);
         } catch (Throwable e) {
-            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
+            String message = e.getMessage();
+            if (e instanceof InterruptedException || e instanceof TimeoutException
+                || (message != null && message.contains("Timeout on blocking read"))) {
                 trackCancellation(start, span);
             } else {
                 trackFailure(start, e, span);
@@ -201,10 +195,12 @@ public class TelemetryHelper {
         // already a NativeIoException/TimeoutException
         if (unwrapped instanceof RuntimeException) {
             String message = unwrapped.getMessage();
-            if (message.contains("NativeIoException")) {
-                unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
-            } else if (message.contains("TimeoutException")) {
-                unwrapped = new TimeoutException(message);
+            if (message != null) {
+                if (message.contains("NativeIoException")) {
+                    unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
+                } else if (message.contains("TimeoutException")) {
+                    unwrapped = new TimeoutException(message);
+                }
             }
         }
 

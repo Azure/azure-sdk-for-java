@@ -19,7 +19,9 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
@@ -50,7 +52,9 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -132,10 +136,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
@@ -146,7 +154,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
-                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
+                "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
@@ -201,6 +210,49 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient() {
         return getOAuthServiceClientBuilder().buildAsyncClient();
+    }
+
+    protected SessionContext getEnabledDfsSessionContext() {
+        return new SessionContext(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+            StorageCommonTestUtils.getTokenCredential(interceptorManager))
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildClient();
+    }
+
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        DataLakeServiceClientBuilder builder
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .sessionContext(sessionContext);
+
+        instrument(builder);
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildAsyncClient();
     }
 
     protected DataLakeServiceClient getServiceClient(TestAccount account) {
@@ -762,6 +814,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
+    protected Map<String, String> getTags() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "bar");
+        return tags;
+    }
+
     protected void liveTestScenarioWithRetry(Runnable runnable) {
         if (!interceptorManager.isLiveMode()) {
             runnable.run();
@@ -832,5 +890,27 @@ public class DataLakeTestBase extends TestProxyTestBase {
             assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
                 received.getStaticWebsite().getErrorDocument404Path());
         }
+    }
+
+    public static HttpPipelinePolicy getAddHeadersAndQueryPolicy(Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParams) {
+        // Create policy to add headers and query params to request
+        return (context, next) -> {
+            // Add request headers
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                context.getHttpRequest().setHeader(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
+            }
+
+            // Add query parameters
+            String extraQuery = requestQueryParams.entrySet()
+                .stream()
+                .map(e -> Utility.urlEncode(e.getKey()) + "=" + Utility.urlEncode(e.getValue()))
+                .collect(Collectors.joining("&"));
+
+            String currentUrl = context.getHttpRequest().getUrl().toString();
+            context.getHttpRequest().setUrl(currentUrl + "&" + extraQuery);
+
+            return next.process();
+        };
     }
 }

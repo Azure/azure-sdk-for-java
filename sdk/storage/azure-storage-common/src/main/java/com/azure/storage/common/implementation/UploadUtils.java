@@ -97,10 +97,15 @@ public class UploadUtils {
                     return Flux.just(buffer);
                 }
                 int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
+                // Split boundaries are relative to the buffer's position so that bytes before it are not uploaded.
+                int startPosition = buffer.position();
                 return Flux.range(0, numSplits).map(i -> {
-                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                    duplicate.position(i * chunkSize);
-                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
+                    // While duplicate.asReadOnlyBuffer() is safer, it significantly slows down crc64 calculation because it forces a copy of the buffer.
+                    // No downstream buffers should be modifying the buffer anyways.
+                    ByteBuffer duplicate = buffer.duplicate();
+                    duplicate.position(startPosition + i * chunkSize);
+                    duplicate
+                        .limit((int) Math.min(duplicate.limit(), (long) startPosition + (long) (i + 1) * chunkSize));
                     return duplicate;
                 });
             }, 1, 1);
@@ -148,12 +153,12 @@ public class UploadUtils {
         }
     }
 
-    /* PULLED FROM RELEASE
-     * Computes the md5 of the data.
-     *
+    /**
+     * It computes the MD5 of the provided buffer
      * @param data The data.
      * @param logger Logger to log errors.
      * @return The md5 of the data.
+     */
     public static byte[] computeMd5(ByteBuffer data, ClientLogger logger) {
         if (data == null) {
             return null;
@@ -165,7 +170,7 @@ public class UploadUtils {
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
-    } */
+    }
 
     /**
      * Computes the md5 of the data and wraps it with the data.

@@ -1,24 +1,215 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `DataLakeFileSystemAsyncClient.createIfNotExists` and `createIfNotExistsWithResponse` to return `false` when the file system already exists.
+  `deleteIfExists` and `deleteIfExistsWithResponse` now return `false` when the file system does not exist.
 
 ### Other Changes
 
-## 12.26.0-beta.2 (Unreleased)
+## 12.31.0-beta.1 (2026-11-05)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.2` to version `12.38.0-beta.1`.
+
+## 12.30.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.37.1` to version `12.37.2`.
+
+## 12.30.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.37.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.29.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.36.1`.
+
+## 12.29.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Bugs Fixed
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
+- Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
+  name a second time, causing subsequent requests made through that client to target a double-encoded path when the
+  name contained characters such as `%`, `#`, or a space.
+- Fixed a bug where the sync `DataLakeFileClient`/`DataLakeDirectoryClient` returned by `rename`/`renameWithResponse`
+  kept its internal async client rooted at the original source path. Operations delegated to that async client (such as
+  file `append`, `flush`, and `upload`, or directory child/ACL clients) targeted the old path instead of the renamed
+  destination.
+
+### Other Changes
+- Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
+  `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
+  Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+- Updated the documentation of `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` `delete`,
+  `deleteWithResponse`, `deleteIfExists`, and `deleteIfExistsWithResponse`, and
+  `DataLakeServiceClient`/`DataLakeServiceAsyncClient` `deleteFileSystem` and `deleteFileSystemWithResponse` to note
+  that operations on paths within a deleted file system, including reads and writes, may continue to succeed for up to
+  30 seconds after the delete request is accepted.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.36.0`.
+
+## 12.28.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.28.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
+
+## 12.29.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+## 12.28.0 (2026-06-11)
+
+### Features Added
+- Added `getTags`/`setTags` to path APIs (sync + async).
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.27.0 (2026-05-14)
+
+### Features Added
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.33.4` to version `12.34.0`.
+
+## 12.26.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.33.4`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 12.26.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
+
+
+## 12.28.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added `getTags`/`setTags` to path APIs (sync + async).
+- Added support for service version 2026-06-06.
+
+## 12.27.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.26.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the 
+  info level; invalid combinations of credentials will throw an error.
+
+## 12.26.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.0` to version `12.33.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.26.0 (2026-01-15)
+
+### Features Added
+- Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.32.0` to version `12.33.0`.
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
 
 ## 12.26.0-beta.1 (2025-12-03)
 
@@ -785,4 +976,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-

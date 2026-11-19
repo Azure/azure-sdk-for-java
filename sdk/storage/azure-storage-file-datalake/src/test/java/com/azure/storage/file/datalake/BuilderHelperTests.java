@@ -9,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
@@ -16,11 +18,15 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,9 +36,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -40,6 +52,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,6 +60,7 @@ public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS
         = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
+    private static final String DFS_ENDPOINT = "https://account.dfs.core.windows.net/";
     private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
@@ -55,13 +69,83 @@ public class BuilderHelperTests {
         = CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    private static final String UA_PATTERN
-        = "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/"
-            + CLIENT_VERSION + " " + "(.)*";
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
+    private static final String UA_PATTERN = "azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+        + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setHeader(HttpHeaderName.CONTENT_LENGTH, "0")
             .setBody(Flux.empty());
+    }
+
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportSync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(false);
+    }
+
+    @Test
+    public void customDfsSessionAcquisitionUsesDataLakeBuilderTransportAsync() {
+        customDfsSessionAcquisitionUsesDataLakeBuilderTransport(true);
+    }
+
+    private void customDfsSessionAcquisitionUsesDataLakeBuilderTransport(boolean async) {
+        AtomicInteger acquisitions = new AtomicInteger();
+        AtomicInteger reads = new AtomicInteger();
+        HttpHeaderName marker = HttpHeaderName.fromString("x-test-datalake");
+        HttpClient transport = request -> {
+            assertEquals("account.blob.core.windows.net", request.getUrl().getHost());
+            assertEquals("configured", request.getHeaders().getValue(marker));
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                acquisitions.incrementAndGet();
+                assertEquals("/filesystem", request.getUrl().getPath());
+                assertEquals("restype=container&comp=session", request.getUrl().getQuery());
+                String body = "<CreateSessionResult><Id>test-session</Id><Expiration>"
+                    + new DateTimeRfc1123(OffsetDateTime.now().plusHours(1))
+                    + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
+                    + "<SessionToken>datalake-session</SessionToken>"
+                    + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+                    + "</Credentials></CreateSessionResult>";
+                return Mono.just(new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
+                    .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/xml"));
+            }
+            reads.incrementAndGet();
+            assertEquals(HttpMethod.GET, request.getHttpMethod());
+            assertTrue(
+                request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session datalake-session:"));
+            return Mono.just(new MockHttpResponse(request, 200, "data".getBytes(StandardCharsets.UTF_8))
+                .addHeader(HttpHeaderName.CONTENT_LENGTH.toString(), "4")
+                .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/octet-stream")
+                .addHeader(HttpHeaderName.ETAG.toString(), "\"etag\"")
+                .addHeader(HttpHeaderName.LAST_MODIFIED.toString(),
+                    new DateTimeRfc1123(OffsetDateTime.now()).toString()));
+        };
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder().endpoint(DFS_ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(transport)
+            .addPolicy(new AddHeadersPolicy(new HttpHeaders().set(marker, "configured")))
+            .sessionContext(new SessionContext(DFS_ENDPOINT, new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED));
+        if (async) {
+            for (int i = 0; i < 2; i++) {
+                DataLakeServiceAsyncClient client = builder.buildAsyncClient();
+                StepVerifier.create(
+                    client.getFileSystemAsyncClient("filesystem").getFileAsyncClient("file" + i).read().collectList())
+                    .assertNext(buffers -> {
+                        assertEquals(4, buffers.stream().mapToInt(buffer -> buffer.remaining()).sum());
+                    })
+                    .verifyComplete();
+            }
+        } else {
+            for (int i = 0; i < 2; i++) {
+                DataLakeServiceClient client = builder.buildClient();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                client.getFileSystemClient("filesystem").getFileClient("file" + i).read(stream);
+                assertEquals("data", new String(stream.toByteArray(), StandardCharsets.UTF_8));
+            }
+        }
+        assertEquals(1, acquisitions.get(), "Independently built clients using the same options share acquisition.");
+        assertEquals(2, reads.get());
     }
 
     /**
@@ -232,6 +316,53 @@ public class BuilderHelperTests {
             .verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("dfsAccountNameSupplier")
+    void secondaryIpv6Dualstack(String urlString, String expectedAccountName) throws MalformedURLException {
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        String newUri = DataLakeImplUtils.endpointToDesiredEndpoint(blobUrlParts.toUrl().toString(), "dfs", "blob");
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> dfsAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://myaccount.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-dualstack.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-ipv6.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-dualstack.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-ipv6.dfs.core.windows.net/", "myaccount"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dfsManagedDiskAccountNameSupplier")
+    void ipv6InternalAccounts(String urlString, String expectedAccountName) throws MalformedURLException {
+        String blobUrlString = DataLakeImplUtils.endpointToDesiredEndpoint(urlString, "blob", "dfs");
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(blobUrlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        String newUri = DataLakeImplUtils.endpointToDesiredEndpoint(blobUrlParts.toUrl().toString(), "dfs", "blob");
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> dfsManagedDiskAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://md-d3rqxhqbxbwq.dfs.core.windows.net/", "md-d3rqxhqbxbwq"),
+            Arguments.of("https://md-ssd-bndub02px100c21.dfs.core.windows.net/", "md-ssd-bndub02px100c21"));
+    }
+
     @Test
     public void doesNotThrowOnAmbiguousCredentialsWithoutAzureSasCredential() {
         assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
@@ -264,12 +395,6 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class,
             () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
@@ -289,13 +414,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
                 .pathName("foo")
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildDirectoryClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
-                .pathName("foo")
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildDirectoryClient());
@@ -309,12 +427,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
                 .credential(new StorageSharedKeyCredential("foo", "bar"))
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
 

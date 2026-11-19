@@ -17,7 +17,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
@@ -57,7 +56,6 @@ import java.util.stream.Collectors;
  *
  * <p>
  * Please refer to the
- *
  * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
@@ -78,8 +76,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient,
             dataLakePathClient.getHttpPipeline(), dataLakePathClient.getAccountUrl(),
             dataLakePathClient.getServiceVersion(), dataLakePathClient.getAccountName(),
-            dataLakePathClient.getFileSystemName(), Utility.urlEncode(dataLakePathClient.pathName),
-            PathResourceType.DIRECTORY, dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
+            dataLakePathClient.getFileSystemName(), dataLakePathClient.pathName, PathResourceType.DIRECTORY,
+            dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
             dataLakePathClient.isTokenCredentialAuthenticated());
         this.dataLakeDirectoryAsyncClient
             = new DataLakeDirectoryAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
@@ -1153,7 +1151,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         ListPathsOptions options = new ListPathsOptions().setRecursive(recursive)
             .setUserPrincipalNameReturned(userPrincipleNameReturned)
             .setMaxResults(maxResults);
-        return listPaths(options, timeout);
+        return listPaths(options, timeout, Context.NONE);
     }
 
     /**
@@ -1165,10 +1163,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
+    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout, Context context) {
         ListPathsOptions finalOptions = options == null ? new ListPathsOptions() : options;
         Integer maxResults = finalOptions.getMaxResults();
         boolean recursive = finalOptions.isRecursive();
@@ -1179,7 +1178,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
                 = () -> this.fileSystemDataLakeStorage.getFileSystems()
                     .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                        pageSize == null ? maxResults : pageSize, upn, beginFrom, Context.NONE);
+                        pageSize == null ? maxResults : pageSize, upn, beginFrom, context);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response
                 = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);

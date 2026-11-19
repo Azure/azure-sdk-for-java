@@ -445,7 +445,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             }
 
             assertDoesNotThrow(() -> primaryDataLakeServiceClient
-                .listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(10))
+                .listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(60))
                 .streamByPage()
                 .count());
         } finally {

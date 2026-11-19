@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
@@ -46,11 +47,14 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
@@ -74,6 +78,7 @@ import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -81,6 +86,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -117,9 +123,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -129,6 +138,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class BlobApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -2153,12 +2163,24 @@ public class BlobApiTests extends BlobTestBase {
             () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null));
     }
 
+    // Abort-copy tests race the service: the cross-account copy must still be pending when the abort request
+    // lands. A larger source widens that window (A1); combined with an assumeTrue guard on the poll status (B),
+    // the tests assert abort behavior when a copy is genuinely pending and skip (rather than fail) if the
+    // service finished the copy first. Server-to-server copy, so the larger size costs only the initial upload.
+    //
+    // The source is capped just under the test proxy's 30,000,000-byte request-body limit: a body at/above that
+    // limit cannot be ingested by the proxy in record or playback (it fails with HTTP 500 "Request body too large"
+    // or a premature connection close, and also destabilizes the shared proxy connection pool for concurrent
+    // tests). 28 MiB (29,360,128 bytes) stays under the cap while keeping the window wide enough to exercise abort.
+    private static final int ABORT_COPY_SOURCE_SIZE_BYTES = 28 * Constants.MB;
+
     @Test
     public void abortCopyBaseSimple() {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2171,6 +2193,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId());
         BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId()));
@@ -2186,7 +2210,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2202,6 +2227,8 @@ public class BlobApiTests extends BlobTestBase {
             bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
+        assumeTrue(response.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; cannot observe the 412 lease mismatch.");
         BlobCopyInfo blobCopyInfo = response.getValue();
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
@@ -2217,7 +2244,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2230,6 +2258,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         Response<Void> response
             = bu2.abortCopyFromUrlWithResponse(lastResponse.getValue().getCopyId(), null, null, null);
         HttpHeaders headers = response.getHeaders();
@@ -2247,7 +2277,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateContainerName());
         cu2.create();
@@ -2264,6 +2295,8 @@ public class BlobApiTests extends BlobTestBase {
 
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         String copyId = lastResponse.getValue().getCopyId();
         assertResponseStatusCode(bu2.abortCopyFromUrlWithResponse(copyId, leaseId, null, null), 204);
         // cleanup:
@@ -2559,6 +2592,45 @@ public class BlobApiTests extends BlobTestBase {
             () -> bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditions(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfModifiedSince(changeTime.plusDays(-1));
+        } else {
+            // requires no modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusMinutes(5));
+        }
+
+        assertResponseStatusCode(bc.deleteWithResponse(null, brc, null, null), 202);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditionsFail(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfModifiedSince(changeTime.plusMinutes(5));
+        } else {
+            // requires no modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusDays(-1));
+        }
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> bc.deleteWithResponse(null, brc, null, null));
+        assertEquals(412, e.getStatusCode());
+        assertEquals("AccessTierChangeTimeConditionNotMet", e.getErrorCode().toString());
+    }
+
     @Test
     public void blobDeleteError() {
         bc = cc.getBlobClient(generateBlobName());
@@ -2690,7 +2762,9 @@ public class BlobApiTests extends BlobTestBase {
 
         bc.setAccessTier(tier);
         assertEquals(tier, bc.getProperties().getAccessTier());
-        assertEquals(tier, cc.listBlobs().iterator().next().getProperties().getAccessTier());
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        assertEquals(tier, cc.listBlobs(options, null).iterator().next().getProperties().getAccessTier());
 
         // cleanup:
         cc.delete();
@@ -3138,6 +3212,112 @@ public class BlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void sharedSessionContextUsesSameLiveTokenAcrossIndependentClients() {
+        String blobName = generateBlobName();
+        String content = "shared-session-context";
+        cc.getBlobClient(blobName).upload(BinaryData.fromString(content), true);
+
+        AtomicInteger sessionDownloads = new AtomicInteger();
+        AtomicReference<String> sharedSessionToken = new AtomicReference<>();
+        AtomicBoolean sessionTokenMismatch = new AtomicBoolean();
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), request -> {
+            String path = request.getUrl().getPath();
+            if (request.getHttpMethod() == HttpMethod.GET && path != null && path.endsWith("/" + blobName)) {
+                String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                if (authorization != null && authorization.startsWith("Session ")) {
+                    sessionDownloads.incrementAndGet();
+                    int signatureDelimiter = authorization.lastIndexOf(':');
+                    if (signatureDelimiter <= "Session ".length()) {
+                        sessionTokenMismatch.set(true);
+                        return;
+                    }
+                    String sessionToken = authorization.substring("Session ".length(), signatureDelimiter);
+                    String firstToken = sharedSessionToken.get();
+                    if (firstToken == null) {
+                        if (!sharedSessionToken.compareAndSet(null, sessionToken)
+                            && !sessionToken.equals(sharedSessionToken.get())) {
+                            sessionTokenMismatch.set(true);
+                        }
+                    } else if (!sessionToken.equals(firstToken)) {
+                        sessionTokenMismatch.set(true);
+                    }
+                }
+            }
+        });
+        SessionContext sharedContext
+            = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
+
+        BlobClient first
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+        BlobClient second
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        assertEquals(content, first.downloadContent().toString());
+        assertEquals(1, sessionDownloads.get(), "The first client should use session authentication.");
+        assertEquals(content, second.downloadContent().toString());
+        assertEquals(2, sessionDownloads.get(), "The second client should also use session authentication.");
+        assertNotNull(sharedSessionToken.get(), "A live session token must have been captured.");
+        assertFalse(sessionTokenMismatch.get(), "The independent clients used different live session tokens.");
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        BlobClient blobClient = cc.getBlobClient(blobName);
+        blobClient.getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
+            }
+        });
+
+        BlobClient sessionBlob
+            = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        File outFile = new File(prefix + "-session-download.tmp");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null, null,
+            false, null, null);
+
+        assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+        assertTrue(downloadAuthSchemesByRange.size() > 1,
+            "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+        assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+            "Expected every chunked blob download range to attempt Session auth; saw " + downloadAuthSchemesByRange);
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
     @LiveOnly
@@ -3184,6 +3364,21 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
         String expectedEncodedContainerName = "my%20container";
         assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
+    public void uploadStreamAccessTierSmart() {
+        bc = cc.getBlobClient(generateBlobName());
+        InputStream data = new ByteArrayInputStream(getRandomByteArray(Constants.KB));
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data).setTier(AccessTier.SMART);
+        bc.uploadWithResponse(options, null, Context.NONE);
+
+        Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
     }
 
 }

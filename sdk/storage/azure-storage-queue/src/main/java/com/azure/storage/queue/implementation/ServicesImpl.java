@@ -26,6 +26,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
@@ -35,7 +36,6 @@ import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentHe
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextHeaders;
 import com.azure.storage.queue.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.queue.implementation.util.ModelHelper;
-import com.azure.storage.queue.models.KeyInfo;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;

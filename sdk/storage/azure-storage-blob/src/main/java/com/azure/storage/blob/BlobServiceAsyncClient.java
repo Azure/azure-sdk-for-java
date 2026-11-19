@@ -26,6 +26,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -37,6 +38,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -196,6 +198,8 @@ public final class BlobServiceAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #deleteBlobContainer(String)}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String -->
@@ -207,6 +211,9 @@ public final class BlobServiceAsyncClient {
      *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
@@ -217,6 +224,8 @@ public final class BlobServiceAsyncClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #deleteBlobContainer(String)}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -236,6 +245,9 @@ public final class BlobServiceAsyncClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
@@ -261,6 +273,8 @@ public final class BlobServiceAsyncClient {
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #deleteBlobContainer(String)}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
@@ -272,6 +286,9 @@ public final class BlobServiceAsyncClient {
      *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     * Errors with a {@link BlobStorageException} if the container could not be created for any other reason than that
+     * it already exists, for example when a container with the same name is still being deleted (status code 409, error
+     * code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
@@ -281,6 +298,8 @@ public final class BlobServiceAsyncClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #deleteBlobContainer(String)}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -305,7 +324,9 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created. If {@link Response}'s status code is 201,
      * a new container was successfully created. If status code is 409, a container with the same name already existed
-     * at this location.
+     * at this location. Errors with a {@link BlobStorageException} if the container could not be created for any other
+     * reason than that it already exists, for example when a container with the same name is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
@@ -323,7 +344,7 @@ public final class BlobServiceAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
                 context).onErrorResume(
-                    t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409, t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((BlobStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
@@ -336,6 +357,14 @@ public final class BlobServiceAsyncClient {
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->
@@ -358,6 +387,13 @@ public final class BlobServiceAsyncClient {
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -390,6 +426,14 @@ public final class BlobServiceAsyncClient {
      * Deletes the specified container in the storage account if it exists. For
      * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
@@ -417,6 +461,13 @@ public final class BlobServiceAsyncClient {
      * Deletes the specified container in the storage account if it exists.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -873,7 +924,7 @@ public final class BlobServiceAsyncClient {
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the user
      * delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
@@ -888,20 +939,44 @@ public final class BlobServiceAsyncClient {
         }
     }
 
+    /**
+     * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link BlobGetUserDelegationKeyOptions options} to configure the request.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the user
+     * delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
+                options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
+        return getUserDelegationKeyWithResponse(start, expiry, null, context);
+    }
+
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        String delegatedUserTenantId, Context context) {
+        context = context == null ? Context.NONE : context;
+        throwOnAnonymousAccess();
         if (start != null && !start.isBefore(expiry)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        throwOnAnonymousAccess();
-        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices()
             .getUserDelegationKeyWithResponseAsync(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                    .setDelegatedUserTenantId(delegatedUserTenantId),
                 null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }

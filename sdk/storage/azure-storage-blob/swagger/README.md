@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-02-06/blob.json
+use: '@autorest/java@4.1.63'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/BlobStorage/stable/2027-03-07/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -44,7 +44,6 @@ directive:
     $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
-
 
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
@@ -354,6 +353,7 @@ directive:
   transform: >
     $.enum.push("SnaphotOperationRateExceeded");
     $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+    $.enum.push("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 ```
 
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
@@ -452,6 +452,16 @@ directive:
   transform: >
     $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
     $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+    $.properties.SignedDelegatedUserTid["x-ms-client-name"] = "signedDelegatedUserTenantId";
+```
+
+### Rename KeyInfo DelegatedUserTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.KeyInfo
+  transform: >
+    $.properties.DelegatedUserTid["x-ms-client-name"] = "delegatedUserTenantId";
 ```
 
 ### Remove AccessConditions parameter groupings
@@ -607,6 +617,19 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Delete the Apache Arrow list x-ms-pageable extensions as autorest can't recognize the itemName for their binary responses
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
 ### BlobCopySourceTags expandable string enum and rename
 ``` yaml
 directive:
@@ -624,6 +647,17 @@ directive:
   where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob&fromUrl"].put
   transform: >
     $.description = "The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given URL.  This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten with the content of the new blob.  To perform partial updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put Block List.";
+```
+
+### Remove source CPK parameter grouping
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.SourceEncryptionKey["x-ms-parameter-grouping"];
+    delete $.SourceEncryptionKeySha256["x-ms-parameter-grouping"];
+    delete $.SourceEncryptionAlgorithm["x-ms-parameter-grouping"];
 ```
 
 ### Rename ListBlobsIncludeItem Enums to be underscore cased
@@ -685,5 +719,3 @@ directive:
         }
       ];
 ```
-
-

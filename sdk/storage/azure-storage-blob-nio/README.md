@@ -20,7 +20,7 @@ This package allows you to interact with Azure Blob Storage through the standard
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-beta.38</version>
+    <version>12.0.0-beta.42</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -281,7 +281,7 @@ are not currently supported but are under consideration and may be added before 
 which of these may be most useful and are open to suggestions for items not included in this list. While all of these 
 items are being considered, they have not been investigated and designed and therefore we cannot confirm their 
 feasibility within Azure Blob Storage. Therefore, it may be the case that further investigation reveals a feature may 
-not be possible or otherwise may conflict with established design goals and therefor will not ultimately be supported. 
+not be possible or otherwise may conflict with established design goals and therefore will not ultimately be supported. 
 
 - Symbolic links
 - Hard links
@@ -327,7 +327,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [file_system]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystem.html
 [file_systems]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystems.html
 
