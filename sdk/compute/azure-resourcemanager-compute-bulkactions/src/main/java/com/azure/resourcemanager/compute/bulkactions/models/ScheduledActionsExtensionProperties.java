@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * A scheduled action associated with a specific compute resource.
+ * A recurring bulk action associated with a specific compute resource.
  */
 @Immutable
 public final class ScheduledActionsExtensionProperties
@@ -47,7 +47,7 @@ public final class ScheduledActionsExtensionProperties
     private ScheduledActionsSchedule schedule;
 
     /*
-     * Notification settings that apply to the scheduled action.
+     * Notification settings that apply to the recurring bulk action.
      */
     private List<NotificationProperties> notificationSettings;
 
@@ -57,7 +57,7 @@ public final class ScheduledActionsExtensionProperties
     private Boolean disabled;
 
     /*
-     * Read-only. The provisioning state of the scheduled action.
+     * Read-only. The provisioning state of the recurring bulk action.
      */
     private ScheduledActionsProvisioningState provisioningState;
 
@@ -118,7 +118,7 @@ public final class ScheduledActionsExtensionProperties
     }
 
     /**
-     * Get the notificationSettings property: Notification settings that apply to the scheduled action.
+     * Get the notificationSettings property: Notification settings that apply to the recurring bulk action.
      * 
      * @return the notificationSettings value.
      */
@@ -136,7 +136,7 @@ public final class ScheduledActionsExtensionProperties
     }
 
     /**
-     * Get the provisioningState property: Read-only. The provisioning state of the scheduled action.
+     * Get the provisioningState property: Read-only. The provisioning state of the recurring bulk action.
      * 
      * @return the provisioningState value.
      */

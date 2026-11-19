@@ -12,12 +12,12 @@ public final class OccurrencesListResourcesSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_PagedSuccess.json
      */
     /**
-     * Sample code: 02 - List a page of resources in a recurring scheduled action occurrence.
+     * Sample code: 02 - List a page of resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .listResources("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
@@ -28,12 +28,12 @@ public final class OccurrencesListResourcesSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - List resources in a recurring scheduled action occurrence.
+     * Sample code: 01 - List resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceListSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceListSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .listResources("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",

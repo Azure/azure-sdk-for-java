@@ -12,16 +12,16 @@ public final class HcpOpenShiftClusterAdminCredentialRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOpenShiftClusterAdminCredentialRequest model
-            = BinaryData.fromString("{\"certificateSigningRequest\":\"pwlbjnpg\"}")
+            = BinaryData.fromString("{\"certificateSigningRequest\":\"gual\"}")
                 .toObject(HcpOpenShiftClusterAdminCredentialRequest.class);
-        Assertions.assertEquals("pwlbjnpg", model.certificateSigningRequest());
+        Assertions.assertEquals("gual", model.certificateSigningRequest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HcpOpenShiftClusterAdminCredentialRequest model
-            = new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest("pwlbjnpg");
+            = new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest("gual");
         model = BinaryData.fromObject(model).toObject(HcpOpenShiftClusterAdminCredentialRequest.class);
-        Assertions.assertEquals("pwlbjnpg", model.certificateSigningRequest());
+        Assertions.assertEquals("gual", model.certificateSigningRequest());
     }
 }

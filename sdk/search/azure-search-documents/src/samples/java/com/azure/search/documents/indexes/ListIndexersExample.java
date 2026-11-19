@@ -31,7 +31,7 @@ public class ListIndexersExample {
 
     private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
         System.out.println("Found the following indexers:");
-        indexerAsyncClient.listIndexers().subscribe(indexer ->
-            System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag()));
+        indexerAsyncClient.listIndexers().doOnNext(indexer ->
+            System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag())).blockLast();
     }
 }

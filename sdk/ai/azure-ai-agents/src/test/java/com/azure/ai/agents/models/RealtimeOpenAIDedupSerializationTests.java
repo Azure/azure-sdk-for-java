@@ -8,12 +8,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.LogProbProperties;
-import com.openai.models.realtime.NoiseReductionType;
 import com.openai.models.realtime.RealtimeReasoning;
 import com.openai.models.realtime.RealtimeReasoningEffort;
 import com.openai.models.realtime.RealtimeResponseStatus;
 import com.openai.models.realtime.RealtimeResponseUsage;
-import com.openai.models.responses.ResponsePrompt;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,43 +36,25 @@ public class RealtimeOpenAIDedupSerializationTests {
             + "\"usage\":" + USAGE_JSON + "}";
 
     @Test
-    public void testRealtimeReasoningAndPromptRoundTrip() throws IOException {
-        RealtimeReasoningEffort[] efforts = {
-            RealtimeReasoningEffort.MINIMAL,
-            RealtimeReasoningEffort.LOW,
-            RealtimeReasoningEffort.MEDIUM,
-            RealtimeReasoningEffort.HIGH,
-            RealtimeReasoningEffort.XHIGH };
+    public void testConversationItemObjectTypeRoundTripsPolymorphically() throws IOException {
+        String[] variants = {
+            "\"type\":\"message\",\"role\":\"system\",\"content\":[]",
+            "\"type\":\"message\",\"role\":\"user\",\"content\":[]",
+            "\"type\":\"message\",\"role\":\"assistant\",\"content\":[]",
+            "\"type\":\"function_call\",\"call_id\":\"call\",\"name\":\"fn\",\"arguments\":\"{}\"",
+            "\"type\":\"function_call_output\",\"call_id\":\"call\",\"output\":\"done\"" };
 
-        for (RealtimeReasoningEffort effort : efforts) {
-            RealtimeReasoning reasoning = RealtimeReasoning.builder().effort(effort).build();
-            ResponsePrompt prompt = ResponsePrompt.builder().id("pmpt_123").version("2").build();
-            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setInstructions("Be concise")
-                .setReasoning(reasoning)
-                .setPrompt(prompt);
-
-            String json = serialize(original);
-            assertTrue(json.contains("\"effort\":\"" + effort.asString() + "\""));
-            assertTrue(json.contains("\"prompt\":{\"id\":\"pmpt_123\""));
-
-            RealtimeSessionConfiguration result;
-            try (JsonReader reader = JsonProviders.createReader(json)) {
-                result = RealtimeSessionConfiguration.fromJson(reader);
+        for (String variant : variants) {
+            RealtimeConversationItem item;
+            try (JsonReader reader = JsonProviders.createReader("{" + variant + ",\"object\":\"realtime.item\"}")) {
+                item = RealtimeConversationItem.fromJson(reader);
             }
-
-            assertEquals(effort, result.getReasoning().effort().get());
-            assertEquals("pmpt_123", result.getPrompt().id());
-            assertEquals("2", result.getPrompt().version().get());
-            assertEquals(json, serialize(result));
+            String json = serialize(item);
+            assertTrue(json.contains("\"object\":\"realtime.item\""));
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                assertEquals(json, serialize(RealtimeConversationItem.fromJson(reader)));
+            }
         }
-    }
-
-    @Test
-    public void testAbsentRealtimeReasoningAndPromptRemainAbsent() throws IOException {
-        String json = serialize(new RealtimeSessionConfiguration().setInstructions("No reasoning"));
-
-        assertFalse(json.contains("\"reasoning\""));
-        assertFalse(json.contains("\"prompt\""));
     }
 
     @Test
@@ -100,37 +80,6 @@ public class RealtimeOpenAIDedupSerializationTests {
     }
 
     @Test
-    public void testNoiseReductionEnumRoundTrip() throws IOException {
-        NoiseReductionType[] types = { NoiseReductionType.NEAR_FIELD, NoiseReductionType.FAR_FIELD };
-
-        for (NoiseReductionType type : types) {
-            com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction realtimeNoiseReduction
-                = com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction.builder().type(type).build();
-            com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction transcriptionNoiseReduction
-                = com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction.builder()
-                    .type(type)
-                    .build();
-            RealtimeSessionAudioInput realtime
-                = new RealtimeSessionAudioInput().setNoiseReduction(realtimeNoiseReduction);
-            RealtimeTranscriptionSessionAudioInput transcription
-                = new RealtimeTranscriptionSessionAudioInput().setNoiseReduction(transcriptionNoiseReduction);
-
-            String realtimeJson = serialize(realtime);
-            String transcriptionJson = serialize(transcription);
-            assertEquals("{\"noise_reduction\":{\"type\":\"" + type.asString() + "\"}}", realtimeJson);
-            assertEquals(realtimeJson, transcriptionJson);
-
-            try (JsonReader reader = JsonProviders.createReader(realtimeJson)) {
-                assertEquals(type, RealtimeSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
-            }
-            try (JsonReader reader = JsonProviders.createReader(transcriptionJson)) {
-                assertEquals(type,
-                    RealtimeTranscriptionSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
-            }
-        }
-    }
-
-    @Test
     public void testLogProbsRoundTripThroughPolymorphicServerEvent() throws IOException {
         String input = "{\"type\":\"conversation.item.input_audio_transcription.delta\","
             + "\"event_id\":\"evt_1\",\"item_id\":\"item_1\",\"content_index\":0,\"delta\":\"hello\","
@@ -143,7 +92,7 @@ public class RealtimeOpenAIDedupSerializationTests {
 
         RealtimeConversationItemInputAudioTranscriptionDeltaEvent delta
             = assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionDeltaEvent.class, event);
-        LogProbProperties logProb = delta.getLogprobs().get(0);
+        LogProbProperties logProb = delta.getLogProbs().get(0);
         assertEquals("hello", logProb.token());
         assertEquals(-0.25, logProb.logprob());
         assertEquals(2, logProb.bytes().size());
@@ -182,19 +131,10 @@ public class RealtimeOpenAIDedupSerializationTests {
 
     @Test
     public void testStatusAndUsageAcrossVoiceResponseModels() throws IOException {
-        VoiceResponseBase responseBase;
-        VoiceAgentRealtimeResponseBase realtimeResponseBase;
         VoiceAgentRealtimeResponse realtimeResponse;
         VoiceResponse response;
         VoiceConversation conversation;
 
-        try (JsonReader reader = JsonProviders.createReader(RESPONSE_FIELDS_JSON)) {
-            responseBase = VoiceResponseBase.fromJson(reader);
-        }
-        try (
-            JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"," + RESPONSE_FIELDS_JSON.substring(1))) {
-            realtimeResponseBase = VoiceAgentRealtimeResponseBase.fromJson(reader);
-        }
         try (
             JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"," + RESPONSE_FIELDS_JSON.substring(1))) {
             realtimeResponse = VoiceAgentRealtimeResponse.fromJson(reader);
@@ -208,14 +148,10 @@ public class RealtimeOpenAIDedupSerializationTests {
             conversation = VoiceConversation.fromJson(reader);
         }
 
-        assertResponseFields(responseBase.getStatusDetails(), responseBase.getUsage());
-        assertResponseFields(realtimeResponseBase.getStatusDetails(), realtimeResponseBase.getUsage());
         assertResponseFields(realtimeResponse.getStatusDetails(), realtimeResponse.getUsage());
         assertResponseFields(response.getStatusDetails(), response.getUsage());
         assertUsage(conversation.getUsage());
 
-        assertStable(responseBase, VoiceResponseBase::fromJson);
-        assertStable(realtimeResponseBase, VoiceAgentRealtimeResponseBase::fromJson);
         assertStable(realtimeResponse, VoiceAgentRealtimeResponse::fromJson);
         assertStable(response, VoiceResponse::fromJson);
         assertStable(conversation, VoiceConversation::fromJson);
@@ -223,9 +159,9 @@ public class RealtimeOpenAIDedupSerializationTests {
 
     @Test
     public void testAbsentStatusAndUsageRemainAbsent() throws IOException {
-        VoiceAgentRealtimeResponseBase response;
+        VoiceAgentRealtimeResponse response;
         try (JsonReader reader = JsonProviders.createReader("{\"id\":\"resp_1\"}")) {
-            response = VoiceAgentRealtimeResponseBase.fromJson(reader);
+            response = VoiceAgentRealtimeResponse.fromJson(reader);
         }
 
         assertNull(response.getStatusDetails());

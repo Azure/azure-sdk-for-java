@@ -134,9 +134,12 @@ public final class AzureKeyVaultSecretProviderClassImpl implements AzureKeyVault
         com.azure.resourcemanager.secretsstoreextension.SecretsStoreExtensionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureKeyVaultSecretProviderClasses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
+        this.azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
     }
 
     public AzureKeyVaultSecretProviderClass refresh() {

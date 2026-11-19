@@ -61,7 +61,9 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public ManagedOp getById(String id) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
+        String managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
         if (managedOpsName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
@@ -70,7 +72,9 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public Response<ManagedOp> getByIdWithResponse(String id, Context context) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
+        String managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
         if (managedOpsName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
@@ -79,7 +83,9 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public void deleteById(String id) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
+        String managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
         if (managedOpsName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
@@ -88,7 +94,9 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
+        String managedOpsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName");
         if (managedOpsName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));

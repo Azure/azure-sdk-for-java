@@ -13,17 +13,17 @@ public final class CommitmentTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierInner model = BinaryData.fromString(
-            "{\"kind\":\"l\",\"skuName\":\"iomqoqpepiaea\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"rgdtpeqnacyheqw\",\"tier\":\"qq\",\"maxCount\":1737059096,\"quota\":{\"quantity\":4637890487093031437,\"unit\":\"ozf\"},\"cost\":{\"commitmentMeterId\":\"wmbupyvqyvliq\",\"overageMeterId\":\"psejbsvsiaies\"}}")
+            "{\"kind\":\"lxqk\",\"skuName\":\"qjvzvc\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"pzesfkqqx\",\"tier\":\"vzflbrous\",\"maxCount\":724678754,\"quota\":{\"quantity\":2106890361991205032,\"unit\":\"okgoojjf\"},\"cost\":{\"commitmentMeterId\":\"ubcmun\",\"overageMeterId\":\"btzvxxv\"}}")
             .toObject(CommitmentTierInner.class);
-        Assertions.assertEquals("l", model.kind());
-        Assertions.assertEquals("iomqoqpepiaea", model.skuName());
-        Assertions.assertEquals(HostingModel.CONNECTED_CONTAINER, model.hostingModel());
-        Assertions.assertEquals("rgdtpeqnacyheqw", model.planType());
-        Assertions.assertEquals("qq", model.tier());
-        Assertions.assertEquals(1737059096, model.maxCount());
-        Assertions.assertEquals(4637890487093031437L, model.quota().quantity());
-        Assertions.assertEquals("ozf", model.quota().unit());
-        Assertions.assertEquals("wmbupyvqyvliq", model.cost().commitmentMeterId());
-        Assertions.assertEquals("psejbsvsiaies", model.cost().overageMeterId());
+        Assertions.assertEquals("lxqk", model.kind());
+        Assertions.assertEquals("qjvzvc", model.skuName());
+        Assertions.assertEquals(HostingModel.PROVISIONED_WEB, model.hostingModel());
+        Assertions.assertEquals("pzesfkqqx", model.planType());
+        Assertions.assertEquals("vzflbrous", model.tier());
+        Assertions.assertEquals(724678754, model.maxCount());
+        Assertions.assertEquals(2106890361991205032L, model.quota().quantity());
+        Assertions.assertEquals("okgoojjf", model.quota().unit());
+        Assertions.assertEquals("ubcmun", model.cost().commitmentMeterId());
+        Assertions.assertEquals("btzvxxv", model.cost().overageMeterId());
     }
 }

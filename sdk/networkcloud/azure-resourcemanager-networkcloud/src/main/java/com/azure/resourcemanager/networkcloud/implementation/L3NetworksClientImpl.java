@@ -437,7 +437,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * domain set up for layer-3 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l3NetworkName, L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch);
@@ -799,7 +799,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3NetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3NetworkName,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

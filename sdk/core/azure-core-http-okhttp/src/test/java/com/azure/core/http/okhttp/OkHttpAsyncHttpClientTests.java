@@ -231,7 +231,7 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void perCallTimeout() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(20)).build();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -253,7 +253,7 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void perCallTimeoutSync() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(20)).build();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofMinutes(1)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 

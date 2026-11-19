@@ -12,8 +12,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.edgeactions.EdgeActionsManager;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +24,7 @@ public final class EdgeActionVersionsDeployVersionCodeMockTests {
     @Test
     public void testDeployVersionCode() throws Exception {
         String responseStr
-            = "{\"deploymentType\":\"others\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-06-25T23:55:57Z\"}";
+            = "{\"properties\":{\"deploymentType\":\"file\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2020-12-31T13:56:03Z\"},\"location\":\"c\",\"tags\":{\"j\":\"hfnljkyq\"},\"id\":\"uujqgidokgjljyo\",\"name\":\"gvcl\",\"type\":\"bgsncghkjeszzhb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,13 @@ public final class EdgeActionVersionsDeployVersionCodeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        EdgeActionVersionProperties response = manager.edgeActionVersions()
+        EdgeActionVersion response = manager.edgeActionVersions()
             .deployVersionCode("fcivfsnkym", "ctq", "jf",
                 new VersionCodeInner().withContent("ebrjcxe").withName("fuwutttxf"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.isDefaultVersion());
+        Assertions.assertEquals("c", response.location());
+        Assertions.assertEquals("hfnljkyq", response.tags().get("j"));
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.FILE, response.properties().deploymentType());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.properties().isDefaultVersion());
     }
 }

@@ -24,12 +24,6 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
     private String id;
 
     /*
-     * Parent room identifier.
-     */
-    @Generated
-    private final String parentRoom;
-
-    /*
      * The entity tag for this resource.
      */
     @Generated
@@ -38,11 +32,11 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
     /**
      * Creates an instance of ChatConversation class.
      *
-     * @param parentRoom the parentRoom value to set.
+     * @param roomId the roomId value to set.
      */
     @Generated
-    private ChatConversation(String parentRoom) {
-        this.parentRoom = parentRoom;
+    private ChatConversation(String roomId) {
+        this.roomId = roomId;
     }
 
     /**
@@ -53,16 +47,6 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the parentRoom property: Parent room identifier.
-     *
-     * @return the parentRoom value.
-     */
-    @Generated
-    public String getParentRoom() {
-        return this.parentRoom;
     }
 
     /**
@@ -82,7 +66,7 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("parentRoom", this.parentRoom);
+        jsonWriter.writeStringField("parentRoom", this.roomId);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,7 +83,7 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
     public static ChatConversation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String parentRoom = null;
+            String roomId = null;
             String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -107,17 +91,33 @@ public final class ChatConversation implements JsonSerializable<ChatConversation
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("parentRoom".equals(fieldName)) {
-                    parentRoom = reader.getString();
+                    roomId = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ChatConversation deserializedChatConversation = new ChatConversation(parentRoom);
+            ChatConversation deserializedChatConversation = new ChatConversation(roomId);
             deserializedChatConversation.id = id;
             deserializedChatConversation.etag = etag;
             return deserializedChatConversation;
         });
+    }
+
+    /*
+     * Parent room identifier.
+     */
+    @Generated
+    private final String roomId;
+
+    /**
+     * Get the roomId property: Parent room identifier.
+     *
+     * @return the roomId value.
+     */
+    @Generated
+    public String getRoomId() {
+        return this.roomId;
     }
 }

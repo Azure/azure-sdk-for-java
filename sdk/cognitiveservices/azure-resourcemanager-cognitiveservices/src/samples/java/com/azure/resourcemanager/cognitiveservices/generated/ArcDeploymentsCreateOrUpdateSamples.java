@@ -4,13 +4,11 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentComputeType;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentCpuMemoryResourceRequirements;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentKubernetesResources;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentResourceRequirements;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentRuntime;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSku;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSkuName;
 import java.util.HashMap;
@@ -21,7 +19,33 @@ import java.util.Map;
  */
 public final class ArcDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeployment.json
+     * x-ms-original-file: 2026-11-15-preview/CreateOrUpdateArcDeploymentWithVllm.json
+     */
+    /**
+     * Sample code: CreateOrUpdateArcDeploymentWithVllm.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createOrUpdateArcDeploymentWithVllm(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.arcDeployments()
+            .define("gpt-oss-vllm-arc")
+            .withExistingAccount("resourceGroupName", "accountName")
+            .withProperties(new ArcDeploymentProperties()
+                .withModel(new ArcDeploymentModel().withAssetId(
+                    "azureml://registries/azure-foundrylocalonazurelocal/models/openai-gpt-oss-20b/versions/1"))
+                .withExtensionId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator")
+                .withReplicas(2)
+                .withResources(new ArcDeploymentKubernetesResources()
+                    .withLimits(new ArcDeploymentResourceRequirements().withGpu(5)))
+                .withNodeSelector(mapOf("agentpool", "a100")))
+            .withSku(new ArcDeploymentSku().withName(ArcDeploymentSkuName.ARC))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-15-preview/CreateOrUpdateArcDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateArcDeployment.
@@ -34,11 +58,10 @@ public final class ArcDeploymentsCreateOrUpdateSamples {
             .define("phi-3-arc")
             .withExistingAccount("resourceGroupName", "accountName")
             .withProperties(new ArcDeploymentProperties()
-                .withModel(new ArcDeploymentModel().withFormat("OpenAI").withName("phi-3-mini"))
+                .withModel(new ArcDeploymentModel()
+                    .withAssetId("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-generic-cpu/versions/3"))
                 .withExtensionId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator")
-                .withRuntime(ArcDeploymentRuntime.ONNX)
-                .withCompute(ArcDeploymentComputeType.CPU)
                 .withReplicas(2)
                 .withResources(new ArcDeploymentKubernetesResources()
                     .withRequests(new ArcDeploymentCpuMemoryResourceRequirements().withCpu("8").withMemory("16Gi"))
@@ -49,26 +72,23 @@ public final class ArcDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
+     * x-ms-original-file: 2026-11-15-preview/CreateOrUpdateArcDeploymentWithGpu.json
      */
     /**
-     * Sample code: CreateOrUpdateArcDeploymentWithTemplate.
+     * Sample code: CreateOrUpdateArcDeploymentWithGpu.
      * 
      * @param manager Entry point to CognitiveServicesManager.
      */
-    public static void createOrUpdateArcDeploymentWithTemplate(
+    public static void createOrUpdateArcDeploymentWithGpu(
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.arcDeployments()
-            .define("qwen-template-arc")
+            .define("phi-3-gpu-arc")
             .withExistingAccount("resourceGroupName", "accountName")
             .withProperties(new ArcDeploymentProperties()
-                .withModel(new ArcDeploymentModel().withFormat("OpenAI").withName("qwen3"))
+                .withModel(new ArcDeploymentModel()
+                    .withAssetId("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-cuda-gpu/versions/2"))
                 .withExtensionId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator")
-                .withRuntime(ArcDeploymentRuntime.VLLM)
-                .withCompute(ArcDeploymentComputeType.GPU)
-                .withDeploymentTemplate(
-                    "azureml://registries/azureml-openai-oss/deploymenttemplates/vllm-qwen--qwen3-5-0-8b/versions/1")
                 .withReplicas(2)
                 .withResources(new ArcDeploymentKubernetesResources()
                     .withLimits(new ArcDeploymentResourceRequirements().withGpu(5)))

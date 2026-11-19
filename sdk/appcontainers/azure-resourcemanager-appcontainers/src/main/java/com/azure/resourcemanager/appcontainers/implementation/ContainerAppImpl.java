@@ -207,8 +207,12 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.containerAppName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containerApps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
+            "resourceGroupName");
+        this.containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}",
+            "containerAppName");
     }
 
     public ContainerApp refresh() {

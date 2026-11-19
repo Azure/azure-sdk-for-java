@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointTierInformationV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointTierInformationV2 model = BinaryData
-            .fromString("{\"type\":\"InstantRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"frl\":\"nokixrjqcirgz\"}}")
+        RecoveryPointTierInformationV2 model = BinaryData.fromString(
+            "{\"type\":\"Invalid\",\"status\":\"Valid\",\"extendedInfo\":{\"uvgp\":\"hfjmhvv\",\"uzjyihsasbhudypo\":\"uneqsxvmhf\",\"slynsqyrpfoo\":\"yue\",\"zdzgtilaxhnfhqly\":\"rlttymsjnygqdnfw\"}}")
             .toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals("nokixrjqcirgz", model.extendedInfo().get("frl"));
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
+        Assertions.assertEquals("hfjmhvv", model.extendedInfo().get("uvgp"));
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.VALID, model.status());
     }
 }

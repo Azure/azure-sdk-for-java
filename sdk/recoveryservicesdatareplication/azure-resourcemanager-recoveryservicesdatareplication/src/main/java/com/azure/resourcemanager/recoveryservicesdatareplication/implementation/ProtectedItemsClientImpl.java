@@ -783,7 +783,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String protectedItemName, Boolean forceDelete) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, vaultName, protectedItemName, forceDelete);

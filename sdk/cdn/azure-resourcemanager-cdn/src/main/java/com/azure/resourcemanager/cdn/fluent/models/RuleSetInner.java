@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.cdn.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
+import com.azure.resourcemanager.cdn.models.BatchRuleProperties;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Friendly RuleSet name mapping to the any RuleSet or secret related information.
  */
-@Immutable
+@Fluent
 public final class RuleSetInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the Rule Set to create.
@@ -47,7 +49,7 @@ public final class RuleSetInner extends ProxyResource {
     /**
      * Creates an instance of RuleSetInner class.
      */
-    private RuleSetInner() {
+    public RuleSetInner() {
     }
 
     /**
@@ -105,6 +107,64 @@ public final class RuleSetInner extends ProxyResource {
      */
     public String profileName() {
         return this.innerProperties() == null ? null : this.innerProperties().profileName();
+    }
+
+    /**
+     * Get the batchMode property: Indicates whether rule set is in batch mode. When batch mode is enabled, rules will
+     * be processed in a batch along with the rule set.
+     * When batch mode is disabled, rules would need to be processed independently.
+     * This property can only be set during rule set creation and cannot be updated later.
+     * For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to
+     * the new rule set.
+     * 
+     * @return the batchMode value.
+     */
+    public Boolean batchMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().batchMode();
+    }
+
+    /**
+     * Set the batchMode property: Indicates whether rule set is in batch mode. When batch mode is enabled, rules will
+     * be processed in a batch along with the rule set.
+     * When batch mode is disabled, rules would need to be processed independently.
+     * This property can only be set during rule set creation and cannot be updated later.
+     * For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to
+     * the new rule set.
+     * 
+     * @param batchMode the batchMode value to set.
+     * @return the RuleSetInner object itself.
+     */
+    public RuleSetInner withBatchMode(Boolean batchMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RuleSetProperties();
+        }
+        this.innerProperties().withBatchMode(batchMode);
+        return this;
+    }
+
+    /**
+     * Get the rules property: A list of rules that are part of this rule set provided the rule set is in batch mode.
+     * This property will be ignored if the rule set is not in batch mode.
+     * 
+     * @return the rules value.
+     */
+    public List<BatchRuleProperties> rules() {
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
+    }
+
+    /**
+     * Set the rules property: A list of rules that are part of this rule set provided the rule set is in batch mode.
+     * This property will be ignored if the rule set is not in batch mode.
+     * 
+     * @param rules the rules value to set.
+     * @return the RuleSetInner object itself.
+     */
+    public RuleSetInner withRules(List<BatchRuleProperties> rules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RuleSetProperties();
+        }
+        this.innerProperties().withRules(rules);
+        return this;
     }
 
     /**

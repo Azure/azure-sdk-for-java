@@ -6,34 +6,41 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeProperties;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VolumePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeProperties model = BinaryData.fromString(
-            "{\"volumeId\":\"nltyfsoppusuesnz\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"avo\"},\"sizeGiB\":251447703520099794,\"storageTarget\":{\"targetIqn\":\"ohctbqvudwx\",\"targetPortalHostname\":\"dnvowg\",\"targetPortalPort\":884625398,\"provisioningState\":\"Pending\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"glhslazj\"},\"provisioningState\":\"Updating\"}")
+            "{\"volumeId\":\"siznto\",\"creationData\":{\"createSource\":\"Disk\",\"sourceId\":\"uajpsquc\"},\"sizeGiB\":2911148405453383602,\"storageTarget\":{\"targetIqn\":\"dkfo\",\"targetPortalHostname\":\"nygj\",\"targetPortalPort\":1672849191,\"provisioningState\":\"Restoring\",\"status\":\"Invalid\"},\"managedBy\":[{\"clientId\":\"eupewnwreitjz\",\"version\":1524084754,\"resourceIds\":[\"arhmofcqhsmy\",\"rkdtmlxh\"]}],\"provisioningState\":\"Updating\"}")
             .toObject(VolumeProperties.class);
-        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.creationData().createSource());
-        Assertions.assertEquals("avo", model.creationData().sourceId());
-        Assertions.assertEquals(251447703520099794L, model.sizeGiB());
-        Assertions.assertEquals("glhslazj", model.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.DISK, model.creationData().createSource());
+        Assertions.assertEquals("uajpsquc", model.creationData().sourceId());
+        Assertions.assertEquals(2911148405453383602L, model.sizeGiB());
+        Assertions.assertEquals("eupewnwreitjz", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(1524084754, model.managedBy().get(0).version());
+        Assertions.assertEquals("arhmofcqhsmy", model.managedBy().get(0).resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeProperties model = new VolumeProperties()
             .withCreationData(
-                new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT).withSourceId("avo"))
-            .withSizeGiB(251447703520099794L)
-            .withManagedBy(new ManagedByInfo().withResourceId("glhslazj"));
+                new SourceCreationData().withCreateSource(VolumeCreateOption.DISK).withSourceId("uajpsquc"))
+            .withSizeGiB(2911148405453383602L)
+            .withManagedBy(Arrays.asList(new ManagedByResources().withClientId("eupewnwreitjz")
+                .withVersion(1524084754)
+                .withResourceIds(Arrays.asList("arhmofcqhsmy", "rkdtmlxh"))));
         model = BinaryData.fromObject(model).toObject(VolumeProperties.class);
-        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.creationData().createSource());
-        Assertions.assertEquals("avo", model.creationData().sourceId());
-        Assertions.assertEquals(251447703520099794L, model.sizeGiB());
-        Assertions.assertEquals("glhslazj", model.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.DISK, model.creationData().createSource());
+        Assertions.assertEquals("uajpsquc", model.creationData().sourceId());
+        Assertions.assertEquals(2911148405453383602L, model.sizeGiB());
+        Assertions.assertEquals("eupewnwreitjz", model.managedBy().get(0).clientId());
+        Assertions.assertEquals(1524084754, model.managedBy().get(0).version());
+        Assertions.assertEquals("arhmofcqhsmy", model.managedBy().get(0).resourceIds().get(0));
     }
 }

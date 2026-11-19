@@ -14,11 +14,11 @@ public final class SqlDedicatedGatewayServiceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDedicatedGatewayServiceResourceProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"SqlDedicatedGateway\",\"sqlDedicatedGatewayEndpoint\":\"kkreh\",\"dedicatedGatewayType\":\"DistributedQuery\",\"locations\":[{\"sqlDedicatedGatewayEndpoint\":\"dui\",\"name\":\"ulxfaryrvjl\",\"location\":\"ezvjq\",\"status\":\"Creating\"},{\"sqlDedicatedGatewayEndpoint\":\"yiyaxqvjweiwtczk\",\"name\":\"nvovbooqbmdqrxy\",\"location\":\"ae\",\"status\":\"Creating\"},{\"sqlDedicatedGatewayEndpoint\":\"lw\",\"name\":\"dtlri\",\"location\":\"ooy\",\"status\":\"Error\"},{\"sqlDedicatedGatewayEndpoint\":\"dtzcqi\",\"name\":\"dudgcozzomeh\",\"location\":\"antolamlbijuxkq\",\"status\":\"Stopped\"}],\"creationTime\":\"2021-07-06T21:24:13Z\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":1550585160,\"status\":\"Running\",\"kwx\":\"\\\"datazdqiqdlrat\\\"\",\"lhpryjfzihuio\":\"\\\"dataauwxsuykznhrfgsl\\\"\",\"pajtfeyvkbd\":\"\\\"dataeo\\\"\",\"rhd\":\"\\\"datadd\\\"\"}")
+            "{\"serviceType\":\"SqlDedicatedGateway\",\"sqlDedicatedGatewayEndpoint\":\"pngvyvuoikdlpsx\",\"dedicatedGatewayType\":\"IntegratedCache\",\"locations\":[{\"sqlDedicatedGatewayEndpoint\":\"imq\",\"name\":\"yclocfmvswxvjel\",\"location\":\"fqhdxt\",\"status\":\"Creating\"},{\"sqlDedicatedGatewayEndpoint\":\"krybpaevykby\",\"name\":\"crqkwakkc\",\"location\":\"foulborcxuibsdq\",\"status\":\"Running\"},{\"sqlDedicatedGatewayEndpoint\":\"lp\",\"name\":\"t\",\"location\":\"wpgweoqhbj\",\"status\":\"Deleting\"},{\"sqlDedicatedGatewayEndpoint\":\"bleru\",\"name\":\"llcshjuci\",\"location\":\"y\",\"status\":\"Deleting\"}],\"creationTime\":\"2021-08-16T21:39:41Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1562445388,\"status\":\"Running\",\"elhbimyiie\":\"\\\"dataazra\\\"\"}")
             .toObject(SqlDedicatedGatewayServiceResourceProperties.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(1550585160, model.instanceCount());
-        Assertions.assertEquals("kkreh", model.sqlDedicatedGatewayEndpoint());
-        Assertions.assertEquals(DedicatedGatewayType.DISTRIBUTED_QUERY, model.dedicatedGatewayType());
+        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
+        Assertions.assertEquals(1562445388, model.instanceCount());
+        Assertions.assertEquals("pngvyvuoikdlpsx", model.sqlDedicatedGatewayEndpoint());
+        Assertions.assertEquals(DedicatedGatewayType.INTEGRATED_CACHE, model.dedicatedGatewayType());
     }
 }

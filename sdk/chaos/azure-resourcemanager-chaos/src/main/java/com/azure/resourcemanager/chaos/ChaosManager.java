@@ -35,12 +35,15 @@ import com.azure.resourcemanager.chaos.implementation.DiscoveredResourcesImpl;
 import com.azure.resourcemanager.chaos.implementation.ExperimentsImpl;
 import com.azure.resourcemanager.chaos.implementation.OperationStatusesImpl;
 import com.azure.resourcemanager.chaos.implementation.OperationsImpl;
-import com.azure.resourcemanager.chaos.implementation.PrivateAccessesImpl;
 import com.azure.resourcemanager.chaos.implementation.ScenarioConfigurationsImpl;
 import com.azure.resourcemanager.chaos.implementation.ScenarioRunsImpl;
+import com.azure.resourcemanager.chaos.implementation.ScenarioTemplateVersionsImpl;
+import com.azure.resourcemanager.chaos.implementation.ScenarioTemplatesImpl;
 import com.azure.resourcemanager.chaos.implementation.ScenariosImpl;
 import com.azure.resourcemanager.chaos.implementation.TargetTypesImpl;
 import com.azure.resourcemanager.chaos.implementation.TargetsImpl;
+import com.azure.resourcemanager.chaos.implementation.WorkspaceDiscoveriesImpl;
+import com.azure.resourcemanager.chaos.implementation.WorkspaceEvaluationsImpl;
 import com.azure.resourcemanager.chaos.implementation.WorkspacesImpl;
 import com.azure.resourcemanager.chaos.models.ActionVersions;
 import com.azure.resourcemanager.chaos.models.Actions;
@@ -51,12 +54,15 @@ import com.azure.resourcemanager.chaos.models.DiscoveredResources;
 import com.azure.resourcemanager.chaos.models.Experiments;
 import com.azure.resourcemanager.chaos.models.OperationStatuses;
 import com.azure.resourcemanager.chaos.models.Operations;
-import com.azure.resourcemanager.chaos.models.PrivateAccesses;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurations;
 import com.azure.resourcemanager.chaos.models.ScenarioRuns;
+import com.azure.resourcemanager.chaos.models.ScenarioTemplateVersions;
+import com.azure.resourcemanager.chaos.models.ScenarioTemplates;
 import com.azure.resourcemanager.chaos.models.Scenarios;
 import com.azure.resourcemanager.chaos.models.TargetTypes;
 import com.azure.resourcemanager.chaos.models.Targets;
+import com.azure.resourcemanager.chaos.models.WorkspaceDiscoveries;
+import com.azure.resourcemanager.chaos.models.WorkspaceEvaluations;
 import com.azure.resourcemanager.chaos.models.Workspaces;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -81,8 +87,6 @@ public final class ChaosManager {
 
     private Experiments experiments;
 
-    private PrivateAccesses privateAccesses;
-
     private Actions actions;
 
     private ActionVersions actionVersions;
@@ -93,9 +97,17 @@ public final class ChaosManager {
 
     private Workspaces workspaces;
 
+    private WorkspaceDiscoveries workspaceDiscoveries;
+
+    private WorkspaceEvaluations workspaceEvaluations;
+
     private DiscoveredResources discoveredResources;
 
     private Scenarios scenarios;
+
+    private ScenarioTemplates scenarioTemplates;
+
+    private ScenarioTemplateVersions scenarioTemplateVersions;
 
     private ScenarioConfigurations scenarioConfigurations;
 
@@ -379,18 +391,6 @@ public final class ChaosManager {
     }
 
     /**
-     * Gets the resource collection API of PrivateAccesses. It manages PrivateAccess.
-     * 
-     * @return Resource collection API of PrivateAccesses.
-     */
-    public PrivateAccesses privateAccesses() {
-        if (this.privateAccesses == null) {
-            this.privateAccesses = new PrivateAccessesImpl(clientObject.getPrivateAccesses(), this);
-        }
-        return privateAccesses;
-    }
-
-    /**
      * Gets the resource collection API of Actions.
      * 
      * @return Resource collection API of Actions.
@@ -451,6 +451,30 @@ public final class ChaosManager {
     }
 
     /**
+     * Gets the resource collection API of WorkspaceDiscoveries.
+     * 
+     * @return Resource collection API of WorkspaceDiscoveries.
+     */
+    public WorkspaceDiscoveries workspaceDiscoveries() {
+        if (this.workspaceDiscoveries == null) {
+            this.workspaceDiscoveries = new WorkspaceDiscoveriesImpl(clientObject.getWorkspaceDiscoveries(), this);
+        }
+        return workspaceDiscoveries;
+    }
+
+    /**
+     * Gets the resource collection API of WorkspaceEvaluations.
+     * 
+     * @return Resource collection API of WorkspaceEvaluations.
+     */
+    public WorkspaceEvaluations workspaceEvaluations() {
+        if (this.workspaceEvaluations == null) {
+            this.workspaceEvaluations = new WorkspaceEvaluationsImpl(clientObject.getWorkspaceEvaluations(), this);
+        }
+        return workspaceEvaluations;
+    }
+
+    /**
      * Gets the resource collection API of DiscoveredResources.
      * 
      * @return Resource collection API of DiscoveredResources.
@@ -472,6 +496,31 @@ public final class ChaosManager {
             this.scenarios = new ScenariosImpl(clientObject.getScenarios(), this);
         }
         return scenarios;
+    }
+
+    /**
+     * Gets the resource collection API of ScenarioTemplates.
+     * 
+     * @return Resource collection API of ScenarioTemplates.
+     */
+    public ScenarioTemplates scenarioTemplates() {
+        if (this.scenarioTemplates == null) {
+            this.scenarioTemplates = new ScenarioTemplatesImpl(clientObject.getScenarioTemplates(), this);
+        }
+        return scenarioTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of ScenarioTemplateVersions.
+     * 
+     * @return Resource collection API of ScenarioTemplateVersions.
+     */
+    public ScenarioTemplateVersions scenarioTemplateVersions() {
+        if (this.scenarioTemplateVersions == null) {
+            this.scenarioTemplateVersions
+                = new ScenarioTemplateVersionsImpl(clientObject.getScenarioTemplateVersions(), this);
+        }
+        return scenarioTemplateVersions;
     }
 
     /**

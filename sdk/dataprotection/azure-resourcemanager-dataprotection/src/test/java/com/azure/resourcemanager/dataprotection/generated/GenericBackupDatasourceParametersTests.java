@@ -12,17 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GenericBackupDatasourceParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenericBackupDatasourceParameters model = BinaryData.fromString(
-            "{\"objectType\":\"GenericBackupDatasourceParameters\",\"resourceSelectors\":[\"wzjeiach\",\"oosflnr\",\"sfqpteehz\"]}")
+        GenericBackupDatasourceParameters model = BinaryData
+            .fromString(
+                "{\"objectType\":\"GenericBackupDatasourceParameters\",\"resourceSelectors\":[\"jeiachboosfl\"]}")
             .toObject(GenericBackupDatasourceParameters.class);
-        Assertions.assertEquals("wzjeiach", model.resourceSelectors().get(0));
+        Assertions.assertEquals("jeiachboosfl", model.resourceSelectors().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericBackupDatasourceParameters model = new GenericBackupDatasourceParameters()
-            .withResourceSelectors(Arrays.asList("wzjeiach", "oosflnr", "sfqpteehz"));
+        GenericBackupDatasourceParameters model
+            = new GenericBackupDatasourceParameters().withResourceSelectors(Arrays.asList("jeiachboosfl"));
         model = BinaryData.fromObject(model).toObject(GenericBackupDatasourceParameters.class);
-        Assertions.assertEquals("wzjeiach", model.resourceSelectors().get(0));
+        Assertions.assertEquals("jeiachboosfl", model.resourceSelectors().get(0));
     }
 }

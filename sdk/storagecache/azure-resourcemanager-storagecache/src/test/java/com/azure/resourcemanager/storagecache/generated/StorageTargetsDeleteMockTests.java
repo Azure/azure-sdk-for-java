@@ -27,8 +27,7 @@ public final class StorageTargetsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.storageTargets()
-            .delete("x", "lucvpam", "sreuzvxurisjnh", "ytxifqjzgxmrh", com.azure.core.util.Context.NONE);
+        manager.storageTargets().delete("fgcviz", "zdwlvwlyoupfgfb", "jub", "yhgk", com.azure.core.util.Context.NONE);
 
     }
 }

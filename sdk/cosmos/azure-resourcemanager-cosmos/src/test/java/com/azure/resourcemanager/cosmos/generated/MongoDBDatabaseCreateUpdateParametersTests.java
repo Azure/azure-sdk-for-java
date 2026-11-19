@@ -23,48 +23,48 @@ public final class MongoDBDatabaseCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBDatabaseCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"jzoywjxhp\",\"restoreParameters\":{\"restoreSource\":\"ontacnpq\",\"restoreTimestampInUtc\":\"2020-12-27T20:17:23Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":1093452654,\"autoscaleSettings\":{\"maxThroughput\":2123752302}}},\"id\":\"oogwxhnsduugwb\",\"name\":\"e\",\"type\":\"fqkfuarenl\",\"location\":\"htkln\",\"tags\":{\"yfedevjbo\":\"fvv\",\"minqcym\":\"lcqxypokk\"},\"identity\":{\"principalId\":\"gn\",\"tenantId\":\"xxewu\",\"type\":\"None\",\"userAssignedIdentities\":{\"tddmf\":{\"principalId\":\"bchaqd\",\"clientId\":\"qecrqctmxx\"},\"roevyt\":{\"principalId\":\"uytxzvtznapxban\",\"clientId\":\"vvoxczytprwnw\"},\"lobdxna\":{\"principalId\":\"okrrrouuxv\",\"clientId\":\"asbcrymodizrx\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"jhzn\",\"restoreParameters\":{\"restoreSource\":\"uatmzwcjjncqtj\",\"restoreTimestampInUtc\":\"2021-03-13T06:57:20Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"},\"options\":{\"throughput\":1580680245,\"autoscaleSettings\":{\"maxThroughput\":1718175668}}},\"id\":\"bxn\",\"name\":\"ebwgga\",\"type\":\"tzlswvaj\",\"location\":\"utlxjoqzasunwqrj\",\"tags\":{\"r\":\"gqhaohcmbuocn\"},\"identity\":{\"principalId\":\"bpyr\",\"tenantId\":\"ameb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"v\":{\"principalId\":\"fkmroc\",\"clientId\":\"e\"},\"unssxlghieegjl\":{\"principalId\":\"tod\",\"clientId\":\"pyapucygvoav\"}}}}")
             .toObject(MongoDBDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("htkln", model.location());
-        Assertions.assertEquals("fvv", model.tags().get("yfedevjbo"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("jzoywjxhp", model.resource().id());
-        Assertions.assertEquals("ontacnpq", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T20:17:23Z"),
+        Assertions.assertEquals("utlxjoqzasunwqrj", model.location());
+        Assertions.assertEquals("gqhaohcmbuocn", model.tags().get("r"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("jhzn", model.resource().id());
+        Assertions.assertEquals("uatmzwcjjncqtj", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T06:57:20Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(1093452654, model.options().throughput());
-        Assertions.assertEquals(2123752302, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1580680245, model.options().throughput());
+        Assertions.assertEquals(1718175668, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDBDatabaseCreateUpdateParameters model = new MongoDBDatabaseCreateUpdateParameters().withLocation("htkln")
-            .withTags(mapOf("yfedevjbo", "fvv", "minqcym", "lcqxypokk"))
-            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("tddmf", new ManagedServiceIdentityUserAssignedIdentities(), "roevyt",
-                    new ManagedServiceIdentityUserAssignedIdentities(), "lobdxna",
-                    new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new MongoDBDatabaseResource().withId("jzoywjxhp")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("ontacnpq")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2020-12-27T20:17:23Z"))
-                    .withRestoreWithTtlDisabled(false))
-                .withCreateMode(CreateMode.DEFAULT))
-            .withOptions(new CreateUpdateOptions().withThroughput(1093452654)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(2123752302)));
+        MongoDBDatabaseCreateUpdateParameters model
+            = new MongoDBDatabaseCreateUpdateParameters().withLocation("utlxjoqzasunwqrj")
+                .withTags(mapOf("r", "gqhaohcmbuocn"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("v", new ManagedServiceIdentityUserAssignedIdentities(),
+                        "unssxlghieegjl", new ManagedServiceIdentityUserAssignedIdentities())))
+                .withResource(new MongoDBDatabaseResource().withId("jhzn")
+                    .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("uatmzwcjjncqtj")
+                        .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-13T06:57:20Z"))
+                        .withRestoreWithTtlDisabled(true))
+                    .withCreateMode(CreateMode.DEFAULT))
+                .withOptions(new CreateUpdateOptions().withThroughput(1580680245)
+                    .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1718175668)));
         model = BinaryData.fromObject(model).toObject(MongoDBDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("htkln", model.location());
-        Assertions.assertEquals("fvv", model.tags().get("yfedevjbo"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("jzoywjxhp", model.resource().id());
-        Assertions.assertEquals("ontacnpq", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T20:17:23Z"),
+        Assertions.assertEquals("utlxjoqzasunwqrj", model.location());
+        Assertions.assertEquals("gqhaohcmbuocn", model.tags().get("r"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("jhzn", model.resource().id());
+        Assertions.assertEquals("uatmzwcjjncqtj", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T06:57:20Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(1093452654, model.options().throughput());
-        Assertions.assertEquals(2123752302, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1580680245, model.options().throughput());
+        Assertions.assertEquals(1718175668, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

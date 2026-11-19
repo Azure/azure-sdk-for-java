@@ -12,6 +12,7 @@ import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentityType;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryption;
+import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public final class ContextCachesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Update_CustomerManagedKey.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Update_CustomerManagedKey.json
      */
     /**
      * Sample code: Update a Azure Context Cache Account's Customer Managed Key Encryption Settings.
@@ -45,7 +46,7 @@ public final class ContextCachesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Update.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Update.json
      */
     /**
      * Sample code: Update a Context Cache tags.
@@ -55,11 +56,18 @@ public final class ContextCachesUpdateSamples {
     public static void updateAContextCacheTags(com.azure.resourcemanager.storage.StorageManager manager) {
         manager.serviceClient()
             .getContextCaches()
-            .update("testrg", "testaccount",
-                new ContextCacheUpdate().withTags(mapOf("environment", "production", "team", "context-cache"))
-                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED))
-                    .withProperties(new ContextCachePropertiesUpdate()
-                        .withDescription("Updated Prompt Service account description")),
+            .update("testrg", "testcontextcache", new ContextCacheUpdate()
+                .withTags(mapOf("environment", "production", "team", "promptservice"))
+                .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami",
+                        new UserAssignedIdentity())))
+                .withProperties(new ContextCachePropertiesUpdate().withDescription("Updated context cache")
+                    .withEncryption(new StorageAccountEncryption()
+                        .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                            .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                                .withIdentityType(KeyEncryptionKeyIdentityType.SYSTEM_ASSIGNED_IDENTITY))
+                            .withKeyEncryptionKeyUrl("fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 

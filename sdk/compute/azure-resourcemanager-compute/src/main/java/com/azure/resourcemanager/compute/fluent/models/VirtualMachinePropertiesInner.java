@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.FlexProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
@@ -39,6 +40,18 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
      * Specifies the hardware settings for the virtual machine.
      */
     private HardwareProfile hardwareProfile;
+
+    /*
+     * [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a compatible alternative VM size based on
+     * capacity and placement considerations, and returns the deployed size in hardwareProfile.vmSize. A request that
+     * adds flexProfile must omit hardwareProfile.vmSize. For a virtual machine that uses FlexProfile, a
+     * hardwareProfile.vmSize equal to the deployed size is ignored, so a GET response can be sent back unchanged. A
+     * PATCH request that omits flexProfile keeps it. A PUT request that omits flexProfile and sets
+     * hardwareProfile.vmSize clears it. This property cannot exist along with a non-null properties.availabilitySet,
+     * properties.capacityReservation, properties.host, properties.hostGroup, properties.proximityPlacementGroup or
+     * properties.virtualMachineScaleSet.
+     */
+    private FlexProfile flexProfile;
 
     /*
      * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
@@ -240,6 +253,40 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
      */
     public VirtualMachinePropertiesInner withHardwareProfile(HardwareProfile hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
+     * Get the flexProfile property: [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a
+     * compatible alternative VM size based on capacity and placement considerations, and returns the deployed size in
+     * hardwareProfile.vmSize. A request that adds flexProfile must omit hardwareProfile.vmSize. For a virtual machine
+     * that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed size is ignored, so a GET response can be
+     * sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request that omits flexProfile and
+     * sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null
+     * properties.availabilitySet, properties.capacityReservation, properties.host, properties.hostGroup,
+     * properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+     * 
+     * @return the flexProfile value.
+     */
+    public FlexProfile flexProfile() {
+        return this.flexProfile;
+    }
+
+    /**
+     * Set the flexProfile property: [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a
+     * compatible alternative VM size based on capacity and placement considerations, and returns the deployed size in
+     * hardwareProfile.vmSize. A request that adds flexProfile must omit hardwareProfile.vmSize. For a virtual machine
+     * that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed size is ignored, so a GET response can be
+     * sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request that omits flexProfile and
+     * sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null
+     * properties.availabilitySet, properties.capacityReservation, properties.host, properties.hostGroup,
+     * properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+     * 
+     * @param flexProfile the flexProfile value to set.
+     * @return the VirtualMachinePropertiesInner object itself.
+     */
+    public VirtualMachinePropertiesInner withFlexProfile(FlexProfile flexProfile) {
+        this.flexProfile = flexProfile;
         return this;
     }
 
@@ -855,6 +902,9 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
         if (hardwareProfile() != null) {
             hardwareProfile().validate();
         }
+        if (flexProfile() != null) {
+            flexProfile().validate();
+        }
         if (scheduledEventsPolicy() != null) {
             scheduledEventsPolicy().validate();
         }
@@ -906,6 +956,7 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("flexProfile", this.flexProfile);
         jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
@@ -952,6 +1003,8 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
 
                 if ("hardwareProfile".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("flexProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.flexProfile = FlexProfile.fromJson(reader);
                 } else if ("scheduledEventsPolicy".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.scheduledEventsPolicy
                         = ScheduledEventsPolicy.fromJson(reader);

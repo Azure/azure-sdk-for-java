@@ -11,7 +11,7 @@ public final class AutoImportJobPropertiesStatusBlobSyncEventsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoImportJobPropertiesStatusBlobSyncEvents model = BinaryData.fromString(
-            "{\"importedFiles\":7729076180734759194,\"importedDirectories\":6240929679987561692,\"importedSymlinks\":1198847986383751038,\"preexistingFiles\":2564546549976864523,\"preexistingDirectories\":3175851773458085291,\"preexistingSymlinks\":7006051412962010375,\"totalBlobsImported\":2787297702458911120,\"rateOfBlobImport\":8730500535564914627,\"totalErrors\":840452358512329690,\"totalConflicts\":2977949110627506617,\"deletions\":9051460600298746000,\"lastChangeFeedEventConsumedTime\":\"2021-07-26T09:04:37Z\",\"lastTimeFullySynchronized\":\"2021-09-24T16:40:45Z\"}")
+            "{\"importedFiles\":7437240091195438123,\"importedDirectories\":4122808446567257102,\"importedSymlinks\":8683067691856036748,\"preexistingFiles\":2193229469155152172,\"preexistingDirectories\":2330390624121963294,\"preexistingSymlinks\":4989783820906018065,\"totalBlobsImported\":3111999108543895279,\"rateOfBlobImport\":8684744606268928331,\"totalErrors\":9021745847558937122,\"totalConflicts\":5521111989104394475,\"deletions\":4981925315017214440,\"lastChangeFeedEventConsumedTime\":\"2021-10-01T10:28:10Z\",\"lastTimeFullySynchronized\":\"2021-06-22T02:09:03Z\"}")
             .toObject(AutoImportJobPropertiesStatusBlobSyncEvents.class);
     }
 }

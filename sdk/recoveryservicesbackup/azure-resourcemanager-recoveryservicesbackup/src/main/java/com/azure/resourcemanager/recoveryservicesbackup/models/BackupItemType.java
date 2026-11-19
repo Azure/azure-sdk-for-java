@@ -92,6 +92,11 @@ public final class BackupItemType extends ExpandableStringEnum<BackupItemType> {
     public static final BackupItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
+     * A SQL Server instance.
+     */
+    public static final BackupItemType SQLINSTANCE = fromString("SQLInstance");
+
+    /**
      * Creates a new instance of BackupItemType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

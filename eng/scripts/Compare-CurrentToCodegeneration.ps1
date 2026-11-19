@@ -64,11 +64,6 @@ function Find-GenerationInformation {
     Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
     return
   }
-  if ($LibraryFolder.Contains("azure-ai-anomalydetector")) {
-    # Skip azure-ai-anomalydetector for TypeSpec regeneration as it is has errors that need to be fixed.
-    Write-Host "Skipping TypeSpec regeneration for azure-ai-anomalydetector: $LibraryFolder"
-    return
-  }
   if ($LibraryFolder.Contains("azure-ai-vision-face")) {
     # Skip azure-ai-vision-face for TypeSpec regeneration as it is has errors that need to be fixed.
     Write-Host "Skipping TypeSpec regeneration for azure-ai-vision-face: $LibraryFolder"
@@ -181,7 +176,7 @@ $generateScript = {
     }
 
     # prevent warning related to EOL differences which triggers an exception for some reason
-    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

@@ -12,10 +12,10 @@ public final class BulkCreateCustomVirtualMachineInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomVirtualMachineInfo model
-            = BinaryData.fromString("{\"name\":\"kx\",\"vmSize\":\"skpbhenbtkcxywn\",\"zone\":\"nrs\"}")
+            = BinaryData.fromString("{\"name\":\"dhibnuq\",\"vmSize\":\"pikad\",\"zone\":\"vtq\"}")
                 .toObject(BulkCreateCustomVirtualMachineInfo.class);
-        Assertions.assertEquals("kx", model.name());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.vmSize());
-        Assertions.assertEquals("nrs", model.zone());
+        Assertions.assertEquals("dhibnuq", model.name());
+        Assertions.assertEquals("pikad", model.vmSize());
+        Assertions.assertEquals("vtq", model.zone());
     }
 }

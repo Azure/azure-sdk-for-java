@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ArcDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetArcDeployment.json
+     * x-ms-original-file: 2026-11-15-preview/GetArcDeployment.json
      */
     /**
      * Sample code: GetArcDeployment.
@@ -18,6 +18,6 @@ public final class ArcDeploymentsGetSamples {
      */
     public static void getArcDeployment(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.arcDeployments()
-            .getWithResponse("resourceGroupName", "accountName", "qwen-template-arc", com.azure.core.util.Context.NONE);
+            .getWithResponse("resourceGroupName", "accountName", "phi-3-gpu-arc", com.azure.core.util.Context.NONE);
     }
 }

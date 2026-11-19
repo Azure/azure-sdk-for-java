@@ -62,11 +62,6 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
     public static final DeliveryRuleActionValue EDGE_ACTION = fromString("EdgeAction");
 
     /**
-     * Static value AfdUrlSigning for DeliveryRuleActionValue.
-     */
-    public static final DeliveryRuleActionValue AFD_URL_SIGNING = fromString("AfdUrlSigning");
-
-    /**
      * Creates a new instance of DeliveryRuleActionValue value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

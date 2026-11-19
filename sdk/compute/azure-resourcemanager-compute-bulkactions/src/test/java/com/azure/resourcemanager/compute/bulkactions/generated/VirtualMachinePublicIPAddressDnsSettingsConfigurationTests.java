@@ -13,19 +13,19 @@ public final class VirtualMachinePublicIPAddressDnsSettingsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = BinaryData.fromString("{\"domainNameLabel\":\"paztzpofncck\",\"domainNameLabelScope\":\"TenantReuse\"}")
+            = BinaryData.fromString("{\"domainNameLabel\":\"zpof\",\"domainNameLabelScope\":\"TenantReuse\"}")
                 .toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("paztzpofncck", model.domainNameLabel());
+        Assertions.assertEquals("zpof", model.domainNameLabel());
         Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.domainNameLabelScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("paztzpofncck")
+            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("zpof")
                 .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("paztzpofncck", model.domainNameLabel());
+        Assertions.assertEquals("zpof", model.domainNameLabel());
         Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.domainNameLabelScope());
     }
 }

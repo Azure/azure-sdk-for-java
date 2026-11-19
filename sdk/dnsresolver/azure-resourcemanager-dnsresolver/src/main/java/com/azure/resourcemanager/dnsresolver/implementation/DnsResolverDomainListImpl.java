@@ -161,9 +161,12 @@ public final class DnsResolverDomainListImpl
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverDomainListName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolverDomainLists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "resourceGroupName");
+        this.dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "dnsResolverDomainListName");
     }
 
     public DnsResolverDomainList refresh() {

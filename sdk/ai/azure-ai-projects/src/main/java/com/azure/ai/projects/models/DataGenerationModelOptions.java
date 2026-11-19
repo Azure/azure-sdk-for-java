@@ -18,7 +18,10 @@ import java.io.IOException;
 public final class DataGenerationModelOptions implements JsonSerializable<DataGenerationModelOptions> {
 
     /*
-     * Base model name used to generate data.
+     * Base model name used to generate data. For trace and conversation jobs, a nonempty value is required when
+     * `generate_test_case_rubric` is true. Conversation jobs also require a nonempty value when
+     * `generate_test_case_description` is true. Model options must be omitted for conversation reconstruction when
+     * neither description nor rubric generation is enabled.
      */
     @Generated
     private final String model;
@@ -34,7 +37,10 @@ public final class DataGenerationModelOptions implements JsonSerializable<DataGe
     }
 
     /**
-     * Get the model property: Base model name used to generate data.
+     * Get the model property: Base model name used to generate data. For trace and conversation jobs, a nonempty value
+     * is required when `generate_test_case_rubric` is true. Conversation jobs also require a nonempty value when
+     * `generate_test_case_description` is true. Model options must be omitted for conversation reconstruction when
+     * neither description nor rubric generation is enabled.
      *
      * @return the model value.
      */

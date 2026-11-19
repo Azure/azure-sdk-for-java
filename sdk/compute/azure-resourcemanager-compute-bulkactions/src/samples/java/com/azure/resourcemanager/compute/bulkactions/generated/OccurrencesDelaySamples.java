@@ -16,13 +16,13 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
      */
     /**
-     * Sample code: 03 - Response with partial success results when delaying operations in a recurring scheduled action
+     * Sample code: 03 - Response with partial success results when delaying operations in a recurring bulk action
      * occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
@@ -37,12 +37,12 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Delay operations in a recurring scheduled action occurrence.
+     * Sample code: 01 - Delay operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
@@ -57,12 +57,12 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
      */
     /**
-     * Sample code: 02 - Delay all operations in a recurring scheduled action occurrence.
+     * Sample code: 02 - Delay all operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",

@@ -3,30 +3,44 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import reactor.core.Disposable;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.util.concurrent.ExecutionException;
+import java.nio.channels.CompletionHandler;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link AsynchronousByteChannel}.
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
-public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<ByteBuffer> {
+public final class AsynchronousByteChannelWriteSubscriber
+    implements Subscriber<ByteBuffer>, CompletionHandler<Integer, ByteBuffer>, Disposable {
     private static final ClientLogger LOGGER = new ClientLogger(AsynchronousByteChannelWriteSubscriber.class);
 
     private final AsynchronousByteChannel channel;
     private final MonoSink<Void> emitter;
 
-    // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
-    private Subscription subscription;
-    private boolean done = false;
+    private static final AtomicReferenceFieldUpdater<AsynchronousByteChannelWriteSubscriber, Subscription> SUBSCRIPTION
+        = AtomicReferenceFieldUpdater.newUpdater(AsynchronousByteChannelWriteSubscriber.class, Subscription.class,
+            "subscription");
+    private final AtomicInteger wip = new AtomicInteger();
+    private volatile Subscription subscription;
+    private volatile ByteBuffer buffer;
+    private volatile boolean requested;
+    private volatile boolean writePending;
+    private volatile boolean sourceDone;
+    private volatile boolean cancelled;
+    private volatile boolean terminated;
+    private volatile Throwable error;
 
     /**
      * Creates a subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a
@@ -38,75 +52,117 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
     public AsynchronousByteChannelWriteSubscriber(AsynchronousByteChannel channel, MonoSink<Void> emitter) {
         this.channel = channel;
         this.emitter = emitter;
+        emitter.onCancel(this);
     }
 
     @Override
     public void onSubscribe(Subscription s) {
-        // Only set the Subscription if one has not been previously set.
-        // Any additional Subscriptions will be cancelled.
-        if (Operators.validate(this.subscription, s)) {
-            subscription = s;
-
-            s.request(1);
+        if (Operators.setOnce(SUBSCRIPTION, this, s)) {
+            drain();
         }
     }
 
     @Override
     public void onNext(ByteBuffer bytes) {
-        if (done) {
-            // The subscription has indicated completion, don't allow erroneous onNext emissions to be processed.
+        if (sourceDone || cancelled || terminated) {
             Operators.onNextDropped(bytes, Context.of(emitter.contextView()));
             return;
         }
 
-        if (!bytes.hasRemaining()) {
-            // Nothing to process, request the next emission.
-            subscription.request(1);
-            return;
-        }
-
-        write(bytes);
-
-        // Request the next ByteBuffer.
-        if (!done) {
-            subscription.request(1);
-        }
+        // The producer may reclaim its storage as soon as onNext returns.
+        buffer = ByteBuffer.wrap(FluxUtil.byteBufferToArray(bytes));
+        requested = false;
+        drain();
     }
 
-    private void write(ByteBuffer bytes) {
-        try {
-            while (bytes.hasRemaining()) {
-                channel.write(bytes).get();
-            }
-        } catch (Exception ex) {
-            if (ex instanceof ExecutionException) {
-                onError(ex.getCause());
-            } else {
-                onError(ex);
-            }
+    @Override
+    public void completed(Integer result, ByteBuffer attachment) {
+        writePending = false;
+        drain();
+    }
+
+    @Override
+    public void failed(Throwable throwable, ByteBuffer attachment) {
+        if (cancelled || terminated) {
+            Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
+        } else {
+            error = throwable;
+            sourceDone = true;
+            Operators.terminate(SUBSCRIPTION, this);
         }
+        buffer = null;
+        writePending = false;
+        drain();
     }
 
     @Override
     public void onError(Throwable throwable) {
-        if (done) {
+        if (sourceDone || cancelled || terminated) {
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
             return;
         }
 
-        done = true;
-        subscription.cancel();
-        emitter.error(LOGGER.logThrowableAsError(throwable));
+        error = throwable;
+        sourceDone = true;
+        Operators.terminate(SUBSCRIPTION, this);
+        drain();
     }
 
     @Override
     public void onComplete() {
-        if (done) {
-            // Already completed, just return as there is no cleanup processing to do.
+        sourceDone = true;
+        drain();
+    }
+
+    @Override
+    public void dispose() {
+        cancelled = true;
+        Operators.terminate(SUBSCRIPTION, this);
+        drain();
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return cancelled || terminated;
+    }
+
+    private void drain() {
+        // Completion handlers may run inline. Serialize writes and requests without recursive callback chains.
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        done = true;
-        emitter.success();
+        int missed = 1;
+        do {
+            if (cancelled) {
+                if (!writePending) {
+                    buffer = null;
+                }
+            } else if (!terminated && !writePending) {
+                ByteBuffer current = buffer;
+                if (current != null && current.hasRemaining()) {
+                    writePending = true;
+                    try {
+                        channel.write(current, current, this);
+                    } catch (RuntimeException ex) {
+                        failed(ex, current);
+                    }
+                } else {
+                    buffer = null;
+                    if (sourceDone) {
+                        terminated = true;
+                        if (error == null) {
+                            emitter.success();
+                        } else {
+                            emitter.error(LOGGER.logThrowableAsError(error));
+                        }
+                    } else if (!requested && subscription != null) {
+                        requested = true;
+                        subscription.request(1);
+                    }
+                }
+            }
+            missed = wip.addAndGet(-missed);
+        } while (missed != 0);
     }
 }

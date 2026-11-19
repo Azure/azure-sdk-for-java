@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-# Parsed YAML contracts for the template-only release-completion correlation pilot.
+# Parsed YAML contracts for manual release IDs and the existing automatic SDK PR handoff.
 # Requires Pester 5 and powershell-yaml. Run Invoke-Pester -Path this file.
 # These are local contracts, not Azure Pipelines expansion or live publication validation.
 
@@ -19,9 +19,7 @@ BeforeAll {
         ConvertFrom-Yaml (Get-Content (Join-Path $root $_) -Raw)
     })
     $entry, $client, $manual, $auto = $documents
-    $idExpression = '${{ parameters.ReleasePlanId }}'
-    $templateGuard = '${{ if eq(parameters.ServiceDirectory, ''template'') }}'
-    $autoGuard = '${{ if and(eq(parameters.ServiceDirectory, ''template''), eq(variables[''Build.Reason''], ''IndividualCI''), eq(variables[''Build.SourceBranch''], ''refs/heads/main'')) }}'
+    $script:idExpression = '${{ parameters.ReleasePlanId }}'
 
     function Find-YamlMap {
         param([object]$Node, [string]$Key, [string]$Value)
@@ -39,15 +37,15 @@ BeforeAll {
         }
     }
 
-    $manualRelay = @(Find-YamlMap $client template 'archetype-java-release-batch.yml')[0]
-    $autoRelay = @(Find-YamlMap $client template 'archetype-java-auto-release-batch.yml')[0]
-    $manualCompletion = @(Find-YamlMap $manual template '/eng/common/pipelines/templates/steps/mark-release-completion.yml')[0]
+    $script:manualRelay = @(Find-YamlMap $client template 'archetype-java-release-batch.yml')[0]
+    $script:autoRelay = @(Find-YamlMap $client template 'archetype-java-auto-release-batch.yml')[0]
+    $script:manualCompletion = @(Find-YamlMap $manual template '/eng/common/pipelines/templates/steps/mark-release-completion.yml')[0]
     $autoStage = $auto.stages[0]
     $autoPublish = @(Find-YamlMap $autoStage job PublishDevFeedPackage)[0]
-    $autoCompletion = @($autoPublish.steps | Where-Object { $_['displayName'] -eq 'Mark auto-release packages as released' })[0]
+    $script:autoCompletion = @($autoPublish.steps | Where-Object { $_['displayName'] -eq 'Mark auto-release packages as released' })[0]
 }
 
-Describe 'Java template release-completion correlation' {
+Describe 'Java manual release-plan ID forwarding' {
     It 'declares an optional raw string ID with zero default at all four boundaries' {
         foreach ($document in $documents) {
             $parameter = @($document.parameters | Where-Object { $_.name -eq 'ReleasePlanId' })
@@ -65,14 +63,17 @@ Describe 'Java template release-completion correlation' {
         $autoRelay.parameters.ReleasePlanId | Should -BeExactly $idExpression
     }
 
-    It 'passes only the manual ID to common completion and only for template' {
+    It 'forwards the optional manual ID without changing common completion inputs' {
         $parameters = $manualCompletion.parameters
-        $parameters.Contains('ReleasePlanId') | Should -BeFalse
+        $parameters.ReleasePlanId | Should -BeExactly $idExpression
         $parameters.Contains('SdkPullRequest') | Should -BeFalse
-        $parameters[$templateGuard].ReleasePlanId | Should -BeExactly $idExpression
-        @($parameters[$templateGuard].Keys) | Should -Be @('ReleasePlanId')
+        @($parameters.Keys | Sort-Object) | Should -Be @('ConfigFileDir', 'PackageArtifactName', 'ReleasePlanId', 'SourceRootPath')
         $parameters.PackageArtifactName | Should -BeExactly '${{artifact.name}}'
         $parameters.ConfigFileDir | Should -BeExactly '$(Pipeline.Workspace)/packages-signed/PackageInfo'
+        $parameters.SourceRootPath | Should -BeExactly '$(Pipeline.Workspace)/azure-sdk-for-java'
+        $common = ConvertFrom-Yaml (Get-Content (Join-Path $root 'eng/common/pipelines/templates/steps/mark-release-completion.yml') -Raw)
+        $common.parameters.Contains('ReleasePlanId') | Should -BeTrue
+        $common.parameters.Contains('SdkPullRequest') | Should -BeTrue
     }
 
     It 'keeps auto expansion restricted to internal IndividualCI main and preserves the prepare dependency' {
@@ -89,34 +90,30 @@ Describe 'Java template release-completion correlation' {
         @($auto.parameters | Where-Object { $_.name -eq 'DependsOn' })[0].default | Should -Be @('AutoReleasePrepare')
     }
 
-    It 'binds the triggering PR output at release-stage scope only for template IndividualCI main' {
-        $binding = @($autoStage.variables | Where-Object { $_.Contains($autoGuard) })
+    It 'preserves the existing automatic SDK PR binding for all services' {
+        $binding = @($autoStage.variables | Where-Object { $_.Contains('name') -and $_.name -eq 'AutoReleaseSdkPullRequestUrl' })
         $binding.Count | Should -Be 1
-        $binding[0][$autoGuard][0].name | Should -BeExactly 'AutoReleaseSdkPullRequestUrl'
-        $binding[0][$autoGuard][0].value | Should -BeExactly '$[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs[''resolve.AutoReleaseSdkPullRequestUrl''] ]'
+        $binding[0].value | Should -BeExactly '$[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs[''resolve.AutoReleaseSdkPullRequestUrl''] ]'
         @(Find-YamlMap $autoStage.jobs name AutoReleaseSdkPullRequestUrl).Count | Should -Be 0
     }
 
-    It 'uses a file-based template auto consumer over only the filtered PackageInfo directory' {
-        $inputs = $autoCompletion.inputs[$templateGuard]
-        $inputs.scriptLocation | Should -BeExactly 'scriptPath'
-        $inputs.scriptPath | Should -BeExactly '$(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1'
-        $inputs.Contains('inlineScript') | Should -BeFalse
-        $expected = '-PackageInfoFilePath ''$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo'' -AzsdkExePath ''$(AZSDK)'' -ReleasePlanId ''${{ parameters.ReleasePlanId }}'' -SdkPullRequest ''$(AutoReleaseSdkPullRequestUrl)'''
-        $inputs.arguments.Trim() | Should -BeExactly $expected
-        $autoCompletion.inputs.Contains('arguments') | Should -BeFalse
+    It 'adds the optional ID to the existing filtered automatic completion loop' {
+        $inputs = $autoCompletion.inputs
+        $inputs.scriptLocation | Should -BeExactly 'inlineScript'
+        $inputs.inlineScript | Should -Match 'foreach \(\$artifact in \$artifacts\)'
+        $inputs.inlineScript | Should -Match 'PackageInfo/\$\(\$artifact.name\).json'
+        $inputs.inlineScript | Should -Match ([regex]::Escape('-ReleasePlanId ''${{ parameters.ReleasePlanId }}'''))
+        $inputs.inlineScript | Should -Match ([regex]::Escape('-SdkPullRequest ''$(AutoReleaseSdkPullRequestUrl)'''))
+        $inputs.Contains('arguments') | Should -BeFalse
         $filter = @(Find-YamlMap $autoStage displayName 'Filter signed packages for auto-release')[0]
         $filter.inputs.arguments | Should -Match '-TargetDirectory "\$\(Pipeline.Workspace\)/packages-signed-auto-release"'
         $filter.inputs.arguments | Should -Match '-ArtifactsJson ''\$\(AutoReleaseArtifactsJson\)'''
     }
 
-    It 'leaves non-template auto completion on the existing uncorrelated per-artifact loop' {
-        $legacy = $autoCompletion.inputs['${{ else }}']
-        $legacy.scriptLocation | Should -BeExactly 'inlineScript'
-        $legacy.inlineScript | Should -Match 'foreach \(\$artifact in \$artifacts\)'
-        $legacy.inlineScript | Should -Match 'PackageInfo/\$\(\$artifact.name\).json'
-        $legacy.inlineScript | Should -Not -Match 'ReleasePlanId|SdkPullRequest'
-        $legacy.Contains('arguments') | Should -BeFalse
+    It 'does not add service-specific branches to automatic completion' {
+        @($autoCompletion.inputs.Keys | Where-Object { $_ -like '${{*' }).Count | Should -Be 0
+        $autoCompletion.inputs.inlineScript | Should -Match 'AutoReleaseArtifactsJson'
+        $autoCompletion.inputs.Contains('scriptPath') | Should -BeFalse
     }
 
     It 'preserves completion publication gating, service connection and error policy' {
@@ -154,8 +151,8 @@ Describe 'Java template release-completion correlation' {
             $value | Should -BeOfType ([string])
             $value | Should -BeExactly $Id
         }
-        $manualCompletion.parameters[$templateGuard].ReleasePlanId | Should -BeExactly $idExpression
-        $argument = $autoCompletion.inputs[$templateGuard].arguments.Replace($idExpression, $value)
+        $manualCompletion.parameters.ReleasePlanId | Should -BeExactly $idExpression
+        $argument = $autoCompletion.inputs.inlineScript.Replace($idExpression, $value)
         $argument | Should -Match ([regex]::Escape("-ReleasePlanId '$Id'"))
     }
 }

@@ -12,24 +12,24 @@ public final class TrafficRoutingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficRoutingRule model = BinaryData.fromString(
-            "{\"ruleId\":\"dqllzsauzpjlxeeh\",\"description\":\"iqhzlr\",\"deploymentId\":\"mezx\",\"trafficPercentage\":1703626456}")
+            "{\"ruleId\":\"izwxvs\",\"description\":\"sgfy\",\"deploymentId\":\"ky\",\"trafficPercentage\":1929213488}")
             .toObject(TrafficRoutingRule.class);
-        Assertions.assertEquals("dqllzsauzpjlxeeh", model.ruleId());
-        Assertions.assertEquals("iqhzlr", model.description());
-        Assertions.assertEquals("mezx", model.deploymentId());
-        Assertions.assertEquals(1703626456, model.trafficPercentage());
+        Assertions.assertEquals("izwxvs", model.ruleId());
+        Assertions.assertEquals("sgfy", model.description());
+        Assertions.assertEquals("ky", model.deploymentId());
+        Assertions.assertEquals(1929213488, model.trafficPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficRoutingRule model = new TrafficRoutingRule().withRuleId("dqllzsauzpjlxeeh")
-            .withDescription("iqhzlr")
-            .withDeploymentId("mezx")
-            .withTrafficPercentage(1703626456);
+        TrafficRoutingRule model = new TrafficRoutingRule().withRuleId("izwxvs")
+            .withDescription("sgfy")
+            .withDeploymentId("ky")
+            .withTrafficPercentage(1929213488);
         model = BinaryData.fromObject(model).toObject(TrafficRoutingRule.class);
-        Assertions.assertEquals("dqllzsauzpjlxeeh", model.ruleId());
-        Assertions.assertEquals("iqhzlr", model.description());
-        Assertions.assertEquals("mezx", model.deploymentId());
-        Assertions.assertEquals(1703626456, model.trafficPercentage());
+        Assertions.assertEquals("izwxvs", model.ruleId());
+        Assertions.assertEquals("sgfy", model.description());
+        Assertions.assertEquals("ky", model.deploymentId());
+        Assertions.assertEquals(1929213488, model.trafficPercentage());
     }
 }

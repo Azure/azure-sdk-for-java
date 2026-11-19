@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelDisplay model = BinaryData.fromString("{\"description\":\"a\"}").toObject(UsageModelDisplay.class);
-        Assertions.assertEquals("a", model.description());
+        UsageModelDisplay model
+            = BinaryData.fromString("{\"description\":\"eokerqwkyhkobopg\"}").toObject(UsageModelDisplay.class);
+        Assertions.assertEquals("eokerqwkyhkobopg", model.description());
     }
 }

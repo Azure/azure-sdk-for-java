@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementProperties model = BinaryData.fromString("{\"supportedResourceTypes\":[\"ybrk\"]}")
+        SkuMixPlacementProperties model = BinaryData
+            .fromString(
+                "{\"supportedResourceTypes\":[\"wckbasyypnd\",\"hsgcbacphejkot\",\"nqgoulzndli\",\"wyqkgfgibm\"]}")
             .toObject(SkuMixPlacementProperties.class);
-        Assertions.assertEquals("ybrk", model.supportedResourceTypes().get(0));
+        Assertions.assertEquals("wckbasyypnd", model.supportedResourceTypes().get(0));
     }
 }

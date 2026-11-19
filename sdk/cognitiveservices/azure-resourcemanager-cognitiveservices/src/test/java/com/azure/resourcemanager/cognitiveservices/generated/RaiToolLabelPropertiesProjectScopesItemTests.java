@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiToolLabelPropertiesProjectScopesItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiToolLabelPropertiesProjectScopesItem model
-            = BinaryData.fromString("{\"project\":\"fdvruz\",\"labelValues\":{\"otngfdgu\":\"zojhpctfnmd\"}}")
-                .toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("fdvruz", model.project());
-        Assertions.assertEquals("zojhpctfnmd", model.labelValues().get("otngfdgu"));
+        RaiToolLabelPropertiesProjectScopesItem model = BinaryData.fromString(
+            "{\"project\":\"n\",\"labelValues\":{\"vym\":\"ywsxvjabjqqaxu\",\"oabhjxwxqweuip\":\"nudn\",\"sqxtltclkrdpq\":\"pvksmit\",\"d\":\"fhyrfrakk\"}}")
+            .toObject(RaiToolLabelPropertiesProjectScopesItem.class);
+        Assertions.assertEquals("n", model.project());
+        Assertions.assertEquals("ywsxvjabjqqaxu", model.labelValues().get("vym"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelPropertiesProjectScopesItem model
-            = new RaiToolLabelPropertiesProjectScopesItem().withProject("fdvruz")
-                .withLabelValues(mapOf("otngfdgu", "zojhpctfnmd"));
+        RaiToolLabelPropertiesProjectScopesItem model = new RaiToolLabelPropertiesProjectScopesItem().withProject("n")
+            .withLabelValues(
+                mapOf("vym", "ywsxvjabjqqaxu", "oabhjxwxqweuip", "nudn", "sqxtltclkrdpq", "pvksmit", "d", "fhyrfrakk"));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("fdvruz", model.project());
-        Assertions.assertEquals("zojhpctfnmd", model.labelValues().get("otngfdgu"));
+        Assertions.assertEquals("n", model.project());
+        Assertions.assertEquals("ywsxvjabjqqaxu", model.labelValues().get("vym"));
     }
 
     // Use "Map.of" if available

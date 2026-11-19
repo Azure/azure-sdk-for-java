@@ -14,22 +14,22 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateParametersTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDedicatedGatewayServiceResourceCreateUpdateParameters model = BinaryData.fromString(
-            "{\"serviceType\":\"SqlDedicatedGateway\",\"dedicatedGatewayType\":\"IntegratedCache\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1247158338}")
+            "{\"serviceType\":\"SqlDedicatedGateway\",\"dedicatedGatewayType\":\"IntegratedCache\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":8510650}")
             .toObject(SqlDedicatedGatewayServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1247158338, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
+        Assertions.assertEquals(8510650, model.instanceCount());
         Assertions.assertEquals(DedicatedGatewayType.INTEGRATED_CACHE, model.dedicatedGatewayType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDedicatedGatewayServiceResourceCreateUpdateParameters model
-            = new SqlDedicatedGatewayServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D16S)
-                .withInstanceCount(1247158338)
+            = new SqlDedicatedGatewayServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
+                .withInstanceCount(8510650)
                 .withDedicatedGatewayType(DedicatedGatewayType.INTEGRATED_CACHE);
         model = BinaryData.fromObject(model).toObject(SqlDedicatedGatewayServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1247158338, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
+        Assertions.assertEquals(8510650, model.instanceCount());
         Assertions.assertEquals(DedicatedGatewayType.INTEGRATED_CACHE, model.dedicatedGatewayType());
     }
 }

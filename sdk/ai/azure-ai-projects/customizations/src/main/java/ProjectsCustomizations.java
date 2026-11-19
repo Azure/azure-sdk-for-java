@@ -1,7 +1,9 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -27,16 +29,75 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        modifyPollingStrategies(libraryCustomization);
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         protectPolymorphicBaseConstructors(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
+    private void modifyPollingStrategies(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.projects.implementation", "OperationLocationPollingStrategy")
+            .customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("OperationLocationPollingStrategy")
+                    .orElseThrow(
+                        () -> new IllegalStateException("OperationLocationPollingStrategy was not generated."));
+                clazz.getMethodsByName("poll").forEach(MethodDeclaration::remove);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("/** {@inheritDoc} */\n"
+                    + "@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, "
+                    + "TypeReference<T> pollResponseType) {\n"
+                    + "    return super.poll(pollingContext, pollResponseType)"
+                    + ".map(ProjectsServicePollUtils::remapStatus);\n" + "}"));
+            });
+
+        customization.getClass("com.azure.ai.projects.implementation", "SyncOperationLocationPollingStrategy")
+            .customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("SyncOperationLocationPollingStrategy")
+                    .orElseThrow(
+                        () -> new IllegalStateException("SyncOperationLocationPollingStrategy was not generated."));
+                clazz.getMethodsByName("poll").forEach(MethodDeclaration::remove);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("/** {@inheritDoc} */\n"
+                    + "@Override public PollResponse<T> poll(PollingContext<T> pollingContext, "
+                    + "TypeReference<T> pollResponseType) {\n"
+                    + "    return ProjectsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType));\n"
+                    + "}"));
+            });
+    }
+
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.projects.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
+    }
+
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
         List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobConfiguration",
-            "DataGenerationJobSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
-            "EvaluatorGenerationJobSource", "InsightRequest", "RecurrenceSchedule", "RoutineAction",
-            "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "Trigger");
+            "DataGenerationJobSource", "EvaluationRunDataSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
+            "EvaluatorGenerationJobSource", "InsightRequest", "ItemGenerationParameters", "RecurrenceSchedule",
+            "RoutineAction", "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "TraceSource",
+            "Trigger");
         for (String className : classNames) {
             customization.getClass("com.azure.ai.projects.models", className)
                 .customizeAst(ast -> ast.getClassByName(className)

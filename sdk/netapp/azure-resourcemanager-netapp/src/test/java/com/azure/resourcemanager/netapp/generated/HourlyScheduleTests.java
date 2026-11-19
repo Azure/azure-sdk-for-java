@@ -12,21 +12,21 @@ public final class HourlyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HourlySchedule model = BinaryData
-            .fromString("{\"snapshotsToKeep\":1309534736,\"minute\":2001921074,\"usedBytes\":7831439414407354845}")
+            .fromString("{\"snapshotsToKeep\":1262943142,\"minute\":823230249,\"usedBytes\":1830518534758850486}")
             .toObject(HourlySchedule.class);
-        Assertions.assertEquals(1309534736, model.snapshotsToKeep());
-        Assertions.assertEquals(2001921074, model.minute());
-        Assertions.assertEquals(7831439414407354845L, model.usedBytes());
+        Assertions.assertEquals(1262943142, model.snapshotsToKeep());
+        Assertions.assertEquals(823230249, model.minute());
+        Assertions.assertEquals(1830518534758850486L, model.usedBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HourlySchedule model = new HourlySchedule().withSnapshotsToKeep(1309534736)
-            .withMinute(2001921074)
-            .withUsedBytes(7831439414407354845L);
+        HourlySchedule model = new HourlySchedule().withSnapshotsToKeep(1262943142)
+            .withMinute(823230249)
+            .withUsedBytes(1830518534758850486L);
         model = BinaryData.fromObject(model).toObject(HourlySchedule.class);
-        Assertions.assertEquals(1309534736, model.snapshotsToKeep());
-        Assertions.assertEquals(2001921074, model.minute());
-        Assertions.assertEquals(7831439414407354845L, model.usedBytes());
+        Assertions.assertEquals(1262943142, model.snapshotsToKeep());
+        Assertions.assertEquals(823230249, model.minute());
+        Assertions.assertEquals(1830518534758850486L, model.usedBytes());
     }
 }

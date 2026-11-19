@@ -55,6 +55,7 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)'
           displayName: 'Capture repo state for analysis'
           condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          isProduction: false
           sbomEnabled: false
 
         - ${{ each versionOverride in parameters.VersionOverrides }}:

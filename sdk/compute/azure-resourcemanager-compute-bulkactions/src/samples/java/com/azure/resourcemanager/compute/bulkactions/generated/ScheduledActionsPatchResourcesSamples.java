@@ -16,15 +16,15 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 02 - Update resource-specific notification settings for a recurring scheduled action.
+     * Sample code: 02 - Update resource-specific notification settings for a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceUpdateSpaceresourceHyphenMinusspecificSpacenotificationSpacesettingsSpaceforSpaceaSpacerecurringSpacescheduledSpaceaction(
+        zeroTwoSpaceHyphenMinusSpaceUpdateSpaceresourceHyphenMinusspecificSpacenotificationSpacesettingsSpaceforSpaceaSpacerecurringSpacebulkSpaceaction(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
@@ -50,45 +50,15 @@ public final class ScheduledActionsPatchResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_PartialSuccess.json
      */
     /**
-     * Sample code: 01 - Update settings for recurring scheduled action resources.
+     * Sample code: 03 - Response with partial results when updating recurring bulk action resources.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceUpdateSpacesettingsSpaceforSpacerecurringSpacescheduledSpaceactionSpaceresources(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
-                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
-                    .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
-                            .withType(NotificationType.EMAIL)
-                            .withLanguage(Language.EN_US)
-                            .withDisabled(false))),
-                    new ScheduledActionResourceInput().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
-                        .withNotificationSettings(
-                            Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(false))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_PartialSuccess.json
-     */
-    /**
-     * Sample code: 03 - Response with partial results when updating recurring scheduled action resources.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceupdatingSpacerecurringSpacescheduledSpaceactionSpaceresources(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceupdatingSpacerecurringSpacebulkSpaceactionSpaceresources(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
@@ -106,6 +76,36 @@ public final class ScheduledActionsPatchResourcesSamples {
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
                                 .withDisabled(true))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Update settings for recurring bulk action resources.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacesettingsSpaceforSpacerecurringSpacebulkSpaceactionSpaceresources(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
+                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
+                    .withNotificationSettings(
+                        Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(false))),
+                    new ScheduledActionResourceInput().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
+                        .withNotificationSettings(
+                            Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false))))),
                 com.azure.core.util.Context.NONE);
     }
 }

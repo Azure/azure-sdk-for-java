@@ -129,10 +129,25 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/privateEndpointConnections/{privateEndpointConnectionName}",
+                "resourceGroupName");
+        }
+        this.environmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "environmentName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
+        if (this.privateEndpointConnectionName == null) {
+            this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/privateEndpointConnections/{privateEndpointConnectionName}",
+                "privateEndpointConnectionName");
+        }
     }
 
     public PrivateEndpointConnection refresh() {

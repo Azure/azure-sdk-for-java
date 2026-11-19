@@ -141,9 +141,12 @@ public final class GoldenGateDeploymentImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.goldenGateDeploymentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "goldenGateDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}",
+            "resourceGroupName");
+        this.goldenGateDeploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/goldenGateDeployments/{goldenGateDeploymentName}",
+            "goldenGateDeploymentName");
     }
 
     public GoldenGateDeployment refresh() {

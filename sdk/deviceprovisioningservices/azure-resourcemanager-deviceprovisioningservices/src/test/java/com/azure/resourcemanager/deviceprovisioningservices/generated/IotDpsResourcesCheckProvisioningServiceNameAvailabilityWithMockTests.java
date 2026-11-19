@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class IotDpsResourcesCheckProvisioningServiceNameAvailabilityWithMockTests {
     @Test
     public void testCheckProvisioningServiceNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"n\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"lfltka\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class IotDpsResourcesCheckProvisioningServiceNameAvailabilityWithMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailabilityInfo response = manager.iotDpsResources()
-            .checkProvisioningServiceNameAvailabilityWithResponse(new OperationInputs().withName("tmweriofzpyq"),
+            .checkProvisioningServiceNameAvailabilityWithResponse(new OperationInputs().withName("ujhemmsbvdkcrodt"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(NameUnavailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("n", response.message());
+        Assertions.assertEquals("lfltka", response.message());
     }
 }

@@ -15,28 +15,28 @@ public final class ExternalAuthClientProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalAuthClientProfile model = BinaryData.fromString(
-            "{\"component\":{\"name\":\"rhdwbavxbniw\",\"authClientNamespace\":\"jswztsdbpg\"},\"clientId\":\"xytxhpzxbz\",\"extraScopes\":[\"abgl\",\"uhxwtctyqiklbbov\",\"lwzbhvgyugu\"],\"type\":\"Public\"}")
+            "{\"component\":{\"name\":\"vnotyfjfcnj\",\"authClientNamespace\":\"k\"},\"clientId\":\"nxdhbt\",\"extraScopes\":[\"h\",\"wpn\"],\"type\":\"Confidential\"}")
             .toObject(ExternalAuthClientProfile.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.component().name());
-        Assertions.assertEquals("jswztsdbpg", model.component().authClientNamespace());
-        Assertions.assertEquals("xytxhpzxbz", model.clientId());
-        Assertions.assertEquals("abgl", model.extraScopes().get(0));
-        Assertions.assertEquals(ExternalAuthClientType.PUBLIC, model.type());
+        Assertions.assertEquals("vnotyfjfcnj", model.component().name());
+        Assertions.assertEquals("k", model.component().authClientNamespace());
+        Assertions.assertEquals("nxdhbt", model.clientId());
+        Assertions.assertEquals("h", model.extraScopes().get(0));
+        Assertions.assertEquals(ExternalAuthClientType.CONFIDENTIAL, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalAuthClientProfile model = new ExternalAuthClientProfile()
             .withComponent(
-                new ExternalAuthClientComponentProfile().withName("rhdwbavxbniw").withAuthClientNamespace("jswztsdbpg"))
-            .withClientId("xytxhpzxbz")
-            .withExtraScopes(Arrays.asList("abgl", "uhxwtctyqiklbbov", "lwzbhvgyugu"))
-            .withType(ExternalAuthClientType.PUBLIC);
+                new ExternalAuthClientComponentProfile().withName("vnotyfjfcnj").withAuthClientNamespace("k"))
+            .withClientId("nxdhbt")
+            .withExtraScopes(Arrays.asList("h", "wpn"))
+            .withType(ExternalAuthClientType.CONFIDENTIAL);
         model = BinaryData.fromObject(model).toObject(ExternalAuthClientProfile.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.component().name());
-        Assertions.assertEquals("jswztsdbpg", model.component().authClientNamespace());
-        Assertions.assertEquals("xytxhpzxbz", model.clientId());
-        Assertions.assertEquals("abgl", model.extraScopes().get(0));
-        Assertions.assertEquals(ExternalAuthClientType.PUBLIC, model.type());
+        Assertions.assertEquals("vnotyfjfcnj", model.component().name());
+        Assertions.assertEquals("k", model.component().authClientNamespace());
+        Assertions.assertEquals("nxdhbt", model.clientId());
+        Assertions.assertEquals("h", model.extraScopes().get(0));
+        Assertions.assertEquals(ExternalAuthClientType.CONFIDENTIAL, model.type());
     }
 }

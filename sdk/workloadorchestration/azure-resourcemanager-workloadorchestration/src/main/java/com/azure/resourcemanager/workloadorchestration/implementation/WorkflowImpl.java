@@ -111,9 +111,15 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
-        this.workflowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workflows");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}",
+            "resourceGroupName");
+        this.contextName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}",
+            "contextName");
+        this.workflowName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}",
+            "workflowName");
     }
 
     public Workflow refresh() {

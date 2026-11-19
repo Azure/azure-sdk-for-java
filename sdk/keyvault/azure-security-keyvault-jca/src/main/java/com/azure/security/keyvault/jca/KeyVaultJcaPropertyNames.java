@@ -58,16 +58,11 @@ public final class KeyVaultJcaPropertyNames {
     public static final String CERT_PATH_CUSTOM = "azure.cert-path.custom";
 
     /**
-     * The certificate refresh interval property name.
+    * The certificate refresh interval property name. Accepts an ISO-8601 duration, such as {@code PT30S}, or a
+    * millisecond value, such as {@code 30000}.
      */
     public static final String KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL
         = "azure.keyvault.jca.certificates-refresh-interval";
-
-    /**
-     * The certificate refresh interval in milliseconds property name.
-     */
-    public static final String KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS
-        = "azure.keyvault.jca.certificates-refresh-interval-in-ms";
 
     /**
      * The property name used to refresh certificates when an untrusted certificate is encountered.

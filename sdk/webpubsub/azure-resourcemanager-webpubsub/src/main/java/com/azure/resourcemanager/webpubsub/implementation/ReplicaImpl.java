@@ -137,9 +137,15 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     ReplicaImpl(ReplicaInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.replicaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "resourceName");
+        this.replicaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}",
+            "replicaName");
     }
 
     public Replica refresh() {

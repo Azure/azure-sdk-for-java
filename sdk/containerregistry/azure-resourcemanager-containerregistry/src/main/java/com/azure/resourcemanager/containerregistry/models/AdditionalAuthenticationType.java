@@ -17,6 +17,19 @@ public final class AdditionalAuthenticationType extends ExpandableStringEnum<Add
     public static final AdditionalAuthenticationType GOOGLE_ARTIFACT_REGISTRY = fromString("GoogleArtifactRegistry");
 
     /**
+     * Amazon Elastic Container Registry (ECR) authentication via workload identity federation.
+     */
+    public static final AdditionalAuthenticationType AWS_ELASTIC_CONTAINER_REGISTRY
+        = fromString("AwsElasticContainerRegistry");
+
+    /**
+     * Microsoft Entra authentication via a federated identity credential on an application
+     * in another tenant.
+     */
+    public static final AdditionalAuthenticationType ENTRA_FEDERATED_IDENTITY_CREDENTIAL
+        = fromString("EntraFederatedIdentityCredential");
+
+    /**
      * Creates a new instance of AdditionalAuthenticationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

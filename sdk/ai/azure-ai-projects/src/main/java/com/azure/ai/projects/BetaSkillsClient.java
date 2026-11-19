@@ -51,6 +51,56 @@ public final class BetaSkillsClient {
     }
 
     /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSkill(String name) {
+        deleteSkillWithResponse(name, new RequestOptions());
+    }
+
+    /**
+     * Deletes a skill and its associated versions.
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillWithResponse(name, requestOptions), null);
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @throws HttpResponseException if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSkillVersion(String name, String version) {
+        deleteSkillVersionWithResponse(name, version, new RequestOptions());
+    }
+
+    /**
+     * Deletes a specific version of a skill.
+     *
+     * @param name The unique name of the skill.
+     * @param version The version of the skill.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws HttpResponseException if the request is rejected by the server.
+     * @return the response without the deletion-confirmation body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSkillVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillVersionWithResponse(name, version, requestOptions), null);
+    }
+
+    /**
      * Retrieve a skill
      *
      * Retrieves the specified skill and its current configuration.
@@ -181,51 +231,6 @@ public final class BetaSkillsClient {
     }
 
     /**
-     * Deletes a skill.
-     *
-     * @param skillName The unique name of the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSkill(String skillName) {
-        // Generated convenience method for deleteSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteSkillWithResponse(skillName, requestOptions);
-    }
-
-    /**
-     * Deletes a skill.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     deleted: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The unique name of the skill.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted skill along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
-        return new SimpleResponse<>(internalDeleteSkillWithResponse(name, requestOptions), null);
-    }
-
-    /**
      * Delete a skill
      *
      * Removes the specified skill and its associated versions.
@@ -310,6 +315,43 @@ public final class BetaSkillsClient {
     public Response<BinaryData> createSkillVersionWithResponse(String name, BinaryData createSkillVersionRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.createSkillVersionWithResponse(name, createSkillVersionRequest, requestOptions);
+    }
+
+    /**
+     * Create a skill version from uploaded files
+     *
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param content The multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
+        RequestOptions requestOptions) {
+        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.createSkillVersionFromFilesWithResponseInternal(name, content, requestOptions);
     }
 
     /**
@@ -543,13 +585,10 @@ public final class BetaSkillsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSkills(requestOptions)
+        return serviceClient.listSkills(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
@@ -570,7 +609,7 @@ public final class BetaSkillsClient {
     public PagedIterable<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSkills(requestOptions)
+        return serviceClient.listSkills(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
@@ -669,8 +708,10 @@ public final class BetaSkillsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a skill.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
+        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)
@@ -720,13 +761,10 @@ public final class BetaSkillsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSkillVersions(name, requestOptions)
+        return serviceClient.listSkillVersions(after, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillVersion.class));
     }
 
@@ -749,7 +787,7 @@ public final class BetaSkillsClient {
     public PagedIterable<SkillVersion> listSkillVersions(String name) {
         // Generated convenience method for listSkillVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSkillVersions(name, requestOptions)
+        return serviceClient.listSkillVersions(null, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillVersion.class));
     }
 
@@ -819,42 +857,5 @@ public final class BetaSkillsClient {
         // Generated convenience method for getSkillVersionContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSkillVersionContentWithResponse(name, version, requestOptions).getValue();
-    }
-
-    /**
-     * Create a skill version from uploaded files
-     *
-     * Creates a new version of a skill from uploaded files via multipart form data.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     skill_id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Required)
-     *     created_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skill.
-     * @param content The multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific version of a skill along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
-        RequestOptions requestOptions) {
-        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.createSkillVersionFromFilesWithResponseInternal(name, content, requestOptions);
     }
 }

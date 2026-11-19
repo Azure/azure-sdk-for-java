@@ -102,9 +102,15 @@ public final class SignalDefinitionImpl
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signaldefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "healthModelName");
+        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "signalDefinitionName");
     }
 
     public SignalDefinition refresh() {

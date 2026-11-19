@@ -26,7 +26,7 @@ public final class ImportJobsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"w\",\"zhwplefaxvxilc\",\"tg\",\"hnze\"],\"conflictResolutionMode\":\"OverwriteAlways\",\"maximumErrors\":1207398675,\"status\":{\"state\":\"Completed\",\"statusMessage\":\"lqhy\",\"totalBlobsWalked\":2089848727273246662,\"blobsWalkedPerSecond\":5405740747067335057,\"totalBlobsImported\":8144209061033072751,\"importedFiles\":3935144936817968720,\"importedDirectories\":5700722260986013528,\"importedSymlinks\":5825843842170136922,\"preexistingFiles\":7052211137025041333,\"preexistingDirectories\":5499561988006889896,\"preexistingSymlinks\":8149568399079294349,\"blobsImportedPerSecond\":1474264152955193357,\"lastCompletionTime\":\"2021-05-21T17:58:21Z\",\"lastStartedTime\":\"2021-09-17T23:37:48Z\",\"totalErrors\":826518294,\"totalConflicts\":293972975}},\"location\":\"fgiagtcojocqwo\",\"tags\":{\"uxylfsbtkadpy\":\"zjvusfzldmo\",\"tgkbugrjqctojc\":\"own\",\"cuplcplcwkhih\":\"isofieypefojyqd\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"hhvjhh\",\"akz\",\"bbjjidjksyxk\"],\"conflictResolutionMode\":\"Skip\",\"maximumErrors\":1732474011,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"jednlj\",\"totalBlobsWalked\":7592252826756292876,\"blobsWalkedPerSecond\":3773978570740216333,\"totalBlobsImported\":3654875978787835683,\"importedFiles\":3366975403019452617,\"importedDirectories\":1789601609206670515,\"importedSymlinks\":158167053603599295,\"preexistingFiles\":4409807448883678204,\"preexistingDirectories\":8795706373981455807,\"preexistingSymlinks\":3505608113038307586,\"blobsImportedPerSecond\":9046253755572881988,\"lastCompletionTime\":\"2021-05-09T05:27:31Z\",\"lastStartedTime\":\"2021-08-14T08:25:58Z\",\"totalErrors\":357469787,\"totalConflicts\":1775360689}},\"location\":\"ffeycx\",\"tags\":{\"mx\":\"piymerteea\",\"xv\":\"iekkkzddrtkgdojb\",\"cuijpxt\":\"vrefdeesv\"},\"id\":\"s\",\"name\":\"wprtu\",\"type\":\"wsawddjibabxvi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,22 @@ public final class ImportJobsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImportJob response = manager.importJobs()
-            .define("omtkub")
-            .withRegion("d")
-            .withExistingAmlFilesystem("huzqgn", "dgkynscliqhzvhxn")
-            .withTags(mapOf("spave", "wafqroud", "bunzozudh", "hrv", "moy", "xg"))
-            .withAdminStatus(ImportJobAdminStatus.CANCEL)
-            .withImportPrefixes(Arrays.asList("zxhi"))
-            .withConflictResolutionMode(ConflictResolutionMode.SKIP)
-            .withMaximumErrors(25072478)
+            .define("ouwivkxoyzunbixx")
+            .withRegion("yqhlwigdivbkbx")
+            .withExistingAmlFilesystem("tilaxh", "fhqlyvi")
+            .withTags(mapOf("vdaeyyguxakjsq", "fajuwas"))
+            .withAdminStatus(ImportJobAdminStatus.ACTIVE)
+            .withImportPrefixes(Arrays.asList("pgclrciv", "soxfrken", "pmyyefrpmpdnqq"))
+            .withConflictResolutionMode(ConflictResolutionMode.OVERWRITE_ALWAYS)
+            .withMaximumErrors(281711345)
             .create();
 
-        Assertions.assertEquals("fgiagtcojocqwo", response.location());
-        Assertions.assertEquals("zjvusfzldmo", response.tags().get("uxylfsbtkadpy"));
+        Assertions.assertEquals("ffeycx", response.location());
+        Assertions.assertEquals("piymerteea", response.tags().get("mx"));
         Assertions.assertEquals(ImportJobAdminStatus.CANCEL, response.adminStatus());
-        Assertions.assertEquals("w", response.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, response.conflictResolutionMode());
-        Assertions.assertEquals(1207398675, response.maximumErrors());
+        Assertions.assertEquals("hhvjhh", response.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.SKIP, response.conflictResolutionMode());
+        Assertions.assertEquals(1732474011, response.maximumErrors());
     }
 
     // Use "Map.of" if available

@@ -414,7 +414,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, String ifMatch,
         String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, bmcKeySetName,
@@ -715,7 +715,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, String ifMatch, String ifNoneMatch,
         BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch,
@@ -1003,7 +1003,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String bmcKeySetName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch);

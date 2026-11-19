@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ncrdo\",\"requiredMembers\":[\"ysecp\",\"khxd\",\"yhqtzcvimmwcko\"],\"requiredZoneNames\":[\"fymtrtsvxupqtzck\",\"bcbkgnrfr\"],\"displayName\":\"chj\"},\"id\":\"cqzahgtvbgdob\",\"name\":\"morzolxosg\",\"type\":\"htrxueqbmxqfgv\"},{\"properties\":{\"groupId\":\"qs\",\"requiredMembers\":[\"esgcsqos\",\"cxlngoufpi\"],\"requiredZoneNames\":[\"mfxzspf\"],\"displayName\":\"slazipplxgtdu\"},\"id\":\"ty\",\"name\":\"i\",\"type\":\"drznlaxozqthkwxf\"},{\"properties\":{\"groupId\":\"zizyxdu\",\"requiredMembers\":[\"qzb\",\"qcakmfckviyj\"],\"requiredZoneNames\":[\"mnsbq\",\"itwhmucjiu\",\"cxyvehykl\",\"lyqdvpqfbxgyc\"],\"displayName\":\"usdmtxq\"},\"id\":\"fn\",\"name\":\"heywvfopkyllrey\",\"type\":\"nj\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"nhtzg\",\"requiredMembers\":[\"iwmopkud\"],\"requiredZoneNames\":[\"tbwzjbqzqwbhz\",\"hqzdbzlkd\",\"bekvprkwpvxieqc\"],\"displayName\":\"gzshfa\"},\"id\":\"e\",\"name\":\"xaeiue\",\"type\":\"k\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("dnccotelik", "iytehhxtzxqdwbym", com.azure.core.util.Context.NONE)
+            .listWithResponse("zzxqtcgswmhzci", "itykzyirjui", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fymtrtsvxupqtzck", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("tbwzjbqzqwbhz", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

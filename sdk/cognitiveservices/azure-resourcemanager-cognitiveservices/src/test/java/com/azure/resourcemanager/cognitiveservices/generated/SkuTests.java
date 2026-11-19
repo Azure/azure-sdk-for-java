@@ -13,27 +13,27 @@ public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Sku model = BinaryData.fromString(
-            "{\"name\":\"q\",\"tier\":\"Free\",\"size\":\"ixuigdtopbobj\",\"family\":\"hm\",\"capacity\":115410873}")
+            "{\"name\":\"u\",\"tier\":\"Free\",\"size\":\"hrzayvvtpgvdf\",\"family\":\"otkftutqxlngx\",\"capacity\":1542158785}")
             .toObject(Sku.class);
-        Assertions.assertEquals("q", model.name());
+        Assertions.assertEquals("u", model.name());
         Assertions.assertEquals(SkuTier.FREE, model.tier());
-        Assertions.assertEquals("ixuigdtopbobj", model.size());
-        Assertions.assertEquals("hm", model.family());
-        Assertions.assertEquals(115410873, model.capacity());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.size());
+        Assertions.assertEquals("otkftutqxlngx", model.family());
+        Assertions.assertEquals(1542158785, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("q")
+        Sku model = new Sku().withName("u")
             .withTier(SkuTier.FREE)
-            .withSize("ixuigdtopbobj")
-            .withFamily("hm")
-            .withCapacity(115410873);
+            .withSize("hrzayvvtpgvdf")
+            .withFamily("otkftutqxlngx")
+            .withCapacity(1542158785);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("q", model.name());
+        Assertions.assertEquals("u", model.name());
         Assertions.assertEquals(SkuTier.FREE, model.tier());
-        Assertions.assertEquals("ixuigdtopbobj", model.size());
-        Assertions.assertEquals("hm", model.family());
-        Assertions.assertEquals(115410873, model.capacity());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.size());
+        Assertions.assertEquals("otkftutqxlngx", model.family());
+        Assertions.assertEquals(1542158785, model.capacity());
     }
 }

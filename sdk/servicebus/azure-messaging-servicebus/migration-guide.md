@@ -6,6 +6,12 @@ version 3 of
 [`com.microsoft.azure:azure-servicebus`](https://central.sonatype.com/artifact/com.microsoft.azure/azure-servicebus). It
 will focus on side-by-side comparisons for similar operations between the two packages.
 
+> **Important:** `com.microsoft.azure:azure-servicebus` (the `com.microsoft.azure.servicebus` package) was retired on
+> September 30, 2026 and no longer receives official support or updates from Microsoft. Applications using this
+> library can continue to function. Migrate to `com.azure:azure-messaging-servicebus` to receive security
+> updates and bug fixes. See the
+> [retirement announcement](https://techcommunity.microsoft.com/blog/messagingonazureblog/some-azure-service-bus-sdk-libraries-will-be-retired-on-30-september-2026%E2%80%94migrat/3917853).
+
 Familiarity with the `com.microsoft.azure:azure-servicebus` library is assumed. For those new to the Service Bus client
 library for Java, please refer to the
 [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md)
@@ -61,10 +67,8 @@ improvements made to the Azure development experience, such as
  - A unified diagnostics pipeline offering a common view of the activities across each of the client libraries.
  
 
-While we believe that there is significant benefit to adopting the new Service Bus library `azure-messaging-servicebus`,
-it is important to be aware that the previous version `azure-servicebus` have not been officially deprecated. They will
-continue to be supported with security and bug fixes as well as receiving some minor refinements. However, in the near
-future they will not be under active development and new features are unlikely to be added to them.
+`com.azure:azure-messaging-servicebus` is the supported replacement for the retired
+`com.microsoft.azure:azure-servicebus` library.
 
 ### New features
 

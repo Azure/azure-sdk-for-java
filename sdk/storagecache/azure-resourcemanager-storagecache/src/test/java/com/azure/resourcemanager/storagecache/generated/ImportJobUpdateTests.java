@@ -15,19 +15,19 @@ public final class ImportJobUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"osjswsr\":\"lqiyntorzihl\",\"qioxi\":\"slyzrpzbchckqq\",\"wyhqmibzyhwits\":\"suiizynkedyat\"},\"properties\":{\"adminStatus\":\"Cancel\"}}")
+            "{\"tags\":{\"stkwqqtch\":\"drd\",\"mtdaa\":\"alm\",\"vgpiohgwxrt\":\"gdv\"},\"properties\":{\"adminStatus\":\"Cancel\"}}")
             .toObject(ImportJobUpdate.class);
-        Assertions.assertEquals("lqiyntorzihl", model.tags().get("osjswsr"));
+        Assertions.assertEquals("drd", model.tags().get("stkwqqtch"));
         Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportJobUpdate model = new ImportJobUpdate()
-            .withTags(mapOf("osjswsr", "lqiyntorzihl", "qioxi", "slyzrpzbchckqq", "wyhqmibzyhwits", "suiizynkedyat"))
-            .withAdminStatus(ImportJobAdminStatus.CANCEL);
+        ImportJobUpdate model
+            = new ImportJobUpdate().withTags(mapOf("stkwqqtch", "drd", "mtdaa", "alm", "vgpiohgwxrt", "gdv"))
+                .withAdminStatus(ImportJobAdminStatus.CANCEL);
         model = BinaryData.fromObject(model).toObject(ImportJobUpdate.class);
-        Assertions.assertEquals("lqiyntorzihl", model.tags().get("osjswsr"));
+        Assertions.assertEquals("drd", model.tags().get("stkwqqtch"));
         Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
     }
 

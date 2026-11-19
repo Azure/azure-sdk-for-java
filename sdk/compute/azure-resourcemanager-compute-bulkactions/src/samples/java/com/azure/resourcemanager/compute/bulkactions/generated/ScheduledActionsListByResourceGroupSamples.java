@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_ListByResourceGroup_PagedSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_ListByResourceGroup_PagedSuccess.json
      */
     /**
-     * Sample code: List a page of recurring scheduled actions in a resource group.
+     * Sample code: List recurring bulk actions in a resource group.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listAPageOfRecurringScheduledActionsInAResourceGroup(
+    public static void listRecurringBulkActionsInAResourceGroup(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }

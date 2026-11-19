@@ -27,6 +27,7 @@ import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.StorageAccountSharedKeyAccessProperties;
 import com.azure.resourcemanager.storage.models.StorageDataCollaborationPolicyProperties;
+import com.azure.resourcemanager.storage.models.TurboTier;
 import java.io.IOException;
 
 /**
@@ -64,6 +65,11 @@ public final class StorageAccountPropertiesUpdateParameters
      * block blobs storage account type.
      */
     private AccessTier accessTier;
+
+    /*
+     * Configures Turbo Tier for the storage account.
+     */
+    private TurboTier turboTier;
 
     /*
      * Provides the identity based authentication settings for Azure Files.
@@ -300,6 +306,26 @@ public final class StorageAccountPropertiesUpdateParameters
      */
     public StorageAccountPropertiesUpdateParameters withAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @return the turboTier value.
+     */
+    public TurboTier turboTier() {
+        return this.turboTier;
+    }
+
+    /**
+     * Set the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @param turboTier the turboTier value to set.
+     * @return the StorageAccountPropertiesUpdateParameters object itself.
+     */
+    public StorageAccountPropertiesUpdateParameters withTurboTier(TurboTier turboTier) {
+        this.turboTier = turboTier;
         return this;
     }
 
@@ -813,6 +839,9 @@ public final class StorageAccountPropertiesUpdateParameters
         if (keyPolicy() != null) {
             keyPolicy().validate();
         }
+        if (turboTier() != null) {
+            turboTier().validate();
+        }
         if (azureFilesIdentityBasedAuthentication() != null) {
             azureFilesIdentityBasedAuthentication().validate();
         }
@@ -850,6 +879,7 @@ public final class StorageAccountPropertiesUpdateParameters
         jsonWriter.writeJsonField("sasPolicy", this.sasPolicy);
         jsonWriter.writeJsonField("keyPolicy", this.keyPolicy);
         jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeJsonField("turboTier", this.turboTier);
         jsonWriter.writeJsonField("azureFilesIdentityBasedAuthentication", this.azureFilesIdentityBasedAuthentication);
         jsonWriter.writeBooleanField("supportsHttpsTrafficOnly", this.enableHttpsTrafficOnly);
         jsonWriter.writeBooleanField("isSftpEnabled", this.isSftpEnabled);
@@ -907,6 +937,8 @@ public final class StorageAccountPropertiesUpdateParameters
                 } else if ("accessTier".equals(fieldName)) {
                     deserializedStorageAccountPropertiesUpdateParameters.accessTier
                         = AccessTier.fromString(reader.getString());
+                } else if ("turboTier".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.turboTier = TurboTier.fromJson(reader);
                 } else if ("azureFilesIdentityBasedAuthentication".equals(fieldName)) {
                     deserializedStorageAccountPropertiesUpdateParameters.azureFilesIdentityBasedAuthentication
                         = AzureFilesIdentityBasedAuthentication.fromJson(reader);

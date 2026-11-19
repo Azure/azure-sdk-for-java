@@ -14,17 +14,17 @@ public final class ProtectionIntentResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntentResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"cyar\",\"itemId\":\"oohguabzoghkt\",\"policyId\":\"yczhco\",\"protectionState\":\"Protecting\"},\"tags\":{\"tjzcfyjzpt\":\"zqro\",\"h\":\"rl\"},\"location\":\"qinfszpyglqd\",\"eTag\":\"rjzralcx\",\"id\":\"byypsjoqcjenky\",\"name\":\"fq\",\"type\":\"vsqxfxjelgcmpzqj\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"uwyvcacoyvi\",\"itemId\":\"s\",\"policyId\":\"usjszlbscm\",\"protectionState\":\"Protected\"},\"tags\":{\"nwyvq\":\"iufehgmvf\"},\"location\":\"rerlniy\",\"eTag\":\"lyfwxzutg\",\"id\":\"twhghmupgxyjtc\",\"name\":\"xabb\",\"type\":\"jf\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"bbklqpxzuca\",\"itemId\":\"ddwwnlzafwxudgnh\",\"policyId\":\"okrtalvnb\",\"protectionState\":\"Protecting\"},\"tags\":{\"kyrdnqodx\":\"meluclvdjj\",\"aqnvzoqgyipemchg\":\"hhxhq\"},\"location\":\"sczuejdtxptlghwz\",\"eTag\":\"mewjjstliuhq\",\"id\":\"moaiancz\",\"name\":\"vodrrslblxydkxr\",\"type\":\"vvbxiwkgfbqljnq\"}],\"nextLink\":\"ychocokulehu\"}")
+            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"h\",\"itemId\":\"ddacbcbgydlqidy\",\"policyId\":\"hmptyrilkfbn\",\"protectionState\":\"Protected\"},\"tags\":{\"fnqt\":\"ztpb\"},\"location\":\"to\",\"eTag\":\"lswbnf\",\"id\":\"epl\",\"name\":\"wqjnsfzygleexa\",\"type\":\"vmywhsbrcarycsjj\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DPM\",\"sourceResourceId\":\"qajuvehzptdmk\",\"itemId\":\"bhmpfulubefgybp\",\"policyId\":\"bfununmpzkrv\",\"protectionState\":\"Protecting\"},\"tags\":{\"cwnphbkgfyrtogm\":\"dschlzvfictnkjjw\",\"ev\":\"mjpjscdfpdqwty\",\"x\":\"wmseharxifvqn\",\"sidqpxlbtpakft\":\"mbpjptnvwjh\"},\"location\":\"atw\",\"eTag\":\"kyutrymdwmfjhpyc\",\"id\":\"q\",\"name\":\"vdwkqpldr\",\"type\":\"efgnaavuagnt\"}],\"nextLink\":\"aou\"}")
             .toObject(ProtectionIntentResourceList.class);
-        Assertions.assertEquals("ychocokulehu", model.nextLink());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM,
+        Assertions.assertEquals("aou", model.nextLink());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD,
             model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("cyar", model.value().get(0).properties().sourceResourceId());
-        Assertions.assertEquals("oohguabzoghkt", model.value().get(0).properties().itemId());
-        Assertions.assertEquals("yczhco", model.value().get(0).properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("zqro", model.value().get(0).tags().get("tjzcfyjzpt"));
-        Assertions.assertEquals("qinfszpyglqd", model.value().get(0).location());
-        Assertions.assertEquals("rjzralcx", model.value().get(0).etag());
+        Assertions.assertEquals("h", model.value().get(0).properties().sourceResourceId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.value().get(0).properties().itemId());
+        Assertions.assertEquals("hmptyrilkfbn", model.value().get(0).properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ztpb", model.value().get(0).tags().get("fnqt"));
+        Assertions.assertEquals("to", model.value().get(0).location());
+        Assertions.assertEquals("lswbnf", model.value().get(0).etag());
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.cosmos.models.GraphApiComputeRegionalServiceRes
 public final class GraphApiComputeRegionalServiceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GraphApiComputeRegionalServiceResource model = BinaryData
-            .fromString(
-                "{\"graphApiComputeEndpoint\":\"yznm\",\"name\":\"cdo\",\"location\":\"v\",\"status\":\"Updating\"}")
+        GraphApiComputeRegionalServiceResource model = BinaryData.fromString(
+            "{\"graphApiComputeEndpoint\":\"pgg\",\"name\":\"meyobqajejirvavr\",\"location\":\"gpogpl\",\"status\":\"Running\"}")
             .toObject(GraphApiComputeRegionalServiceResource.class);
     }
 }

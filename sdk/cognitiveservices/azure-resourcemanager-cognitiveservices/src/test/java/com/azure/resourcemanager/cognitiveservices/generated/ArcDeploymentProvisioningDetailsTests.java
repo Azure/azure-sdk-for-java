@@ -13,9 +13,9 @@ public final class ArcDeploymentProvisioningDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentProvisioningDetails model = BinaryData
-            .fromString("{\"message\":\"pziuwfbzkkdtnh\",\"lastOperationTimestamp\":\"2021-09-26T00:23:44Z\"}")
+            .fromString("{\"message\":\"yctsdbtqgkuj\",\"lastOperationTimestamp\":\"2021-10-20T16:36:50Z\"}")
             .toObject(ArcDeploymentProvisioningDetails.class);
-        Assertions.assertEquals("pziuwfbzkkdtnh", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T00:23:44Z"), model.lastOperationTimestamp());
+        Assertions.assertEquals("yctsdbtqgkuj", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T16:36:50Z"), model.lastOperationTimestamp());
     }
 }

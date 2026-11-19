@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class AutoExportJobsListByAmlFilesystemSamples {
     /*
-     * x-ms-original-file: 2026-01-01/autoExportJobs_ListByAmlFilesystem.json
+     * x-ms-original-file: 2026-08-01/autoExportJobs_ListByAmlFilesystem.json
      */
     /**
      * Sample code: autoExportJobs_ListByAmlFilesystem.

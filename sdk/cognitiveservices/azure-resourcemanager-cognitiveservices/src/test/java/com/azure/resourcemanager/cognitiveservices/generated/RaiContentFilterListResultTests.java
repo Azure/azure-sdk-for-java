@@ -13,11 +13,11 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"glcfhmlrqryxyn\",\"value\":[{\"properties\":{\"name\":\"p\",\"isMultiLevelFilter\":false,\"source\":\"PreToolCall\"},\"id\":\"nptgoeiybba\",\"name\":\"pfhvfslk\",\"type\":\"ntjlr\"},{\"properties\":{\"name\":\"kskyrioovzid\",\"isMultiLevelFilter\":true,\"source\":\"PreRun\"},\"id\":\"zm\",\"name\":\"frygznmmax\",\"type\":\"izkzobgo\"},{\"properties\":{\"name\":\"hsln\",\"isMultiLevelFilter\":true,\"source\":\"PreToolCall\"},\"id\":\"xynl\",\"name\":\"xecwcro\",\"type\":\"phslhcawjutifdw\"},{\"properties\":{\"name\":\"igorqjbttzhragl\",\"isMultiLevelFilter\":true,\"source\":\"PostRun\"},\"id\":\"qjujeickpzvcp\",\"name\":\"pmxelnwcltyje\",\"type\":\"ex\"}]}")
+            "{\"nextLink\":\"falkzazm\",\"value\":[{\"properties\":{\"name\":\"gjqafkmkrokzr\",\"isMultiLevelFilter\":true,\"source\":\"PreToolCall\"},\"id\":\"pqrtvaoznqni\",\"name\":\"iezeagm\",\"type\":\"eituugedhfpjs\"},{\"properties\":{\"name\":\"mbl\",\"isMultiLevelFilter\":true,\"source\":\"PostToolCall\"},\"id\":\"lctaeb\",\"name\":\"syrled\",\"type\":\"cust\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("glcfhmlrqryxyn", model.nextLink());
-        Assertions.assertEquals("p", model.value().get(0).properties().name());
-        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals("falkzazm", model.nextLink());
+        Assertions.assertEquals("gjqafkmkrokzr", model.value().get(0).properties().name());
+        Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
         Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.value().get(0).properties().source());
     }
 }

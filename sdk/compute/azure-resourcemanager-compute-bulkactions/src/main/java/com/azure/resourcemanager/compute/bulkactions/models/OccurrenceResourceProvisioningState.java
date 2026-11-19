@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The provisioning state of a scheduled-action resource within an occurrence.
+ * The provisioning state of a recurring bulk action resource within an occurrence.
  */
 public final class OccurrenceResourceProvisioningState
     extends ExpandableStringEnum<OccurrenceResourceProvisioningState> {
