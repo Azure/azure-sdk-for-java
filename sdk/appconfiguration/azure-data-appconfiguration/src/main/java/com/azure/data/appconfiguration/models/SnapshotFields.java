@@ -79,6 +79,12 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     public static final SnapshotFields TAGS = fromString("tags");
 
     /**
+     * Populates the snapshot `description` from the service.
+     */
+    @Generated
+    public static final SnapshotFields DESCRIPTION = fromString("description");
+
+    /**
      * Creates a new instance of SnapshotFields value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

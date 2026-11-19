@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.10.0-beta.1</version>
+  <version>1.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -169,6 +169,14 @@ ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .endpoint(endpoint)
     .buildClient();
 ```
+
+When using Microsoft Entra ID, the client automatically infers the authentication audience from the endpoint hostname,
+including sovereign cloud and staging endpoints. For example, `https://my-store.appconfig.sovereign.cloud` uses
+`https://appconfig.sovereign.cloud`, and `https://my-store.azconfig.io` uses `https://azconfig.io`.
+Unrecognized hostnames default to `https://appconfig.azure.com`. To override inference, call
+`audience(ConfigurationAudience.fromString("https://custom.audience"))` on the builder. Audience values in Java do not
+include a trailing slash; the client appends `/.default` to form the token scope. This applies to both synchronous and
+asynchronous clients. See [authentication token audiences](https://aka.ms/appconfig/client-token-audience) for details.
 
 ## Key concepts
 
@@ -580,7 +588,7 @@ the client library to use the Netty HTTP client. Configuring or changing the HTT
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
 better performance compared to the default SSL implementation within the JDK. For more information, including how to 
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+reduce the dependency size, refer to the [performance tuning][performance_tuning] documentation.
 
 ## Next steps
 
@@ -612,12 +620,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
-
 
