@@ -97,13 +97,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental modification steps without having to rebuild the
-     * index every time.
-     */
-    @Generated
-    private SearchIndexerCache cache;
-
     /**
      * Creates an instance of SearchIndexer class.
      *
@@ -389,30 +382,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     }
 
     /**
-     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @return the cache value.
-     */
-    @Generated
-    public SearchIndexerCache getCache() {
-        return this.cache;
-    }
-
-    /**
-     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @param cache the cache value to set.
-     * @return the SearchIndexer object itself.
-     */
-    @Generated
-    public SearchIndexer setCache(SearchIndexerCache cache) {
-        this.cache = cache;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -507,5 +476,36 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
             deserializedSearchIndexer.cache = cache;
             return deserializedSearchIndexer;
         });
+    }
+
+    /*
+     * Adds caching to an enrichment pipeline to allow for incremental modification steps without having to rebuild the
+     * index every time.
+     */
+    @Generated
+    private SearchIndexerCache cache;
+
+    /**
+     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
+     * without having to rebuild the index every time.
+     *
+     * @return the cache value.
+     */
+    @Generated
+    public SearchIndexerCache getCache() {
+        return this.cache;
+    }
+
+    /**
+     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
+     * without having to rebuild the index every time.
+     *
+     * @param cache the cache value to set.
+     * @return the SearchIndexer object itself.
+     */
+    @Generated
+    public SearchIndexer setCache(SearchIndexerCache cache) {
+        this.cache = cache;
+        return this;
     }
 }

@@ -20,38 +20,16 @@ import java.util.Map;
 public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugInfo> {
 
     /*
-     * Contains debugging information specific to semantic ranking requests.
-     */
-    @Generated
-    private SemanticDebugInfo semantic;
-
-    /*
      * Contains debugging information specific to vector and hybrid search.
      */
     @Generated
     private VectorsDebugInfo vectors;
-
-    /*
-     * Contains debugging information specific to vectors matched within a collection of complex types.
-     */
-    @Generated
-    private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
 
     /**
      * Creates an instance of DocumentDebugInfo class.
      */
     @Generated
     private DocumentDebugInfo() {
-    }
-
-    /**
-     * Get the semantic property: Contains debugging information specific to semantic ranking requests.
-     *
-     * @return the semantic value.
-     */
-    @Generated
-    public SemanticDebugInfo getSemantic() {
-        return this.semantic;
     }
 
     /**
@@ -62,17 +40,6 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     @Generated
     public VectorsDebugInfo getVectors() {
         return this.vectors;
-    }
-
-    /**
-     * Get the innerHits property: Contains debugging information specific to vectors matched within a collection of
-     * complex types.
-     *
-     * @return the innerHits value.
-     */
-    @Generated
-    public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
-        return this.innerHits;
     }
 
     /**
@@ -114,5 +81,38 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
             }
             return deserializedDocumentDebugInfo;
         });
+    }
+
+    /*
+     * Contains debugging information specific to semantic ranking requests.
+     */
+    @Generated
+    private SemanticDebugInfo semantic;
+
+    /*
+     * Contains debugging information specific to vectors matched within a collection of complex types.
+     */
+    @Generated
+    private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
+
+    /**
+     * Get the semantic property: Contains debugging information specific to semantic ranking requests.
+     *
+     * @return the semantic value.
+     */
+    @Generated
+    public SemanticDebugInfo getSemantic() {
+        return this.semantic;
+    }
+
+    /**
+     * Get the innerHits property: Contains debugging information specific to vectors matched within a collection of
+     * complex types.
+     *
+     * @return the innerHits value.
+     */
+    @Generated
+    public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
+        return this.innerHits;
     }
 }

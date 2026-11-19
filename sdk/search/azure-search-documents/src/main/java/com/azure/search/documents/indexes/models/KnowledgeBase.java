@@ -14,6 +14,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReason
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a knowledge base definition.
@@ -40,18 +41,6 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     private List<KnowledgeBaseModel> models;
 
     /*
-     * The retrieval reasoning effort configuration.
-     */
-    @Generated
-    private KnowledgeRetrievalReasoningEffort retrievalReasoningEffort;
-
-    /*
-     * The output mode for the knowledge base.
-     */
-    @Generated
-    private KnowledgeRetrievalOutputMode outputMode;
-
-    /*
      * The ETag of the knowledge base.
      */
     @Generated
@@ -68,18 +57,6 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
      */
     @Generated
     private String description;
-
-    /*
-     * Instructions considered by the knowledge base when developing query plan.
-     */
-    @Generated
-    private String retrievalInstructions;
-
-    /*
-     * Instructions considered by the knowledge base when generating answers.
-     */
-    @Generated
-    private String answerInstructions;
 
     /**
      * Creates an instance of KnowledgeBase class.
@@ -158,50 +135,6 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     }
 
     /**
-     * Get the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
-     *
-     * @return the retrievalReasoningEffort value.
-     */
-    @Generated
-    public KnowledgeRetrievalReasoningEffort getRetrievalReasoningEffort() {
-        return this.retrievalReasoningEffort;
-    }
-
-    /**
-     * Set the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
-     *
-     * @param retrievalReasoningEffort the retrievalReasoningEffort value to set.
-     * @return the KnowledgeBase object itself.
-     */
-    @Generated
-    public KnowledgeBase setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffort retrievalReasoningEffort) {
-        this.retrievalReasoningEffort = retrievalReasoningEffort;
-        return this;
-    }
-
-    /**
-     * Get the outputMode property: The output mode for the knowledge base.
-     *
-     * @return the outputMode value.
-     */
-    @Generated
-    public KnowledgeRetrievalOutputMode getOutputMode() {
-        return this.outputMode;
-    }
-
-    /**
-     * Set the outputMode property: The output mode for the knowledge base.
-     *
-     * @param outputMode the outputMode value to set.
-     * @return the KnowledgeBase object itself.
-     */
-    @Generated
-    public KnowledgeBase setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
-        this.outputMode = outputMode;
-        return this;
-    }
-
-    /**
      * Get the eTag property: The ETag of the knowledge base.
      *
      * @return the eTag value.
@@ -268,6 +201,183 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("knowledgeSources", this.knowledgeSources,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("models", this.models, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
+        jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
+        jsonWriter.writeStringField("@odata.etag", this.eTag);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("retrievalInstructions", this.retrievalInstructions);
+        jsonWriter.writeStringField("answerInstructions", this.answerInstructions);
+        jsonWriter.writeJsonField("corsOptions", this.corsOptions);
+        jsonWriter.writeJsonField("retrieveDefaults", this.retrieveDefaults);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KnowledgeBase from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KnowledgeBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KnowledgeBase.
+     */
+    @Generated
+    public static KnowledgeBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            List<KnowledgeSourceReference> knowledgeSources = null;
+            List<KnowledgeBaseTool> tools = null;
+            List<KnowledgeBaseModel> models = null;
+            KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
+            KnowledgeRetrievalOutputMode outputMode = null;
+            String eTag = null;
+            SearchResourceEncryptionKey encryptionKey = null;
+            String description = null;
+            Map<String, String> tags = null;
+            String retrievalInstructions = null;
+            String answerInstructions = null;
+            CorsOptions corsOptions = null;
+            KnowledgeBaseRetrieveDefaults retrieveDefaults = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("knowledgeSources".equals(fieldName)) {
+                    knowledgeSources = reader.readArray(reader1 -> KnowledgeSourceReference.fromJson(reader1));
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> KnowledgeBaseTool.fromJson(reader1));
+                } else if ("models".equals(fieldName)) {
+                    models = reader.readArray(reader1 -> KnowledgeBaseModel.fromJson(reader1));
+                } else if ("retrievalReasoningEffort".equals(fieldName)) {
+                    retrievalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
+                } else if ("outputMode".equals(fieldName)) {
+                    outputMode = KnowledgeRetrievalOutputMode.fromString(reader.getString());
+                } else if ("@odata.etag".equals(fieldName)) {
+                    eTag = reader.getString();
+                } else if ("encryptionKey".equals(fieldName)) {
+                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("retrievalInstructions".equals(fieldName)) {
+                    retrievalInstructions = reader.getString();
+                } else if ("answerInstructions".equals(fieldName)) {
+                    answerInstructions = reader.getString();
+                } else if ("corsOptions".equals(fieldName)) {
+                    corsOptions = CorsOptions.fromJson(reader);
+                } else if ("retrieveDefaults".equals(fieldName)) {
+                    retrieveDefaults = KnowledgeBaseRetrieveDefaults.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            KnowledgeBase deserializedKnowledgeBase = new KnowledgeBase(name, knowledgeSources);
+            deserializedKnowledgeBase.tools = tools;
+            deserializedKnowledgeBase.models = models;
+            deserializedKnowledgeBase.retrievalReasoningEffort = retrievalReasoningEffort;
+            deserializedKnowledgeBase.outputMode = outputMode;
+            deserializedKnowledgeBase.eTag = eTag;
+            deserializedKnowledgeBase.encryptionKey = encryptionKey;
+            deserializedKnowledgeBase.description = description;
+            deserializedKnowledgeBase.tags = tags;
+            deserializedKnowledgeBase.retrievalInstructions = retrievalInstructions;
+            deserializedKnowledgeBase.answerInstructions = answerInstructions;
+            deserializedKnowledgeBase.corsOptions = corsOptions;
+            deserializedKnowledgeBase.retrieveDefaults = retrieveDefaults;
+            return deserializedKnowledgeBase;
+        });
+    }
+
+    /*
+     * The retrieval reasoning effort configuration.
+     */
+    @Generated
+    private KnowledgeRetrievalReasoningEffort retrievalReasoningEffort;
+
+    /*
+     * The output mode for the knowledge base.
+     */
+    @Generated
+    private KnowledgeRetrievalOutputMode outputMode;
+
+    /*
+     * Instructions considered by the knowledge base when developing query plan.
+     */
+    @Generated
+    private String retrievalInstructions;
+
+    /*
+     * Instructions considered by the knowledge base when generating answers.
+     */
+    @Generated
+    private String answerInstructions;
+
+    /*
+     * Options to control Cross-Origin Resource Sharing (CORS) for the knowledge base.
+     */
+    @Generated
+    private CorsOptions corsOptions;
+
+    /**
+     * Get the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
+     *
+     * @return the retrievalReasoningEffort value.
+     */
+    @Generated
+    public KnowledgeRetrievalReasoningEffort getRetrievalReasoningEffort() {
+        return this.retrievalReasoningEffort;
+    }
+
+    /**
+     * Set the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
+     *
+     * @param retrievalReasoningEffort the retrievalReasoningEffort value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffort retrievalReasoningEffort) {
+        this.retrievalReasoningEffort = retrievalReasoningEffort;
+        return this;
+    }
+
+    /**
+     * Get the outputMode property: The output mode for the knowledge base.
+     *
+     * @return the outputMode value.
+     */
+    @Generated
+    public KnowledgeRetrievalOutputMode getOutputMode() {
+        return this.outputMode;
+    }
+
+    /**
+     * Set the outputMode property: The output mode for the knowledge base.
+     *
+     * @param outputMode the outputMode value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
+        this.outputMode = outputMode;
+        return this;
+    }
+
+    /**
      * Get the retrievalInstructions property: Instructions considered by the knowledge base when developing query plan.
      *
      * @return the retrievalInstructions value.
@@ -312,85 +422,121 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the knowledge base.
+     *
+     * @return the corsOptions value.
      */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeArrayField("knowledgeSources", this.knowledgeSources,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("models", this.models, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
-        jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
-        jsonWriter.writeStringField("@odata.etag", this.eTag);
-        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("retrievalInstructions", this.retrievalInstructions);
-        jsonWriter.writeStringField("answerInstructions", this.answerInstructions);
-        return jsonWriter.writeEndObject();
+    public CorsOptions getCorsOptions() {
+        return this.corsOptions;
     }
 
     /**
-     * Reads an instance of KnowledgeBase from the JsonReader.
+     * Set the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the knowledge base.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KnowledgeBase if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KnowledgeBase.
+     * @param corsOptions the corsOptions value to set.
+     * @return the KnowledgeBase object itself.
      */
     @Generated
-    public static KnowledgeBase fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            List<KnowledgeSourceReference> knowledgeSources = null;
-            List<KnowledgeBaseModel> models = null;
-            KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
-            KnowledgeRetrievalOutputMode outputMode = null;
-            String eTag = null;
-            SearchResourceEncryptionKey encryptionKey = null;
-            String description = null;
-            String retrievalInstructions = null;
-            String answerInstructions = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("knowledgeSources".equals(fieldName)) {
-                    knowledgeSources = reader.readArray(reader1 -> KnowledgeSourceReference.fromJson(reader1));
-                } else if ("models".equals(fieldName)) {
-                    models = reader.readArray(reader1 -> KnowledgeBaseModel.fromJson(reader1));
-                } else if ("retrievalReasoningEffort".equals(fieldName)) {
-                    retrievalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
-                } else if ("outputMode".equals(fieldName)) {
-                    outputMode = KnowledgeRetrievalOutputMode.fromString(reader.getString());
-                } else if ("@odata.etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else if ("encryptionKey".equals(fieldName)) {
-                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("retrievalInstructions".equals(fieldName)) {
-                    retrievalInstructions = reader.getString();
-                } else if ("answerInstructions".equals(fieldName)) {
-                    answerInstructions = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            KnowledgeBase deserializedKnowledgeBase = new KnowledgeBase(name, knowledgeSources);
-            deserializedKnowledgeBase.models = models;
-            deserializedKnowledgeBase.retrievalReasoningEffort = retrievalReasoningEffort;
-            deserializedKnowledgeBase.outputMode = outputMode;
-            deserializedKnowledgeBase.eTag = eTag;
-            deserializedKnowledgeBase.encryptionKey = encryptionKey;
-            deserializedKnowledgeBase.description = description;
-            deserializedKnowledgeBase.retrievalInstructions = retrievalInstructions;
-            deserializedKnowledgeBase.answerInstructions = answerInstructions;
-            return deserializedKnowledgeBase;
-        });
+    public KnowledgeBase setCorsOptions(CorsOptions corsOptions) {
+        this.corsOptions = corsOptions;
+        return this;
+    }
+
+    /*
+     * User-defined key-value pairs for categorizing the knowledge base and attributing its usage and costs.
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Persisted request-wide retrieve defaults for this knowledge base. These values apply to retrieve requests that
+     * omit the corresponding fields; request-time values take precedence when present.
+     */
+    @Generated
+    private KnowledgeBaseRetrieveDefaults retrieveDefaults;
+
+    /**
+     * Get the tags property: User-defined key-value pairs for categorizing the knowledge base and attributing its usage
+     * and costs.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: User-defined key-value pairs for categorizing the knowledge base and attributing its usage
+     * and costs.
+     *
+     * @param tags the tags value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the retrieveDefaults property: Persisted request-wide retrieve defaults for this knowledge base. These values
+     * apply to retrieve requests that omit the corresponding fields; request-time values take precedence when present.
+     *
+     * @return the retrieveDefaults value.
+     */
+    @Generated
+    public KnowledgeBaseRetrieveDefaults getRetrieveDefaults() {
+        return this.retrieveDefaults;
+    }
+
+    /**
+     * Set the retrieveDefaults property: Persisted request-wide retrieve defaults for this knowledge base. These values
+     * apply to retrieve requests that omit the corresponding fields; request-time values take precedence when present.
+     *
+     * @param retrieveDefaults the retrieveDefaults value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setRetrieveDefaults(KnowledgeBaseRetrieveDefaults retrieveDefaults) {
+        this.retrieveDefaults = retrieveDefaults;
+        return this;
+    }
+
+    /*
+     * Named retrieval tools, each limited to a subset of this knowledge base's sources. When configured, MCP advertises
+     * these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves from the full knowledge
+     * base. Omitting tools or supplying an empty array in this API version clears existing tools.
+     */
+    @Generated
+    private List<KnowledgeBaseTool> tools;
+
+    /**
+     * Get the tools property: Named retrieval tools, each limited to a subset of this knowledge base's sources. When
+     * configured, MCP advertises these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves
+     * from the full knowledge base. Omitting tools or supplying an empty array in this API version clears existing
+     * tools.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<KnowledgeBaseTool> getTools() {
+        return this.tools;
+    }
+
+    /**
+     * Set the tools property: Named retrieval tools, each limited to a subset of this knowledge base's sources. When
+     * configured, MCP advertises these tools in addition to the built-in knowledge_base_retrieve tool, which retrieves
+     * from the full knowledge base. Omitting tools or supplying an empty array in this API version clears existing
+     * tools.
+     *
+     * @param tools the tools value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    @Generated
+    public KnowledgeBase setTools(List<KnowledgeBaseTool> tools) {
+        this.tools = tools;
+        return this;
     }
 }

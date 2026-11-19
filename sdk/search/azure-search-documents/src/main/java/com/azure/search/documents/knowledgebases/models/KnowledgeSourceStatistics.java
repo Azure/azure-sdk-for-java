@@ -5,11 +5,13 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Statistical information about knowledge source synchronization history.
@@ -27,28 +29,13 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
      * Average synchronization duration in HH:MM:SS format.
      */
     @Generated
-    private final String averageSynchronizationDuration;
+    private final Duration averageSynchronizationDuration;
 
     /*
      * Average items processed per synchronization.
      */
     @Generated
     private final int averageItemsProcessedPerSynchronization;
-
-    /**
-     * Creates an instance of KnowledgeSourceStatistics class.
-     *
-     * @param totalSynchronization the totalSynchronization value to set.
-     * @param averageSynchronizationDuration the averageSynchronizationDuration value to set.
-     * @param averageItemsProcessedPerSynchronization the averageItemsProcessedPerSynchronization value to set.
-     */
-    @Generated
-    public KnowledgeSourceStatistics(int totalSynchronization, String averageSynchronizationDuration,
-        int averageItemsProcessedPerSynchronization) {
-        this.totalSynchronization = totalSynchronization;
-        this.averageSynchronizationDuration = averageSynchronizationDuration;
-        this.averageItemsProcessedPerSynchronization = averageItemsProcessedPerSynchronization;
-    }
 
     /**
      * Get the totalSynchronization property: Total number of synchronizations.
@@ -66,7 +53,7 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
      * @return the averageSynchronizationDuration value.
      */
     @Generated
-    public String getAverageSynchronizationDuration() {
+    public Duration getAverageSynchronizationDuration() {
         return this.averageSynchronizationDuration;
     }
 
@@ -88,7 +75,8 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("totalSynchronization", this.totalSynchronization);
-        jsonWriter.writeStringField("averageSynchronizationDuration", this.averageSynchronizationDuration);
+        jsonWriter.writeStringField("averageSynchronizationDuration",
+            CoreUtils.durationToStringWithDays(this.averageSynchronizationDuration));
         jsonWriter.writeIntField("averageItemsProcessedPerSynchronization",
             this.averageItemsProcessedPerSynchronization);
         return jsonWriter.writeEndObject();
@@ -107,7 +95,7 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
     public static KnowledgeSourceStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int totalSynchronization = 0;
-            String averageSynchronizationDuration = null;
+            Duration averageSynchronizationDuration = null;
             int averageItemsProcessedPerSynchronization = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -115,7 +103,8 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
                 if ("totalSynchronization".equals(fieldName)) {
                     totalSynchronization = reader.getInt();
                 } else if ("averageSynchronizationDuration".equals(fieldName)) {
-                    averageSynchronizationDuration = reader.getString();
+                    averageSynchronizationDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("averageItemsProcessedPerSynchronization".equals(fieldName)) {
                     averageItemsProcessedPerSynchronization = reader.getInt();
                 } else {
@@ -125,5 +114,20 @@ public final class KnowledgeSourceStatistics implements JsonSerializable<Knowled
             return new KnowledgeSourceStatistics(totalSynchronization, averageSynchronizationDuration,
                 averageItemsProcessedPerSynchronization);
         });
+    }
+
+    /**
+     * Creates an instance of KnowledgeSourceStatistics class.
+     *
+     * @param totalSynchronization the totalSynchronization value to set.
+     * @param averageSynchronizationDuration the averageSynchronizationDuration value to set.
+     * @param averageItemsProcessedPerSynchronization the averageItemsProcessedPerSynchronization value to set.
+     */
+    @Generated
+    public KnowledgeSourceStatistics(int totalSynchronization, Duration averageSynchronizationDuration,
+        int averageItemsProcessedPerSynchronization) {
+        this.totalSynchronization = totalSynchronization;
+        this.averageSynchronizationDuration = averageSynchronizationDuration;
+        this.averageItemsProcessedPerSynchronization = averageItemsProcessedPerSynchronization;
     }
 }

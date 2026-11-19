@@ -31,14 +31,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     private CustomEntityLookupSkillLanguage defaultLanguageCode;
 
     /*
-     * Path to a JSON or CSV file containing all the target text to match against. This entity definition is read at the
-     * beginning of an indexer run. Any updates to this file during an indexer run will not take effect until subsequent
-     * runs. This config must be accessible over HTTPS.
-     */
-    @Generated
-    private String entitiesDefinitionUri;
-
-    /*
      * The inline CustomEntity definition.
      */
     @Generated
@@ -106,32 +98,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     @Generated
     public CustomEntityLookupSkill setDefaultLanguageCode(CustomEntityLookupSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
-        return this;
-    }
-
-    /**
-     * Get the entitiesDefinitionUri property: Path to a JSON or CSV file containing all the target text to match
-     * against. This entity definition is read at the beginning of an indexer run. Any updates to this file during an
-     * indexer run will not take effect until subsequent runs. This config must be accessible over HTTPS.
-     *
-     * @return the entitiesDefinitionUri value.
-     */
-    @Generated
-    public String getEntitiesDefinitionUri() {
-        return this.entitiesDefinitionUri;
-    }
-
-    /**
-     * Set the entitiesDefinitionUri property: Path to a JSON or CSV file containing all the target text to match
-     * against. This entity definition is read at the beginning of an indexer run. Any updates to this file during an
-     * indexer run will not take effect until subsequent runs. This config must be accessible over HTTPS.
-     *
-     * @param entitiesDefinitionUri the entitiesDefinitionUri value to set.
-     * @return the CustomEntityLookupSkill object itself.
-     */
-    @Generated
-    public CustomEntityLookupSkill setEntitiesDefinitionUri(String entitiesDefinitionUri) {
-        this.entitiesDefinitionUri = entitiesDefinitionUri;
         return this;
     }
 
@@ -286,7 +252,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("defaultLanguageCode",
             this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
-        jsonWriter.writeStringField("entitiesDefinitionUri", this.entitiesDefinitionUri);
+        jsonWriter.writeStringField("entitiesDefinitionUri", this.entitiesDefinitionUrl);
         jsonWriter.writeArrayField("inlineEntitiesDefinition", this.inlineEntitiesDefinition,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("globalDefaultCaseSensitive", this.globalDefaultCaseSensitive);
@@ -314,7 +280,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
             String context = null;
             String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
             CustomEntityLookupSkillLanguage defaultLanguageCode = null;
-            String entitiesDefinitionUri = null;
+            String entitiesDefinitionUrl = null;
             List<CustomEntity> inlineEntitiesDefinition = null;
             Boolean globalDefaultCaseSensitive = null;
             Boolean globalDefaultAccentSensitive = null;
@@ -337,7 +303,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                 } else if ("defaultLanguageCode".equals(fieldName)) {
                     defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getString());
                 } else if ("entitiesDefinitionUri".equals(fieldName)) {
-                    entitiesDefinitionUri = reader.getString();
+                    entitiesDefinitionUrl = reader.getString();
                 } else if ("inlineEntitiesDefinition".equals(fieldName)) {
                     inlineEntitiesDefinition = reader.readArray(reader1 -> CustomEntity.fromJson(reader1));
                 } else if ("globalDefaultCaseSensitive".equals(fieldName)) {
@@ -356,12 +322,46 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
             deserializedCustomEntityLookupSkill.setContext(context);
             deserializedCustomEntityLookupSkill.odataType = odataType;
             deserializedCustomEntityLookupSkill.defaultLanguageCode = defaultLanguageCode;
-            deserializedCustomEntityLookupSkill.entitiesDefinitionUri = entitiesDefinitionUri;
+            deserializedCustomEntityLookupSkill.entitiesDefinitionUrl = entitiesDefinitionUrl;
             deserializedCustomEntityLookupSkill.inlineEntitiesDefinition = inlineEntitiesDefinition;
             deserializedCustomEntityLookupSkill.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
             deserializedCustomEntityLookupSkill.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
             deserializedCustomEntityLookupSkill.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
             return deserializedCustomEntityLookupSkill;
         });
+    }
+
+    /*
+     * Path to a JSON or CSV file containing all the target text to match against. This entity definition is read at the
+     * beginning of an indexer run. Any updates to this file during an indexer run will not take effect until subsequent
+     * runs. This config must be accessible over HTTPS.
+     */
+    @Generated
+    private String entitiesDefinitionUrl;
+
+    /**
+     * Get the entitiesDefinitionUrl property: Path to a JSON or CSV file containing all the target text to match
+     * against. This entity definition is read at the beginning of an indexer run. Any updates to this file during an
+     * indexer run will not take effect until subsequent runs. This config must be accessible over HTTPS.
+     *
+     * @return the entitiesDefinitionUrl value.
+     */
+    @Generated
+    public String getEntitiesDefinitionUrl() {
+        return this.entitiesDefinitionUrl;
+    }
+
+    /**
+     * Set the entitiesDefinitionUrl property: Path to a JSON or CSV file containing all the target text to match
+     * against. This entity definition is read at the beginning of an indexer run. Any updates to this file during an
+     * indexer run will not take effect until subsequent runs. This config must be accessible over HTTPS.
+     *
+     * @param entitiesDefinitionUrl the entitiesDefinitionUrl value to set.
+     * @return the CustomEntityLookupSkill object itself.
+     */
+    @Generated
+    public CustomEntityLookupSkill setEntitiesDefinitionUrl(String entitiesDefinitionUrl) {
+        this.entitiesDefinitionUrl = entitiesDefinitionUrl;
+        return this;
     }
 }

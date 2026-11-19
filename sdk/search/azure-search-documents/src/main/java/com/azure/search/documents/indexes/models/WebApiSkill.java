@@ -26,12 +26,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
     private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
     /*
-     * The url for the Web API.
-     */
-    @Generated
-    private final String uri;
-
-    /*
      * The headers required to make the http request.
      */
     @Generated
@@ -84,12 +78,12 @@ public final class WebApiSkill extends SearchIndexerSkill {
      *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
-     * @param uri the uri value to set.
+     * @param url the url value to set.
      */
     @Generated
-    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String url) {
         super(inputs, outputs);
-        this.uri = uri;
+        this.url = url;
     }
 
     /**
@@ -101,16 +95,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
     @Override
     public String getOdataType() {
         return this.odataType;
-    }
-
-    /**
-     * Get the uri property: The url for the Web API.
-     *
-     * @return the uri value.
-     */
-    @Generated
-    public String getUri() {
-        return this.uri;
     }
 
     /**
@@ -323,7 +307,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("uri", this.url);
         jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeJsonField("httpHeaders", this.httpHeaders);
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
@@ -352,7 +336,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
-            String uri = null;
+            String url = null;
             String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
             WebApiHttpHeaders httpHeaders = null;
             String httpMethod = null;
@@ -375,7 +359,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
                 } else if ("uri".equals(fieldName)) {
-                    uri = reader.getString();
+                    url = reader.getString();
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
                 } else if ("httpHeaders".equals(fieldName)) {
@@ -396,7 +380,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                     reader.skipChildren();
                 }
             }
-            WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
+            WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, url);
             deserializedWebApiSkill.setName(name);
             deserializedWebApiSkill.setDescription(description);
             deserializedWebApiSkill.setContext(context);
@@ -410,5 +394,21 @@ public final class WebApiSkill extends SearchIndexerSkill {
             deserializedWebApiSkill.authIdentity = authIdentity;
             return deserializedWebApiSkill;
         });
+    }
+
+    /*
+     * The url for the Web API.
+     */
+    @Generated
+    private final String url;
+
+    /**
+     * Get the url property: The url for the Web API.
+     *
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 }

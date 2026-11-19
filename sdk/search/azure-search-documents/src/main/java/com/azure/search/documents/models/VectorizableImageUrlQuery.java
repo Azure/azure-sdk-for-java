@@ -114,36 +114,6 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      */
     @Generated
     @Override
-    public VectorizableImageUrlQuery setThreshold(VectorThreshold threshold) {
-        super.setThreshold(threshold);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableImageUrlQuery setFilterOverride(String filterOverride) {
-        super.setFilterOverride(filterOverride);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableImageUrlQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
-        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighbors());
@@ -154,6 +124,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
         jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
+        jsonWriter.writeJsonField("topicGraph", getTopicGraph());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("url", this.url);
         return jsonWriter.writeEndObject();
@@ -191,6 +162,8 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
                 } else if ("perDocumentVectorLimit".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery
                         .setPerDocumentVectorLimit(reader.getNullable(JsonReader::getInt));
+                } else if ("topicGraph".equals(fieldName)) {
+                    deserializedVectorizableImageUrlQuery.setTopicGraph(VectorQueryTopicGraph.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("url".equals(fieldName)) {
@@ -210,6 +183,46 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     @Override
     public VectorizableImageUrlQuery setWeight(Float weight) {
         super.setWeight(weight);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setThreshold(VectorThreshold threshold) {
+        super.setThreshold(threshold);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        super.setTopicGraph(topicGraph);
         return this;
     }
 }

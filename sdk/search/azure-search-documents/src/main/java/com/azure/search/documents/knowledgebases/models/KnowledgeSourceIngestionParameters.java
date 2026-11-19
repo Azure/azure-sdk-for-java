@@ -67,12 +67,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     @Generated
     private KnowledgeSourceContentExtractionMode contentExtractionMode;
 
-    /*
-     * Optional AI Services configuration for content processing.
-     */
-    @Generated
-    private AIServices aiServices;
-
     /**
      * Creates an instance of KnowledgeSourceIngestionParameters class.
      */
@@ -257,28 +251,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     }
 
     /**
-     * Get the aiServices property: Optional AI Services configuration for content processing.
-     *
-     * @return the aiServices value.
-     */
-    @Generated
-    public AIServices getAiServices() {
-        return this.aiServices;
-    }
-
-    /**
-     * Set the aiServices property: Optional AI Services configuration for content processing.
-     *
-     * @param aiServices the aiServices value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setAiServices(AIServices aiServices) {
-        this.aiServices = aiServices;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -295,6 +267,11 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
         jsonWriter.writeJsonField("aiServices", this.aiServices);
+        jsonWriter.writeJsonField("assetStore", this.assetStore);
+        jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
+        jsonWriter.writeStringField("networkAccessMode",
+            this.networkAccessMode == null ? null : this.networkAccessMode.toString());
+        jsonWriter.writeJsonField("cache", this.cache);
         return jsonWriter.writeEndObject();
     }
 
@@ -338,12 +315,173 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.aiServices = AIServices.fromJson(reader);
+                    deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
+                } else if ("assetStore".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.assetStore = AssetStore.fromJson(reader);
+                } else if ("freshnessPolicy".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.freshnessPolicy = FreshnessPolicy.fromJson(reader);
+                } else if ("networkAccessMode".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.networkAccessMode
+                        = KnowledgeSourceNetworkAccessMode.fromString(reader.getString());
+                } else if ("cache".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.cache = KnowledgeSourceCache.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKnowledgeSourceIngestionParameters;
         });
+    }
+
+    /*
+     * Optional asset store configuration for storing extracted assets such as images.
+     */
+    @Generated
+    private AssetStore assetStore;
+
+    /*
+     * Optional freshness policy for biasing retrieval toward newer documents.
+     */
+    @Generated
+    private FreshnessPolicy freshnessPolicy;
+
+    /**
+     * Get the assetStore property: Optional asset store configuration for storing extracted assets such as images.
+     *
+     * @return the assetStore value.
+     */
+    @Generated
+    public AssetStore getAssetStore() {
+        return this.assetStore;
+    }
+
+    /**
+     * Set the assetStore property: Optional asset store configuration for storing extracted assets such as images.
+     *
+     * @param assetStore the assetStore value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setAssetStore(AssetStore assetStore) {
+        this.assetStore = assetStore;
+        return this;
+    }
+
+    /**
+     * Get the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
+     *
+     * @return the freshnessPolicy value.
+     */
+    @Generated
+    public FreshnessPolicy getFreshnessPolicy() {
+        return this.freshnessPolicy;
+    }
+
+    /**
+     * Set the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
+     *
+     * @param freshnessPolicy the freshnessPolicy value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setFreshnessPolicy(FreshnessPolicy freshnessPolicy) {
+        this.freshnessPolicy = freshnessPolicy;
+        return this;
+    }
+
+    /*
+     * Optional AI Services configuration for content processing.
+     */
+    @Generated
+    private AiServices aiServices;
+
+    /**
+     * Get the aiServices property: Optional AI Services configuration for content processing.
+     *
+     * @return the aiServices value.
+     */
+    @Generated
+    public AiServices getAiServices() {
+        return this.aiServices;
+    }
+
+    /**
+     * Set the aiServices property: Optional AI Services configuration for content processing.
+     *
+     * @param aiServices the aiServices value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
+        this.aiServices = aiServices;
+        return this;
+    }
+
+    /*
+     * Optional network access mode for ingestion. Set to 'private' to run ingestion in a private execution environment
+     * that can reach data sources and dependencies over a private network. Default is 'public'. This is a create-time
+     * setting and cannot be changed after the knowledge source is created.
+     */
+    @Generated
+    private KnowledgeSourceNetworkAccessMode networkAccessMode;
+
+    /**
+     * Get the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
+     * in a private execution environment that can reach data sources and dependencies over a private network. Default
+     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
+     *
+     * @return the networkAccessMode value.
+     */
+    @Generated
+    public KnowledgeSourceNetworkAccessMode getNetworkAccessMode() {
+        return this.networkAccessMode;
+    }
+
+    /**
+     * Set the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
+     * in a private execution environment that can reach data sources and dependencies over a private network. Default
+     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
+     *
+     * @param networkAccessMode the networkAccessMode value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setNetworkAccessMode(KnowledgeSourceNetworkAccessMode networkAccessMode) {
+        this.networkAccessMode = networkAccessMode;
+        return this;
+    }
+
+    /*
+     * Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage account with Blob and
+     * Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or its storage binding or
+     * identity changed.
+     */
+    @Generated
+    private KnowledgeSourceCache cache;
+
+    /**
+     * Get the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @return the cache value.
+     */
+    @Generated
+    public KnowledgeSourceCache getCache() {
+        return this.cache;
+    }
+
+    /**
+     * Set the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @param cache the cache value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setCache(KnowledgeSourceCache cache) {
+        this.cache = cache;
+        return this;
     }
 }

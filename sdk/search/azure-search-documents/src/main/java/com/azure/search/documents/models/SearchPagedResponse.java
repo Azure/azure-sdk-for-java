@@ -81,12 +81,21 @@ public final class SearchPagedResponse
     }
 
     /**
-     * Get the debugInfo property: Debug information that applies to the search results as a whole.
+     * Gets diagnostic information requested by the query's debug option.
      *
-     * @return the debugInfo value.
+     * @return the query diagnostics, or null when not returned.
      */
     public DebugInfo getDebugInfo() {
         return page.getDebugInfo();
+    }
+
+    /**
+     * Gets the result of semantic query rewriting.
+     *
+     * @return the query rewrite result type, or null when not returned.
+     */
+    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
+        return page.getSemanticQueryRewritesResultType();
     }
 
     /**
@@ -107,15 +116,6 @@ public final class SearchPagedResponse
      */
     public SemanticSearchResultsType getSemanticPartialResponseType() {
         return page.getSemanticPartialResponseType();
-    }
-
-    /**
-     * Get the semanticQueryRewritesResultType property: Type of query rewrite that was used to retrieve documents.
-     *
-     * @return the semanticQueryRewritesResultType value.
-     */
-    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return page.getSemanticQueryRewritesResultType();
     }
 
     @Override

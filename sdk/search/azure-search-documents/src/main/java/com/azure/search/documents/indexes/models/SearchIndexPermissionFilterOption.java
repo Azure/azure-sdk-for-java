@@ -13,13 +13,13 @@ import java.util.Collection;
 public final class SearchIndexPermissionFilterOption extends ExpandableStringEnum<SearchIndexPermissionFilterOption> {
 
     /**
-     * enabled.
+     * Permission filtering is enabled for the index.
      */
     @Generated
     public static final SearchIndexPermissionFilterOption ENABLED = fromString("enabled");
 
     /**
-     * disabled.
+     * Permission filtering is disabled for the index.
      */
     @Generated
     public static final SearchIndexPermissionFilterOption DISABLED = fromString("disabled");

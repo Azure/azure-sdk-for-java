@@ -299,7 +299,11 @@ public final class FieldBuilder {
             .setSortable(toBoolean(basicField.isSortable()))
             .setFacetable(toBoolean(basicField.isFacetable()))
             .setPermissionFilter(nullOrT(basicField.permissionFilter(), PermissionFilter::fromString))
-            .setSensitivityLabel(toBoolean(basicField.isSensitivityLabel()))
+            .setSensitivityLabelId(toBoolean(basicField.isSensitivityLabelId()))
+            .setSensitivityLabelName(toBoolean(basicField.isSensitivityLabelName()))
+            .setSourceDocumentId(toBoolean(basicField.isSourceDocumentId()))
+            .setSharepointSiteUrl(toBoolean(basicField.isSharepointSiteUrl()))
+            .setOrganizationAccessExpiration(toBoolean(basicField.isOrganizationAccessExpiration()))
             .setAnalyzerName(nullOrT(basicField.analyzerName(), LexicalAnalyzerName::fromString))
             .setSearchAnalyzerName(nullOrT(basicField.searchAnalyzerName(), LexicalAnalyzerName::fromString))
             .setIndexAnalyzerName(nullOrT(basicField.indexAnalyzerName(), LexicalAnalyzerName::fromString))
@@ -307,6 +311,7 @@ public final class FieldBuilder {
             .setVectorSearchDimensions(
                 basicField.vectorSearchDimensions() > 0 ? basicField.vectorSearchDimensions() : null)
             .setVectorSearchProfileName(nullOrT(basicField.vectorSearchProfileName(), Function.identity()))
+            .setTopicGraphProfile(nullOrT(basicField.topicGraphProfile(), Function.identity()))
             .setVectorEncodingFormat(nullOrT(basicField.vectorEncodingFormat(), VectorEncodingFormat::fromString))
             .setSynonymMapNames(synonymMapNames(basicField.synonymMapNames()));
 

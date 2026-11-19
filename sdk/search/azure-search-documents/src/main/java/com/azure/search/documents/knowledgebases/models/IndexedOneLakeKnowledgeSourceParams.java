@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
+import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import java.io.IOException;
 
 /**
@@ -69,16 +70,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
      */
     @Generated
     @Override
-    public IndexedOneLakeKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public IndexedOneLakeKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -95,7 +86,13 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("neverQuerySource", isNeverQuerySource());
+        jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
+        jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
+        jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -116,7 +113,12 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean neverQuerySource = null;
+            Boolean failOnError = null;
             Float rerankerThreshold = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
+            Integer maxOutputDocuments = null;
+            Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.INDEXED_ONE_LAKE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -129,8 +131,18 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("neverQuerySource".equals(fieldName)) {
+                    neverQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failOnError".equals(fieldName)) {
+                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("enableImageServing".equals(fieldName)) {
+                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else {
@@ -142,9 +154,75 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
             deserializedIndexedOneLakeKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedIndexedOneLakeKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedIndexedOneLakeKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedIndexedOneLakeKnowledgeSourceParams.setNeverQuerySource(neverQuerySource);
+            deserializedIndexedOneLakeKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedIndexedOneLakeKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedIndexedOneLakeKnowledgeSourceParams.setResultsProcessing(resultsProcessing);
+            deserializedIndexedOneLakeKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
+            deserializedIndexedOneLakeKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedIndexedOneLakeKnowledgeSourceParams.kind = kind;
             return deserializedIndexedOneLakeKnowledgeSourceParams;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
+        super.setAlwaysQuerySource(alwaysQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams setFailOnError(Boolean failOnError) {
+        super.setFailOnError(failOnError);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
+        super.setMaxOutputDocuments(maxOutputDocuments);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
+        super.setEnableImageServing(enableImageServing);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams setNeverQuerySource(Boolean neverQuerySource) {
+        super.setNeverQuerySource(neverQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSourceParams
+        setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

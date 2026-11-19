@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.AgenticSearchOptions;
 import com.azure.search.documents.models.HybridSearch;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
@@ -158,18 +159,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     private SearchMode searchMode;
 
     /*
-     * A value that specifies the language of the search query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType querySpeller;
-
-    /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
@@ -233,18 +222,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     private QueryCaptionType captions;
 
     /*
-     * A value that specifies whether query rewrites should be generated to augment the search query.
-     */
-    @Generated
-    private QueryRewritesType queryRewrites;
-
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    @Generated
-    private List<String> semanticFields;
-
-    /*
      * The query parameters for vector and hybrid search queries.
      */
     @Generated
@@ -256,12 +233,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
      */
     @Generated
     private VectorFilterMode vectorFilterMode;
-
-    /*
-     * The query parameters to configure hybrid search behaviors.
-     */
-    @Generated
-    private HybridSearch hybridSearch;
 
     /**
      * Creates an instance of SearchPostRequest class.
@@ -699,52 +670,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     }
 
     /**
-     * Get the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @return the querySpeller value.
-     */
-    @Generated
-    public QuerySpellerType getQuerySpeller() {
-        return this.querySpeller;
-    }
-
-    /**
-     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @param querySpeller the querySpeller value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQuerySpeller(QuerySpellerType querySpeller) {
-        this.querySpeller = querySpeller;
-        return this;
-    }
-
-    /**
      * Get the select property: The comma-separated list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      *
@@ -967,52 +892,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     }
 
     /**
-     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public QueryRewritesType getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQueryRewrites(QueryRewritesType queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    @Generated
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
      * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
      * @return the vectorQueries value.
@@ -1059,28 +938,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     }
 
     /**
-     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @return the hybridSearch value.
-     */
-    @Generated
-    public HybridSearch getHybridSearch() {
-        return this.hybridSearch;
-    }
-
-    /**
-     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @param hybridSearch the hybridSearch value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setHybridSearch(HybridSearch hybridSearch) {
-        this.hybridSearch = hybridSearch;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -1099,11 +956,13 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
         jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
         jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
+        jsonWriter.writeStringField("moreLikeThis", this.moreLikeThis);
         if (this.orderBy != null) {
             jsonWriter.writeStringField("orderby",
                 this.orderBy.stream().map(element -> element == null ? "" : element).collect(Collectors.joining(",")));
         }
         jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeJsonField("agenticOptions", this.agenticOptions);
         jsonWriter.writeStringField("scoringStatistics",
             this.scoringStatistics == null ? null : this.scoringStatistics.toString());
         jsonWriter.writeStringField("sessionId", this.sessionId);
@@ -1184,6 +1043,8 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                     deserializedSearchPostRequest.highlightPreTag = reader.getString();
                 } else if ("minimumCoverage".equals(fieldName)) {
                     deserializedSearchPostRequest.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                } else if ("moreLikeThis".equals(fieldName)) {
+                    deserializedSearchPostRequest.moreLikeThis = reader.getString();
                 } else if ("orderby".equals(fieldName)) {
                     List<String> orderBy = reader.getNullable(nonNullReader -> {
                         String orderByEncodedAsString = nonNullReader.getString();
@@ -1194,6 +1055,8 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                     deserializedSearchPostRequest.orderBy = orderBy;
                 } else if ("queryType".equals(fieldName)) {
                     deserializedSearchPostRequest.queryType = QueryType.fromString(reader.getString());
+                } else if ("agenticOptions".equals(fieldName)) {
+                    deserializedSearchPostRequest.agenticOptions = AgenticSearchOptions.fromJson(reader);
                 } else if ("scoringStatistics".equals(fieldName)) {
                     deserializedSearchPostRequest.scoringStatistics = ScoringStatistics.fromString(reader.getString());
                 } else if ("sessionId".equals(fieldName)) {
@@ -1270,5 +1133,211 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
             }
             return deserializedSearchPostRequest;
         });
+    }
+
+    /*
+     * A value that specifies the language of the search query.
+     */
+    @Generated
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
+     */
+    @Generated
+    private QuerySpellerType querySpeller;
+
+    /*
+     * A value that specifies whether query rewrites should be generated to augment the search query.
+     */
+    @Generated
+    private QueryRewritesType queryRewrites;
+
+    /*
+     * The comma-separated list of field names used for semantic ranking.
+     */
+    @Generated
+    private List<String> semanticFields;
+
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    @Generated
+    private HybridSearch hybridSearch;
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    @Generated
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the querySpeller value.
+     */
+    @Generated
+    public QuerySpellerType getQuerySpeller() {
+        return this.querySpeller;
+    }
+
+    /**
+     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param querySpeller the querySpeller value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQuerySpeller(QuerySpellerType querySpeller) {
+        this.querySpeller = querySpeller;
+        return this;
+    }
+
+    /**
+     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @return the queryRewrites value.
+     */
+    @Generated
+    public QueryRewritesType getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQueryRewrites(QueryRewritesType queryRewrites) {
+        this.queryRewrites = queryRewrites;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @return the semanticFields value.
+     */
+    @Generated
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
+        return this;
+    }
+
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @return the hybridSearch value.
+     */
+    @Generated
+    public HybridSearch getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setHybridSearch(HybridSearch hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
+    }
+
+    /*
+     * The key of the document to use as the basis for finding similar documents. This parameter cannot be used together
+     * with search text.
+     */
+    @Generated
+    private String moreLikeThis;
+
+    /*
+     * Request-scoped runtime options when queryType is set to 'agentic'. Not supported with other query modes. Use the
+     * existing debug selector for diagnostics.
+     */
+    @Generated
+    private AgenticSearchOptions agenticOptions;
+
+    /**
+     * Get the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @return the moreLikeThis value.
+     */
+    @Generated
+    public String getMoreLikeThis() {
+        return this.moreLikeThis;
+    }
+
+    /**
+     * Set the moreLikeThis property: The key of the document to use as the basis for finding similar documents. This
+     * parameter cannot be used together with search text.
+     *
+     * @param moreLikeThis the moreLikeThis value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setMoreLikeThis(String moreLikeThis) {
+        this.moreLikeThis = moreLikeThis;
+        return this;
+    }
+
+    /**
+     * Get the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @return the agenticOptions value.
+     */
+    @Generated
+    public AgenticSearchOptions getAgenticOptions() {
+        return this.agenticOptions;
+    }
+
+    /**
+     * Set the agenticOptions property: Request-scoped runtime options when queryType is set to 'agentic'. Not supported
+     * with other query modes. Use the existing debug selector for diagnostics.
+     *
+     * @param agenticOptions the agenticOptions value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setAgenticOptions(AgenticSearchOptions agenticOptions) {
+        this.agenticOptions = agenticOptions;
+        return this;
     }
 }

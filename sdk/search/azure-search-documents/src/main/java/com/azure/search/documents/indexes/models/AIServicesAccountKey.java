@@ -30,7 +30,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
     private final String key;
 
     /*
-     * The subdomain url for the corresponding AI Service.
+     * The subdomain/Azure AI Services endpoint url for the corresponding AI Service.
      */
     @Generated
     private final String subdomainUrl;
@@ -69,7 +69,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
     }
 
     /**
-     * Get the subdomainUrl property: The subdomain url for the corresponding AI Service.
+     * Get the subdomainUrl property: The subdomain/Azure AI Services endpoint url for the corresponding AI Service.
      *
      * @return the subdomainUrl value.
      */

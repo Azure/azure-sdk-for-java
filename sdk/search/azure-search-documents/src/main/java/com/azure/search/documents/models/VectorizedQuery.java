@@ -105,6 +105,104 @@ public final class VectorizedQuery extends VectorQuery {
      */
     @Generated
     @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("k", getKNearestNeighbors());
+        jsonWriter.writeStringField("fields", getFields());
+        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
+        jsonWriter.writeNumberField("oversampling", getOversampling());
+        jsonWriter.writeNumberField("weight", getWeight());
+        jsonWriter.writeJsonField("threshold", getThreshold());
+        jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
+        jsonWriter.writeJsonField("topicGraph", getTopicGraph());
+        jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VectorizedQuery from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VectorizedQuery if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VectorizedQuery.
+     */
+    @Generated
+    public static VectorizedQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Integer kNearestNeighbors = null;
+            String fields = null;
+            Boolean exhaustive = null;
+            Double oversampling = null;
+            Float weight = null;
+            VectorThreshold threshold = null;
+            String filterOverride = null;
+            Integer perDocumentVectorLimit = null;
+            VectorQueryTopicGraph topicGraph = null;
+            List<Float> vector = null;
+            VectorQueryKind kind = VectorQueryKind.VECTOR;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("k".equals(fieldName)) {
+                    kNearestNeighbors = reader.getNullable(JsonReader::getInt);
+                } else if ("fields".equals(fieldName)) {
+                    fields = reader.getString();
+                } else if ("exhaustive".equals(fieldName)) {
+                    exhaustive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("oversampling".equals(fieldName)) {
+                    oversampling = reader.getNullable(JsonReader::getDouble);
+                } else if ("weight".equals(fieldName)) {
+                    weight = reader.getNullable(JsonReader::getFloat);
+                } else if ("threshold".equals(fieldName)) {
+                    threshold = VectorThreshold.fromJson(reader);
+                } else if ("filterOverride".equals(fieldName)) {
+                    filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("topicGraph".equals(fieldName)) {
+                    topicGraph = VectorQueryTopicGraph.fromJson(reader);
+                } else if ("vector".equals(fieldName)) {
+                    vector = reader.readArray(reader1 -> reader1.getFloat());
+                } else if ("kind".equals(fieldName)) {
+                    kind = VectorQueryKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            VectorizedQuery deserializedVectorizedQuery = new VectorizedQuery(vector);
+            deserializedVectorizedQuery.setKNearestNeighbors(kNearestNeighbors);
+            deserializedVectorizedQuery.setFields(fields);
+            deserializedVectorizedQuery.setExhaustive(exhaustive);
+            deserializedVectorizedQuery.setOversampling(oversampling);
+            deserializedVectorizedQuery.setWeight(weight);
+            deserializedVectorizedQuery.setThreshold(threshold);
+            deserializedVectorizedQuery.setFilterOverride(filterOverride);
+            deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
+            deserializedVectorizedQuery.setTopicGraph(topicGraph);
+            deserializedVectorizedQuery.kind = kind;
+            return deserializedVectorizedQuery;
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizedQuery setWeight(Float weight) {
+        super.setWeight(weight);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public VectorizedQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
         return this;
@@ -135,91 +233,8 @@ public final class VectorizedQuery extends VectorQuery {
      */
     @Generated
     @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("k", getKNearestNeighbors());
-        jsonWriter.writeStringField("fields", getFields());
-        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeNumberField("oversampling", getOversampling());
-        jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
-        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
-        jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of VectorizedQuery from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of VectorizedQuery if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VectorizedQuery.
-     */
-    @Generated
-    public static VectorizedQuery fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Integer kNearestNeighbors = null;
-            String fields = null;
-            Boolean exhaustive = null;
-            Double oversampling = null;
-            Float weight = null;
-            VectorThreshold threshold = null;
-            String filterOverride = null;
-            Integer perDocumentVectorLimit = null;
-            List<Float> vector = null;
-            VectorQueryKind kind = VectorQueryKind.VECTOR;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("k".equals(fieldName)) {
-                    kNearestNeighbors = reader.getNullable(JsonReader::getInt);
-                } else if ("fields".equals(fieldName)) {
-                    fields = reader.getString();
-                } else if ("exhaustive".equals(fieldName)) {
-                    exhaustive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("oversampling".equals(fieldName)) {
-                    oversampling = reader.getNullable(JsonReader::getDouble);
-                } else if ("weight".equals(fieldName)) {
-                    weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    threshold = VectorThreshold.fromJson(reader);
-                } else if ("filterOverride".equals(fieldName)) {
-                    filterOverride = reader.getString();
-                } else if ("perDocumentVectorLimit".equals(fieldName)) {
-                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
-                } else if ("vector".equals(fieldName)) {
-                    vector = reader.readArray(reader1 -> reader1.getFloat());
-                } else if ("kind".equals(fieldName)) {
-                    kind = VectorQueryKind.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            VectorizedQuery deserializedVectorizedQuery = new VectorizedQuery(vector);
-            deserializedVectorizedQuery.setKNearestNeighbors(kNearestNeighbors);
-            deserializedVectorizedQuery.setFields(fields);
-            deserializedVectorizedQuery.setExhaustive(exhaustive);
-            deserializedVectorizedQuery.setOversampling(oversampling);
-            deserializedVectorizedQuery.setWeight(weight);
-            deserializedVectorizedQuery.setThreshold(threshold);
-            deserializedVectorizedQuery.setFilterOverride(filterOverride);
-            deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
-            deserializedVectorizedQuery.kind = kind;
-            return deserializedVectorizedQuery;
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizedQuery setWeight(Float weight) {
-        super.setWeight(weight);
+    public VectorizedQuery setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        super.setTopicGraph(topicGraph);
         return this;
     }
 }

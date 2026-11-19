@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -122,18 +123,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      */
     @Generated
     private VectorSearch vectorSearch;
-
-    /*
-     * A value indicating whether permission filtering is enabled for the index.
-     */
-    @Generated
-    private SearchIndexPermissionFilterOption permissionFilterOption;
-
-    /*
-     * A value indicating whether Purview is enabled for the index.
-     */
-    @Generated
-    private Boolean purviewEnabled;
 
     /*
      * The ETag of the index.
@@ -590,6 +579,191 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
+     * Get the eTag property: The ETag of the index.
+     *
+     * @return the eTag value.
+     */
+    @Generated
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag of the index.
+     *
+     * @param eTag the eTag value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("graphProfile", this.graphProfile);
+        jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile);
+        jsonWriter.writeJsonField("corsOptions", this.corsOptions);
+        jsonWriter.writeArrayField("suggesters", this.suggesters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("analyzers", this.analyzers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
+        jsonWriter.writeJsonField("similarity", this.similarity);
+        jsonWriter.writeJsonField("semantic", this.semanticSearch);
+        jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
+        jsonWriter.writeStringField("permissionFilterOption",
+            this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
+        jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
+        jsonWriter.writeJsonField("sharePointConnectorAppRegistration", this.sharePointConnectorAppRegistration);
+        jsonWriter.writeJsonField("oneLakeSecuritySource", this.oneLakeSecuritySource);
+        jsonWriter.writeStringField("@odata.etag", this.eTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndex from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndex if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchIndex.
+     */
+    @Generated
+    public static SearchIndex fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            List<SearchField> fields = null;
+            String description = null;
+            GraphProfile graphProfile = null;
+            List<ScoringProfile> scoringProfiles = null;
+            String defaultScoringProfile = null;
+            CorsOptions corsOptions = null;
+            List<SearchSuggester> suggesters = null;
+            List<LexicalAnalyzer> analyzers = null;
+            List<LexicalTokenizer> tokenizers = null;
+            List<TokenFilter> tokenFilters = null;
+            List<CharFilter> charFilters = null;
+            List<LexicalNormalizer> normalizers = null;
+            SearchResourceEncryptionKey encryptionKey = null;
+            SimilarityAlgorithm similarity = null;
+            SemanticSearch semanticSearch = null;
+            VectorSearch vectorSearch = null;
+            SearchIndexPermissionFilterOption permissionFilterOption = null;
+            Boolean purviewEnabled = null;
+            SharePointConnectorAppRegistration sharePointConnectorAppRegistration = null;
+            OneLakeSecuritySource oneLakeSecuritySource = null;
+            String eTag = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("fields".equals(fieldName)) {
+                    fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("graphProfile".equals(fieldName)) {
+                    graphProfile = GraphProfile.fromJson(reader);
+                } else if ("scoringProfiles".equals(fieldName)) {
+                    scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
+                } else if ("defaultScoringProfile".equals(fieldName)) {
+                    defaultScoringProfile = reader.getString();
+                } else if ("corsOptions".equals(fieldName)) {
+                    corsOptions = CorsOptions.fromJson(reader);
+                } else if ("suggesters".equals(fieldName)) {
+                    suggesters = reader.readArray(reader1 -> SearchSuggester.fromJson(reader1));
+                } else if ("analyzers".equals(fieldName)) {
+                    analyzers = reader.readArray(reader1 -> LexicalAnalyzer.fromJson(reader1));
+                } else if ("tokenizers".equals(fieldName)) {
+                    tokenizers = reader.readArray(reader1 -> LexicalTokenizer.fromJson(reader1));
+                } else if ("tokenFilters".equals(fieldName)) {
+                    tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
+                } else if ("charFilters".equals(fieldName)) {
+                    charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
+                } else if ("normalizers".equals(fieldName)) {
+                    normalizers = reader.readArray(reader1 -> LexicalNormalizer.fromJson(reader1));
+                } else if ("encryptionKey".equals(fieldName)) {
+                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                } else if ("similarity".equals(fieldName)) {
+                    similarity = SimilarityAlgorithm.fromJson(reader);
+                } else if ("semantic".equals(fieldName)) {
+                    semanticSearch = SemanticSearch.fromJson(reader);
+                } else if ("vectorSearch".equals(fieldName)) {
+                    vectorSearch = VectorSearch.fromJson(reader);
+                } else if ("permissionFilterOption".equals(fieldName)) {
+                    permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
+                } else if ("purviewEnabled".equals(fieldName)) {
+                    purviewEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sharePointConnectorAppRegistration".equals(fieldName)) {
+                    sharePointConnectorAppRegistration = SharePointConnectorAppRegistration.fromJson(reader);
+                } else if ("oneLakeSecuritySource".equals(fieldName)) {
+                    oneLakeSecuritySource = OneLakeSecuritySource.fromJson(reader);
+                } else if ("@odata.etag".equals(fieldName)) {
+                    eTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            SearchIndex deserializedSearchIndex = new SearchIndex(name, fields);
+            deserializedSearchIndex.description = description;
+            deserializedSearchIndex.graphProfile = graphProfile;
+            deserializedSearchIndex.scoringProfiles = scoringProfiles;
+            deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
+            deserializedSearchIndex.corsOptions = corsOptions;
+            deserializedSearchIndex.suggesters = suggesters;
+            deserializedSearchIndex.analyzers = analyzers;
+            deserializedSearchIndex.tokenizers = tokenizers;
+            deserializedSearchIndex.tokenFilters = tokenFilters;
+            deserializedSearchIndex.charFilters = charFilters;
+            deserializedSearchIndex.normalizers = normalizers;
+            deserializedSearchIndex.encryptionKey = encryptionKey;
+            deserializedSearchIndex.similarity = similarity;
+            deserializedSearchIndex.semanticSearch = semanticSearch;
+            deserializedSearchIndex.vectorSearch = vectorSearch;
+            deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
+            deserializedSearchIndex.purviewEnabled = purviewEnabled;
+            deserializedSearchIndex.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+            deserializedSearchIndex.oneLakeSecuritySource = oneLakeSecuritySource;
+            deserializedSearchIndex.eTag = eTag;
+            return deserializedSearchIndex;
+        });
+    }
+
+    /*
+     * A value indicating whether permission filtering is enabled for the index.
+     */
+    @Generated
+    private SearchIndexPermissionFilterOption permissionFilterOption;
+
+    /*
+     * A value indicating whether Purview is enabled for the index.
+     */
+    @Generated
+    private Boolean purviewEnabled;
+
+    /*
+     * Configures a SharePoint connector app registration for the index, enabling document-level permissions from
+     * SharePoint. If provided, the applicationId and federatedCredentialId properties are required.
+     */
+    @Generated
+    private SharePointConnectorAppRegistration sharePointConnectorAppRegistration;
+
+    /**
      * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
      * index.
      *
@@ -636,153 +810,93 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the eTag property: The ETag of the index.
+     * Get the sharePointConnectorAppRegistration property: Configures a SharePoint connector app registration for the
+     * index, enabling document-level permissions from SharePoint. If provided, the applicationId and
+     * federatedCredentialId properties are required.
      *
-     * @return the eTag value.
+     * @return the sharePointConnectorAppRegistration value.
      */
     @Generated
-    public String getETag() {
-        return this.eTag;
+    public SharePointConnectorAppRegistration getSharePointConnectorAppRegistration() {
+        return this.sharePointConnectorAppRegistration;
     }
 
     /**
-     * Set the eTag property: The ETag of the index.
+     * Set the sharePointConnectorAppRegistration property: Configures a SharePoint connector app registration for the
+     * index, enabling document-level permissions from SharePoint. If provided, the applicationId and
+     * federatedCredentialId properties are required.
      *
-     * @param eTag the eTag value to set.
+     * @param sharePointConnectorAppRegistration the sharePointConnectorAppRegistration value to set.
      * @return the SearchIndex object itself.
      */
     @Generated
-    public SearchIndex setETag(String eTag) {
-        this.eTag = eTag;
+    public SearchIndex
+        setSharePointConnectorAppRegistration(SharePointConnectorAppRegistration sharePointConnectorAppRegistration) {
+        this.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+        return this;
+    }
+
+    /*
+     * Maps edge-list graph roles to this index's fields. Required for search.graph; omitted on ordinary document
+     * indexes.
+     */
+    @Generated
+    private GraphProfile graphProfile;
+
+    /*
+     * Identifies the Microsoft Fabric OneLake lakehouse that the index's documents originate from. Required when any
+     * field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId' permission filter.
+     */
+    @Generated
+    private OneLakeSecuritySource oneLakeSecuritySource;
+
+    /**
+     * Get the graphProfile property: Maps edge-list graph roles to this index's fields. Required for search.graph;
+     * omitted on ordinary document indexes.
+     *
+     * @return the graphProfile value.
+     */
+    @Generated
+    public GraphProfile getGraphProfile() {
+        return this.graphProfile;
+    }
+
+    /**
+     * Set the graphProfile property: Maps edge-list graph roles to this index's fields. Required for search.graph;
+     * omitted on ordinary document indexes.
+     *
+     * @param graphProfile the graphProfile value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setGraphProfile(GraphProfile graphProfile) {
+        this.graphProfile = graphProfile;
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the oneLakeSecuritySource property: Identifies the Microsoft Fabric OneLake lakehouse that the index's
+     * documents originate from. Required when any field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId'
+     * permission filter.
+     *
+     * @return the oneLakeSecuritySource value.
      */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile);
-        jsonWriter.writeJsonField("corsOptions", this.corsOptions);
-        jsonWriter.writeArrayField("suggesters", this.suggesters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("analyzers", this.analyzers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
-        jsonWriter.writeJsonField("similarity", this.similarity);
-        jsonWriter.writeJsonField("semantic", this.semanticSearch);
-        jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
-        jsonWriter.writeStringField("permissionFilterOption",
-            this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
-        jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
-        jsonWriter.writeStringField("@odata.etag", this.eTag);
-        return jsonWriter.writeEndObject();
+    public OneLakeSecuritySource getOneLakeSecuritySource() {
+        return this.oneLakeSecuritySource;
     }
 
     /**
-     * Reads an instance of SearchIndex from the JsonReader.
+     * Set the oneLakeSecuritySource property: Identifies the Microsoft Fabric OneLake lakehouse that the index's
+     * documents originate from. Required when any field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId'
+     * permission filter.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchIndex if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchIndex.
+     * @param oneLakeSecuritySource the oneLakeSecuritySource value to set.
+     * @return the SearchIndex object itself.
      */
     @Generated
-    public static SearchIndex fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            List<SearchField> fields = null;
-            String description = null;
-            List<ScoringProfile> scoringProfiles = null;
-            String defaultScoringProfile = null;
-            CorsOptions corsOptions = null;
-            List<SearchSuggester> suggesters = null;
-            List<LexicalAnalyzer> analyzers = null;
-            List<LexicalTokenizer> tokenizers = null;
-            List<TokenFilter> tokenFilters = null;
-            List<CharFilter> charFilters = null;
-            List<LexicalNormalizer> normalizers = null;
-            SearchResourceEncryptionKey encryptionKey = null;
-            SimilarityAlgorithm similarity = null;
-            SemanticSearch semanticSearch = null;
-            VectorSearch vectorSearch = null;
-            SearchIndexPermissionFilterOption permissionFilterOption = null;
-            Boolean purviewEnabled = null;
-            String eTag = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("fields".equals(fieldName)) {
-                    fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("scoringProfiles".equals(fieldName)) {
-                    scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
-                } else if ("defaultScoringProfile".equals(fieldName)) {
-                    defaultScoringProfile = reader.getString();
-                } else if ("corsOptions".equals(fieldName)) {
-                    corsOptions = CorsOptions.fromJson(reader);
-                } else if ("suggesters".equals(fieldName)) {
-                    suggesters = reader.readArray(reader1 -> SearchSuggester.fromJson(reader1));
-                } else if ("analyzers".equals(fieldName)) {
-                    analyzers = reader.readArray(reader1 -> LexicalAnalyzer.fromJson(reader1));
-                } else if ("tokenizers".equals(fieldName)) {
-                    tokenizers = reader.readArray(reader1 -> LexicalTokenizer.fromJson(reader1));
-                } else if ("tokenFilters".equals(fieldName)) {
-                    tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
-                } else if ("charFilters".equals(fieldName)) {
-                    charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
-                } else if ("normalizers".equals(fieldName)) {
-                    normalizers = reader.readArray(reader1 -> LexicalNormalizer.fromJson(reader1));
-                } else if ("encryptionKey".equals(fieldName)) {
-                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("similarity".equals(fieldName)) {
-                    similarity = SimilarityAlgorithm.fromJson(reader);
-                } else if ("semantic".equals(fieldName)) {
-                    semanticSearch = SemanticSearch.fromJson(reader);
-                } else if ("vectorSearch".equals(fieldName)) {
-                    vectorSearch = VectorSearch.fromJson(reader);
-                } else if ("permissionFilterOption".equals(fieldName)) {
-                    permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
-                } else if ("purviewEnabled".equals(fieldName)) {
-                    purviewEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("@odata.etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            SearchIndex deserializedSearchIndex = new SearchIndex(name, fields);
-            deserializedSearchIndex.description = description;
-            deserializedSearchIndex.scoringProfiles = scoringProfiles;
-            deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
-            deserializedSearchIndex.corsOptions = corsOptions;
-            deserializedSearchIndex.suggesters = suggesters;
-            deserializedSearchIndex.analyzers = analyzers;
-            deserializedSearchIndex.tokenizers = tokenizers;
-            deserializedSearchIndex.tokenFilters = tokenFilters;
-            deserializedSearchIndex.charFilters = charFilters;
-            deserializedSearchIndex.normalizers = normalizers;
-            deserializedSearchIndex.encryptionKey = encryptionKey;
-            deserializedSearchIndex.similarity = similarity;
-            deserializedSearchIndex.semanticSearch = semanticSearch;
-            deserializedSearchIndex.vectorSearch = vectorSearch;
-            deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
-            deserializedSearchIndex.purviewEnabled = purviewEnabled;
-            deserializedSearchIndex.eTag = eTag;
-            return deserializedSearchIndex;
-        });
+    public SearchIndex setOneLakeSecuritySource(OneLakeSecuritySource oneLakeSecuritySource) {
+        this.oneLakeSecuritySource = oneLakeSecuritySource;
+        return this;
     }
 }
