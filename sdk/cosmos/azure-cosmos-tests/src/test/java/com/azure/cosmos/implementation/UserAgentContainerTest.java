@@ -33,6 +33,8 @@ public class UserAgentContainerTest {
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker, UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F3"},
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F1"},
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker), "|F2"},
+            {Arrays.asList(UserAgentFeatureFlags.EncryptionMixedArrayOptOut), "|F80"},
+            {Arrays.asList(UserAgentFeatureFlags.ThinClient, UserAgentFeatureFlags.EncryptionMixedArrayOptOut), "|F84"},
             {new ArrayList<>(), ""},
             {null, ""}
         };
@@ -194,11 +196,33 @@ public class UserAgentContainerTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void explicitFeatureFlagSurvivesFeatureAndSuffixUpdates() {
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.addFeatureEnabledFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
+        userAgentContainer.addFeatureEnabledFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
+        assertThat(userAgentContainer.getUserAgent()).endsWith("|F80");
+
+        userAgentContainer.setSuffix("my-app");
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            new HashSet<>(Arrays.asList(UserAgentFeatureFlags.ThinClient)));
+        userAgentContainer.appendSuffix("azure-cosmos-encryption/3.0.0");
+        assertThat(userAgentContainer.getUserAgent()).endsWith("my-app azure-cosmos-encryption/3.0.0|F84");
+        assertThat(userAgentContainer.getSuffix()).isEqualTo("my-app azure-cosmos-encryption/3.0.0");
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            new HashSet<>(Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker)));
+        assertThat(userAgentContainer.getUserAgent()).endsWith("my-app azure-cosmos-encryption/3.0.0|F82");
+        userAgentContainer.setSuffix("new-app");
+        assertThat(userAgentContainer.getUserAgent()).endsWith("new-app|F80");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void concurrentReadersObserveCompleteUserAgentSnapshots() throws Exception {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("my-app");
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(
             new HashSet<>(Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker)));
+        userAgentContainer.addFeatureEnabledFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
 
         ExecutorService executor = Executors.newFixedThreadPool(5);
         CountDownLatch start = new CountDownLatch(1);
@@ -218,7 +242,7 @@ public class UserAgentContainerTest {
                     start.await();
                     for (int i = 0; i < 10_000; i++) {
                         String userAgent = userAgentContainer.getUserAgent();
-                        if (!userAgent.endsWith("|F2")) {
+                        if (!userAgent.endsWith("|F82")) {
                             throw new AssertionError("Observed incomplete user-agent snapshot: " + userAgent);
                         }
                     }

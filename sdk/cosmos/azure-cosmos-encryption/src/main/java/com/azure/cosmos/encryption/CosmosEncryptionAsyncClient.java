@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -206,7 +207,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             AsyncDocumentClient documentClient = CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosAsyncClient);
             documentClient.appendUserAgentSuffix(Constants.USER_AGENT_SUFFIX);
             if (!this.mixedArrayEncryptionEnabled) {
-                documentClient.appendUserAgentSuffix(Constants.MIXED_ARRAYS_DISABLED_USER_AGENT_SUFFIX);
+                documentClient.addUserAgentFeatureFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
             }
         } catch (Exception e) {
             LOGGER.warn("Failed to append encryption SDK user agent suffix", e);

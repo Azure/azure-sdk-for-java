@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.text.Normalizer;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
@@ -24,6 +25,8 @@ public class UserAgentContainer {
     private volatile String suffix;
     private volatile String userAgent;
     private String baseUserAgentWithSuffix;
+    private int featureFlags;
+    private int additionalFeatureFlags;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
@@ -54,15 +57,29 @@ public class UserAgentContainer {
         writeLock.lock();
         try {
 
-            int value = 0;
+            this.featureFlags = 0;
 
             for (UserAgentFeatureFlags userAgentFeatureFlag : userAgentFeatureFlags) {
-                value += userAgentFeatureFlag.getValue();
+                this.featureFlags |= userAgentFeatureFlag.getValue();
             }
 
-            this.userAgent = (!Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
-                ? this.baseUserAgentWithSuffix
-                : this.baseUserAgent) + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
+            this.userAgent = getUserAgentWithFeatureFlags();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    /**
+     * Adds an explicitly enabled flag, preserving it when evaluated feature flags are refreshed.
+     *
+     * @param userAgentFeatureFlag the flag to add
+     */
+    public void addFeatureEnabledFlag(UserAgentFeatureFlags userAgentFeatureFlag) {
+        Objects.requireNonNull(userAgentFeatureFlag, "userAgentFeatureFlag");
+        writeLock.lock();
+        try {
+            this.additionalFeatureFlags |= userAgentFeatureFlag.getValue();
+            this.userAgent = getUserAgentWithFeatureFlags();
         } finally {
             writeLock.unlock();
         }
@@ -71,7 +88,8 @@ public class UserAgentContainer {
     public void setSuffix(String suffix) {
         writeLock.lock();
         try {
-            this.userAgent = this.setSuffixInternal(suffix);
+            this.featureFlags = 0;
+            this.userAgent = this.setSuffixInternal(suffix) + getFeatureFlagsSuffix();
         } finally {
             writeLock.unlock();
         }
@@ -90,16 +108,10 @@ public class UserAgentContainer {
                 }
             }
 
-            String featureFlagsSuffix = "";
-            int featureFlagsIndex = this.userAgent.indexOf("|F");
-            if (featureFlagsIndex >= 0) {
-                featureFlagsSuffix = this.userAgent.substring(featureFlagsIndex);
-            }
-
             String appendedSuffix = Strings.isNullOrEmpty(this.suffix)
                 ? suffix
                 : this.suffix + " " + suffix;
-            this.userAgent = this.setSuffixInternal(appendedSuffix) + featureFlagsSuffix;
+            this.userAgent = this.setSuffixInternal(appendedSuffix) + getFeatureFlagsSuffix();
         } finally {
             writeLock.unlock();
         }
@@ -107,6 +119,16 @@ public class UserAgentContainer {
 
     public String getUserAgent() {
         return this.userAgent;
+    }
+
+    private String getUserAgentWithFeatureFlags() {
+        return (!Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
+            ? this.baseUserAgentWithSuffix : this.baseUserAgent) + getFeatureFlagsSuffix();
+    }
+
+    private String getFeatureFlagsSuffix() {
+        int value = this.featureFlags | this.additionalFeatureFlags;
+        return value == 0 ? "" : "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
     }
 
     private String setSuffixInternal(String suffix) {

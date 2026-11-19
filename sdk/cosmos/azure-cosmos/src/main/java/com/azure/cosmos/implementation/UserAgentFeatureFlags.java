@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 /**
- * An enum representing various flags whose opt-in context will appear in the user agent suffix.
+ * An enum representing feature and configuration flags that appear in the user agent suffix.
  * <p>
  * IMPORTANT: When adding a new flag, please ensure the following:
  * <ul>
@@ -24,7 +24,8 @@ public enum UserAgentFeatureFlags {
     // Bit 6 (1 << 6) is reserved in the Java SDK for HTTP/2 PING keepalive health.
     // Cross-SDK reservation in .NET (UserAgentFeatureFlags.cs) will be tracked
     // separately and is not a blocker for surfacing this flag in Java telemetry.
-    Http2PingHealth(1 << 6);
+    Http2PingHealth(1 << 6),
+    EncryptionMixedArrayOptOut(1 << 7);
 
     private final int value;
 

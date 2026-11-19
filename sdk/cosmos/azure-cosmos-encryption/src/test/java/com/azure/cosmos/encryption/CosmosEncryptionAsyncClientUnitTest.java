@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +27,8 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+
+import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -81,8 +84,11 @@ public class CosmosEncryptionAsyncClientUnitTest {
         KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
         UserAgentContainer userAgent = new UserAgentContainer();
         userAgent.setSuffix("customer-app");
+        userAgent.setFeatureEnabledFlagsAsSuffix(EnumSet.of(UserAgentFeatureFlags.ThinClient));
         FieldUtils.writeField(mockDocClient, "userAgentContainer", userAgent, true);
         Mockito.doCallRealMethod().when(mockDocClient).appendUserAgentSuffix(Mockito.anyString());
+        Mockito.doCallRealMethod().when(mockDocClient)
+            .addUserAgentFeatureFlag(Mockito.any(UserAgentFeatureFlags.class));
         String previousValue = System.getProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
 
         org.mockito.MockedStatic<CosmosBridgeInternal> bridgeMock = Mockito.mockStatic(CosmosBridgeInternal.class);
@@ -101,12 +107,8 @@ public class CosmosEncryptionAsyncClientUnitTest {
             assertThat(userAgent.getUserAgent())
                 .contains("customer-app", Constants.USER_AGENT_SUFFIX);
             assertThat(userAgent.getSuffix().split("\\s+"))
-                .containsOnlyOnce("customer-app", Constants.USER_AGENT_SUFFIX);
-            if (optOutExpected) {
-                assertThat(userAgent.getSuffix().split("\\s+")).containsOnlyOnce("encryption-mixed-arrays-disabled");
-            } else {
-                assertThat(userAgent.getUserAgent()).doesNotContain("encryption-mixed-arrays-disabled");
-            }
+                .containsExactly("customer-app", Constants.USER_AGENT_SUFFIX);
+            assertThat(userAgent.getUserAgent()).endsWith(optOutExpected ? "|F84" : "|F4");
         } finally {
             bridgeMock.close();
             restoreMixedArraySetting(previousValue);
@@ -134,7 +136,7 @@ public class CosmosEncryptionAsyncClientUnitTest {
 
             assertThat(client.isMixedArrayEncryptionEnabled()).isFalse();
             assertThat(encryptedArray.get(1).asInt()).isEqualTo(42);
-            Mockito.verify(mockDocClient).appendUserAgentSuffix(Constants.MIXED_ARRAYS_DISABLED_USER_AGENT_SUFFIX);
+            Mockito.verify(mockDocClient).addUserAgentFeatureFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
         } finally {
             restoreMixedArraySetting(previousValue);
         }

@@ -1221,6 +1221,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public void addUserAgentFeatureFlag(UserAgentFeatureFlags userAgentFeatureFlag) {
+        this.userAgentContainer.addFeatureEnabledFlag(userAgentFeatureFlag);
+    }
+
+    @Override
     public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
         return mostRecentlyCreatedDiagnostics.get();
     }
@@ -1669,6 +1674,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void addUserAgentSuffix(UserAgentContainer userAgentContainer, Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+
+        // The encryption SDK registers its opt-out explicitly, not through core feature evaluation.
+        userAgentFeatureFlags.remove(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
 
         if (!this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionAutomaticFailover);
