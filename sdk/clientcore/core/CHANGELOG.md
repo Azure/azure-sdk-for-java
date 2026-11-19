@@ -14,6 +14,9 @@
 
 ### Bugs Fixed
 
+- Fixed `ProxyOptions` suffix wildcards in non-proxy hosts dropping a literal character, causing unintended hosts
+  to bypass the proxy, and fixed an exception for the `.*` entry.
+
 - Restricted JDK HTTP proxy credentials to authentication challenges from the configured proxy host and port,
   preventing destination servers or other proxies from receiving them.
 - Fixed HTTP timeout resolution to prefer explicit builder values, then builder-specific configuration, then global

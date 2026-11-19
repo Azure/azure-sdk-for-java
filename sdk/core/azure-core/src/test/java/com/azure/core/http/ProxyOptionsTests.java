@@ -491,6 +491,47 @@ public class ProxyOptionsTests {
         return argumentsList.stream();
     }
 
+    @ParameterizedTest
+    @MethodSource("nonProxyHostSuffixSupplier")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void nonProxyHostSuffix(String entry, String host, boolean expected) {
+        ProxyOptions codeOptions
+            = new ProxyOptions(ProxyOptions.Type.HTTP, InetSocketAddress.createUnresolved("localhost", 7777))
+                .setNonProxyHosts(entry);
+        Configuration javaConfiguration = createJavaEnvConfiguration(null, null, entry, false);
+        Configuration explicitConfiguration = createExplicitConfiguration(null, null, entry);
+        Configuration environmentConfiguration
+            = setJavaSystemProxyPrerequisiteToTrue("http://localhost:7777", entry.replace('|', ','), true);
+
+        ProxyOptions[] options = new ProxyOptions[] {
+            codeOptions,
+            fromConfiguration(javaConfiguration),
+            fromConfiguration(explicitConfiguration),
+            fromConfiguration(environmentConfiguration) };
+        for (ProxyOptions option : options) {
+            Pattern pattern = compile(option.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+            assertEquals(expected, pattern.matcher(host).matches(),
+                () -> String.format("Expected Pattern '%s' to match '%s': %s.", pattern.pattern(), host, expected));
+        }
+    }
+
+    private static Stream<Arguments> nonProxyHostSuffixSupplier() {
+        return Stream.of(Arguments.of("storage1*", "storage1.example.com", true),
+            Arguments.of("storage1*", "storage2.example.com", false), Arguments.of("10.*", "10.0.0.1", true),
+            Arguments.of("10.*", "100.64.0.1", false), Arguments.of("storage1*?", "storage1.example.com", true),
+            Arguments.of("storage1*?", "storage2.example.com", false),
+            Arguments.of("storage1.?", "storage1.example.com", true),
+            Arguments.of("storage1.?", "storage2.example.com", false), Arguments.of("192.168.", "192.168.0.1", true),
+            Arguments.of("192.168.", "192.16.0.1", false), Arguments.of("storage1.*", "storage1.example.com", true),
+            Arguments.of("storage1.*", "storage1other.example.com", false),
+            Arguments.of("storage1.*?", "storage1.example.com", true),
+            Arguments.of("storage1.*?", "storage1other.example.com", false), Arguments.of(".*", "example.com", true),
+            Arguments.of(".*?", "example.com", true), Arguments.of("*", "example.com", true),
+            Arguments.of("*?", "example.com", true), Arguments.of("a*", "abc", true), Arguments.of("a*", "bcd", false),
+            Arguments.of("storage1*|10.*", "storage2.example.com", false),
+            Arguments.of("storage1*|10.*", "10.0.0.1", true));
+    }
+
     @Test
     public void sanitizeNoProxyDoesNotSplitEscapedCommas() {
         String noProxy = "noproxy\\,withescapedcomma";

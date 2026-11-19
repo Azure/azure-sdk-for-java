@@ -12,6 +12,9 @@
 
 ### Bugs Fixed
 
+- Fixed `ProxyOptions` suffix wildcards in non-proxy hosts dropping a literal character, causing unintended hosts
+  to bypass the proxy, and fixed an exception for the `.*` entry.
+
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused

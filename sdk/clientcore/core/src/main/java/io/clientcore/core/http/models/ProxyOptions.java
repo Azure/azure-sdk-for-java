@@ -106,6 +106,8 @@ public final class ProxyOptions {
      * <p>
      * The expected format of the passed string is a {@code '|'} delimited list of hosts which should bypass the proxy.
      * Individual host strings may contain regex characters such as {@code '*'}.
+     * For example, {@code storage1*} bypasses the proxy for hosts beginning with {@code storage1}, and
+     * {@code 10.*} bypasses it for hosts beginning with {@code 10.} (the period is literal).
      *
      * @param nonProxyHosts Hosts that bypass the proxy.
      * @return the updated ProxyOptions object
@@ -441,22 +443,16 @@ public final class ProxyOptions {
              */
             if (sanitizedNonProxyHost.endsWith(".")) {
                 suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
+                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 1);
             } else if (sanitizedNonProxyHost.endsWith(".?")) {
                 suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 3);
+                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
             } else if (sanitizedNonProxyHost.endsWith("*?")) {
                 suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 3);
+                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
             } else if (sanitizedNonProxyHost.endsWith("*")) {
                 suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 2);
-            } else if (sanitizedNonProxyHost.endsWith(".*?")) {
-                suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 4);
-            } else if (sanitizedNonProxyHost.endsWith(".*")) {
-                suffixWildcard = ".*?";
-                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 3);
+                sanitizedNonProxyHost = sanitizedNonProxyHost.substring(0, sanitizedNonProxyHost.length() - 1);
             }
 
             try {
