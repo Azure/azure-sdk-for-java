@@ -67,6 +67,7 @@ public class RxGatewayStoreModelTest {
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(
             Collections.singleton(UserAgentFeatureFlags.ThinClient));
+        userAgentContainer.appendSuffix("encryption-mixed-arrays-disabled");
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             clientContext,
@@ -80,7 +81,7 @@ public class RxGatewayStoreModelTest {
 
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT))
             .isEqualTo(userAgentContainer.getUserAgent())
-            .endsWith("test-application|F4");
+            .endsWith("test-application encryption-mixed-arrays-disabled|F4");
     }
 
     @Test(groups = "unit")

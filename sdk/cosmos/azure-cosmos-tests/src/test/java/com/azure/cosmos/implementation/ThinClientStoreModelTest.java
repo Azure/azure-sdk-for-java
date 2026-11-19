@@ -232,6 +232,7 @@ public class ThinClientStoreModelTest {
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(
             Collections.singleton(UserAgentFeatureFlags.ThinClient));
+        userAgentContainer.appendSuffix("encryption-mixed-arrays-disabled");
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
             clientContext,
@@ -257,7 +258,7 @@ public class ThinClientStoreModelTest {
         assertThat(httpHeaders.value(HttpConstants.HttpHeaders.USER_AGENT))
             .as("ThinClient HTTP framing headers should use the latest evaluated user agent")
             .isEqualTo(userAgentContainer.getUserAgent())
-            .endsWith("test-application|F4");
+            .endsWith("test-application encryption-mixed-arrays-disabled|F4");
         assertThat(httpHeaders.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449))
             .as("ThinClient HTTP framing headers should not include the Gateway V1 no-retry-449 header")
             .isNull();
