@@ -45,7 +45,7 @@ BeforeAll {
     $script:autoCompletion = @($autoPublish.steps | Where-Object { $_['displayName'] -eq 'Mark auto-release packages as released' })[0]
 }
 
-Describe 'Java manual release-plan ID forwarding' {
+Describe 'Java manual release-plan ID forwarding' -Tag 'UnitTest' {
     It 'declares an optional raw string ID with zero default at all four boundaries' {
         foreach ($document in $documents) {
             $parameter = @($document.parameters | Where-Object { $_.name -eq 'ReleasePlanId' })
@@ -102,7 +102,9 @@ Describe 'Java manual release-plan ID forwarding' {
         $inputs.scriptLocation | Should -BeExactly 'inlineScript'
         $inputs.inlineScript | Should -Match 'foreach \(\$artifact in \$artifacts\)'
         $inputs.inlineScript | Should -Match 'PackageInfo/\$\(\$artifact.name\).json'
-        $inputs.inlineScript | Should -Match ([regex]::Escape('-ReleasePlanId ''${{ parameters.ReleasePlanId }}'''))
+        $inputs.inlineScript | Should -Match ([regex]::Escape('-ReleasePlanId "$env:AZSDK_RELEASE_PLAN_ID"'))
+        $inputs.inlineScript | Should -Not -Match 'parameters\.ReleasePlanId'
+        $autoCompletion.env.AZSDK_RELEASE_PLAN_ID | Should -BeExactly $idExpression
         $inputs.inlineScript | Should -Match ([regex]::Escape('-SdkPullRequest ''$(AutoReleaseSdkPullRequestUrl)'''))
         $inputs.Contains('arguments') | Should -BeFalse
         $filter = @(Find-YamlMap $autoStage displayName 'Filter signed packages for auto-release')[0]
@@ -141,18 +143,29 @@ Describe 'Java manual release-plan ID forwarding' {
 
     It 'keeps raw ID <Id> unchanged for downstream validation, including invalid numeric text' -TestCases @(
         @{ Id = '0' }, @{ Id = '2147483647' }, @{ Id = '2147483648' },
-        @{ Id = '9007199254740993' }, @{ Id = '1.5' }, @{ Id = '-1' }, @{ Id = ' 42 ' }
+        @{ Id = '9007199254740993' }, @{ Id = '1.5' }, @{ Id = '-1' }, @{ Id = ' 42 ' },
+        @{ Id = "0'; Write-Output 'probe'; #" }, @{ Id = '$(Write-Output probe)' }
     ) {
         param([string]$Id)
-        # Parse a quoted queue-time value and apply the exact, untransformed relay expressions.
-        $value = (ConvertFrom-Yaml "ReleasePlanId: '$Id'").ReleasePlanId
+        $value = (ConvertFrom-Yaml (ConvertTo-Yaml @{ ReleasePlanId = $Id })).ReleasePlanId
         foreach ($relay in @($entry.extends, $manualRelay, $autoRelay)) {
             $relay.parameters.ReleasePlanId | Should -BeExactly $idExpression
             $value | Should -BeOfType ([string])
             $value | Should -BeExactly $Id
         }
         $manualCompletion.parameters.ReleasePlanId | Should -BeExactly $idExpression
-        $argument = $autoCompletion.inputs.inlineScript.Replace($idExpression, $value)
-        $argument | Should -Match ([regex]::Escape("-ReleasePlanId '$Id'"))
+        $argument = [regex]::Match($autoCompletion.inputs.inlineScript, '-ReleasePlanId\s+("[^"\r\n]*")').Value
+        $argument | Should -BeExactly '-ReleasePlanId "$env:AZSDK_RELEASE_PLAN_ID"'
+        $previousValue = $env:AZSDK_RELEASE_PLAN_ID
+        try {
+            $env:AZSDK_RELEASE_PLAN_ID = $value
+            $capture = [scriptblock]::Create('& { param([string]$ReleasePlanId) $ReleasePlanId } ' + $argument)
+            $actual = @(& $capture)
+            $actual.Count | Should -Be 1
+            $actual[0] | Should -BeExactly $Id
+        }
+        finally {
+            $env:AZSDK_RELEASE_PLAN_ID = $previousValue
+        }
     }
 }

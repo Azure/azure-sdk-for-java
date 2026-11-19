@@ -386,10 +386,12 @@ stages:
                   $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1 `
                     -PackageInfoFilePath "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($artifact.name).json" `
                     -AzsdkExePath '$(AZSDK)' `
-                    -ReleasePlanId '${{ parameters.ReleasePlanId }}' `
+                    -ReleasePlanId "$env:AZSDK_RELEASE_PLAN_ID" `
                     -SdkPullRequest '$(AutoReleaseSdkPullRequestUrl)'
                 }
               workingDirectory: $(Pipeline.Workspace)
+            env:
+              AZSDK_RELEASE_PLAN_ID: ${{ parameters.ReleasePlanId }}
 
       - job: UpdatePackageVersion
         displayName: Update auto-release package versions
