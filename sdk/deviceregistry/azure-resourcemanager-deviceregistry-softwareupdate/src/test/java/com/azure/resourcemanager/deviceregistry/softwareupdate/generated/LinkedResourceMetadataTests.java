@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.softwareupdate.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkedResourceMetadata;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkedResourceMetadata;
 import org.junit.jupiter.api.Assertions;
 
 public final class LinkedResourceMetadataTests {

@@ -11,15 +11,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.UpdateInstancesClient;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.LinkPreflightResponseInner;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.UpdateInstanceInner;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkInitiateRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkNotifyRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkPreflightRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkPreflightResponse;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkUpdateRequest;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.UpdateInstance;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.UpdateInstances;
 
@@ -96,52 +90,6 @@ public final class UpdateInstancesImpl implements UpdateInstances {
         } else {
             return null;
         }
-    }
-
-    public Response<LinkPreflightResponse> linkPreflightWithResponse(String resourceGroupName,
-        String updateInstanceName, LinkPreflightRequest body, Context context) {
-        Response<LinkPreflightResponseInner> inner
-            = this.serviceClient().linkPreflightWithResponse(resourceGroupName, updateInstanceName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LinkPreflightResponseImpl(inner.getValue(), this.manager()));
-    }
-
-    public LinkPreflightResponse linkPreflight(String resourceGroupName, String updateInstanceName,
-        LinkPreflightRequest body) {
-        LinkPreflightResponseInner inner
-            = this.serviceClient().linkPreflight(resourceGroupName, updateInstanceName, body);
-        if (inner != null) {
-            return new LinkPreflightResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body) {
-        this.serviceClient().linkInitiate(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body,
-        Context context) {
-        this.serviceClient().linkInitiate(resourceGroupName, updateInstanceName, body, context);
-    }
-
-    public void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body) {
-        this.serviceClient().linkNotify(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body,
-        Context context) {
-        this.serviceClient().linkNotify(resourceGroupName, updateInstanceName, body, context);
-    }
-
-    public void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body) {
-        this.serviceClient().linkUpdate(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body,
-        Context context) {
-        this.serviceClient().linkUpdate(resourceGroupName, updateInstanceName, body, context);
     }
 
     public UpdateInstance getById(String id) {

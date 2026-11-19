@@ -36,14 +36,14 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.UpdateInstancesClient;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.LinkPreflightResponseInner;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.UpdateInstanceInner;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkInitiateRequest;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkNotifyRequest;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkPreflightRequest;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkPreflightResponse;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.LinkUpdateRequest;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.UpdateInstanceListResult;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkInitiateRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkNotifyRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkPreflightRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkUpdateRequest;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.UpdateInstanceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -212,7 +212,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkPreflight")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LinkPreflightResponseInner>> linkPreflight(@HostParam("endpoint") String endpoint,
+        Mono<Response<LinkPreflightResponse>> linkPreflight(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("updateInstanceName") String updateInstanceName, @HeaderParam("Content-Type") String contentType,
@@ -222,7 +222,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkPreflight")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<LinkPreflightResponseInner> linkPreflightSync(@HostParam("endpoint") String endpoint,
+        Response<LinkPreflightResponse> linkPreflightSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("updateInstanceName") String updateInstanceName, @HeaderParam("Content-Type") String contentType,
@@ -1238,7 +1238,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return response body for /link/preflight along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkPreflightResponseInner>> linkPreflightWithResponseAsync(String resourceGroupName,
+    private Mono<Response<LinkPreflightResponse>> linkPreflightWithResponseAsync(String resourceGroupName,
         String updateInstanceName, LinkPreflightRequest body) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -1263,7 +1263,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return response body for /link/preflight on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LinkPreflightResponseInner> linkPreflightAsync(String resourceGroupName, String updateInstanceName,
+    private Mono<LinkPreflightResponse> linkPreflightAsync(String resourceGroupName, String updateInstanceName,
         LinkPreflightRequest body) {
         return linkPreflightWithResponseAsync(resourceGroupName, updateInstanceName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1284,8 +1284,8 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return response body for /link/preflight along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkPreflightResponseInner> linkPreflightWithResponse(String resourceGroupName,
-        String updateInstanceName, LinkPreflightRequest body, Context context) {
+    Response<LinkPreflightResponse> linkPreflightWithResponse(String resourceGroupName, String updateInstanceName,
+        LinkPreflightRequest body, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.linkPreflightSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1306,7 +1306,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return response body for /link/preflight.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkPreflightResponseInner linkPreflight(String resourceGroupName, String updateInstanceName,
+    LinkPreflightResponse linkPreflight(String resourceGroupName, String updateInstanceName,
         LinkPreflightRequest body) {
         return linkPreflightWithResponse(resourceGroupName, updateInstanceName, body, Context.NONE).getValue();
     }
@@ -1418,7 +1418,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of account linking information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkInitiate(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkInitiate(String resourceGroupName, String updateInstanceName,
         LinkInitiateRequest body) {
         Response<BinaryData> response = linkInitiateWithResponse(resourceGroupName, updateInstanceName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1439,7 +1439,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of account linking information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkInitiate(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkInitiate(String resourceGroupName, String updateInstanceName,
         LinkInitiateRequest body, Context context) {
         Response<BinaryData> response = linkInitiateWithResponse(resourceGroupName, updateInstanceName, body, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
@@ -1478,7 +1478,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body) {
+    void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body) {
         beginLinkInitiate(resourceGroupName, updateInstanceName, body).getFinalResult();
     }
 
@@ -1496,8 +1496,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body,
-        Context context) {
+    void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body, Context context) {
         beginLinkInitiate(resourceGroupName, updateInstanceName, body, context).getFinalResult();
     }
 
@@ -1608,7 +1607,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of account linking information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkNotify(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkNotify(String resourceGroupName, String updateInstanceName,
         LinkNotifyRequest body) {
         Response<BinaryData> response = linkNotifyWithResponse(resourceGroupName, updateInstanceName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1629,7 +1628,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of account linking information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkNotify(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkNotify(String resourceGroupName, String updateInstanceName,
         LinkNotifyRequest body, Context context) {
         Response<BinaryData> response = linkNotifyWithResponse(resourceGroupName, updateInstanceName, body, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
@@ -1667,7 +1666,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body) {
+    void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body) {
         beginLinkNotify(resourceGroupName, updateInstanceName, body).getFinalResult();
     }
 
@@ -1685,8 +1684,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body,
-        Context context) {
+    void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body, Context context) {
         beginLinkNotify(resourceGroupName, updateInstanceName, body, context).getFinalResult();
     }
 
@@ -1797,7 +1795,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of response body for /link/update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkUpdate(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkUpdate(String resourceGroupName, String updateInstanceName,
         LinkUpdateRequest body) {
         Response<BinaryData> response = linkUpdateWithResponse(resourceGroupName, updateInstanceName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -1818,7 +1816,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @return the {@link SyncPoller} for polling of response body for /link/update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginLinkUpdate(String resourceGroupName, String updateInstanceName,
+    SyncPoller<PollResult<Void>, Void> beginLinkUpdate(String resourceGroupName, String updateInstanceName,
         LinkUpdateRequest body, Context context) {
         Response<BinaryData> response = linkUpdateWithResponse(resourceGroupName, updateInstanceName, body, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
@@ -1856,7 +1854,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body) {
+    void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body) {
         beginLinkUpdate(resourceGroupName, updateInstanceName, body).getFinalResult();
     }
 
@@ -1874,8 +1872,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body,
-        Context context) {
+    void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body, Context context) {
         beginLinkUpdate(resourceGroupName, updateInstanceName, body, context).getFinalResult();
     }
 

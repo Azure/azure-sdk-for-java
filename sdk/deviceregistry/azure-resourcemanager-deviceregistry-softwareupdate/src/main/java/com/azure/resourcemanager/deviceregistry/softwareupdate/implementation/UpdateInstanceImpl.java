@@ -4,17 +4,11 @@
 
 package com.azure.resourcemanager.deviceregistry.softwareupdate.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.UpdateInstanceInner;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.fluent.models.UpdateInstancePropertiesInner;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkInitiateRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkNotifyRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkPreflightRequest;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkPreflightResponse;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.LinkUpdateRequest;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.UpdateInstance;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.UpdateInstanceProperties;
@@ -166,39 +160,6 @@ public final class UpdateInstanceImpl implements UpdateInstance, UpdateInstance.
             .getByResourceGroupWithResponse(resourceGroupName, updateInstanceName, context)
             .getValue();
         return this;
-    }
-
-    public Response<LinkPreflightResponse> linkPreflightWithResponse(LinkPreflightRequest body, Context context) {
-        return serviceManager.updateInstances()
-            .linkPreflightWithResponse(resourceGroupName, updateInstanceName, body, context);
-    }
-
-    public LinkPreflightResponse linkPreflight(LinkPreflightRequest body) {
-        return serviceManager.updateInstances().linkPreflight(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkInitiate(LinkInitiateRequest body) {
-        serviceManager.updateInstances().linkInitiate(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkInitiate(LinkInitiateRequest body, Context context) {
-        serviceManager.updateInstances().linkInitiate(resourceGroupName, updateInstanceName, body, context);
-    }
-
-    public void linkNotify(LinkNotifyRequest body) {
-        serviceManager.updateInstances().linkNotify(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkNotify(LinkNotifyRequest body, Context context) {
-        serviceManager.updateInstances().linkNotify(resourceGroupName, updateInstanceName, body, context);
-    }
-
-    public void linkUpdate(LinkUpdateRequest body) {
-        serviceManager.updateInstances().linkUpdate(resourceGroupName, updateInstanceName, body);
-    }
-
-    public void linkUpdate(LinkUpdateRequest body, Context context) {
-        serviceManager.updateInstances().linkUpdate(resourceGroupName, updateInstanceName, body, context);
     }
 
     public UpdateInstanceImpl withRegion(Region location) {

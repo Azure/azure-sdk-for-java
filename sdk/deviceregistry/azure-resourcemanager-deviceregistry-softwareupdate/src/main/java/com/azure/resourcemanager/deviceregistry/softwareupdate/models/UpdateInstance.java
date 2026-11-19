@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.deviceregistry.softwareupdate.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -286,90 +285,4 @@ public interface UpdateInstance {
      * @return the refreshed resource.
      */
     UpdateInstance refresh(Context context);
-
-    /**
-     * Preflight check for account linking readiness. No state change.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for /link/preflight along with {@link Response}.
-     */
-    Response<LinkPreflightResponse> linkPreflightWithResponse(LinkPreflightRequest body, Context context);
-
-    /**
-     * Preflight check for account linking readiness. No state change.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for /link/preflight.
-     */
-    LinkPreflightResponse linkPreflight(LinkPreflightRequest body);
-
-    /**
-     * Initiate account linking. Validates and persists binding, sets linkingState=InProgress.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkInitiate(LinkInitiateRequest body);
-
-    /**
-     * Initiate account linking. Validates and persists binding, sets linkingState=InProgress.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkInitiate(LinkInitiateRequest body, Context context);
-
-    /**
-     * Notify linking state change (commit, fail, or namespaceDeleted).
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkNotify(LinkNotifyRequest body);
-
-    /**
-     * Notify linking state change (commit, fail, or namespaceDeleted).
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkNotify(LinkNotifyRequest body, Context context);
-
-    /**
-     * Update linking properties (e.g., identity rotation).
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkUpdate(LinkUpdateRequest body);
-
-    /**
-     * Update linking properties (e.g., identity rotation).
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void linkUpdate(LinkUpdateRequest body, Context context);
 }

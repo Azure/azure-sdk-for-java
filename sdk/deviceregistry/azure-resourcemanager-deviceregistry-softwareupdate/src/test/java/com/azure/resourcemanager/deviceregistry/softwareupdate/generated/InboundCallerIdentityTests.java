@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.softwareupdate.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.deviceregistry.softwareupdate.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.softwareupdate.implementation.models.InboundCallerIdentity;
 import com.azure.resourcemanager.deviceregistry.softwareupdate.models.ManagedServiceIdentityType;
 import org.junit.jupiter.api.Assertions;
 

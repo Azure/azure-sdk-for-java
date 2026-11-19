@@ -27,7 +27,7 @@ public final class UpdateInstancesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceAddress\":\"fvgxbfsmxneh\",\"linking\":{\"namespaceResourceId\":\"vecxgodebfqkk\",\"linkingState\":\"Succeeded\"}},\"identity\":{\"principalId\":\"ukgri\",\"tenantId\":\"lzlfbxzpuz\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"drgvtqagn\":{\"principalId\":\"nqzahmgkbrpyyd\",\"clientId\":\"bnuqqkpik\"},\"zzmhjrunmpxttd\":{\"principalId\":\"ynhijggme\",\"clientId\":\"siarbutrcvpn\"},\"nrs\":{\"principalId\":\"rbnlankxmyskp\",\"clientId\":\"enbtkcxywny\"}}},\"location\":\"lqidyby\",\"tags\":{\"lfktsths\":\"fclhaaxdbabphlwr\"},\"id\":\"cocmnyyaztt\",\"name\":\"twwrqp\",\"type\":\"edckzywbiexzfey\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceAddress\":\"yxzk\",\"linking\":{\"namespaceResourceId\":\"ocukoklyax\",\"linkingState\":\"Orphaned\"}},\"identity\":{\"principalId\":\"uqszfk\",\"tenantId\":\"ypewrmjmwvvjekt\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"qdqgbi\":{\"principalId\":\"hwlrsf\",\"clientId\":\"zpwv\"},\"jf\":{\"principalId\":\"lihkaetcktvfc\",\"clientId\":\"fsnkymuctq\"}}},\"location\":\"brjcxe\",\"tags\":{\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"id\":\"flz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +36,24 @@ public final class UpdateInstancesCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        UpdateInstance response = manager.updateInstances()
-            .define("ejzicwifsjtt")
-            .withRegion("mjmwvvjektcx")
-            .withExistingResourceGroup("fyhxde")
-            .withTags(mapOf("rzpwvlqdqgbiq", "hwlrsf", "vf", "lihkaetcktvfc", "xerf", "nkymuctqhjfbebrj", "phxepcyvahf",
-                "wutttxfvjrbi"))
-            .withProperties(new UpdateInstancePropertiesInner())
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("tmryw", new UserAssignedIdentity(), "nwvlryavwhheunmm",
-                    new UserAssignedIdentity(), "conuqszfkbeype", new UserAssignedIdentity())))
-            .create();
+        UpdateInstance response
+            = manager.updateInstances()
+                .define("zjuqkhrsaj")
+                .withRegion("zfbishcbkhaj")
+                .withExistingResourceGroup("cciw")
+                .withTags(mapOf("agalpbuxwgipwhon", "eamdp", "kix", "wkgshwa", "eputtmrywnuzoqf", "bin",
+                    "qvyxlwhzlsicoho", "iyqzrnk"))
+                .withProperties(new UpdateInstancePropertiesInner())
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("vmezy", new UserAssignedIdentity(), "oenkouknvudwti",
+                            new UserAssignedIdentity(), "npiucgygevqznty", new UserAssignedIdentity(), "jzicwifsjt",
+                            new UserAssignedIdentity())))
+                .create();
 
-        Assertions.assertEquals("lqidyby", response.location());
-        Assertions.assertEquals("fclhaaxdbabphlwr", response.tags().get("lfktsths"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("brjcxe", response.location());
+        Assertions.assertEquals("wutttxfvjrbi", response.tags().get("phxepcyvahf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available
