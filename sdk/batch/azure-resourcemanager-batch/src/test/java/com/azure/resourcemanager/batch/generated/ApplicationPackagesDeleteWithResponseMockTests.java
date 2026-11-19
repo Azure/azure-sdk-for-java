@@ -28,7 +28,8 @@ public final class ApplicationPackagesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.applicationPackages()
-            .deleteWithResponse("evy", "yhsgz", "czbgomfgbeg", "qgleohibetnluank", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ygznmmaxrizk", "obgop", "lhslnelxieixyn", "lxecwcrojphslh",
+                com.azure.core.util.Context.NONE);
 
     }
 }

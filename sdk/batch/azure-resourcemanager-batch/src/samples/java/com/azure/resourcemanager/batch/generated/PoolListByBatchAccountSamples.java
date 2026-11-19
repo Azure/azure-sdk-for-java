@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class PoolListByBatchAccountSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolList.json
+     * x-ms-original-file: 2026-10-01/PoolList.json
      */
     /**
      * Sample code: ListPool.
@@ -23,7 +23,7 @@ public final class PoolListByBatchAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolListWithFilter.json
+     * x-ms-original-file: 2026-10-01/PoolListWithFilter.json
      */
     /**
      * Sample code: ListPoolWithFilter.
@@ -34,7 +34,7 @@ public final class PoolListByBatchAccountSamples {
         manager.pools()
             .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", 50,
                 "properties/allocationState,properties/provisioningStateTransitionTime,properties/currentDedicatedNodes,properties/currentLowPriorityNodes",
-                "startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-02-02')",
+                "startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-09-01')",
                 com.azure.core.util.Context.NONE);
     }
 }

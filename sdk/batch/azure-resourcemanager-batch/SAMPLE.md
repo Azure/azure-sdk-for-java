@@ -77,7 +77,7 @@
  */
 public final class ApplicationCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationCreate.json
+     * x-ms-original-file: 2026-10-01/ApplicationCreate.json
      */
     /**
      * Sample code: ApplicationCreate.
@@ -103,7 +103,7 @@ public final class ApplicationCreateSamples {
  */
 public final class ApplicationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationDelete.json
+     * x-ms-original-file: 2026-10-01/ApplicationDelete.json
      */
     /**
      * Sample code: ApplicationDelete.
@@ -125,7 +125,7 @@ public final class ApplicationDeleteSamples {
  */
 public final class ApplicationGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationGet.json
+     * x-ms-original-file: 2026-10-01/ApplicationGet.json
      */
     /**
      * Sample code: ApplicationGet.
@@ -147,7 +147,7 @@ public final class ApplicationGetSamples {
  */
 public final class ApplicationListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationList.json
+     * x-ms-original-file: 2026-10-01/ApplicationList.json
      */
     /**
      * Sample code: ApplicationList.
@@ -171,7 +171,7 @@ import com.azure.resourcemanager.batch.models.Application;
  */
 public final class ApplicationUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationUpdate.json
+     * x-ms-original-file: 2026-10-01/ApplicationUpdate.json
      */
     /**
      * Sample code: ApplicationUpdate.
@@ -197,7 +197,7 @@ import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParamete
  */
 public final class ApplicationPackageActivateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageActivate.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageActivate.json
      */
     /**
      * Sample code: ApplicationPackageActivate.
@@ -220,7 +220,7 @@ public final class ApplicationPackageActivateSamples {
  */
 public final class ApplicationPackageCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageCreate.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageCreate.json
      */
     /**
      * Sample code: ApplicationPackageCreate.
@@ -244,7 +244,7 @@ public final class ApplicationPackageCreateSamples {
  */
 public final class ApplicationPackageDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageDelete.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageDelete.json
      */
     /**
      * Sample code: ApplicationPackageDelete.
@@ -267,7 +267,7 @@ public final class ApplicationPackageDeleteSamples {
  */
 public final class ApplicationPackageGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageGet.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageGet.json
      */
     /**
      * Sample code: ApplicationPackageGet.
@@ -290,7 +290,7 @@ public final class ApplicationPackageGetSamples {
  */
 public final class ApplicationPackageListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageList.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageList.json
      */
     /**
      * Sample code: ApplicationPackageList.
@@ -322,7 +322,7 @@ import java.util.Map;
  */
 public final class BatchAccountCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_BYOS.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_BYOS.json
      */
     /**
      * Sample code: BatchAccountCreate_BYOS.
@@ -344,7 +344,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_UserAssignedIdentity.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_UserAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_UserAssignedIdentity.
@@ -366,7 +366,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PrivateBatchAccountCreate.json
+     * x-ms-original-file: 2026-10-01/PrivateBatchAccountCreate.json
      */
     /**
      * Sample code: PrivateBatchAccountCreate.
@@ -388,7 +388,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_SystemAssignedIdentity.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_SystemAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_SystemAssignedIdentity.
@@ -407,7 +407,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_Default.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_Default.json
      */
     /**
      * Sample code: BatchAccountCreate_Default.
@@ -446,7 +446,7 @@ public final class BatchAccountCreateSamples {
  */
 public final class BatchAccountDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountDelete.json
+     * x-ms-original-file: 2026-10-01/BatchAccountDelete.json
      */
     /**
      * Sample code: BatchAccountDelete.
@@ -467,7 +467,7 @@ public final class BatchAccountDeleteSamples {
  */
 public final class BatchAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateBatchAccountGet.json
+     * x-ms-original-file: 2026-10-01/PrivateBatchAccountGet.json
      */
     /**
      * Sample code: PrivateBatchAccountGet.
@@ -481,7 +481,7 @@ public final class BatchAccountGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountGet.json
+     * x-ms-original-file: 2026-10-01/BatchAccountGet.json
      */
     /**
      * Sample code: BatchAccountGet.
@@ -504,7 +504,7 @@ public final class BatchAccountGetByResourceGroupSamples {
  */
 public final class BatchAccountGetDetectorSamples {
     /*
-     * x-ms-original-file: 2025-06-01/DetectorGet.json
+     * x-ms-original-file: 2026-10-01/DetectorGet.json
      */
     /**
      * Sample code: GetDetector.
@@ -527,7 +527,7 @@ public final class BatchAccountGetDetectorSamples {
  */
 public final class BatchAccountGetKeysSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountGetKeys.json
+     * x-ms-original-file: 2026-10-01/BatchAccountGetKeys.json
      */
     /**
      * Sample code: BatchAccountGetKeys.
@@ -549,7 +549,7 @@ public final class BatchAccountGetKeysSamples {
  */
 public final class BatchAccountListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountList.json
+     * x-ms-original-file: 2026-10-01/BatchAccountList.json
      */
     /**
      * Sample code: BatchAccountList.
@@ -570,7 +570,7 @@ public final class BatchAccountListSamples {
  */
 public final class BatchAccountListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01/BatchAccountListByResourceGroup.json
      */
     /**
      * Sample code: BatchAccountListByResourceGroup.
@@ -591,7 +591,7 @@ public final class BatchAccountListByResourceGroupSamples {
  */
 public final class BatchAccountListDetectorsSamples {
     /*
-     * x-ms-original-file: 2025-06-01/DetectorList.json
+     * x-ms-original-file: 2026-10-01/DetectorList.json
      */
     /**
      * Sample code: ListDetectors.
@@ -613,7 +613,7 @@ public final class BatchAccountListDetectorsSamples {
  */
 public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: 2026-10-01/BatchAccountListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ListOutboundNetworkDependencies.
@@ -639,7 +639,7 @@ import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameter
  */
 public final class BatchAccountRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountRegenerateKey.json
+     * x-ms-original-file: 2026-10-01/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.
@@ -663,7 +663,7 @@ public final class BatchAccountRegenerateKeySamples {
  */
 public final class BatchAccountSynchronizeAutoStorageKeysSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountSynchronizeAutoStorageKeys.json
+     * x-ms-original-file: 2026-10-01/BatchAccountSynchronizeAutoStorageKeys.json
      */
     /**
      * Sample code: BatchAccountSynchronizeAutoStorageKeys.
@@ -689,7 +689,7 @@ import com.azure.resourcemanager.batch.models.BatchAccount;
  */
 public final class BatchAccountUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountUpdate.json
+     * x-ms-original-file: 2026-10-01/BatchAccountUpdate.json
      */
     /**
      * Sample code: BatchAccountUpdate.
@@ -720,7 +720,7 @@ import com.azure.resourcemanager.batch.models.ResourceType;
  */
 public final class LocationCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01/LocationCheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: 2026-10-01/LocationCheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_AlreadyExists.
@@ -737,7 +737,7 @@ public final class LocationCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/LocationCheckNameAvailability_Available.json
+     * x-ms-original-file: 2026-10-01/LocationCheckNameAvailability_Available.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_Available.
@@ -762,7 +762,7 @@ public final class LocationCheckNameAvailabilitySamples {
  */
 public final class LocationGetQuotasSamples {
     /*
-     * x-ms-original-file: 2025-06-01/LocationGetQuotas.json
+     * x-ms-original-file: 2026-10-01/LocationGetQuotas.json
      */
     /**
      * Sample code: LocationGetQuotas.
@@ -783,7 +783,7 @@ public final class LocationGetQuotasSamples {
  */
 public final class LocationListSupportedVirtualMachineSkusSamples {
     /*
-     * x-ms-original-file: 2025-06-01/LocationListVirtualMachineSkus.json
+     * x-ms-original-file: 2026-10-01/LocationListVirtualMachineSkus.json
      */
     /**
      * Sample code: LocationListVirtualMachineSkus.
@@ -804,7 +804,7 @@ public final class LocationListSupportedVirtualMachineSkusSamples {
  */
 public final class NetworkSecurityPerimeterGetConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-06-01/NspConfigurationGet.json
+     * x-ms-original-file: 2026-10-01/NspConfigurationGet.json
      */
     /**
      * Sample code: GetNspConfiguration.
@@ -827,7 +827,7 @@ public final class NetworkSecurityPerimeterGetConfigurationSamples {
  */
 public final class NetworkSecurityPerimeterListConfigurationsSamples {
     /*
-     * x-ms-original-file: 2025-06-01/NspConfigurationsList.json
+     * x-ms-original-file: 2026-10-01/NspConfigurationsList.json
      */
     /**
      * Sample code: ListNspConfigurations.
@@ -849,7 +849,7 @@ public final class NetworkSecurityPerimeterListConfigurationsSamples {
  */
 public final class NetworkSecurityPerimeterReconcileConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-06-01/NspConfigurationReconcile.json
+     * x-ms-original-file: 2026-10-01/NspConfigurationReconcile.json
      */
     /**
      * Sample code: ReconcileNspConfiguration.
@@ -872,7 +872,7 @@ public final class NetworkSecurityPerimeterReconcileConfigurationSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/OperationsList.json
+     * x-ms-original-file: 2026-10-01/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -947,7 +947,7 @@ import java.util.Map;
  */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration ServiceArtifactReference.
@@ -978,7 +978,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_SecurityProfile.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_SecurityProfile.json
      */
     /**
      * Sample code: CreatePool - SecurityProfile.
@@ -1006,7 +1006,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_Tags.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_Tags.json
      */
     /**
      * Sample code: CreatePool - Tags.
@@ -1029,7 +1029,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration OSDisk.
@@ -1058,7 +1058,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
      */
     /**
      * Sample code: CreatePool - disk encryption set for user subscription accounts.
@@ -1090,7 +1090,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_MinimalVirtualMachineConfiguration.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal VirtualMachineConfiguration.
@@ -1115,7 +1115,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration Extensions.
@@ -1151,7 +1151,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
      */
     /**
      * Sample code: CreatePool - customer managed key for Batch managed accounts.
@@ -1186,7 +1186,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_UserAssignedIdentities.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_UserAssignedIdentities.json
      */
     /**
      * Sample code: CreatePool - UserAssignedIdentities.
@@ -1216,7 +1216,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_AcceleratedNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_AcceleratedNetworking.json
      */
     /**
      * Sample code: CreatePool - accelerated networking.
@@ -1244,7 +1244,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_UpgradePolicy.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_UpgradePolicy.json
      */
     /**
      * Sample code: CreatePool - UpgradePolicy.
@@ -1284,7 +1284,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full VirtualMachineConfiguration.
@@ -1342,7 +1342,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
      */
     /**
      * Sample code: CreatePool - confidential disk encryption set for user subscription accounts.
@@ -1385,7 +1385,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_SharedImageGallery.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_SharedImageGallery.json
      */
     /**
      * Sample code: CreatePool - Custom Image.
@@ -1405,7 +1405,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_DualStackNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_DualStackNetworking.json
      */
     /**
      * Sample code: CreatePool - dual stack networking.
@@ -1441,7 +1441,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_NoPublicIPAddresses.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_NoPublicIPAddresses.json
      */
     /**
      * Sample code: CreatePool - No public IP.
@@ -1465,7 +1465,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_PublicIPs.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.
@@ -1512,7 +1512,7 @@ public final class PoolCreateSamples {
  */
 public final class PoolDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolDelete.json
+     * x-ms-original-file: 2026-10-01/PoolDelete.json
      */
     /**
      * Sample code: DeletePool.
@@ -1534,7 +1534,7 @@ public final class PoolDeleteSamples {
  */
 public final class PoolDisableAutoScaleSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolDisableAutoScale.json
+     * x-ms-original-file: 2026-10-01/PoolDisableAutoScale.json
      */
     /**
      * Sample code: Disable AutoScale.
@@ -1557,7 +1557,7 @@ public final class PoolDisableAutoScaleSamples {
  */
 public final class PoolGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_SecurityProfile.json
+     * x-ms-original-file: 2026-10-01/PoolGet_SecurityProfile.json
      */
     /**
      * Sample code: GetPool - SecurityProfile.
@@ -1571,7 +1571,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration Extensions.
@@ -1586,7 +1586,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration OSDisk.
@@ -1600,7 +1600,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_UpgradePolicy.json
+     * x-ms-original-file: 2026-10-01/PoolGet_UpgradePolicy.json
      */
     /**
      * Sample code: GetPool - UpgradePolicy.
@@ -1614,7 +1614,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration ServiceArtifactReference.
@@ -1629,7 +1629,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_AcceleratedNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolGet_AcceleratedNetworking.json
      */
     /**
      * Sample code: GetPool - AcceleratedNetworking.
@@ -1643,7 +1643,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet.json
+     * x-ms-original-file: 2026-10-01/PoolGet.json
      */
     /**
      * Sample code: GetPool.
@@ -1666,7 +1666,7 @@ public final class PoolGetSamples {
  */
 public final class PoolListByBatchAccountSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolList.json
+     * x-ms-original-file: 2026-10-01/PoolList.json
      */
     /**
      * Sample code: ListPool.
@@ -1680,7 +1680,7 @@ public final class PoolListByBatchAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolListWithFilter.json
+     * x-ms-original-file: 2026-10-01/PoolListWithFilter.json
      */
     /**
      * Sample code: ListPoolWithFilter.
@@ -1691,7 +1691,7 @@ public final class PoolListByBatchAccountSamples {
         manager.pools()
             .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", 50,
                 "properties/allocationState,properties/provisioningStateTransitionTime,properties/currentDedicatedNodes,properties/currentLowPriorityNodes",
-                "startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-02-02')",
+                "startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-09-01')",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1705,7 +1705,7 @@ public final class PoolListByBatchAccountSamples {
  */
 public final class PoolStopResizeSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolStopResize.json
+     * x-ms-original-file: 2026-10-01/PoolStopResize.json
      */
     /**
      * Sample code: StopPoolResize.
@@ -1725,10 +1725,11 @@ public final class PoolStopResizeSamples {
 ```java
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
-import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
 import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.Pool;
+import com.azure.resourcemanager.batch.models.PoolPatchProperties;
+import com.azure.resourcemanager.batch.models.RequestedComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import java.time.Duration;
@@ -1739,7 +1740,7 @@ import java.util.Arrays;
  */
 public final class PoolUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_EnableAutoScale.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_EnableAutoScale.json
      */
     /**
      * Sample code: UpdatePool - Enable Autoscale.
@@ -1751,13 +1752,13 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withScaleSettings(
-                new ScaleSettings().withAutoScale(new AutoScaleSettings().withFormula("$TargetDedicatedNodes=34")))
+            .withProperties(new PoolPatchProperties().withScaleSettings(
+                new ScaleSettings().withAutoScale(new AutoScaleSettings().withFormula("$TargetDedicatedNodes=34"))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_RemoveStartTask.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_RemoveStartTask.json
      */
     /**
      * Sample code: UpdatePool - Remove Start Task.
@@ -1768,11 +1769,11 @@ public final class PoolUpdateSamples {
         Pool resource = manager.pools()
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withStartTask(new StartTask()).apply();
+        resource.update().withProperties(new PoolPatchProperties().withStartTask(new StartTask())).apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_ResizePool.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_ResizePool.json
      */
     /**
      * Sample code: UpdatePool - Resize Pool.
@@ -1784,16 +1785,16 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withScaleSettings(
+            .withProperties(new PoolPatchProperties().withScaleSettings(
                 new ScaleSettings().withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
                     .withTargetDedicatedNodes(5)
                     .withTargetLowPriorityNodes(0)
-                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+                    .withNodeDeallocationOption(RequestedComputeNodeDeallocationOption.TASK_COMPLETION))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_OtherProperties.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_OtherProperties.json
      */
     /**
      * Sample code: UpdatePool - Other Properties.
@@ -1805,12 +1806,13 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
-            .withApplicationPackages(Arrays.asList(new ApplicationPackageReference().withId(
-                "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
-                new ApplicationPackageReference().withId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
-                    .withVersion("1.0")))
+            .withProperties(new PoolPatchProperties()
+                .withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
+                .withApplicationPackages(Arrays.asList(new ApplicationPackageReference().withId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
+                    new ApplicationPackageReference().withId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
+                        .withVersion("1.0"))))
             .apply();
     }
 }
@@ -1824,7 +1826,7 @@ public final class PoolUpdateSamples {
  */
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionDelete.
@@ -1848,7 +1850,7 @@ public final class PrivateEndpointConnectionDeleteSamples {
  */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -1872,7 +1874,7 @@ public final class PrivateEndpointConnectionGetSamples {
  */
 public final class PrivateEndpointConnectionListByBatchAccountSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: ListPrivateEndpointConnections.
@@ -1898,7 +1900,7 @@ import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus
  */
 public final class PrivateEndpointConnectionUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: UpdatePrivateEndpointConnection.
@@ -1925,7 +1927,7 @@ public final class PrivateEndpointConnectionUpdateSamples {
  */
 public final class PrivateLinkResourceGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateLinkResourceGet.json
+     * x-ms-original-file: 2026-10-01/PrivateLinkResourceGet.json
      */
     /**
      * Sample code: GetPrivateLinkResource.
@@ -1948,7 +1950,7 @@ public final class PrivateLinkResourceGetSamples {
  */
 public final class PrivateLinkResourceListByBatchAccountSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2026-10-01/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: ListPrivateLinkResource.

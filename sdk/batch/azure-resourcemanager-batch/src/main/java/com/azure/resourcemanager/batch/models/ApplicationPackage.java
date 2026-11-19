@@ -72,14 +72,18 @@ public interface ApplicationPackage {
     String format();
 
     /**
-     * Gets the storageUrl property: The URL for the application package in Azure Storage.
+     * Gets the storageUrl property: The URL for the application package in Azure Storage. This property is only
+     * returned for the PUT application package (create or update) operation. For the GET application package and POST
+     * activate application package operations, this property is not populated.
      * 
      * @return the storageUrl value.
      */
     String storageUrl();
 
     /**
-     * Gets the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
+     * Gets the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire. This property is
+     * only returned for the PUT application package (create or update) operation. For the GET application package and
+     * POST activate application package operations, this property is not populated.
      * 
      * @return the storageUrlExpiry value.
      */

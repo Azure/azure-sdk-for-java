@@ -26,7 +26,7 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"zqaclna\"},\"groupIds\":[\"iygnugjknfsmfctt\",\"xuuyilflqoiquvr\",\"hmrnjhvsuj\",\"tczytqjtwh\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"fprnjl\",\"actionsRequired\":\"lxsmrpddouifamow\"}},\"etag\":\"iynknlq\",\"tags\":{\"w\":\"vp\",\"xylrjvmtygjbmz\":\"xqszdtmaajquh\"},\"id\":\"spsp\",\"name\":\"hckfkyjpmspbps\",\"type\":\"df\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"sh\"},\"groupIds\":[\"wpnulaiywzejyw\",\"slwkojpl\",\"ndnpdwrpqafgfug\",\"nnfhyetefypo\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"fjgtixrjvzuy\",\"actionsRequired\":\"rmlmuowo\"}},\"etag\":\"au\",\"tags\":{\"ons\":\"p\",\"innixjawrtmjfj\":\"onwpnga\",\"vnekhenlusfnrdtj\":\"yccxlzhcox\"},\"id\":\"xrdcqtj\",\"name\":\"idttgepus\",\"type\":\"vyjtcvu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,19 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PrivateEndpointConnection response
-            = manager.privateEndpointConnections()
-                .update("nbmhyree", "dzqavbpdqmjxlyyz", "lgouwtlmjj",
-                    new PrivateEndpointConnectionInner()
-                        .withTags(mapOf("hlisngw", "xuckpggqoweyir", "uwnpqxpxiwfcng", "lqqmpiz", "kv", "saasiixtmkzj"))
-                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
-                            .withDescription("nxaulk")),
-                    "hkwfbkgozxwop", com.azure.core.util.Context.NONE);
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .update("qw", "edmurrxxge", "pkt", new PrivateEndpointConnectionInner()
+                .withTags(mapOf("jqirwrw", "kyefchnmnahmnxhk", "i", "ooxf", "rsnewmozqvbubqma", "hx", "taboidvmf",
+                    "hsycxhxzgaz"))
+                .withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("jwpfilkm")),
+                "kqtob", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vp", response.tags().get("w"));
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals("p", response.tags().get("ons"));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fprnjl", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fjgtixrjvzuy", response.privateLinkServiceConnectionState().description());
     }
 
     // Use "Map.of" if available

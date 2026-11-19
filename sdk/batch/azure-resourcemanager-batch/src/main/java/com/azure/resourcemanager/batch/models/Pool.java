@@ -131,6 +131,15 @@ public interface Pool {
     String vmSize();
 
     /**
+     * Gets the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be changed
+     * while the pool has no compute nodes.
+     * 
+     * @return the vmSkuProfile value.
+     */
+    VirtualMachineSkuProfile vmSkuProfile();
+
+    /**
      * Gets the deploymentConfiguration property: This property describes the virtual machines that the pool nodes will
      * be deployed on.
      * 
@@ -333,13 +342,13 @@ public interface Pool {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithDisplayName, DefinitionStages.WithVmSize, DefinitionStages.WithDeploymentConfiguration,
-            DefinitionStages.WithScaleSettings, DefinitionStages.WithInterNodeCommunication,
-            DefinitionStages.WithNetworkConfiguration, DefinitionStages.WithTaskSlotsPerNode,
-            DefinitionStages.WithTaskSchedulingPolicy, DefinitionStages.WithUserAccounts, DefinitionStages.WithMetadata,
-            DefinitionStages.WithStartTask, DefinitionStages.WithApplicationPackages,
-            DefinitionStages.WithMountConfiguration, DefinitionStages.WithUpgradePolicy, DefinitionStages.WithIfMatch,
-            DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithDisplayName, DefinitionStages.WithVmSize, DefinitionStages.WithVmSkuProfile,
+            DefinitionStages.WithDeploymentConfiguration, DefinitionStages.WithScaleSettings,
+            DefinitionStages.WithInterNodeCommunication, DefinitionStages.WithNetworkConfiguration,
+            DefinitionStages.WithTaskSlotsPerNode, DefinitionStages.WithTaskSchedulingPolicy,
+            DefinitionStages.WithUserAccounts, DefinitionStages.WithMetadata, DefinitionStages.WithStartTask,
+            DefinitionStages.WithApplicationPackages, DefinitionStages.WithMountConfiguration,
+            DefinitionStages.WithUpgradePolicy, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -421,6 +430,23 @@ public interface Pool {
              * @return the next definition stage.
              */
             WithCreate withVmSize(String vmSize);
+        }
+
+        /**
+         * The stage of the Pool definition allowing to specify vmSkuProfile.
+         */
+        interface WithVmSkuProfile {
+            /**
+             * Specifies the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used
+             * to allocate compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property
+             * can only be changed while the pool has no compute nodes..
+             * 
+             * @param vmSkuProfile Specifies the profile of VM sizes and the allocation strategy used to allocate
+             * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be
+             * changed while the pool has no compute nodes.
+             * @return the next definition stage.
+             */
+            WithCreate withVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile);
         }
 
         /**
@@ -690,12 +716,8 @@ public interface Pool {
     /**
      * The template for Pool update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithDisplayName,
-        UpdateStages.WithVmSize, UpdateStages.WithDeploymentConfiguration, UpdateStages.WithScaleSettings,
-        UpdateStages.WithInterNodeCommunication, UpdateStages.WithNetworkConfiguration,
-        UpdateStages.WithTaskSlotsPerNode, UpdateStages.WithTaskSchedulingPolicy, UpdateStages.WithUserAccounts,
-        UpdateStages.WithMetadata, UpdateStages.WithStartTask, UpdateStages.WithApplicationPackages,
-        UpdateStages.WithMountConfiguration, UpdateStages.WithUpgradePolicy, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -743,269 +765,16 @@ public interface Pool {
         }
 
         /**
-         * The stage of the Pool update allowing to specify displayName.
+         * The stage of the Pool update allowing to specify properties.
          */
-        interface WithDisplayName {
+        interface WithProperties {
             /**
-             * Specifies the displayName property: The display name for the pool.
+             * Specifies the properties property: The pool properties to update..
              * 
-             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
-             * 1024..
-             * 
-             * @param displayName The display name for the pool.
-             * 
-             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
-             * 1024.
+             * @param properties The pool properties to update.
              * @return the next definition stage.
              */
-            Update withDisplayName(String displayName);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify vmSize.
-         */
-        interface WithVmSize {
-            /**
-             * Specifies the vmSize property: The size of virtual machines in the pool. All VMs in a pool are the same
-             * size.
-             * 
-             * For information about available VM sizes, see Sizes for Virtual Machines in Azure
-             * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes
-             * except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series)..
-             * 
-             * @param vmSize The size of virtual machines in the pool. All VMs in a pool are the same size.
-             * 
-             * For information about available VM sizes, see Sizes for Virtual Machines in Azure
-             * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes
-             * except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
-             * @return the next definition stage.
-             */
-            Update withVmSize(String vmSize);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify deploymentConfiguration.
-         */
-        interface WithDeploymentConfiguration {
-            /**
-             * Specifies the deploymentConfiguration property: This property describes the virtual machines that the
-             * pool nodes will be deployed on.
-             * 
-             * Deployment configuration properties..
-             * 
-             * @param deploymentConfiguration This property describes the virtual machines that the pool nodes will be
-             * deployed on.
-             * 
-             * Deployment configuration properties.
-             * @return the next definition stage.
-             */
-            Update withDeploymentConfiguration(DeploymentConfiguration deploymentConfiguration);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify scaleSettings.
-         */
-        interface WithScaleSettings {
-            /**
-             * Specifies the scaleSettings property: Settings which configure the number of nodes in the pool.
-             * 
-             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
-             * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
-             * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
-             * targetDedicatedNodes..
-             * 
-             * @param scaleSettings Settings which configure the number of nodes in the pool.
-             * 
-             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
-             * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
-             * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
-             * targetDedicatedNodes.
-             * @return the next definition stage.
-             */
-            Update withScaleSettings(ScaleSettings scaleSettings);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify interNodeCommunication.
-         */
-        interface WithInterNodeCommunication {
-            /**
-             * Specifies the interNodeCommunication property: Whether the pool permits direct communication between
-             * nodes.
-             * 
-             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
-             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
-             * defaults to 'Disabled'..
-             * 
-             * @param interNodeCommunication Whether the pool permits direct communication between nodes.
-             * 
-             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
-             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
-             * defaults to 'Disabled'.
-             * @return the next definition stage.
-             */
-            Update withInterNodeCommunication(InterNodeCommunicationState interNodeCommunication);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify networkConfiguration.
-         */
-        interface WithNetworkConfiguration {
-            /**
-             * Specifies the networkConfiguration property: The network configuration for the pool.
-             * 
-             * The network configuration for a pool..
-             * 
-             * @param networkConfiguration The network configuration for the pool.
-             * 
-             * The network configuration for a pool.
-             * @return the next definition stage.
-             */
-            Update withNetworkConfiguration(NetworkConfiguration networkConfiguration);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify taskSlotsPerNode.
-         */
-        interface WithTaskSlotsPerNode {
-            /**
-             * Specifies the taskSlotsPerNode property: The number of task slots that can be used to run concurrent
-             * tasks on a single compute node in the pool.
-             * 
-             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
-             * the pool or 256..
-             * 
-             * @param taskSlotsPerNode The number of task slots that can be used to run concurrent tasks on a single
-             * compute node in the pool.
-             * 
-             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
-             * the pool or 256.
-             * @return the next definition stage.
-             */
-            Update withTaskSlotsPerNode(Integer taskSlotsPerNode);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify taskSchedulingPolicy.
-         */
-        interface WithTaskSchedulingPolicy {
-            /**
-             * Specifies the taskSchedulingPolicy property: How tasks are distributed across compute nodes in a pool.
-             * 
-             * If not specified, the default is spread..
-             * 
-             * @param taskSchedulingPolicy How tasks are distributed across compute nodes in a pool.
-             * 
-             * If not specified, the default is spread.
-             * @return the next definition stage.
-             */
-            Update withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify userAccounts.
-         */
-        interface WithUserAccounts {
-            /**
-             * Specifies the userAccounts property: The list of user accounts to be created on each node in the pool..
-             * 
-             * @param userAccounts The list of user accounts to be created on each node in the pool.
-             * @return the next definition stage.
-             */
-            Update withUserAccounts(List<UserAccount> userAccounts);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify metadata.
-         */
-        interface WithMetadata {
-            /**
-             * Specifies the metadata property: A list of name-value pairs associated with the pool as metadata.
-             * 
-             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code..
-             * 
-             * @param metadata A list of name-value pairs associated with the pool as metadata.
-             * 
-             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
-             * @return the next definition stage.
-             */
-            Update withMetadata(List<MetadataItem> metadata);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify startTask.
-         */
-        interface WithStartTask {
-            /**
-             * Specifies the startTask property: A task specified to run on each compute node as it joins the pool.
-             * 
-             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
-             * the pool..
-             * 
-             * @param startTask A task specified to run on each compute node as it joins the pool.
-             * 
-             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
-             * the pool.
-             * @return the next definition stage.
-             */
-            Update withStartTask(StartTask startTask);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify applicationPackages.
-         */
-        interface WithApplicationPackages {
-            /**
-             * Specifies the applicationPackages property: The list of application packages to be installed on each
-             * compute node in the pool.
-             * 
-             * Changes to application package references affect all new compute nodes joining the pool, but do not
-             * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
-             * of 10 application package references on any given pool..
-             * 
-             * @param applicationPackages The list of application packages to be installed on each compute node in the
-             * pool.
-             * 
-             * Changes to application package references affect all new compute nodes joining the pool, but do not
-             * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
-             * of 10 application package references on any given pool.
-             * @return the next definition stage.
-             */
-            Update withApplicationPackages(List<ApplicationPackageReference> applicationPackages);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify mountConfiguration.
-         */
-        interface WithMountConfiguration {
-            /**
-             * Specifies the mountConfiguration property: A list of file systems to mount on each node in the pool.
-             * 
-             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse..
-             * 
-             * @param mountConfiguration A list of file systems to mount on each node in the pool.
-             * 
-             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
-             * @return the next definition stage.
-             */
-            Update withMountConfiguration(List<MountConfiguration> mountConfiguration);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify upgradePolicy.
-         */
-        interface WithUpgradePolicy {
-            /**
-             * Specifies the upgradePolicy property: The upgrade policy for the pool.
-             * 
-             * Describes an upgrade policy - automatic, manual, or rolling..
-             * 
-             * @param upgradePolicy The upgrade policy for the pool.
-             * 
-             * Describes an upgrade policy - automatic, manual, or rolling.
-             * @return the next definition stage.
-             */
-            Update withUpgradePolicy(UpgradePolicy upgradePolicy);
+            Update withProperties(PoolPatchProperties properties);
         }
 
         /**

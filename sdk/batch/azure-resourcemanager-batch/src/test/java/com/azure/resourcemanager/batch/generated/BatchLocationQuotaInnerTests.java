@@ -11,6 +11,6 @@ public final class BatchLocationQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BatchLocationQuotaInner model
-            = BinaryData.fromString("{\"accountQuota\":783935050}").toObject(BatchLocationQuotaInner.class);
+            = BinaryData.fromString("{\"accountQuota\":1941131866}").toObject(BatchLocationQuotaInner.class);
     }
 }

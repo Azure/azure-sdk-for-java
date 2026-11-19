@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.batch.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,18 +15,18 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Result of a list NSP (network security perimeter) configurations request.
+ * The response of a NetworkSecurityPerimeterConfiguration list operation.
  */
 @Immutable
 public final class NetworkSecurityPerimeterConfigurationListResult
     implements JsonSerializable<NetworkSecurityPerimeterConfigurationListResult> {
     /*
-     * Array of network security perimeter results.
+     * The NetworkSecurityPerimeterConfiguration items on this page
      */
     private List<NetworkSecurityPerimeterConfigurationInner> value;
 
     /*
-     * The link used to get the next page of results.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -36,7 +37,7 @@ public final class NetworkSecurityPerimeterConfigurationListResult
     }
 
     /**
-     * Get the value property: Array of network security perimeter results.
+     * Get the value property: The NetworkSecurityPerimeterConfiguration items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +46,7 @@ public final class NetworkSecurityPerimeterConfigurationListResult
     }
 
     /**
-     * Get the nextLink property: The link used to get the next page of results.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -59,10 +60,16 @@ public final class NetworkSecurityPerimeterConfigurationListResult
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model NetworkSecurityPerimeterConfigurationListResult"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkSecurityPerimeterConfigurationListResult.class);
 
     /**
      * {@inheritDoc}
@@ -81,6 +88,7 @@ public final class NetworkSecurityPerimeterConfigurationListResult
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkSecurityPerimeterConfigurationListResult if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterConfigurationListResult.
      */
     public static NetworkSecurityPerimeterConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {

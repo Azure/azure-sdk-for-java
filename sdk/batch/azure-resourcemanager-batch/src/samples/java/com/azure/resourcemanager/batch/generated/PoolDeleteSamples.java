@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class PoolDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolDelete.json
+     * x-ms-original-file: 2026-10-01/PoolDelete.json
      */
     /**
      * Sample code: DeletePool.

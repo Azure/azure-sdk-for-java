@@ -157,7 +157,9 @@ public final class ApplicationPackageInner extends ProxyResource {
     }
 
     /**
-     * Get the storageUrl property: The URL for the application package in Azure Storage.
+     * Get the storageUrl property: The URL for the application package in Azure Storage. This property is only returned
+     * for the PUT application package (create or update) operation. For the GET application package and POST activate
+     * application package operations, this property is not populated.
      * 
      * @return the storageUrl value.
      */
@@ -166,7 +168,9 @@ public final class ApplicationPackageInner extends ProxyResource {
     }
 
     /**
-     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
+     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire. This property is only
+     * returned for the PUT application package (create or update) operation. For the GET application package and POST
+     * activate application package operations, this property is not populated.
      * 
      * @return the storageUrlExpiry value.
      */

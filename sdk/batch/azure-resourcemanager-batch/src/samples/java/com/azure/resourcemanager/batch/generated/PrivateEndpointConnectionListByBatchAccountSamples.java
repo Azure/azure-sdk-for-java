@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class PrivateEndpointConnectionListByBatchAccountSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: ListPrivateEndpointConnections.

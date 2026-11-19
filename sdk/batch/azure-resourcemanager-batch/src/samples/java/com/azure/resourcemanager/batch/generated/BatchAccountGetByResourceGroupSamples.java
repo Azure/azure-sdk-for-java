@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class BatchAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateBatchAccountGet.json
+     * x-ms-original-file: 2026-10-01/PrivateBatchAccountGet.json
      */
     /**
      * Sample code: PrivateBatchAccountGet.
@@ -23,7 +23,7 @@ public final class BatchAccountGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountGet.json
+     * x-ms-original-file: 2026-10-01/BatchAccountGet.json
      */
     /**
      * Sample code: BatchAccountGet.

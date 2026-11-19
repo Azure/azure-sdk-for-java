@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class PoolGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_SecurityProfile.json
+     * x-ms-original-file: 2026-10-01/PoolGet_SecurityProfile.json
      */
     /**
      * Sample code: GetPool - SecurityProfile.
@@ -23,7 +23,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration Extensions.
@@ -38,7 +38,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration OSDisk.
@@ -52,7 +52,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_UpgradePolicy.json
+     * x-ms-original-file: 2026-10-01/PoolGet_UpgradePolicy.json
      */
     /**
      * Sample code: GetPool - UpgradePolicy.
@@ -66,7 +66,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
+     * x-ms-original-file: 2026-10-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration ServiceArtifactReference.
@@ -81,7 +81,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet_AcceleratedNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolGet_AcceleratedNetworking.json
      */
     /**
      * Sample code: GetPool - AcceleratedNetworking.
@@ -95,7 +95,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolGet.json
+     * x-ms-original-file: 2026-10-01/PoolGet.json
      */
     /**
      * Sample code: GetPool.

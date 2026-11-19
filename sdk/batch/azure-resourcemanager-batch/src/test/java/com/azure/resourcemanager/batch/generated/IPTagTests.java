@@ -12,16 +12,16 @@ public final class IPTagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IPTag model
-            = BinaryData.fromString("{\"ipTagType\":\"cybxa\",\"tag\":\"gszufoxciqopid\"}").toObject(IPTag.class);
-        Assertions.assertEquals("cybxa", model.ipTagType());
-        Assertions.assertEquals("gszufoxciqopid", model.tag());
+            = BinaryData.fromString("{\"ipTagType\":\"rtwaenuuzko\",\"tag\":\"minrfdw\"}").toObject(IPTag.class);
+        Assertions.assertEquals("rtwaenuuzko", model.ipTagType());
+        Assertions.assertEquals("minrfdw", model.tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IPTag model = new IPTag().withIpTagType("cybxa").withTag("gszufoxciqopid");
+        IPTag model = new IPTag().withIpTagType("rtwaenuuzko").withTag("minrfdw");
         model = BinaryData.fromObject(model).toObject(IPTag.class);
-        Assertions.assertEquals("cybxa", model.ipTagType());
-        Assertions.assertEquals("gszufoxciqopid", model.tag());
+        Assertions.assertEquals("rtwaenuuzko", model.ipTagType());
+        Assertions.assertEquals("minrfdw", model.tag());
     }
 }

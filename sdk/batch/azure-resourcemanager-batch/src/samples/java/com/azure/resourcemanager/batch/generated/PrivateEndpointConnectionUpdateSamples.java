@@ -13,7 +13,7 @@ import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus
  */
 public final class PrivateEndpointConnectionUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: 2026-10-01/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: UpdatePrivateEndpointConnection.

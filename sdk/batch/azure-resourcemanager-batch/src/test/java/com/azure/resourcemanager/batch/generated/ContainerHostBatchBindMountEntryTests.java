@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerHostBatchBindMountEntryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerHostBatchBindMountEntry model = BinaryData.fromString("{\"source\":\"Startup\",\"isReadOnly\":true}")
+        ContainerHostBatchBindMountEntry model = BinaryData.fromString("{\"source\":\"Task\",\"isReadOnly\":false}")
             .toObject(ContainerHostBatchBindMountEntry.class);
-        Assertions.assertEquals(ContainerHostDataPath.STARTUP, model.source());
-        Assertions.assertTrue(model.isReadOnly());
+        Assertions.assertEquals(ContainerHostDataPath.TASK, model.source());
+        Assertions.assertFalse(model.isReadOnly());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerHostBatchBindMountEntry model
-            = new ContainerHostBatchBindMountEntry().withSource(ContainerHostDataPath.STARTUP).withIsReadOnly(true);
+            = new ContainerHostBatchBindMountEntry().withSource(ContainerHostDataPath.TASK).withIsReadOnly(false);
         model = BinaryData.fromObject(model).toObject(ContainerHostBatchBindMountEntry.class);
-        Assertions.assertEquals(ContainerHostDataPath.STARTUP, model.source());
-        Assertions.assertTrue(model.isReadOnly());
+        Assertions.assertEquals(ContainerHostDataPath.TASK, model.source());
+        Assertions.assertFalse(model.isReadOnly());
     }
 }

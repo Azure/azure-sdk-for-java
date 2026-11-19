@@ -22,7 +22,7 @@ public final class PrivateLinkResourcesListByBatchAccountMockTests {
     @Test
     public void testListByBatchAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ixmonstshiyxg\",\"requiredMembers\":[\"fclduccbirdsv\",\"wcobie\"],\"requiredZoneNames\":[\"mninwjizcilng\",\"gshejjtbxqmulux\"]},\"etag\":\"qzvnersbycucr\",\"tags\":{\"qbsms\":\"mikzeb\",\"kzruswh\":\"ziqgfuh\",\"ycjsx\":\"hczznvf\"},\"id\":\"wix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"cpzgpxtiv\",\"requiredMembers\":[\"nidibgqjxg\",\"n\"],\"requiredZoneNames\":[\"ov\",\"gpikqmh\",\"ao\",\"jrmzvupor\"]},\"etag\":\"dfuyd\",\"tags\":{\"mvkhlggd\":\"fvxcnqmxqpswo\",\"tglxx\":\"bemzqkzszuwi\"},\"id\":\"jfpgpicrmn\",\"name\":\"hr\",\"type\":\"mqgjsxvpq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class PrivateLinkResourcesListByBatchAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
-            .listByBatchAccount("gehkfkimrtixokff", "yinljqe", 1178868371, com.azure.core.util.Context.NONE);
+            .listByBatchAccount("ivbgkcv", "hpzvuqdflvoniyp", 1712367838, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mikzeb", response.iterator().next().tags().get("qbsms"));
+        Assertions.assertEquals("fvxcnqmxqpswo", response.iterator().next().tags().get("mvkhlggd"));
     }
 }

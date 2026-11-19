@@ -21,7 +21,7 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
     @Test
     public void testListSupportedVirtualMachineSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ychunsjlpjrtwszh\",\"familyName\":\"uic\",\"capabilities\":[{\"name\":\"rrmhwrbfdp\",\"value\":\"lubhvjg\"},{\"name\":\"ocu\",\"value\":\"lw\"},{\"name\":\"memhooclutnpq\",\"value\":\"mczjkm\"},{\"name\":\"kyujxsglhsrrr\",\"value\":\"jylmbkzudnigr\"}],\"batchSupportEndOfLife\":\"2021-06-14T14:38:58Z\"}]}";
+            = "{\"value\":[{\"name\":\"qlhris\",\"familyName\":\"lmiiiovg\",\"capabilities\":[{\"name\":\"uugqk\",\"value\":\"otiowlxteqd\"},{\"name\":\"jgwdtgukranbl\",\"value\":\"hqlkccuzgygqwaho\"},{\"name\":\"lwgniiprglvawu\",\"value\":\"d\"},{\"name\":\"ypivlsbb\",\"value\":\"mcub\"}],\"batchSupportEndOfLife\":\"2021-07-10T21:52:44Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SupportedSku> response = manager.locations()
-            .listSupportedVirtualMachineSkus("mzsyzfhotl", 1472660607, "k", com.azure.core.util.Context.NONE);
+            .listSupportedVirtualMachineSkus("kixkykxdssjpemm", 899835628, "fxhikkflrmymyi",
+                com.azure.core.util.Context.NONE);
 
     }
 }

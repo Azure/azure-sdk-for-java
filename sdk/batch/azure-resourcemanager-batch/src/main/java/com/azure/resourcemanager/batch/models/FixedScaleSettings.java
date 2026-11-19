@@ -46,7 +46,7 @@ public final class FixedScaleSettings implements JsonSerializable<FixedScaleSett
      * 
      * If omitted, the default value is Requeue.
      */
-    private ComputeNodeDeallocationOption nodeDeallocationOption;
+    private RequestedComputeNodeDeallocationOption nodeDeallocationOption;
 
     /**
      * Creates an instance of FixedScaleSettings class.
@@ -138,7 +138,7 @@ public final class FixedScaleSettings implements JsonSerializable<FixedScaleSett
      * 
      * @return the nodeDeallocationOption value.
      */
-    public ComputeNodeDeallocationOption nodeDeallocationOption() {
+    public RequestedComputeNodeDeallocationOption nodeDeallocationOption() {
         return this.nodeDeallocationOption;
     }
 
@@ -151,7 +151,8 @@ public final class FixedScaleSettings implements JsonSerializable<FixedScaleSett
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the FixedScaleSettings object itself.
      */
-    public FixedScaleSettings withNodeDeallocationOption(ComputeNodeDeallocationOption nodeDeallocationOption) {
+    public FixedScaleSettings
+        withNodeDeallocationOption(RequestedComputeNodeDeallocationOption nodeDeallocationOption) {
         this.nodeDeallocationOption = nodeDeallocationOption;
         return this;
     }
@@ -202,7 +203,7 @@ public final class FixedScaleSettings implements JsonSerializable<FixedScaleSett
                     deserializedFixedScaleSettings.targetLowPriorityNodes = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeDeallocationOption".equals(fieldName)) {
                     deserializedFixedScaleSettings.nodeDeallocationOption
-                        = ComputeNodeDeallocationOption.fromString(reader.getString());
+                        = RequestedComputeNodeDeallocationOption.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -12,33 +12,33 @@ public final class RollingUpgradePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RollingUpgradePolicy model = BinaryData.fromString(
-            "{\"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":1206519159,\"maxUnhealthyInstancePercent\":565781188,\"maxUnhealthyUpgradedInstancePercent\":273619728,\"pauseTimeBetweenBatches\":\"kzwpcnpw\",\"prioritizeUnhealthyInstances\":true,\"rollbackFailedInstancesOnPolicyBreach\":true}")
+            "{\"enableCrossZoneUpgrade\":false,\"maxBatchInstancePercent\":754615325,\"maxUnhealthyInstancePercent\":881453963,\"maxUnhealthyUpgradedInstancePercent\":942135651,\"pauseTimeBetweenBatches\":\"tmdvypgikdgs\",\"prioritizeUnhealthyInstances\":false,\"rollbackFailedInstancesOnPolicyBreach\":true}")
             .toObject(RollingUpgradePolicy.class);
-        Assertions.assertTrue(model.enableCrossZoneUpgrade());
-        Assertions.assertEquals(1206519159, model.maxBatchInstancePercent());
-        Assertions.assertEquals(565781188, model.maxUnhealthyInstancePercent());
-        Assertions.assertEquals(273619728, model.maxUnhealthyUpgradedInstancePercent());
-        Assertions.assertEquals("kzwpcnpw", model.pauseTimeBetweenBatches());
-        Assertions.assertTrue(model.prioritizeUnhealthyInstances());
+        Assertions.assertFalse(model.enableCrossZoneUpgrade());
+        Assertions.assertEquals(754615325, model.maxBatchInstancePercent());
+        Assertions.assertEquals(881453963, model.maxUnhealthyInstancePercent());
+        Assertions.assertEquals(942135651, model.maxUnhealthyUpgradedInstancePercent());
+        Assertions.assertEquals("tmdvypgikdgs", model.pauseTimeBetweenBatches());
+        Assertions.assertFalse(model.prioritizeUnhealthyInstances());
         Assertions.assertTrue(model.rollbackFailedInstancesOnPolicyBreach());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RollingUpgradePolicy model = new RollingUpgradePolicy().withEnableCrossZoneUpgrade(true)
-            .withMaxBatchInstancePercent(1206519159)
-            .withMaxUnhealthyInstancePercent(565781188)
-            .withMaxUnhealthyUpgradedInstancePercent(273619728)
-            .withPauseTimeBetweenBatches("kzwpcnpw")
-            .withPrioritizeUnhealthyInstances(true)
+        RollingUpgradePolicy model = new RollingUpgradePolicy().withEnableCrossZoneUpgrade(false)
+            .withMaxBatchInstancePercent(754615325)
+            .withMaxUnhealthyInstancePercent(881453963)
+            .withMaxUnhealthyUpgradedInstancePercent(942135651)
+            .withPauseTimeBetweenBatches("tmdvypgikdgs")
+            .withPrioritizeUnhealthyInstances(false)
             .withRollbackFailedInstancesOnPolicyBreach(true);
         model = BinaryData.fromObject(model).toObject(RollingUpgradePolicy.class);
-        Assertions.assertTrue(model.enableCrossZoneUpgrade());
-        Assertions.assertEquals(1206519159, model.maxBatchInstancePercent());
-        Assertions.assertEquals(565781188, model.maxUnhealthyInstancePercent());
-        Assertions.assertEquals(273619728, model.maxUnhealthyUpgradedInstancePercent());
-        Assertions.assertEquals("kzwpcnpw", model.pauseTimeBetweenBatches());
-        Assertions.assertTrue(model.prioritizeUnhealthyInstances());
+        Assertions.assertFalse(model.enableCrossZoneUpgrade());
+        Assertions.assertEquals(754615325, model.maxBatchInstancePercent());
+        Assertions.assertEquals(881453963, model.maxUnhealthyInstancePercent());
+        Assertions.assertEquals(942135651, model.maxUnhealthyUpgradedInstancePercent());
+        Assertions.assertEquals("tmdvypgikdgs", model.pauseTimeBetweenBatches());
+        Assertions.assertFalse(model.prioritizeUnhealthyInstances());
         Assertions.assertTrue(model.rollbackFailedInstancesOnPolicyBreach());
     }
 }

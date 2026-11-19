@@ -16,7 +16,7 @@ public final class BatchPoolIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BatchPoolIdentity model = BinaryData.fromString(
-            "{\"type\":\"None\",\"userAssignedIdentities\":{\"vdnkfxusem\":{\"principalId\":\"sccyajguqf\",\"clientId\":\"ygz\"},\"celve\":{\"principalId\":\"zrmuhapfcqdps\",\"clientId\":\"qvpsvuoymg\"},\"edkowepbqpcrfk\":{\"principalId\":\"ypql\",\"clientId\":\"eokerqwkyhkobopg\"}}}")
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"bfggjioolvr\":{\"principalId\":\"uzhlhkjoqrv\",\"clientId\":\"aatjinrvgoupmfi\"},\"vblm\":{\"principalId\":\"kvtkkg\",\"clientId\":\"qwjygvja\"}}}")
             .toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }
@@ -24,8 +24,8 @@ public final class BatchPoolIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BatchPoolIdentity model = new BatchPoolIdentity().withType(PoolIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("vdnkfxusem", new UserAssignedIdentities(), "celve",
-                new UserAssignedIdentities(), "edkowepbqpcrfk", new UserAssignedIdentities()));
+            .withUserAssignedIdentities(
+                mapOf("bfggjioolvr", new UserAssignedIdentities(), "vblm", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }

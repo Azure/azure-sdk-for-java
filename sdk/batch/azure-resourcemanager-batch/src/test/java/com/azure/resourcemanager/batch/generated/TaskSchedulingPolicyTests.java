@@ -14,18 +14,18 @@ public final class TaskSchedulingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskSchedulingPolicy model
-            = BinaryData.fromString("{\"jobDefaultOrder\":\"CreationTime\",\"nodeFillType\":\"Pack\"}")
+            = BinaryData.fromString("{\"jobDefaultOrder\":\"CreationTime\",\"nodeFillType\":\"Spread\"}")
                 .toObject(TaskSchedulingPolicy.class);
         Assertions.assertEquals(JobDefaultOrder.CREATION_TIME, model.jobDefaultOrder());
-        Assertions.assertEquals(ComputeNodeFillType.PACK, model.nodeFillType());
+        Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TaskSchedulingPolicy model = new TaskSchedulingPolicy().withJobDefaultOrder(JobDefaultOrder.CREATION_TIME)
-            .withNodeFillType(ComputeNodeFillType.PACK);
+            .withNodeFillType(ComputeNodeFillType.SPREAD);
         model = BinaryData.fromObject(model).toObject(TaskSchedulingPolicy.class);
         Assertions.assertEquals(JobDefaultOrder.CREATION_TIME, model.jobDefaultOrder());
-        Assertions.assertEquals(ComputeNodeFillType.PACK, model.nodeFillType());
+        Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
     }
 }

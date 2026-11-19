@@ -54,7 +54,6 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to BatchManager.
- * The Batch Management Client.
  */
 public final class BatchManager {
     private Operations operations;

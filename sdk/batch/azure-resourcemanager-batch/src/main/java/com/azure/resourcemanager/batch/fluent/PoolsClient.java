@@ -11,6 +11,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.batch.fluent.models.PoolInner;
+import com.azure.resourcemanager.batch.models.PoolPatch;
 import com.azure.resourcemanager.batch.models.PoolsCreateResponse;
 import com.azure.resourcemanager.batch.models.PoolsDisableAutoScaleResponse;
 import com.azure.resourcemanager.batch.models.PoolsGetResponse;
@@ -119,7 +120,7 @@ public interface PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PoolsUpdateResponse updateWithResponse(String resourceGroupName, String accountName, String poolName,
-        PoolInner parameters, String ifMatch, Context context);
+        PoolPatch parameters, String ifMatch, Context context);
 
     /**
      * Updates the properties of an existing pool.
@@ -138,7 +139,7 @@ public interface PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters);
+    PoolInner update(String resourceGroupName, String accountName, String poolName, PoolPatch parameters);
 
     /**
      * Deletes the specified pool.

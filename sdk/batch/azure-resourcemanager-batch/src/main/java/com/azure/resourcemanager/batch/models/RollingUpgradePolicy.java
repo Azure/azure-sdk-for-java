@@ -20,8 +20,8 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
      * Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain
      * and maxBatchInstancePercent to determine the batch size. If this field is not set, Azure Azure Batch will not set
      * its default value. The value of enableCrossZoneUpgrade on the created VirtualMachineScaleSet will be decided by
-     * the default configurations on VirtualMachineScaleSet. This field is able to be set to true or false only when
-     * using NodePlacementConfiguration as Zonal.
+     * the default configurations on VirtualMachineScaleSet. This field can be set to true or false only when
+     * nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is Auto.
      */
     private Boolean enableCrossZoneUpgrade;
 
@@ -77,8 +77,9 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
      * Get the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
      * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. If this field
      * is not set, Azure Azure Batch will not set its default value. The value of enableCrossZoneUpgrade on the created
-     * VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field is
-     * able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+     * VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field can be
+     * set to true or false only when nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is
+     * Auto.
      * 
      * @return the enableCrossZoneUpgrade value.
      */
@@ -90,8 +91,9 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
      * Set the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
      * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. If this field
      * is not set, Azure Azure Batch will not set its default value. The value of enableCrossZoneUpgrade on the created
-     * VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field is
-     * able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+     * VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field can be
+     * set to true or false only when nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is
+     * Auto.
      * 
      * @param enableCrossZoneUpgrade the enableCrossZoneUpgrade value to set.
      * @return the RollingUpgradePolicy object itself.

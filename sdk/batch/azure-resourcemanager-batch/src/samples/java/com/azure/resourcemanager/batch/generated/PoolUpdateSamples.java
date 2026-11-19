@@ -6,10 +6,11 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
-import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
 import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.Pool;
+import com.azure.resourcemanager.batch.models.PoolPatchProperties;
+import com.azure.resourcemanager.batch.models.RequestedComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import java.time.Duration;
@@ -20,7 +21,7 @@ import java.util.Arrays;
  */
 public final class PoolUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_EnableAutoScale.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_EnableAutoScale.json
      */
     /**
      * Sample code: UpdatePool - Enable Autoscale.
@@ -32,13 +33,13 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withScaleSettings(
-                new ScaleSettings().withAutoScale(new AutoScaleSettings().withFormula("$TargetDedicatedNodes=34")))
+            .withProperties(new PoolPatchProperties().withScaleSettings(
+                new ScaleSettings().withAutoScale(new AutoScaleSettings().withFormula("$TargetDedicatedNodes=34"))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_RemoveStartTask.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_RemoveStartTask.json
      */
     /**
      * Sample code: UpdatePool - Remove Start Task.
@@ -49,11 +50,11 @@ public final class PoolUpdateSamples {
         Pool resource = manager.pools()
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withStartTask(new StartTask()).apply();
+        resource.update().withProperties(new PoolPatchProperties().withStartTask(new StartTask())).apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_ResizePool.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_ResizePool.json
      */
     /**
      * Sample code: UpdatePool - Resize Pool.
@@ -65,16 +66,16 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withScaleSettings(
+            .withProperties(new PoolPatchProperties().withScaleSettings(
                 new ScaleSettings().withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
                     .withTargetDedicatedNodes(5)
                     .withTargetLowPriorityNodes(0)
-                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+                    .withNodeDeallocationOption(RequestedComputeNodeDeallocationOption.TASK_COMPLETION))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolUpdate_OtherProperties.json
+     * x-ms-original-file: 2026-10-01/PoolUpdate_OtherProperties.json
      */
     /**
      * Sample code: UpdatePool - Other Properties.
@@ -86,12 +87,13 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
-            .withApplicationPackages(Arrays.asList(new ApplicationPackageReference().withId(
-                "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
-                new ApplicationPackageReference().withId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
-                    .withVersion("1.0")))
+            .withProperties(new PoolPatchProperties()
+                .withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
+                .withApplicationPackages(Arrays.asList(new ApplicationPackageReference().withId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
+                    new ApplicationPackageReference().withId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
+                        .withVersion("1.0"))))
             .apply();
     }
 }

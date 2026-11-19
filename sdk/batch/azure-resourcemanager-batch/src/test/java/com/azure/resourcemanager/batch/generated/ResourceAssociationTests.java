@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceAssociationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceAssociation model = BinaryData.fromString("{\"name\":\"ttijfybvpoekrs\",\"accessMode\":\"Audit\"}")
+        ResourceAssociation model = BinaryData.fromString("{\"name\":\"qdrfegcealzxwhc\",\"accessMode\":\"Audit\"}")
             .toObject(ResourceAssociation.class);
-        Assertions.assertEquals("ttijfybvpoekrs", model.name());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.name());
         Assertions.assertEquals(ResourceAssociationAccessMode.AUDIT, model.accessMode());
     }
 }

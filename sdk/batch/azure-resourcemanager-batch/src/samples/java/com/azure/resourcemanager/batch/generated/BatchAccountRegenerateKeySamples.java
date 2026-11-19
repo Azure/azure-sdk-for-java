@@ -12,7 +12,7 @@ import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameter
  */
 public final class BatchAccountRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountRegenerateKey.json
+     * x-ms-original-file: 2026-10-01/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.

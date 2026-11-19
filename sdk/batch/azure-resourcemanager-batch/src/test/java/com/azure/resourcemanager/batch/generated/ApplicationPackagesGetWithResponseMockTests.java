@@ -21,7 +21,7 @@ public final class ApplicationPackagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"rngifl\",\"storageUrl\":\"pasccbi\",\"storageUrlExpiry\":\"2021-02-19T12:22:52Z\",\"lastActivationTime\":\"2021-07-29T06:48:21Z\"},\"etag\":\"yjdfqwmky\",\"tags\":{\"lzo\":\"fdvruz\",\"fnmdxotn\":\"hpc\"},\"id\":\"dgug\",\"name\":\"yzihgrkyuizabsn\",\"type\":\"fpphoj\"}";
+            = "{\"properties\":{\"state\":\"Active\",\"format\":\"rqryxynqn\",\"storageUrl\":\"dpsovwxznptgo\",\"storageUrlExpiry\":\"2021-01-27T13:39:56Z\",\"lastActivationTime\":\"2021-04-09T17:39:15Z\"},\"etag\":\"bp\",\"tags\":{\"lkvn\":\"f\"},\"id\":\"lrigjkskyri\",\"name\":\"ovzidsx\",\"type\":\"aabzmif\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class ApplicationPackagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationPackage response = manager.applicationPackages()
-            .getWithResponse("boxjumvq", "olihrra", "ouau", "rjtloq", com.azure.core.util.Context.NONE)
+            .getWithResponse("ijjumfq", "azlnqnmcjngzqdqx", "bjwgnyfus", "zsvtuikzhajqgl",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fdvruz", response.tags().get("lzo"));
+        Assertions.assertEquals("f", response.tags().get("lkvn"));
     }
 }

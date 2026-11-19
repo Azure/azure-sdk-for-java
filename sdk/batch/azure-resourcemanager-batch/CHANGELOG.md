@@ -1,14 +1,101 @@
 # Release History
 
-## 3.1.0-beta.1 (Unreleased)
+## 3.1.0 (2026-11-19)
 
-### Features Added
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK.  Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FixedScaleSettings` was modified
 
-### Other Changes
+* `withNodeDeallocationOption(models.ComputeNodeDeallocationOption)` was removed
+* `models.ComputeNodeDeallocationOption nodeDeallocationOption()` -> `models.RequestedComputeNodeDeallocationOption nodeDeallocationOption()`
+
+#### `models.Pool$Update` was modified
+
+* `withApplicationPackages(java.util.List)` was removed
+* `withInterNodeCommunication(models.InterNodeCommunicationState)` was removed
+* `withDeploymentConfiguration(models.DeploymentConfiguration)` was removed
+* `withTaskSlotsPerNode(java.lang.Integer)` was removed
+* `withUpgradePolicy(models.UpgradePolicy)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withMountConfiguration(java.util.List)` was removed
+* `withTaskSchedulingPolicy(models.TaskSchedulingPolicy)` was removed
+* `withNetworkConfiguration(models.NetworkConfiguration)` was removed
+* `withStartTask(models.StartTask)` was removed
+* `withVmSize(java.lang.String)` was removed
+* `withMetadata(java.util.List)` was removed
+* `withScaleSettings(models.ScaleSettings)` was removed
+* `withUserAccounts(java.util.List)` was removed
+
+#### `models.AuthenticationMode` was modified
+
+* `TASK_AUTHENTICATION_TOKEN` was removed
+
+### Features Added
+
+* `models.ResiliencyPolicy` was added
+
+* `models.PlacementPatch` was added
+
+* `models.VirtualMachineSkuAllocationStrategy` was added
+
+* `models.Placement` was added
+
+* `models.PoolPatchProperties` was added
+
+* `models.ZoneAllocationPolicy` was added
+
+* `models.VirtualMachineConfigurationPatch` was added
+
+* `models.ZoneAllocationPolicyPatch` was added
+
+* `models.VirtualMachineSkuProfile` was added
+
+* `models.RequestedComputeNodeDeallocationOption` was added
+
+* `models.HardwareProfile` was added
+
+* `models.PoolPatch` was added
+
+* `models.MaxInstancePercentPerZonePolicy` was added
+
+* `models.ResiliencyPolicyPatch` was added
+
+* `models.ZonePlacementPolicyType` was added
+
+* `models.VirtualMachineSkuProfileVmSize` was added
+
+* `models.VmSizeProperties` was added
+
+* `models.DeploymentConfigurationPatch` was added
+
+* `models.MaxInstancePercentPerZonePolicyPatch` was added
+
+#### `models.FixedScaleSettings` was modified
+
+* `withNodeDeallocationOption(models.RequestedComputeNodeDeallocationOption)` was added
+
+#### `models.VirtualMachineConfiguration` was modified
+
+* `placement()` was added
+* `resiliencyPolicy()` was added
+* `withResiliencyPolicy(models.ResiliencyPolicy)` was added
+* `hardwareProfile()` was added
+* `withPlacement(models.Placement)` was added
+* `withHardwareProfile(models.HardwareProfile)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withVmSkuProfile(models.VirtualMachineSkuProfile)` was added
+
+#### `models.Pool` was modified
+
+* `vmSkuProfile()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withProperties(models.PoolPatchProperties)` was added
 
 ## 3.0.0 (2026-02-11)
 

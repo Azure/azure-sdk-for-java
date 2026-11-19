@@ -26,6 +26,7 @@ import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
+import com.azure.resourcemanager.batch.models.VirtualMachineSkuProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -291,6 +292,33 @@ public final class PoolInner extends ProxyResource {
             this.innerProperties = new PoolProperties();
         }
         this.innerProperties().withVmSize(vmSize);
+        return this;
+    }
+
+    /**
+     * Get the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be changed
+     * while the pool has no compute nodes.
+     * 
+     * @return the vmSkuProfile value.
+     */
+    public VirtualMachineSkuProfile vmSkuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmSkuProfile();
+    }
+
+    /**
+     * Set the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be changed
+     * while the pool has no compute nodes.
+     * 
+     * @param vmSkuProfile the vmSkuProfile value to set.
+     * @return the PoolInner object itself.
+     */
+    public PoolInner withVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withVmSkuProfile(vmSkuProfile);
         return this;
     }
 

@@ -27,7 +27,7 @@ public final class BatchAccountsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.batchAccounts().delete("etpwbralll", "bphbqzmizakakank", com.azure.core.util.Context.NONE);
+        manager.batchAccounts().delete("lzo", "hpc", com.azure.core.util.Context.NONE);
 
     }
 }
