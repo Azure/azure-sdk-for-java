@@ -1,6 +1,6 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
+## 1.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,85 @@
 
 ### Bugs Fixed
 
+- Fixed `BlobCheckpointStore.updateCheckpoint` so that it falls back to the deprecated
+  `Checkpoint.getOffset()` (Long) value when `Checkpoint.getOffsetString()` is not populated. This restores writing of
+  the `offset` blob metadata for callers that still build `Checkpoint` instances using the legacy long offset, fixing
+  a regression introduced in 1.21.0 that broke partition switch-over and consumer-group lag monitoring.
+  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+
 ### Other Changes
+
+## 1.22.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.35.2` to version `12.37.1`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.7` to version `5.22.1`.
+
+## 1.21.9 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.6` to version `5.21.7`.
+
+## 1.21.8 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.21.5` to version `5.21.6`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
+
+## 1.21.7 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.21.4` to version `5.21.5`.
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.35.0`.
+
+
+## 1.21.6 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.33.4`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.3` to version `5.21.4`.
+
+## 1.21.5 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
+
+
+## 1.21.4 (2026-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.1` to version `12.33.2`.
+
+## 1.21.3 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.0` to version `12.33.1`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.2` to version `5.21.3`.
 
 ## 1.21.2 (2025-10-27)
 

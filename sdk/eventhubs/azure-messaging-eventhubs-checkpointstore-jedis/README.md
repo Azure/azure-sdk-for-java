@@ -60,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -176,7 +176,7 @@ Guidelines][guidelines] for more information.
 [event_hubs_product_docs]: https://learn.microsoft.com/azure/event-hubs/
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md#key-concepts
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [maven]: https://maven.apache.org/
 [redis_quickstart]: https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
 [redis_quickstart_java]: https://learn.microsoft.com/azure/azure-cache-for-redis/cache-java-get-started

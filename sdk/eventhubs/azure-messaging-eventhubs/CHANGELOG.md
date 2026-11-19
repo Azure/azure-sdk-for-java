@@ -1,6 +1,6 @@
 # Release History
 
-## 5.22.0-beta.1 (Unreleased)
+## 5.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,68 @@
 
 ### Bugs Fixed
 
+- Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated
+  to the `Checkpoint` passed to the `CheckpointStore`. Previously only the deprecated `offset` (Long) was set, which
+  caused checkpoint stores that read `offsetString` (such as `BlobCheckpointStore`) to persist a `null` offset, breaking
+  partition switch-over and consumer-group lag monitoring.
+  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+
 ### Other Changes
+
+## 5.22.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-amqp` from `2.12.2` to version `2.13.0`.
+
+## 5.21.7 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-amqp` from `2.12.1` to version `2.12.2`.
+
+## 5.21.6 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.12.0` to version `2.12.1`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
+## 5.21.5 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.11.4` to version `2.12.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
+## 5.21.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
+
+## 5.21.3 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.11.2` to version `2.11.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
 ## 5.21.2 (2025-10-27)
 

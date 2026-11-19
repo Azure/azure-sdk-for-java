@@ -238,14 +238,22 @@ public class BlobCheckpointStore implements CheckpointStore {
     /**
      * Updates the checkpoint in Storage Blobs for a partition.
      *
-     * @param checkpoint Checkpoint information containing sequence number and offset to be stored for this partition.
-     * @return The new ETag on successful update.
+     * <p>At least one of {@code sequenceNumber}, {@code offsetString}, or the deprecated {@code offset} must be
+     * populated on the supplied {@link Checkpoint}. When both {@code offsetString} and the deprecated {@code offset}
+     * are populated, {@code offsetString} is preferred and persisted as the offset metadata value.</p>
+     *
+     * @param checkpoint Checkpoint information containing the sequence number and/or offset (as {@code offsetString}
+     * or the deprecated {@code offset}) to be stored for this partition.
+     * @return A {@link Mono} that completes when the checkpoint metadata has been persisted.
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-        if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
+        if (checkpoint == null
+            || (checkpoint.getSequenceNumber() == null
+                && checkpoint.getOffset() == null
+                && CoreUtils.isNullOrEmpty(checkpoint.getOffsetString()))) {
             throw LOGGER.logExceptionAsWarning(Exceptions.propagate(new IllegalStateException(
-                "Both sequence number and offset cannot be null when updating a checkpoint")));
+                "At least one of sequence number, offset, or offsetString must be provided when updating a checkpoint")));
         }
 
         String partitionId = checkpoint.getPartitionId();
@@ -259,8 +267,14 @@ public class BlobCheckpointStore implements CheckpointStore {
         String sequenceNumber
             = checkpoint.getSequenceNumber() == null ? null : String.valueOf(checkpoint.getSequenceNumber());
 
+        // Prefer offsetString when populated; otherwise fall back to the deprecated offset (Long) so callers that
+        // still build Checkpoint instances using setOffset(Long) continue to persist the offset metadata.
+        String offset = CoreUtils.isNullOrEmpty(checkpoint.getOffsetString())
+            ? Objects.toString(checkpoint.getOffset(), null)
+            : checkpoint.getOffsetString();
+
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
-        metadata.put(OFFSET, checkpoint.getOffsetString());
+        metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
         return blobAsyncClient.exists().flatMap(exists -> {
