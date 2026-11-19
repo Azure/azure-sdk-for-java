@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionSettings;
@@ -86,21 +85,18 @@ public class CosmosEncryptionAsyncClientUnitTest {
         userAgent.setSuffix("customer-app");
         userAgent.setFeatureEnabledFlagsAsSuffix(EnumSet.of(UserAgentFeatureFlags.ThinClient));
         FieldUtils.writeField(mockDocClient, "userAgentContainer", userAgent, true);
+        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
         Mockito.doCallRealMethod().when(mockDocClient).appendUserAgentSuffix(Mockito.anyString());
         Mockito.doCallRealMethod().when(mockDocClient)
             .addUserAgentFeatureFlag(Mockito.any(UserAgentFeatureFlags.class));
         String previousValue = System.getProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
 
-        org.mockito.MockedStatic<CosmosBridgeInternal> bridgeMock = Mockito.mockStatic(CosmosBridgeInternal.class);
         try {
             if (setting == null) {
                 System.clearProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
             } else {
                 System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, setting);
             }
-            bridgeMock.when(() -> CosmosBridgeInternal.getAsyncDocumentClient(mockAsyncClient))
-                .thenReturn(mockDocClient);
-
             new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
             new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
 
@@ -110,7 +106,6 @@ public class CosmosEncryptionAsyncClientUnitTest {
                 .containsExactly("customer-app", Constants.USER_AGENT_SUFFIX);
             assertThat(userAgent.getUserAgent()).endsWith(optOutExpected ? "|F84" : "|F4");
         } finally {
-            bridgeMock.close();
             restoreMixedArraySetting(previousValue);
         }
     }
@@ -119,11 +114,10 @@ public class CosmosEncryptionAsyncClientUnitTest {
     public void encryptionOptOutSnapshotMatchesUserAgent() throws Exception {
         CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
         AsyncDocumentClient mockDocClient = Mockito.mock(AsyncDocumentClient.class);
+        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
         KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
         String previousValue = System.getProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
-        try (org.mockito.MockedStatic<CosmosBridgeInternal> bridgeMock = Mockito.mockStatic(CosmosBridgeInternal.class)) {
-            bridgeMock.when(() -> CosmosBridgeInternal.getAsyncDocumentClient(mockAsyncClient))
-                .thenReturn(mockDocClient);
+        try {
             System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, "false");
             CosmosEncryptionAsyncClient client =
                 new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
@@ -160,23 +154,17 @@ public class CosmosEncryptionAsyncClientUnitTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TestSuiteBase.TIMEOUT)
-    public void encryptionClientHandlesAppendFailureGracefully() {
-        // If getAsyncDocumentClient throws, encryption client should still be created
+    public void encryptionClientHandlesAppendFailureGracefully() throws Exception {
         CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
+        AsyncDocumentClient mockDocClient = Mockito.mock(AsyncDocumentClient.class);
         KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
+        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
+        Mockito.doThrow(new RuntimeException("simulated failure"))
+            .when(mockDocClient).appendUserAgentSuffix(Constants.USER_AGENT_SUFFIX);
 
-        org.mockito.MockedStatic<CosmosBridgeInternal> bridgeMock = Mockito.mockStatic(CosmosBridgeInternal.class);
-        try {
-            bridgeMock.when(() -> CosmosBridgeInternal.getAsyncDocumentClient(mockAsyncClient))
-                .thenThrow(new RuntimeException("simulated failure"));
-
-            // Should not throw — the failure is caught and logged
-            CosmosEncryptionAsyncClient client =
-                new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
-            assertThat(client).isNotNull();
-            assertThat(client.getCosmosAsyncClient()).isSameAs(mockAsyncClient);
-        } finally {
-            bridgeMock.close();
-        }
+        CosmosEncryptionAsyncClient client =
+            new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
+        assertThat(client).isNotNull();
+        assertThat(client.getCosmosAsyncClient()).isSameAs(mockAsyncClient);
     }
 }

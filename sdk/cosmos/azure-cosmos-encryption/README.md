@@ -174,10 +174,7 @@ The fix is enabled by default. To temporarily restore legacy array traversal for
 A non-empty JVM property takes precedence over the environment variable. Values are case-insensitive `true` or
 `false`; invalid values are rejected rather than silently disabling encryption. Each encryption client
 captures the setting when it is created and shares it with its container processors; restart the application
-to change modes consistently. Explicit opt-out sets bit `0x80` (`EncryptionMixedArrayOptOut`) in the underlying
-Cosmos client's compact user-agent feature mask (`|F80` alone, or `|F84` together with ThinClient).
-Default and explicit `true` settings do not set this bit. The mask is client-wide, including requests sharing
-that underlying Cosmos client; the encryption SDK version suffix remains unchanged.
+to change modes consistently.
 The setting is implemented in the encryption package and does not require a new `azure-cosmos` config getter.
 
 **Warning:** legacy mode restores the first-element-based behavior, including the bug that leaves scalar elements
