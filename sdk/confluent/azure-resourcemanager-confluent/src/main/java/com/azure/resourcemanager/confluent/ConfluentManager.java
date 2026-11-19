@@ -32,6 +32,8 @@ import com.azure.resourcemanager.confluent.implementation.ConfluentManagementCli
 import com.azure.resourcemanager.confluent.implementation.ConnectorsImpl;
 import com.azure.resourcemanager.confluent.implementation.EnvironmentsImpl;
 import com.azure.resourcemanager.confluent.implementation.MarketplaceAgreementsImpl;
+import com.azure.resourcemanager.confluent.implementation.MonitorResourcesImpl;
+import com.azure.resourcemanager.confluent.implementation.MonitorTagRulesImpl;
 import com.azure.resourcemanager.confluent.implementation.NetworkGatewayResourcesImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationOperationsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationsImpl;
@@ -43,6 +45,8 @@ import com.azure.resourcemanager.confluent.models.Clusters;
 import com.azure.resourcemanager.confluent.models.Connectors;
 import com.azure.resourcemanager.confluent.models.Environments;
 import com.azure.resourcemanager.confluent.models.MarketplaceAgreements;
+import com.azure.resourcemanager.confluent.models.MonitorResources;
+import com.azure.resourcemanager.confluent.models.MonitorTagRules;
 import com.azure.resourcemanager.confluent.models.NetworkGatewayResources;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
 import com.azure.resourcemanager.confluent.models.Organizations;
@@ -60,6 +64,10 @@ import java.util.stream.Collectors;
  * Entry point to ConfluentManager.
  */
 public final class ConfluentManager {
+    private MonitorResources monitorResources;
+
+    private MonitorTagRules monitorTagRules;
+
     private NetworkGatewayResources networkGatewayResources;
 
     private AccessPointResources accessPointResources;
@@ -295,6 +303,30 @@ public final class ConfluentManager {
                 .build();
             return new ConfluentManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of MonitorResources. It manages MonitorResource.
+     * 
+     * @return Resource collection API of MonitorResources.
+     */
+    public MonitorResources monitorResources() {
+        if (this.monitorResources == null) {
+            this.monitorResources = new MonitorResourcesImpl(clientObject.getMonitorResources(), this);
+        }
+        return monitorResources;
+    }
+
+    /**
+     * Gets the resource collection API of MonitorTagRules. It manages MonitorTagRule.
+     * 
+     * @return Resource collection API of MonitorTagRules.
+     */
+    public MonitorTagRules monitorTagRules() {
+        if (this.monitorTagRules == null) {
+            this.monitorTagRules = new MonitorTagRulesImpl(clientObject.getMonitorTagRules(), this);
+        }
+        return monitorTagRules;
     }
 
     /**

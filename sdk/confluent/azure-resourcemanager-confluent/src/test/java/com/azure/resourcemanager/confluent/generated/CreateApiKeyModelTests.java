@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateApiKeyModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateApiKeyModel model
-            = BinaryData.fromString("{\"name\":\"hhyxxrw\",\"description\":\"co\"}").toObject(CreateApiKeyModel.class);
-        Assertions.assertEquals("hhyxxrw", model.name());
-        Assertions.assertEquals("co", model.description());
+        CreateApiKeyModel model = BinaryData.fromString("{\"name\":\"tnvyqiatkzwp\",\"description\":\"p\"}")
+            .toObject(CreateApiKeyModel.class);
+        Assertions.assertEquals("tnvyqiatkzwp", model.name());
+        Assertions.assertEquals("p", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateApiKeyModel model = new CreateApiKeyModel().withName("hhyxxrw").withDescription("co");
+        CreateApiKeyModel model = new CreateApiKeyModel().withName("tnvyqiatkzwp").withDescription("p");
         model = BinaryData.fromObject(model).toObject(CreateApiKeyModel.class);
-        Assertions.assertEquals("hhyxxrw", model.name());
-        Assertions.assertEquals("co", model.description());
+        Assertions.assertEquals("tnvyqiatkzwp", model.name());
+        Assertions.assertEquals("p", model.description());
     }
 }

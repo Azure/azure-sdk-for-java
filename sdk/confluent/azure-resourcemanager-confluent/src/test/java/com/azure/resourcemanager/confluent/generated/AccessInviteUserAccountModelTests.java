@@ -13,27 +13,27 @@ public final class AccessInviteUserAccountModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInviteUserAccountModel model = BinaryData.fromString(
-            "{\"organizationId\":\"iby\",\"email\":\"dl\",\"upn\":\"shfwpracstwity\",\"invitedUserDetails\":{\"invitedEmail\":\"vxccedcp\",\"auth_type\":\"dyodnwzxltj\"}}")
+            "{\"organizationId\":\"oezbrhubsk\",\"email\":\"dyg\",\"upn\":\"okkqfqjbvleo\",\"invitedUserDetails\":{\"invitedEmail\":\"luiqtqzfavyvnqq\",\"auth_type\":\"aryeu\"}}")
             .toObject(AccessInviteUserAccountModel.class);
-        Assertions.assertEquals("iby", model.organizationId());
-        Assertions.assertEquals("dl", model.email());
-        Assertions.assertEquals("shfwpracstwity", model.upn());
-        Assertions.assertEquals("vxccedcp", model.invitedUserDetails().invitedEmail());
-        Assertions.assertEquals("dyodnwzxltj", model.invitedUserDetails().authType());
+        Assertions.assertEquals("oezbrhubsk", model.organizationId());
+        Assertions.assertEquals("dyg", model.email());
+        Assertions.assertEquals("okkqfqjbvleo", model.upn());
+        Assertions.assertEquals("luiqtqzfavyvnqq", model.invitedUserDetails().invitedEmail());
+        Assertions.assertEquals("aryeu", model.invitedUserDetails().authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessInviteUserAccountModel model = new AccessInviteUserAccountModel().withOrganizationId("iby")
-            .withEmail("dl")
-            .withUpn("shfwpracstwity")
+        AccessInviteUserAccountModel model = new AccessInviteUserAccountModel().withOrganizationId("oezbrhubsk")
+            .withEmail("dyg")
+            .withUpn("okkqfqjbvleo")
             .withInvitedUserDetails(
-                new AccessInvitedUserDetails().withInvitedEmail("vxccedcp").withAuthType("dyodnwzxltj"));
+                new AccessInvitedUserDetails().withInvitedEmail("luiqtqzfavyvnqq").withAuthType("aryeu"));
         model = BinaryData.fromObject(model).toObject(AccessInviteUserAccountModel.class);
-        Assertions.assertEquals("iby", model.organizationId());
-        Assertions.assertEquals("dl", model.email());
-        Assertions.assertEquals("shfwpracstwity", model.upn());
-        Assertions.assertEquals("vxccedcp", model.invitedUserDetails().invitedEmail());
-        Assertions.assertEquals("dyodnwzxltj", model.invitedUserDetails().authType());
+        Assertions.assertEquals("oezbrhubsk", model.organizationId());
+        Assertions.assertEquals("dyg", model.email());
+        Assertions.assertEquals("okkqfqjbvleo", model.upn());
+        Assertions.assertEquals("luiqtqzfavyvnqq", model.invitedUserDetails().invitedEmail());
+        Assertions.assertEquals("aryeu", model.invitedUserDetails().authType());
     }
 }

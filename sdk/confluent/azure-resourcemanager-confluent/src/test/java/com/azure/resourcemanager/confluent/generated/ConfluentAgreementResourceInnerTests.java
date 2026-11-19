@@ -13,36 +13,36 @@ public final class ConfluentAgreementResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementResourceInner model = BinaryData.fromString(
-            "{\"id\":\"jjfzqlqhycavo\",\"name\":\"gxdbeesmie\",\"type\":\"lrariaawiu\",\"properties\":{\"publisher\":\"wqfbylyrfgiagt\",\"product\":\"jocqwogfnzjvusf\",\"plan\":\"dmozu\",\"licenseTextLink\":\"lfsbtkadpysow\",\"privacyPolicyLink\":\"tgkbugrjqctojc\",\"retrieveDatetime\":\"2021-05-06T01:49:14Z\",\"signature\":\"fieypefojyqdhcup\",\"accepted\":false}}")
+            "{\"id\":\"ygvkzqkjj\",\"name\":\"kbzefezrxcczurt\",\"type\":\"ipqxbkwvzgnzv\",\"properties\":{\"publisher\":\"d\",\"product\":\"zmqpnodawopqhewj\",\"plan\":\"mcgsbostzelnd\",\"licenseTextLink\":\"tutmzl\",\"privacyPolicyLink\":\"ojlvfhrbbpneqvc\",\"retrieveDatetime\":\"2021-08-30T03:07:54Z\",\"signature\":\"urmochpprprs\",\"accepted\":true}}")
             .toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("wqfbylyrfgiagt", model.publisher());
-        Assertions.assertEquals("jocqwogfnzjvusf", model.product());
-        Assertions.assertEquals("dmozu", model.plan());
-        Assertions.assertEquals("lfsbtkadpysow", model.licenseTextLink());
-        Assertions.assertEquals("tgkbugrjqctojc", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T01:49:14Z"), model.retrieveDatetime());
-        Assertions.assertEquals("fieypefojyqdhcup", model.signature());
-        Assertions.assertFalse(model.accepted());
+        Assertions.assertEquals("d", model.publisher());
+        Assertions.assertEquals("zmqpnodawopqhewj", model.product());
+        Assertions.assertEquals("mcgsbostzelnd", model.plan());
+        Assertions.assertEquals("tutmzl", model.licenseTextLink());
+        Assertions.assertEquals("ojlvfhrbbpneqvc", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T03:07:54Z"), model.retrieveDatetime());
+        Assertions.assertEquals("urmochpprprs", model.signature());
+        Assertions.assertTrue(model.accepted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("wqfbylyrfgiagt")
-            .withProduct("jocqwogfnzjvusf")
-            .withPlan("dmozu")
-            .withLicenseTextLink("lfsbtkadpysow")
-            .withPrivacyPolicyLink("tgkbugrjqctojc")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-05-06T01:49:14Z"))
-            .withSignature("fieypefojyqdhcup")
-            .withAccepted(false);
+        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("d")
+            .withProduct("zmqpnodawopqhewj")
+            .withPlan("mcgsbostzelnd")
+            .withLicenseTextLink("tutmzl")
+            .withPrivacyPolicyLink("ojlvfhrbbpneqvc")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-08-30T03:07:54Z"))
+            .withSignature("urmochpprprs")
+            .withAccepted(true);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("wqfbylyrfgiagt", model.publisher());
-        Assertions.assertEquals("jocqwogfnzjvusf", model.product());
-        Assertions.assertEquals("dmozu", model.plan());
-        Assertions.assertEquals("lfsbtkadpysow", model.licenseTextLink());
-        Assertions.assertEquals("tgkbugrjqctojc", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T01:49:14Z"), model.retrieveDatetime());
-        Assertions.assertEquals("fieypefojyqdhcup", model.signature());
-        Assertions.assertFalse(model.accepted());
+        Assertions.assertEquals("d", model.publisher());
+        Assertions.assertEquals("zmqpnodawopqhewj", model.product());
+        Assertions.assertEquals("mcgsbostzelnd", model.plan());
+        Assertions.assertEquals("tutmzl", model.licenseTextLink());
+        Assertions.assertEquals("ojlvfhrbbpneqvc", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T03:07:54Z"), model.retrieveDatetime());
+        Assertions.assertEquals("urmochpprprs", model.signature());
+        Assertions.assertTrue(model.accepted());
     }
 }

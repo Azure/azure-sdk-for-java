@@ -12,27 +12,27 @@ public final class SCMetadataEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SCMetadataEntity model = BinaryData.fromString(
-            "{\"self\":\"jpsq\",\"resourceName\":\"mpoyfd\",\"createdTimestamp\":\"ogknygjofjdd\",\"updatedTimestamp\":\"s\",\"deletedTimestamp\":\"eupewnwreitjz\"}")
+            "{\"self\":\"kvwrwjfeu\",\"resourceName\":\"hutje\",\"createdTimestamp\":\"mrldhu\",\"updatedTimestamp\":\"zzd\",\"deletedTimestamp\":\"qxhocdgeablgphut\"}")
             .toObject(SCMetadataEntity.class);
-        Assertions.assertEquals("jpsq", model.self());
-        Assertions.assertEquals("mpoyfd", model.resourceName());
-        Assertions.assertEquals("ogknygjofjdd", model.createdTimestamp());
-        Assertions.assertEquals("s", model.updatedTimestamp());
-        Assertions.assertEquals("eupewnwreitjz", model.deletedTimestamp());
+        Assertions.assertEquals("kvwrwjfeu", model.self());
+        Assertions.assertEquals("hutje", model.resourceName());
+        Assertions.assertEquals("mrldhu", model.createdTimestamp());
+        Assertions.assertEquals("zzd", model.updatedTimestamp());
+        Assertions.assertEquals("qxhocdgeablgphut", model.deletedTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCMetadataEntity model = new SCMetadataEntity().withSelf("jpsq")
-            .withResourceName("mpoyfd")
-            .withCreatedTimestamp("ogknygjofjdd")
-            .withUpdatedTimestamp("s")
-            .withDeletedTimestamp("eupewnwreitjz");
+        SCMetadataEntity model = new SCMetadataEntity().withSelf("kvwrwjfeu")
+            .withResourceName("hutje")
+            .withCreatedTimestamp("mrldhu")
+            .withUpdatedTimestamp("zzd")
+            .withDeletedTimestamp("qxhocdgeablgphut");
         model = BinaryData.fromObject(model).toObject(SCMetadataEntity.class);
-        Assertions.assertEquals("jpsq", model.self());
-        Assertions.assertEquals("mpoyfd", model.resourceName());
-        Assertions.assertEquals("ogknygjofjdd", model.createdTimestamp());
-        Assertions.assertEquals("s", model.updatedTimestamp());
-        Assertions.assertEquals("eupewnwreitjz", model.deletedTimestamp());
+        Assertions.assertEquals("kvwrwjfeu", model.self());
+        Assertions.assertEquals("hutje", model.resourceName());
+        Assertions.assertEquals("mrldhu", model.createdTimestamp());
+        Assertions.assertEquals("zzd", model.updatedTimestamp());
+        Assertions.assertEquals("qxhocdgeablgphut", model.deletedTimestamp());
     }
 }

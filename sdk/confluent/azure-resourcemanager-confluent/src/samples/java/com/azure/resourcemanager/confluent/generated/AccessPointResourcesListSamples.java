@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class AccessPointResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AccessPointResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/AccessPointResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessPointResources_List_MaximumSet.

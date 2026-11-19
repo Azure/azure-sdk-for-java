@@ -22,7 +22,7 @@ public final class OrganizationsListSchemaRegistryClustersMockTests {
     @Test
     public void testListSchemaRegistryClusters() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"rqryxynqn\",\"id\":\"dpsovwxznptgo\",\"properties\":{\"metadata\":{\"self\":\"b\",\"resourceName\":\"pfhvfslk\",\"createdTimestamp\":\"tjlrigjksky\",\"updatedTimestamp\":\"oov\",\"deletedTimestamp\":\"dsxwaab\"},\"spec\":{\"name\":\"frygznmmax\",\"httpEndpoint\":\"zkzobgopxlhslnel\",\"package\":\"eixynllxecwcroj\",\"region\":{\"id\":\"lhc\",\"related\":\"jutifdwfmvigorqj\",\"resourceName\":\"tzh\"},\"environment\":{\"id\":\"lkafhonqjuje\",\"related\":\"kpzvcpopmxelnwc\",\"resourceName\":\"yjede\"},\"cloud\":\"mlfmkqs\"},\"status\":{\"phase\":\"uawxtzx\"}}}]}";
+            = "{\"value\":[{\"kind\":\"fcluqvo\",\"id\":\"ycjimryvwgcwwpbm\",\"properties\":{\"metadata\":{\"self\":\"sydsxwefohe\",\"resourceName\":\"vopwndyqleallk\",\"createdTimestamp\":\"tkhlowkxxpvbr\",\"updatedTimestamp\":\"jmzsyzfh\",\"deletedTimestamp\":\"lhikcyychunsj\"},\"spec\":{\"name\":\"rtws\",\"httpEndpoint\":\"vv\",\"package\":\"c\",\"region\":{\"id\":\"trrmhwrb\",\"related\":\"pyf\",\"resourceName\":\"bhvjglr\"},\"environment\":{\"id\":\"yzlwh\",\"related\":\"emhooclutnpq\",\"resourceName\":\"mczjkm\"},\"cloud\":\"kyujxsglhsrrr\"},\"status\":{\"phase\":\"ylmbkzudni\"}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,26 +32,26 @@ public final class OrganizationsListSchemaRegistryClustersMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SchemaRegistryClusterRecord> response = manager.organizations()
-            .listSchemaRegistryClusters("jw", "nyfusfzsvtuikzh", "jqg", 961484418, "fh",
+            .listSchemaRegistryClusters("bsxtkcudfbsfarfs", "owlkjxnqpv", "gf", 1896459173, "mhqykizmdksa",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rqryxynqn", response.iterator().next().kind());
-        Assertions.assertEquals("dpsovwxznptgo", response.iterator().next().id());
-        Assertions.assertEquals("b", response.iterator().next().metadata().self());
-        Assertions.assertEquals("pfhvfslk", response.iterator().next().metadata().resourceName());
-        Assertions.assertEquals("tjlrigjksky", response.iterator().next().metadata().createdTimestamp());
-        Assertions.assertEquals("oov", response.iterator().next().metadata().updatedTimestamp());
-        Assertions.assertEquals("dsxwaab", response.iterator().next().metadata().deletedTimestamp());
-        Assertions.assertEquals("frygznmmax", response.iterator().next().spec().name());
-        Assertions.assertEquals("zkzobgopxlhslnel", response.iterator().next().spec().httpEndpoint());
-        Assertions.assertEquals("eixynllxecwcroj", response.iterator().next().spec().packageProperty());
-        Assertions.assertEquals("lhc", response.iterator().next().spec().region().id());
-        Assertions.assertEquals("jutifdwfmvigorqj", response.iterator().next().spec().region().related());
-        Assertions.assertEquals("tzh", response.iterator().next().spec().region().resourceName());
-        Assertions.assertEquals("lkafhonqjuje", response.iterator().next().spec().environment().id());
-        Assertions.assertEquals("kpzvcpopmxelnwc", response.iterator().next().spec().environment().related());
-        Assertions.assertEquals("yjede", response.iterator().next().spec().environment().resourceName());
-        Assertions.assertEquals("mlfmkqs", response.iterator().next().spec().cloud());
-        Assertions.assertEquals("uawxtzx", response.iterator().next().status().phase());
+        Assertions.assertEquals("fcluqvo", response.iterator().next().kind());
+        Assertions.assertEquals("ycjimryvwgcwwpbm", response.iterator().next().id());
+        Assertions.assertEquals("sydsxwefohe", response.iterator().next().metadata().self());
+        Assertions.assertEquals("vopwndyqleallk", response.iterator().next().metadata().resourceName());
+        Assertions.assertEquals("tkhlowkxxpvbr", response.iterator().next().metadata().createdTimestamp());
+        Assertions.assertEquals("jmzsyzfh", response.iterator().next().metadata().updatedTimestamp());
+        Assertions.assertEquals("lhikcyychunsj", response.iterator().next().metadata().deletedTimestamp());
+        Assertions.assertEquals("rtws", response.iterator().next().spec().name());
+        Assertions.assertEquals("vv", response.iterator().next().spec().httpEndpoint());
+        Assertions.assertEquals("c", response.iterator().next().spec().packageProperty());
+        Assertions.assertEquals("trrmhwrb", response.iterator().next().spec().region().id());
+        Assertions.assertEquals("pyf", response.iterator().next().spec().region().related());
+        Assertions.assertEquals("bhvjglr", response.iterator().next().spec().region().resourceName());
+        Assertions.assertEquals("yzlwh", response.iterator().next().spec().environment().id());
+        Assertions.assertEquals("emhooclutnpq", response.iterator().next().spec().environment().related());
+        Assertions.assertEquals("mczjkm", response.iterator().next().spec().environment().resourceName());
+        Assertions.assertEquals("kyujxsglhsrrr", response.iterator().next().spec().cloud());
+        Assertions.assertEquals("ylmbkzudni", response.iterator().next().status().phase());
     }
 }

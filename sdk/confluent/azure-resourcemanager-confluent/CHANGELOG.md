@@ -1,14 +1,53 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.3.0-beta.3 (2026-11-19)
+
+- Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package api-version 2026-10-21-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.MonitorResource$DefinitionStages` was added
 
-### Bugs Fixed
+* `models.MonitorResource` was added
 
-### Other Changes
+* `models.MonitorTagRule$DefinitionStages` was added
+
+* `models.MonitorTagRule$Update` was added
+
+* `models.MonitorResource$UpdateStages` was added
+
+* `models.MonitorResource$Update` was added
+
+* `models.MonitorTagRuleProperties` was added
+
+* `models.FilteringTag` was added
+
+* `models.TagAction` was added
+
+* `models.MonitoringStatus` was added
+
+* `models.MonitorResources` was added
+
+* `models.MonitorTagRule$UpdateStages` was added
+
+* `models.MonitorTagRule` was added
+
+* `models.MonitorTagRule$Definition` was added
+
+* `models.MonitorResource$Definition` was added
+
+* `models.LogRules` was added
+
+* `models.MonitorProperties` was added
+
+* `models.MonitorTagRules` was added
+
+* `models.MonitorResourceUpdateParameters` was added
+
+#### `ConfluentManager` was modified
+
+* `monitorResources()` was added
+* `monitorTagRules()` was added
 
 ## 1.3.0-beta.2 (2026-11-18)
 

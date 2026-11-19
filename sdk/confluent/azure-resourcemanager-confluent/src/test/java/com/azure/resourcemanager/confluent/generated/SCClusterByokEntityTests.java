@@ -12,20 +12,20 @@ public final class SCClusterByokEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SCClusterByokEntity model
-            = BinaryData.fromString("{\"id\":\"qapnedgfbcv\",\"related\":\"vq\",\"resourceName\":\"keqdcvdrhvoods\"}")
+            = BinaryData.fromString("{\"id\":\"owpulpq\",\"related\":\"ylsyxkqjnsje\",\"resourceName\":\"tiagx\"}")
                 .toObject(SCClusterByokEntity.class);
-        Assertions.assertEquals("qapnedgfbcv", model.id());
-        Assertions.assertEquals("vq", model.related());
-        Assertions.assertEquals("keqdcvdrhvoods", model.resourceName());
+        Assertions.assertEquals("owpulpq", model.id());
+        Assertions.assertEquals("ylsyxkqjnsje", model.related());
+        Assertions.assertEquals("tiagx", model.resourceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SCClusterByokEntity model
-            = new SCClusterByokEntity().withId("qapnedgfbcv").withRelated("vq").withResourceName("keqdcvdrhvoods");
+            = new SCClusterByokEntity().withId("owpulpq").withRelated("ylsyxkqjnsje").withResourceName("tiagx");
         model = BinaryData.fromObject(model).toObject(SCClusterByokEntity.class);
-        Assertions.assertEquals("qapnedgfbcv", model.id());
-        Assertions.assertEquals("vq", model.related());
-        Assertions.assertEquals("keqdcvdrhvoods", model.resourceName());
+        Assertions.assertEquals("owpulpq", model.id());
+        Assertions.assertEquals("ylsyxkqjnsje", model.related());
+        Assertions.assertEquals("tiagx", model.resourceName());
     }
 }

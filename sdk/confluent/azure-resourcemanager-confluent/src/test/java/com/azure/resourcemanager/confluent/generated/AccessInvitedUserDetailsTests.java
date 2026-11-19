@@ -12,18 +12,18 @@ public final class AccessInvitedUserDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInvitedUserDetails model
-            = BinaryData.fromString("{\"invitedEmail\":\"nhltiugcxn\",\"auth_type\":\"vwxqibyqunyo\"}")
+            = BinaryData.fromString("{\"invitedEmail\":\"jkqa\",\"auth_type\":\"gzslesjcbhernnti\"}")
                 .toObject(AccessInvitedUserDetails.class);
-        Assertions.assertEquals("nhltiugcxn", model.invitedEmail());
-        Assertions.assertEquals("vwxqibyqunyo", model.authType());
+        Assertions.assertEquals("jkqa", model.invitedEmail());
+        Assertions.assertEquals("gzslesjcbhernnti", model.authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessInvitedUserDetails model
-            = new AccessInvitedUserDetails().withInvitedEmail("nhltiugcxn").withAuthType("vwxqibyqunyo");
+            = new AccessInvitedUserDetails().withInvitedEmail("jkqa").withAuthType("gzslesjcbhernnti");
         model = BinaryData.fromObject(model).toObject(AccessInvitedUserDetails.class);
-        Assertions.assertEquals("nhltiugcxn", model.invitedEmail());
-        Assertions.assertEquals("vwxqibyqunyo", model.authType());
+        Assertions.assertEquals("jkqa", model.invitedEmail());
+        Assertions.assertEquals("gzslesjcbhernnti", model.authType());
     }
 }

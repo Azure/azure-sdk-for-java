@@ -24,7 +24,7 @@ public final class OrganizationsListRegionsWithResponseMockTests {
     @Test
     public void testListRegionsWithResponse() throws Exception {
         String responseStr
-            = "{\"data\":[{\"kind\":\"k\",\"id\":\"zyvli\",\"properties\":{\"metadata\":{\"self\":\"kcxk\",\"resourceName\":\"bn\",\"createdTimestamp\":\"ysux\",\"updatedTimestamp\":\"qrntv\",\"deletedTimestamp\":\"ijpstte\"},\"spec\":{\"name\":\"qpwcyyufmh\",\"cloud\":\"nc\",\"regionName\":\"mqspkcdqzhlctdd\",\"packages\":[\"ndy\"]}}},{\"kind\":\"chrqb\",\"id\":\"jrcg\",\"properties\":{\"metadata\":{\"self\":\"cw\",\"resourceName\":\"xjumvq\",\"createdTimestamp\":\"lihrraiouaubr\",\"updatedTimestamp\":\"loqxfuojrngif\",\"deletedTimestamp\":\"z\"},\"spec\":{\"name\":\"ccbiuimzdlyjdfq\",\"cloud\":\"kyoqufdv\",\"regionName\":\"zslzojhp\",\"packages\":[\"nmdxotngfd\",\"ugeyzihgrkyuiza\"]}}},{\"kind\":\"nmfpp\",\"id\":\"jee\",\"properties\":{\"metadata\":{\"self\":\"hsgz\",\"resourceName\":\"zbgomfgbeg\",\"createdTimestamp\":\"gleohi\",\"updatedTimestamp\":\"tnluankrr\",\"deletedTimestamp\":\"eeebtijvacv\"},\"spec\":{\"name\":\"z\",\"cloud\":\"q\",\"regionName\":\"aj\",\"packages\":[\"xaceve\",\"jkuyxoafgaoq\",\"tfaeyl\"]}}}]}";
+            = "{\"data\":[{\"kind\":\"ttvwkpqh\",\"id\":\"enuygbq\",\"properties\":{\"metadata\":{\"self\":\"kewvnqv\",\"resourceName\":\"lguaucm\",\"createdTimestamp\":\"jwnlax\",\"updatedTimestamp\":\"njqikcz\",\"deletedTimestamp\":\"itacgxmfcsserx\"},\"spec\":{\"name\":\"soxhlwntsjgqr\",\"cloud\":\"y\",\"regionName\":\"uuuybnchrsziz\",\"packages\":[\"elyetndnbf\",\"yggagflnlgmt\",\"wahzjmucftbyr\"]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,23 @@ public final class OrganizationsListRegionsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListRegionsSuccessResponse response = manager.organizations()
-            .listRegionsWithResponse("gsrboldforobw", "lvizb",
-                new ListAccessRequestModel().withSearchFilters(mapOf("odxeszabbela", "ovvacqpbt", "cwyhahno",
-                    "umuaslzkwrrwoycq", "fuurutlwexx", "drkywuhps", "srzpgepqtybbww", "lalniex")),
+            .listRegionsWithResponse("excmjurbuhhl", "yqltqsro",
+                new ListAccessRequestModel().withSearchFilters(
+                    mapOf("ysidfvclgl", "wkffdjkt", "uijtkbu", "n", "haru", "qogsfikayian", "iqxf", "t")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("k", response.data().get(0).kind());
-        Assertions.assertEquals("zyvli", response.data().get(0).id());
-        Assertions.assertEquals("kcxk", response.data().get(0).metadata().self());
-        Assertions.assertEquals("bn", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("ysux", response.data().get(0).metadata().createdTimestamp());
-        Assertions.assertEquals("qrntv", response.data().get(0).metadata().updatedTimestamp());
-        Assertions.assertEquals("ijpstte", response.data().get(0).metadata().deletedTimestamp());
-        Assertions.assertEquals("qpwcyyufmh", response.data().get(0).spec().name());
-        Assertions.assertEquals("nc", response.data().get(0).spec().cloud());
-        Assertions.assertEquals("mqspkcdqzhlctdd", response.data().get(0).spec().regionName());
-        Assertions.assertEquals("ndy", response.data().get(0).spec().packages().get(0));
+        Assertions.assertEquals("ttvwkpqh", response.data().get(0).kind());
+        Assertions.assertEquals("enuygbq", response.data().get(0).id());
+        Assertions.assertEquals("kewvnqv", response.data().get(0).metadata().self());
+        Assertions.assertEquals("lguaucm", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("jwnlax", response.data().get(0).metadata().createdTimestamp());
+        Assertions.assertEquals("njqikcz", response.data().get(0).metadata().updatedTimestamp());
+        Assertions.assertEquals("itacgxmfcsserx", response.data().get(0).metadata().deletedTimestamp());
+        Assertions.assertEquals("soxhlwntsjgqr", response.data().get(0).spec().name());
+        Assertions.assertEquals("y", response.data().get(0).spec().cloud());
+        Assertions.assertEquals("uuuybnchrsziz", response.data().get(0).spec().regionName());
+        Assertions.assertEquals("elyetndnbf", response.data().get(0).spec().packages().get(0));
     }
 
     // Use "Map.of" if available

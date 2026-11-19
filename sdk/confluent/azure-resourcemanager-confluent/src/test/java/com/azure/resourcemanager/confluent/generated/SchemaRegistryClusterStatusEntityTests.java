@@ -12,7 +12,7 @@ public final class SchemaRegistryClusterStatusEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryClusterStatusEntity model
-            = BinaryData.fromString("{\"phase\":\"rzt\"}").toObject(SchemaRegistryClusterStatusEntity.class);
-        Assertions.assertEquals("rzt", model.phase());
+            = BinaryData.fromString("{\"phase\":\"sytgadgvraea\"}").toObject(SchemaRegistryClusterStatusEntity.class);
+        Assertions.assertEquals("sytgadgvraea", model.phase());
     }
 }

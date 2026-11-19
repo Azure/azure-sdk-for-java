@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SaaSDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SaaSData model = BinaryData.fromString("{\"saaSResourceId\":\"qzbqjvsov\"}").toObject(SaaSData.class);
-        Assertions.assertEquals("qzbqjvsov", model.saaSResourceId());
+        SaaSData model = BinaryData.fromString("{\"saaSResourceId\":\"hseyvju\"}").toObject(SaaSData.class);
+        Assertions.assertEquals("hseyvju", model.saaSResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SaaSData model = new SaaSData().withSaaSResourceId("qzbqjvsov");
+        SaaSData model = new SaaSData().withSaaSResourceId("hseyvju");
         model = BinaryData.fromObject(model).toObject(SaaSData.class);
-        Assertions.assertEquals("qzbqjvsov", model.saaSResourceId());
+        Assertions.assertEquals("hseyvju", model.saaSResourceId());
     }
 }
