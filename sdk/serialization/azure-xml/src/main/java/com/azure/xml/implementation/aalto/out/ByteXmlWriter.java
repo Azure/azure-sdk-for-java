@@ -53,13 +53,11 @@ public abstract class ByteXmlWriter extends XmlWriter {
 
     final static byte BYTE_SPACE = (byte) ' ';
     final static byte BYTE_COLON = (byte) ':';
-    final static byte BYTE_SEMICOLON = (byte) ';';
     final static byte BYTE_RBRACKET = (byte) ']';
     final static byte BYTE_QMARK = (byte) '?';
     final static byte BYTE_EQ = (byte) '=';
     final static byte BYTE_SLASH = (byte) '/';
     final static byte BYTE_HASH = (byte) '#';
-    final static byte BYTE_HYPHEN = (byte) '-';
 
     final static byte BYTE_LT = (byte) '<';
     final static byte BYTE_GT = (byte) '>';
@@ -80,8 +78,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
 
     final static byte[] BYTES_CDATA_START = getAscii("<![CDATA[");
     final static byte[] BYTES_CDATA_END = getAscii("]]>");
-    final static byte[] BYTES_COMMENT_START = getAscii("<!--");
-    final static byte[] BYTES_COMMENT_END = getAscii("-->");
 
     final static byte[] BYTES_XMLDECL_START = getAscii("<?xml version=\"");
     final static byte[] BYTES_XMLDECL_ENCODING = getAscii(" encoding=\"");
@@ -157,7 +153,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public WName constructName(String prefix, String localName) throws XMLStreamException {
+    public final WName constructName(String prefix, String localName) throws XMLStreamException {
         verifyNameComponent(prefix);
         verifyNameComponent(localName);
         return doConstructName(prefix, localName);
@@ -266,7 +262,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
      */
 
     @Override
-    public void _releaseBuffers() {
+    public final void _releaseBuffers() {
         super._releaseBuffers();
         if (_outputBuffer != null) {
             _config.freeFullBBuffer(_outputBuffer);
@@ -279,7 +275,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void _closeTarget(boolean doClose) throws IOException {
+    public final void _closeTarget(boolean doClose) throws IOException {
         if (_out != null) { // just in case it's called multiple times
             if (doClose) {
                 _out.close();
@@ -314,13 +310,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
             len -= len2;
         }
     }
-
-    /**
-     * This method is heavily encoding-dependant, so it needs
-     * to be deferred to sub-classes
-     */
-    @Override
-    public abstract void writeRaw(char[] cbuf, int offset, int len) throws IOException, XMLStreamException;
 
     /*
     /**********************************************************************
@@ -606,22 +595,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
     /**********************************************************************
      */
 
-    protected final void writeName(WName name) throws IOException {
-        int ptr = _outputPtr;
-        int len = name.serializedLength();
-        if ((ptr + len) > _outputBufferLen) {
-            flushBuffer();
-            // name longer than the buffer? can write it straight out
-            if (len >= _outputBufferLen) {
-                name.writeBytes(_out);
-                return;
-            }
-            ptr = _outputPtr;
-        }
-        ptr += name.appendBytes(_outputBuffer, ptr);
-        _outputPtr = ptr;
-    }
-
     protected final void writeName(byte preChar, WName name) throws IOException {
         flushBuffer();
         // name longer than the buffer? Need to write it straight out
@@ -650,7 +623,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
      *   mode)
      */
     @Override
-    public int writeCData(String data) throws IOException, XMLStreamException {
+    public final int writeCData(String data) throws IOException, XMLStreamException {
         writeCDataStart(); // will check surrogates
         int len = data.length();
         int offset = 0;
@@ -975,244 +948,9 @@ public abstract class ByteXmlWriter extends XmlWriter {
 
     /*
     /**********************************************************************
-    /* Write methods, typed (element) content
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
     /* Write methods, other
     /**********************************************************************
      */
-
-    /**
-     * Method that will try to output the content as specified. If
-     * the content passed in has embedded "--" in it, it will either
-     * add an intervening space between consequtive hyphens (if content
-     * fixing is enabled), or return the offset of the first hyphen in
-     * multi-hyphen sequence.
-     */
-    @Override
-    public int writeComment(String data) throws IOException, XMLStreamException {
-        writeCommentStart();
-
-        int len = data.length();
-        int offset = 0;
-        while (len > 0) {
-            char[] buf = _copyBuffer;
-            final int blen = buf.length;
-            int len2 = Math.min(len, blen);
-            // Nope, can only do part
-            data.getChars(offset, offset + len2, buf, 0);
-            int cix = writeCommentContents(buf, 0, len2);
-            if (cix >= 0) {
-                return offset + cix;
-            }
-            offset += blen;
-            len -= blen;
-        }
-        writeCommentEnd();
-        return -1;
-    }
-
-    /**
-     * Note: the only way to fix comment contents is to inject a space
-     * to split up consecutive '--' (or '-' that ends a comment).
-     */
-    protected int writeCommentContents(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
-        if (_surrogate != 0) {
-            outputSurrogates(_surrogate, cbuf[offset]);
-            // reset the temporary surrogate storage
-            _surrogate = 0;
-            ++offset;
-            --len;
-        }
-
-        // Unlike with writeCharacters() and fastWriteName(), let's not
-        // worry about split buffers here: this is unlikely to become
-        // performance bottleneck. This allows keeping it simple; and
-        // should it matter, we could start doing fast version here as well.
-        len += offset; // now marks the end
-
-        main_loop: while (offset < len) {
-            final int[] charTypes = _charTypes.OTHER_CHARS;
-
-            while (true) {
-                int ch = cbuf[offset];
-                if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break;
-                }
-                if (charTypes[ch] != XmlCharTypes.CT_OK) {
-                    break;
-                }
-                if (_outputPtr >= _outputBufferLen) {
-                    flushBuffer();
-                }
-                _outputBuffer[_outputPtr++] = (byte) ch;
-                if (++offset >= len) {
-                    break main_loop;
-                }
-            }
-
-            // Ok, so what did we hit?
-            int ch = cbuf[offset++];
-            if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
-                switch (charTypes[ch]) {
-                    case CT_INVALID:
-                        reportInvalidChar(ch);
-                    case CT_WS_CR: // No way to escape within CDATA
-                    case CT_WS_LF:
-                        ++_locRowNr;
-                        break;
-
-                    case CT_OUTPUT_MUST_QUOTE: // == MULTIBYTE_N value
-                        reportFailedEscaping("comment", ch);
-                    case CT_MULTIBYTE_2:
-                        // To off-line or not?
-                        output2ByteChar(ch);
-                        continue;
-
-                    case CT_HYPHEN:
-                        // No need if followed by non hyphen
-                        if (offset < len && cbuf[offset] != '-') {
-                            break;
-                        }
-                        // Two hyphens, or hyphen at end; must append a space
-                        writeRaw(BYTE_HYPHEN, BYTE_SPACE);
-                        continue;
-
-                    default: // Everything else should be outputtable as is
-                        break;
-                }
-                if (_outputPtr >= _outputBufferLen) {
-                    flushBuffer();
-                }
-                _outputBuffer[_outputPtr++] = (byte) ch;
-            } else { // beyond 2-byte encodables; 3-byte, surrogates?
-                offset = outputMultiByteChar(ch, cbuf, offset, len);
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public void writeDTD(String data) throws IOException, XMLStreamException {
-        // !!! TBI: Check for char validity, similar to other methods?
-        writeRaw(data, 0, data.length());
-    }
-
-    protected int writePIData(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
-        if (_surrogate != 0) {
-            outputSurrogates(_surrogate, cbuf[offset]);
-            // reset the temporary surrogate storage
-            _surrogate = 0;
-            ++offset;
-            --len;
-        }
-
-        // Unlike with writeCharacters() and fastWriteName(), let's not
-        // worry about split buffers here: this is unlikely to become
-        // performance bottleneck. This allows keeping it simple; and
-        // should it matter, we could start doing fast version here as well.
-        len += offset; // now marks the end
-
-        main_loop: while (offset < len) {
-            final int[] charTypes = _charTypes.OTHER_CHARS;
-
-            while (true) {
-                int ch = cbuf[offset];
-                if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break;
-                }
-                if (charTypes[ch] != XmlCharTypes.CT_OK) {
-                    break;
-                }
-                if (_outputPtr >= _outputBufferLen) {
-                    flushBuffer();
-                }
-                _outputBuffer[_outputPtr++] = (byte) ch;
-                if (++offset >= len) {
-                    break main_loop;
-                }
-            }
-
-            // Ok, so what did we hit?
-            int ch = cbuf[offset++];
-            if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
-                switch (charTypes[ch]) {
-                    case CT_INVALID:
-                        reportInvalidChar(ch);
-                    case CT_WS_CR: // No way to escape within CDATA
-                    case CT_WS_LF:
-                        ++_locRowNr;
-                        break;
-
-                    case CT_OUTPUT_MUST_QUOTE: // == MULTIBYTE_N value
-                        reportFailedEscaping("processing instruction", ch);
-                    case CT_MULTIBYTE_2:
-                        // To off-line or not?
-                        output2ByteChar(ch);
-                        continue;
-
-                    case CT_QMARK:
-                        // Problem, if we have '?>'
-                        if (offset < len && cbuf[offset] == '>') {
-                            return offset;
-                        }
-                        break;
-
-                    default: // Everything else should be outputtable as is
-                        break;
-                }
-                if (_outputPtr >= _outputBufferLen) {
-                    flushBuffer();
-                }
-                _outputBuffer[_outputPtr++] = (byte) ch;
-            } else { // beyond 2-byte encodables; 3-byte, surrogates?
-                offset = outputMultiByteChar(ch, cbuf, offset, len);
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public void writeEntityReference(WName name) throws IOException {
-        writeRaw(BYTE_AMP); // will check surrogates
-        writeName(name);
-        writeRaw(BYTE_SEMICOLON);
-    }
-
-    @Override
-    public int writePI(WName target, String data) throws IOException, XMLStreamException {
-        writeRaw(BYTE_LT, BYTE_QMARK);
-        writeName(target);
-        if (data != null) {
-            // Need to split etc
-            writeRaw(BYTE_SPACE);
-
-            int len = data.length();
-            int offset = 0;
-            while (len > 0) {
-                char[] buf = _copyBuffer;
-                int blen = buf.length;
-
-                // Can write all the rest?
-                if (blen > len) {
-                    blen = len;
-                }
-                // Nope, can only do part
-                data.getChars(offset, offset + blen, buf, 0);
-                int cix = writePIData(buf, 0, blen);
-                if (cix >= 0) {
-                    return offset + cix;
-                }
-                offset += blen;
-                len -= blen;
-            }
-        }
-        writeRaw(BYTE_QMARK, BYTE_GT);
-        return -1;
-    }
 
     @Override
     public final void writeSpace(String data) throws IOException, XMLStreamException {
@@ -1231,7 +969,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeSpace(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
+    public final void writeSpace(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         if (_out == null) {
             return;
         }
@@ -1254,7 +992,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeXmlDeclaration(String version, String encoding, String standalone)
+    public final void writeXmlDeclaration(String version, String encoding, String standalone)
         throws IOException, XMLStreamException {
         writeRaw(BYTES_XMLDECL_START); // will check surrogates
         // !!! TBI: check validity
@@ -1290,14 +1028,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
         writeRaw(BYTES_CDATA_END);
     }
 
-    protected final void writeCommentStart() throws IOException {
-        writeRaw(BYTES_COMMENT_START);
-    }
-
-    protected final void writeCommentEnd() throws IOException {
-        writeRaw(BYTES_COMMENT_END);
-    }
-
     /*
     /**********************************************************************
     /* Write methods, raw (unprocessed) output
@@ -1326,10 +1056,10 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     protected final void writeRaw(byte[] buf) throws IOException {
-        writeRaw(buf, 0, buf.length);
+        writeRaw(buf, buf.length);
     }
 
-    protected final void writeRaw(byte[] buf, int offset, int len) throws IOException {
+    protected final void writeRaw(byte[] buf, int len) throws IOException {
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
         }
@@ -1337,7 +1067,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         int ptr = _outputPtr;
         // Common case: fits right in the buffer
         if ((ptr + len) <= _outputBufferLen) {
-            System.arraycopy(buf, offset, _outputBuffer, ptr, len);
+            System.arraycopy(buf, 0, _outputBuffer, ptr, len);
             _outputPtr += len;
             return;
         }
@@ -1348,10 +1078,10 @@ public abstract class ByteXmlWriter extends XmlWriter {
             ptr = _outputPtr;
         }
         if (len < SMALL_WRITE) {
-            System.arraycopy(buf, offset, _outputBuffer, ptr, len);
+            System.arraycopy(buf, 0, _outputBuffer, ptr, len);
             _outputPtr += len;
         } else {
-            _out.write(buf, offset, len);
+            _out.write(buf, 0, len);
         }
     }
 

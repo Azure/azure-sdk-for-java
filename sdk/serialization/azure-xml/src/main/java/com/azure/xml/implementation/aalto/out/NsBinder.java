@@ -98,11 +98,10 @@ final class NsBinder {
          */
         String[] strs = _nsStrings;
         // Hash code should differentiate cheaply (beyond length checks)
-        int phash = prefix.hashCode();
 
         for (int ix = _scopeEnd - 2; ix >= 0; ix -= 2) {
             String thisP = strs[ix];
-            if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+            if (Objects.equals(thisP, prefix)) {
                 return strs[ix + 1];
             }
         }
@@ -117,21 +116,19 @@ final class NsBinder {
          * and so on.
          */
         String[] strs = _nsStrings;
-        int uhash = uri.hashCode();
 
         main_loop: for (int ix = _scopeEnd - 1; ix > 0; ix -= 2) {
             String thisU = strs[ix];
-            if (Objects.equals(thisU, uri) || (thisU.hashCode() == uhash && thisU.equals(uri))) {
+            if (Objects.equals(thisU, uri)) {
                 // match, but has it been masked?
                 String prefix = strs[ix - 1];
                 /* only need to check, if it wasn't within current scope
                  * (no masking allowed within scopes)
                  */
                 if (ix < _scopeStart) {
-                    int phash = prefix.hashCode();
                     for (int j = ix - 1, end = _scopeEnd; j < end; j += 2) {
                         String thisP = strs[ix];
-                        if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+                        if (Objects.equals(thisP, prefix)) {
                             // Masking, can't use
                             continue main_loop;
                         }
@@ -148,17 +145,15 @@ final class NsBinder {
          * findPrefixByUri...
          */
         String[] strs = _nsStrings;
-        int uhash = uri.hashCode();
 
         main_loop: for (int ix = _scopeEnd - 1; ix > 0; ix -= 2) {
             String thisU = strs[ix];
-            if (Objects.equals(thisU, uri) || (thisU.hashCode() == uhash && thisU.equals(uri))) {
+            if (Objects.equals(thisU, uri)) {
                 String prefix = strs[ix - 1];
                 if (ix < _scopeStart) {
-                    int phash = prefix.hashCode();
                     for (int j = ix - 1, end = _scopeEnd; j < end; j += 2) {
                         String thisP = strs[ix];
-                        if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+                        if (Objects.equals(thisP, prefix)) {
                             // Masking... got to continue the main loop:
                             continue main_loop;
                         }
@@ -197,11 +192,10 @@ final class NsBinder {
      */
     void addMapping(String prefix, String uri) {
         String[] strs = _nsStrings;
-        int phash = prefix.hashCode();
 
         for (int ix = _scopeStart, end = _scopeEnd; ix < end; ix += 2) {
             String thisP = strs[ix];
-            if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+            if (Objects.equals(thisP, prefix)) {
                 // Overriding an existing mapping
                 strs[ix + 1] = uri;
                 return;

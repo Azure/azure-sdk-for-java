@@ -1,10 +1,9 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import com.azure.xml.implementation.aalto.WFCException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.impl.LocationImpl;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.util.DataUtil;
 import com.azure.xml.implementation.aalto.util.TextBuilder;
 import com.azure.xml.implementation.aalto.util.XmlChars;
@@ -29,7 +28,7 @@ import java.util.Objects;
  * Scanners are encoding and input type (byte, char / stream, block)
  * specific, so there are many implementations.
  */
-public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, NamespaceContext {
+public abstract class XmlScanner implements XMLStreamConstants, NamespaceContext {
 
     // // // Constants:
 
@@ -300,7 +299,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             try {
                 _closeSource();
             } catch (IOException ioe) {
-                throw new IoStreamException(ioe);
+                throw new StreamExceptionBase(ioe);
             }
         }
     }
@@ -322,7 +321,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     /**********************************************************************
      */
 
-    public ReaderConfig getConfig() {
+    public final ReaderConfig getConfig() {
         return _config;
     }
 
@@ -597,7 +596,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
      */
 
     @Override
-    public String getNamespaceURI(String prefix) {
+    public final String getNamespaceURI(String prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
         }
@@ -625,7 +624,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     }
 
     @Override
-    public String getPrefix(String nsURI) {
+    public final String getPrefix(String nsURI) {
         /* As per JDK 1.5 JavaDocs, null is illegal; but no mention
          * about empty String (""). But that should
          */
@@ -664,7 +663,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     }
 
     @Override
-    public Iterator<String> getPrefixes(String nsURI) {
+    public final Iterator<String> getPrefixes(String nsURI) {
         if (nsURI == null) {
             throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
         }
@@ -854,7 +853,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         if (_nsBindingCount == 0) {
             _nsBindings = new NsBinding[16];
         } else if (_nsBindingCount >= _nsBindings.length) {
-            _nsBindings = (NsBinding[]) DataUtil.growAnyArrayBy(_nsBindings, _nsBindings.length);
+            _nsBindings = DataUtil.growAnyArrayBy(_nsBindings, _nsBindings.length);
         }
         _nsBindings[_nsBindingCount] = b;
         ++_nsBindingCount;
@@ -962,7 +961,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         /* 29-Mar-2008, tatus: Not sure if these are all Well-Formedness
          *   Constraint (WFC) violations? They should be... ?
          */
-        throw new WFCException(msg, getCurrentLocation());
+        throw new StreamExceptionBase(msg, getCurrentLocation());
     }
 
     /**
@@ -1115,7 +1114,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     protected char handleInvalidXmlChar(int i) throws XMLStreamException {
         char c = (char) i;
-        if (c == CHAR_NULL) {
+        if (c == XmlConsts.CHAR_NULL) {
             throwNullChar();
         }
 
@@ -1127,7 +1126,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     protected void throwInvalidSpace(int i) throws XMLStreamException {
         char c = (char) i;
-        if (c == CHAR_NULL) {
+        if (c == XmlConsts.CHAR_NULL) {
             throwNullChar();
         }
         reportInputProblem("Illegal character (" + XmlChars.getCharDesc(c) + ")");

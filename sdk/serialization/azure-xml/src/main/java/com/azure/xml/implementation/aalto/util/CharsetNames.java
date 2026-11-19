@@ -8,7 +8,7 @@ import java.io.Writer;
  * Simple utility class that normalizes given character input character
  * set names into canonical (within context of this processor) names
  */
-public final class CharsetNames implements XmlConsts {
+public final class CharsetNames {
     /*
     /**********************************************************
     /* Canonical names used internally
@@ -273,10 +273,10 @@ public final class CharsetNames implements XmlConsts {
             }
 
             // if not equal, maybe there are WS/hyphen/underscores to skip
-            while (c1 <= CHAR_SPACE || c1 == '_' || c1 == '-') {
+            while (c1 <= XmlConsts.CHAR_SPACE || c1 == '_' || c1 == '-') {
                 c1 = (i1 >= len1) ? EOS : str1.charAt(i1++);
             }
-            while (c2 <= CHAR_SPACE || c2 == '_' || c2 == '-') {
+            while (c2 <= XmlConsts.CHAR_SPACE || c2 == '_' || c2 == '-') {
                 c2 = (i2 >= len2) ? EOS : str2.charAt(i2++);
             }
             // Ok, how about case differences, then?
@@ -312,10 +312,10 @@ public final class CharsetNames implements XmlConsts {
             }
 
             // if not equal, maybe there are WS/hyphen/underscores to skip
-            while (c1 <= CHAR_SPACE || c1 == '_' || c1 == '-') {
+            while (c1 <= XmlConsts.CHAR_SPACE || c1 == '_' || c1 == '-') {
                 c1 = (i1 >= len1) ? EOS : enc.charAt(i1++);
             }
-            while (c2 <= CHAR_SPACE || c2 == '_' || c2 == '-') {
+            while (c2 <= XmlConsts.CHAR_SPACE || c2 == '_' || c2 == '-') {
                 c2 = (i2 >= len2) ? EOS : prefix.charAt(i2++);
             }
             // Ok, how about case differences, then?
