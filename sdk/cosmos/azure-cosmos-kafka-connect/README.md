@@ -6,12 +6,12 @@ The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kaf
 ## Getting started
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure.kafka-connect:azure-cosmos-kafka-connect;current})
+[//]: # ({x-version-update-start;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current})
 ```xml
 <dependency>
-  <groupId>com.azure.kafka.connect</groupId>
+  <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>2.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,7 +74,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_kafka_maven]: https://central.sonatype.com/artifact/com.azure.kafka.connect/azure-cosmos-kafka-connect
+[cosmos_kafka_maven]: https://central.sonatype.com/artifact/com.azure.cosmos.kafka/azure-cosmos-kafka-connect
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
