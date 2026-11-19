@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteLagAuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteLagAuthorizationDelete.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteLagAuthorizationDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteLag Authorization.

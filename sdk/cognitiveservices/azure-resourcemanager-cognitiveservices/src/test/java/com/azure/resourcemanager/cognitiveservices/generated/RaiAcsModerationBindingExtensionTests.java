@@ -16,26 +16,26 @@ public final class RaiAcsModerationBindingExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsModerationBindingExtension model = BinaryData.fromString(
-            "{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"SelfHarm\",\"harm_config_id\":\"lqxihhrmooiz\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"ypxiutcxap\"},{\"category\":\"Sexual\",\"harm_config_id\":\"rpetogebjoxsl\"},{\"category\":\"SelfHarm\",\"harm_config_id\":\"hlabrq\"}]}")
+            "{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"Hate\",\"harm_config_id\":\"bsjuscvsfx\"},{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"tmgxuupbezqcc\"},{\"category\":\"ProtectedMaterialCode\",\"harm_config_id\":\"tce\"}]}")
             .toObject(RaiAcsModerationBindingExtension.class);
         Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.SELF_HARM, model.harmConfigs().get(0).category());
-        Assertions.assertEquals("lqxihhrmooiz", model.harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE, model.harmConfigs().get(0).category());
+        Assertions.assertEquals("bsjuscvsfx", model.harmConfigs().get(0).harmConfigId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsModerationBindingExtension model = new RaiAcsModerationBindingExtension()
-            .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
-            .withHarmConfigs(Arrays.asList(
-                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM)
-                    .withHarmConfigId("lqxihhrmooiz"),
-                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM).withHarmConfigId("ypxiutcxap"),
-                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SEXUAL).withHarmConfigId("rpetogebjoxsl"),
-                new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.SELF_HARM).withHarmConfigId("hlabrq")));
+        RaiAcsModerationBindingExtension model
+            = new RaiAcsModerationBindingExtension().withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                .withHarmConfigs(Arrays.asList(
+                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.HATE).withHarmConfigId("bsjuscvsfx"),
+                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                        .withHarmConfigId("tmgxuupbezqcc"),
+                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_CODE)
+                        .withHarmConfigId("tce")));
         model = BinaryData.fromObject(model).toObject(RaiAcsModerationBindingExtension.class);
         Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.SELF_HARM, model.harmConfigs().get(0).category());
-        Assertions.assertEquals("lqxihhrmooiz", model.harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals(RaiAcsHarmCategory.HATE, model.harmConfigs().get(0).category());
+        Assertions.assertEquals("bsjuscvsfx", model.harmConfigs().get(0).harmConfigId());
     }
 }

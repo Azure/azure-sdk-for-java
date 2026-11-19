@@ -436,7 +436,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      * @return the {@link SyncPoller} for polling of the AI Manager resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AIManagerInner>, AIManagerInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<AIManagerInner>, AIManagerInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, AIManagerInner resource, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch);
@@ -756,7 +756,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String ifMatch) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, ifMatch);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

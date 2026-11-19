@@ -607,7 +607,7 @@ public final class StorageSyncServicesClientImpl implements StorageSyncServicesC
      * @return the {@link SyncPoller} for polling of storage Sync Service object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginUpdate(
+    private SyncPoller<PollResult<StorageSyncServiceInner>, StorageSyncServiceInner> beginUpdate(
         String resourceGroupName, String storageSyncServiceName, StorageSyncServiceUpdateParameters parameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, storageSyncServiceName, parameters);
         return this.client.<StorageSyncServiceInner, StorageSyncServiceInner>getLroResult(response,

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class WorkbenchesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchComputeProperties.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateWorkbenchComputeProperties.json
      */
     /**
      * Sample code: UpdateWorkbenchComputeProperties.
@@ -44,7 +44,7 @@ public final class WorkbenchesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbench.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateWorkbench.json
      */
     /**
      * Sample code: UpdateWorkbench.
@@ -60,7 +60,7 @@ public final class WorkbenchesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchResetComputeProperties.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateWorkbenchResetComputeProperties.json
      */
     /**
      * Sample code: UpdateWorkbenchResetComputeProperties.

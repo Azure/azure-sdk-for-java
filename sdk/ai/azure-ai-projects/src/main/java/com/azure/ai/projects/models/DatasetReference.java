@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Reference to a versioned Foundry Dataset.
+ * Reference to a Dataset whose concrete version has already been resolved.
  */
 @Immutable
 public final class DatasetReference implements JsonSerializable<DatasetReference> {
@@ -24,7 +24,7 @@ public final class DatasetReference implements JsonSerializable<DatasetReference
     private final String name;
 
     /*
-     * Dataset version.
+     * Concrete Dataset version.
      */
     @Generated
     private final String version;
@@ -52,7 +52,7 @@ public final class DatasetReference implements JsonSerializable<DatasetReference
     }
 
     /**
-     * Get the version property: Dataset version.
+     * Get the version property: Concrete Dataset version.
      *
      * @return the version value.
      */

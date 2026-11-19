@@ -136,10 +136,11 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldSummaryInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, accept, context))
             .<PagedResponse<NeuroShieldSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -200,10 +201,10 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldSummaryInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         Integer top) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldSummaryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, accept, Context.NONE);
+        Response<NeuroShieldSummaryListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -225,10 +226,10 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldSummaryInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         Integer top, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldSummaryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, accept, context);
+        Response<NeuroShieldSummaryListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -291,10 +292,11 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldSummaryInner>> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -336,8 +338,9 @@ public final class NeuroShieldSummariesClientImpl implements NeuroShieldSummarie
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldSummaryInner> getWithResponse(String resourceGroupName, String neuroShieldName,
         Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, accept, context);
     }
 

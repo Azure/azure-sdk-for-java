@@ -1729,7 +1729,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
         EncryptionTransitionRequest body) {
         Response<BinaryData> response = transitionToCmkWithResponse(resourceGroupName, accountName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
@@ -2250,7 +2250,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
+    private SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
         ChangeKeyVault body) {
         Response<BinaryData> response = changeKeyVaultWithResponse(resourceGroupName, accountName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

@@ -13,16 +13,16 @@ public final class RaiRegoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiRegoProperties model
-            = BinaryData.fromString("{\"encoding\":\"Base64\",\"rego\":\"wjwiuub\"}").toObject(RaiRegoProperties.class);
-        Assertions.assertEquals(RaiRegoEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("wjwiuub", model.rego());
+            = BinaryData.fromString("{\"encoding\":\"None\",\"rego\":\"njyixh\"}").toObject(RaiRegoProperties.class);
+        Assertions.assertEquals(RaiRegoEncoding.NONE, model.encoding());
+        Assertions.assertEquals("njyixh", model.rego());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiRegoProperties model = new RaiRegoProperties().withEncoding(RaiRegoEncoding.BASE64).withRego("wjwiuub");
+        RaiRegoProperties model = new RaiRegoProperties().withEncoding(RaiRegoEncoding.NONE).withRego("njyixh");
         model = BinaryData.fromObject(model).toObject(RaiRegoProperties.class);
-        Assertions.assertEquals(RaiRegoEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("wjwiuub", model.rego());
+        Assertions.assertEquals(RaiRegoEncoding.NONE, model.encoding());
+        Assertions.assertEquals("njyixh", model.rego());
     }
 }

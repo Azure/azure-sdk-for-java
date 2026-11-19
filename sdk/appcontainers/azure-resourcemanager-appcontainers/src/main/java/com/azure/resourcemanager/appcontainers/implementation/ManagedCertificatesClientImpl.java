@@ -411,7 +411,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String managedCertificateName,
         ManagedCertificateInner managedCertificateEnvelope) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,

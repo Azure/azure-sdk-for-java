@@ -41,7 +41,6 @@ import com.azure.resourcemanager.containerservice.fluent.models.PoolBootstrapDat
 import com.azure.resourcemanager.containerservice.implementation.models.AgentPoolListResult;
 import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpdate;
-import com.azure.resourcemanager.containerservice.models.ListBootstrapDataRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -155,15 +154,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/listBootstrapData")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PoolBootstrapDataInner>> listBootstrapData(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
-            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ListBootstrapDataRequest body,
-            Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({ 200, 202 })
@@ -2121,7 +2119,6 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2130,7 +2127,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
-        String resourceName, String agentPoolName, ListBootstrapDataRequest body) {
+        String resourceName, String agentPoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2149,17 +2146,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBootstrapData(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, contentType, accept,
-                body, context))
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2171,7 +2161,6 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2181,7 +2170,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
-        String resourceName, String agentPoolName, ListBootstrapDataRequest body, Context context) {
+        String resourceName, String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2200,17 +2189,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBootstrapData(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, contentType, accept, body,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context);
     }
 
     /**
@@ -2221,7 +2203,6 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2229,8 +2210,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolBootstrapDataInner> listBootstrapDataAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, ListBootstrapDataRequest body) {
-        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName, body)
+        String agentPoolName) {
+        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2242,7 +2223,6 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2251,9 +2231,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PoolBootstrapDataInner> listBootstrapDataWithResponse(String resourceGroupName, String resourceName,
-        String agentPoolName, ListBootstrapDataRequest body, Context context) {
-        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName, body, context)
-            .block();
+        String agentPoolName, Context context) {
+        return listBootstrapDataWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
     }
 
     /**
@@ -2264,17 +2243,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bootstrap configuration for a FlexNode pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName, String agentPoolName,
-        ListBootstrapDataRequest body) {
-        return listBootstrapDataWithResponse(resourceGroupName, resourceName, agentPoolName, body, Context.NONE)
-            .getValue();
+    public PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName,
+        String agentPoolName) {
+        return listBootstrapDataWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE).getValue();
     }
 
     /**

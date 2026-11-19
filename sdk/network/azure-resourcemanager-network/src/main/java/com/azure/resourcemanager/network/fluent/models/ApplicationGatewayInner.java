@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
+import com.azure.resourcemanager.network.models.ApplicationGatewayDeploymentTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
@@ -222,6 +223,31 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the deploymentTier property: Deployment tier of the application gateway resource. Only valid on Standard_v2
+     * and WAF_v2 SKUs.
+     * 
+     * @return the deploymentTier value.
+     */
+    public ApplicationGatewayDeploymentTier deploymentTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentTier();
+    }
+
+    /**
+     * Set the deploymentTier property: Deployment tier of the application gateway resource. Only valid on Standard_v2
+     * and WAF_v2 SKUs.
+     * 
+     * @param deploymentTier the deploymentTier value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withDeploymentTier(ApplicationGatewayDeploymentTier deploymentTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withDeploymentTier(deploymentTier);
         return this;
     }
 
@@ -908,6 +934,31 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withEnableFips(enableFips);
+        return this;
+    }
+
+    /**
+     * Get the enableConfidentialCompute property: Whether Confidential Compute is enabled on the application gateway
+     * resource.
+     * 
+     * @return the enableConfidentialCompute value.
+     */
+    public Boolean enableConfidentialCompute() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConfidentialCompute();
+    }
+
+    /**
+     * Set the enableConfidentialCompute property: Whether Confidential Compute is enabled on the application gateway
+     * resource.
+     * 
+     * @param enableConfidentialCompute the enableConfidentialCompute value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withEnableConfidentialCompute(Boolean enableConfidentialCompute) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withEnableConfidentialCompute(enableConfidentialCompute);
         return this;
     }
 

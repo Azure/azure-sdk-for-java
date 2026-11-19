@@ -12,18 +12,18 @@ public final class AdapterDeploymentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdapterDeploymentProperties model = BinaryData.fromString(
-            "{\"sourceModelId\":\"seac\",\"targetDeploymentName\":\"hztxkbrfgd\",\"activeTargetDeploymentName\":\"jiye\",\"provisioningState\":\"Succeeded\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Accepted\",\"requestedTargetDeploymentName\":\"qrxetfgcwvr\",\"startedAt\":\"2021-06-08T13:30:09Z\",\"completedAt\":\"2021-11-23T04:06:09Z\"}}")
+            "{\"sourceModelId\":\"imrljdp\",\"targetDeploymentName\":\"qfxy\",\"activeTargetDeploymentName\":\"hkftbaewh\",\"provisioningState\":\"ExtensionUnreachable\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Succeeded\",\"requestedTargetDeploymentName\":\"fmxtllf\",\"startedAt\":\"2021-05-28T19:56:57Z\",\"completedAt\":\"2021-03-07T18:22:38Z\"}}")
             .toObject(AdapterDeploymentProperties.class);
-        Assertions.assertEquals("seac", model.sourceModelId());
-        Assertions.assertEquals("hztxkbrfgd", model.targetDeploymentName());
+        Assertions.assertEquals("imrljdp", model.sourceModelId());
+        Assertions.assertEquals("qfxy", model.targetDeploymentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdapterDeploymentProperties model
-            = new AdapterDeploymentProperties().withSourceModelId("seac").withTargetDeploymentName("hztxkbrfgd");
+            = new AdapterDeploymentProperties().withSourceModelId("imrljdp").withTargetDeploymentName("qfxy");
         model = BinaryData.fromObject(model).toObject(AdapterDeploymentProperties.class);
-        Assertions.assertEquals("seac", model.sourceModelId());
-        Assertions.assertEquals("hztxkbrfgd", model.targetDeploymentName());
+        Assertions.assertEquals("imrljdp", model.sourceModelId());
+        Assertions.assertEquals("qfxy", model.targetDeploymentName());
     }
 }

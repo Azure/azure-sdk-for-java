@@ -4,7 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 
 public class ListIndexersExample {
@@ -27,29 +26,12 @@ public class ListIndexersExample {
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
-        String prefix = args.length == 0 ? "" : args[0];
-        listIndexers(indexerAsyncClient, prefix);
-        indexerAsyncClient.listDataSourceConnections(listingOptions(prefix)).mapPage(source -> source.getName())
-            .doOnNext(name -> System.out.println("Data source: " + name)).blockLast();
-        indexerAsyncClient.listSkillsets(listingOptions(prefix)).mapPage(skillset -> skillset.getName())
-            .doOnNext(name -> System.out.println("Skillset: " + name)).blockLast();
+        listIndexers(indexerAsyncClient);
     }
 
-    private static RequestOptions listingOptions(String prefix) {
-        return new RequestOptions().addQueryParam("search", prefix).addQueryParam("searchType", "prefix")
-            .addQueryParam("pageSize", "1").addQueryParam("$select", "name");
-    }
-
-    private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient, String prefix) {
+    private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
         System.out.println("Found the following indexers:");
-        indexerAsyncClient.listIndexers(listingOptions(prefix))
-            .concatMap(indexer -> indexerAsyncClient.getIndexerStatus(indexer.getName()).doOnNext(status -> {
-                System.out.println("Indexer: " + indexer.getName());
-                if (status.getRuntime() != null) {
-                    System.out.printf("Runtime: %d used, %s remaining seconds, period %s to %s%n",
-                        status.getRuntime().getUsedSeconds(), status.getRuntime().getRemainingSeconds(),
-                        status.getRuntime().getBeginningTime(), status.getRuntime().getEndingTime());
-                }
-            })).blockLast();
+        indexerAsyncClient.listIndexers().doOnNext(indexer ->
+            System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag())).blockLast();
     }
 }

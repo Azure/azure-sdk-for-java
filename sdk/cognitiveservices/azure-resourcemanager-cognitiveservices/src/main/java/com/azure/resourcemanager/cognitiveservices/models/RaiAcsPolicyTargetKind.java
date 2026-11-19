@@ -12,9 +12,24 @@ import java.util.Collection;
  */
 public final class RaiAcsPolicyTargetKind extends ExpandableStringEnum<RaiAcsPolicyTargetKind> {
     /**
+     * The target contains agent initialization state.
+     */
+    public static final RaiAcsPolicyTargetKind AGENT_INITIALIZATION = fromString("agent_init");
+
+    /**
      * The target contains user input.
      */
     public static final RaiAcsPolicyTargetKind USER_INPUT = fromString("user_input");
+
+    /**
+     * The target contains model messages.
+     */
+    public static final RaiAcsPolicyTargetKind MODEL_MESSAGES = fromString("messages");
+
+    /**
+     * The target contains a completed model response.
+     */
+    public static final RaiAcsPolicyTargetKind MODEL_RESPONSE = fromString("model_response");
 
     /**
      * The target contains assistant output.
@@ -30,6 +45,11 @@ public final class RaiAcsPolicyTargetKind extends ExpandableStringEnum<RaiAcsPol
      * The target contains a tool result.
      */
     public static final RaiAcsPolicyTargetKind TOOL_RESULT = fromString("tool_result");
+
+    /**
+     * The target contains the final agent execution summary.
+     */
+    public static final RaiAcsPolicyTargetKind AGENT_SUMMARY = fromString("agent_summary");
 
     /**
      * Creates a new instance of RaiAcsPolicyTargetKind value.

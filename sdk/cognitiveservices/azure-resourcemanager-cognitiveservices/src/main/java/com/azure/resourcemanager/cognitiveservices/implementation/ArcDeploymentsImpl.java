@@ -48,8 +48,9 @@ public final class ArcDeploymentsImpl implements ArcDeployments {
         this.serviceClient().delete(resourceGroupName, accountName, deploymentName);
     }
 
-    public void delete(String resourceGroupName, String accountName, String deploymentName, Context context) {
-        this.serviceClient().delete(resourceGroupName, accountName, deploymentName, context);
+    public void delete(String resourceGroupName, String accountName, String deploymentName, Boolean force,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, deploymentName, force, context);
     }
 
     public PagedIterable<ArcDeployment> list(String resourceGroupName, String accountName) {
@@ -134,10 +135,11 @@ public final class ArcDeploymentsImpl implements ArcDeployments {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'arcDeployments'.", id)));
         }
-        this.delete(resourceGroupName, accountName, deploymentName, Context.NONE);
+        Boolean localForce = null;
+        this.delete(resourceGroupName, accountName, deploymentName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}",
             "resourceGroupName");
@@ -159,7 +161,7 @@ public final class ArcDeploymentsImpl implements ArcDeployments {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'arcDeployments'.", id)));
         }
-        this.delete(resourceGroupName, accountName, deploymentName, context);
+        this.delete(resourceGroupName, accountName, deploymentName, force, context);
     }
 
     private ArcDeploymentsClient serviceClient() {
