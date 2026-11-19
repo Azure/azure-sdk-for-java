@@ -1,14 +1,14 @@
 ```java
 maven {
     parent : com.azure:azure-client-sdk-parent:1.7.0
-    properties : com.azure:azure-compute-batch:1.0.0-beta.5
-    name : Microsoft Azure SDK for Batch Client
-    description : This package contains Microsoft Azure Batch Track 2 data plane client library.
+    properties : com.azure:azure-compute-batch:1.0.0
+    name : Microsoft Azure client library for Batch Client
+    description : This package contains the Microsoft Azure Batch data plane client library.
     dependencies {
         // compile scope
-        com.azure:azure-core 1.56.1
-        com.azure:azure-core-http-netty 1.16.1
-        com.azure:azure-json 1.5.0
+        com.azure:azure-core 1.61.0
+        com.azure:azure-core-http-netty 1.17.0
+        com.azure:azure-json 1.5.1
     }
 }
 module com.azure.compute.batch {
@@ -27,14 +27,12 @@ package com.azure.compute.batch {
         @Generated public Mono<Response<BinaryData>> getApplicationWithResponse(String applicationId, RequestOptions requestOptions)
         public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId)
         public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options)
-        public PollerFlux<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint)
-        public PollerFlux<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateDeleteOptions options)
-        public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId)
-        public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions)
-        public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId)
-        public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options, RequestConditions requestConditions)
-        public PollerFlux<BatchPool, Void> beginDeletePool(String poolId)
-        public PollerFlux<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions)
+        public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId)
+        public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions)
+        public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId)
+        public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options, RequestConditions requestConditions)
+        public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId)
+        public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions)
         public PollerFlux<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters)
         public PollerFlux<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options, RequestConditions requestConditions)
         public PollerFlux<BatchJob, BatchJob> beginEnableJob(String jobId)
@@ -55,15 +53,6 @@ package com.azure.compute.batch {
         public PollerFlux<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions)
         public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId)
         public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options, RequestConditions requestConditions)
-        @Generated public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint)
-        @Generated public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, BatchCertificateCancelDeletionOptions options)
-        @Generated public Mono<Response<Void>> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions)
-        @Generated public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint)
-        @Generated public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateGetOptions options)
-        @Generated public Mono<Response<BinaryData>> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions)
-        @Generated public Mono<Void> createCertificate(BatchCertificate certificate)
-        @Generated public Mono<Void> createCertificate(BatchCertificate certificate, BatchCertificateCreateOptions options)
-        @Generated public Mono<Response<Void>> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions)
         @Generated public Mono<Void> createJob(BatchJobCreateParameters job)
         @Generated public Mono<Void> createJob(BatchJobCreateParameters job, BatchJobCreateOptions options)
         @Generated public Mono<Void> createJobSchedule(BatchJobScheduleCreateParameters jobSchedule)
@@ -82,14 +71,18 @@ package com.azure.compute.batch {
         @Generated public Mono<BatchCreateTaskCollectionResult> createTaskCollection(String jobId, BatchTaskGroup taskCollection, BatchTaskCollectionCreateOptions options)
         @Generated public Mono<Response<BinaryData>> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection, RequestOptions requestOptions)
         public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList)
-        public Mono<Void> createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions batchTaskBulkCreateOptions)
+        public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions batchTaskBulkCreateOptions)
         @Generated public Mono<Response<Void>> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions)
+        public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
+        public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions)
+        public Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions)
         @Generated public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath)
         @Generated public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileDeleteOptions options)
         @Generated public Mono<Response<Void>> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath, RequestOptions requestOptions)
-        @Generated public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName)
-        @Generated public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName, BatchNodeUserDeleteOptions options)
-        @Generated public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String userName, RequestOptions requestOptions)
+        @Generated public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username)
+        @Generated public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username, BatchNodeUserDeleteOptions options)
+        @Generated public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String username, RequestOptions requestOptions)
+        public Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions)
         @Generated public Mono<Void> deleteTask(String jobId, String taskId)
         @Generated public Mono<Void> deleteTask(String jobId, String taskId, BatchTaskDeleteOptions options, RequestConditions requestConditions)
         @Generated public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath)
@@ -99,6 +92,7 @@ package com.azure.compute.batch {
         @Generated public Mono<Void> disableJobSchedule(String jobScheduleId)
         @Generated public Mono<Void> disableJobSchedule(String jobScheduleId, BatchJobScheduleDisableOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions)
+        public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions)
         @Generated public Mono<Void> disableNodeScheduling(String poolId, String nodeId)
         @Generated public Mono<Void> disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options)
         @Generated public Mono<Response<Void>> disableNodeSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
@@ -108,11 +102,12 @@ package com.azure.compute.batch {
         @Generated public Mono<Void> enableJobSchedule(String jobScheduleId)
         @Generated public Mono<Void> enableJobSchedule(String jobScheduleId, BatchJobScheduleEnableOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions)
+        public Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions)
         @Generated public Mono<Void> enableNodeScheduling(String poolId, String nodeId)
         @Generated public Mono<Void> enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options)
         @Generated public Mono<Response<Void>> enableNodeSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
-        @Generated public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters)
-        @Generated public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters, BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions)
+        @Generated public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters)
+        @Generated public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters, BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions)
         @Generated public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters)
         @Generated public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters, BatchPoolEvaluateAutoScaleOptions options)
@@ -132,9 +127,6 @@ package com.azure.compute.batch {
         @Generated public PagedFlux<BatchApplication> listApplications()
         @Generated public PagedFlux<BinaryData> listApplications(RequestOptions requestOptions)
         @Generated public PagedFlux<BatchApplication> listApplications(BatchApplicationsListOptions options)
-        @Generated public PagedFlux<BatchCertificate> listCertificates()
-        @Generated public PagedFlux<BinaryData> listCertificates(RequestOptions requestOptions)
-        @Generated public PagedFlux<BatchCertificate> listCertificates(BatchCertificatesListOptions options)
         @Generated public PagedFlux<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId)
         @Generated public PagedFlux<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId, RequestOptions requestOptions)
         @Generated public PagedFlux<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId, BatchJobPreparationAndReleaseTaskStatusListOptions options)
@@ -162,9 +154,6 @@ package com.azure.compute.batch {
         @Generated public PagedFlux<BatchPool> listPools()
         @Generated public PagedFlux<BinaryData> listPools(RequestOptions requestOptions)
         @Generated public PagedFlux<BatchPool> listPools(BatchPoolsListOptions options)
-        @Generated public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics()
-        @Generated public PagedFlux<BinaryData> listPoolUsageMetrics(RequestOptions requestOptions)
-        @Generated public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options)
         @Generated public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId)
         @Generated public PagedFlux<BinaryData> listSubTasks(String jobId, String taskId, RequestOptions requestOptions)
         @Generated public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options)
@@ -201,21 +190,27 @@ package com.azure.compute.batch {
         @Generated public Mono<Void> reactivateTask(String jobId, String taskId)
         @Generated public Mono<Void> reactivateTask(String jobId, String taskId, BatchTaskReactivateOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions)
+        public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
+        public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
+        public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions)
         @Generated public Mono<Void> replaceJob(String jobId, BatchJob job)
         @Generated public Mono<Void> replaceJob(String jobId, BatchJob job, BatchJobReplaceOptions options, RequestConditions requestConditions)
         @Generated public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule jobSchedule)
         @Generated public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule jobSchedule, BatchJobScheduleReplaceOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions)
         @Generated public Mono<Response<Void>> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions)
-        @Generated public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters parameters)
-        @Generated public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options)
-        @Generated public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions)
+        @Generated public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters)
+        @Generated public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options)
+        @Generated public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String username, BinaryData parameters, RequestOptions requestOptions)
         @Generated public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceParameters pool)
         @Generated public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceParameters pool, BatchPoolPropertiesReplaceOptions options)
         @Generated public Mono<Response<Void>> replacePoolPropertiesWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions)
         @Generated public Mono<Void> replaceTask(String jobId, String taskId, BatchTask task)
         @Generated public Mono<Void> replaceTask(String jobId, String taskId, BatchTask task, BatchTaskReplaceOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> replaceTaskWithResponse(String jobId, String taskId, BinaryData task, RequestOptions requestOptions)
+        public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions)
+        public Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
+        public Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions)
         @Generated public Mono<BatchTask> getTask(String jobId, String taskId)
         @Generated public Mono<BatchTask> getTask(String jobId, String taskId, BatchTaskGetOptions options, RequestConditions requestConditions)
         @Generated public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath)
@@ -225,6 +220,8 @@ package com.azure.compute.batch {
         @Generated public Mono<Response<Void>> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath, RequestOptions requestOptions)
         @Generated public Mono<Response<BinaryData>> getTaskFileWithResponse(String jobId, String taskId, String filePath, RequestOptions requestOptions)
         @Generated public Mono<Response<BinaryData>> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions)
+        public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions)
+        public Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions)
         @Generated public Mono<Void> terminateTask(String jobId, String taskId)
         @Generated public Mono<Void> terminateTask(String jobId, String taskId, BatchTaskTerminateOptions options, RequestConditions requestConditions)
         @Generated public Mono<Response<Void>> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions)
@@ -250,14 +247,12 @@ package com.azure.compute.batch {
         @Generated public Response<BinaryData> getApplicationWithResponse(String applicationId, RequestOptions requestOptions)
         public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId)
         public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options)
-        public SyncPoller<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint)
-        public SyncPoller<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateDeleteOptions options)
-        public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId)
-        public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions)
-        public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId)
-        public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options, RequestConditions requestConditions)
-        public SyncPoller<BatchPool, Void> beginDeletePool(String poolId)
-        public SyncPoller<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions)
+        public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId)
+        public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions)
+        public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId)
+        public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options, RequestConditions requestConditions)
+        public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId)
+        public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions)
         public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters)
         public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options, RequestConditions requestConditions)
         public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId)
@@ -278,15 +273,6 @@ package com.azure.compute.batch {
         public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions)
         public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId)
         public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options, RequestConditions requestConditions)
-        @Generated public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint)
-        @Generated public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, BatchCertificateCancelDeletionOptions options)
-        @Generated public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions)
-        @Generated public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint)
-        @Generated public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateGetOptions options)
-        @Generated public Response<BinaryData> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions)
-        @Generated public void createCertificate(BatchCertificate certificate)
-        @Generated public void createCertificate(BatchCertificate certificate, BatchCertificateCreateOptions options)
-        @Generated public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions)
         @Generated public void createJob(BatchJobCreateParameters job)
         @Generated public void createJob(BatchJobCreateParameters job, BatchJobCreateOptions options)
         @Generated public void createJobSchedule(BatchJobScheduleCreateParameters jobSchedule)
@@ -304,15 +290,15 @@ package com.azure.compute.batch {
         @Generated public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection)
         @Generated public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection, BatchTaskCollectionCreateOptions options)
         @Generated public Response<BinaryData> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection, RequestOptions requestOptions)
-        public void createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList)
-        public void createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions batchTaskBulkCreateOptions)
+        public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList)
+        public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions batchTaskBulkCreateOptions)
         @Generated public Response<Void> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions)
         @Generated public void deleteNodeFile(String poolId, String nodeId, String filePath)
         @Generated public void deleteNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileDeleteOptions options)
         @Generated public Response<Void> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath, RequestOptions requestOptions)
-        @Generated public void deleteNodeUser(String poolId, String nodeId, String userName)
-        @Generated public void deleteNodeUser(String poolId, String nodeId, String userName, BatchNodeUserDeleteOptions options)
-        @Generated public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName, RequestOptions requestOptions)
+        @Generated public void deleteNodeUser(String poolId, String nodeId, String username)
+        @Generated public void deleteNodeUser(String poolId, String nodeId, String username, BatchNodeUserDeleteOptions options)
+        @Generated public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String username, RequestOptions requestOptions)
         @Generated public void deleteTask(String jobId, String taskId)
         @Generated public void deleteTask(String jobId, String taskId, BatchTaskDeleteOptions options, RequestConditions requestConditions)
         @Generated public void deleteTaskFile(String jobId, String taskId, String filePath)
@@ -334,8 +320,8 @@ package com.azure.compute.batch {
         @Generated public void enableNodeScheduling(String poolId, String nodeId)
         @Generated public void enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options)
         @Generated public Response<Void> enableNodeSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions)
-        @Generated public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters)
-        @Generated public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters, BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions)
+        @Generated public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters)
+        @Generated public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters, BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions)
         @Generated public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions)
         @Generated public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters)
         @Generated public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters, BatchPoolEvaluateAutoScaleOptions options)
@@ -355,9 +341,6 @@ package com.azure.compute.batch {
         @Generated public PagedIterable<BatchApplication> listApplications()
         @Generated public PagedIterable<BinaryData> listApplications(RequestOptions requestOptions)
         @Generated public PagedIterable<BatchApplication> listApplications(BatchApplicationsListOptions options)
-        @Generated public PagedIterable<BatchCertificate> listCertificates()
-        @Generated public PagedIterable<BinaryData> listCertificates(RequestOptions requestOptions)
-        @Generated public PagedIterable<BatchCertificate> listCertificates(BatchCertificatesListOptions options)
         @Generated public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId)
         @Generated public PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId, RequestOptions requestOptions)
         @Generated public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId, BatchJobPreparationAndReleaseTaskStatusListOptions options)
@@ -385,9 +368,6 @@ package com.azure.compute.batch {
         @Generated public PagedIterable<BatchPool> listPools()
         @Generated public PagedIterable<BinaryData> listPools(RequestOptions requestOptions)
         @Generated public PagedIterable<BatchPool> listPools(BatchPoolsListOptions options)
-        @Generated public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics()
-        @Generated public PagedIterable<BinaryData> listPoolUsageMetrics(RequestOptions requestOptions)
-        @Generated public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options)
         @Generated public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId)
         @Generated public PagedIterable<BinaryData> listSubTasks(String jobId, String taskId, RequestOptions requestOptions)
         @Generated public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options)
@@ -430,9 +410,9 @@ package com.azure.compute.batch {
         @Generated public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule jobSchedule, BatchJobScheduleReplaceOptions options, RequestConditions requestConditions)
         @Generated public Response<Void> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions)
         @Generated public Response<Void> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions)
-        @Generated public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters parameters)
-        @Generated public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options)
-        @Generated public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions)
+        @Generated public void replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters)
+        @Generated public void replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options)
+        @Generated public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String username, BinaryData parameters, RequestOptions requestOptions)
         @Generated public void replacePoolProperties(String poolId, BatchPoolReplaceParameters pool)
         @Generated public void replacePoolProperties(String poolId, BatchPoolReplaceParameters pool, BatchPoolPropertiesReplaceOptions options)
         @Generated public Response<Void> replacePoolPropertiesWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions)
@@ -465,13 +445,13 @@ package com.azure.compute.batch {
         @Generated public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters, RequestOptions requestOptions)
     }
     @ServiceClientBuilder(serviceClients = { BatchClient, BatchAsyncClient })
-    public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder> , ConfigurationTrait<BatchClientBuilder> , TokenCredentialTrait<BatchClientBuilder> , EndpointTrait<BatchClientBuilder> {
+    public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder> , ConfigurationTrait<BatchClientBuilder> , TokenCredentialTrait<BatchClientBuilder> , EndpointTrait<BatchClientBuilder> , AzureNamedKeyCredentialTrait<BatchClientBuilder> {
         @Generated public BatchClientBuilder()
         @Generated @Override public BatchClientBuilder addPolicy(HttpPipelinePolicy customPolicy)
         @Generated @Override public BatchClientBuilder clientOptions(ClientOptions clientOptions)
         @Generated @Override public BatchClientBuilder configuration(Configuration configuration)
         @Generated @Override public BatchClientBuilder credential(TokenCredential tokenCredential)
-        public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential)
+        @Override public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential)
         @Generated @Override public BatchClientBuilder endpoint(String endpoint)
         @Generated @Override public BatchClientBuilder httpClient(HttpClient httpClient)
         @Generated @Override public BatchClientBuilder httpLogOptions(HttpLogOptions httpLogOptions)
@@ -483,114 +463,10 @@ package com.azure.compute.batch {
         @Generated public BatchClient buildClient()
     }
     public enum BatchServiceVersion implements ServiceVersion {
-        V2024_07_01_20_0("2024-07-01.20.0");
-        public static BatchServiceVersion getLatest() // returns V2024_07_01_20_0
+        V2025_06_01("2025-06-01"),
+        V2026_10_01("2026-10-01");
+        public static BatchServiceVersion getLatest() // returns V2026_10_01
         @Override public String getVersion()
-    }
-    public final class CertificateDeletePollerAsync {
-        public CertificateDeletePollerAsync(BatchAsyncClient batchAsyncClient, String thumbprintAlgorithm, String thumbprint, RequestOptions options)
-        public Function<PollingContext<BatchCertificate>, Mono<PollResponse<BatchCertificate>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchCertificate>, PollResponse<BatchCertificate>, Mono<BatchCertificate>> getCancelOperation()
-        public Function<PollingContext<BatchCertificate>, Mono<Void>> getFetchResultOperation()
-        public Function<PollingContext<BatchCertificate>, Mono<PollResponse<BatchCertificate>>> getPollOperation()
-    }
-    public final class JobDeletePollerAsync {
-        public JobDeletePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, RequestOptions options)
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJob>, PollResponse<BatchJob>, Mono<BatchJob>> getCancelOperation()
-        public Function<PollingContext<BatchJob>, Mono<Void>> getFetchResultOperation()
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation()
-    }
-    public final class JobDisablePollerAsync {
-        public JobDisablePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, BatchJobDisableParameters parameters, RequestOptions options)
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJob>, PollResponse<BatchJob>, Mono<BatchJob>> getCancelOperation()
-        public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation()
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation()
-    }
-    public final class JobEnablePollerAsync {
-        public JobEnablePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, RequestOptions options)
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJob>, PollResponse<BatchJob>, Mono<BatchJob>> getCancelOperation()
-        public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation()
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation()
-    }
-    public final class JobScheduleDeletePollerAsync {
-        public JobScheduleDeletePollerAsync(BatchAsyncClient batchAsyncClient, String jobScheduleId, RequestOptions options)
-        public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJobSchedule>, PollResponse<BatchJobSchedule>, Mono<BatchJobSchedule>> getCancelOperation()
-        public Function<PollingContext<BatchJobSchedule>, Mono<Void>> getFetchResultOperation()
-        public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation()
-    }
-    public final class JobScheduleTerminatePollerAsync {
-        public JobScheduleTerminatePollerAsync(BatchAsyncClient batchAsyncClient, String jobScheduleId, RequestOptions options)
-        public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJobSchedule>, PollResponse<BatchJobSchedule>, Mono<BatchJobSchedule>> getCancelOperation()
-        public Function<PollingContext<BatchJobSchedule>, Mono<BatchJobSchedule>> getFetchResultOperation()
-        public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation()
-    }
-    public final class JobTerminatePollerAsync {
-        public JobTerminatePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, RequestOptions options)
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchJob>, PollResponse<BatchJob>, Mono<BatchJob>> getCancelOperation()
-        public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation()
-        public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation()
-    }
-    public final class NodeDeallocatePollerAsync {
-        public NodeDeallocatePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId, RequestOptions options)
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation()
-        public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation()
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation()
-    }
-    public final class NodeRebootPollerAsync {
-        public NodeRebootPollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId, RequestOptions options)
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation()
-        public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation()
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation()
-    }
-    public final class NodeReimagePollerAsync {
-        public NodeReimagePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId, RequestOptions options)
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation()
-        public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation()
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation()
-    }
-    public final class NodeRemovePollerAsync {
-        public NodeRemovePollerAsync(BatchAsyncClient client, String poolId, BatchNodeRemoveParameters parameters, RequestOptions options)
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchPool>, PollResponse<BatchPool>, Mono<BatchPool>> getCancelOperation()
-        public Function<PollingContext<BatchPool>, Mono<BatchPool>> getFetchResultOperation()
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation()
-    }
-    public final class NodeStartPollerAsync {
-        public NodeStartPollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId, RequestOptions options)
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation()
-        public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation()
-        public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation()
-    }
-    public final class PoolDeletePollerAsync {
-        public PoolDeletePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, RequestOptions options)
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchPool>, PollResponse<BatchPool>, Mono<BatchPool>> getCancelOperation()
-        public Function<PollingContext<BatchPool>, Mono<Void>> getFetchResultOperation()
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation()
-    }
-    public final class PoolResizePollerAsync {
-        public PoolResizePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, BatchPoolResizeParameters parameters, RequestOptions options)
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchPool>, PollResponse<BatchPool>, Mono<BatchPool>> getCancelOperation()
-        public Function<PollingContext<BatchPool>, Mono<BatchPool>> getFetchResultOperation()
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation()
-    }
-    public final class PoolStopResizePollerAsync {
-        public PoolStopResizePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, RequestOptions options)
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation()
-        public BiFunction<PollingContext<BatchPool>, PollResponse<BatchPool>, Mono<BatchPool>> getCancelOperation()
-        public Function<PollingContext<BatchPool>, Mono<BatchPool>> getFetchResultOperation()
-        public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation()
     }
 }
 package com.azure.compute.batch.models {
@@ -601,12 +477,6 @@ package com.azure.compute.batch.models {
         @Deprecated @Generated public AllocationState()
         @Generated public static AllocationState fromString(String name)
         @Generated public static Collection<AllocationState> values()
-    }
-    @Fluent
-    public final class AuthenticationTokenSettings implements JsonSerializable<AuthenticationTokenSettings> {
-        @Generated public AuthenticationTokenSettings()
-        @Generated public List<BatchAccessScope> getAccess()
-        @Generated public AuthenticationTokenSettings setAccess(List<BatchAccessScope> access)
     }
     @Immutable
     public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
@@ -652,6 +522,7 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class AzureBlobFileSystemConfiguration implements JsonSerializable<AzureBlobFileSystemConfiguration> {
         @Generated public AzureBlobFileSystemConfiguration(String accountName, String containerName, String relativeMountPath)
+        public AzureBlobFileSystemConfiguration(String accountName, String containerName, Path relativeMountPath)
         @Generated public String getAccountKey()
         @Generated public AzureBlobFileSystemConfiguration setAccountKey(String accountKey)
         @Generated public String getAccountName()
@@ -667,6 +538,7 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class AzureFileShareConfiguration implements JsonSerializable<AzureFileShareConfiguration> {
         @Generated public AzureFileShareConfiguration(String accountName, String accountKey, String azureFileUrl, String relativeMountPath)
+        public AzureFileShareConfiguration(String accountName, String accountKey, String azureFileUrl, Path relativeMountPath)
         @Generated public String getAccountKey()
         @Generated public String getAccountName()
         @Generated public String getAzureFileUrl()
@@ -674,15 +546,9 @@ package com.azure.compute.batch.models {
         @Generated public AzureFileShareConfiguration setMountOptions(String mountOptions)
         @Generated public String getRelativeMountPath()
     }
-    public final class BatchAccessScope extends ExpandableStringEnum<BatchAccessScope> {
-        @Generated public static final BatchAccessScope JOB = fromString("job");
-        @Deprecated @Generated public BatchAccessScope()
-        @Generated public static BatchAccessScope fromString(String name)
-        @Generated public static Collection<BatchAccessScope> values()
-    }
     @Immutable
-    public final class BatchAffinityInfo implements JsonSerializable<BatchAffinityInfo> {
-        @Generated public BatchAffinityInfo(String affinityId)
+    public final class BatchAffinityDetails implements JsonSerializable<BatchAffinityDetails> {
+        @Generated public BatchAffinityDetails(String affinityId)
         @Generated public String getAffinityId()
     }
     public final class BatchAllTasksCompleteMode extends ExpandableStringEnum<BatchAllTasksCompleteMode> {
@@ -702,8 +568,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchApplicationGetOptions {
         @Generated public BatchApplicationGetOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchApplicationGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchApplicationGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchApplicationPackageReference implements JsonSerializable<BatchApplicationPackageReference> {
@@ -717,8 +583,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchApplicationsListOptions()
         @Generated public Integer getMaxPageSize()
         @Generated public BatchApplicationsListOptions setMaxPageSize(Integer maxPageSize)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchApplicationsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchApplicationsListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchAutoPoolSpecification implements JsonSerializable<BatchAutoPoolSpecification> {
@@ -731,119 +597,29 @@ package com.azure.compute.batch.models {
         @Generated public BatchAutoPoolSpecification setPool(BatchPoolSpecification pool)
         @Generated public BatchPoolLifetimeOption getPoolLifetimeOption()
     }
-    @Fluent
-    public final class BatchCertificate implements JsonSerializable<BatchCertificate> {
-        @Generated public BatchCertificate(String thumbprint, String thumbprintAlgorithm, byte[] data)
-        @Generated public BatchCertificateFormat getCertificateFormat()
-        @Generated public BatchCertificate setCertificateFormat(BatchCertificateFormat certificateFormat)
-        @Generated public byte[] getData()
-        @Generated public BatchCertificateDeleteError getDeleteCertificateError()
-        @Generated public String getPassword()
-        @Generated public BatchCertificate setPassword(String password)
-        @Generated public BatchCertificateState getPreviousState()
-        @Generated public OffsetDateTime getPreviousStateTransitionTime()
-        @Generated public String getPublicData()
-        @Generated public BatchCertificateState getState()
-        @Generated public OffsetDateTime getStateTransitionTime()
-        @Generated public String getThumbprint()
-        @Generated public String getThumbprintAlgorithm()
-        @Generated public String getUrl()
-    }
-    @Fluent
-    public final class BatchCertificateCancelDeletionOptions {
-        @Generated public BatchCertificateCancelDeletionOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchCertificateCancelDeletionOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Fluent
-    public final class BatchCertificateCreateOptions {
-        @Generated public BatchCertificateCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchCertificateCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Immutable
-    public final class BatchCertificateDeleteError implements JsonSerializable<BatchCertificateDeleteError> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public String getCode()
-        @Generated public String getMessage()
-        @Generated public List<NameValuePair> getValues()
-    }
-    @Fluent
-    public final class BatchCertificateDeleteOptions {
-        @Generated public BatchCertificateDeleteOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchCertificateDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    public final class BatchCertificateFormat extends ExpandableStringEnum<BatchCertificateFormat> {
-        @Generated public static final BatchCertificateFormat PFX = fromString("pfx");
-        @Generated public static final BatchCertificateFormat CER = fromString("cer");
-        @Deprecated @Generated public BatchCertificateFormat()
-        @Generated public static BatchCertificateFormat fromString(String name)
-        @Generated public static Collection<BatchCertificateFormat> values()
-    }
-    @Fluent
-    public final class BatchCertificateGetOptions {
-        @Generated public BatchCertificateGetOptions()
-        @Generated public List<String> getSelect()
-        @Generated public BatchCertificateGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchCertificateGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Fluent
-    public final class BatchCertificateReference implements JsonSerializable<BatchCertificateReference> {
-        @Generated public BatchCertificateReference(String thumbprint, String thumbprintAlgorithm)
-        @Generated public BatchCertificateStoreLocation getStoreLocation()
-        @Generated public BatchCertificateReference setStoreLocation(BatchCertificateStoreLocation storeLocation)
-        @Generated public String getStoreName()
-        @Generated public BatchCertificateReference setStoreName(String storeName)
-        @Generated public String getThumbprint()
-        @Generated public String getThumbprintAlgorithm()
-        @Generated public List<BatchCertificateVisibility> getVisibility()
-        @Generated public BatchCertificateReference setVisibility(List<BatchCertificateVisibility> visibility)
-    }
-    public final class BatchCertificateState extends ExpandableStringEnum<BatchCertificateState> {
-        @Generated public static final BatchCertificateState ACTIVE = fromString("active");
-        @Generated public static final BatchCertificateState DELETING = fromString("deleting");
-        @Generated public static final BatchCertificateState DELETE_FAILED = fromString("deletefailed");
-        @Deprecated @Generated public BatchCertificateState()
-        @Generated public static BatchCertificateState fromString(String name)
-        @Generated public static Collection<BatchCertificateState> values()
-    }
-    public final class BatchCertificateStoreLocation extends ExpandableStringEnum<BatchCertificateStoreLocation> {
-        @Generated public static final BatchCertificateStoreLocation CURRENT_USER = fromString("currentuser");
-        @Generated public static final BatchCertificateStoreLocation LOCAL_MACHINE = fromString("localmachine");
-        @Deprecated @Generated public BatchCertificateStoreLocation()
-        @Generated public static BatchCertificateStoreLocation fromString(String name)
-        @Generated public static Collection<BatchCertificateStoreLocation> values()
-    }
-    public final class BatchCertificateVisibility extends ExpandableStringEnum<BatchCertificateVisibility> {
-        @Generated public static final BatchCertificateVisibility START_TASK = fromString("starttask");
-        @Generated public static final BatchCertificateVisibility TASK = fromString("task");
-        @Generated public static final BatchCertificateVisibility REMOTE_USER = fromString("remoteuser");
-        @Deprecated @Generated public BatchCertificateVisibility()
-        @Generated public static BatchCertificateVisibility fromString(String name)
-        @Generated public static Collection<BatchCertificateVisibility> values()
-    }
-    @Fluent
-    public final class BatchCertificatesListOptions {
-        @Generated public BatchCertificatesListOptions()
-        @Generated public String getFilter()
-        @Generated public BatchCertificatesListOptions setFilter(String filter)
-        @Generated public Integer getMaxPageSize()
-        @Generated public BatchCertificatesListOptions setMaxPageSize(Integer maxPageSize)
-        @Generated public List<String> getSelect()
-        @Generated public BatchCertificatesListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchCertificatesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+    public final class BatchCachingType extends ExpandableStringEnum<BatchCachingType> {
+        @Generated public static final BatchCachingType NONE = fromString("none");
+        @Generated public static final BatchCachingType READ_ONLY = fromString("readonly");
+        @Generated public static final BatchCachingType READ_WRITE = fromString("readwrite");
+        @Deprecated @Generated public BatchCachingType()
+        @Generated public static BatchCachingType fromString(String name)
+        @Generated public static Collection<BatchCachingType> values()
     }
     @Fluent
     public final class BatchContainerConfiguration implements JsonSerializable<BatchContainerConfiguration> {
-        @Generated public BatchContainerConfiguration(ContainerType type)
+        @Generated public BatchContainerConfiguration(BatchContainerType type)
         @Generated public List<String> getContainerImageNames()
         @Generated public BatchContainerConfiguration setContainerImageNames(List<String> containerImageNames)
         @Generated public List<ContainerRegistryReference> getContainerRegistries()
         @Generated public BatchContainerConfiguration setContainerRegistries(List<ContainerRegistryReference> containerRegistries)
-        @Generated public ContainerType getType()
+        @Generated public BatchContainerType getType()
+    }
+    public final class BatchContainerType extends ExpandableStringEnum<BatchContainerType> {
+        @Generated public static final BatchContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
+        @Generated public static final BatchContainerType CRI_COMPATIBLE = fromString("criCompatible");
+        @Deprecated @Generated public BatchContainerType()
+        @Generated public static BatchContainerType fromString(String name)
+        @Generated public static Collection<BatchContainerType> values()
     }
     @Immutable
     public final class BatchCreateTaskCollectionResult implements JsonSerializable<BatchCreateTaskCollectionResult> {
@@ -888,10 +664,11 @@ package com.azure.compute.batch.models {
         @Generated public static BatchErrorSourceCategory fromString(String name)
         @Generated public static Collection<BatchErrorSourceCategory> values()
     }
-    public class BatchFileProperties {
-        public BatchFileProperties(HttpHeaders headers)
+    public final class BatchFileProperties {
+        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public long getContentLength()
-        public boolean isOcpBatchFileIsDirectory()
+        public boolean isDirectory()
+        public static BatchFileProperties fromHeaders(HttpHeaders headers)
         public String getOcpBatchFileMode()
         public String getOcpBatchFileUrl()
         public OffsetDateTime getOcpCreationTime()
@@ -909,7 +686,7 @@ package com.azure.compute.batch.models {
     }
     @Fluent
     public final class BatchJob implements JsonSerializable<BatchJob> {
-        @Generated public BatchJob(BatchPoolInfo poolInfo)
+        @Generated public BatchJob(BatchPoolDetails poolDetails)
         @Generated public Boolean isAllowTaskPreemption()
         @Generated public BatchJob setAllowTaskPreemption(Boolean allowTaskPreemption)
         @Generated public BatchAllTasksCompleteMode getAllTasksCompleteMode()
@@ -920,7 +697,7 @@ package com.azure.compute.batch.models {
         @Generated public OffsetDateTime getCreationTime()
         @Generated public String getDisplayName()
         @Generated public String getETag()
-        @Generated public BatchJobExecutionInfo getExecutionInfo()
+        @Generated public BatchJobExecutionDetails getExecutionInfo()
         @Generated public String getId()
         @Generated public BatchJobManagerTask getJobManagerTask()
         @Generated public BatchJobPreparationTask getJobPreparationTask()
@@ -932,7 +709,7 @@ package com.azure.compute.batch.models {
         @Generated public List<BatchMetadataItem> getMetadata()
         @Generated public BatchJob setMetadata(List<BatchMetadataItem> metadata)
         @Generated public BatchJobNetworkConfiguration getNetworkConfiguration()
-        @Generated public BatchPoolInfo getPoolInfo()
+        @Generated public BatchPoolDetails getPoolDetails()
         @Generated public BatchJobState getPreviousState()
         @Generated public OffsetDateTime getPreviousStateTransitionTime()
         @Generated public Integer getPriority()
@@ -962,12 +739,12 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobCreateOptions {
         @Generated public BatchJobCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobCreateParameters implements JsonSerializable<BatchJobCreateParameters> {
-        @Generated public BatchJobCreateParameters(String id, BatchPoolInfo poolInfo)
+        @Generated public BatchJobCreateParameters(String id, BatchPoolDetails poolDetails)
         @Generated public Boolean isAllowTaskPreemption()
         @Generated public BatchJobCreateParameters setAllowTaskPreemption(Boolean allowTaskPreemption)
         @Generated public BatchAllTasksCompleteMode getAllTasksCompleteMode()
@@ -991,7 +768,7 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobCreateParameters setMetadata(List<BatchMetadataItem> metadata)
         @Generated public BatchJobNetworkConfiguration getNetworkConfiguration()
         @Generated public BatchJobCreateParameters setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration)
-        @Generated public BatchPoolInfo getPoolInfo()
+        @Generated public BatchPoolDetails getPoolDetails()
         @Generated public Integer getPriority()
         @Generated public BatchJobCreateParameters setPriority(Integer priority)
         @Generated public BatchTaskFailureMode getTaskFailureMode()
@@ -999,19 +776,26 @@ package com.azure.compute.batch.models {
         @Generated public Boolean isUsesTaskDependencies()
         @Generated public BatchJobCreateParameters setUsesTaskDependencies(Boolean usesTaskDependencies)
     }
+    public final class BatchJobDefaultOrder extends ExpandableStringEnum<BatchJobDefaultOrder> {
+        @Generated public static final BatchJobDefaultOrder NONE = fromString("none");
+        @Generated public static final BatchJobDefaultOrder CREATION_TIME = fromString("creationtime");
+        @Deprecated @Generated public BatchJobDefaultOrder()
+        @Generated public static BatchJobDefaultOrder fromString(String name)
+        @Generated public static Collection<BatchJobDefaultOrder> values()
+    }
     @Fluent
     public final class BatchJobDeleteOptions {
         @Generated public BatchJobDeleteOptions()
         @Generated public Boolean isForce()
         @Generated public BatchJobDeleteOptions setForce(Boolean force)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobDisableOptions {
         @Generated public BatchJobDisableOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobDisableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobDisableOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchJobDisableParameters implements JsonSerializable<BatchJobDisableParameters> {
@@ -1021,11 +805,11 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobEnableOptions {
         @Generated public BatchJobEnableOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobEnableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobEnableOptions setTimeout(Duration timeout)
     }
     @Immutable
-    public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExecutionInfo> {
+    public final class BatchJobExecutionDetails implements JsonSerializable<BatchJobExecutionDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getEndTime()
         @Generated public String getPoolId()
@@ -1040,8 +824,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobGetOptions setExpand(List<String> expand)
         @Generated public List<String> getSelect()
         @Generated public BatchJobGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobManagerTask implements JsonSerializable<BatchJobManagerTask> {
@@ -1050,8 +834,6 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobManagerTask setAllowLowPriorityNode(Boolean allowLowPriorityNode)
         @Generated public List<BatchApplicationPackageReference> getApplicationPackageReferences()
         @Generated public BatchJobManagerTask setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences)
-        @Generated public AuthenticationTokenSettings getAuthenticationTokenSettings()
-        @Generated public BatchJobManagerTask setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings)
         @Generated public String getCommandLine()
         @Generated public BatchTaskConstraints getConstraints()
         @Generated public BatchJobManagerTask setConstraints(BatchTaskConstraints constraints)
@@ -1085,8 +867,8 @@ package com.azure.compute.batch.models {
     @Immutable
     public final class BatchJobPreparationAndReleaseTaskStatus implements JsonSerializable<BatchJobPreparationAndReleaseTaskStatus> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchJobPreparationTaskExecutionInfo getJobPreparationTaskExecutionInfo()
-        @Generated public BatchJobReleaseTaskExecutionInfo getJobReleaseTaskExecutionInfo()
+        @Generated public BatchJobPreparationTaskExecutionDetails getJobPreparationTaskExecutionInfo()
+        @Generated public BatchJobReleaseTaskExecutionDetails getJobReleaseTaskExecutionInfo()
         @Generated public String getNodeId()
         @Generated public String getNodeUrl()
         @Generated public String getPoolId()
@@ -1100,8 +882,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobPreparationAndReleaseTaskStatusListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchJobPreparationAndReleaseTaskStatusListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobPreparationAndReleaseTaskStatusListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobPreparationAndReleaseTaskStatusListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobPreparationTask implements JsonSerializable<BatchJobPreparationTask> {
@@ -1125,12 +907,12 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobPreparationTask setWaitForSuccess(Boolean waitForSuccess)
     }
     @Immutable
-    public final class BatchJobPreparationTaskExecutionInfo implements JsonSerializable<BatchJobPreparationTaskExecutionInfo> {
+    public final class BatchJobPreparationTaskExecutionDetails implements JsonSerializable<BatchJobPreparationTaskExecutionDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskContainerExecutionInfo getContainerInfo()
+        @Generated public BatchTaskContainerExecutionDetails getContainerInfo()
         @Generated public OffsetDateTime getEndTime()
         @Generated public Integer getExitCode()
-        @Generated public BatchTaskFailureInfo getFailureInfo()
+        @Generated public BatchTaskFailureDetails getFailureInfo()
         @Generated public OffsetDateTime getLastRetryTime()
         @Generated public BatchTaskExecutionResult getResult()
         @Generated public int getRetryCount()
@@ -1166,12 +948,12 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobReleaseTask setUserIdentity(UserIdentity userIdentity)
     }
     @Immutable
-    public final class BatchJobReleaseTaskExecutionInfo implements JsonSerializable<BatchJobReleaseTaskExecutionInfo> {
+    public final class BatchJobReleaseTaskExecutionDetails implements JsonSerializable<BatchJobReleaseTaskExecutionDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskContainerExecutionInfo getContainerInfo()
+        @Generated public BatchTaskContainerExecutionDetails getContainerInfo()
         @Generated public OffsetDateTime getEndTime()
         @Generated public Integer getExitCode()
-        @Generated public BatchTaskFailureInfo getFailureInfo()
+        @Generated public BatchTaskFailureDetails getFailureInfo()
         @Generated public BatchTaskExecutionResult getResult()
         @Generated public OffsetDateTime getStartTime()
         @Generated public BatchJobReleaseTaskState getState()
@@ -1188,8 +970,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobReplaceOptions {
         @Generated public BatchJobReplaceOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobReplaceOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule> {
@@ -1197,7 +979,7 @@ package com.azure.compute.batch.models {
         @Generated public OffsetDateTime getCreationTime()
         @Generated public String getDisplayName()
         @Generated public String getETag()
-        @Generated public BatchJobScheduleExecutionInfo getExecutionInfo()
+        @Generated public BatchJobScheduleExecutionDetails getExecutionDetails()
         @Generated public String getId()
         @Generated public BatchJobScheduleStatistics getJobScheduleStatistics()
         @Generated public BatchJobSpecification getJobSpecification()
@@ -1227,8 +1009,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobScheduleCreateOptions {
         @Generated public BatchJobScheduleCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleCreateParameters implements JsonSerializable<BatchJobScheduleCreateParameters> {
@@ -1246,23 +1028,23 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobScheduleDeleteOptions()
         @Generated public Boolean isForce()
         @Generated public BatchJobScheduleDeleteOptions setForce(Boolean force)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleDisableOptions {
         @Generated public BatchJobScheduleDisableOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleDisableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleDisableOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleEnableOptions {
         @Generated public BatchJobScheduleEnableOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleEnableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleEnableOptions setTimeout(Duration timeout)
     }
     @Immutable
-    public final class BatchJobScheduleExecutionInfo implements JsonSerializable<BatchJobScheduleExecutionInfo> {
+    public final class BatchJobScheduleExecutionDetails implements JsonSerializable<BatchJobScheduleExecutionDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getEndTime()
         @Generated public OffsetDateTime getNextRunTime()
@@ -1271,8 +1053,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobScheduleExistsOptions {
         @Generated public BatchJobScheduleExistsOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleExistsOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleExistsOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleGetOptions {
@@ -1281,14 +1063,14 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobScheduleGetOptions setExpand(List<String> expand)
         @Generated public List<String> getSelect()
         @Generated public BatchJobScheduleGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleReplaceOptions {
         @Generated public BatchJobScheduleReplaceOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleReplaceOptions setTimeout(Duration timeout)
     }
     public final class BatchJobScheduleState extends ExpandableStringEnum<BatchJobScheduleState> {
         @Generated public static final BatchJobScheduleState ACTIVE = fromString("active");
@@ -1323,14 +1105,14 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobScheduleTerminateOptions()
         @Generated public Boolean isForce()
         @Generated public BatchJobScheduleTerminateOptions setForce(Boolean force)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleTerminateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleTerminateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleUpdateOptions {
         @Generated public BatchJobScheduleUpdateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobScheduleUpdateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobScheduleUpdateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobScheduleUpdateParameters implements JsonSerializable<BatchJobScheduleUpdateParameters> {
@@ -1353,8 +1135,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobSchedulesListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchJobSchedulesListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobSchedulesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobSchedulesListOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchJobSchedulingError implements JsonSerializable<BatchJobSchedulingError> {
@@ -1366,7 +1148,7 @@ package com.azure.compute.batch.models {
     }
     @Fluent
     public final class BatchJobSpecification implements JsonSerializable<BatchJobSpecification> {
-        @Generated public BatchJobSpecification(BatchPoolInfo poolInfo)
+        @Generated public BatchJobSpecification(BatchPoolDetails poolDetails)
         @Generated public Boolean isAllowTaskPreemption()
         @Generated public BatchJobSpecification setAllowTaskPreemption(Boolean allowTaskPreemption)
         @Generated public BatchAllTasksCompleteMode getAllTasksCompleteMode()
@@ -1389,7 +1171,7 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobSpecification setMetadata(List<BatchMetadataItem> metadata)
         @Generated public BatchJobNetworkConfiguration getNetworkConfiguration()
         @Generated public BatchJobSpecification setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration)
-        @Generated public BatchPoolInfo getPoolInfo()
+        @Generated public BatchPoolDetails getPoolDetails()
         @Generated public Integer getPriority()
         @Generated public BatchJobSpecification setPriority(Integer priority)
         @Generated public BatchTaskFailureMode getTaskFailureMode()
@@ -1430,8 +1212,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobTaskCountsGetOptions {
         @Generated public BatchJobTaskCountsGetOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobTaskCountsGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobTaskCountsGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobTerminateOptions {
@@ -1440,8 +1222,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobTerminateOptions setForce(Boolean force)
         @Generated public BatchJobTerminateParameters getParameters()
         @Generated public BatchJobTerminateOptions setParameters(BatchJobTerminateParameters parameters)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobTerminateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobTerminateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobTerminateParameters implements JsonSerializable<BatchJobTerminateParameters> {
@@ -1452,8 +1234,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchJobUpdateOptions {
         @Generated public BatchJobUpdateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobUpdateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobUpdateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobUpdateParameters implements JsonSerializable<BatchJobUpdateParameters> {
@@ -1470,8 +1252,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobUpdateParameters setMetadata(List<BatchMetadataItem> metadata)
         @Generated public BatchJobNetworkConfiguration getNetworkConfiguration()
         @Generated public BatchJobUpdateParameters setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration)
-        @Generated public BatchPoolInfo getPoolInfo()
-        @Generated public BatchJobUpdateParameters setPoolInfo(BatchPoolInfo poolInfo)
+        @Generated public BatchPoolDetails getPoolInfo()
+        @Generated public BatchJobUpdateParameters setPoolInfo(BatchPoolDetails poolInfo)
         @Generated public Integer getPriority()
         @Generated public BatchJobUpdateParameters setPriority(Integer priority)
     }
@@ -1486,8 +1268,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobsFromScheduleListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchJobsFromScheduleListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobsFromScheduleListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobsFromScheduleListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchJobsListOptions {
@@ -1500,8 +1282,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchJobsListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchJobsListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchJobsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchJobsListOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchMetadataItem implements JsonSerializable<BatchMetadataItem> {
@@ -1514,41 +1296,35 @@ package com.azure.compute.batch.models {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getAffinityId()
         @Generated public OffsetDateTime getAllocationTime()
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
         @Generated public Boolean isDedicated()
         @Generated public BatchNodeEndpointConfiguration getEndpointConfiguration()
         @Generated public List<BatchNodeError> getErrors()
         @Generated public String getId()
         @Generated public String getIpAddress()
+        @Generated public String getIpv6Address()
         @Generated public OffsetDateTime getLastBootTime()
-        @Generated public BatchNodeAgentInfo getNodeAgentInfo()
-        @Generated public List<BatchTaskInfo> getRecentTasks()
+        @Generated public BatchNodeAgentDetails getNodeAgentInfo()
+        @Generated public String getPublicIpAddress()
+        @Generated public String getPublicIpv6Address()
+        @Generated public List<BatchTaskDetails> getRecentTasks()
         @Generated public Integer getRunningTasksCount()
         @Generated public Integer getRunningTaskSlotsCount()
         @Generated public SchedulingState getSchedulingState()
         @Generated public BatchStartTask getStartTask()
-        @Generated public BatchStartTaskInfo getStartTaskInfo()
+        @Generated public BatchStartTaskDetails getStartTaskInfo()
         @Generated public BatchNodeState getState()
         @Generated public OffsetDateTime getStateTransitionTime()
-        @Generated public Integer getTotalTasksRun()
+        @Generated public int getTotalTasksRun()
         @Generated public Integer getTotalTasksSucceeded()
         @Generated public String getUrl()
-        @Generated public VirtualMachineInfo getVirtualMachineInfo()
+        @Generated public VirtualMachineDetails getVirtualMachineDetails()
         @Generated public String getVmSize()
     }
     @Immutable
-    public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgentInfo> {
+    public final class BatchNodeAgentDetails implements JsonSerializable<BatchNodeAgentDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getLastUpdateTime()
         @Generated public String getVersion()
-    }
-    public final class BatchNodeCommunicationMode extends ExpandableStringEnum<BatchNodeCommunicationMode> {
-        @Generated public static final BatchNodeCommunicationMode DEFAULT = fromString("default");
-        @Generated public static final BatchNodeCommunicationMode CLASSIC = fromString("classic");
-        @Generated public static final BatchNodeCommunicationMode SIMPLIFIED = fromString("simplified");
-        @Deprecated @Generated public BatchNodeCommunicationMode()
-        @Generated public static BatchNodeCommunicationMode fromString(String name)
-        @Generated public static Collection<BatchNodeCommunicationMode> values()
     }
     @Immutable
     public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> {
@@ -1575,7 +1351,6 @@ package com.azure.compute.batch.models {
         @Generated public static final BatchNodeDeallocateOption REQUEUE = fromString("requeue");
         @Generated public static final BatchNodeDeallocateOption TERMINATE = fromString("terminate");
         @Generated public static final BatchNodeDeallocateOption TASK_COMPLETION = fromString("taskcompletion");
-        @Generated public static final BatchNodeDeallocateOption RETAINED_DATA = fromString("retaineddata");
         @Deprecated @Generated public BatchNodeDeallocateOption()
         @Generated public static BatchNodeDeallocateOption fromString(String name)
         @Generated public static Collection<BatchNodeDeallocateOption> values()
@@ -1585,8 +1360,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeDeallocateOptions()
         @Generated public BatchNodeDeallocateParameters getParameters()
         @Generated public BatchNodeDeallocateOptions setParameters(BatchNodeDeallocateParameters parameters)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeDeallocateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeDeallocateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeDeallocateParameters implements JsonSerializable<BatchNodeDeallocateParameters> {
@@ -1598,10 +1373,19 @@ package com.azure.compute.batch.models {
         @Generated public static final BatchNodeDeallocationOption REQUEUE = fromString("requeue");
         @Generated public static final BatchNodeDeallocationOption TERMINATE = fromString("terminate");
         @Generated public static final BatchNodeDeallocationOption TASK_COMPLETION = fromString("taskcompletion");
-        @Generated public static final BatchNodeDeallocationOption RETAINED_DATA = fromString("retaineddata");
         @Deprecated @Generated public BatchNodeDeallocationOption()
         @Generated public static BatchNodeDeallocationOption fromString(String name)
         @Generated public static Collection<BatchNodeDeallocationOption> values()
+    }
+    @Immutable
+    public final class BatchNodeDetails implements JsonSerializable<BatchNodeDetails> {
+        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
+        @Generated public String getAffinityId()
+        @Generated public String getNodeId()
+        @Generated public String getNodeUrl()
+        @Generated public String getPoolId()
+        @Generated public String getTaskRootDirectory()
+        @Generated public String getTaskRootDirectoryUrl()
     }
     public final class BatchNodeDisableSchedulingOption extends ExpandableStringEnum<BatchNodeDisableSchedulingOption> {
         @Generated public static final BatchNodeDisableSchedulingOption REQUEUE = fromString("requeue");
@@ -1610,12 +1394,6 @@ package com.azure.compute.batch.models {
         @Deprecated @Generated public BatchNodeDisableSchedulingOption()
         @Generated public static BatchNodeDisableSchedulingOption fromString(String name)
         @Generated public static Collection<BatchNodeDisableSchedulingOption> values()
-    }
-    @Fluent
-    public final class BatchNodeDisableSchedulingParameters implements JsonSerializable<BatchNodeDisableSchedulingParameters> {
-        @Generated public BatchNodeDisableSchedulingParameters()
-        @Generated public BatchNodeDisableSchedulingOption getNodeDisableSchedulingOption()
-        @Generated public BatchNodeDisableSchedulingParameters setNodeDisableSchedulingOption(BatchNodeDisableSchedulingOption nodeDisableSchedulingOption)
     }
     @Immutable
     public final class BatchNodeEndpointConfiguration implements JsonSerializable<BatchNodeEndpointConfiguration> {
@@ -1634,8 +1412,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeExtensionGetOptions()
         @Generated public List<String> getSelect()
         @Generated public BatchNodeExtensionGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeExtensionGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeExtensionGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeExtensionsListOptions {
@@ -1644,8 +1422,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeExtensionsListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchNodeExtensionsListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeExtensionsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeExtensionsListOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchNodeFile implements JsonSerializable<BatchNodeFile> {
@@ -1660,8 +1438,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeFileDeleteOptions()
         @Generated public Boolean isRecursive()
         @Generated public BatchNodeFileDeleteOptions setRecursive(Boolean recursive)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeFileDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeFileDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeFileGetOptions {
@@ -1672,8 +1450,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeFileGetOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince)
         @Generated public String getOcpRange()
         @Generated public BatchNodeFileGetOptions setOcpRange(String ocpRange)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeFileGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeFileGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeFilePropertiesGetOptions {
@@ -1682,8 +1460,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeFilePropertiesGetOptions setIfModifiedSince(OffsetDateTime ifModifiedSince)
         @Generated public OffsetDateTime getIfUnmodifiedSince()
         @Generated public BatchNodeFilePropertiesGetOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeFilePropertiesGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeFilePropertiesGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeFilesListOptions {
@@ -1694,8 +1472,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeFilesListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public Boolean isRecursive()
         @Generated public BatchNodeFilesListOptions setRecursive(Boolean recursive)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeFilesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeFilesListOptions setTimeout(Duration timeout)
     }
     public final class BatchNodeFillType extends ExpandableStringEnum<BatchNodeFillType> {
         @Generated public static final BatchNodeFillType SPREAD = fromString("spread");
@@ -1709,8 +1487,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeGetOptions()
         @Generated public List<String> getSelect()
         @Generated public BatchNodeGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeIdentityReference implements JsonSerializable<BatchNodeIdentityReference> {
@@ -1718,21 +1496,11 @@ package com.azure.compute.batch.models {
         @Generated public String getResourceId()
         @Generated public BatchNodeIdentityReference setResourceId(String resourceId)
     }
-    @Immutable
-    public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public String getAffinityId()
-        @Generated public String getNodeId()
-        @Generated public String getNodeUrl()
-        @Generated public String getPoolId()
-        @Generated public String getTaskRootDirectory()
-        @Generated public String getTaskRootDirectoryUrl()
-    }
     @Fluent
     public final class BatchNodeLogsUploadOptions {
         @Generated public BatchNodeLogsUploadOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeLogsUploadOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeLogsUploadOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodePlacementConfiguration implements JsonSerializable<BatchNodePlacementConfiguration> {
@@ -1751,7 +1519,6 @@ package com.azure.compute.batch.models {
         @Generated public static final BatchNodeRebootKind REQUEUE = fromString("requeue");
         @Generated public static final BatchNodeRebootKind TERMINATE = fromString("terminate");
         @Generated public static final BatchNodeRebootKind TASK_COMPLETION = fromString("taskcompletion");
-        @Generated public static final BatchNodeRebootKind RETAINED_DATA = fromString("retaineddata");
         @Deprecated @Generated public BatchNodeRebootKind()
         @Generated public static BatchNodeRebootKind fromString(String name)
         @Generated public static Collection<BatchNodeRebootKind> values()
@@ -1761,8 +1528,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeRebootOptions()
         @Generated public BatchNodeRebootParameters getParameters()
         @Generated public BatchNodeRebootOptions setParameters(BatchNodeRebootParameters parameters)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeRebootOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeRebootOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeRebootParameters implements JsonSerializable<BatchNodeRebootParameters> {
@@ -1774,7 +1541,6 @@ package com.azure.compute.batch.models {
         @Generated public static final BatchNodeReimageOption REQUEUE = fromString("requeue");
         @Generated public static final BatchNodeReimageOption TERMINATE = fromString("terminate");
         @Generated public static final BatchNodeReimageOption TASK_COMPLETION = fromString("taskcompletion");
-        @Generated public static final BatchNodeReimageOption RETAINED_DATA = fromString("retaineddata");
         @Deprecated @Generated public BatchNodeReimageOption()
         @Generated public static BatchNodeReimageOption fromString(String name)
         @Generated public static Collection<BatchNodeReimageOption> values()
@@ -1784,8 +1550,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodeReimageOptions()
         @Generated public BatchNodeReimageParameters getParameters()
         @Generated public BatchNodeReimageOptions setParameters(BatchNodeReimageParameters parameters)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeReimageOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeReimageOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeReimageParameters implements JsonSerializable<BatchNodeReimageParameters> {
@@ -1796,14 +1562,16 @@ package com.azure.compute.batch.models {
     @Immutable
     public final class BatchNodeRemoteLoginSettings implements JsonSerializable<BatchNodeRemoteLoginSettings> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
+        @Generated public String getIpv6RemoteLoginIpAddress()
+        @Generated public Integer getIpv6RemoteLoginPort()
         @Generated public String getRemoteLoginIpAddress()
         @Generated public int getRemoteLoginPort()
     }
     @Fluent
     public final class BatchNodeRemoteLoginSettingsGetOptions {
         @Generated public BatchNodeRemoteLoginSettingsGetOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeRemoteLoginSettingsGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeRemoteLoginSettingsGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeRemoveParameters implements JsonSerializable<BatchNodeRemoveParameters> {
@@ -1817,22 +1585,28 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchNodeSchedulingDisableOptions {
         @Generated public BatchNodeSchedulingDisableOptions()
-        @Generated public BatchNodeDisableSchedulingParameters getParameters()
-        @Generated public BatchNodeSchedulingDisableOptions setParameters(BatchNodeDisableSchedulingParameters parameters)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeSchedulingDisableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public BatchNodeSchedulingDisableParameters getParameters()
+        @Generated public BatchNodeSchedulingDisableOptions setParameters(BatchNodeSchedulingDisableParameters parameters)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeSchedulingDisableOptions setTimeout(Duration timeout)
+    }
+    @Fluent
+    public final class BatchNodeSchedulingDisableParameters implements JsonSerializable<BatchNodeSchedulingDisableParameters> {
+        @Generated public BatchNodeSchedulingDisableParameters()
+        @Generated public BatchNodeDisableSchedulingOption getNodeDisableSchedulingOption()
+        @Generated public BatchNodeSchedulingDisableParameters setNodeDisableSchedulingOption(BatchNodeDisableSchedulingOption nodeDisableSchedulingOption)
     }
     @Fluent
     public final class BatchNodeSchedulingEnableOptions {
         @Generated public BatchNodeSchedulingEnableOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeSchedulingEnableOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeSchedulingEnableOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeStartOptions {
         @Generated public BatchNodeStartOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeStartOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeStartOptions setTimeout(Duration timeout)
     }
     public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
         @Generated public static final BatchNodeState IDLE = fromString("idle");
@@ -1858,8 +1632,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchNodeUserCreateOptions {
         @Generated public BatchNodeUserCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeUserCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeUserCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeUserCreateParameters implements JsonSerializable<BatchNodeUserCreateParameters> {
@@ -1877,14 +1651,14 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchNodeUserDeleteOptions {
         @Generated public BatchNodeUserDeleteOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeUserDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeUserDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeUserReplaceOptions {
         @Generated public BatchNodeUserReplaceOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodeUserReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodeUserReplaceOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodeUserUpdateParameters implements JsonSerializable<BatchNodeUserUpdateParameters> {
@@ -1899,9 +1673,9 @@ package com.azure.compute.batch.models {
     @Immutable
     public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVMExtension> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public VMExtensionInstanceView getInstanceView()
+        @Generated public VirtualMachineExtensionInstanceView getInstanceView()
         @Generated public String getProvisioningState()
-        @Generated public VMExtension getVmExtension()
+        @Generated public VirtualMachineExtension getVmExtension()
     }
     @Fluent
     public final class BatchNodesListOptions {
@@ -1912,20 +1686,20 @@ package com.azure.compute.batch.models {
         @Generated public BatchNodesListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchNodesListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodesListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchNodesRemoveOptions {
         @Generated public BatchNodesRemoveOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchNodesRemoveOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchNodesRemoveOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchOsDisk implements JsonSerializable<BatchOsDisk> {
         @Generated public BatchOsDisk()
-        @Generated public CachingType getCaching()
-        @Generated public BatchOsDisk setCaching(CachingType caching)
+        @Generated public BatchCachingType getCaching()
+        @Generated public BatchOsDisk setCaching(BatchCachingType caching)
         @Generated public Integer getDiskSizeGB()
         @Generated public BatchOsDisk setDiskSizeGB(Integer diskSizeGB)
         @Generated public BatchDiffDiskSettings getEphemeralOSDiskSettings()
@@ -1944,11 +1718,9 @@ package com.azure.compute.batch.models {
         @Generated public Duration getAutoScaleEvaluationInterval()
         @Generated public String getAutoScaleFormula()
         @Generated public AutoScaleRun getAutoScaleRun()
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
         @Generated public OffsetDateTime getCreationTime()
-        @Generated public Integer getCurrentDedicatedNodes()
-        @Generated public Integer getCurrentLowPriorityNodes()
-        @Generated public BatchNodeCommunicationMode getCurrentNodeCommunicationMode()
+        @Generated public int getCurrentDedicatedNodes()
+        @Generated public int getCurrentLowPriorityNodes()
         @Generated public String getDisplayName()
         @Generated public Boolean isEnableAutoScale()
         @Generated public Boolean isEnableInterNodeCommunication()
@@ -1962,13 +1734,11 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolStatistics getPoolStatistics()
         @Generated public List<ResizeError> getResizeErrors()
         @Generated public Duration getResizeTimeout()
-        @Generated public Map<String, String> getResourceTags()
         @Generated public BatchStartTask getStartTask()
         @Generated public BatchPoolState getState()
         @Generated public OffsetDateTime getStateTransitionTime()
         @Generated public Integer getTargetDedicatedNodes()
         @Generated public Integer getTargetLowPriorityNodes()
-        @Generated public BatchNodeCommunicationMode getTargetNodeCommunicationMode()
         @Generated public BatchTaskSchedulingPolicy getTaskSchedulingPolicy()
         @Generated public Integer getTaskSlotsPerNode()
         @Generated public UpgradePolicy getUpgradePolicy()
@@ -1976,12 +1746,27 @@ package com.azure.compute.batch.models {
         @Generated public List<UserAccount> getUserAccounts()
         @Generated public VirtualMachineConfiguration getVirtualMachineConfiguration()
         @Generated public String getVmSize()
+        @Generated public VirtualMachineSkuProfile getVmSkuProfile()
+    }
+    @Fluent
+    public final class BatchPoolAutoScaleEnableOptions {
+        @Generated public BatchPoolAutoScaleEnableOptions()
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolAutoScaleEnableOptions setTimeout(Duration timeout)
+    }
+    @Fluent
+    public final class BatchPoolAutoScaleEnableParameters implements JsonSerializable<BatchPoolAutoScaleEnableParameters> {
+        @Generated public BatchPoolAutoScaleEnableParameters()
+        @Generated public Duration getAutoScaleEvaluationInterval()
+        @Generated public BatchPoolAutoScaleEnableParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval)
+        @Generated public String getAutoScaleFormula()
+        @Generated public BatchPoolAutoScaleEnableParameters setAutoScaleFormula(String autoScaleFormula)
     }
     @Fluent
     public final class BatchPoolCreateOptions {
         @Generated public BatchPoolCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolCreateParameters implements JsonSerializable<BatchPoolCreateParameters> {
@@ -1992,8 +1777,6 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolCreateParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval)
         @Generated public String getAutoScaleFormula()
         @Generated public BatchPoolCreateParameters setAutoScaleFormula(String autoScaleFormula)
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
-        @Generated public BatchPoolCreateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences)
         @Generated public String getDisplayName()
         @Generated public BatchPoolCreateParameters setDisplayName(String displayName)
         @Generated public Boolean isEnableAutoScale()
@@ -2009,16 +1792,12 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolCreateParameters setNetworkConfiguration(NetworkConfiguration networkConfiguration)
         @Generated public Duration getResizeTimeout()
         @Generated public BatchPoolCreateParameters setResizeTimeout(Duration resizeTimeout)
-        @Generated public Map<String, String> getResourceTags()
-        @Generated public BatchPoolCreateParameters setResourceTags(Map<String, String> resourceTags)
         @Generated public BatchStartTask getStartTask()
         @Generated public BatchPoolCreateParameters setStartTask(BatchStartTask startTask)
         @Generated public Integer getTargetDedicatedNodes()
         @Generated public BatchPoolCreateParameters setTargetDedicatedNodes(Integer targetDedicatedNodes)
         @Generated public Integer getTargetLowPriorityNodes()
         @Generated public BatchPoolCreateParameters setTargetLowPriorityNodes(Integer targetLowPriorityNodes)
-        @Generated public BatchNodeCommunicationMode getTargetNodeCommunicationMode()
-        @Generated public BatchPoolCreateParameters setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode)
         @Generated public BatchTaskSchedulingPolicy getTaskSchedulingPolicy()
         @Generated public BatchPoolCreateParameters setTaskSchedulingPolicy(BatchTaskSchedulingPolicy taskSchedulingPolicy)
         @Generated public Integer getTaskSlotsPerNode()
@@ -2030,32 +1809,28 @@ package com.azure.compute.batch.models {
         @Generated public VirtualMachineConfiguration getVirtualMachineConfiguration()
         @Generated public BatchPoolCreateParameters setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration)
         @Generated public String getVmSize()
+        @Generated public VirtualMachineSkuProfile getVmSkuProfile()
+        @Generated public BatchPoolCreateParameters setVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile)
     }
     @Fluent
     public final class BatchPoolDeleteOptions {
         @Generated public BatchPoolDeleteOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolDeleteOptions setTimeout(Duration timeout)
+    }
+    @Fluent
+    public final class BatchPoolDetails implements JsonSerializable<BatchPoolDetails> {
+        @Generated public BatchPoolDetails()
+        @Generated public BatchAutoPoolSpecification getAutoPoolSpecification()
+        @Generated public BatchPoolDetails setAutoPoolSpecification(BatchAutoPoolSpecification autoPoolSpecification)
+        @Generated public String getPoolId()
+        @Generated public BatchPoolDetails setPoolId(String poolId)
     }
     @Fluent
     public final class BatchPoolDisableAutoScaleOptions {
         @Generated public BatchPoolDisableAutoScaleOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolDisableAutoScaleOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Fluent
-    public final class BatchPoolEnableAutoScaleOptions {
-        @Generated public BatchPoolEnableAutoScaleOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolEnableAutoScaleOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Fluent
-    public final class BatchPoolEnableAutoScaleParameters implements JsonSerializable<BatchPoolEnableAutoScaleParameters> {
-        @Generated public BatchPoolEnableAutoScaleParameters()
-        @Generated public Duration getAutoScaleEvaluationInterval()
-        @Generated public BatchPoolEnableAutoScaleParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval)
-        @Generated public String getAutoScaleFormula()
-        @Generated public BatchPoolEnableAutoScaleParameters setAutoScaleFormula(String autoScaleFormula)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolDisableAutoScaleOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchPoolEndpointConfiguration implements JsonSerializable<BatchPoolEndpointConfiguration> {
@@ -2065,8 +1840,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchPoolEvaluateAutoScaleOptions {
         @Generated public BatchPoolEvaluateAutoScaleOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolEvaluateAutoScaleOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolEvaluateAutoScaleOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchPoolEvaluateAutoScaleParameters implements JsonSerializable<BatchPoolEvaluateAutoScaleParameters> {
@@ -2076,8 +1851,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchPoolExistsOptions {
         @Generated public BatchPoolExistsOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolExistsOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolExistsOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolGetOptions {
@@ -2086,8 +1861,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolGetOptions setExpand(List<String> expand)
         @Generated public List<String> getSelect()
         @Generated public BatchPoolGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolGetOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdentity> {
@@ -2095,20 +1870,18 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolIdentityType getType()
         @Generated public List<BatchUserAssignedIdentity> getUserAssignedIdentities()
     }
+    @Fluent
+    public final class BatchPoolIdentityReference implements JsonSerializable<BatchPoolIdentityReference> {
+        @Generated public BatchPoolIdentityReference()
+        @Generated public String getResourceId()
+        @Generated public BatchPoolIdentityReference setResourceId(String resourceId)
+    }
     public final class BatchPoolIdentityType extends ExpandableStringEnum<BatchPoolIdentityType> {
         @Generated public static final BatchPoolIdentityType USER_ASSIGNED = fromString("UserAssigned");
         @Generated public static final BatchPoolIdentityType NONE = fromString("None");
         @Deprecated @Generated public BatchPoolIdentityType()
         @Generated public static BatchPoolIdentityType fromString(String name)
         @Generated public static Collection<BatchPoolIdentityType> values()
-    }
-    @Fluent
-    public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
-        @Generated public BatchPoolInfo()
-        @Generated public BatchAutoPoolSpecification getAutoPoolSpecification()
-        @Generated public BatchPoolInfo setAutoPoolSpecification(BatchAutoPoolSpecification autoPoolSpecification)
-        @Generated public String getPoolId()
-        @Generated public BatchPoolInfo setPoolId(String poolId)
     }
     public final class BatchPoolLifetimeOption extends ExpandableStringEnum<BatchPoolLifetimeOption> {
         @Generated public static final BatchPoolLifetimeOption JOB_SCHEDULE = fromString("jobschedule");
@@ -2131,31 +1904,28 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolNodeCountsListOptions setFilter(String filter)
         @Generated public Integer getMaxPageSize()
         @Generated public BatchPoolNodeCountsListOptions setMaxPageSize(Integer maxPageSize)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolNodeCountsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolNodeCountsListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolPropertiesReplaceOptions {
         @Generated public BatchPoolPropertiesReplaceOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolPropertiesReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolPropertiesReplaceOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolReplaceParameters implements JsonSerializable<BatchPoolReplaceParameters> {
-        @Generated public BatchPoolReplaceParameters(List<BatchCertificateReference> certificateReferences, List<BatchApplicationPackageReference> applicationPackageReferences, List<BatchMetadataItem> metadata)
+        @Generated public BatchPoolReplaceParameters(List<BatchApplicationPackageReference> applicationPackageReferences, List<BatchMetadataItem> metadata)
         @Generated public List<BatchApplicationPackageReference> getApplicationPackageReferences()
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
         @Generated public List<BatchMetadataItem> getMetadata()
         @Generated public BatchStartTask getStartTask()
         @Generated public BatchPoolReplaceParameters setStartTask(BatchStartTask startTask)
-        @Generated public BatchNodeCommunicationMode getTargetNodeCommunicationMode()
-        @Generated public BatchPoolReplaceParameters setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode)
     }
     @Fluent
     public final class BatchPoolResizeOptions {
         @Generated public BatchPoolResizeOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolResizeOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolResizeOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolResizeParameters implements JsonSerializable<BatchPoolResizeParameters> {
@@ -2172,8 +1942,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchPoolResizeStopOptions {
         @Generated public BatchPoolResizeStopOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolResizeStopOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolResizeStopOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchPoolResourceStatistics implements JsonSerializable<BatchPoolResourceStatistics> {
@@ -2201,8 +1971,6 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolSpecification setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval)
         @Generated public String getAutoScaleFormula()
         @Generated public BatchPoolSpecification setAutoScaleFormula(String autoScaleFormula)
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
-        @Generated public BatchPoolSpecification setCertificateReferences(List<BatchCertificateReference> certificateReferences)
         @Generated public String getDisplayName()
         @Generated public BatchPoolSpecification setDisplayName(String displayName)
         @Generated public Boolean isEnableAutoScale()
@@ -2217,16 +1985,12 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolSpecification setNetworkConfiguration(NetworkConfiguration networkConfiguration)
         @Generated public Duration getResizeTimeout()
         @Generated public BatchPoolSpecification setResizeTimeout(Duration resizeTimeout)
-        @Generated public String getResourceTags()
-        @Generated public BatchPoolSpecification setResourceTags(String resourceTags)
         @Generated public BatchStartTask getStartTask()
         @Generated public BatchPoolSpecification setStartTask(BatchStartTask startTask)
         @Generated public Integer getTargetDedicatedNodes()
         @Generated public BatchPoolSpecification setTargetDedicatedNodes(Integer targetDedicatedNodes)
         @Generated public Integer getTargetLowPriorityNodes()
         @Generated public BatchPoolSpecification setTargetLowPriorityNodes(Integer targetLowPriorityNodes)
-        @Generated public BatchNodeCommunicationMode getTargetNodeCommunicationMode()
-        @Generated public BatchPoolSpecification setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode)
         @Generated public BatchTaskSchedulingPolicy getTaskSchedulingPolicy()
         @Generated public BatchPoolSpecification setTaskSchedulingPolicy(BatchTaskSchedulingPolicy taskSchedulingPolicy)
         @Generated public Integer getTaskSlotsPerNode()
@@ -2253,21 +2017,18 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolResourceStatistics getResourceStatistics()
         @Generated public OffsetDateTime getStartTime()
         @Generated public String getUrl()
-        @Generated public BatchPoolUsageStatistics getUsageStatistics()
     }
     @Fluent
     public final class BatchPoolUpdateOptions {
         @Generated public BatchPoolUpdateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolUpdateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolUpdateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPoolUpdateParameters> {
         @Generated public BatchPoolUpdateParameters()
         @Generated public List<BatchApplicationPackageReference> getApplicationPackageReferences()
         @Generated public BatchPoolUpdateParameters setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences)
-        @Generated public List<BatchCertificateReference> getCertificateReferences()
-        @Generated public BatchPoolUpdateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences)
         @Generated public String getDisplayName()
         @Generated public BatchPoolUpdateParameters setDisplayName(String displayName)
         @Generated public Boolean isEnableInterNodeCommunication()
@@ -2278,12 +2039,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolUpdateParameters setMountConfiguration(List<MountConfiguration> mountConfiguration)
         @Generated public NetworkConfiguration getNetworkConfiguration()
         @Generated public BatchPoolUpdateParameters setNetworkConfiguration(NetworkConfiguration networkConfiguration)
-        @Generated public Map<String, String> getResourceTags()
-        @Generated public BatchPoolUpdateParameters setResourceTags(Map<String, String> resourceTags)
         @Generated public BatchStartTask getStartTask()
         @Generated public BatchPoolUpdateParameters setStartTask(BatchStartTask startTask)
-        @Generated public BatchNodeCommunicationMode getTargetNodeCommunicationMode()
-        @Generated public BatchPoolUpdateParameters setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode)
         @Generated public BatchTaskSchedulingPolicy getTaskSchedulingPolicy()
         @Generated public BatchPoolUpdateParameters setTaskSchedulingPolicy(BatchTaskSchedulingPolicy taskSchedulingPolicy)
         @Generated public Integer getTaskSlotsPerNode()
@@ -2296,36 +2053,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolUpdateParameters setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration)
         @Generated public String getVmSize()
         @Generated public BatchPoolUpdateParameters setVmSize(String vmSize)
-    }
-    @Immutable
-    public final class BatchPoolUsageMetrics implements JsonSerializable<BatchPoolUsageMetrics> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public OffsetDateTime getEndTime()
-        @Generated public String getPoolId()
-        @Generated public OffsetDateTime getStartTime()
-        @Generated public double getTotalCoreHours()
-        @Generated public String getVmSize()
-    }
-    @Fluent
-    public final class BatchPoolUsageMetricsListOptions {
-        @Generated public BatchPoolUsageMetricsListOptions()
-        @Generated public OffsetDateTime getEndtime()
-        @Generated public BatchPoolUsageMetricsListOptions setEndtime(OffsetDateTime endtime)
-        @Generated public String getFilter()
-        @Generated public BatchPoolUsageMetricsListOptions setFilter(String filter)
-        @Generated public Integer getMaxPageSize()
-        @Generated public BatchPoolUsageMetricsListOptions setMaxPageSize(Integer maxPageSize)
-        @Generated public OffsetDateTime getStartTime()
-        @Generated public BatchPoolUsageMetricsListOptions setStartTime(OffsetDateTime startTime)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolUsageMetricsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
-    }
-    @Immutable
-    public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoolUsageStatistics> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public Duration getDedicatedCoreTime()
-        @Generated public OffsetDateTime getLastUpdateTime()
-        @Generated public OffsetDateTime getStartTime()
+        @Generated public VirtualMachineSkuProfile getVmSkuProfile()
+        @Generated public BatchPoolUpdateParameters setVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile)
     }
     @Fluent
     public final class BatchPoolsListOptions {
@@ -2338,8 +2067,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchPoolsListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchPoolsListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchPoolsListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchPoolsListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchPublicIpAddressConfiguration implements JsonSerializable<BatchPublicIpAddressConfiguration> {
@@ -2348,6 +2077,10 @@ package com.azure.compute.batch.models {
         @Generated public BatchPublicIpAddressConfiguration setIpAddressIds(List<String> ipAddressIds)
         @Generated public IpAddressProvisioningType getIpAddressProvisioningType()
         @Generated public BatchPublicIpAddressConfiguration setIpAddressProvisioningType(IpAddressProvisioningType ipAddressProvisioningType)
+        @Generated public List<IPFamily> getIpFamilies()
+        @Generated public BatchPublicIpAddressConfiguration setIpFamilies(List<IPFamily> ipFamilies)
+        @Generated public List<IPTag> getIpTags()
+        @Generated public BatchPublicIpAddressConfiguration setIpTags(List<IPTag> ipTags)
     }
     @Fluent
     public final class BatchStartTask implements JsonSerializable<BatchStartTask> {
@@ -2367,12 +2100,12 @@ package com.azure.compute.batch.models {
         @Generated public BatchStartTask setWaitForSuccess(Boolean waitForSuccess)
     }
     @Immutable
-    public final class BatchStartTaskInfo implements JsonSerializable<BatchStartTaskInfo> {
+    public final class BatchStartTaskDetails implements JsonSerializable<BatchStartTaskDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskContainerExecutionInfo getContainerInfo()
+        @Generated public BatchTaskContainerExecutionDetails getContainerInfo()
         @Generated public OffsetDateTime getEndTime()
         @Generated public Integer getExitCode()
-        @Generated public BatchTaskFailureInfo getFailureInfo()
+        @Generated public BatchTaskFailureDetails getFailureInfo()
         @Generated public OffsetDateTime getLastRetryTime()
         @Generated public BatchTaskExecutionResult getResult()
         @Generated public int getRetryCount()
@@ -2391,18 +2124,18 @@ package com.azure.compute.batch.models {
         @Generated public BatchSubTasksListOptions()
         @Generated public List<String> getSelect()
         @Generated public BatchSubTasksListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchSubTasksListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchSubTasksListOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskContainerExecutionInfo getContainerInfo()
+        @Generated public BatchTaskContainerExecutionDetails getContainerInfo()
         @Generated public OffsetDateTime getEndTime()
         @Generated public Integer getExitCode()
-        @Generated public BatchTaskFailureInfo getFailureInfo()
+        @Generated public BatchTaskFailureDetails getFailureInfo()
         @Generated public Integer getId()
-        @Generated public BatchNodeInfo getNodeInfo()
+        @Generated public BatchNodeDetails getNodeInfo()
         @Generated public BatchSubtaskState getPreviousState()
         @Generated public OffsetDateTime getPreviousStateTransitionTime()
         @Generated public BatchTaskExecutionResult getResult()
@@ -2425,15 +2158,14 @@ package com.azure.compute.batch.models {
         @Generated public List<String> getCapabilities()
         @Generated public BatchVmImageReference getImageReference()
         @Generated public String getNodeAgentSkuId()
-        @Generated public OSType getOsType()
+        @Generated public OsType getOsType()
         @Generated public ImageVerificationType getVerificationType()
     }
     @Fluent
     public final class BatchTask implements JsonSerializable<BatchTask> {
         @Generated public BatchTask()
-        @Generated public BatchAffinityInfo getAffinityInfo()
+        @Generated public BatchAffinityDetails getAffinityInfo()
         @Generated public List<BatchApplicationPackageReference> getApplicationPackageReferences()
-        @Generated public AuthenticationTokenSettings getAuthenticationTokenSettings()
         @Generated public String getCommandLine()
         @Generated public BatchTaskConstraints getConstraints()
         @Generated public BatchTask setConstraints(BatchTaskConstraints constraints)
@@ -2443,12 +2175,12 @@ package com.azure.compute.batch.models {
         @Generated public String getDisplayName()
         @Generated public List<EnvironmentSetting> getEnvironmentSettings()
         @Generated public String getETag()
-        @Generated public BatchTaskExecutionInfo getExecutionInfo()
+        @Generated public BatchTaskExecutionDetails getExecutionInfo()
         @Generated public ExitConditions getExitConditions()
         @Generated public String getId()
         @Generated public OffsetDateTime getLastModified()
         @Generated public MultiInstanceSettings getMultiInstanceSettings()
-        @Generated public BatchNodeInfo getNodeInfo()
+        @Generated public BatchNodeDetails getNodeInfo()
         @Generated public List<OutputFile> getOutputFiles()
         @Generated public BatchTaskState getPreviousState()
         @Generated public OffsetDateTime getPreviousStateTransitionTime()
@@ -2476,8 +2208,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchTaskCollectionCreateOptions {
         @Generated public BatchTaskCollectionCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskCollectionCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskCollectionCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskConstraints implements JsonSerializable<BatchTaskConstraints> {
@@ -2490,7 +2222,7 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskConstraints setRetentionTime(Duration retentionTime)
     }
     @Immutable
-    public final class BatchTaskContainerExecutionInfo implements JsonSerializable<BatchTaskContainerExecutionInfo> {
+    public final class BatchTaskContainerExecutionDetails implements JsonSerializable<BatchTaskContainerExecutionDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getContainerId()
         @Generated public String getError()
@@ -2527,18 +2259,16 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchTaskCreateOptions {
         @Generated public BatchTaskCreateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskCreateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskCreateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskCreateParameters implements JsonSerializable<BatchTaskCreateParameters> {
         @Generated public BatchTaskCreateParameters(String id, String commandLine)
-        @Generated public BatchAffinityInfo getAffinityInfo()
-        @Generated public BatchTaskCreateParameters setAffinityInfo(BatchAffinityInfo affinityInfo)
+        @Generated public BatchAffinityDetails getAffinityInfo()
+        @Generated public BatchTaskCreateParameters setAffinityInfo(BatchAffinityDetails affinityInfo)
         @Generated public List<BatchApplicationPackageReference> getApplicationPackageReferences()
         @Generated public BatchTaskCreateParameters setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences)
-        @Generated public AuthenticationTokenSettings getAuthenticationTokenSettings()
-        @Generated public BatchTaskCreateParameters setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings)
         @Generated public String getCommandLine()
         @Generated public BatchTaskConstraints getConstraints()
         @Generated public BatchTaskCreateParameters setConstraints(BatchTaskConstraints constraints)
@@ -2577,8 +2307,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchTaskDeleteOptions {
         @Generated public BatchTaskDeleteOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskDependencies implements JsonSerializable<BatchTaskDependencies> {
@@ -2589,12 +2319,22 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskDependencies setTaskIds(List<String> taskIds)
     }
     @Immutable
-    public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskExecutionInfo> {
+    public final class BatchTaskDetails implements JsonSerializable<BatchTaskDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskContainerExecutionInfo getContainerInfo()
+        @Generated public BatchTaskExecutionDetails getExecutionInfo()
+        @Generated public String getJobId()
+        @Generated public Integer getSubtaskId()
+        @Generated public String getTaskId()
+        @Generated public BatchTaskState getTaskState()
+        @Generated public String getTaskUrl()
+    }
+    @Immutable
+    public final class BatchTaskExecutionDetails implements JsonSerializable<BatchTaskExecutionDetails> {
+        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
+        @Generated public BatchTaskContainerExecutionDetails getContainerInfo()
         @Generated public OffsetDateTime getEndTime()
         @Generated public Integer getExitCode()
-        @Generated public BatchTaskFailureInfo getFailureInfo()
+        @Generated public BatchTaskFailureDetails getFailureInfo()
         @Generated public OffsetDateTime getLastRequeueTime()
         @Generated public OffsetDateTime getLastRetryTime()
         @Generated public int getRequeueCount()
@@ -2610,7 +2350,7 @@ package com.azure.compute.batch.models {
         @Generated public static Collection<BatchTaskExecutionResult> values()
     }
     @Immutable
-    public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFailureInfo> {
+    public final class BatchTaskFailureDetails implements JsonSerializable<BatchTaskFailureDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public BatchErrorSourceCategory getCategory()
         @Generated public String getCode()
@@ -2629,8 +2369,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskFileDeleteOptions()
         @Generated public Boolean isRecursive()
         @Generated public BatchTaskFileDeleteOptions setRecursive(Boolean recursive)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskFileDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskFileDeleteOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskFileGetOptions {
@@ -2641,8 +2381,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskFileGetOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince)
         @Generated public String getOcpRange()
         @Generated public BatchTaskFileGetOptions setOcpRange(String ocpRange)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskFileGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskFileGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskFilePropertiesGetOptions {
@@ -2651,8 +2391,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskFilePropertiesGetOptions setIfModifiedSince(OffsetDateTime ifModifiedSince)
         @Generated public OffsetDateTime getIfUnmodifiedSince()
         @Generated public BatchTaskFilePropertiesGetOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskFilePropertiesGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskFilePropertiesGetOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskFilesListOptions {
@@ -2663,8 +2403,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskFilesListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public Boolean isRecursive()
         @Generated public BatchTaskFilesListOptions setRecursive(Boolean recursive)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskFilesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskFilesListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskGetOptions {
@@ -2673,8 +2413,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTaskGetOptions setExpand(List<String> expand)
         @Generated public List<String> getSelect()
         @Generated public BatchTaskGetOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskGetOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskGetOptions setTimeout(Duration timeout)
     }
     @Immutable
     public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
@@ -2687,31 +2427,23 @@ package com.azure.compute.batch.models {
         @Generated public int getEnd()
         @Generated public int getStart()
     }
-    @Immutable
-    public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public BatchTaskExecutionInfo getExecutionInfo()
-        @Generated public String getJobId()
-        @Generated public Integer getSubtaskId()
-        @Generated public String getTaskId()
-        @Generated public BatchTaskState getTaskState()
-        @Generated public String getTaskUrl()
-    }
     @Fluent
     public final class BatchTaskReactivateOptions {
         @Generated public BatchTaskReactivateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskReactivateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskReactivateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTaskReplaceOptions {
         @Generated public BatchTaskReplaceOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskReplaceOptions setTimeout(Duration timeout)
     }
-    @Immutable
+    @Fluent
     public final class BatchTaskSchedulingPolicy implements JsonSerializable<BatchTaskSchedulingPolicy> {
         @Generated public BatchTaskSchedulingPolicy(BatchNodeFillType nodeFillType)
+        @Generated public BatchJobDefaultOrder getJobDefaultOrder()
+        @Generated public BatchTaskSchedulingPolicy setJobDefaultOrder(BatchJobDefaultOrder jobDefaultOrder)
         @Generated public BatchNodeFillType getNodeFillType()
     }
     @Immutable
@@ -2750,8 +2482,8 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class BatchTaskTerminateOptions {
         @Generated public BatchTaskTerminateOptions()
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTaskTerminateOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTaskTerminateOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchTasksListOptions {
@@ -2764,8 +2496,8 @@ package com.azure.compute.batch.models {
         @Generated public BatchTasksListOptions setMaxPageSize(Integer maxPageSize)
         @Generated public List<String> getSelect()
         @Generated public BatchTasksListOptions setSelect(List<String> select)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public BatchTasksListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public BatchTasksListOptions setTimeout(Duration timeout)
     }
     @Fluent
     public final class BatchUefiSettings implements JsonSerializable<BatchUefiSettings> {
@@ -2807,17 +2539,10 @@ package com.azure.compute.batch.models {
         @Generated public String getVirtualMachineImageId()
         @Generated public BatchVmImageReference setVirtualMachineImageId(String virtualMachineImageId)
     }
-    public final class CachingType extends ExpandableStringEnum<CachingType> {
-        @Generated public static final CachingType NONE = fromString("none");
-        @Generated public static final CachingType READ_ONLY = fromString("readonly");
-        @Generated public static final CachingType READ_WRITE = fromString("readwrite");
-        @Deprecated @Generated public CachingType()
-        @Generated public static CachingType fromString(String name)
-        @Generated public static Collection<CachingType> values()
-    }
     @Fluent
     public final class CifsMountConfiguration implements JsonSerializable<CifsMountConfiguration> {
         @Generated public CifsMountConfiguration(String username, String source, String relativeMountPath, String password)
+        public CifsMountConfiguration(String username, String source, Path relativeMountPath, String password)
         @Generated public String getMountOptions()
         @Generated public CifsMountConfiguration setMountOptions(String mountOptions)
         @Generated public String getPassword()
@@ -2856,13 +2581,6 @@ package com.azure.compute.batch.models {
         @Generated public String getUsername()
         @Generated public ContainerRegistryReference setUsername(String username)
     }
-    public final class ContainerType extends ExpandableStringEnum<ContainerType> {
-        @Generated public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
-        @Generated public static final ContainerType CRI_COMPATIBLE = fromString("criCompatible");
-        @Deprecated @Generated public ContainerType()
-        @Generated public static ContainerType fromString(String name)
-        @Generated public static Collection<ContainerType> values()
-    }
     public final class ContainerWorkingDirectory extends ExpandableStringEnum<ContainerWorkingDirectory> {
         @Generated public static final ContainerWorkingDirectory TASK_WORKING_DIRECTORY = fromString("taskWorkingDirectory");
         @Generated public static final ContainerWorkingDirectory CONTAINER_IMAGE_DEFAULT = fromString("containerImageDefault");
@@ -2872,18 +2590,18 @@ package com.azure.compute.batch.models {
     }
     public class CreateTasksErrorException extends AzureException {
         public CreateTasksErrorException(String message, List<BatchTaskCreateResult> failureTaskList, List<BatchTaskCreateParameters> pendingTaskList)
-        public List<BatchTaskCreateResult> failureTaskList()
-        public List<BatchTaskCreateParameters> pendingTaskList()
+        public List<BatchTaskCreateResult> getFailureTaskList()
+        public List<BatchTaskCreateParameters> getPendingTaskList()
     }
     @Fluent
     public final class DataDisk implements JsonSerializable<DataDisk> {
         @Generated public DataDisk(int logicalUnitNumber, int diskSizeGb)
-        @Generated public CachingType getCaching()
-        @Generated public DataDisk setCaching(CachingType caching)
+        @Generated public BatchCachingType getCaching()
+        @Generated public DataDisk setCaching(BatchCachingType caching)
         @Generated public int getDiskSizeGb()
         @Generated public int getLogicalUnitNumber()
-        @Generated public StorageAccountType getStorageAccountType()
-        @Generated public DataDisk setStorageAccountType(StorageAccountType storageAccountType)
+        @Generated public ManagedDisk getManagedDisk()
+        @Generated public DataDisk setManagedDisk(ManagedDisk managedDisk)
     }
     public final class DependencyAction extends ExpandableStringEnum<DependencyAction> {
         @Generated public static final DependencyAction SATISFY = fromString("satisfy");
@@ -2907,10 +2625,28 @@ package com.azure.compute.batch.models {
         @Generated public static Collection<DisableBatchJobOption> values()
     }
     @Fluent
+    public final class DiskCustomerManagedKey implements JsonSerializable<DiskCustomerManagedKey> {
+        @Generated public DiskCustomerManagedKey()
+        @Generated public BatchPoolIdentityReference getIdentityReference()
+        @Generated public DiskCustomerManagedKey setIdentityReference(BatchPoolIdentityReference identityReference)
+        @Generated public String getKeyUrl()
+        @Generated public DiskCustomerManagedKey setKeyUrl(String keyUrl)
+        @Generated public Boolean isRotationToLatestKeyVersionEnabled()
+        @Generated public DiskCustomerManagedKey setRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled)
+    }
+    @Fluent
     public final class DiskEncryptionConfiguration implements JsonSerializable<DiskEncryptionConfiguration> {
         @Generated public DiskEncryptionConfiguration()
+        @Generated public DiskCustomerManagedKey getCustomerManagedKey()
+        @Generated public DiskEncryptionConfiguration setCustomerManagedKey(DiskCustomerManagedKey customerManagedKey)
         @Generated public List<DiskEncryptionTarget> getTargets()
         @Generated public DiskEncryptionConfiguration setTargets(List<DiskEncryptionTarget> targets)
+    }
+    @Fluent
+    public final class DiskEncryptionSetParameters implements JsonSerializable<DiskEncryptionSetParameters> {
+        @Generated public DiskEncryptionSetParameters()
+        @Generated public String getId()
+        @Generated public DiskEncryptionSetParameters setId(String id)
     }
     public final class DiskEncryptionTarget extends ExpandableStringEnum<DiskEncryptionTarget> {
         @Generated public static final DiskEncryptionTarget OS_DISK = fromString("osdisk");
@@ -2984,6 +2720,42 @@ package com.azure.compute.batch.models {
         @Generated public String getFileMode()
         @Generated public OffsetDateTime getLastModified()
     }
+    @Fluent
+    public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
+        @Generated public HardwareProfile()
+        @Generated public VMSizeProperties getVmSizeProperties()
+        @Generated public HardwareProfile setVmSizeProperties(VMSizeProperties vmSizeProperties)
+    }
+    @Fluent
+    public final class HostEndpointSettings implements JsonSerializable<HostEndpointSettings> {
+        @Generated public HostEndpointSettings()
+        @Generated public String getInVmAccessControlProfileReferenceId()
+        @Generated public HostEndpointSettings setInVmAccessControlProfileReferenceId(String inVmAccessControlProfileReferenceId)
+        @Generated public HostEndpointSettingsModeTypes getMode()
+        @Generated public HostEndpointSettings setMode(HostEndpointSettingsModeTypes mode)
+    }
+    public final class HostEndpointSettingsModeTypes extends ExpandableStringEnum<HostEndpointSettingsModeTypes> {
+        @Generated public static final HostEndpointSettingsModeTypes AUDIT = fromString("Audit");
+        @Generated public static final HostEndpointSettingsModeTypes ENFORCE = fromString("Enforce");
+        @Deprecated @Generated public HostEndpointSettingsModeTypes()
+        @Generated public static HostEndpointSettingsModeTypes fromString(String name)
+        @Generated public static Collection<HostEndpointSettingsModeTypes> values()
+    }
+    public final class IPFamily extends ExpandableStringEnum<IPFamily> {
+        @Generated public static final IPFamily IPV4 = fromString("IPv4");
+        @Generated public static final IPFamily IPV6 = fromString("IPv6");
+        @Deprecated @Generated public IPFamily()
+        @Generated public static IPFamily fromString(String name)
+        @Generated public static Collection<IPFamily> values()
+    }
+    @Fluent
+    public final class IPTag implements JsonSerializable<IPTag> {
+        @Generated public IPTag()
+        @Generated public String getIpTagType()
+        @Generated public IPTag setIpTagType(String ipTagType)
+        @Generated public String getTag()
+        @Generated public IPTag setTag(String tag)
+    }
     public final class ImageVerificationType extends ExpandableStringEnum<ImageVerificationType> {
         @Generated public static final ImageVerificationType VERIFIED = fromString("verified");
         @Generated public static final ImageVerificationType UNVERIFIED = fromString("unverified");
@@ -3045,10 +2817,19 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
         @Generated public ManagedDisk()
+        @Generated public DiskEncryptionSetParameters getDiskEncryptionSet()
+        @Generated public ManagedDisk setDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet)
         @Generated public BatchVmDiskSecurityProfile getSecurityProfile()
         @Generated public ManagedDisk setSecurityProfile(BatchVmDiskSecurityProfile securityProfile)
         @Generated public StorageAccountType getStorageAccountType()
         @Generated public ManagedDisk setStorageAccountType(StorageAccountType storageAccountType)
+    }
+    @Fluent
+    public final class MaxInstancePercentPerZonePolicy implements JsonSerializable<MaxInstancePercentPerZonePolicy> {
+        @Generated public MaxInstancePercentPerZonePolicy(int value)
+        @Generated public Boolean isEnabled()
+        @Generated public MaxInstancePercentPerZonePolicy setEnabled(Boolean enabled)
+        @Generated public int getValue()
     }
     @Fluent
     public final class MountConfiguration implements JsonSerializable<MountConfiguration> {
@@ -3110,17 +2891,18 @@ package com.azure.compute.batch.models {
     @Fluent
     public final class NfsMountConfiguration implements JsonSerializable<NfsMountConfiguration> {
         @Generated public NfsMountConfiguration(String source, String relativeMountPath)
+        public NfsMountConfiguration(String source, Path relativeMountPath)
         @Generated public String getMountOptions()
         @Generated public NfsMountConfiguration setMountOptions(String mountOptions)
         @Generated public String getRelativeMountPath()
         @Generated public String getSource()
     }
-    public final class OSType extends ExpandableStringEnum<OSType> {
-        @Generated public static final OSType LINUX = fromString("linux");
-        @Generated public static final OSType WINDOWS = fromString("windows");
-        @Deprecated @Generated public OSType()
-        @Generated public static OSType fromString(String name)
-        @Generated public static Collection<OSType> values()
+    public final class OsType extends ExpandableStringEnum<OsType> {
+        @Generated public static final OsType LINUX = fromString("linux");
+        @Generated public static final OsType WINDOWS = fromString("windows");
+        @Deprecated @Generated public OsType()
+        @Generated public static OsType fromString(String name)
+        @Generated public static Collection<OsType> values()
     }
     @Immutable
     public final class OutputFile implements JsonSerializable<OutputFile> {
@@ -3167,10 +2949,30 @@ package com.azure.compute.batch.models {
         @Generated public OutputFileUploadHeader setValue(String value)
     }
     @Immutable
+    public final class Placement implements JsonSerializable<Placement> {
+        @Generated public Placement(ZonePlacementPolicyType zonePlacementPolicy)
+        @Generated public ZonePlacementPolicyType getZonePlacementPolicy()
+    }
+    @Fluent
+    public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSettings> {
+        @Generated public ProxyAgentSettings()
+        @Generated public Boolean isEnabled()
+        @Generated public ProxyAgentSettings setEnabled(Boolean enabled)
+        @Generated public HostEndpointSettings getImds()
+        @Generated public ProxyAgentSettings setImds(HostEndpointSettings imds)
+        @Generated public HostEndpointSettings getWireServer()
+        @Generated public ProxyAgentSettings setWireServer(HostEndpointSettings wireServer)
+    }
+    @Immutable
     public final class RecentBatchJob implements JsonSerializable<RecentBatchJob> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getId()
         @Generated public String getUrl()
+    }
+    @Immutable
+    public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy> {
+        @Generated public ResiliencyPolicy(ZoneAllocationPolicy zoneAllocationPolicy)
+        @Generated public ZoneAllocationPolicy getZoneAllocationPolicy()
     }
     @Immutable
     public final class ResizeError implements JsonSerializable<ResizeError> {
@@ -3190,6 +2992,7 @@ package com.azure.compute.batch.models {
         @Generated public ResourceFile setFileMode(String fileMode)
         @Generated public String getFilePath()
         @Generated public ResourceFile setFilePath(String filePath)
+        public ResourceFile setFilePath(Path filePath)
         @Generated public String getHttpUrl()
         @Generated public ResourceFile setHttpUrl(String httpUrl)
         @Generated public BatchNodeIdentityReference getIdentityReference()
@@ -3225,6 +3028,7 @@ package com.azure.compute.batch.models {
     public final class SecurityEncryptionTypes extends ExpandableStringEnum<SecurityEncryptionTypes> {
         @Generated public static final SecurityEncryptionTypes NON_PERSISTED_TPM = fromString("NonPersistedTPM");
         @Generated public static final SecurityEncryptionTypes VMGUEST_STATE_ONLY = fromString("VMGuestStateOnly");
+        @Generated public static final SecurityEncryptionTypes DISK_WITH_VMGUEST_STATE = fromString("DiskWithVMGuestState");
         @Deprecated @Generated public SecurityEncryptionTypes()
         @Generated public static SecurityEncryptionTypes fromString(String name)
         @Generated public static Collection<SecurityEncryptionTypes> values()
@@ -3234,6 +3038,8 @@ package com.azure.compute.batch.models {
         @Generated public SecurityProfile()
         @Generated public Boolean isEncryptionAtHost()
         @Generated public SecurityProfile setEncryptionAtHost(Boolean encryptionAtHost)
+        @Generated public ProxyAgentSettings getProxyAgentSettings()
+        @Generated public SecurityProfile setProxyAgentSettings(ProxyAgentSettings proxyAgentSettings)
         @Generated public SecurityTypes getSecurityType()
         @Generated public SecurityProfile setSecurityType(SecurityTypes securityType)
         @Generated public BatchUefiSettings getUefiSettings()
@@ -3241,7 +3047,7 @@ package com.azure.compute.batch.models {
     }
     public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
         @Generated public static final SecurityTypes TRUSTED_LAUNCH = fromString("trustedLaunch");
-        @Generated public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialVM");
+        @Generated public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialvm");
         @Deprecated @Generated public SecurityTypes()
         @Generated public static SecurityTypes fromString(String name)
         @Generated public static Collection<SecurityTypes> values()
@@ -3274,8 +3080,8 @@ package com.azure.compute.batch.models {
         @Generated public SupportedBatchImagesListOptions setFilter(String filter)
         @Generated public Integer getMaxPageSize()
         @Generated public SupportedBatchImagesListOptions setMaxPageSize(Integer maxPageSize)
-        @Generated public Duration getTimeOutInSeconds()
-        @Generated public SupportedBatchImagesListOptions setTimeOutInSeconds(Duration timeOutInSeconds)
+        @Generated public Duration getTimeout()
+        @Generated public SupportedBatchImagesListOptions setTimeout(Duration timeout)
     }
     public final class UpgradeMode extends ExpandableStringEnum<UpgradeMode> {
         @Generated public static final UpgradeMode AUTOMATIC = fromString("automatic");
@@ -3331,30 +3137,12 @@ package com.azure.compute.batch.models {
         @Generated public UserIdentity setUsername(String username)
     }
     @Fluent
-    public final class VMExtension implements JsonSerializable<VMExtension> {
-        @Generated public VMExtension(String name, String publisher, String type)
-        @Generated public Boolean isAutoUpgradeMinorVersion()
-        @Generated public VMExtension setAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion)
-        @Generated public Boolean isEnableAutomaticUpgrade()
-        @Generated public VMExtension setEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade)
-        @Generated public String getName()
-        @Generated public Map<String, String> getProtectedSettings()
-        @Generated public VMExtension setProtectedSettings(Map<String, String> protectedSettings)
-        @Generated public List<String> getProvisionAfterExtensions()
-        @Generated public VMExtension setProvisionAfterExtensions(List<String> provisionAfterExtensions)
-        @Generated public String getPublisher()
-        @Generated public Map<String, String> getSettings()
-        @Generated public VMExtension setSettings(Map<String, String> settings)
-        @Generated public String getType()
-        @Generated public String getTypeHandlerVersion()
-        @Generated public VMExtension setTypeHandlerVersion(String typeHandlerVersion)
-    }
-    @Immutable
-    public final class VMExtensionInstanceView implements JsonSerializable<VMExtensionInstanceView> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        @Generated public String getName()
-        @Generated public List<InstanceViewStatus> getStatuses()
-        @Generated public List<InstanceViewStatus> getSubStatuses()
+    public final class VMSizeProperties implements JsonSerializable<VMSizeProperties> {
+        @Generated public VMSizeProperties()
+        @Generated public Integer getVCPUsAvailable()
+        @Generated public VMSizeProperties setVCPUsAvailable(Integer vCPUsAvailable)
+        @Generated public Integer getVCPUsPerCore()
+        @Generated public VMSizeProperties setVCPUsPerCore(Integer vCPUsPerCore)
     }
     @Fluent
     public final class VirtualMachineConfiguration implements JsonSerializable<VirtualMachineConfiguration> {
@@ -3365,8 +3153,10 @@ package com.azure.compute.batch.models {
         @Generated public VirtualMachineConfiguration setDataDisks(List<DataDisk> dataDisks)
         @Generated public DiskEncryptionConfiguration getDiskEncryptionConfiguration()
         @Generated public VirtualMachineConfiguration setDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration)
-        @Generated public List<VMExtension> getExtensions()
-        @Generated public VirtualMachineConfiguration setExtensions(List<VMExtension> extensions)
+        @Generated public List<VirtualMachineExtension> getExtensions()
+        @Generated public VirtualMachineConfiguration setExtensions(List<VirtualMachineExtension> extensions)
+        @Generated public HardwareProfile getHardwareProfile()
+        @Generated public VirtualMachineConfiguration setHardwareProfile(HardwareProfile hardwareProfile)
         @Generated public BatchVmImageReference getImageReference()
         @Generated public String getLicenseType()
         @Generated public VirtualMachineConfiguration setLicenseType(String licenseType)
@@ -3375,6 +3165,10 @@ package com.azure.compute.batch.models {
         @Generated public VirtualMachineConfiguration setNodePlacementConfiguration(BatchNodePlacementConfiguration nodePlacementConfiguration)
         @Generated public BatchOsDisk getOsDisk()
         @Generated public VirtualMachineConfiguration setOsDisk(BatchOsDisk osDisk)
+        @Generated public Placement getPlacement()
+        @Generated public VirtualMachineConfiguration setPlacement(Placement placement)
+        @Generated public ResiliencyPolicy getResiliencyPolicy()
+        @Generated public VirtualMachineConfiguration setResiliencyPolicy(ResiliencyPolicy resiliencyPolicy)
         @Generated public SecurityProfile getSecurityProfile()
         @Generated public VirtualMachineConfiguration setSecurityProfile(SecurityProfile securityProfile)
         @Generated public ServiceArtifactReference getServiceArtifactReference()
@@ -3383,10 +3177,59 @@ package com.azure.compute.batch.models {
         @Generated public VirtualMachineConfiguration setWindowsConfiguration(WindowsConfiguration windowsConfiguration)
     }
     @Immutable
-    public final class VirtualMachineInfo implements JsonSerializable<VirtualMachineInfo> {
+    public final class VirtualMachineDetails implements JsonSerializable<VirtualMachineDetails> {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public BatchVmImageReference getImageReference()
         @Generated public String getScaleSetVmResourceId()
+    }
+    @Fluent
+    public final class VirtualMachineExtension implements JsonSerializable<VirtualMachineExtension> {
+        @Generated public VirtualMachineExtension(String name, String publisher, String type)
+        @Generated public Boolean isAutoUpgradeMinorVersion()
+        @Generated public VirtualMachineExtension setAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion)
+        @Generated public Boolean isEnableAutomaticUpgrade()
+        @Generated public VirtualMachineExtension setEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade)
+        @Generated public String getName()
+        @Generated public Map<String, String> getProtectedSettings()
+        @Generated public VirtualMachineExtension setProtectedSettings(Map<String, String> protectedSettings)
+        @Generated public List<String> getProvisionAfterExtensions()
+        @Generated public VirtualMachineExtension setProvisionAfterExtensions(List<String> provisionAfterExtensions)
+        @Generated public String getPublisher()
+        @Generated public Map<String, String> getSettings()
+        @Generated public VirtualMachineExtension setSettings(Map<String, String> settings)
+        @Generated public String getType()
+        @Generated public String getTypeHandlerVersion()
+        @Generated public VirtualMachineExtension setTypeHandlerVersion(String typeHandlerVersion)
+    }
+    @Immutable
+    public final class VirtualMachineExtensionInstanceView implements JsonSerializable<VirtualMachineExtensionInstanceView> {
+        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
+        @Generated public String getName()
+        @Generated public List<InstanceViewStatus> getStatuses()
+        @Generated public List<InstanceViewStatus> getSubStatuses()
+    }
+    public final class VirtualMachineSkuAllocationStrategy extends ExpandableStringEnum<VirtualMachineSkuAllocationStrategy> {
+        @Generated public static final VirtualMachineSkuAllocationStrategy LOWEST_PRICE = fromString("lowestPrice");
+        @Generated public static final VirtualMachineSkuAllocationStrategy CAPACITY_OPTIMIZED = fromString("capacityOptimized");
+        @Generated public static final VirtualMachineSkuAllocationStrategy PRIORITIZED = fromString("prioritized");
+        @Deprecated @Generated public VirtualMachineSkuAllocationStrategy()
+        @Generated public static VirtualMachineSkuAllocationStrategy fromString(String name)
+        @Generated public static Collection<VirtualMachineSkuAllocationStrategy> values()
+    }
+    @Fluent
+    public final class VirtualMachineSkuProfile implements JsonSerializable<VirtualMachineSkuProfile> {
+        @Generated public VirtualMachineSkuProfile()
+        @Generated public VirtualMachineSkuAllocationStrategy getAllocationStrategy()
+        @Generated public VirtualMachineSkuProfile setAllocationStrategy(VirtualMachineSkuAllocationStrategy allocationStrategy)
+        @Generated public List<VirtualMachineSkuProfileVmSize> getVmSizes()
+        @Generated public VirtualMachineSkuProfile setVmSizes(List<VirtualMachineSkuProfileVmSize> vmSizes)
+    }
+    @Fluent
+    public final class VirtualMachineSkuProfileVmSize implements JsonSerializable<VirtualMachineSkuProfileVmSize> {
+        @Generated public VirtualMachineSkuProfileVmSize(String name)
+        @Generated public String getName()
+        @Generated public Integer getRank()
+        @Generated public VirtualMachineSkuProfileVmSize setRank(Integer rank)
     }
     @Fluent
     public final class WindowsConfiguration implements JsonSerializable<WindowsConfiguration> {
@@ -3399,6 +3242,20 @@ package com.azure.compute.batch.models {
         @Generated public WindowsUserConfiguration()
         @Generated public LoginMode getLoginMode()
         @Generated public WindowsUserConfiguration setLoginMode(LoginMode loginMode)
+    }
+    @Fluent
+    public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocationPolicy> {
+        @Generated public ZoneAllocationPolicy()
+        @Generated public MaxInstancePercentPerZonePolicy getMaxInstancePercentPerZonePolicy()
+        @Generated public ZoneAllocationPolicy setMaxInstancePercentPerZonePolicy(MaxInstancePercentPerZonePolicy maxInstancePercentPerZonePolicy)
+        @Generated public Integer getMaxZoneCount()
+        @Generated public ZoneAllocationPolicy setMaxZoneCount(Integer maxZoneCount)
+    }
+    public final class ZonePlacementPolicyType extends ExpandableStringEnum<ZonePlacementPolicyType> {
+        @Generated public static final ZonePlacementPolicyType AUTO = fromString("Auto");
+        @Deprecated @Generated public ZonePlacementPolicyType()
+        @Generated public static ZonePlacementPolicyType fromString(String name)
+        @Generated public static Collection<ZonePlacementPolicyType> values()
     }
 }
 ```
