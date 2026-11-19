@@ -10,13 +10,13 @@
 
 #### Bugs Fixed
 
-- Fixed native-image binding of global Azure and Key Vault property-source settings, credential initialization, and secret response deserialization. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed missing global Azure properties in AOT-generated application contexts, including Service Bus binder child contexts, while retaining runtime configuration binding. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed missing native-image binding metadata for JDBC passwordless settings and for Cosmos, Event Hubs, Service Bus, Blob, and Queue settings when using ConnectionDetails. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed AOT processing of Service Bus JMS connection factories by replacing instance suppliers with factory-method bean definitions. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed missing reflection metadata for Service Bus JMS URI prefetch options and Standard-tier AMQP customization in native images. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed Qpid factory discovery for Service Bus JMS native connections by retaining provider, SSL transport, SASL, and default tracing descriptors and factory metadata. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
-- Fixed missing native proxy metadata for cached Service Bus JMS connections and sessions. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed native-image binding of global Azure and Key Vault property-source settings, credential initialization, and secret response deserialization. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing global Azure properties in AOT-generated application contexts, including Service Bus binder child contexts, while retaining runtime configuration binding. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing native-image binding metadata for JDBC passwordless settings and for Cosmos, Event Hubs, Service Bus, Blob, and Queue settings when using ConnectionDetails. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed AOT processing of Service Bus JMS connection factories by replacing instance suppliers with factory-method bean definitions. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing reflection metadata for Service Bus JMS URI prefetch options and Standard-tier AMQP customization in native images. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed Qpid factory discovery for Service Bus JMS native connections by retaining provider, SSL transport, SASL, and default tracing descriptors and factory metadata. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
+- Fixed missing native proxy metadata for cached Service Bus JMS connections and sessions. ([#51342](https://github.com/Azure/azure-sdk-for-java/pull/51342))
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 
 ## 6.5.0 (2026-07-29)
