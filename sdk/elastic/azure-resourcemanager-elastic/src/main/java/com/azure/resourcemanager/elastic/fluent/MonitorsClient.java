@@ -53,7 +53,7 @@ public interface MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +68,7 @@ public interface MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +85,7 @@ public interface MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -99,7 +99,7 @@ public interface MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +116,7 @@ public interface MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,7 +131,7 @@ public interface MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +148,7 @@ public interface MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,7 +162,7 @@ public interface MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

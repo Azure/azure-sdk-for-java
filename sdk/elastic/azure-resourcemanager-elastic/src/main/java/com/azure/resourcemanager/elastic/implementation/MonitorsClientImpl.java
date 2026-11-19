@@ -294,7 +294,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -316,7 +316,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -336,7 +336,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,7 +357,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -378,7 +378,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,7 +399,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -419,7 +419,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,7 +439,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,7 +460,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -479,7 +479,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,7 +497,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -514,7 +514,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * Azure resources through Elastic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +533,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -555,7 +555,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,7 +575,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,7 +596,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +617,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -638,7 +638,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -658,7 +658,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -678,7 +678,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,7 +699,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -718,7 +718,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,7 +736,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -753,7 +753,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
+     * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
