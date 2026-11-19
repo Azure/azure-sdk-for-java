@@ -48,8 +48,12 @@ public class GenerateMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (skip || "pom".equals(project.getPackaging())) {
-            getLog().info("Skipping API review generation.");
+        if (skip) {
+            getLog().info("Skipping API review generation because api-review.skip is set.");
+            return;
+        }
+        if ("pom".equals(project.getPackaging())) {
+            getLog().info("Skipping API review generation for a POM-only project.");
             return;
         }
         String version = project.getOriginalModel().getVersion();

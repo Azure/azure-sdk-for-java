@@ -8,14 +8,13 @@ Builds and stages the Java API review JAR and generator script into an ARH tools
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [Parameter(Mandatory)][string]$SourceDirectory,
     [Parameter(Mandatory)][string]$BinOutputDirectory
 )
 
 Set-StrictMode -Version 4
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
-$root = (Resolve-Path -LiteralPath $SourceDirectory).Path
+$root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..' '..')).Path
 $plugin = Join-Path $root 'sdk' 'tools' 'api-review-maven-plugin'
 $pomPath = Join-Path $plugin 'pom.xml'
 $generator = Join-Path $root 'eng' 'scripts' 'Generate-ApiReviewArtifact.ps1'

@@ -23,7 +23,10 @@
     </license>
   </licenses>
   <developers>
-    <developer><id>microsoft</id><name>Microsoft Corporation</name></developer>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
   </developers>
   <issueManagement>
     <system>GitHub</system>
@@ -35,7 +38,9 @@
     <developerConnection/>
     <tag>HEAD</tag>
   </scm>
-  <prerequisites><maven>3.6.3</maven></prerequisites>
+  <prerequisites>
+    <maven>3.6.3</maven>
+  </prerequisites>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>8</maven.compiler.source>
@@ -45,69 +50,92 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.apache.maven</groupId><artifactId>maven-plugin-api</artifactId>
-      <version>${maven.version}</version><scope>provided</scope>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven</groupId><artifactId>maven-core</artifactId>
-      <version>${maven.version}</version><scope>provided</scope>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven</groupId><artifactId>maven-artifact</artifactId>
-      <version>${maven.version}</version><scope>provided</scope>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.plugin-tools</groupId><artifactId>maven-plugin-annotations</artifactId>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
       <version>3.15.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId><artifactId>azure-json</artifactId>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
       <version>1.5.0</version>
     </dependency>
     <dependency>
-      <groupId>com.github.javaparser</groupId><artifactId>javaparser-core</artifactId>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
       <version>3.26.4</version>
     </dependency>
     <dependency>
-      <groupId>com.networknt</groupId><artifactId>json-schema-validator</artifactId>
+      <groupId>com.networknt</groupId>
+      <artifactId>json-schema-validator</artifactId>
       <version>1.5.6</version>
       <exclusions>
-        <exclusion><groupId>com.fasterxml.jackson.dataformat</groupId><artifactId>jackson-dataformat-yaml</artifactId></exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-yaml</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
       <version>2.0.13</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId><artifactId>slf4j-nop</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
       <version>2.0.13</version>
     </dependency>
     <dependency>
-      <groupId>org.unbescape</groupId><artifactId>unbescape</artifactId>
+      <groupId>org.unbescape</groupId>
+      <artifactId>unbescape</artifactId>
       <version>1.1.6.RELEASE</version>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-api</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <version>5.14.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
       <version>5.14.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-params</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
       <version>5.14.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
     <resources>
-      <resource><directory>src/main/resources</directory></resource>
-      <resource><directory>${processorDirectory}/src/main/resources</directory></resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${processorDirectory}/src/main/resources</directory>
+      </resource>
     </resources>
     <pluginManagement>
       <plugins>
@@ -115,15 +143,21 @@
           <groupId>com.azure.tools</groupId>
           <artifactId>codesnippet-maven-plugin</artifactId>
           <version>1.0.0-beta.10</version>
-          <configuration><readmeGlob>**/*.md</readmeGlob></configuration>
+          <configuration>
+            <readmeGlob>**/*.md</readmeGlob>
+          </configuration>
           <executions>
             <execution>
               <id>update-codesnippets</id>
-              <goals><goal>update-codesnippet</goal></goals>
+              <goals>
+                <goal>update-codesnippet</goal>
+              </goals>
             </execution>
             <execution>
               <id>verify-codesnippets</id>
-              <goals><goal>verify-codesnippet</goal></goals>
+              <goals>
+                <goal>verify-codesnippet</goal>
+              </goals>
             </execution>
           </executions>
         </plugin>
@@ -162,7 +196,9 @@
             <execution>
               <id>checkstyle</id>
               <phase>verify</phase>
-              <goals><goal>check</goal></goals>
+              <goals>
+                <goal>check</goal>
+              </goals>
             </execution>
           </executions>
         </plugin>
@@ -220,32 +256,57 @@
           <execution>
             <id>spotless-check</id>
             <phase>verify</phase>
-            <goals><goal>check</goal></goals>
+            <goals>
+              <goal>check</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId><artifactId>build-helper-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
           <execution>
-            <id>include-processor</id><phase>generate-sources</phase><goals><goal>add-source</goal></goals>
-            <configuration><sources><source>${processorDirectory}/src/main/java</source></sources></configuration>
+            <id>include-processor</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${processorDirectory}/src/main/java</source>
+              </sources>
+            </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.15.2</version>
-        <configuration><goalPrefix>api-review</goalPrefix></configuration>
+        <configuration>
+          <goalPrefix>api-review</goalPrefix>
+        </configuration>
         <executions>
-          <execution><id>help-goal</id><goals><goal>helpmojo</goal></goals></execution>
+          <execution>
+            <id>help-goal</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.4.0</version>
-        <executions><execution><id>attach-sources</id><goals><goal>jar-no-fork</goal></goals></execution></executions>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -255,29 +316,50 @@
           <failOnWarnings>false</failOnWarnings>
           <sourcepath>${project.build.sourceDirectory}${path.separator}${processorDirectory}/src/main/java</sourcepath>
         </configuration>
-        <executions><execution><id>attach-javadocs</id><goals><goal>jar</goal></goals></execution></executions>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.2.0</version>
         <executions>
           <execution>
-            <id>copy-pom</id><phase>package</phase><goals><goal>run</goal></goals>
-            <configuration><target><copy file="${project.pomFile}" tofile="${project.build.directory}/${project.build.finalName}.pom"/></target></configuration>
+            <id>copy-pom</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${project.build.directory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.5.0</version>
-        <configuration><forceCreation>true</forceCreation></configuration>
+        <configuration>
+          <forceCreation>true</forceCreation>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
           <execution>
-            <id>executable-plugin</id><phase>package</phase><goals><goal>shade</goal></goals>
+            <id>executable-plugin</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
             <configuration>
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <filters>
@@ -320,16 +402,41 @@
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <localRepositoryPath>${project.build.directory}/it-repository</localRepositoryPath>
-          <postBuildHookScript>verify</postBuildHookScript>
           <streamLogs>false</streamLogs>
           <goals>
             <goal>package</goal>
             <goal>com.azure.tools:api-review-maven-plugin:${project.version}:generate</goal>
           </goals>
-          <properties><api-review.packageRelativePath>sdk/test/azure-widget</api-review.packageRelativePath></properties>
+          <properties>
+            <api-review.packageRelativePath>sdk/test/azure-widget</api-review.packageRelativePath>
+          </properties>
         </configuration>
         <executions>
-          <execution><id>integration-test</id><goals><goal>install</goal><goal>run</goal></goals></execution>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.5.4</version>
+        <configuration>
+          <systemPropertyVariables>
+            <apiReview.buildDirectory>${project.build.directory}</apiReview.buildDirectory>
+            <apiReview.finalName>${project.build.finalName}</apiReview.finalName>
+          </systemPropertyVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -337,7 +444,9 @@
   <profiles>
     <profile>
       <id>java9plus</id>
-      <activation><jdk>[9,)</jdk></activation>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
       <properties>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.testRelease>8</maven.compiler.testRelease>

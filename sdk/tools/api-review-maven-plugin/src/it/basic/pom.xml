@@ -7,14 +7,27 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-widget</artifactId>
   <version>1.0.0</version>
-  <properties><maven.compiler.source>8</maven.compiler.source><maven.compiler.target>8</maven.compiler.target></properties>
+  <properties>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+  </properties>
   <build>
     <finalName>custom-output</finalName>
     <plugins>
-      <plugin><artifactId>maven-compiler-plugin</artifactId><version>3.12.1</version></plugin>
       <plugin>
-        <artifactId>maven-source-plugin</artifactId><version>3.4.0</version>
-        <executions><execution><goals><goal>jar-no-fork</goal></goals></execution></executions>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.12.1</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

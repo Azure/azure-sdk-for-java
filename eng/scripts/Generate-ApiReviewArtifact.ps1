@@ -28,13 +28,12 @@ if (-not (Test-Path -LiteralPath $tool -PathType Leaf)) {
     throw "Expected an executable Java API review JAR: $tool"
 }
 $sdkRoot = Join-Path $root 'sdk'
-$packages = @(Get-ChildItem -LiteralPath $sdkRoot -Directory -Recurse -Filter $PackageName |
-    Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'pom.xml') -PathType Leaf })
+$packages = @(Get-ChildItem -Path (Join-Path $sdkRoot '*' $PackageName 'pom.xml') -File)
 if ($packages.Count -ne 1) {
     throw "Expected one package directory for $PackageName; found $($packages.Count)."
 }
-$package = $packages[0].FullName
-$pom = [xml](Get-Content -LiteralPath (Join-Path $package 'pom.xml') -Raw)
+$package = $packages[0].Directory.FullName
+$pom = [xml](Get-Content -LiteralPath $packages[0].FullName -Raw)
 $artifact = $pom.SelectSingleNode("/*[local-name()='project']/*[local-name()='artifactId']")
 $version = $pom.SelectSingleNode("/*[local-name()='project']/*[local-name()='version']")
 if (-not $artifact -or $artifact.InnerText -ne $PackageName -or -not $version -or

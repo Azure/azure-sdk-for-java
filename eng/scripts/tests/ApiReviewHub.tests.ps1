@@ -26,6 +26,8 @@ Describe 'Java API review hub tooling' {
             '<project><version>1.0.0-beta.1</version></project>'
         )
         Copy-Item -LiteralPath $script:GenerateScript -Destination $sourceScripts
+        $stage = Join-Path $sourceScripts 'Stage-ApiReviewTools.ps1'
+        Copy-Item -LiteralPath $script:StageScript -Destination $stage
         $sources = Join-Path $TestDrive 'azure-example-1.0.0-sources.jar'
         Set-Content -LiteralPath $sources -Value 'source fixture'
         $script:Output = Join-Path $TestDrive "bundle-$([guid]::NewGuid().ToString('N'))"
@@ -41,7 +43,7 @@ Describe 'Java API review hub tooling' {
     It 'builds and stages every runtime file without package or processor sources' {
         Mock mvn { $global:LASTEXITCODE = 0 }
         $bin = Join-Path $TestDrive 'bin'
-        & $script:StageScript -SourceDirectory $root -BinOutputDirectory $bin
+        & $stage -BinOutputDirectory $bin
         @(Get-ChildItem -LiteralPath $bin -File).Count | Should -Be 2
         (Get-FileHash -LiteralPath (Join-Path $bin 'api-review-maven-plugin.jar')).Hash |
             Should -Be (Get-FileHash -LiteralPath $tool).Hash
@@ -54,20 +56,20 @@ Describe 'Java API review hub tooling' {
     It 'does not stage a stale JAR when the build fails' {
         Mock mvn { $global:LASTEXITCODE = 1 }
         $bin = Join-Path $TestDrive 'failed-bin'
-        { & $script:StageScript -SourceDirectory $root -BinOutputDirectory $bin } |
+        { & $stage -BinOutputDirectory $bin } |
             Should -Throw '*build failed*'
         Test-Path -LiteralPath $bin | Should -BeFalse
     }
 
     It 'does not build tools with WhatIf' {
-        & $script:StageScript -SourceDirectory $root -BinOutputDirectory (Join-Path $TestDrive 'whatif') -WhatIf
+        & $stage -BinOutputDirectory (Join-Path $TestDrive 'whatif') -WhatIf
         Should -Invoke mvn -Times 0
     }
 
     It 'runs the staged generator against a source checkout without engineering files' {
         Mock mvn { $global:LASTEXITCODE = 0 }
         $bin = Join-Path $TestDrive 'staged'
-        & $script:StageScript -SourceDirectory $root -BinOutputDirectory $bin
+        & $stage -BinOutputDirectory $bin
         $sourceOnly = Join-Path $TestDrive 'historical-tag'
         New-Item -ItemType Directory -Path (Join-Path $sourceOnly 'sdk' 'test' 'azure-example') -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $package 'pom.xml') `
@@ -124,6 +126,26 @@ Describe 'Java API review hub tooling' {
 
         { & $script:GenerateScript -RepositoryRoot $root -PackageName azure-example -ToolJar $tool `
             -SourcesJar $sources -OutputDirectory $script:Output } | Should -Throw '*found 2*'
+
+        Should -Invoke java -Times 0
+    }
+
+    It 'ignores package-shaped directories outside the SDK package depth' {
+        $nested = Join-Path $package 'src' 'test' 'azure-example'
+        New-Item -ItemType Directory -Path $nested -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $package 'pom.xml') -Destination $nested
+
+        & $script:GenerateScript -RepositoryRoot $root -PackageName azure-example -ToolJar $tool `
+            -SourcesJar $sources -OutputDirectory $script:Output
+
+        Should -Invoke java -Times 1 -ParameterFilter {
+            $args -contains 'sdk/test/azure-example'
+        }
+    }
+
+    It 'rejects a missing package before generation' {
+        { & $script:GenerateScript -RepositoryRoot $root -PackageName azure-missing -ToolJar $tool `
+            -SourcesJar $sources -OutputDirectory $script:Output } | Should -Throw '*found 0*'
 
         Should -Invoke java -Times 0
     }

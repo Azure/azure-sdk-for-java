@@ -24,9 +24,9 @@ jobs:
         - bash: git -C "$(LanguageToolsSourceDirectory)" sparse-checkout add sdk/tools/api-review-maven-plugin sdk/tools/apiview-java-processor .vscode
           displayName: Include Java API review tool sources
         - task: JavaToolInstaller@0
-          displayName: Use Java 11
+          displayName: Use Java 17
           inputs:
-            versionSpec: '11'
+            versionSpec: '17'
             jdkArchitectureOption: x64
             jdkSourceOption: PreInstalled
         - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
@@ -36,6 +36,5 @@ jobs:
             targetType: filePath
             filePath: $(LanguageToolsSourceDirectory)/eng/scripts/Stage-ApiReviewTools.ps1
             arguments: >-
-              -SourceDirectory "$(LanguageToolsSourceDirectory)"
               -BinOutputDirectory "$(BinOutputDirectory)"
             pwsh: true

@@ -8,11 +8,9 @@ param()
 Set-StrictMode -Version 4
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'MavenPluginPackage.ps1')
-if (-not (Get-Module -ListAvailable -Name Pester | Where-Object Version -GE '5.7.1')) {
-    Install-Module -Name Pester -RequiredVersion 5.7.1 -Repository PSGallery -Scope CurrentUser -Force
-}
-Import-Module Pester -MinimumVersion 5.7.1
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..' '..' '..' '..')).Path
+. (Join-Path $repositoryRoot 'eng' 'common' 'scripts' 'Helpers' 'PSModule-Helpers.ps1')
+InstallAndImport-ModuleIfNotInstalled 'Pester' '5.7.1'
 $result = Invoke-Pester -Path @(
     (Join-Path $PSScriptRoot 'tests'),
     (Join-Path $repositoryRoot 'eng' 'scripts' 'tests' 'ApiReviewHub.tests.ps1')

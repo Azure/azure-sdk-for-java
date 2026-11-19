@@ -16,10 +16,10 @@ For API Review Hub, the build-tools wrapper builds the main JAR from the pinned 
 
 Normal SDK package builds may still restore their own dependencies; standalone review generation does not. The two language-owned ARH wrappers remain required.
 
-To build the tool and generate locally with prebuilt sources, run from the repository root using Maven and JDK 11+:
+To build the tool and generate locally with prebuilt sources, run from the repository root using Maven and JDK 17:
 
 ```powershell
-pwsh eng\scripts\Stage-ApiReviewTools.ps1 -SourceDirectory . -BinOutputDirectory artifacts\api-review-tools
+pwsh eng\scripts\Stage-ApiReviewTools.ps1 -BinOutputDirectory artifacts\api-review-tools
 pwsh eng\scripts\Generate-ApiReviewArtifact.ps1 -RepositoryRoot . -PackageName azure-json -ToolJar artifacts\api-review-tools\api-review-maven-plugin.jar -SourcesJar sdk\serialization\azure-json\target\azure-json-1.6.0-beta.1-sources.jar -OutputDirectory artifacts\api-review
 ```
 
@@ -59,7 +59,7 @@ Both modes record the literal package version and forward-slash repository-relat
 
 ## Develop
 
-Use Maven 3.6.3+ and JDK 11+ to build and verify the Java 8-compatible tool:
+Use Maven 3.6.3+ and JDK 17 to build and verify the Java 8-compatible tool:
 
 ```shell
 mvn -f sdk/tools/api-review-maven-plugin/pom.xml clean verify
