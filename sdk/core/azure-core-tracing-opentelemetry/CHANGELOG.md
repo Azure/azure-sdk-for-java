@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.63 (Unreleased)
+## 1.0.0-beta.69 (Unreleased)
 
 ### Features Added
 
@@ -10,15 +10,73 @@
 
 ### Other Changes
 
-## 1.0.0-beta.62 (Unreleased)
+## 1.0.0-beta.68 (2026-10-27)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+- Upgraded `azure-core-experimental` from `1.0.0-beta.71` to `1.0.0-beta.72`.
+
+## 1.0.0-beta.67 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded `opentelemetry-api` from `1.58.0` to `1.65.0`.
+
+## 1.0.0-beta.66 (2026-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
+
+## 1.0.0-beta.65 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
+
+## 1.0.0-beta.64 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+
+## 1.0.0-beta.63 (2026-04-28)
 
 ### Bugs Fixed
 
+- Added additional attributes according to OpenTelemetry semantic conventions changes:
+    - `az.namespace` -> `azure.resource_provider.namespace`
+    - `az.service_request_id` -> `azure.service.request.id`
+  These attributes are added in addition to the existing ones and will be reported together for now to allow users to
+  transition to the new attribute names. The old attributes will be removed in a future release.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded OpenTelemetry from `1.49.0` to `1.58.0`.
+
+## 1.0.0-beta.62 (2026-01-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
 
 ## 1.0.0-beta.61 (2025-10-06)
 

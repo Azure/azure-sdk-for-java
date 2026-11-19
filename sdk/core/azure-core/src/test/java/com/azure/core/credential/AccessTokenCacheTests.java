@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.credential;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -83,7 +82,7 @@ public class AccessTokenCacheTests {
 
         assertEquals(1, refreshCount.get());
 
-        // Second request with same tenant should not trigger refresh (checkToForceFetchToken=false)
+        // Second request with same tenant should not trigger refresh (refreshOnContextChange=false)
         StepVerifier.create(cache.getToken(context1, false)).assertNext(token -> {
             assertNotNull(token);
             assertEquals("token-1", token.getToken()); // Same token
@@ -91,7 +90,7 @@ public class AccessTokenCacheTests {
 
         assertEquals(1, refreshCount.get()); // No additional refresh
 
-        // Third request with different tenant should trigger force refresh with checkToForceFetchToken=true
+        // Third request with different tenant should trigger force refresh with refreshOnContextChange=true
         TokenRequestContext context2 = new TokenRequestContext().addScopes(SCOPE).setTenantId(TENANT_ID_2);
 
         StepVerifier.create(cache.getToken(context2, true)).assertNext(token -> {
@@ -291,5 +290,55 @@ public class AccessTokenCacheTests {
             .verifyComplete();
 
         assertEquals(2, refreshCount.get());
+    }
+
+    @Test
+    public void waitingCallerGetsTokenWhenRefreshingCallerIsCancelled() {
+        // The first token request never completes, any later one succeeds.
+        AtomicInteger refreshCount = new AtomicInteger(0);
+        TokenCredential credential = request -> refreshCount.incrementAndGet() == 1
+            ? Mono.never()
+            : Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
+        AccessTokenCache cache = new AccessTokenCache(credential);
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+
+        // The first caller starts the token refresh, the second caller waits on that refresh.
+        Disposable refreshingCaller = cache.getToken(context, false).subscribe();
+        assertEquals(1, refreshCount.get());
+        Mono<AccessToken> waitingCaller = cache.getToken(context, false);
+
+        StepVerifier.create(waitingCaller)
+            .then(refreshingCaller::dispose)
+            .assertNext(token -> assertEquals("token-2", token.getToken()))
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+
+        assertEquals(2, refreshCount.get());
+    }
+
+    @Test
+    public void waitingCallerGetsTokenWhenRefreshCompletesEmpty() {
+        // The first token request completes empty when the test says so, any later one succeeds.
+        Sinks.One<AccessToken> firstRequest = Sinks.one();
+        AtomicInteger refreshCount = new AtomicInteger(0);
+        TokenCredential credential = request -> refreshCount.incrementAndGet() == 1
+            ? firstRequest.asMono()
+            : Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
+        AccessTokenCache cache = new AccessTokenCache(credential);
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+
+        // The first caller starts the token refresh, the second caller waits on that refresh.
+        Disposable refreshingCaller = cache.getToken(context, false).subscribe();
+        assertEquals(1, refreshCount.get());
+        Mono<AccessToken> waitingCaller = cache.getToken(context, false);
+
+        StepVerifier.create(waitingCaller)
+            .then(firstRequest::tryEmitEmpty)
+            .assertNext(token -> assertEquals("token-2", token.getToken()))
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+
+        assertEquals(2, refreshCount.get());
+        refreshingCaller.dispose();
     }
 }

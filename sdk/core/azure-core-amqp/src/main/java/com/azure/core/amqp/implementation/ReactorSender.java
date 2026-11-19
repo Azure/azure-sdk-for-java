@@ -110,6 +110,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
     private volatile int linkSize;
+    private volatile int maxBatchSize;
 
     /**
      * Creates an instance of {@link ReactorSender}.
@@ -404,6 +405,56 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     }
 
                     return linkSize;
+                }));
+        }
+    }
+
+    @Override
+    public Mono<Integer> getMaxBatchSize() {
+        if (maxBatchSize > 0) {
+            return Mono.defer(() -> Mono.just(this.maxBatchSize));
+        }
+
+        synchronized (this) {
+            if (maxBatchSize > 0) {
+                return Mono.defer(() -> Mono.just(maxBatchSize));
+            }
+
+            // Don't wrap in RetryUtil.withRetry: getEndpointStates() is a cache(1) Flux, so once it
+            // reaches a terminal state (ACTIVE, COMPLETE, or error), every subscription replays that
+            // cached signal. Retrying on error would just replay the same error after the backoff
+            // delay without producing new network activity. A bare timeout still applies so callers
+            // don't hang indefinitely if the link never transitions to ACTIVE.
+            return getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                .timeout(retryOptions.getTryTimeout())
+                .then(Mono.fromCallable(() -> {
+                    final Map<Symbol, Object> remoteProperties = sender.getRemoteProperties();
+                    if (remoteProperties != null
+                        && remoteProperties.containsKey(AmqpConstants.MAX_MESSAGE_BATCH_SIZE)) {
+                        final Object value = remoteProperties.get(AmqpConstants.MAX_MESSAGE_BATCH_SIZE);
+                        // The AMQP property may arrive as UnsignedLong, UnsignedInteger, Long, or Integer.
+                        // intValue() is consistent with getLinkSize() — values > Integer.MAX_VALUE (impossible
+                        // for batch sizes) would overflow to negative and trigger the fallback below.
+                        if (value instanceof Number) {
+                            maxBatchSize = ((Number) value).intValue();
+                        }
+                    }
+
+                    // Fall back to the standard max-message-size if the vendor property is absent,
+                    // non-numeric, or non-positive (expected for non-Service Bus brokers and older
+                    // service deployments).
+                    if (maxBatchSize <= 0) {
+                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+                        logger.verbose(
+                            "Vendor property '{}' not found, non-numeric, or non-positive on link, "
+                                + "falling back to max-message-size: {}.",
+                            AmqpConstants.MAX_MESSAGE_BATCH_SIZE, remoteMaxMessageSize);
+                        if (remoteMaxMessageSize != null) {
+                            maxBatchSize = remoteMaxMessageSize.intValue();
+                        }
+                    }
+
+                    return maxBatchSize;
                 }));
         }
     }
