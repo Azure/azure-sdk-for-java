@@ -15,6 +15,12 @@ have to be online at the same time.
 [Source code][source_code] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs] | [Samples][sample_examples] | [Package (Maven)][maven_package]
 
+The asynchronous processor accepts reactive message and error handlers through `processorAsync()` and
+`sessionProcessorAsync()`. Its `ServiceBusReceivedMessageAsyncContext` exposes non-blocking manual settlement.
+Return a `Mono` covering all application work and settlement so acknowledgement happens after downstream work succeeds.
+See the [reactive processor sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorAsyncSample.java)
+for queue and session processing with Microsoft Entra ID authentication.
+
 ## Getting started
 
 ### Prerequisites
@@ -70,7 +76,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.18.0-beta.2</version>
+    <version>7.18.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -90,7 +96,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.4</version>
+    <version>1.18.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -265,7 +271,6 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
     .processMessage(processMessage)
     .processError(processError)
-    .disableAutoComplete()
     .buildProcessorClient();
 
 // Starts the processor in the background. Control returns immediately.
@@ -302,7 +307,6 @@ TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Create the processor client via the builder and its sub-builder
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
-// 'disableAutoComplete()' will opt in to manual settlement (e.g. complete, abandon).
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, tokenCredential)
     .processor()
@@ -310,7 +314,6 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
     .processMessage(processMessage)
     .processError(processError)
-    .disableAutoComplete()
     .buildProcessorClient();
 
 // Starts the processor in the background. Control returns immediately.
@@ -385,7 +388,6 @@ created the same way as shown below. Learn more about dead-letter queue [here][d
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
-// 'disableAutoComplete' indicates that users will explicitly settle their message.
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, credential)
     .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
@@ -557,4 +559,3 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
 [receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
-

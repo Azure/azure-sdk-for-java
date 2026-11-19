@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Constants which is used for management calls to support operations for example renewlock, schedule, defer etc.
  */
@@ -17,6 +20,7 @@ public class ManagementConstants {
     public static final String LOCK_TOKEN_KEY = "lock-token";
     public static final String LOCK_TOKENS_KEY = "lock-tokens";
     public static final String MESSAGE_COUNT_KEY = "message-count";
+    public static final String ENQUEUED_TIME_UTC = "enqueued-time-utc";
     public static final String MESSAGE = "message";
     public static final String MESSAGES = "messages";
     public static final String MESSAGE_ID = "message-id";
@@ -25,6 +29,28 @@ public class ManagementConstants {
     public static final String SEQUENCE_NUMBERS = "sequence-numbers";
     public static final String SESSION_ID = "session-id";
     public static final String SESSION_STATE = "session-state";
+    /**
+     * Wire key for the session-ID array in the {@code OPERATION_GET_MESSAGE_SESSIONS} response. The
+     * field name ("sessions-ids") is fixed by the broker contract; the constant name omits the extra
+     * "s" so it reads consistently with {@link #SESSION_ID} and {@link #SEQUENCE_NUMBERS}.
+     */
+    public static final String SESSION_IDS = "sessions-ids";
+
+    /**
+     * Sentinel timestamp the broker recognizes as the default list mode for the
+     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. This mode returns sessions with active
+     * messages or stored session state and excludes sessions with neither. Matches Track 1's
+     * {@code SessionBrowser.MAXDATE = new Date(253402300800000L)}
+     * (rendered by {@link OffsetDateTime#toString()} as {@code +10000-01-01T00:00Z} - the leading
+     * {@code +} is required by ISO 8601 for years with more than four digits); using any other
+     * value risks the broker not switching into the proven mode. Defined as {@link OffsetDateTime}
+     * so callers and the implementation can clamp inputs via {@link OffsetDateTime#compareTo}
+     * without each owning their own copy.
+     */
+    public static final OffsetDateTime DEFAULT_LISTING_SENTINEL
+        = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    public static final String LAST_UPDATED_TIME = "last-updated-time";
+    public static final String LAST_SESSION_ID = "last-session-id";
     public static final String VIA_PARTITION_KEY = "via-partition-key";
     public static final String RULE_NAME = "rule-name";
     public static final String RULE_DESCRIPTION = "rule-description";
@@ -59,8 +85,10 @@ public class ManagementConstants {
     static final String OPERATION_SET_SESSION_STATE = AmqpConstants.VENDOR + ":set-session-state";
     static final String OPERATION_UPDATE_DISPOSITION = AmqpConstants.VENDOR + ":update-disposition";
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
+    static final String OPERATION_BATCH_DELETE_MESSAGES = AmqpConstants.VENDOR + ":batch-delete-messages";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
+    static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 

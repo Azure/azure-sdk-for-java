@@ -156,7 +156,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.21.7;1.22.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.17.19;7.18.0-beta.2
+com.azure:azure-messaging-servicebus;7.17.19;7.20.0-beta.1
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.5.6;1.6.0-beta.1
@@ -290,7 +290,7 @@ com.azure.resourcemanager:azure-resourcemanager-resources;2.54.2;2.57.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redis;2.53.9;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.8;2.56.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.9;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.9;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sql;2.54.0;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storage;2.57.1;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.53.9;2.54.0-beta.1

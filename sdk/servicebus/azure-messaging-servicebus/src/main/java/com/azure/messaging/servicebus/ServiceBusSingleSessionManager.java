@@ -67,7 +67,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
 
     @Override
     public String getLinkName(String sessionId) {
-        return sessionReceiver.getSessionId().equals(sessionId) ? sessionReceiver.getLinkName() : null;
+        return sessionReceiver.getSessionId().equalsIgnoreCase(sessionId) ? sessionReceiver.getLinkName() : null;
     }
 
     @Override
@@ -82,7 +82,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         ServiceBusTransactionContext transactionContext) {
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
             deadLetterDescription, propertiesToModify, transactionContext);
-        if (sessionReceiver.getSessionId().equals(sessionId)) {
+        if (sessionReceiver.getSessionId().equalsIgnoreCase(sessionId)) {
             return sessionReceiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             // Once the side-by-side support for V1 is no longer needed, as part of deleting V1 ServiceBusSessionManager,
             // Update this method to return Mono<Void> and remove the thenReturn(true).
