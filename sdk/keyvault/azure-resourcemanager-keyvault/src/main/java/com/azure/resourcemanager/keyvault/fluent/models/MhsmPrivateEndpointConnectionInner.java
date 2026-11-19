@@ -29,16 +29,6 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
     private MhsmPrivateEndpointConnectionProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
-     */
-    private String location;
-
-    /*
      * SKU details
      */
     private ManagedHsmSku sku;
@@ -52,6 +42,16 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
      * Modified whenever there is a change in the state of private endpoint connection.
      */
     private String etag;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    private String location;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -86,46 +86,6 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
      */
     private MhsmPrivateEndpointConnectionProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the MhsmPrivateEndpointConnectionInner object itself.
-     */
-    public MhsmPrivateEndpointConnectionInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     * 
-     * @param location the location value to set.
-     * @return the MhsmPrivateEndpointConnectionInner object itself.
-     */
-    public MhsmPrivateEndpointConnectionInner withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     /**
@@ -185,6 +145,46 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
      */
     public MhsmPrivateEndpointConnectionInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     * 
+     * @param location the location value to set.
+     * @return the MhsmPrivateEndpointConnectionInner object itself.
+     */
+    public MhsmPrivateEndpointConnectionInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the MhsmPrivateEndpointConnectionInner object itself.
+     */
+    public MhsmPrivateEndpointConnectionInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -307,11 +307,11 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -341,17 +341,17 @@ public final class MhsmPrivateEndpointConnectionInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedMhsmPrivateEndpointConnectionInner.innerProperties
                         = MhsmPrivateEndpointConnectionProperties.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMhsmPrivateEndpointConnectionInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedMhsmPrivateEndpointConnectionInner.location = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedMhsmPrivateEndpointConnectionInner.sku = ManagedHsmSku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedMhsmPrivateEndpointConnectionInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedMhsmPrivateEndpointConnectionInner.etag = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMhsmPrivateEndpointConnectionInner.tags = tags;
                 } else if ("systemData".equals(fieldName)) {
                     deserializedMhsmPrivateEndpointConnectionInner.systemData = SystemData.fromJson(reader);
                 } else {

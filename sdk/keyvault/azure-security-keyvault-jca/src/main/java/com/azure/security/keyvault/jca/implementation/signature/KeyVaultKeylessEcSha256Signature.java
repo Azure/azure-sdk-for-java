@@ -6,10 +6,14 @@ package com.azure.security.keyvault.jca.implementation.signature;
  * key vault SHA256
  */
 public final class KeyVaultKeylessEcSha256Signature extends KeyVaultKeylessEcSignature {
+    /**
+     * Algorithm name used by this implementation.
+     */
+    public static final String ALGORITHM_NAME = "SHA256withECDSA";
 
     @Override
     public String getAlgorithmName() {
-        return "SHA256withECDSA";
+        return ALGORITHM_NAME;
     }
 
     /**

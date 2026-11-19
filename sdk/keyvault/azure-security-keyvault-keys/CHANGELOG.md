@@ -1,6 +1,6 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,107 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.13.0 (2026-11-13)
+
+### Features Added
+
+- Added support for service version `2026-04-01`.
+- (From 4.12.0-beta.1) Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management).
+- (From 4.12.0-beta.2) Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM, and requires a remote-key client.
+
+### Breaking Changes
+
+- These changes do not impact the API of stable versions such as 4.12.1. Only code written against a beta version such as 4.12.0-beta.2 may be affected.
+
+- Removed `KeyServiceVersion.V2026_01_01_PREVIEW` and `CryptographyServiceVersion.V2026_01_01_PREVIEW`; use `V2026_04_01` instead.
+
+### Other Changes
+
+- The default service version is now `2026-04-01`.
+
+## 4.12.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 4.11.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 4.12.0-beta.2 (2026-09-28)
+
+### Features Added
+
+- Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
+
+## 4.11.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+
+## 4.12.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management). Only supported on Managed HSM with service version `2026-01-01-preview` or newer.
+- Added support for service version `2026-01-01-preview`.
+
+## 4.11.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
+## 4.11.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
+
+## 4.10.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 4.10.6 (2026-03-23)
+
+### Bugs Fixed
+
+- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+- Fixed tag comparison in `AesCbcHmacSha2Decryptor.doFinal()` where the computed tag was incorrectly compared with itself. ([#48090](https://github.com/Azure/azure-sdk-for-java/issues/48090))
+- Fixed an issue where cryptographic operation results (`SignResult`, `EncryptResult`, `DecryptResult`, `WrapResult`, `UnwrapResult`) returned a versionless key ID instead of the full versioned key ID returned by the service. This caused issues when attempting roundtrip scenarios, as callers couldn't determine which key version was used for the original operation. ([#47822](https://github.com/Azure/azure-sdk-for-java/issues/47822))
+
+## 4.10.5 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
 ## 4.10.4 (2025-10-27)
 

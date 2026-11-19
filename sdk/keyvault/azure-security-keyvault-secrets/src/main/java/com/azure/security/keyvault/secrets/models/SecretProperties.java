@@ -73,6 +73,11 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
             public void setRecoverableDays(SecretProperties properties, Integer recoverableDays) {
                 properties.recoverableDays = recoverableDays;
             }
+
+            @Override
+            public void setPreviousVersion(SecretProperties properties, String previousVersion) {
+                properties.previousVersion = previousVersion;
+            }
         });
     }
 
@@ -152,6 +157,12 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
      * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      */
     Integer recoverableDays;
+
+    /**
+     * The version of the previous secret, if applicable. Applies only to secrets created after June 1, 2025.
+     * Secrets created before this date are not retroactively updated.
+     */
+    String previousVersion;
 
     SecretProperties(String secretName) {
         this.name = secretName;
@@ -348,6 +359,16 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
         return recoverableDays;
     }
 
+    /**
+     * Get the previousVersion property: The version of the previous secret, if applicable. Applies only to
+     * secrets created after June 1, 2025. Secrets created before this date are not retroactively updated.
+     *
+     * @return the previousVersion value.
+     */
+    public String getPreviousVersion() {
+        return this.previousVersion;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
@@ -381,6 +402,8 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
                     secretProperties.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("recoverableDays".equals(fieldName)) {
                     secretProperties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("previousVersion".equals(fieldName)) {
+                    secretProperties.previousVersion = reader.getString();
                 } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     deserializeAttributes(reader, secretProperties);
                 } else if ("id".equals(fieldName)) {

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
-import org.apache.hc.core5.http.ClassicHttpResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -77,6 +78,11 @@ public final class AccessTokenUtil {
 
     private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+    private static final String PROPERTY_AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+    private static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+    private static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+    private static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
+    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
 
     /**
      * Get an access token for a managed identity.
@@ -91,8 +97,10 @@ public final class AccessTokenUtil {
 
         /*
          * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
-         * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
-         * Azure Virtual Machine 2018-02-01, see more from https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
+         * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from
+         * https://learn.microsoft.com/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
+         * Azure Virtual Machine 2018-02-01, see more from
+         * https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
          */
         if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
@@ -119,21 +127,21 @@ public final class AccessTokenUtil {
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
         String clientId, String clientSecret) {
-        LOGGER.entering("AccessTokenUtil", "getAccessToken",
-            new Object[] { resource, tenantId, clientId, clientSecret });
+        return getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret, HttpUtil::post);
+    }
+
+    // Overloaded method that allows specifying a custom HttpPoster for testing.
+    static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId, String clientId,
+        String clientSecret, HttpPoster httpPoster) {
+        // The client secret is deliberately left out: entering() renders every parameter in clear text.
+        LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[] { resource, tenantId, clientId });
         LOGGER.info("Getting access token using client ID / client secret");
 
         AccessToken result = null;
 
-        StringBuilder oauth2Url = new StringBuilder();
-
-        if (aadAuthenticationUrl == null) {
-            oauth2Url.append(OAUTH2_TOKEN_BASE_URL).append(tenantId).append("/");
-        } else {
-            oauth2Url.append(addTrailingSlashIfRequired(aadAuthenticationUrl));
-        }
-
-        oauth2Url.append(OAUTH2_TOKEN_POSTFIX);
+        String oauth2Url = (aadAuthenticationUrl == null)
+            ? OAUTH2_TOKEN_BASE_URL + tenantId + "/" + OAUTH2_TOKEN_POSTFIX
+            : addTrailingSlashIfRequired(aadAuthenticationUrl) + OAUTH2_TOKEN_POSTFIX;
 
         String encodedClientSecret = "";
 
@@ -143,17 +151,10 @@ public final class AccessTokenUtil {
             LOGGER.log(WARNING, "Failed to encode client secret for access token request", e);
         }
 
-        StringBuilder requestBody = new StringBuilder();
+        String requestBody = GRANT_TYPE_FRAGMENT + CLIENT_ID_FRAGMENT + clientId + CLIENT_SECRET_FRAGMENT
+            + encodedClientSecret + RESOURCE_FRAGMENT + resource;
 
-        requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT)
-            .append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT)
-            .append(encodedClientSecret)
-            .append(RESOURCE_FRAGMENT)
-            .append(resource);
-
-        String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        String body = httpPoster.post(oauth2Url, null, requestBody, "application/x-www-form-urlencoded");
 
         if (body != null) {
             try {
@@ -169,7 +170,164 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the access token on Azure App Service.
+     * Functional interface for making HTTP POST requests.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP POST behavior to be mocked or overridden.
+     */
+    @FunctionalInterface
+    interface HttpPoster {
+        String post(String uri, Map<String, String> headers, String body, String contentType);
+    }
+
+    /**
+     * Functional interface for retrieving HTTP response headers.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response headers to be mocked or overridden.
+     */
+    @FunctionalInterface
+    interface HttpHeaderRetriever {
+        Map<String, List<String>> get(String uri);
+    }
+
+    /**
+     * Check if Azure Workload Identity environment is available.
+     *
+     * @return true if Workload Identity environment variables are present, false otherwise.
+     */
+    public static boolean isWorkloadIdentityAvailable(String clientId, String tenantId) {
+        String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
+        String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
+
+        return !isNullOrEmpty(System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE))
+            && !isNullOrEmpty(effectiveClientId)
+            && !isNullOrEmpty(effectiveTenantId);
+    }
+
+    /**
+     * Get an access token via
+     * <a href="https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#third-case-access-token-request-with-a-federated-credential">
+     * client credentials grant flow</a> using
+     * <a href="https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview">
+     * Microsoft Entra Workload ID with AKS</a>.
+     * Uses the federated token in file located at the provided path and the given clientId and tenantId
+     * to issue an access token HTTP request.
+     *
+     * @param resource The resource scope (will be appended with /.default if not already present).
+     * @param tenantId Tenant ID to use. If blank, fallback to environment variable AZURE_TENANT_ID.
+     * @param clientId Client ID of the managed identity to use. If blank, fallback to environment variable AZURE_CLIENT_ID.
+     * @return An access token, or null if the operation fails.
+     */
+    public static AccessToken getAccessTokenWithWorkloadIdentity(String resource, String tenantId, String clientId) {
+        LOGGER.info("Getting access token using federated Workload Identity token");
+
+        // Use environment variables as fallback
+        String effectiveTokenFilePath = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
+        String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
+        String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
+
+        LOGGER.log(INFO, "Using federated token file: {0}", effectiveTokenFilePath);
+        LOGGER.log(INFO, "Using clientId {0} in tenantId {1}", new Object[] { effectiveClientId, effectiveTenantId });
+
+        // Ensure scope ends with /.default
+        String scope = buildScope(resource);
+
+        // Allow override of authority host via environment variable
+        String authorityHost
+            = useDefaultIfBlank(System.getenv(PROPERTY_AZURE_AUTHORITY_HOST), () -> DEFAULT_AUTHORITY_HOST);
+
+        String federatedToken = readFile(effectiveTokenFilePath);
+        if (isNullOrEmpty(federatedToken)) {
+            LOGGER.log(WARNING, "Failed to read federated token from file: {0}", effectiveTokenFilePath);
+            LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", null);
+            return null;
+        }
+
+        String requestUrl = buildTokenRequestUrl(authorityHost, effectiveTenantId);
+        String requestBody = buildTokenRequestBody(effectiveClientId, federatedToken, scope);
+
+        String response = HttpUtil.post(requestUrl, null, requestBody, "application/x-www-form-urlencoded");
+        AccessToken result = parseAccessTokenResponse(response);
+
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", result);
+        return result;
+    }
+
+    /**
+     * Builds the OAuth2 scope from the resource, ensuring it ends with /.default.
+     *
+     * @param resource The resource scope.
+     * @return The formatted scope.
+     */
+    private static String buildScope(String resource) {
+        if (resource.endsWith("/.default")) {
+            return resource;
+        }
+        return addTrailingSlashIfRequired(resource) + ".default";
+    }
+
+    /**
+     * Builds the token request URL for OAuth2.
+     *
+     * @param authorityHost The authority host.
+     * @param tenantId The tenant ID.
+     * @return The complete token request URL.
+     */
+    private static String buildTokenRequestUrl(String authorityHost, String tenantId) {
+        return addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
+    }
+
+    /**
+     * Builds the token request body for workload identity authentication.
+     *
+     * @param clientId The client ID.
+     * @param federatedToken The federated token.
+     * @param scope The OAuth2 scope.
+     * @return The URL-encoded request body.
+     */
+    private static String buildTokenRequestBody(String clientId, String federatedToken, String scope) {
+        return "grant_type=client_credentials" + "&client_id=" + urlEncode(clientId) + "&client_assertion_type="
+            + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer") + "&client_assertion="
+            + urlEncode(federatedToken) + "&scope=" + urlEncode(scope);
+    }
+
+    /**
+     * Parse an access token from the HTTP response body.
+     *
+     * @param response The HTTP response body.
+     * @return The parsed AccessToken, or null if parsing fails.
+     */
+    private static AccessToken parseAccessTokenResponse(String response) {
+        if (response == null) {
+            return null;
+        }
+
+        try {
+            return JsonConverterUtil.fromJson(AccessToken::fromJson, response);
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse access token from response.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Read file contents from the specified path.
+     * Package-private for testing.
+     *
+     * @param filePath The path to the file.
+     * @return The file content as a trimmed string, or null if reading fails.
+     */
+    static String readFile(String filePath) {
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get(filePath);
+            return new String(java.nio.file.Files.readAllBytes(path), java.nio.charset.StandardCharsets.UTF_8).trim();
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to read file.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Gets an access token from the Azure App Service environment endpoint using JDK proxy selection.
      *
      * @param resource The resource.
      * @param clientId The user-assigned managed identity (null if system-assigned).
@@ -180,17 +338,13 @@ public final class AccessTokenUtil {
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
 
         AccessToken result = null;
-        StringBuilder url = new StringBuilder();
-
-        url.append(System.getenv("MSI_ENDPOINT"))
-            .append("?api-version=2017-09-01")
-            .append(RESOURCE_FRAGMENT)
-            .append(resource);
-
+        String url;
         if (clientId != null) {
-            url.append("&clientid=").append(clientId);
-
+            url = System.getenv("MSI_ENDPOINT") + "?api-version=2017-09-01" + RESOURCE_FRAGMENT + resource
+                + "&clientid=" + clientId;
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
+        } else {
+            url = System.getenv("MSI_ENDPOINT") + "?api-version=2017-09-01" + RESOURCE_FRAGMENT + resource;
         }
 
         HashMap<String, String> headers = new HashMap<>();
@@ -198,7 +352,7 @@ public final class AccessTokenUtil {
         headers.put("Metadata", "true");
         headers.put("Secret", System.getenv("MSI_SECRET"));
 
-        String body = HttpUtil.get(url.toString(), headers);
+        String body = HttpUtil.get(url, headers);
 
         if (body != null) {
             try {
@@ -214,7 +368,8 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the access token on Azure Container App (API version 2019-08-01)
+     * Gets an access token from the Azure Container Apps environment endpoint using JDK proxy selection
+     * (API version 2019-08-01).
      *
      * @param resource The resource.
      * @param clientId The user-assigned managed identity (null if system-assigned).
@@ -237,9 +392,9 @@ public final class AccessTokenUtil {
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = Collections.emptyMap();
         if (System.getenv(PROPERTY_IDENTITY_HEADER) != null && !System.getenv(PROPERTY_IDENTITY_HEADER).isEmpty()) {
-            headers.put("X-IDENTITY-HEADER", System.getenv(PROPERTY_IDENTITY_HEADER));
+            headers = Collections.singletonMap("X-IDENTITY-HEADER", System.getenv(PROPERTY_IDENTITY_HEADER));
         }
 
         String body = HttpUtil.get(url.toString(), headers);
@@ -258,13 +413,17 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the authorization token on everything else but Azure App Service.
+     * Gets an access token from the VM IMDS endpoint, bypassing HTTP proxy routing.
      *
      * @param resource The resource.
      * @param identity The user-assigned identity (null if system-assigned).
      * @return The authorization token.
      */
     private static AccessToken getAccessTokenOnOthers(String resource, String identity) {
+        return getAccessTokenOnOthers(resource, identity, OAUTH2_MANAGED_IDENTITY_TOKEN_URL);
+    }
+
+    static AccessToken getAccessTokenOnOthers(String resource, String identity, String endpoint) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
 
@@ -276,17 +435,13 @@ public final class AccessTokenUtil {
 
         StringBuilder url = new StringBuilder();
 
-        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL).append(RESOURCE_FRAGMENT).append(resource);
+        url.append(endpoint).append(RESOURCE_FRAGMENT).append(resource);
 
         if (identity != null) {
             url.append("&object_id=").append(identity);
         }
 
-        HashMap<String, String> headers = new HashMap<>();
-
-        headers.put("Metadata", "true");
-
-        String body = HttpUtil.get(url.toString(), headers);
+        String body = HttpUtil.getWithoutProxy(url.toString(), Collections.singletonMap("Metadata", "true"));
 
         if (body != null) {
             try {
@@ -302,17 +457,25 @@ public final class AccessTokenUtil {
     }
 
     public static String getLoginUri(String resourceUri, boolean disableChallengeResourceVerification) {
+        return getLoginUri(resourceUri, disableChallengeResourceVerification, HttpUtil::getWithOnlyResponseHeaders);
+    }
+
+    // Overloaded method that allows specifying a custom HttpHeaderRetriever for testing.
+    static String getLoginUri(String resourceUri, boolean disableChallengeResourceVerification,
+        HttpHeaderRetriever httpHeaderRetriever) {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        ClassicHttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
+        Map<String, List<String>> headers = httpHeaderRetriever.get(resourceUri);
 
-        if (response == null) {
+        if (headers == null) {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
         }
 
-        Map<String, String> challengeAttributes
-            = extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
+        List<String> wwwAuthenticates = headers.get(WWW_AUTHENTICATE);
+        String wwwAuthenticate
+            = wwwAuthenticates == null || wwwAuthenticates.isEmpty() ? null : wwwAuthenticates.get(0);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(wwwAuthenticate);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -326,8 +489,8 @@ public final class AccessTokenUtil {
         } else {
             if (!disableChallengeResourceVerification && !isChallengeResourceValid(resourceUri, scope)) {
                 throw new IllegalStateException("The challenge resource " + scope + " does not match the requested "
-                    + "domain. If you wish to disable this check, set the environment property "
-                    + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
+                    + "domain. If you wish to disable this check, set the environment property " + "'"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION + "' to 'true'. See "
                     + "https://aka.ms/azsdk/blog/vault-uri for more information.");
             }
 
@@ -373,7 +536,7 @@ public final class AccessTokenUtil {
         for (String pair : attributes) {
             String[] keyValue = pair.split("=");
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            attributeMap.put(keyValue[0].replace("\"", ""), keyValue[1].replace("\"", ""));
         }
 
         LOGGER.exiting("AccessTokenUtil", "extractChallengeAttributes", attributeMap);
@@ -391,7 +554,7 @@ public final class AccessTokenUtil {
     private static boolean isBearerChallenge(String authenticateHeader) {
         return authenticateHeader != null
             && !authenticateHeader.isEmpty()
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT));
+            && BEARER_TOKEN_PREFIX.regionMatches(true, 0, authenticateHeader, 0, BEARER_TOKEN_PREFIX.length());
     }
 
     /**
@@ -429,5 +592,48 @@ public final class AccessTokenUtil {
 
         // Returns false if the host specified in the scope does not match the requested domain.
         return isValid;
+    }
+
+    /**
+     * Checks if a string is null or empty.
+     *
+     * @param value The string to check.
+     * @return true if the string is null or empty, false otherwise.
+     */
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
+    /**
+     * URL-encodes the given text using UTF-8 encoding.
+     *
+     * @param text The text to encode.
+     * @return The URL-encoded text, or null if encoding fails.
+     */
+    private static String urlEncode(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(WARNING, "Failed to encode text.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Returns the value if not null or blank, otherwise returns the default value from the supplier.
+     *
+     * @param value The value to check.
+     * @param defaultValueSupplier The supplier for the default value.
+     * @return The value if not null or blank, otherwise the default value.
+     */
+    private static String useDefaultIfBlank(String value, java.util.function.Supplier<String> defaultValueSupplier) {
+        if (isNullOrEmpty(value)) {
+            return defaultValueSupplier.get();
+        }
+        return value;
     }
 }
