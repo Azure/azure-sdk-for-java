@@ -852,7 +852,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @DoNotRecord
     @Test
     public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
-        // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
+        // Contract: when the caller sets no range, continuation pages must also omit the Range header.
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobClientBase client = client(httpClient);
 
@@ -861,8 +861,8 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertEquals(2, httpClient.captured.size());
         CapturedRequest first = httpClient.captured.get(0);
         CapturedRequest second = httpClient.captured.get(1);
-        assertNull(first.range, "Initial page must not send x-ms-range when no range was set");
-        assertNull(second.range, "Continuation page must not send x-ms-range when no range was set");
+        assertNull(first.range, "Initial page must not send the Range header when no range was set");
+        assertNull(second.range, "Continuation page must not send the Range header when no range was set");
         assertNull(first.ifMatch);
         assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
     }
@@ -954,7 +954,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             this.ifNoneMatch = request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH);
             this.ifUnmodifiedSince = request.getHeaders().getValue(HttpHeaderName.IF_UNMODIFIED_SINCE);
             this.leaseId = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-lease-id"));
-            this.range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            this.range = request.getHeaders().getValue(HttpHeaderName.RANGE);
         }
     }
 
@@ -983,7 +983,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             this.url = request.getUrl().toString();
             this.requestHost = request.getUrl().getHost();
             this.hostHeader = request.getHeaders().getValue(HttpHeaderName.HOST);
-            this.rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            this.rangeHeader = request.getHeaders().getValue(HttpHeaderName.RANGE);
         }
     }
 
@@ -1120,7 +1120,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         }
 
         private HttpResponse createDataResponse(HttpRequest request) {
-            String range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            String range = request.getHeaders().getValue(HttpHeaderName.RANGE);
             long start = 0L;
             long end = contentBytes.length - 1L;
             if (range != null) {

@@ -411,7 +411,7 @@ public class DataLakeDataLocalityOptionsTests {
             }
 
             dataRequestCount++;
-            String rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            String rangeHeader = request.getHeaders().getValue(HttpHeaderName.RANGE);
             int start = 0;
             int end = DOWNLOAD_BODY.length - 1;
             if (rangeHeader != null) {

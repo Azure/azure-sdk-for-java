@@ -314,6 +314,16 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     }
 
     @Test
+    public void getLayoutEmptyBlobNoContentReturnsNoRanges() {
+        // An empty blob answers Get Blob Layout with 204 and no body.
+        HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 204,
+            new HttpHeaders().set(HttpHeaderName.ETAG, FIRST_PAGE_ETAG), new byte[0]));
+        BlobAsyncClientBase client = client(httpClient);
+
+        StepVerifier.create(client.getLayout(null).count()).expectNext(0L).verifyComplete();
+    }
+
+    @Test
     public void getLayoutContinuationUsesFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClientBase client = client(httpClient);
@@ -448,7 +458,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
     @Test
     public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
-        // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
+        // Contract: when the caller sets no range, continuation pages must also omit the Range header.
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClientBase client = client(httpClient);
 
@@ -459,8 +469,8 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         assertEquals(2, httpClient.captured.size());
         CapturedRequest first = httpClient.captured.get(0);
         CapturedRequest second = httpClient.captured.get(1);
-        assertNull(first.range, "Initial page must not send x-ms-range when no range was set");
-        assertNull(second.range, "Continuation page must not send x-ms-range when no range was set");
+        assertNull(first.range, "Initial page must not send the Range header when no range was set");
+        assertNull(second.range, "Continuation page must not send the Range header when no range was set");
         assertNull(first.ifMatch);
         assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
     }
@@ -479,7 +489,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
             this.ifNoneMatch = request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH);
             this.ifUnmodifiedSince = request.getHeaders().getValue(HttpHeaderName.IF_UNMODIFIED_SINCE);
             this.leaseId = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-lease-id"));
-            this.range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+            this.range = request.getHeaders().getValue(HttpHeaderName.RANGE);
         }
     }
 

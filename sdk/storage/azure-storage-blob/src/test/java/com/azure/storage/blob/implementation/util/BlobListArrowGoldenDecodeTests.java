@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.implementation.models.BlobListArrowParseException;
 import org.junit.jupiter.api.Test;
 
@@ -44,13 +44,13 @@ public class BlobListArrowGoldenDecodeTests {
         assertEquals(Integer.valueOf(2), result.getNumberOfRecords());
 
         // Two rows: one blob, one prefix.
-        List<BlobItemInternal> items = result.getBlobItems();
+        List<BlobItem> items = result.getBlobItems();
         assertEquals(2, items.size());
 
-        BlobItemInternal blob = items.get(0);
+        BlobItem blob = items.get(0);
         assertNotNull(blob.getName());
-        assertEquals("blob1", blob.getName().getContent());
-        assertNull(blob.isPrefix());
+        assertEquals("blob1", blob.getName());
+        assertFalse(blob.isPrefix());
         assertEquals(Boolean.FALSE, blob.isDeleted());
         assertNotNull(blob.getProperties());
         assertEquals(7L, (long) blob.getProperties().getContentLength());
@@ -63,9 +63,9 @@ public class BlobListArrowGoldenDecodeTests {
         assertEquals("v1", metadata.get("k1"));
         assertEquals("v2", metadata.get("k2"));
 
-        BlobItemInternal prefix = items.get(1);
+        BlobItem prefix = items.get(1);
         assertNotNull(prefix.getName());
-        assertEquals("dir/", prefix.getName().getContent());
+        assertEquals("dir/", prefix.getName());
         assertTrue(prefix.isPrefix());
         // The prefix row had no metadata entries; the reader must not surface an (empty) map for it.
         assertNull(prefix.getMetadata());
@@ -79,12 +79,12 @@ public class BlobListArrowGoldenDecodeTests {
         ArrowBlobListDeserializer.ArrowListBlobsResult result
             = ArrowBlobListDeserializer.deserialize(openFixture("allcolumns.arrow.base64"));
 
-        List<BlobItemInternal> items = result.getBlobItems();
+        List<BlobItem> items = result.getBlobItems();
         assertEquals(1, items.size());
-        BlobItemInternal blob = items.get(0);
+        BlobItem blob = items.get(0);
 
         // Spot-check one field from each Arrow type category to prove full-schema decode.
-        assertEquals("blob1", blob.getName().getContent());
+        assertEquals("blob1", blob.getName());
         assertEquals(Boolean.FALSE, blob.isDeleted());
         assertEquals(7L, (long) blob.getProperties().getContentLength());
         assertEquals(1000L, blob.getProperties().getCreationTime().toEpochSecond());

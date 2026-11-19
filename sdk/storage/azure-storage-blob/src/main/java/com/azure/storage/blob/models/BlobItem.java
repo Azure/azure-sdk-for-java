@@ -25,6 +25,9 @@ import static com.azure.storage.blob.implementation.util.ModelHelper.transformOb
 public final class BlobItem {
     private final BlobItemInternal blobItemInternal;
 
+    // Whether this item is a virtual directory in a hierarchical listing; the service doesn't send it per item.
+    private Boolean isPrefix;
+
     static {
         BlobItemConstructorProxy.setAccessor(BlobItem::new);
     }
@@ -220,7 +223,7 @@ public final class BlobItem {
      * @return the BlobItem object itself.
      */
     public BlobItem setCurrentVersion(Boolean isCurrentVersion) {
-        blobItemInternal.setIsCurrentVersion(isCurrentVersion);
+        blobItemInternal.setCurrentVersion(isCurrentVersion);
         return this;
     }
 
@@ -281,7 +284,7 @@ public final class BlobItem {
      * @return the isPrefix value.
      */
     public Boolean isPrefix() {
-        return blobItemInternal.isPrefix() != null && blobItemInternal.isPrefix();
+        return isPrefix != null && isPrefix;
     }
 
     /**
@@ -291,7 +294,7 @@ public final class BlobItem {
      * @return the BlobItem object itself.
      */
     public BlobItem setIsPrefix(Boolean isPrefix) {
-        blobItemInternal.setIsPrefix(isPrefix);
+        this.isPrefix = isPrefix;
         return this;
     }
 }

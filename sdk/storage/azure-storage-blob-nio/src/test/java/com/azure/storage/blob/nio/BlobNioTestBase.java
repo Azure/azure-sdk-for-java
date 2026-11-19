@@ -98,8 +98,8 @@ public class BlobNioTestBase extends TestProxyTestBase {
             // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
             // in SAS tokens.
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
-                .setExcludedHeaders(Arrays.asList("x-ms-copy-source", "If-Match", "x-ms-range", "If-Modified-Since",
-                    "If-Unmodified-Since"))
+                .setExcludedHeaders(Arrays.asList("x-ms-copy-source", "If-Match", "x-ms-range", "Range",
+                    "If-Modified-Since", "If-Unmodified-Since", "Accept"))
                 .setQueryOrderingIgnored(true)
                 .setIgnoredQueryParameters(Arrays.asList("sv"))));
         }

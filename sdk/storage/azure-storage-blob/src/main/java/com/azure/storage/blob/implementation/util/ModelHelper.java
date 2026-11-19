@@ -3,13 +3,17 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.Context;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -21,10 +25,12 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConst
 import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem;
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
+import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
-import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
+import com.azure.storage.blob.implementation.models.BlobStorageError;
+import com.azure.storage.blob.implementation.models.BlobStorageErrorException;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -32,6 +38,7 @@ import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
@@ -61,8 +68,12 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlWriter;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -79,6 +90,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import javax.xml.stream.XMLStreamException;
+
 /**
  * This class provides helper methods for common model patterns.
  * <p>
@@ -86,6 +99,24 @@ import java.util.concurrent.TimeoutException;
  */
 public final class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    /**
+     * Attaches {@code Accept: application/xml} to the request options of an operation the generated layer left
+     * without an Accept header.
+     * <p>
+     * The shipped SDK sends {@code application/xml} on every operation, including those that return no body. The
+     * emitter only declares an Accept where the response has a media type to derive one from, so the rest would go
+     * out as the transport default. This is applied to the request options the operation already carries rather than
+     * through a pipeline policy, because consumers such as DataLake and Blob Batch build blob clients over their own
+     * pipelines and would not pick a blob-builder policy up.
+     *
+     * @param requestOptions The request options for the operation; may be {@code null}.
+     * @return The request options carrying the Accept header.
+     */
+    public static RequestOptions xmlAccept(RequestOptions requestOptions) {
+        RequestOptions options = requestOptions == null ? new RequestOptions() : requestOptions;
+        return options.setHeader(HttpHeaderName.ACCEPT, "application/xml");
+    }
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
@@ -208,19 +239,23 @@ public final class ModelHelper {
     }
 
     /**
-     * Transforms {@link BlobsDownloadHeaders} into a public {@link BlobDownloadHeaders}.
+     * Transforms {@link BlobsDownloadHeaders} into a public {@link BlobDownloadHeaders}. The error code and content
+     * type are read from the raw response headers, as the generated header class doesn't carry them.
      *
      * @param internalHeaders {@link BlobsDownloadHeaders}
+     * @param rawHeaders The raw response headers.
      * @return {@link BlobDownloadHeaders}
      */
     public static BlobDownloadHeaders populateBlobDownloadHeaders(BlobsDownloadHeaders internalHeaders,
-        String errorCode) {
+        HttpHeaders rawHeaders) {
         /*
         We have these two types because we needed to update this interface in a way that could not be generated
         (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
         wrapping it. Because it's headers type, we couldn't change the name of the generated type.
          */
-        return BlobDownloadHeadersConstructorProxy.create(internalHeaders).setErrorCode(errorCode);
+        return BlobDownloadHeadersConstructorProxy.create(internalHeaders)
+            .setErrorCode(getErrorCode(rawHeaders))
+            .setContentType(getHeaderValue(rawHeaders, HttpHeaderName.CONTENT_TYPE));
     }
 
     /**
@@ -417,13 +452,13 @@ public final class ModelHelper {
         }
 
         if (tags.isEmpty()) {
-            return new BlobTags().setBlobTagSet(new ArrayList<>());
+            return new BlobTags(new ArrayList<>());
         }
 
         List<BlobTag> blobTagSet = new ArrayList<>(tags.size());
-        tags.forEach((key, value) -> blobTagSet.add(new BlobTag().setKey(key).setValue(value)));
+        tags.forEach((key, value) -> blobTagSet.add(new BlobTag(key, value)));
 
-        return new BlobTags().setBlobTagSet(blobTagSet);
+        return new BlobTags(blobTagSet);
     }
 
     public static List<ObjectReplicationPolicy>
@@ -570,6 +605,58 @@ public final class ModelHelper {
         return getHeaderValue(headers, X_MS_ERROR_CODE);
     }
 
+    /**
+     * Reads x-ms-request-server-encrypted from the raw response headers, for operations whose generated response
+     * headers don't model it (for example Clear Pages).
+     *
+     * @param headers The raw response headers.
+     * @return Whether the request contents were encrypted, or null if the header is absent.
+     */
+    public static Boolean isServerEncrypted(HttpHeaders headers) {
+        String value = getHeaderValue(headers, HttpHeaderName.fromString("x-ms-request-server-encrypted"));
+        return value == null ? null : Boolean.parseBoolean(value);
+    }
+
+    /**
+     * Reads x-ms-encryption-key-sha256 from the raw response headers, for operations whose generated response
+     * headers don't model it (for example Clear Pages).
+     *
+     * @param headers The raw response headers.
+     * @return The SHA-256 hash of the customer-provided encryption key, or null if the header is absent.
+     */
+    public static String getEncryptionKeySha256(HttpHeaders headers) {
+        return getHeaderValue(headers, HttpHeaderName.fromString("x-ms-encryption-key-sha256"));
+    }
+
+    // azure-core context key (HttpUtils.AZURE_STREAM_RESPONSE_BODY) that opts a call in to streaming its BinaryData
+    // response body instead of buffering it.
+    private static final String STREAM_RESPONSE_BODY = "azure-stream-response-body";
+
+    /**
+     * Adds the azure-core streaming opt-in to a context, so the generated layer returns the response body as a stream
+     * rather than buffering it. Downloads and queries need this: an error part-way through then surfaces while reading,
+     * where the retriable download can resume, and large blobs aren't held in memory.
+     *
+     * @param context The context of the call; may be null.
+     * @return The context with streaming enabled.
+     */
+    public static Context streamingContext(Context context) {
+        return (context == null ? Context.NONE : context).addData(STREAM_RESPONSE_BODY, true);
+    }
+
+    /**
+     * Adapts a streamed generated response to the {@link StreamResponse} the download and query responses are built
+     * on. The body must have been requested with {@link #streamingContext(Context)} so it's read lazily.
+     *
+     * @param response The generated response with a streamed body.
+     * @return The equivalent {@link StreamResponse}.
+     */
+    @SuppressWarnings("deprecation") // StreamResponse(HttpResponse) needs the raw response, which RestProxy doesn't expose.
+    public static StreamResponse toStreamResponse(Response<BinaryData> response) {
+        return new StreamResponse(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toFluxByteBuffer());
+    }
+
     public static String getETag(HttpHeaders headers) {
         return getHeaderValue(headers, HttpHeaderName.ETAG);
     }
@@ -636,7 +723,9 @@ public final class ModelHelper {
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
-        return BlobQueryHeadersConstructorProxy.create(headers).setErrorCode(ModelHelper.getErrorCode(rawHeaders));
+        return BlobQueryHeadersConstructorProxy.create(headers)
+            .setErrorCode(getErrorCode(rawHeaders))
+            .setContentType(getHeaderValue(rawHeaders, HttpHeaderName.CONTENT_TYPE));
     }
 
     public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
@@ -886,19 +975,17 @@ public final class ModelHelper {
     }
 
     /**
-     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
-     * {@link BlobStorageExceptionInternal} and it will be mapped to {@link BlobStorageException}.
-     * <p>
-     * The internal exception is required as the public exception was created using Object as the exception value. This
-     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this, and we map that to the public exception, keeping the API the same.
+     * Maps the generated {@link BlobStorageErrorException} to the public {@link BlobStorageException}, which is the
+     * exception type the clients have always thrown. The message is enriched from the deserialized error body (for
+     * example, the x-ms-version mismatch hint, which relies on the error's {@code HeaderName}).
      *
-     * @param internal The internal exception.
+     * @param internal The exception thrown by the generated implementation layer.
      * @return The public exception.
      */
-    public static BlobStorageException mapToBlobStorageException(BlobStorageExceptionInternal internal) {
-        String code = internal.getValue() == null ? null : internal.getValue().getCode();
-        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+    public static BlobStorageException mapToBlobStorageException(BlobStorageErrorException internal) {
+        BlobStorageError error = internal.getValue();
+        String code = error == null || error.getCode() == null ? null : error.getCode().toString();
+        String headerName = error == null ? null : error.getHeaderName();
         return new BlobStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
@@ -971,6 +1058,87 @@ public final class ModelHelper {
             throw new IllegalArgumentException(
                 "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.");
         }
+    }
+
+    /**
+     * Serializes an {@link XmlSerializable} request body into XML {@link BinaryData} for the protocol layer.
+     * <p>
+     * The generated protocol methods take the request body as {@link BinaryData}; the hand-written clients use this
+     * to encode the typed model the same way the AutoRest convenience methods did.
+     *
+     * @param value The value to serialize; may be {@code null}.
+     * @return The XML-encoded {@link BinaryData}, or {@code null} when {@code value} is {@code null}.
+     */
+    public static BinaryData serializeXmlBody(XmlSerializable<?> value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
+                value.toXml(xmlWriter);
+                xmlWriter.flush();
+            }
+            return BinaryData.fromBytes(stream.toByteArray());
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Deserializes an XML protocol-response body into the given model.
+     * <p>
+     * The generated protocol methods return the response body as {@link BinaryData}; the hand-written clients use
+     * this to reconstruct the typed model via its generated {@code fromXml(XmlReader)} factory, matching the value
+     * the AutoRest convenience methods returned directly.
+     *
+     * @param data The raw XML body; may be {@code null}.
+     * @param deserializer The model's {@code fromXml} factory.
+     * @param <T> The deserialized type.
+     * @return The deserialized model, or {@code null} when {@code data} is {@code null}.
+     */
+    public static <T> T deserializeXmlBody(BinaryData data, XmlDeserializer<T> deserializer) {
+        if (data == null) {
+            return null;
+        }
+        try (XmlReader xmlReader = XmlReader.fromBytes(data.toBytes())) {
+            return deserializer.deserialize(xmlReader);
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Functional interface matching the generated {@code fromXml(XmlReader)} factory methods so protocol responses
+     * can be deserialized generically.
+     *
+     * @param <T> The deserialized type.
+     */
+    @FunctionalInterface
+    public interface XmlDeserializer<T> {
+        /**
+         * Deserializes an instance of {@code T} from the reader.
+         *
+         * @param reader The {@link XmlReader} positioned at the body.
+         * @return The deserialized instance.
+         * @throws XMLStreamException If deserialization fails.
+         */
+        T deserialize(XmlReader reader) throws XMLStreamException;
+    }
+
+    /**
+     * Maps the public {@link BlobCopySourceTagsMode} onto the generated {@link BlobCopySourceTags}.
+     * <p>
+     * The spec models the copy source tags mode as a closed enum, so the emitter generates an internal
+     * {@code enum} while the shipped public type is an {@link com.azure.core.util.ExpandableStringEnum}. Both carry
+     * the same wire values, so the bridge is a value lookup. Remove once the spec exposes the type as an open union
+     * named {@code BlobCopySourceTagsMode} for java.
+     *
+     * @param mode The public copy source tags mode; may be {@code null}.
+     * @return The generated equivalent, or {@code null} if {@code mode} is {@code null}.
+     */
+    public static BlobCopySourceTags toCopySourceTags(BlobCopySourceTagsMode mode) {
+        return mode == null ? null : BlobCopySourceTags.fromString(mode.toString());
     }
 
     private ModelHelper() {

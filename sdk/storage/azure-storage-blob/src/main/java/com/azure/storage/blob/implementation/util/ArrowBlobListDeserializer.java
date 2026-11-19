@@ -4,6 +4,7 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobListArrowParseException;
 import com.azure.storage.blob.implementation.models.BlobName;
@@ -39,7 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Deserializes an Apache Arrow IPC stream from the ListBlobs response into a list of {@link BlobItemInternal} objects.
+ * Deserializes an Apache Arrow IPC stream from the ListBlobs response into a list of {@link BlobItem} objects.
  */
 public final class ArrowBlobListDeserializer {
 
@@ -85,7 +86,7 @@ public final class ArrowBlobListDeserializer {
             throw new BlobListArrowParseException("ListBlobs Arrow parse failure: input stream is null.");
         }
 
-        List<BlobItemInternal> results = new ArrayList<>();
+        List<BlobItem> results = new ArrayList<>();
         String nextMarker = null;
         Integer numberOfRecords = null;
 
@@ -145,7 +146,7 @@ public final class ArrowBlobListDeserializer {
         }
     }
 
-    private static BlobItemInternal readRow(Batch batch, int index) {
+    private static BlobItem readRow(Batch batch, int index) {
         BlobItemInternal item = new BlobItemInternal();
 
         String name = getVarChar(batch, "Name", index);
@@ -155,8 +156,7 @@ public final class ArrowBlobListDeserializer {
 
         String resourceType = getVarChar(batch, "ResourceType", index);
         if ("blobprefix".equals(resourceType)) {
-            item.setIsPrefix(true);
-            return item;
+            return ModelHelper.populateBlobItem(item).setIsPrefix(true);
         }
 
         BlobItemPropertiesInternal properties = new BlobItemPropertiesInternal();
@@ -168,7 +168,7 @@ public final class ArrowBlobListDeserializer {
 
         item.setSnapshot(getVarChar(batch, "Snapshot", index));
         item.setVersionId(getVarChar(batch, "VersionId", index));
-        item.setIsCurrentVersion(getBit(batch, "IsCurrentVersion", index));
+        item.setCurrentVersion(getBit(batch, "IsCurrentVersion", index));
         item.setHasVersionsOnly(getBit(batch, "HasVersionsOnly", index));
 
         Map<String, String> metadata = getMap(batch, "Metadata", index);
@@ -249,7 +249,7 @@ public final class ArrowBlobListDeserializer {
 
         properties.setBlobSequenceNumber(getUInt64(batch, "x-ms-blob-sequence-number", index));
 
-        properties.setIsSealed(getBit(batch, "Sealed", index));
+        properties.setSealed(getBit(batch, "Sealed", index));
         properties.setLegalHold(getBit(batch, "LegalHold", index));
         properties.setDeletedTime(getTimestamp(batch, "DeletedTime", index));
         properties.setLastAccessedOn(getTimestamp(batch, "LastAccessTime", index));
@@ -280,7 +280,7 @@ public final class ArrowBlobListDeserializer {
         }
 
         item.setProperties(properties);
-        return item;
+        return ModelHelper.populateBlobItem(item);
     }
 
     private static <T extends Column> T getColumn(Batch batch, String name, int index, Class<T> type,
@@ -330,7 +330,7 @@ public final class ArrowBlobListDeserializer {
      * Result of deserializing an Arrow ListBlobs response.
      */
     public static final class ArrowListBlobsResult {
-        private final List<BlobItemInternal> blobItems;
+        private final List<BlobItem> blobItems;
         private final String nextMarker;
         private final Integer numberOfRecords;
 
@@ -341,7 +341,7 @@ public final class ArrowBlobListDeserializer {
          * @param nextMarker      the continuation token for the next page, or null if this is the last page
          * @param numberOfRecords the total number of records reported by the service, or null if not present
          */
-        public ArrowListBlobsResult(List<BlobItemInternal> blobItems, String nextMarker, Integer numberOfRecords) {
+        public ArrowListBlobsResult(List<BlobItem> blobItems, String nextMarker, Integer numberOfRecords) {
             this.blobItems = blobItems;
             this.nextMarker = nextMarker;
             this.numberOfRecords = numberOfRecords;
@@ -350,7 +350,7 @@ public final class ArrowBlobListDeserializer {
         /**
          * @return the deserialized blob items
          */
-        public List<BlobItemInternal> getBlobItems() {
+        public List<BlobItem> getBlobItems() {
             return blobItems;
         }
 

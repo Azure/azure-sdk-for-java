@@ -1,0 +1,4 @@
+directory: specification/storage/data-plane/BlobStorage
+commit: 042215770c9fa3d3ab1ea8053c96d0ca631f90f4
+repo: ibrandes/azure-rest-api-specs
+additionalDirectories: []

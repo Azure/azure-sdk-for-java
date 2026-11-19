@@ -767,7 +767,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setSealed(Boolean sealed) {
-        internalProperties.setIsSealed(sealed);
+        internalProperties.setSealed(sealed);
         return this;
     }
 

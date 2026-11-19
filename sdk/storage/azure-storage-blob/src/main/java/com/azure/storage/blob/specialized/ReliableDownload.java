@@ -59,8 +59,8 @@ final class ReliableDownload {
         from the response for better book-keeping towards the end.
          */
         if (this.info.getCount() == null) {
-            long blobLength = ModelHelper.getBlobLength(ModelHelper.populateBlobDownloadHeaders(deserializedHeaders,
-                ModelHelper.getErrorCode(rawResponse.getHeaders())));
+            long blobLength = ModelHelper
+                .getBlobLength(ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, rawResponse.getHeaders()));
             info.setCount(blobLength - info.getOffset());
         }
     }
@@ -78,8 +78,7 @@ final class ReliableDownload {
     }
 
     BlobDownloadHeaders getDeserializedHeaders() {
-        return ModelHelper.populateBlobDownloadHeaders(deserializedHeaders,
-            ModelHelper.getErrorCode(rawResponse.getHeaders()));
+        return ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, rawResponse.getHeaders());
     }
 
     Flux<ByteBuffer> getValue() {
