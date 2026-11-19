@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-09-22)
+## 2.1.0-beta.1 (2026-11-19)
 
 - Azure Resource Manager Quota client library for Java. This package contains Microsoft Azure SDK for Quota Management SDK. Microsoft Azure Quota Resource Provider. Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -178,8 +178,8 @@
 
 #### `QuotaManager` was modified
 
-* `incomingQuotaTransfers()` was added
 * `quotaTransfers()` was added
+* `incomingQuotaTransfers()` was added
 
 ## 2.0.0 (2025-09-19)
 
