@@ -26,6 +26,10 @@
 - Fixed `ShareDirectoryClient` and `ShareDirectoryAsyncClient` rename operations for directories whose names contain
   `#`, a `%` sequence, or non-ASCII characters. Previously the rename-source header was sent unencoded, so such
   renames could fail or move a different directory. The source path is now URL-encoded in the header.
+- Fixed `createIfNotExists`, `createDirectoryIfNotExists`, and `createSubdirectoryIfNotExists` (and their `WithResponse`
+  variants) on `ShareAsyncClient` and `ShareDirectoryAsyncClient` treating every 409 as "already exists". Like the
+  synchronous clients, they now do so only for `ShareAlreadyExists` and `ResourceAlreadyExists`, and emit
+  `ShareStorageException` for other conflicts, such as `ShareBeingDeleted` or `ResourceTypeMismatch`.
 
 ### Other Changes
 
