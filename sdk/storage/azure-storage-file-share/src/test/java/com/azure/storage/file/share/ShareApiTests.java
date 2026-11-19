@@ -316,7 +316,7 @@ public class ShareApiTests extends FileShareTestBase {
     // createAfterShareDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
     @LiveOnly
     @Test
-    public void createAfterShareDeleteCompletes() {
+    public void createSucceedsAfterShareDeleteCompletes() {
         ShareClient client = primaryFileServiceClient.getShareClient(generateShareName());
         client.create();
         client.delete();

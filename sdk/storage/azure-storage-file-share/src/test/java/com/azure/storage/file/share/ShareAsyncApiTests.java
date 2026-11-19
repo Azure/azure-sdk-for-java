@@ -238,7 +238,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     // createAfterShareDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
     @LiveOnly
     @Test
-    public void createAfterShareDeleteCompletes() {
+    public void createSucceedsAfterShareDeleteCompletes() {
         ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
 
         StepVerifier

@@ -873,12 +873,15 @@ public class ModelHelper {
     }
 
     /**
-     * Determines whether the throwable is a 409 {@link ShareStorageException} carrying the given error code, which is
-     * how the service reports that a resource already exists.
+     * Determines whether a failure is a 409 Conflict that the service answered with the given error code.
      *
-     * @param throwable The throwable to inspect.
-     * @param errorCode The expected error code.
-     * @return {@code true} if the throwable is a 409 with the given error code.
+     * <p>The status code alone does not say why the service refused a request: it also answers 409 for reasons such as
+     * ShareBeingDeleted or ResourceTypeMismatch. Methods that treat a conflict as "already exists" use this so that
+     * other conflicts still fail.</p>
+     *
+     * @param throwable The failure.
+     * @param errorCode The error code of the conflict to match.
+     * @return Whether the failure is a {@link ShareStorageException} with status code 409 and the given error code.
      */
     public static boolean isConflictWithErrorCode(Throwable throwable, ShareErrorCode errorCode) {
         if (!(throwable instanceof ShareStorageException)) {
