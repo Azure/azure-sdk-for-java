@@ -20,6 +20,11 @@ import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properti
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import com.azure.storage.queue.QueueMessageEncoding;
+import jakarta.jms.Connection;
+import jakarta.jms.QueueConnection;
+import jakarta.jms.QueueSession;
+import jakarta.jms.TopicConnection;
+import jakarta.jms.TopicSession;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -33,9 +38,13 @@ import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.connection.SessionProxy;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,7 +105,7 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
     }
 
     @Test
-    void registersGlobalAndPasswordlessHintsWithoutKeyVaultClient() throws IOException, NoSuchMethodException {
+    void registersSharedHintsWithoutKeyVaultClient() throws IOException, NoSuchMethodException {
         try (FilteredClassLoader classLoader = new FilteredClassLoader("com.azure.security.keyvault.secrets")) {
             RuntimeHints hints = loadHints(classLoader);
 
@@ -104,7 +113,8 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
             assertPasswordlessBindingHints(hints);
             assertThat(hints.reflection().getTypeHint(AzureKeyVaultSecretProperties.class)).isNull();
             assertThat(hints.reflection().getTypeHint(AzureKeyVaultPropertySourceProperties.class)).isNull();
-            assertThat(hints.reflection().getTypeHint(AzureIdentityEnvVars.class)).isNull();
+            assertThat(RuntimeHintsPredicates.reflection()
+                .onConstructorInvocation(AzureIdentityEnvVars.class.getDeclaredConstructor())).accepts(hints);
             assertThat(hints.reflection().getTypeHint(TypeReference.of(
                 "com.azure.security.keyvault.secrets.implementation.models.SecretItem"))).isNull();
             assertThat(hints.reflection().getTypeHint(TypeReference.of(
@@ -118,6 +128,96 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
 
         assertThat(RuntimeHintsPredicates.reflection()
             .onConstructorInvocation(AzureIdentityEnvVars.class.getDeclaredConstructor())).accepts(hints);
+    }
+
+    @Test
+    void skipsMissingIdentityEnvironmentVariables() throws IOException, NoSuchMethodException {
+        try (FilteredClassLoader classLoader = new FilteredClassLoader("com.azure.identity")) {
+            RuntimeHints hints = loadHints(classLoader);
+
+            assertThat(hints.reflection().getTypeHint(TypeReference.of("com.azure.identity.AzureIdentityEnvVars")))
+                .isNull();
+            assertGlobalBindingHints(hints);
+        }
+    }
+
+    @Test
+    void registersHintsForQpidJmsUriConfiguration() throws ClassNotFoundException, NoSuchMethodException {
+        RuntimeHints hints = loadHints(getClass().getClassLoader());
+        Class<?> factoryType = Class.forName("org.apache.qpid.jms.JmsConnectionFactory");
+        Class<?> policyType = Class.forName("org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy");
+
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(factoryType.getMethod("getPrefetchPolicy"))).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onMethodInvocation(policyType.getMethod("setAll", int.class))).accepts(hints);
+        assertThat(hints.reflection().getTypeHint(factoryType).getMemberCategories())
+            .contains(MemberCategory.INVOKE_PUBLIC_METHODS);
+        assertThat(hints.reflection().getTypeHint(policyType).getMemberCategories())
+            .contains(MemberCategory.INVOKE_PUBLIC_METHODS);
+    }
+
+    @Test
+    void registersHintsForStandardTierJmsCustomization() throws ClassNotFoundException, NoSuchFieldException {
+        RuntimeHints hints = loadHints(getClass().getClassLoader());
+        Class<?> serviceBusFactory = Class.forName("com.azure.servicebus.jms.ServiceBusJmsConnectionFactory");
+        Class<?> qpidFactory = Class.forName("org.apache.qpid.jms.JmsConnectionFactory");
+
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onFieldAccess(serviceBusFactory.getDeclaredField("factory"))).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onFieldAccess(qpidFactory.getDeclaredField("extensionMap"))).accepts(hints);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "provider/amqps", "provider/failover", "transports/ssl", "sasl/PLAIN", "sasl/ANONYMOUS", "tracing/noop"
+    })
+    void registersHintsForQpidFactoryDiscovery(String factoryPath)
+        throws IOException, ClassNotFoundException, NoSuchMethodException {
+        String resource = "META-INF/services/org/apache/qpid/jms/" + factoryPath;
+        Properties descriptor = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(resource)) {
+            assertThat(input).isNotNull();
+            descriptor.load(input);
+        }
+        Class<?> factoryType = Class.forName(descriptor.getProperty("class"));
+        RuntimeHints hints = loadHints(getClass().getClassLoader());
+
+        assertThat(RuntimeHintsPredicates.resource().forResource(resource)).accepts(hints);
+        assertThat(RuntimeHintsPredicates.reflection()
+            .onConstructorInvocation(factoryType.getDeclaredConstructor())).accepts(hints);
+        assertThat(hints.reflection().getTypeHint(factoryType).getMemberCategories())
+            .contains(MemberCategory.INVOKE_PUBLIC_METHODS);
+    }
+
+    @ParameterizedTest
+    @MethodSource("jmsCachingProxyInterfaces")
+    void registersHintsForJmsCachingProxies(List<Class<?>> interfaces) {
+        assertThat(RuntimeHintsPredicates.proxies().forInterfaces(interfaces.toArray(new Class<?>[0])))
+            .accepts(loadHints(getClass().getClassLoader()));
+    }
+
+    @Test
+    void skipsJmsCachingProxiesWithoutSpringJms() throws IOException {
+        try (FilteredClassLoader classLoader = new FilteredClassLoader(CachingConnectionFactory.class)) {
+            assertThat(loadHints(classLoader).proxies().jdkProxyHints()).isEmpty();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"com.azure.servicebus.jms", "org.apache.qpid.jms"})
+    void skipsQpidHintsWithoutJmsDependencies(String excludedPackage) throws IOException, NoSuchMethodException {
+        try (FilteredClassLoader classLoader = new FilteredClassLoader(excludedPackage)) {
+            RuntimeHints hints = loadHints(classLoader);
+
+            assertThat(hints.reflection().getTypeHint(TypeReference.of(
+                "org.apache.qpid.jms.JmsConnectionFactory"))).isNull();
+            assertThat(hints.reflection().getTypeHint(TypeReference.of(
+                "org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy"))).isNull();
+            assertGlobalBindingHints(hints);
+            assertJdbcPasswordlessBindingHints(hints);
+        }
     }
 
     @ParameterizedTest
@@ -179,6 +279,18 @@ class SpringCloudAzureAutoconfigureRuntimeHintsTests {
             Arguments.of("com.azure.storage.queue", AzureStorageQueueProperties.class,
                 "setMessageEncoding", new Class<?>[] {QueueMessageEncoding.class})
         );
+    }
+
+    private static Stream<Arguments> jmsCachingProxyInterfaces() {
+        return Stream.of(
+            Arguments.of(List.of(Connection.class)),
+            Arguments.of(List.of(Connection.class, QueueConnection.class)),
+            Arguments.of(List.of(Connection.class, TopicConnection.class)),
+            Arguments.of(List.of(Connection.class, QueueConnection.class, TopicConnection.class)),
+            Arguments.of(List.of(SessionProxy.class)),
+            Arguments.of(List.of(SessionProxy.class, QueueSession.class)),
+            Arguments.of(List.of(SessionProxy.class, TopicSession.class)),
+            Arguments.of(List.of(SessionProxy.class, QueueSession.class, TopicSession.class)));
     }
 
     private RuntimeHints loadHints(ClassLoader classLoader) {

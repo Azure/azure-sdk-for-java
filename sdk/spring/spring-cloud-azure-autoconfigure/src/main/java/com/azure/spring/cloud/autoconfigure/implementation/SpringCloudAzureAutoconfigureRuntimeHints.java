@@ -15,8 +15,11 @@ import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordl
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegistrar;
 import org.springframework.util.ClassUtils;
+
+import java.util.Arrays;
 
 class SpringCloudAzureAutoconfigureRuntimeHints implements RuntimeHintsRegistrar {
 
@@ -46,6 +49,9 @@ class SpringCloudAzureAutoconfigureRuntimeHints implements RuntimeHintsRegistrar
             MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
             MemberCategory.INVOKE_DECLARED_METHODS);
 
+        hints.reflection().registerTypeIfPresent(classLoader, "com.azure.identity.AzureIdentityEnvVars",
+            MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+
         // ConnectionDetails factories bind properties without @ConfigurationProperties.
         if (ClassUtils.isPresent("com.azure.cosmos.CosmosClientBuilder", classLoader)) {
             BindableRuntimeHintsRegistrar.forTypes(AzureCosmosProperties.class).registerHints(hints);
@@ -65,12 +71,40 @@ class SpringCloudAzureAutoconfigureRuntimeHints implements RuntimeHintsRegistrar
             BindableRuntimeHintsRegistrar.forTypes(AzureStorageQueueProperties.class).registerHints(hints);
         }
 
+        if (ClassUtils.isPresent("com.azure.servicebus.jms.ServiceBusJmsConnectionFactory", classLoader)) {
+            // Qpid applies URI options through JavaBeans introspection and reflective setter calls.
+            hints.reflection().registerTypeIfPresent(classLoader, "org.apache.qpid.jms.JmsConnectionFactory",
+                typeHint -> typeHint.withMembers(MemberCategory.INVOKE_PUBLIC_METHODS).withField("extensionMap"));
+            hints.reflection().registerTypeIfPresent(classLoader,
+                "org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy", MemberCategory.INVOKE_PUBLIC_METHODS);
+            // The Standard-tier customizer accesses the wrapped factory and its AMQP extensions.
+            hints.reflection().registerTypeIfPresent(classLoader,
+                "com.azure.servicebus.jms.ServiceBusJmsConnectionFactory", typeHint -> typeHint.withField("factory"));
+            // These are Qpid FactoryFinder descriptors, not standard Java ServiceLoader files.
+            registerQpidFactoryHints(hints, classLoader, "provider/amqps", "provider.amqp.AmqpProviderFactory");
+            registerQpidFactoryHints(hints, classLoader, "provider/failover", "provider.failover.FailoverProviderFactory");
+            registerQpidFactoryHints(hints, classLoader, "transports/ssl", "transports.netty.NettySslTransportFactory");
+            registerQpidFactoryHints(hints, classLoader, "sasl/PLAIN", "sasl.PlainMechanismFactory");
+            registerQpidFactoryHints(hints, classLoader, "sasl/ANONYMOUS", "sasl.AnonymousMechanismFactory");
+            registerQpidFactoryHints(hints, classLoader, "tracing/noop", "tracing.JmsNoOpTracerFactory");
+            if (ClassUtils.isPresent("org.springframework.jms.connection.CachingConnectionFactory", classLoader)) {
+                // Spring builds these interface lists from the concrete connection and session capabilities.
+                registerJmsProxyHints(hints, "jakarta.jms.Connection");
+                registerJmsProxyHints(hints, "jakarta.jms.Connection", "jakarta.jms.QueueConnection");
+                registerJmsProxyHints(hints, "jakarta.jms.Connection", "jakarta.jms.TopicConnection");
+                registerJmsProxyHints(hints, "jakarta.jms.Connection", "jakarta.jms.QueueConnection",
+                    "jakarta.jms.TopicConnection");
+                registerJmsProxyHints(hints, "org.springframework.jms.connection.SessionProxy");
+                registerJmsProxyHints(hints, "org.springframework.jms.connection.SessionProxy", "jakarta.jms.QueueSession");
+                registerJmsProxyHints(hints, "org.springframework.jms.connection.SessionProxy", "jakarta.jms.TopicSession");
+                registerJmsProxyHints(hints, "org.springframework.jms.connection.SessionProxy", "jakarta.jms.QueueSession",
+                    "jakarta.jms.TopicSession");
+            }
+        }
+
         if (ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient", classLoader)) {
             // The environment post-processor binds this type directly, outside bean registration.
             BindableRuntimeHintsRegistrar.forTypes(AzureKeyVaultSecretProperties.class).registerHints(hints);
-            // Azure Identity instantiates this expandable enum reflectively.
-            hints.reflection().registerTypeIfPresent(classLoader, "com.azure.identity.AzureIdentityEnvVars",
-                MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
             // Azure Core detects and invokes these models' JSON streaming methods reflectively.
             hints.reflection().registerTypeIfPresent(classLoader,
                 "com.azure.security.keyvault.secrets.implementation.models.SecretItem",
@@ -79,5 +113,15 @@ class SpringCloudAzureAutoconfigureRuntimeHints implements RuntimeHintsRegistrar
                 "com.azure.security.keyvault.secrets.implementation.models.SecretBundle",
                 MemberCategory.INVOKE_PUBLIC_METHODS);
         }
+    }
+
+    private void registerQpidFactoryHints(RuntimeHints hints, ClassLoader classLoader, String resource, String type) {
+        hints.resources().registerPattern("META-INF/services/org/apache/qpid/jms/" + resource);
+        hints.reflection().registerTypeIfPresent(classLoader, "org.apache.qpid.jms." + type,
+            MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
+    }
+
+    private void registerJmsProxyHints(RuntimeHints hints, String... interfaces) {
+        hints.proxies().registerJdkProxy(Arrays.stream(interfaces).map(TypeReference::of).toArray(TypeReference[]::new));
     }
 }
