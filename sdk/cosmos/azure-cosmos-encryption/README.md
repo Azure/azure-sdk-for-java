@@ -163,13 +163,38 @@ The corrected reader decrypts every non-null scalar array element. If an element
 exception as its cause. It does not silently return the value as plaintext. This failure can also indicate incorrect
 keys or damaged ciphertext; it is not proof that the item was written by an older SDK.
 
+#### Temporary compatibility opt-out
+
+The fix is enabled by default. To temporarily restore legacy array traversal for **both reads and writes**
+(including PATCH), set either of the following before creating encryption clients:
+
+- JVM system property: `-DCOSMOS.ENCRYPTION_MIXED_ARRAYS_ENABLED=false`
+- Environment variable: `COSMOS_ENCRYPTION_MIXED_ARRAYS_ENABLED=false`
+
+A non-empty JVM property takes precedence over the environment variable. Values are case-insensitive `true` or
+`false`; invalid values are rejected rather than silently disabling encryption. Each encryption client
+captures the setting when it is created and shares it with its container processors; restart the application
+to change modes consistently. Explicit opt-out adds `encryption-mixed-arrays-disabled` to the underlying
+Cosmos client's user-agent suffix, alongside the encryption SDK version. Default and explicit `true` settings
+do not add this marker. The suffix is client-wide, including requests sharing that underlying Cosmos client.
+The setting is implemented in the encryption package and does not require a new `azure-cosmos` config getter.
+
+**Warning:** legacy mode restores the first-element-based behavior, including the bug that leaves scalar elements
+unencrypted after an object or array. It logs a warning once per JVM and is a migration bridge, not a long-term fix.
+It also retains legacy failures for unsupported scalar-first mixed arrays. Legacy readers skip scalar elements
+after a leading container, so they cannot correctly read mixed arrays already written with the fix enabled.
+Do not use the two modes interchangeably on the same data or switch to legacy mode after writing corrected data.
+Opt-out is an explicit traversal choice, not a fallback for decoding or authentication failures.
+
 If you confirm that an item contains legacy mixed-type arrays:
 
 1. Coordinate a migration so old clients do not read rewritten items or write more legacy items during the cutover.
-2. Read the affected items with the SDK version that wrote them to recover their decrypted values.
-3. Rewrite the complete decrypted items using the corrected SDK's encryption-enabled writer. Use ETags to prevent
-   overwriting concurrent changes; do not first read the legacy items through the corrected reader.
-4. Resume normal access using the corrected SDK after the affected items have been migrated.
+2. Read the affected items with the SDK version that wrote them, or with the compatibility opt-out in a separate
+   migration reader process, to recover their decrypted values.
+3. Pass the decrypted items to a separate encryption-enabled writer process with the fix enabled and rewrite the
+   complete items. Use ETags to prevent overwriting concurrent changes; do not first read the legacy items through
+   the corrected reader. Do not copy raw encrypted values into the writer.
+4. Resume normal access with the fix enabled after the affected items have been migrated.
 
 These items are partially encrypted, not wholly unencrypted: existing encrypted fields still require decryption.
 Do not treat authentication failures as plaintext or assume that raw stored items can be rewritten without decryption.

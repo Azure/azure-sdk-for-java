@@ -15,6 +15,7 @@ public class Constants {
     public static final String CURRENT_NAME = PROPERTIES.getOrDefault("name", "azure-cosmos-encryption");
     public static final String CURRENT_VERSION = PROPERTIES.getOrDefault("version", "unknown");
     public static final String USER_AGENT_SUFFIX = CURRENT_NAME + "/" + CURRENT_VERSION;
+    public static final String MIXED_ARRAYS_DISABLED_USER_AGENT_SUFFIX = "encryption-mixed-arrays-disabled";
 
     public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
 

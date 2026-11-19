@@ -59,6 +59,7 @@ public class EncryptionProcessor {
     private final CosmosAsyncContainer cosmosAsyncContainer;
     private final EncryptionSettings encryptionSettings;
     private final AtomicBoolean isEncryptionSettingsInitDone;
+    private final boolean mixedArrayEncryptionEnabled;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;
@@ -78,6 +79,8 @@ public class EncryptionProcessor {
         if (encryptionCosmosClient == null) {
             throw new IllegalStateException("encryptionCosmosClient is null");
         }
+        this.mixedArrayEncryptionEnabled =
+            cosmosEncryptionAsyncClientAccessor.isMixedArrayEncryptionEnabled(encryptionCosmosClient);
         this.cosmosAsyncContainer = cosmosAsyncContainer;
         this.encryptionCosmosClient = encryptionCosmosClient;
         this.isEncryptionSettingsInitDone = new AtomicBoolean(false);
@@ -365,11 +368,13 @@ public class EncryptionProcessor {
         else if (propertyValueHolder.isArray()) {
             assert propertyValueHolder instanceof ArrayNode;
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
+            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
             for (int i = 0; i < arrayNode.size(); i++) {
                 JsonNode nodeInArray = arrayNode.get(i);
-                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
                     arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
-                } else if (!nodeInArray.isNull()) {
+                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
                     arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
                         nodeInArray, StringUtils.EMPTY)));
                 }
@@ -398,12 +403,14 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
+            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
             for (int i = 0; i < arrayNode.size(); i++) {
                 JsonNode nodeInArray = arrayNode.get(i);
-                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
                     encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
                         StringUtils.EMPTY);
-                } else if (!nodeInArray.isNull()) {
+                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
                     arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
                         nodeInArray, StringUtils.EMPTY)));
                 }
@@ -411,6 +418,12 @@ public class EncryptionProcessor {
         } else {
             encryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
+    }
+
+    private boolean shouldTraverseArrayContainers(ArrayNode arrayNode) {
+        // Legacy traversal chooses one strategy for the entire array from its first element.
+        return this.mixedArrayEncryptionEnabled || (arrayNode.size() > 0
+            && (arrayNode.get(0).isObject() || arrayNode.get(0).isArray()));
     }
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
@@ -529,12 +542,14 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
+            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
             for (int i = 0; i < arrayNode.size(); i++) {
                 JsonNode nodeInArray = arrayNode.get(i);
-                if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
                     decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
                         propertyName);
-                } else if (!nodeInArray.isNull()) {
+                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
                     try {
                         arrayNode.set(i, decryptAndSerializeValue(encryptionSettings, null, nodeInArray,
                             StringUtils.EMPTY));
@@ -543,7 +558,12 @@ public class EncryptionProcessor {
                             + " in encrypted property '/" + propertyName + "'. Mixed-type arrays written by previous "
                             + "SDK versions may contain unencrypted scalar values. If this is legacy data, read the "
                             + "item using the SDK version that wrote it and rewrite the decrypted item using the "
-                            + "current SDK. Otherwise, check the encryption key and ciphertext integrity.", ex);
+                            + "current SDK. Alternatively, temporarily restore legacy reads AND writes by setting "
+                            + "-D" + EncryptionConfigs.MIXED_ARRAYS_ENABLED + "=false or "
+                            + EncryptionConfigs.MIXED_ARRAYS_ENABLED_VARIABLE + "=false before creating clients. "
+                            + "Legacy mode can leave scalar array elements unencrypted and cannot correctly read "
+                            + "mixed arrays written with the fix enabled. Otherwise, check the encryption key and "
+                            + "ciphertext integrity.", ex);
                     }
                 }
             }
