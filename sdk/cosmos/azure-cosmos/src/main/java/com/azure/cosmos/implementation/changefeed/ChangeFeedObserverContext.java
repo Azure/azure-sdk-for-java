@@ -34,4 +34,13 @@ public interface ChangeFeedObserverContext<T> {
      * @return a representation of the deferred computation of this call.
      */
     Mono<Lease> checkpoint();
+
+    /**
+     * Checkpoints completed progress after processing has stopped. Lease ownership is still validated.
+     *
+     * @return the deferred checkpoint operation.
+     */
+    default Mono<Lease> checkpointOnShutdown() {
+        return this.checkpoint();
+    }
 }

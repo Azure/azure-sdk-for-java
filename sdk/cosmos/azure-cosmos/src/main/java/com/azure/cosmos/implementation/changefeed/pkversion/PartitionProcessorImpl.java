@@ -133,7 +133,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     this.options,
                     JsonNode.class);
             })
-            .flatMap(documentFeedResponse -> {
+            .concatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
@@ -178,7 +178,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             if (skipCheckpoint) {
                                 return Mono.empty();
                             } else {
-                                return this.checkpointer.checkpointPartition(continuationState)
+                                return this.observer.processEmptyBatch(new ChangeFeedObserverContextImpl<>(
+                                        this.lease.getLeaseToken(), documentFeedResponse, continuationState, this.checkpointer))
                                     .doOnError(throwable -> {
                                         logger.warn("Failed to checkpoint partition " + this.lease.getLeaseToken()
                                                 + " from thread " + Thread.currentThread().getId(), throwable);

@@ -15,9 +15,12 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,14 +77,19 @@ class PartitionControllerImpl implements PartitionController {
         }
 
         return this.leaseManager.acquire(lease)
-            .map(updatedLease -> {
-                WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
-                if (checkTask == null) {
-                    logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
-                    PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
-                    this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
+            .flatMap(updatedLease -> {
+                synchronized (this) {
+                    if (this.shutdownCts.isCancellationRequested()) {
+                        return this.leaseManager.release(updatedLease).then(Mono.empty());
+                    }
+                    WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
+                    if (checkTask == null) {
+                        logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
+                        PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
+                        this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
+                    }
                 }
-                return updatedLease;
+                return Mono.just(updatedLease);
             })
             .onErrorResume(throwable -> {
                 logger.warn("Partition " + lease.getLeaseToken() + ": unexpected error; removing lease from current cache.", throwable);
@@ -91,11 +99,14 @@ class PartitionControllerImpl implements PartitionController {
 
     @Override
     public Mono<Void> shutdown() {
-        // TODO: wait for the threads to finish.
-        this.shutdownCts.cancel();
-//        this.currentlyOwnedPartitions.clear();
-
-        return Mono.empty();
+        return Mono.defer(() -> {
+            List<WorkerTask> workers;
+            synchronized (this) {
+                workers = new ArrayList<>(this.currentlyOwnedPartitions.values());
+                this.shutdownCts.cancel();
+            }
+            return Flux.fromIterable(workers).flatMap(WorkerTask::completion).then();
+        });
     }
 
     private Mono<Void> loadLeases() {
@@ -111,7 +122,7 @@ class PartitionControllerImpl implements PartitionController {
     private Mono<Void> removeLease(Lease lease) {
         return Mono.just(this)
             .flatMap(value -> {
-                WorkerTask workerTask = this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
+                WorkerTask workerTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
                 if (workerTask != null && workerTask.isRunning()) {
                     workerTask.cancelJob();
                 }
@@ -129,6 +140,7 @@ class PartitionControllerImpl implements PartitionController {
                 return Mono.empty();
             })
             .doOnSuccess(aVoid -> {
+                this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
                 logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
             });
     }

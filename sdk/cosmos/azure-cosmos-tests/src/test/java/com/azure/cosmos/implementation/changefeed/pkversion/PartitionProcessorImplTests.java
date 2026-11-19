@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
+import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
+import com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
@@ -50,11 +52,13 @@ public class PartitionProcessorImplTests {
     @DataProvider(name = "changeFeed304ResponseContinuationArgProvider")
     public static Object[][] changeFeed304ResponseContinuationArgProvider() {
         return new Object[][]{
-            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint
-            { true, true, true },
-            { true, false, true },
-            { false, true, true },
-            { false, false, false}
+            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint, delayCheckpoint
+            { true, true, true, false },
+            { true, false, true, false },
+            { false, true, true, false },
+            { false, false, false, false },
+            { true, true, false, true },
+            { false, true, false, true }
         };
     }
 
@@ -62,8 +66,10 @@ public class PartitionProcessorImplTests {
     public void shouldCheckpointFor304WhenContinuationTokenChanges(
         boolean hasMoreResult,
         boolean hasContinuationTokenChange,
-        boolean shouldDoCheckpoint) {
+        boolean shouldDoCheckpoint,
+        boolean delayCheckpoint) {
         ChangeFeedObserver<JsonNode> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processEmptyBatch(Mockito.any())).thenCallRealMethod();
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
 
         // Setup initial state with continuation token
@@ -104,7 +110,8 @@ public class PartitionProcessorImplTests {
 
         // Create processor
         PartitionProcessorImpl partitionProcessor = new PartitionProcessorImpl(
-            observerMock,
+            delayCheckpoint ? new AutoCheckpointer<>(
+                new CheckpointFrequency().withProcessedDocumentCount(10), observerMock) : observerMock,
             changeFeedContextClientMock,
             processorSettings,
             partitionCheckpointer,

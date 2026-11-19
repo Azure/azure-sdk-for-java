@@ -137,6 +137,32 @@ The way partitions are managed is that each partition is assigned a roughly equa
 Otherwise, some partitions will see substantially more requests (hot partition) while other partitions see substantially fewer requests (cold partition), and this is to be avoided.
 You may learn more about partitioning [here](https://learn.microsoft.com/azure/cosmos-db/partitioning-overview).
 
+### Change feed processor checkpoint frequency
+
+By default, the change feed processor checkpoints each processed batch. To reduce checkpoint writes to the lease
+container, configure either or both thresholds through `ChangeFeedProcessorOptions`:
+
+```java
+ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions()
+    .setCheckpointInterval(Duration.ofSeconds(30))
+    .setCheckpointProcessedItemCount(10_000);
+```
+
+Pass `options` to `ChangeFeedProcessorBuilder.options(options)`. These options apply to latest-version and
+all-versions-and-deletes processing, including legacy partition-key-range leases. Thresholds apply independently to
+each lease. Reaching either configured threshold checkpoints the entire successfully processed batch; item counts
+include items filtered out by the handler. Use `null` for the interval or `0` for the item count to disable that threshold.
+With both thresholds disabled, checkpointing returns to the default behavior.
+
+The interval is evaluated after successful batches, including empty responses that advance the continuation. It is not
+a background timer, and it does not delay processing or change `feedPollDelay`. A count-only threshold may leave progress
+uncheckpointed until more items arrive or the processor stops gracefully. Lease renewal writes are unaffected.
+
+Always make handlers idempotent: a failure or lease loss can cause all progress since the last persisted checkpoint to
+be delivered again. Await `ChangeFeedProcessor.stop()` to let in-flight processing finish and attempt to checkpoint pending
+progress before releasing leases. A final checkpoint can fail if ownership has already changed. A handler that never
+completes also prevents graceful stop from completing.
+
 ## Examples
 
 The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:

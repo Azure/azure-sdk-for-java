@@ -42,6 +42,8 @@ public final class ChangeFeedProcessorOptions {
     private Duration leaseAcquireInterval;
     private Duration leaseExpirationInterval;
     private Duration feedPollDelay;
+    private Duration checkpointInterval;
+    private int checkpointProcessedItemCount;
 
     private String leasePrefix;
     private int maxItemCount;
@@ -202,6 +204,84 @@ public final class ChangeFeedProcessorOptions {
      */
     public ChangeFeedProcessorOptions setFeedPollDelay(Duration feedPollDelay) {
         this.feedPollDelay = feedPollDelay;
+        return this;
+    }
+
+    /**
+     * Gets the checkpoint interval for each lease.
+     *
+     * @return the checkpoint interval, or {@code null} if the interval threshold is disabled.
+     */
+    public Duration getCheckpointInterval() {
+        return this.checkpointInterval;
+    }
+
+    /**
+     * Sets the checkpoint interval for each lease. The default is {@code null} (disabled).
+     * <p>
+     * Checkpoint thresholds are evaluated after successful processing of a batch, including empty responses that
+     * advance the continuation. This is not a background timer and does not delay processing or change polling.
+     * If an item count threshold is also configured, reaching either threshold triggers a checkpoint.
+     * With neither threshold configured, each processed batch is checkpointed.
+     * <p>
+     * Less frequent checkpoints reduce lease writes but increase potential redelivery after a failure or lease loss.
+     * Handlers must be idempotent. On graceful shutdown, pending progress is checkpointed before releasing the lease
+     * if ownership is still valid. Lease renewal writes are unaffected.
+     *
+     * Applies to latest-version and all-versions-and-deletes processing, including legacy partition-key-range leases.
+     *
+     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.checkpointFrequency -->
+     * <pre>
+     * ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions&#40;&#41;
+     *     .setCheckpointInterval&#40;Duration.ofSeconds&#40;30&#41;&#41;
+     *     .setCheckpointProcessedItemCount&#40;10_000&#41;;
+     * &#47;&#47; Pass options to ChangeFeedProcessorBuilder.options&#40;options&#41;.
+     * &#47;&#47; Checkpoint after a successful batch when either threshold is reached, independently for each lease.
+     * &#47;&#47; Handlers must be idempotent because progress since the last checkpoint can be delivered again.
+     * </pre>
+     * <!-- end com.azure.cosmos.changeFeedProcessor.checkpointFrequency -->
+     *
+     * @param checkpointInterval a positive interval, or {@code null} to disable the interval threshold.
+     * @return the current ChangeFeedProcessorOptions instance.
+     * @throws IllegalArgumentException if the interval is zero or negative.
+     */
+    public ChangeFeedProcessorOptions setCheckpointInterval(Duration checkpointInterval) {
+        if (checkpointInterval != null && (checkpointInterval.isZero() || checkpointInterval.isNegative())) {
+            throw new IllegalArgumentException("checkpointInterval must be positive");
+        }
+        this.checkpointInterval = checkpointInterval;
+        return this;
+    }
+
+    /**
+     * Gets the processed item count threshold for each lease.
+     *
+     * @return the item count threshold, or {@code 0} if the count threshold is disabled.
+     */
+    public int getCheckpointProcessedItemCount() {
+        return this.checkpointProcessedItemCount;
+    }
+
+    /**
+     * Sets the processed item count threshold for each lease. The default is {@code 0} (disabled).
+     * <p>
+     * Counts items delivered to the handler, including items the handler filters out. Thresholds are evaluated after
+     * successful processing of entire batches, so a checkpoint can include more items than this threshold.
+     * If an interval is also configured, reaching either threshold triggers a checkpoint.
+     * With neither threshold configured, each processed batch is checkpointed.
+     * <p>
+     * Less frequent checkpoints increase potential redelivery after a failure or lease loss. Handlers must be
+     * idempotent. Pending progress is checkpointed on graceful shutdown if ownership is still valid.
+     *
+     * @param checkpointProcessedItemCount a positive item count, or {@code 0} to disable the count threshold.
+     * @return the current ChangeFeedProcessorOptions instance.
+     * @throws IllegalArgumentException if the item count is negative.
+     */
+    public ChangeFeedProcessorOptions setCheckpointProcessedItemCount(int checkpointProcessedItemCount) {
+        if (checkpointProcessedItemCount < 0) {
+            throw new IllegalArgumentException("checkpointProcessedItemCount cannot be negative");
+        }
+        this.checkpointProcessedItemCount = checkpointProcessedItemCount;
         return this;
     }
 

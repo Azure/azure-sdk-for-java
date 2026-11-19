@@ -50,6 +50,11 @@ public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverConte
         return this.checkpointer.checkpointPartition(this.continuationState);
     }
 
+    @Override
+    public Mono<Lease> checkpointOnShutdown() {
+        return this.checkpointer.checkpointPartitionOnShutdown(this.continuationState);
+    }
+
     /**
      * @return the id of the partition for the current event.
      */

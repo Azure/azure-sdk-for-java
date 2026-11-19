@@ -419,7 +419,9 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory<JsonNode> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<JsonNode> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency()
+            .withTimeInterval(this.changeFeedProcessorOptions.getCheckpointInterval())
+            .withProcessedDocumentCount(this.changeFeedProcessorOptions.getCheckpointProcessedItemCount()));
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
             this.feedContextClient,

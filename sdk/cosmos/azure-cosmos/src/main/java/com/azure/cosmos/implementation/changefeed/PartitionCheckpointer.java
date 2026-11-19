@@ -18,6 +18,16 @@ public interface PartitionCheckpointer {
     Mono<Lease> checkpointPartition(ChangeFeedState continuationState);
 
     /**
+     * Checkpoints progress during graceful shutdown using a separate cancellation token.
+     *
+     * @param continuationState the last successfully processed continuation.
+     * @return the deferred checkpoint operation.
+     */
+    default Mono<Lease> checkpointPartitionOnShutdown(ChangeFeedState continuationState) {
+        return this.checkpointPartition(continuationState);
+    }
+
+    /**
      * Sets the cancellation token in case we need to bail out before check-pointing.
      *
      * @param cancellationToken the cancellation token.
