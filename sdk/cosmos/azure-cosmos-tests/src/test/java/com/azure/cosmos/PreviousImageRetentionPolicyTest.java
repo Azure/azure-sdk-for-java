@@ -55,7 +55,7 @@ public class PreviousImageRetentionPolicyTest {
         assertThat(serialized.has("changeFeedPolicy")).isFalse();
 
         CosmosContainerProperties roundTripped = fromCollection(new DocumentCollection(collection.toJson()));
-        assertThat(roundTripped.getChangeFeedPreviousImageRetentionMode()).isEqualTo(mode);
+        assertThat(roundTripped.getChangeFeedPreviousImageRetentionMode()).isSameAs(mode);
     }
 
     @Test(groups = "unit", dataProvider = "modes")
@@ -65,7 +65,7 @@ public class PreviousImageRetentionPolicyTest {
         ((ObjectNode) expected.at(FEATURE_PATH)).put("mode", wireValue);
         CosmosContainerProperties properties = fromPolicy(expected.toString());
 
-        assertThat(properties.getChangeFeedPreviousImageRetentionMode()).isEqualTo(mode);
+        assertThat(properties.getChangeFeedPreviousImageRetentionMode()).isSameAs(mode);
         assertThat(serializedPolicy(properties)).isEqualTo(expected);
         assertThat(properties.getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ofMinutes(5));
@@ -130,6 +130,53 @@ public class PreviousImageRetentionPolicyTest {
         assertThat(serializedPolicy(properties)).isEqualTo(Utils.getSimpleObjectMapper().readTree(
             "{\"supportedFeatures\":{\"containerCopy\":{\"mode\":2},\"allVersionsAndDeletes\":{\"mode\":0}}}"));
         assertThat(properties.getChangeFeedPreviousImageRetentionMode()).isEqualTo(CosmosChangeFeedPreviousImageRetentionMode.DISABLED);
+    }
+
+    @DataProvider
+    public Object[][] missingOrNullPolicyObjects() {
+        return new Object[][] {
+            { "{\"futurePolicySetting\":42}",
+                "{\"futurePolicySetting\":42,\"supportedFeatures\":{\"allVersionsAndDeletes\":{\"mode\":3}}}" },
+            { "{\"futurePolicySetting\":42,\"supportedFeatures\":null}",
+                "{\"futurePolicySetting\":42,\"supportedFeatures\":{\"allVersionsAndDeletes\":{\"mode\":3}}}" },
+            { "{\"supportedFeatures\":{\"allVersionsAndDeletes\":null,\"containerCopy\":{\"mode\":2}}}",
+                "{\"supportedFeatures\":{\"allVersionsAndDeletes\":{\"mode\":3},\"containerCopy\":{\"mode\":2}}}" }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "missingOrNullPolicyObjects")
+    public void settingModeCreatesMissingOrNullObjects(String policy, String expected) throws JsonProcessingException {
+        CosmosContainerProperties properties = fromPolicy(policy);
+
+        properties.setChangeFeedPreviousImageRetentionMode(
+            CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
+
+        assertThat(serializedPolicy(properties)).isEqualTo(Utils.getSimpleObjectMapper().readTree(expected));
+        assertThat(properties.getChangeFeedPreviousImageRetentionMode())
+            .isSameAs(CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
+    }
+
+    @DataProvider
+    public Object[][] nonObjectPolicyFields() {
+        return new Object[][] {
+            { "{\"supportedFeatures\":[]}", "supportedFeatures" },
+            { "{\"supportedFeatures\":false}", "supportedFeatures" },
+            { "{\"supportedFeatures\":{\"allVersionsAndDeletes\":[]}}", "allVersionsAndDeletes" },
+            { "{\"supportedFeatures\":{\"allVersionsAndDeletes\":3}}", "allVersionsAndDeletes" }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "nonObjectPolicyFields")
+    public void settingModeRejectsNonObjectsWithoutChangingPolicy(String policy, String fieldName) {
+        CosmosContainerProperties properties = fromPolicy(policy);
+        String before = ModelBridgeInternal.getV2Collection(properties).toJson();
+
+        assertThatThrownBy(() -> properties.setChangeFeedPreviousImageRetentionMode(
+            CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS))
+            .isInstanceOf(UnsupportedOperationException.class)
+            .hasMessageContaining(fieldName);
+
+        assertThat(ModelBridgeInternal.getV2Collection(properties).toJson()).isEqualTo(before);
     }
 
     @DataProvider(name = "unsupportedModes")

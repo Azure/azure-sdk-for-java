@@ -331,8 +331,23 @@ public final class DocumentCollection extends Resource {
         ObjectNode currentPolicy = this.getObject(Constants.Properties.PREVIOUS_IMAGE_RETENTION_POLICY);
         ObjectNode policy = currentPolicy == null ? Utils.getSimpleObjectMapper().createObjectNode() : currentPolicy.deepCopy();
         // Update only the customer-controlled mode, preserving other features and any existing path selection.
-        policy.withObject(ALL_VERSIONS_AND_DELETES_RETENTION_POLICY_PATH).put(Constants.Properties.MODE, mode);
+        ObjectNode supportedFeatures = getOrCreateObjectProperty(policy, "supportedFeatures");
+        ObjectNode featurePolicy = getOrCreateObjectProperty(supportedFeatures, "allVersionsAndDeletes");
+        featurePolicy.put(Constants.Properties.MODE, mode);
         this.set(Constants.Properties.PREVIOUS_IMAGE_RETENTION_POLICY, policy);
+    }
+
+    private static ObjectNode getOrCreateObjectProperty(ObjectNode parent, String propertyName) {
+        // Avoid withObject(), which requires Jackson 2.14 or later.
+        JsonNode value = parent.get(propertyName);
+        if (value == null || value.isNull()) {
+            return parent.putObject(propertyName);
+        }
+        if (!(value instanceof ObjectNode)) {
+            throw new UnsupportedOperationException(
+                "The previous image retention policy property '" + propertyName + "' must be an object.");
+        }
+        return (ObjectNode) value;
     }
 
     /**
