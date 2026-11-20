@@ -42,7 +42,7 @@ class MacPool {
             return this.macProvider.get();
         }
 
-        // Cloning teh rootMac is the fastest option
+        // Cloning the rootMac is the fastest option
         // But while Mac implements Cloneable interface not every MacSpi is required to support cloning
         // If it doesn't  - bad for performance - but functionally correct and necessary
         // - see https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/HowToImplAProvider.html#Step11
