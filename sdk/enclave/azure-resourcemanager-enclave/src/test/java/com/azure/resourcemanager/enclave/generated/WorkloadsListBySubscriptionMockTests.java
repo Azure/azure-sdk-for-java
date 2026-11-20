@@ -22,7 +22,7 @@ public final class WorkloadsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"resourceGroupCollection\":[\"q\",\"pjhmqrhvthl\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"xsmlz\"},{\"id\":\"zdtxetlgyd\"}]}},\"location\":\"qvlnnpxybafiqgea\",\"tags\":{\"lidwcwvmzegjon\":\"gjekglklby\"},\"id\":\"hj\",\"name\":\"rwgdnqzbrfks\",\"type\":\"zhzmtksjci\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"resourceGroupCollection\":[\"ylmbkzudni\",\"rfih\",\"tjewlpxuzzj\",\"nrefqyh\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"hiqakydiwfbrk\"},{\"id\":\"zdq\"}]}},\"location\":\"hcspo\",\"tags\":{\"bjfu\":\"axsipietgb\",\"pnfpubntnbat\":\"bmoichd\",\"uhplrvkmjcwmjv\":\"viqsowsaaelcattc\",\"sfxsf\":\"gfggcvkyylizrzbj\"},\"id\":\"ztlvtmvagbwidqlv\",\"name\":\"ukoveofi\",\"type\":\"rvjfnmjmvlw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class WorkloadsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadResource> response
-            = manager.workloads().listBySubscription("dwv", com.azure.core.util.Context.NONE);
+            = manager.workloads().listBySubscription("mykyujxsglhs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qvlnnpxybafiqgea", response.iterator().next().location());
-        Assertions.assertEquals("gjekglklby", response.iterator().next().tags().get("lidwcwvmzegjon"));
-        Assertions.assertEquals("q", response.iterator().next().properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("hcspo", response.iterator().next().location());
+        Assertions.assertEquals("axsipietgb", response.iterator().next().tags().get("bjfu"));
+        Assertions.assertEquals("ylmbkzudni", response.iterator().next().properties().resourceGroupCollection().get(0));
     }
 }

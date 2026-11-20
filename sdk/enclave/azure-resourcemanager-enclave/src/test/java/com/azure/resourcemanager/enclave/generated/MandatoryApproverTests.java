@@ -12,14 +12,14 @@ public final class MandatoryApproverTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MandatoryApprover model
-            = BinaryData.fromString("{\"approverEntraId\":\"yqzrnkcqvyxlw\"}").toObject(MandatoryApprover.class);
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.approverEntraId());
+            = BinaryData.fromString("{\"approverEntraId\":\"cma\"}").toObject(MandatoryApprover.class);
+        Assertions.assertEquals("cma", model.approverEntraId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MandatoryApprover model = new MandatoryApprover().withApproverEntraId("yqzrnkcqvyxlw");
+        MandatoryApprover model = new MandatoryApprover().withApproverEntraId("cma");
         model = BinaryData.fromObject(model).toObject(MandatoryApprover.class);
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.approverEntraId());
+        Assertions.assertEquals("cma", model.approverEntraId());
     }
 }

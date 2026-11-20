@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class EnclaveConnectionsHandleApprovalDeletionMockTests {
     @Test
     public void testHandleApprovalDeletion() throws Exception {
-        String responseStr = "{\"message\":\"cgxefnohaitraniz\"}";
+        String responseStr = "{\"message\":\"fqovc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class EnclaveConnectionsHandleApprovalDeletionMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ApprovalActionResponse response = manager.enclaveConnections()
-            .handleApprovalDeletion("xudqyemebunaucmc", "rtneemmja", new ApprovalDeletionCallbackRequest()
-                .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE),
-                com.azure.core.util.Context.NONE);
+        ApprovalActionResponse response
+            = manager.enclaveConnections()
+                .handleApprovalDeletion("tmk", "kxpkzwaq", new ApprovalDeletionCallbackRequest()
+                    .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cgxefnohaitraniz", response.message());
+        Assertions.assertEquals("fqovc", response.message());
     }
 }

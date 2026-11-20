@@ -12,11 +12,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.enclave.AzureEnclaveManager;
 import com.azure.resourcemanager.enclave.models.CheckAddressSpaceAvailabilityRequest;
 import com.azure.resourcemanager.enclave.models.CheckAddressSpaceAvailabilityResponse;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
-import com.azure.resourcemanager.enclave.models.SubnetConfiguration;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -34,15 +31,10 @@ public final class CommunitiesCheckAddressSpaceAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckAddressSpaceAvailabilityResponse response = manager.communities()
-            .checkAddressSpaceAvailabilityWithResponse("pezkis", "qjm",
-                new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("g")
-                    .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkName("yparybjufptbjc")
-                        .withNetworkSize("nciuiyqvldaswvpp")
-                        .withCustomCidrRange("qqzlgcndhz")
-                        .withSubnetConfigurations(Arrays.asList(new SubnetConfiguration().withSubnetName("fcfsrhkhgsnx")
-                            .withNetworkPrefixSize(764395735)
-                            .withSubnetDelegation("bzxomeik")))
-                        .withAllowSubnetCommunication(false)),
+            .checkAddressSpaceAvailabilityWithResponse("cxetyvkunmignoh", "k",
+                new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("gqogjwpindedva")
+                    .withPrefixLength(1580003310)
+                    .withAddressSpace("hmedeilbjywfcfxz"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

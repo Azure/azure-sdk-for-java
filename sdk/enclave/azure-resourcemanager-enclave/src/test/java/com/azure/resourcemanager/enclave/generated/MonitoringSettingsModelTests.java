@@ -15,43 +15,37 @@ public final class MonitoringSettingsModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringSettingsModel model = BinaryData.fromString(
-            "{\"diagnosticDestinations\":[{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"cohoq\",\"diagnosticSettingsName\":\"wvl\"},{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"vwhheunmmqhgyx\",\"diagnosticSettingsName\":\"onocukok\"},{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"xuconu\",\"diagnosticSettingsName\":\"zf\"}],\"flowLogDestination\":{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"pewr\",\"diagnosticSettingsName\":\"mwvvjektcxsenhw\"}}")
+            "{\"diagnosticDestinations\":[{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"hfuiuaodsfc\",\"diagnosticSettingsName\":\"vxodpu\"}],\"flowLogDestination\":{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"zydagfuaxbezyiuo\",\"diagnosticSettingsName\":\"twhrdxwzywqsm\"}}")
             .toObject(MonitoringSettingsModel.class);
-        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
-            model.diagnosticDestinations().get(0).destinationType());
-        Assertions.assertEquals("cohoq", model.diagnosticDestinations().get(0).customWorkspaceResourceId());
-        Assertions.assertEquals("wvl", model.diagnosticDestinations().get(0).diagnosticSettingsName());
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE,
+            model.diagnosticDestinations().get(0).destinationType());
+        Assertions.assertEquals("hfuiuaodsfc", model.diagnosticDestinations().get(0).customWorkspaceResourceId());
+        Assertions.assertEquals("vxodpu", model.diagnosticDestinations().get(0).diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
             model.flowLogDestination().destinationType());
-        Assertions.assertEquals("pewr", model.flowLogDestination().customWorkspaceResourceId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.flowLogDestination().diagnosticSettingsName());
+        Assertions.assertEquals("zydagfuaxbezyiuo", model.flowLogDestination().customWorkspaceResourceId());
+        Assertions.assertEquals("twhrdxwzywqsm", model.flowLogDestination().diagnosticSettingsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoringSettingsModel model = new MonitoringSettingsModel()
-            .withDiagnosticDestinations(Arrays.asList(
-                new MonitoringDestination().withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
-                    .withCustomWorkspaceResourceId("cohoq")
-                    .withDiagnosticSettingsName("wvl"),
-                new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                    .withCustomWorkspaceResourceId("vwhheunmmqhgyx")
-                    .withDiagnosticSettingsName("onocukok"),
-                new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                    .withCustomWorkspaceResourceId("xuconu")
-                    .withDiagnosticSettingsName("zf")))
+            .withDiagnosticDestinations(Arrays
+                .asList(new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
+                    .withCustomWorkspaceResourceId("hfuiuaodsfc")
+                    .withDiagnosticSettingsName("vxodpu")))
             .withFlowLogDestination(
-                new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                    .withCustomWorkspaceResourceId("pewr")
-                    .withDiagnosticSettingsName("mwvvjektcxsenhw"));
+                new MonitoringDestination().withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
+                    .withCustomWorkspaceResourceId("zydagfuaxbezyiuo")
+                    .withDiagnosticSettingsName("twhrdxwzywqsm"));
         model = BinaryData.fromObject(model).toObject(MonitoringSettingsModel.class);
-        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
-            model.diagnosticDestinations().get(0).destinationType());
-        Assertions.assertEquals("cohoq", model.diagnosticDestinations().get(0).customWorkspaceResourceId());
-        Assertions.assertEquals("wvl", model.diagnosticDestinations().get(0).diagnosticSettingsName());
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE,
+            model.diagnosticDestinations().get(0).destinationType());
+        Assertions.assertEquals("hfuiuaodsfc", model.diagnosticDestinations().get(0).customWorkspaceResourceId());
+        Assertions.assertEquals("vxodpu", model.diagnosticDestinations().get(0).diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
             model.flowLogDestination().destinationType());
-        Assertions.assertEquals("pewr", model.flowLogDestination().customWorkspaceResourceId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.flowLogDestination().diagnosticSettingsName());
+        Assertions.assertEquals("zydagfuaxbezyiuo", model.flowLogDestination().customWorkspaceResourceId());
+        Assertions.assertEquals("twhrdxwzywqsm", model.flowLogDestination().diagnosticSettingsName());
     }
 }

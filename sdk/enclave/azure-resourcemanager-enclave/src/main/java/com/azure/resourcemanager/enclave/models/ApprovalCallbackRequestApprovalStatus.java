@@ -8,17 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ApprovalCallbackRequestApprovalStatus.
+ * The approval status for an approval callback request.
  */
 public final class ApprovalCallbackRequestApprovalStatus
     extends ExpandableStringEnum<ApprovalCallbackRequestApprovalStatus> {
     /**
-     * Static value Approved for ApprovalCallbackRequestApprovalStatus.
+     * The request is approved.
      */
     public static final ApprovalCallbackRequestApprovalStatus APPROVED = fromString("Approved");
 
     /**
-     * Static value Rejected for ApprovalCallbackRequestApprovalStatus.
+     * The request is rejected.
      */
     public static final ApprovalCallbackRequestApprovalStatus REJECTED = fromString("Rejected");
 

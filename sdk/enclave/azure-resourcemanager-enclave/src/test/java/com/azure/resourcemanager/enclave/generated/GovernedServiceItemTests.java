@@ -16,24 +16,24 @@ public final class GovernedServiceItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernedServiceItem model = BinaryData.fromString(
-            "{\"serviceId\":\"Monitoring\",\"serviceName\":\"ghsauuimjmvxied\",\"option\":\"Deny\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"f\",\"y\",\"osvexcsonpclhoc\",\"hslkevleggzf\"]}")
+            "{\"serviceId\":\"PostgreSQL\",\"serviceName\":\"bonqvpkvlrxnjeas\",\"option\":\"ExceptionOnly\",\"enforcement\":\"Enabled\",\"policyAction\":\"AuditOnly\",\"initiatives\":[\"keyyi\",\"nj\",\"dlwtgrhpdj\"]}")
             .toObject(GovernedServiceItem.class);
-        Assertions.assertEquals(ServiceIdentifier.MONITORING, model.serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.DENY, model.option());
-        Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED, model.enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.NONE, model.policyAction());
+        Assertions.assertEquals(ServiceIdentifier.POSTGRE_SQL, model.serviceId());
+        Assertions.assertEquals(GovernedServiceItemOption.EXCEPTION_ONLY, model.option());
+        Assertions.assertEquals(GovernedServiceItemEnforcement.ENABLED, model.enforcement());
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.AUDIT_ONLY, model.policyAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernedServiceItem model = new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
-            .withOption(GovernedServiceItemOption.DENY)
-            .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
-            .withPolicyAction(GovernedServiceItemPolicyAction.NONE);
+        GovernedServiceItem model = new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
+            .withOption(GovernedServiceItemOption.EXCEPTION_ONLY)
+            .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+            .withPolicyAction(GovernedServiceItemPolicyAction.AUDIT_ONLY);
         model = BinaryData.fromObject(model).toObject(GovernedServiceItem.class);
-        Assertions.assertEquals(ServiceIdentifier.MONITORING, model.serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.DENY, model.option());
-        Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED, model.enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.NONE, model.policyAction());
+        Assertions.assertEquals(ServiceIdentifier.POSTGRE_SQL, model.serviceId());
+        Assertions.assertEquals(GovernedServiceItemOption.EXCEPTION_ONLY, model.option());
+        Assertions.assertEquals(GovernedServiceItemEnforcement.ENABLED, model.enforcement());
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.AUDIT_ONLY, model.policyAction());
     }
 }

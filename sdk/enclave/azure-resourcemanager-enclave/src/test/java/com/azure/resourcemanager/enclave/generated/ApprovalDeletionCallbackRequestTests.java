@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ApprovalDeletionCallbackRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApprovalDeletionCallbackRequest model = BinaryData.fromString("{\"resourceRequestAction\":\"Update\"}")
+        ApprovalDeletionCallbackRequest model = BinaryData.fromString("{\"resourceRequestAction\":\"Create\"}")
             .toObject(ApprovalDeletionCallbackRequest.class);
-        Assertions.assertEquals(ApprovalDeletionCallbackRequestResourceRequestAction.UPDATE,
+        Assertions.assertEquals(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE,
             model.resourceRequestAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalDeletionCallbackRequest model = new ApprovalDeletionCallbackRequest()
-            .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.UPDATE);
+            .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE);
         model = BinaryData.fromObject(model).toObject(ApprovalDeletionCallbackRequest.class);
-        Assertions.assertEquals(ApprovalDeletionCallbackRequestResourceRequestAction.UPDATE,
+        Assertions.assertEquals(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE,
             model.resourceRequestAction());
     }
 }

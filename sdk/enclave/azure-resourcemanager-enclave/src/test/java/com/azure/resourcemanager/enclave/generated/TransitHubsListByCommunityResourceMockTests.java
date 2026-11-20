@@ -25,7 +25,7 @@ public final class TransitHubsListByCommunityResourceMockTests {
     @Test
     public void testListByCommunityResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":7440888451245258989,\"remoteVirtualNetworkId\":\"w\"}},\"resourceCollection\":[\"wzdanojisgglmvo\",\"atuztjct\",\"bpvbkaehxsmzygd\",\"wakwseivmakxhys\"],\"securityProvider\":\"None\"},\"location\":\"ux\",\"tags\":{\"tfjmskdchmaiub\":\"ect\",\"vgmfalkzazmgok\":\"vlzw\",\"zrthqet\":\"dgjqafkmkro\",\"iezeagm\":\"pqrtvaoznqni\"},\"id\":\"eituugedhfpjs\",\"name\":\"lzmb\",\"type\":\"syjdeolctae\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":2118104424859347969,\"remoteVirtualNetworkId\":\"yzbfvxovqkx\"}},\"resourceCollection\":[\"q\",\"gvqrnhyhlwcj\"],\"securityProvider\":\"None\"},\"location\":\"jhffbxrqrkij\",\"tags\":{\"mjswenawwamecle\":\"qlsdxeqztvxwmw\",\"jhtollh\":\"ioulndhzyoe\"},\"id\":\"vidmytzl\",\"name\":\"glxpnovyoanfbcsw\",\"type\":\"agyw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class TransitHubsListByCommunityResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TransitHubResource> response = manager.transitHubs()
-            .listByCommunityResource("pntghyks", "rcdrnxsluvlzlad", com.azure.core.util.Context.NONE);
+            .listByCommunityResource("jizcbfzmcrunfhiu", "nmfbc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ux", response.iterator().next().location());
-        Assertions.assertEquals("ect", response.iterator().next().tags().get("tfjmskdchmaiub"));
-        Assertions.assertEquals(TransitHubState.APPROVED, response.iterator().next().properties().state());
+        Assertions.assertEquals("jhffbxrqrkij", response.iterator().next().location());
+        Assertions.assertEquals("qlsdxeqztvxwmw", response.iterator().next().tags().get("mjswenawwamecle"));
+        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, response.iterator().next().properties().state());
         Assertions.assertEquals(TransitOptionType.PEERING,
             response.iterator().next().properties().transitOption().type());
-        Assertions.assertEquals(7440888451245258989L,
+        Assertions.assertEquals(2118104424859347969L,
             response.iterator().next().properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("w",
+        Assertions.assertEquals("yzbfvxovqkx",
             response.iterator().next().properties().transitOption().params().remoteVirtualNetworkId());
         Assertions.assertEquals(SecurityProvider.NONE, response.iterator().next().properties().securityProvider());
     }

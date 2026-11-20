@@ -25,7 +25,7 @@ public final class DedicatedHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vHubResourceId\":\"ufpbpgnrhol\",\"firewallResourceId\":\"jbfwxipl\",\"firewallPolicyResourceId\":\"solsyjprxslwhdm\",\"designation\":\"Pooled\",\"provisioningState\":\"Succeeded\"},\"location\":\"zjhfvhuwzbxpc\",\"tags\":{\"lrrskap\":\"ihotjecohmxv\",\"ltfokyksyim\":\"xwieexuyade\",\"i\":\"ccgrvkcxzznn\"},\"id\":\"ersejeg\",\"name\":\"rkjguwrjmwvvbt\",\"type\":\"qkxximwgxql\"}";
+            = "{\"properties\":{\"vHubResourceId\":\"n\",\"firewallResourceId\":\"kiioshj\",\"firewallPolicyResourceId\":\"zetybn\",\"designation\":\"Pooled\",\"provisioningState\":\"Succeeded\"},\"location\":\"gctjch\",\"tags\":{\"ebecuvlbefv\":\"mywj\",\"woxzgwpsyxji\":\"cljkxpyl\",\"rdkdkgaw\":\"eypdvrbk\",\"q\":\"wjxildfkcefeyg\"},\"id\":\"jo\",\"name\":\"sfmnaybdjnxumen\",\"type\":\"qontwhymxymulw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,15 @@ public final class DedicatedHubsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DedicatedHubResource response = manager.dedicatedHubs()
-            .define("spugzfeuzjljmph")
-            .withRegion("ecaatsdohzniuc")
-            .withExistingCommunity("ixv", "lwynpbbfqvzfj")
-            .withTags(mapOf("jdllwktle", "ombwii", "lynkgfcfdruw", "owavvqxuajgcqw", "xxtclhuulri", "i"))
+            .define("ersejeg")
+            .withRegion("pbyynvskpajbm")
+            .withExistingCommunity("yimyccgrvk", "xzznnui")
+            .withTags(mapOf("mj", "me", "apeqiscrpil", "xcbccwkqmt"))
             .withProperties(new DedicatedHubProperties().withDesignation(Designation.RESERVED))
             .create();
 
-        Assertions.assertEquals("zjhfvhuwzbxpc", response.location());
-        Assertions.assertEquals("ihotjecohmxv", response.tags().get("lrrskap"));
+        Assertions.assertEquals("gctjch", response.location());
+        Assertions.assertEquals("mywj", response.tags().get("ebecuvlbefv"));
         Assertions.assertEquals(Designation.POOLED, response.properties().designation());
     }
 

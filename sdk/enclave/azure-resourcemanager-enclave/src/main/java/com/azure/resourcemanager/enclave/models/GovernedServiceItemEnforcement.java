@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for GovernedServiceItemEnforcement.
+ * The enforcement state for a governed service.
  */
 public final class GovernedServiceItemEnforcement extends ExpandableStringEnum<GovernedServiceItemEnforcement> {
     /**
-     * Static value Enabled for GovernedServiceItemEnforcement.
+     * Enforcement is enabled.
      */
     public static final GovernedServiceItemEnforcement ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for GovernedServiceItemEnforcement.
+     * Enforcement is disabled.
      */
     public static final GovernedServiceItemEnforcement DISABLED = fromString("Disabled");
 

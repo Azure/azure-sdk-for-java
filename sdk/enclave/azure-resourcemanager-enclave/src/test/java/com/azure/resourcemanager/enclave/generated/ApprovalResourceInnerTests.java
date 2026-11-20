@@ -19,58 +19,51 @@ public final class ApprovalResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"parentResourceId\":\"rpddouifamo\",\"grandparentResourceId\":\"z\",\"approvers\":[{\"approverEntraId\":\"knlqwzdvpiwhxqsz\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-05-25T04:23:34Z\",\"mandatoryApprovalGroupMembershipIds\":[\"quhuxylrj\",\"m\",\"ygjbmzyospspsh\"]},{\"approverEntraId\":\"kfkyjp\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-04-10T13:24:59Z\",\"mandatoryApprovalGroupMembershipIds\":[\"sdfppyogtie\",\"ujtv\"]},{\"approverEntraId\":\"zkc\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-08-12T08:15:01Z\",\"mandatoryApprovalGroupMembershipIds\":[\"unjdx\",\"glnkvxlxpagl\",\"ivbgkcv\",\"hpzvuqdflvoniyp\"]}],\"ticketId\":\"ubcpzgpxti\",\"createdAt\":\"2021-10-13T21:15:45Z\",\"stateChangedAt\":\"2021-06-12T00:57:38Z\",\"mandatoryApprovers\":[{\"approverEntraId\":\"ibg\"},{\"approverEntraId\":\"jxgpnrhgovfg\"},{\"approverEntraId\":\"ik\"},{\"approverEntraId\":\"mhha\"}],\"minimumApproversRequired\":861961081471240230,\"approversApprovedCount\":6664164718456368498,\"mandatoryApproversApprovedCount\":8990299385142231806,\"approvedByEntraIds\":[\"zdfuydzvkfvxcnqm\",\"qpswokmvkhlggdhb\",\"mzqkz\",\"zu\"],\"requestMetadata\":{\"resourceAction\":\"iwtglxxhljfpg\",\"approvalCallbackRoute\":\"crmnzhrgmqgjs\",\"approvalCallbackPayload\":\"pqcbfrmbodthsq\",\"approvalStatus\":\"Pending\"}},\"id\":\"iibakcl\",\"name\":\"c\",\"type\":\"fr\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"parentResourceId\":\"wvxwlmzqwmvt\",\"grandparentResourceId\":\"jmxmcuqud\",\"approvers\":[{\"approverEntraId\":\"clxyn\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-08-20T13:54:14Z\",\"mandatoryApprovalGroupMembershipIds\":[\"abuiy\",\"ibuz\",\"hdugneiknpg\"]}],\"ticketId\":\"gjiuqhibto\",\"createdAt\":\"2021-01-30T05:37:02Z\",\"stateChangedAt\":\"2021-08-27T21:29:32Z\",\"mandatoryApprovers\":[{\"approverEntraId\":\"d\"},{\"approverEntraId\":\"urrxxgewpktv\"},{\"approverEntraId\":\"ylkmqp\"}],\"minimumApproversRequired\":5245321407635126316,\"approversApprovedCount\":8613417390842253719,\"mandatoryApproversApprovedCount\":5332986278611814316,\"approvedByEntraIds\":[\"loxoebqin\",\"ipnwj\"],\"requestMetadata\":{\"resourceAction\":\"ujqlafcbahh\",\"approvalCallbackRoute\":\"pofoi\",\"approvalCallbackPayload\":\"w\",\"approvalStatus\":\"Expired\"}},\"id\":\"kmkkholvdnd\",\"name\":\"iauogphuartv\",\"type\":\"iukyefchnmna\"}")
             .toObject(ApprovalResourceInner.class);
-        Assertions.assertEquals("rpddouifamo", model.properties().parentResourceId());
-        Assertions.assertEquals("z", model.properties().grandparentResourceId());
-        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.properties().approvers().get(0).approverEntraId());
-        Assertions.assertEquals(ActionPerformed.REJECTED, model.properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T04:23:34Z"),
+        Assertions.assertEquals("wvxwlmzqwmvt", model.properties().parentResourceId());
+        Assertions.assertEquals("jmxmcuqud", model.properties().grandparentResourceId());
+        Assertions.assertEquals("clxyn", model.properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals(ActionPerformed.APPROVED, model.properties().approvers().get(0).actionPerformed());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T13:54:14Z"),
             model.properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("ubcpzgpxti", model.properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T21:15:45Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-12T00:57:38Z"), model.properties().stateChangedAt());
-        Assertions.assertEquals("iwtglxxhljfpg", model.properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("crmnzhrgmqgjs", model.properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("pqcbfrmbodthsq", model.properties().requestMetadata().approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.PENDING, model.properties().requestMetadata().approvalStatus());
+        Assertions.assertEquals("gjiuqhibto", model.properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T05:37:02Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T21:29:32Z"), model.properties().stateChangedAt());
+        Assertions.assertEquals("ujqlafcbahh", model.properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("pofoi", model.properties().requestMetadata().approvalCallbackRoute());
+        Assertions.assertEquals("w", model.properties().requestMetadata().approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.EXPIRED, model.properties().requestMetadata().approvalStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalResourceInner model
-            = new ApprovalResourceInner().withProperties(new ApprovalProperties().withParentResourceId("rpddouifamo")
-                .withGrandparentResourceId("z")
-                .withApprovers(Arrays.asList(
-                    new Approver().withApproverEntraId("knlqwzdvpiwhxqsz")
-                        .withActionPerformed(ActionPerformed.REJECTED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-05-25T04:23:34Z")),
-                    new Approver().withApproverEntraId("kfkyjp")
-                        .withActionPerformed(ActionPerformed.REJECTED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-04-10T13:24:59Z")),
-                    new Approver().withApproverEntraId("zkc")
-                        .withActionPerformed(ActionPerformed.APPROVED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-08-12T08:15:01Z"))))
-                .withTicketId("ubcpzgpxti")
-                .withCreatedAt(OffsetDateTime.parse("2021-10-13T21:15:45Z"))
-                .withStateChangedAt(OffsetDateTime.parse("2021-06-12T00:57:38Z"))
-                .withRequestMetadata(new RequestMetadata().withResourceAction("iwtglxxhljfpg")
-                    .withApprovalCallbackRoute("crmnzhrgmqgjs")
-                    .withApprovalCallbackPayload("pqcbfrmbodthsq")
-                    .withApprovalStatus(ApprovalStatus.PENDING)));
+            = new ApprovalResourceInner().withProperties(new ApprovalProperties().withParentResourceId("wvxwlmzqwmvt")
+                .withGrandparentResourceId("jmxmcuqud")
+                .withApprovers(Arrays.asList(new Approver().withApproverEntraId("clxyn")
+                    .withActionPerformed(ActionPerformed.APPROVED)
+                    .withLastUpdatedAt(OffsetDateTime.parse("2021-08-20T13:54:14Z"))))
+                .withTicketId("gjiuqhibto")
+                .withCreatedAt(OffsetDateTime.parse("2021-01-30T05:37:02Z"))
+                .withStateChangedAt(OffsetDateTime.parse("2021-08-27T21:29:32Z"))
+                .withRequestMetadata(new RequestMetadata().withResourceAction("ujqlafcbahh")
+                    .withApprovalCallbackRoute("pofoi")
+                    .withApprovalCallbackPayload("w")
+                    .withApprovalStatus(ApprovalStatus.EXPIRED)));
         model = BinaryData.fromObject(model).toObject(ApprovalResourceInner.class);
-        Assertions.assertEquals("rpddouifamo", model.properties().parentResourceId());
-        Assertions.assertEquals("z", model.properties().grandparentResourceId());
-        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.properties().approvers().get(0).approverEntraId());
-        Assertions.assertEquals(ActionPerformed.REJECTED, model.properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T04:23:34Z"),
+        Assertions.assertEquals("wvxwlmzqwmvt", model.properties().parentResourceId());
+        Assertions.assertEquals("jmxmcuqud", model.properties().grandparentResourceId());
+        Assertions.assertEquals("clxyn", model.properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals(ActionPerformed.APPROVED, model.properties().approvers().get(0).actionPerformed());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T13:54:14Z"),
             model.properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("ubcpzgpxti", model.properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T21:15:45Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-12T00:57:38Z"), model.properties().stateChangedAt());
-        Assertions.assertEquals("iwtglxxhljfpg", model.properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("crmnzhrgmqgjs", model.properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("pqcbfrmbodthsq", model.properties().requestMetadata().approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.PENDING, model.properties().requestMetadata().approvalStatus());
+        Assertions.assertEquals("gjiuqhibto", model.properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T05:37:02Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T21:29:32Z"), model.properties().stateChangedAt());
+        Assertions.assertEquals("ujqlafcbahh", model.properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("pofoi", model.properties().requestMetadata().approvalCallbackRoute());
+        Assertions.assertEquals("w", model.properties().requestMetadata().approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.EXPIRED, model.properties().requestMetadata().approvalStatus());
     }
 }

@@ -181,6 +181,34 @@ public interface CommunityEndpoints {
         String communityEndpointName, ApprovalDeletionCallbackRequest body, Context context);
 
     /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource.
+     */
+    CommunityEndpointResource sync(String resourceGroupName, String communityName, String communityEndpointName);
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource.
+     */
+    CommunityEndpointResource sync(String resourceGroupName, String communityName, String communityEndpointName,
+        Context context);
+
+    /**
      * Get a CommunityEndpointResource.
      * 
      * @param id the resource ID.

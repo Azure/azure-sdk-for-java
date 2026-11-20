@@ -23,6 +23,7 @@ import com.azure.resourcemanager.enclave.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.enclave.models.MonitoringDestinationType;
 import com.azure.resourcemanager.enclave.models.PrincipalType;
 import com.azure.resourcemanager.enclave.models.ServiceIdentifier;
+import com.azure.resourcemanager.enclave.models.SubnetJoinPolicyMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +34,7 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"addressSpace\":\"vweht\",\"dnsServers\":[\"xhzzyse\",\"usxivzrrryvei\",\"ipsk\"],\"provisioningState\":\"Failed\",\"resourceCollection\":[\"vfuzka\"],\"managedResourceGroupName\":\"jvvruxwigsyei\",\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"jtgrqgdgkkileplk\"},{\"id\":\"mknhwtbbaedor\"},{\"id\":\"mqfl\"}]},\"governedServiceList\":[{\"serviceId\":\"ContainerRegistry\",\"serviceName\":\"gwumgxdgdhpa\",\"option\":\"ExceptionOnly\",\"enforcement\":\"Enabled\",\"policyAction\":\"None\",\"initiatives\":[\"jsaqwotmmwllcols\",\"sxap\",\"efh\"]}],\"policyOverride\":\"None\",\"communityRoleAssignments\":[{\"roleDefinitionId\":\"okjljnhvlqjbekp\",\"principals\":[{\"id\":\"snbksdqhj\",\"type\":\"Group\"},{\"id\":\"klxesl\",\"type\":\"Group\"},{\"id\":\"hustcpoqmavnwqjw\",\"type\":\"Group\"}],\"condition\":\"nlejjjkxybwf\"},{\"roleDefinitionId\":\"bkjbz\",\"principals\":[{\"id\":\"svkzykj\",\"type\":\"Group\"}],\"condition\":\"nsxfwu\"}],\"firewallSku\":\"Basic\",\"approvalSettings\":{\"communityEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":419506546,\"mandatoryApprovers\":[{\"approverEntraId\":\"mgjfbpkuwxeoio\"},{\"approverEntraId\":\"fiz\"},{\"approverEntraId\":\"av\"}]},\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":611656643,\"mandatoryApprovers\":[{\"approverEntraId\":\"aykmmf\"}]},\"enclaveCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1870584633,\"mandatoryApprovers\":[{\"approverEntraId\":\"xmdewsrsxkrplbj\"},{\"approverEntraId\":\"zej\"}]},\"connectionCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":999732785,\"mandatoryApprovers\":[{\"approverEntraId\":\"suhbrnn\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":561572161,\"mandatoryApprovers\":[{\"approverEntraId\":\"qkbiwet\"}]},\"communityMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":914577045,\"mandatoryApprovers\":[{\"approverEntraId\":\"qyhgf\"},{\"approverEntraId\":\"etzlexbsfledynoj\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1263064497,\"mandatoryApprovers\":[{\"approverEntraId\":\"kkdtnhqsy\"},{\"approverEntraId\":\"ljselp\"},{\"approverEntraId\":\"pbafvafhlbylc\"}]}},\"maintenanceModeConfiguration\":{\"mode\":\"CanNotDelete\",\"principals\":[{\"id\":\"rhyzdf\",\"type\":\"Group\"},{\"id\":\"sofpltd\",\"type\":\"User\"},{\"id\":\"airrhvhfnracw\",\"type\":\"ServicePrincipal\"},{\"id\":\"qigtuujwouhdaws\",\"type\":\"Group\"}],\"justification\":\"Governance\"},\"dedicatedHubList\":[{\"properties\":{\"vHubResourceId\":\"jybvit\",\"firewallResourceId\":\"kjyaznumtg\",\"firewallPolicyResourceId\":\"uwdchozf\",\"designation\":\"Pooled\",\"provisioningState\":\"Failed\"},\"location\":\"v\",\"tags\":{\"lnuwiguy\":\"akizvoaikna\",\"wxh\":\"lykwphvxz\",\"exaonwivkcq\":\"pejtl\"},\"id\":\"rxhxkn\",\"name\":\"ccrmmk\",\"type\":\"upijubyqjfkakfq\"},{\"properties\":{\"vHubResourceId\":\"em\",\"firewallResourceId\":\"ldudxjascowv\",\"firewallPolicyResourceId\":\"jkpdxphlkksnm\",\"designation\":\"Reserved\",\"provisioningState\":\"Succeeded\"},\"location\":\"jd\",\"tags\":{\"uqwqulsutrjbhxyk\":\"qnwsithuqolyah\",\"g\":\"hyqezvqq\",\"ve\":\"rftb\"},\"id\":\"reuquowtljvf\",\"name\":\"hreagk\",\"type\":\"yxvrqtvbczsul\"},{\"properties\":{\"vHubResourceId\":\"glmep\",\"firewallResourceId\":\"fs\",\"firewallPolicyResourceId\":\"kgsangpszng\",\"designation\":\"Pooled\",\"provisioningState\":\"Updating\"},\"location\":\"kvec\",\"tags\":{\"foknubnoitp\":\"cngoadyedmzrg\",\"rgdg\":\"pz\",\"we\":\"vcoqraswugyxpqi\"},\"id\":\"alwvskbu\",\"name\":\"z\",\"type\":\"caqt\"},{\"properties\":{\"vHubResourceId\":\"co\",\"firewallResourceId\":\"ujpdsxzak\",\"firewallPolicyResourceId\":\"jkmvbi\",\"designation\":\"Reserved\",\"provisioningState\":\"Creating\"},\"location\":\"cvovjufyc\",\"tags\":{\"riuxegthortuda\":\"lbemyej\",\"zmnhiilialwc\":\"lpjfelqerpptcbgq\"},\"id\":\"gckbb\",\"name\":\"ccgzpraoxnyu\",\"type\":\"fa\"}],\"monitoringSettings\":{\"diagnosticDestinations\":[{\"destinationType\":\"CustomWorkspace\",\"customWorkspaceResourceId\":\"p\",\"diagnosticSettingsName\":\"x\"},{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"bh\",\"diagnosticSettingsName\":\"dxyurnpnuhza\"},{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"nuhiig\",\"diagnosticSettingsName\":\"lbuigv\"},{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"tvcrkdlbnbqxvh\",\"diagnosticSettingsName\":\"yhzlwxaeaovurexd\"}],\"flowLogDestination\":{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"dwead\",\"diagnosticSettingsName\":\"zmwntopagt\"}},\"addressSpaces\":[\"mmagoaqylkjzt\"]},\"identity\":{\"principalId\":\"azjcgmxitpfin\",\"tenantId\":\"pdltkrlg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kyeclcdigpta\":{\"principalId\":\"rvcqguefzhomphe\",\"clientId\":\"urelyujlfyoump\"}}},\"location\":\"rzmq\",\"tags\":{\"yzyzjd\":\"ycijoclxiutgj\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"},\"id\":\"v\",\"name\":\"atbwbqam\",\"type\":\"e\"}";
+            = "{\"properties\":{\"addressSpace\":\"n\",\"dnsServers\":[\"tkschgcgqyhl\"],\"provisioningState\":\"Deleting\",\"resourceCollection\":[\"rhvyeld\"],\"managedResourceGroupName\":\"jv\",\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ws\"},{\"id\":\"kjtasb\"}]},\"governedServiceList\":[{\"serviceId\":\"Insights\",\"serviceName\":\"kxkdtxfkndlq\",\"option\":\"Allow\",\"enforcement\":\"Disabled\",\"policyAction\":\"Enforce\",\"initiatives\":[\"bugtywatmqa\"]},{\"serviceId\":\"PrivateDNSZones\",\"serviceName\":\"eatgroeshoy\",\"option\":\"Deny\",\"enforcement\":\"Enabled\",\"policyAction\":\"Enforce\",\"initiatives\":[\"faoytehqpuv\",\"mvqmtdwckygroej\",\"ndljdjuskbr\"]},{\"serviceId\":\"AzureFirewalls\",\"serviceName\":\"ynkceysfaqegpl\",\"option\":\"Allow\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"vbxgkqusyb\"]}],\"policyOverride\":\"None\",\"communityRoleAssignments\":[{\"roleDefinitionId\":\"carvvlfntymtpoi\",\"principals\":[{\"id\":\"azerohzrsq\",\"type\":\"User\"}],\"condition\":\"xkdnwqapf\"},{\"roleDefinitionId\":\"sdpcvess\",\"principals\":[{\"id\":\"h\",\"type\":\"Group\"},{\"id\":\"uipldqq\",\"type\":\"ServicePrincipal\"}],\"condition\":\"kva\"}],\"firewallSku\":\"Standard\",\"subnetJoinPolicyMode\":\"Audit\",\"approvalSettings\":{\"communityEndpointUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1207141724,\"mandatoryApprovers\":[{\"approverEntraId\":\"hta\"}]},\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":177564375,\"mandatoryApprovers\":[{\"approverEntraId\":\"ev\"}]},\"enclaveCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1417686026,\"mandatoryApprovers\":[{\"approverEntraId\":\"ryvei\"},{\"approverEntraId\":\"ipsk\"},{\"approverEntraId\":\"yzatvfuzkaft\"},{\"approverEntraId\":\"vvruxwi\"}]},\"connectionCreation\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":518862153,\"mandatoryApprovers\":[{\"approverEntraId\":\"smjtgrqgdg\"},{\"approverEntraId\":\"kileplkcsmknhwtb\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":765251868,\"mandatoryApprovers\":[{\"approverEntraId\":\"mqfl\"}]},\"communityMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":973456519,\"mandatoryApprovers\":[{\"approverEntraId\":\"mgxdgdhpabgd\"},{\"approverEntraId\":\"xjd\"},{\"approverEntraId\":\"vjsaqwotm\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":76622084,\"mandatoryApprovers\":[{\"approverEntraId\":\"rsxaptefh\"},{\"approverEntraId\":\"xcgjokjljnhvlq\"},{\"approverEntraId\":\"bekpeeksnbksdqhj\"}]}},\"maintenanceModeConfiguration\":{\"mode\":\"Advanced\",\"principals\":[{\"id\":\"eslk\",\"type\":\"ServicePrincipal\"},{\"id\":\"ustcpoq\",\"type\":\"Group\"},{\"id\":\"vnwqjwgo\",\"type\":\"User\"},{\"id\":\"lejjjkxy\",\"type\":\"User\"}],\"justification\":\"Networking\"},\"dedicatedHubList\":[{\"properties\":{\"vHubResourceId\":\"ztensvkzykjtj\",\"firewallResourceId\":\"sxfwushcdp\",\"firewallPolicyResourceId\":\"pn\",\"designation\":\"Reserved\",\"provisioningState\":\"Creating\"},\"location\":\"bpkuwxeoio\",\"tags\":{\"jzwfb\":\"zfav\",\"mmfz\":\"yay\",\"rzx\":\"bfw\"},\"id\":\"dew\",\"name\":\"rsxkr\",\"type\":\"lbjazejww\"},{\"properties\":{\"vHubResourceId\":\"oypsuhbrnnhj\",\"firewallResourceId\":\"qwjhqkbiwetpozyc\",\"firewallPolicyResourceId\":\"iqyhgfse\",\"designation\":\"Pooled\",\"provisioningState\":\"Updating\"},\"location\":\"sfledyn\",\"tags\":{\"fbzkk\":\"ziu\",\"selpkpbaf\":\"tnhqsycl\",\"cbevxrhyzdfw\":\"afhlbyl\",\"mairrh\":\"sofpltd\"},\"id\":\"hfnrac\",\"name\":\"npq\",\"type\":\"g\"},{\"properties\":{\"vHubResourceId\":\"jwouhda\",\"firewallResourceId\":\"igrb\",\"firewallPolicyResourceId\":\"xsjybvitvqk\",\"designation\":\"Pooled\",\"provisioningState\":\"Creating\"},\"location\":\"mtggmu\",\"tags\":{\"fexl\":\"hozfn\"},\"id\":\"xn\",\"name\":\"akizvoaikna\",\"type\":\"lnuwiguy\"},{\"properties\":{\"vHubResourceId\":\"kwph\",\"firewallResourceId\":\"zc\",\"firewallPolicyResourceId\":\"hmpejtlkexaonw\",\"designation\":\"Pooled\",\"provisioningState\":\"Deleting\"},\"location\":\"rxhxkn\",\"tags\":{\"yqjf\":\"rmmkyupiju\",\"jascowvfdjkpd\":\"akfqfrkemyildud\",\"zvyfijdkzuqnwsi\":\"phlkksnm\",\"ah\":\"huqol\"},\"id\":\"uqwqulsutrjbhxyk\",\"name\":\"hyqezvqq\",\"type\":\"g\"}],\"monitoringSettings\":{\"diagnosticDestinations\":[{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"ve\",\"diagnosticSettingsName\":\"e\"}],\"flowLogDestination\":{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"wtl\",\"diagnosticSettingsName\":\"fwhreagkhyxv\"}},\"addressSpaces\":[\"vbczsulmdg\",\"lmepjpf\",\"eykgsangpszngaf\"]},\"identity\":{\"principalId\":\"lkvec\",\"tenantId\":\"jcngoadyed\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"aswugyxpqitw\":{\"principalId\":\"foknubnoitp\",\"clientId\":\"ztrgdgxvcoq\"},\"pdsxzakuejkm\":{\"principalId\":\"alwvskbu\",\"clientId\":\"acaqtyltcoqcu\"},\"yeji\":{\"principalId\":\"iztjof\",\"clientId\":\"vovjufycsjmlbe\"},\"h\":{\"principalId\":\"uxegthortudawlpj\",\"clientId\":\"lqerpptcbgqnzm\"}}},\"location\":\"lialwcjgckbbcccg\",\"tags\":{\"xnyuffatsgftipwc\":\"a\",\"hza\":\"byubhiqdxyurnpn\",\"yl\":\"ccnuhiig\"},\"id\":\"ui\",\"name\":\"vxva\",\"type\":\"vcrk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,35 +44,36 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunityResource response = manager.communities()
-            .getByResourceGroupWithResponse("zhhkuuipldqqc", "ekvalblhtjq", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("qsczpgvdwnapfdqw", "wf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rzmq", response.location());
-        Assertions.assertEquals("ycijoclxiutgj", response.tags().get("yzyzjd"));
-        Assertions.assertEquals("vweht", response.properties().addressSpace());
-        Assertions.assertEquals("xhzzyse", response.properties().dnsServers().get(0));
-        Assertions.assertEquals(ServiceIdentifier.CONTAINER_REGISTRY,
+        Assertions.assertEquals("lialwcjgckbbcccg", response.location());
+        Assertions.assertEquals("a", response.tags().get("xnyuffatsgftipwc"));
+        Assertions.assertEquals("n", response.properties().addressSpace());
+        Assertions.assertEquals("tkschgcgqyhl", response.properties().dnsServers().get(0));
+        Assertions.assertEquals(ServiceIdentifier.INSIGHTS,
             response.properties().governedServiceList().get(0).serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.EXCEPTION_ONLY,
+        Assertions.assertEquals(GovernedServiceItemOption.ALLOW,
             response.properties().governedServiceList().get(0).option());
-        Assertions.assertEquals(GovernedServiceItemEnforcement.ENABLED,
+        Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED,
             response.properties().governedServiceList().get(0).enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.NONE,
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.ENFORCE,
             response.properties().governedServiceList().get(0).policyAction());
         Assertions.assertEquals(CommunityPropertiesPolicyOverride.NONE, response.properties().policyOverride());
-        Assertions.assertEquals("okjljnhvlqjbekp",
+        Assertions.assertEquals("carvvlfntymtpoi",
             response.properties().communityRoleAssignments().get(0).roleDefinitionId());
-        Assertions.assertEquals("snbksdqhj",
+        Assertions.assertEquals("azerohzrsq",
             response.properties().communityRoleAssignments().get(0).principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.GROUP,
+        Assertions.assertEquals(PrincipalType.USER,
             response.properties().communityRoleAssignments().get(0).principals().get(0).type());
-        Assertions.assertEquals("nlejjjkxybwf", response.properties().communityRoleAssignments().get(0).condition());
-        Assertions.assertEquals(FirewallSKU.BASIC, response.properties().firewallSku());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
+        Assertions.assertEquals("xkdnwqapf", response.properties().communityRoleAssignments().get(0).condition());
+        Assertions.assertEquals(FirewallSKU.STANDARD, response.properties().firewallSku());
+        Assertions.assertEquals(SubnetJoinPolicyMode.AUDIT, response.properties().subnetJoinPolicyMode());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             response.properties().granularApprovalSettings().communityEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(419506546,
+        Assertions.assertEquals(1207141724,
             response.properties().granularApprovalSettings().communityEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("mgjfbpkuwxeoio",
+        Assertions.assertEquals("hta",
             response.properties()
                 .granularApprovalSettings()
                 .communityEndpointUpdate()
@@ -80,9 +82,9 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             response.properties().granularApprovalSettings().enclaveEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(611656643,
+        Assertions.assertEquals(177564375,
             response.properties().granularApprovalSettings().enclaveEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("aykmmf",
+        Assertions.assertEquals("ev",
             response.properties()
                 .granularApprovalSettings()
                 .enclaveEndpointUpdate()
@@ -91,20 +93,20 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             response.properties().granularApprovalSettings().enclaveCreation().approvalPolicy());
-        Assertions.assertEquals(1870584633,
+        Assertions.assertEquals(1417686026,
             response.properties().granularApprovalSettings().enclaveCreation().minimumApproversRequired());
-        Assertions.assertEquals("xmdewsrsxkrplbj",
+        Assertions.assertEquals("ryvei",
             response.properties()
                 .granularApprovalSettings()
                 .enclaveCreation()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             response.properties().granularApprovalSettings().connectionCreation().approvalPolicy());
-        Assertions.assertEquals(999732785,
+        Assertions.assertEquals(518862153,
             response.properties().granularApprovalSettings().connectionCreation().minimumApproversRequired());
-        Assertions.assertEquals("suhbrnn",
+        Assertions.assertEquals("smjtgrqgdg",
             response.properties()
                 .granularApprovalSettings()
                 .connectionCreation()
@@ -113,9 +115,9 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             response.properties().granularApprovalSettings().connectionUpdate().approvalPolicy());
-        Assertions.assertEquals(561572161,
+        Assertions.assertEquals(765251868,
             response.properties().granularApprovalSettings().connectionUpdate().minimumApproversRequired());
-        Assertions.assertEquals("qkbiwet",
+        Assertions.assertEquals("mqfl",
             response.properties()
                 .granularApprovalSettings()
                 .connectionUpdate()
@@ -124,47 +126,46 @@ public final class CommunitiesGetByResourceGroupWithResponseMockTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             response.properties().granularApprovalSettings().communityMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(914577045,
+        Assertions.assertEquals(973456519,
             response.properties().granularApprovalSettings().communityMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("qyhgf",
+        Assertions.assertEquals("mgxdgdhpabgd",
             response.properties()
                 .granularApprovalSettings()
                 .communityMaintenanceMode()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             response.properties().granularApprovalSettings().enclaveMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1263064497,
+        Assertions.assertEquals(76622084,
             response.properties().granularApprovalSettings().enclaveMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("kkdtnhqsy",
+        Assertions.assertEquals("rsxaptefh",
             response.properties()
                 .granularApprovalSettings()
                 .enclaveMaintenanceMode()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.CAN_NOT_DELETE,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED,
             response.properties().maintenanceModeConfiguration().mode());
-        Assertions.assertEquals("rhyzdf",
-            response.properties().maintenanceModeConfiguration().principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.GROUP,
+        Assertions.assertEquals("eslk", response.properties().maintenanceModeConfiguration().principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL,
             response.properties().maintenanceModeConfiguration().principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.GOVERNANCE,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING,
             response.properties().maintenanceModeConfiguration().justification());
-        Assertions.assertEquals(MonitoringDestinationType.CUSTOM_WORKSPACE,
-            response.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
-        Assertions.assertEquals("p",
-            response.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
-        Assertions.assertEquals("x",
-            response.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
         Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
+            response.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
+        Assertions.assertEquals("ve",
+            response.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
+        Assertions.assertEquals("e",
+            response.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE,
             response.properties().monitoringSettings().flowLogDestination().destinationType());
-        Assertions.assertEquals("dwead",
+        Assertions.assertEquals("wtl",
             response.properties().monitoringSettings().flowLogDestination().customWorkspaceResourceId());
-        Assertions.assertEquals("zmwntopagt",
+        Assertions.assertEquals("fwhreagkhyxv",
             response.properties().monitoringSettings().flowLogDestination().diagnosticSettingsName());
-        Assertions.assertEquals("mmagoaqylkjzt", response.properties().addressSpaces().get(0));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("vbczsulmdg", response.properties().addressSpaces().get(0));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }

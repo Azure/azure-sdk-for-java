@@ -25,7 +25,7 @@ public final class WorkloadsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGroupCollection\":[\"um\",\"ikjcjcazt\",\"wsnsqowx\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ikytwvczcswka\"},{\"id\":\"ejyfdvlvhbwrnfx\"}]}},\"location\":\"ddpqt\",\"tags\":{\"naoyank\":\"n\"},\"id\":\"oe\",\"name\":\"swankltytmh\",\"type\":\"roznnhdrlktgj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGroupCollection\":[\"ltxdwhmozu\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ns\"},{\"id\":\"jzfpafolpymwamx\"}]}},\"location\":\"rag\",\"tags\":{\"a\":\"phtvdu\",\"jchcsrlzknmzla\":\"vl\"},\"id\":\"rupdwvnphcnzq\",\"name\":\"pjhmqrhvthl\",\"type\":\"iwdcxsmlzzhzd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,16 @@ public final class WorkloadsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadResource response = manager.workloads()
-            .define("wfpfmdgycx")
-            .withRegion("esi")
-            .withExistingVirtualEnclave("digsxcdgl", "plkeuachtomflryt")
-            .withTags(mapOf("hcecybmrqbr", "tljqobbpih", "crse", "bbmpxdlvykfre", "jggsvo", "wjksghudgzhxo",
-                "hrkmdyomkxfbvfbh", "jkxibda"))
-            .withProperties(
-                new WorkloadProperties().withResourceGroupCollection(Arrays.asList("qjjyslurl", "shhkvpedw")))
+            .define("lfojuidjp")
+            .withRegion("dbqzolxrzvhqjw")
+            .withExistingVirtualEnclave("z", "iblkujr")
+            .withTags(mapOf("rrkolawjmjs", "tgvgzp"))
+            .withProperties(new WorkloadProperties().withResourceGroupCollection(Arrays.asList("ejikzoeovvtzejet")))
             .create();
 
-        Assertions.assertEquals("ddpqt", response.location());
-        Assertions.assertEquals("n", response.tags().get("naoyank"));
-        Assertions.assertEquals("um", response.properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("rag", response.location());
+        Assertions.assertEquals("phtvdu", response.tags().get("a"));
+        Assertions.assertEquals("ltxdwhmozu", response.properties().resourceGroupCollection().get(0));
     }
 
     // Use "Map.of" if available

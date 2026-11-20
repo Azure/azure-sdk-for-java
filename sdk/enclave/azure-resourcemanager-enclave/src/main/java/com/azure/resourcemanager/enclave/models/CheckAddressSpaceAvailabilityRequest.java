@@ -23,9 +23,15 @@ public final class CheckAddressSpaceAvailabilityRequest
     private String communityResourceId;
 
     /*
-     * Information about the enclave virtual network
+     * CIDR prefix length (e.g., 22, 23, 24). Determines the size of the address space to check.
      */
-    private EnclaveVirtualNetworkModel enclaveVirtualNetwork;
+    private Integer prefixLength;
+
+    /*
+     * Specific CIDR address space to check availability for. If omitted, RP checks for any available space of the given
+     * prefixLength.
+     */
+    private String addressSpace;
 
     /**
      * Creates an instance of CheckAddressSpaceAvailabilityRequest class.
@@ -54,23 +60,46 @@ public final class CheckAddressSpaceAvailabilityRequest
     }
 
     /**
-     * Get the enclaveVirtualNetwork property: Information about the enclave virtual network.
+     * Get the prefixLength property: CIDR prefix length (e.g., 22, 23, 24). Determines the size of the address space to
+     * check.
      * 
-     * @return the enclaveVirtualNetwork value.
+     * @return the prefixLength value.
      */
-    public EnclaveVirtualNetworkModel enclaveVirtualNetwork() {
-        return this.enclaveVirtualNetwork;
+    public Integer prefixLength() {
+        return this.prefixLength;
     }
 
     /**
-     * Set the enclaveVirtualNetwork property: Information about the enclave virtual network.
+     * Set the prefixLength property: CIDR prefix length (e.g., 22, 23, 24). Determines the size of the address space to
+     * check.
      * 
-     * @param enclaveVirtualNetwork the enclaveVirtualNetwork value to set.
+     * @param prefixLength the prefixLength value to set.
      * @return the CheckAddressSpaceAvailabilityRequest object itself.
      */
-    public CheckAddressSpaceAvailabilityRequest
-        withEnclaveVirtualNetwork(EnclaveVirtualNetworkModel enclaveVirtualNetwork) {
-        this.enclaveVirtualNetwork = enclaveVirtualNetwork;
+    public CheckAddressSpaceAvailabilityRequest withPrefixLength(Integer prefixLength) {
+        this.prefixLength = prefixLength;
+        return this;
+    }
+
+    /**
+     * Get the addressSpace property: Specific CIDR address space to check availability for. If omitted, RP checks for
+     * any available space of the given prefixLength.
+     * 
+     * @return the addressSpace value.
+     */
+    public String addressSpace() {
+        return this.addressSpace;
+    }
+
+    /**
+     * Set the addressSpace property: Specific CIDR address space to check availability for. If omitted, RP checks for
+     * any available space of the given prefixLength.
+     * 
+     * @param addressSpace the addressSpace value to set.
+     * @return the CheckAddressSpaceAvailabilityRequest object itself.
+     */
+    public CheckAddressSpaceAvailabilityRequest withAddressSpace(String addressSpace) {
+        this.addressSpace = addressSpace;
         return this;
     }
 
@@ -81,7 +110,8 @@ public final class CheckAddressSpaceAvailabilityRequest
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("communityResourceId", this.communityResourceId);
-        jsonWriter.writeJsonField("enclaveVirtualNetwork", this.enclaveVirtualNetwork);
+        jsonWriter.writeNumberField("prefixLength", this.prefixLength);
+        jsonWriter.writeStringField("addressSpace", this.addressSpace);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,9 +134,11 @@ public final class CheckAddressSpaceAvailabilityRequest
 
                 if ("communityResourceId".equals(fieldName)) {
                     deserializedCheckAddressSpaceAvailabilityRequest.communityResourceId = reader.getString();
-                } else if ("enclaveVirtualNetwork".equals(fieldName)) {
-                    deserializedCheckAddressSpaceAvailabilityRequest.enclaveVirtualNetwork
-                        = EnclaveVirtualNetworkModel.fromJson(reader);
+                } else if ("prefixLength".equals(fieldName)) {
+                    deserializedCheckAddressSpaceAvailabilityRequest.prefixLength
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("addressSpace".equals(fieldName)) {
+                    deserializedCheckAddressSpaceAvailabilityRequest.addressSpace = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -16,21 +16,20 @@ public final class DedicatedHubPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHubPatchModel model = BinaryData.fromString(
-            "{\"properties\":{\"designation\":\"Pooled\"},\"tags\":{\"haohdjhhflzokxc\":\"wmxqhndvnoamlds\",\"atftgzpnpbsw\":\"xpelnjetagltsx\",\"loccsrmozihm\":\"e\",\"rytfmpcycil\":\"pgawtxxpkyjcxcjx\"}}")
+            "{\"properties\":{\"designation\":\"Pooled\"},\"tags\":{\"lbfjkwr\":\"tu\",\"hsyrqunj\":\"snkq\",\"akdkifmjnnawtqab\":\"hdenxaulk\"}}")
             .toObject(DedicatedHubPatchModel.class);
         Assertions.assertEquals(Designation.POOLED, model.properties().designation());
-        Assertions.assertEquals("wmxqhndvnoamlds", model.tags().get("haohdjhhflzokxc"));
+        Assertions.assertEquals("tu", model.tags().get("lbfjkwr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHubPatchModel model = new DedicatedHubPatchModel()
             .withProperties(new DedicatedHubPatchProperties().withDesignation(Designation.POOLED))
-            .withTags(mapOf("haohdjhhflzokxc", "wmxqhndvnoamlds", "atftgzpnpbsw", "xpelnjetagltsx", "loccsrmozihm", "e",
-                "rytfmpcycil", "pgawtxxpkyjcxcjx"));
+            .withTags(mapOf("lbfjkwr", "tu", "hsyrqunj", "snkq", "akdkifmjnnawtqab", "hdenxaulk"));
         model = BinaryData.fromObject(model).toObject(DedicatedHubPatchModel.class);
         Assertions.assertEquals(Designation.POOLED, model.properties().designation());
-        Assertions.assertEquals("wmxqhndvnoamlds", model.tags().get("haohdjhhflzokxc"));
+        Assertions.assertEquals("tu", model.tags().get("lbfjkwr"));
     }
 
     // Use "Map.of" if available

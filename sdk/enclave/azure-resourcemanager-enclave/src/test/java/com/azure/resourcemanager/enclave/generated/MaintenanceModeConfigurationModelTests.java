@@ -17,24 +17,26 @@ public final class MaintenanceModeConfigurationModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceModeConfigurationModel model = BinaryData.fromString(
-            "{\"mode\":\"Advanced\",\"principals\":[{\"id\":\"lvmezyvshxmzsbbz\",\"type\":\"Group\"}],\"justification\":\"Governance\"}")
+            "{\"mode\":\"On\",\"principals\":[{\"id\":\"wxdndnvowgujjug\",\"type\":\"ServicePrincipal\"},{\"id\":\"kcglhslaz\",\"type\":\"ServicePrincipal\"}],\"justification\":\"Off\"}")
             .toObject(MaintenanceModeConfigurationModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.GOVERNANCE, model.justification());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
+        Assertions.assertEquals("wxdndnvowgujjug", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF, model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceModeConfigurationModel model
-            = new MaintenanceModeConfigurationModel().withMode(MaintenanceModeConfigurationModelMode.ADVANCED)
-                .withPrincipals(Arrays.asList(new Principal().withId("lvmezyvshxmzsbbz").withType(PrincipalType.GROUP)))
-                .withJustification(MaintenanceModeConfigurationModelJustification.GOVERNANCE);
+            = new MaintenanceModeConfigurationModel().withMode(MaintenanceModeConfigurationModelMode.ON)
+                .withPrincipals(
+                    Arrays.asList(new Principal().withId("wxdndnvowgujjug").withType(PrincipalType.SERVICE_PRINCIPAL),
+                        new Principal().withId("kcglhslaz").withType(PrincipalType.SERVICE_PRINCIPAL)))
+                .withJustification(MaintenanceModeConfigurationModelJustification.OFF);
         model = BinaryData.fromObject(model).toObject(MaintenanceModeConfigurationModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.GOVERNANCE, model.justification());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
+        Assertions.assertEquals("wxdndnvowgujjug", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF, model.justification());
     }
 }

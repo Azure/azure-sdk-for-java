@@ -12,7 +12,7 @@ public final class EnclaveConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionProperties model = BinaryData.fromString(
-            "{\"state\":\"Failed\",\"communityResourceId\":\"vnh\",\"sourceResourceId\":\"abrqnkkzj\",\"sourceCidr\":\"b\",\"destinationEndpointId\":\"rgaehvvibrxjj\",\"provisioningState\":\"Deleting\",\"resourceCollection\":[\"eitpkxztmo\",\"bklftidgfcwqmpim\"],\"updateMode\":\"Automatic\"}")
+            "{\"state\":\"PendingApproval\",\"communityResourceId\":\"vnh\",\"sourceResourceId\":\"abrqnkkzj\",\"sourceCidr\":\"b\",\"destinationEndpointId\":\"rgaehvvibrxjj\",\"provisioningState\":\"Deleting\",\"resourceCollection\":[\"eitpkxztmo\",\"bklftidgfcwqmpim\"],\"updateMode\":\"Automatic\"}")
             .toObject(EnclaveConnectionProperties.class);
         Assertions.assertEquals("vnh", model.communityResourceId());
         Assertions.assertEquals("abrqnkkzj", model.sourceResourceId());

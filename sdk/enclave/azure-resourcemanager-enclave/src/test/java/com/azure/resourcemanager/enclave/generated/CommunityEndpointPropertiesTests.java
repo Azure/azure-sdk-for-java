@@ -9,6 +9,7 @@ import com.azure.resourcemanager.enclave.models.CommunityEndpointDestinationRule
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProperties;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,48 +18,57 @@ public final class CommunityEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityEndpointProperties model = BinaryData.fromString(
-            "{\"ruleCollection\":[{\"destinationType\":\"FQDN\",\"protocols\":[\"TCP\",\"UDP\",\"ESP\",\"UDP\"],\"transitHubResourceId\":\"glqgleoh\",\"endpointRuleName\":\"etnluankrrfx\",\"destination\":\"ebtijvacvbmqzbqq\",\"ports\":\"aj\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"HTTPS\",\"AH\",\"TCP\"],\"transitHubResourceId\":\"h\",\"endpointRuleName\":\"uyxoaf\",\"destination\":\"oqltfae\",\"ports\":\"inmfgvxirp\"},{\"destinationType\":\"FQDN\",\"protocols\":[\"ESP\"],\"transitHubResourceId\":\"q\",\"endpointRuleName\":\"hlqhykprlpy\",\"destination\":\"uciqdsme\",\"ports\":\"itdfuxtyasiib\"}],\"resourceCollection\":[\"bnn\",\"stgnl\"],\"provisioningState\":\"NotSpecified\",\"updateMode\":\"Automatic\"}")
+            "{\"ruleCollection\":[{\"destinationType\":\"ServiceTag\",\"protocols\":[\"ANY\",\"TCP\",\"ESP\"],\"transitHubResourceId\":\"vopvp\",\"direction\":\"Outbound\",\"endpointRuleName\":\"qgqqihedsvqwthmk\",\"destination\":\"bcysih\",\"ports\":\"qcwdhoh\"},{\"destinationType\":\"FQDN\",\"protocols\":[\"UDP\",\"TCP\"],\"transitHubResourceId\":\"ufcohdxbz\",\"direction\":\"Inbound\",\"endpointRuleName\":\"uapcvhdbevwqqxe\",\"destination\":\"ko\",\"ports\":\"zinkfkbgbzbowxeq\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"ESP\",\"HTTPS\",\"UDP\"],\"transitHubResourceId\":\"zqkjjeokbzefe\",\"direction\":\"Outbound\",\"endpointRuleName\":\"czurtlei\",\"destination\":\"xbkwv\",\"ports\":\"nzvdfbzdixzmq\"}],\"resourceCollection\":[\"d\",\"wopqhewjptmcgs\",\"ostzelndlatu\",\"mzlbiojlvfhrb\"],\"provisioningState\":\"Deleting\",\"updateMode\":\"Automatic\",\"syncTo\":[\"wwyyurmoch\",\"prprsnmokay\"],\"syncFrom\":\"jnhlbkpbzpcpiljh\",\"syncStatus\":\"InProgress\",\"syncDestinationStatuses\":[{\"destinationId\":\"chndbnwie\",\"status\":\"Failed\",\"errorMessage\":\"ewjwiuubw\",\"lastSyncTime\":\"2021-06-28T06:40:11Z\"},{\"destinationId\":\"sfapaqtferrq\",\"status\":\"InProgress\",\"errorMessage\":\"jkmfxapjwo\",\"lastSyncTime\":\"2021-01-30T20:27:58Z\"},{\"destinationId\":\"nobpudcdabtqwpw\",\"status\":\"InProgress\",\"errorMessage\":\"bzasqbucljgkyexa\",\"lastSyncTime\":\"2021-04-01T05:12:34Z\"},{\"destinationId\":\"yaipidsda\",\"status\":\"Failed\",\"errorMessage\":\"xijj\",\"lastSyncTime\":\"2021-08-25T06:21:20Z\"}],\"syncPerformedBy\":{\"principalId\":\"waz\",\"principalType\":\"nqnm\",\"tenantId\":\"jng\",\"performedAt\":\"2021-03-28T06:10:57Z\",\"correlationId\":\"dqxtbjwgnyf\"}}")
             .toObject(CommunityEndpointProperties.class);
-        Assertions.assertEquals(DestinationType.FQDN, model.ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.TCP, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("glqgleoh", model.ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("etnluankrrfx", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ebtijvacvbmqzbqq", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("aj", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(DestinationType.SERVICE_TAG, model.ruleCollection().get(0).destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("vopvp", model.ruleCollection().get(0).transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.OUTBOUND, model.ruleCollection().get(0).direction());
+        Assertions.assertEquals("qgqqihedsvqwthmk", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("bcysih", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("qcwdhoh", model.ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
+        Assertions.assertEquals("wwyyurmoch", model.syncTo().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunityEndpointProperties model = new CommunityEndpointProperties().withRuleCollection(Arrays.asList(
-            new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDN)
-                .withProtocols(Arrays.asList(CommunityEndpointProtocol.TCP, CommunityEndpointProtocol.UDP,
-                    CommunityEndpointProtocol.ESP, CommunityEndpointProtocol.UDP))
-                .withTransitHubResourceId("glqgleoh")
-                .withEndpointRuleName("etnluankrrfx")
-                .withDestination("ebtijvacvbmqzbqq")
-                .withPorts("aj"),
-            new CommunityEndpointDestinationRule().withDestinationType(DestinationType.SERVICE_TAG)
-                .withProtocols(Arrays.asList(CommunityEndpointProtocol.HTTPS, CommunityEndpointProtocol.AH,
-                    CommunityEndpointProtocol.TCP))
-                .withTransitHubResourceId("h")
-                .withEndpointRuleName("uyxoaf")
-                .withDestination("oqltfae")
-                .withPorts("inmfgvxirp"),
-            new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDN)
-                .withProtocols(Arrays.asList(CommunityEndpointProtocol.ESP))
-                .withTransitHubResourceId("q")
-                .withEndpointRuleName("hlqhykprlpy")
-                .withDestination("uciqdsme")
-                .withPorts("itdfuxtyasiib")))
-            .withUpdateMode(UpdateMode.AUTOMATIC);
+        CommunityEndpointProperties model = new CommunityEndpointProperties()
+            .withRuleCollection(Arrays.asList(
+                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.SERVICE_TAG)
+                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.ANY, CommunityEndpointProtocol.TCP,
+                        CommunityEndpointProtocol.ESP))
+                    .withTransitHubResourceId("vopvp")
+                    .withDirection(RuleDirection.OUTBOUND)
+                    .withEndpointRuleName("qgqqihedsvqwthmk")
+                    .withDestination("bcysih")
+                    .withPorts("qcwdhoh"),
+                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDN)
+                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.UDP, CommunityEndpointProtocol.TCP))
+                    .withTransitHubResourceId("ufcohdxbz")
+                    .withDirection(RuleDirection.INBOUND)
+                    .withEndpointRuleName("uapcvhdbevwqqxe")
+                    .withDestination("ko")
+                    .withPorts("zinkfkbgbzbowxeq"),
+                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.SERVICE_TAG)
+                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.ESP, CommunityEndpointProtocol.HTTPS,
+                        CommunityEndpointProtocol.UDP))
+                    .withTransitHubResourceId("zqkjjeokbzefe")
+                    .withDirection(RuleDirection.OUTBOUND)
+                    .withEndpointRuleName("czurtlei")
+                    .withDestination("xbkwv")
+                    .withPorts("nzvdfbzdixzmq")))
+            .withUpdateMode(UpdateMode.AUTOMATIC)
+            .withSyncTo(Arrays.asList("wwyyurmoch", "prprsnmokay"));
         model = BinaryData.fromObject(model).toObject(CommunityEndpointProperties.class);
-        Assertions.assertEquals(DestinationType.FQDN, model.ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.TCP, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("glqgleoh", model.ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("etnluankrrfx", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ebtijvacvbmqzbqq", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("aj", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(DestinationType.SERVICE_TAG, model.ruleCollection().get(0).destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("vopvp", model.ruleCollection().get(0).transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.OUTBOUND, model.ruleCollection().get(0).direction());
+        Assertions.assertEquals("qgqqihedsvqwthmk", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("bcysih", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("qcwdhoh", model.ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
+        Assertions.assertEquals("wwyyurmoch", model.syncTo().get(0));
     }
 }

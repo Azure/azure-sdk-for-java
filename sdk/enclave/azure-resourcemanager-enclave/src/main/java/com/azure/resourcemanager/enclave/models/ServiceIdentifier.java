@@ -87,6 +87,11 @@ public final class ServiceIdentifier extends ExpandableStringEnum<ServiceIdentif
     public static final ServiceIdentifier STORAGE = fromString("Storage");
 
     /**
+     * Service identifier for Azure Local.
+     */
+    public static final ServiceIdentifier AZURE_LOCAL = fromString("AzureLocal");
+
+    /**
      * Creates a new instance of ServiceIdentifier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

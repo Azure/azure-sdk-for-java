@@ -8,22 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for MaintenanceModeConfigurationModelJustification.
+ * The justification for entering or exiting virtual enclave maintenance mode.
  */
 public final class MaintenanceModeConfigurationModelJustification
     extends ExpandableStringEnum<MaintenanceModeConfigurationModelJustification> {
     /**
-     * Static value Networking for MaintenanceModeConfigurationModelJustification.
+     * Maintenance mode is required for networking changes.
      */
     public static final MaintenanceModeConfigurationModelJustification NETWORKING = fromString("Networking");
 
     /**
-     * Static value Governance for MaintenanceModeConfigurationModelJustification.
+     * Maintenance mode is required for governance changes.
      */
     public static final MaintenanceModeConfigurationModelJustification GOVERNANCE = fromString("Governance");
 
     /**
-     * Static value Off for MaintenanceModeConfigurationModelJustification.
+     * No maintenance mode justification applies.
      */
     public static final MaintenanceModeConfigurationModelJustification OFF = fromString("Off");
 

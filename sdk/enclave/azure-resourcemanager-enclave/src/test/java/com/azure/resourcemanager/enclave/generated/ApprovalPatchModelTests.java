@@ -19,51 +19,51 @@ public final class ApprovalPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalPatchModel model = BinaryData.fromString(
-            "{\"properties\":{\"parentResourceId\":\"u\",\"grandparentResourceId\":\"pckc\",\"approvers\":[{\"approverEntraId\":\"vwe\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-12-05T13:20:13Z\",\"mandatoryApprovalGroupMembershipIds\":[\"ukphaimmoiroq\",\"oshbragapyy\",\"mfsvbpav\",\"opfppdbwnupgah\"]}],\"ticketId\":\"um\",\"createdAt\":\"2021-11-16T21:33:34Z\",\"stateChangedAt\":\"2021-05-10T22:23:02Z\",\"requestMetadata\":{\"resourceAction\":\"acfdmmcpugme\",\"approvalCallbackRoute\":\"epvufhbzehew\",\"approvalCallbackPayload\":\"qhnlbqnbld\",\"approvalStatus\":\"Approved\"}}}")
+            "{\"properties\":{\"parentResourceId\":\"noxaxmqeqal\",\"grandparentResourceId\":\"jnhgwydyyn\",\"approvers\":[{\"approverEntraId\":\"khgb\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-09-12T06:08:07Z\",\"mandatoryApprovalGroupMembershipIds\":[\"rfdl\",\"ukhpyrneizjcp\",\"ogkhnmgbr\",\"uxddbhfh\"]}],\"ticketId\":\"paz\",\"createdAt\":\"2021-06-14T12:47:01Z\",\"stateChangedAt\":\"2021-08-07T06:14:56Z\",\"requestMetadata\":{\"resourceAction\":\"jxhpdulontacn\",\"approvalCallbackRoute\":\"w\",\"approvalCallbackPayload\":\"htuevrhrljy\",\"approvalStatus\":\"Deleted\"}}}")
             .toObject(ApprovalPatchModel.class);
-        Assertions.assertEquals("u", model.properties().parentResourceId());
-        Assertions.assertEquals("pckc", model.properties().grandparentResourceId());
-        Assertions.assertEquals("vwe", model.properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals("noxaxmqeqal", model.properties().parentResourceId());
+        Assertions.assertEquals("jnhgwydyyn", model.properties().grandparentResourceId());
+        Assertions.assertEquals("khgb", model.properties().approvers().get(0).approverEntraId());
         Assertions.assertEquals(ActionPerformed.APPROVED, model.properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T13:20:13Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"),
             model.properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("um", model.properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T21:33:34Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T22:23:02Z"), model.properties().stateChangedAt());
-        Assertions.assertEquals("acfdmmcpugme", model.properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("epvufhbzehew", model.properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("qhnlbqnbld", model.properties().requestMetadata().approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.properties().requestMetadata().approvalStatus());
+        Assertions.assertEquals("paz", model.properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T12:47:01Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T06:14:56Z"), model.properties().stateChangedAt());
+        Assertions.assertEquals("jxhpdulontacn", model.properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("w", model.properties().requestMetadata().approvalCallbackRoute());
+        Assertions.assertEquals("htuevrhrljy", model.properties().requestMetadata().approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.DELETED, model.properties().requestMetadata().approvalStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalPatchModel model
-            = new ApprovalPatchModel().withProperties(new ApprovalPatchProperties().withParentResourceId("u")
-                .withGrandparentResourceId("pckc")
-                .withApprovers(Arrays.asList(new Approver().withApproverEntraId("vwe")
+            = new ApprovalPatchModel().withProperties(new ApprovalPatchProperties().withParentResourceId("noxaxmqeqal")
+                .withGrandparentResourceId("jnhgwydyyn")
+                .withApprovers(Arrays.asList(new Approver().withApproverEntraId("khgb")
                     .withActionPerformed(ActionPerformed.APPROVED)
-                    .withLastUpdatedAt(OffsetDateTime.parse("2021-12-05T13:20:13Z"))))
-                .withTicketId("um")
-                .withCreatedAt(OffsetDateTime.parse("2021-11-16T21:33:34Z"))
-                .withStateChangedAt(OffsetDateTime.parse("2021-05-10T22:23:02Z"))
-                .withRequestMetadata(new RequestMetadataUpdatableProperties().withResourceAction("acfdmmcpugme")
-                    .withApprovalCallbackRoute("epvufhbzehew")
-                    .withApprovalCallbackPayload("qhnlbqnbld")
-                    .withApprovalStatus(ApprovalStatus.APPROVED)));
+                    .withLastUpdatedAt(OffsetDateTime.parse("2021-09-12T06:08:07Z"))))
+                .withTicketId("paz")
+                .withCreatedAt(OffsetDateTime.parse("2021-06-14T12:47:01Z"))
+                .withStateChangedAt(OffsetDateTime.parse("2021-08-07T06:14:56Z"))
+                .withRequestMetadata(new RequestMetadataUpdatableProperties().withResourceAction("jxhpdulontacn")
+                    .withApprovalCallbackRoute("w")
+                    .withApprovalCallbackPayload("htuevrhrljy")
+                    .withApprovalStatus(ApprovalStatus.DELETED)));
         model = BinaryData.fromObject(model).toObject(ApprovalPatchModel.class);
-        Assertions.assertEquals("u", model.properties().parentResourceId());
-        Assertions.assertEquals("pckc", model.properties().grandparentResourceId());
-        Assertions.assertEquals("vwe", model.properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals("noxaxmqeqal", model.properties().parentResourceId());
+        Assertions.assertEquals("jnhgwydyyn", model.properties().grandparentResourceId());
+        Assertions.assertEquals("khgb", model.properties().approvers().get(0).approverEntraId());
         Assertions.assertEquals(ActionPerformed.APPROVED, model.properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T13:20:13Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"),
             model.properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("um", model.properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T21:33:34Z"), model.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T22:23:02Z"), model.properties().stateChangedAt());
-        Assertions.assertEquals("acfdmmcpugme", model.properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("epvufhbzehew", model.properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("qhnlbqnbld", model.properties().requestMetadata().approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.properties().requestMetadata().approvalStatus());
+        Assertions.assertEquals("paz", model.properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T12:47:01Z"), model.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T06:14:56Z"), model.properties().stateChangedAt());
+        Assertions.assertEquals("jxhpdulontacn", model.properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("w", model.properties().requestMetadata().approvalCallbackRoute());
+        Assertions.assertEquals("htuevrhrljy", model.properties().requestMetadata().approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.DELETED, model.properties().requestMetadata().approvalStatus());
     }
 }

@@ -24,7 +24,7 @@ public final class EnclaveEndpointsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"ICMP\",\"UDP\"],\"endpointRuleName\":\"kqv\",\"destination\":\"epdxcltuubwyvpj\",\"ports\":\"wcpjqduqgi\"}],\"resourceCollection\":[\"kydfbwljavhuerkj\",\"dvrgliegftcvbi\",\"ftksd\"],\"provisioningState\":\"Creating\",\"updateMode\":\"Manual\"},\"location\":\"fgmwd\",\"tags\":{\"aqgzekajclyzgs\":\"buvczldbglzoutb\"},\"id\":\"orbjg\",\"name\":\"nzjotvmr\",\"type\":\"khlobvvjbhvhdi\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"TCP\",\"ICMP\"],\"endpointRuleName\":\"xsmyltrw\",\"destination\":\"fmtbgwjdxwn\",\"ports\":\"kurrdreyzjwh\"},{\"protocols\":[\"ICMP\",\"ANY\"],\"endpointRuleName\":\"wzzqseuzuukykcy\",\"destination\":\"yqqz\",\"ports\":\"c\"},{\"protocols\":[\"UDP\"],\"endpointRuleName\":\"tewfopazdazgbsq\",\"destination\":\"ewqcfu\",\"ports\":\"dpvozglqj\"},{\"protocols\":[\"TCP\",\"TCP\"],\"endpointRuleName\":\"lctzeyowmndcovd\",\"destination\":\"qauxzan\",\"ports\":\"kvfruwkudr\"}],\"resourceCollection\":[\"ftxudqy\",\"mebunaucmc\",\"rtneemmja\"],\"provisioningState\":\"Updating\",\"updateMode\":\"Manual\"},\"location\":\"fnohaitran\",\"tags\":{\"fbngfcocef\":\"rwgudasmxub\",\"trauds\":\"priylfmp\"},\"id\":\"hlcdc\",\"name\":\"lregpq\",\"type\":\"moj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,18 @@ public final class EnclaveEndpointsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EnclaveEndpointResource> response
-            = manager.enclaveEndpoints().listBySubscription("bm", com.azure.core.util.Context.NONE);
+            = manager.enclaveEndpoints().listBySubscription("ygnxcgjtfrnqukt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fgmwd", response.iterator().next().location());
-        Assertions.assertEquals("buvczldbglzoutb", response.iterator().next().tags().get("aqgzekajclyzgs"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
+        Assertions.assertEquals("fnohaitran", response.iterator().next().location());
+        Assertions.assertEquals("rwgudasmxub", response.iterator().next().tags().get("fbngfcocef"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.TCP,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("kqv",
+        Assertions.assertEquals("xsmyltrw",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("epdxcltuubwyvpj",
+        Assertions.assertEquals("fmtbgwjdxwn",
             response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("wcpjqduqgi", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("kurrdreyzjwh",
+            response.iterator().next().properties().ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.MANUAL, response.iterator().next().properties().updateMode());
     }
 }

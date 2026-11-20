@@ -23,7 +23,7 @@ public final class DedicatedHubsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vHubResourceId\":\"i\",\"firewallResourceId\":\"aqgrv\",\"firewallPolicyResourceId\":\"omxp\",\"designation\":\"Pooled\",\"provisioningState\":\"Deleting\"},\"location\":\"fjyi\",\"tags\":{\"py\":\"cwiqbuout\",\"zvdajfwnncf\":\"gleofjsbgbw\",\"jjrlhiqlwix\":\"aciq\",\"pg\":\"tbouguxtnd\"},\"id\":\"ttbas\",\"name\":\"alapdlndbe\",\"type\":\"qb\"}]}";
+            = "{\"value\":[{\"properties\":{\"vHubResourceId\":\"wxiplkyso\",\"firewallResourceId\":\"yjprxslw\",\"firewallPolicyResourceId\":\"mcvht\",\"designation\":\"Reserved\",\"provisioningState\":\"Creating\"},\"location\":\"vhuw\",\"tags\":{\"hotjec\":\"pcqzg\"},\"id\":\"hmxvvl\",\"name\":\"rskapbxwieexu\",\"type\":\"aderltfokyk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class DedicatedHubsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DedicatedHubResource> response
-            = manager.dedicatedHubs().listBySubscription("v", com.azure.core.util.Context.NONE);
+            = manager.dedicatedHubs().listBySubscription("tpufpbpgnrholhu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fjyi", response.iterator().next().location());
-        Assertions.assertEquals("cwiqbuout", response.iterator().next().tags().get("py"));
-        Assertions.assertEquals(Designation.POOLED, response.iterator().next().properties().designation());
+        Assertions.assertEquals("vhuw", response.iterator().next().location());
+        Assertions.assertEquals("pcqzg", response.iterator().next().tags().get("hotjec"));
+        Assertions.assertEquals(Designation.RESERVED, response.iterator().next().properties().designation());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.enclave.AzureEnclaveManager;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointResource;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +26,7 @@ public final class CommunityEndpointsListByCommunityResourceMockTests {
     @Test
     public void testListByCommunityResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"IPAddress\",\"protocols\":[\"UDP\",\"HTTP\",\"HTTP\",\"HTTPS\"],\"transitHubResourceId\":\"j\",\"endpointRuleName\":\"jnkdflqion\",\"destination\":\"aeqkzfzqxjoshoh\",\"ports\":\"tryegpkh\"},{\"destinationType\":\"IPAddress\",\"protocols\":[\"TCP\",\"HTTPS\",\"ICMP\"],\"transitHubResourceId\":\"kbfok\",\"endpointRuleName\":\"hupzerufgjblc\",\"destination\":\"myfc\",\"ports\":\"ftzgy\"},{\"destinationType\":\"FQDN\",\"protocols\":[\"ICMP\",\"ESP\",\"AH\"],\"transitHubResourceId\":\"dfqnhttwdowrczfj\",\"endpointRuleName\":\"nuxxrkkm\",\"destination\":\"nulwempdci\",\"ports\":\"hjulrsulwzpflu\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"ICMP\"],\"transitHubResourceId\":\"gzotfriyrgkoekvz\",\"endpointRuleName\":\"xyxhighctxbxmo\",\"destination\":\"cqydey\",\"ports\":\"skiczd\"}],\"resourceCollection\":[\"eizikgqaboohxbms\"],\"provisioningState\":\"Canceled\",\"updateMode\":\"Automatic\"},\"location\":\"rmdvewuyqaeohpj\",\"tags\":{\"xaex\":\"jkbvhhdaurgho\",\"xjxjoe\":\"k\",\"dknkobe\":\"lqxr\",\"cdgzseznux\":\"tmbozomtzamicbig\"},\"id\":\"euairaabmdlqjb\",\"name\":\"dp\",\"type\":\"ixlhupm\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"ServiceTag\",\"protocols\":[\"HTTPS\",\"ANY\",\"TCP\",\"ESP\"],\"transitHubResourceId\":\"twhlpuzjpce\",\"direction\":\"Inbound\",\"endpointRuleName\":\"angp\",\"destination\":\"faxy\",\"ports\":\"lbciphmsexro\"},{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"ICMP\",\"ESP\",\"TCP\"],\"transitHubResourceId\":\"onfeeqgp\",\"direction\":\"Outbound\",\"endpointRuleName\":\"tbgnixxowwzkyfw\",\"destination\":\"piw\",\"ports\":\"ii\"}],\"resourceCollection\":[\"p\",\"pk\",\"dm\",\"xxij\"],\"provisioningState\":\"Accepted\",\"updateMode\":\"Automatic\",\"syncTo\":[\"kjgyacwrasekwe\",\"cvo\"],\"syncFrom\":\"woqartwy\",\"syncStatus\":\"PartiallySucceeded\",\"syncDestinationStatuses\":[{\"destinationId\":\"advatdavuqmcb\",\"status\":\"NotConfigured\",\"errorMessage\":\"fobjlquvjezcj\",\"lastSyncTime\":\"2021-04-11T04:43:26Z\"}],\"syncPerformedBy\":{\"principalId\":\"simi\",\"principalType\":\"yoi\",\"tenantId\":\"l\",\"performedAt\":\"2021-05-10T12:42:32Z\",\"correlationId\":\"iqwnnraclibbfq\"}},\"location\":\"pkl\",\"tags\":{\"kexzgpmnmabeddqi\":\"dgnhautw\",\"fpfqf\":\"wg\"},\"id\":\"cvstclgqrvwerf\",\"name\":\"xbsmtbljje\",\"type\":\"hci\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +35,25 @@ public final class CommunityEndpointsListByCommunityResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CommunityEndpointResource> response = manager.communityEndpoints()
-            .listByCommunityResource("pstauol", "wiubmomsgvv", com.azure.core.util.Context.NONE);
+        PagedIterable<CommunityEndpointResource> response
+            = manager.communityEndpoints().listByCommunityResource("mvxqab", "km", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rmdvewuyqaeohpj", response.iterator().next().location());
-        Assertions.assertEquals("jkbvhhdaurgho", response.iterator().next().tags().get("xaex"));
-        Assertions.assertEquals(DestinationType.IPADDRESS,
+        Assertions.assertEquals("pkl", response.iterator().next().location());
+        Assertions.assertEquals("dgnhautw", response.iterator().next().tags().get("kexzgpmnmabeddqi"));
+        Assertions.assertEquals(DestinationType.SERVICE_TAG,
             response.iterator().next().properties().ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.UDP,
+        Assertions.assertEquals(CommunityEndpointProtocol.HTTPS,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("twhlpuzjpce",
             response.iterator().next().properties().ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("jnkdflqion",
+        Assertions.assertEquals(RuleDirection.INBOUND,
+            response.iterator().next().properties().ruleCollection().get(0).direction());
+        Assertions.assertEquals("angp",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("aeqkzfzqxjoshoh",
-            response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("tryegpkh", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("faxy", response.iterator().next().properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("lbciphmsexro",
+            response.iterator().next().properties().ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.AUTOMATIC, response.iterator().next().properties().updateMode());
+        Assertions.assertEquals("kjgyacwrasekwe", response.iterator().next().properties().syncTo().get(0));
     }
 }

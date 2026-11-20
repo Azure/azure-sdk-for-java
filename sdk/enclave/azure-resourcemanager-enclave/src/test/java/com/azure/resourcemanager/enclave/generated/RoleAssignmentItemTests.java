@@ -15,24 +15,24 @@ public final class RoleAssignmentItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleAssignmentItem model = BinaryData.fromString(
-            "{\"roleDefinitionId\":\"vsovmyokac\",\"principals\":[{\"id\":\"w\",\"type\":\"ServicePrincipal\"},{\"id\":\"zdobpxjmflbvvnch\",\"type\":\"ServicePrincipal\"}],\"condition\":\"ciwwzjuqkhr\"}")
+            "{\"roleDefinitionId\":\"ebxetqgtzxdp\",\"principals\":[{\"id\":\"qqwx\",\"type\":\"Group\"},{\"id\":\"feallnwsu\",\"type\":\"Group\"}],\"condition\":\"njampm\"}")
             .toObject(RoleAssignmentItem.class);
-        Assertions.assertEquals("vsovmyokac", model.roleDefinitionId());
-        Assertions.assertEquals("w", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
-        Assertions.assertEquals("ciwwzjuqkhr", model.condition());
+        Assertions.assertEquals("ebxetqgtzxdp", model.roleDefinitionId());
+        Assertions.assertEquals("qqwx", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
+        Assertions.assertEquals("njampm", model.condition());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignmentItem model = new RoleAssignmentItem().withRoleDefinitionId("vsovmyokac")
-            .withPrincipals(Arrays.asList(new Principal().withId("w").withType(PrincipalType.SERVICE_PRINCIPAL),
-                new Principal().withId("zdobpxjmflbvvnch").withType(PrincipalType.SERVICE_PRINCIPAL)))
-            .withCondition("ciwwzjuqkhr");
+        RoleAssignmentItem model = new RoleAssignmentItem().withRoleDefinitionId("ebxetqgtzxdp")
+            .withPrincipals(Arrays.asList(new Principal().withId("qqwx").withType(PrincipalType.GROUP),
+                new Principal().withId("feallnwsu").withType(PrincipalType.GROUP)))
+            .withCondition("njampm");
         model = BinaryData.fromObject(model).toObject(RoleAssignmentItem.class);
-        Assertions.assertEquals("vsovmyokac", model.roleDefinitionId());
-        Assertions.assertEquals("w", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
-        Assertions.assertEquals("ciwwzjuqkhr", model.condition());
+        Assertions.assertEquals("ebxetqgtzxdp", model.roleDefinitionId());
+        Assertions.assertEquals("qqwx", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
+        Assertions.assertEquals("njampm", model.condition());
     }
 }

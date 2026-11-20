@@ -9,6 +9,7 @@ import com.azure.resourcemanager.enclave.models.CommunityEndpointDestinationRule
 import com.azure.resourcemanager.enclave.models.CommunityEndpointPatchProperties;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,49 +18,41 @@ public final class CommunityEndpointPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityEndpointPatchProperties model = BinaryData.fromString(
-            "{\"ruleCollection\":[{\"destinationType\":\"ServiceTag\",\"protocols\":[\"ANY\",\"HTTPS\",\"ICMP\"],\"transitHubResourceId\":\"hppr\",\"endpointRuleName\":\"snmokayzej\",\"destination\":\"lbkpb\",\"ports\":\"cpilj\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"HTTP\",\"ESP\",\"ANY\",\"ICMP\"],\"transitHubResourceId\":\"bnwieholew\",\"endpointRuleName\":\"iuubwefqsf\",\"destination\":\"aqtferr\",\"ports\":\"ex\"},{\"destinationType\":\"FQDNTag\",\"protocols\":[\"HTTP\"],\"transitHubResourceId\":\"jwogqqnobpudc\",\"endpointRuleName\":\"btqwpwyawbzas\",\"destination\":\"ucljgkyexaoguya\",\"ports\":\"ids\"}],\"updateMode\":\"Manual\"}")
+            "{\"ruleCollection\":[{\"destinationType\":\"FQDNTag\",\"protocols\":[\"HTTPS\"],\"transitHubResourceId\":\"lzqnhcvs\",\"direction\":\"Inbound\",\"endpointRuleName\":\"zoibgsxg\",\"destination\":\"fyq\",\"ports\":\"mpqoxw\"}],\"updateMode\":\"Manual\",\"syncTo\":[\"xiqxeiiqbimh\",\"mwwinhehfqpofv\",\"bcblemb\",\"kbwvqvxkdiv\"]}")
             .toObject(CommunityEndpointPatchProperties.class);
-        Assertions.assertEquals(DestinationType.SERVICE_TAG, model.ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("hppr", model.ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("snmokayzej", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("lbkpb", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("cpilj", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(DestinationType.FQDNTAG, model.ruleCollection().get(0).destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.HTTPS, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("lzqnhcvs", model.ruleCollection().get(0).transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.INBOUND, model.ruleCollection().get(0).direction());
+        Assertions.assertEquals("zoibgsxg", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("fyq", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("mpqoxw", model.ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.MANUAL, model.updateMode());
+        Assertions.assertEquals("xiqxeiiqbimh", model.syncTo().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunityEndpointPatchProperties model
-            = new CommunityEndpointPatchProperties().withRuleCollection(Arrays.asList(
-                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.SERVICE_TAG)
-                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.ANY, CommunityEndpointProtocol.HTTPS,
-                        CommunityEndpointProtocol.ICMP))
-                    .withTransitHubResourceId("hppr")
-                    .withEndpointRuleName("snmokayzej")
-                    .withDestination("lbkpb")
-                    .withPorts("cpilj"),
-                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.SERVICE_TAG)
-                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.HTTP, CommunityEndpointProtocol.ESP,
-                        CommunityEndpointProtocol.ANY, CommunityEndpointProtocol.ICMP))
-                    .withTransitHubResourceId("bnwieholew")
-                    .withEndpointRuleName("iuubwefqsf")
-                    .withDestination("aqtferr")
-                    .withPorts("ex"),
-                new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDNTAG)
-                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.HTTP))
-                    .withTransitHubResourceId("jwogqqnobpudc")
-                    .withEndpointRuleName("btqwpwyawbzas")
-                    .withDestination("ucljgkyexaoguya")
-                    .withPorts("ids")))
-                .withUpdateMode(UpdateMode.MANUAL);
+        CommunityEndpointPatchProperties model = new CommunityEndpointPatchProperties()
+            .withRuleCollection(
+                Arrays.asList(new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDNTAG)
+                    .withProtocols(Arrays.asList(CommunityEndpointProtocol.HTTPS))
+                    .withTransitHubResourceId("lzqnhcvs")
+                    .withDirection(RuleDirection.INBOUND)
+                    .withEndpointRuleName("zoibgsxg")
+                    .withDestination("fyq")
+                    .withPorts("mpqoxw")))
+            .withUpdateMode(UpdateMode.MANUAL)
+            .withSyncTo(Arrays.asList("xiqxeiiqbimh", "mwwinhehfqpofv", "bcblemb", "kbwvqvxkdiv"));
         model = BinaryData.fromObject(model).toObject(CommunityEndpointPatchProperties.class);
-        Assertions.assertEquals(DestinationType.SERVICE_TAG, model.ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("hppr", model.ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("snmokayzej", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("lbkpb", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("cpilj", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(DestinationType.FQDNTAG, model.ruleCollection().get(0).destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.HTTPS, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("lzqnhcvs", model.ruleCollection().get(0).transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.INBOUND, model.ruleCollection().get(0).direction());
+        Assertions.assertEquals("zoibgsxg", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("fyq", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("mpqoxw", model.ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.MANUAL, model.updateMode());
+        Assertions.assertEquals("xiqxeiiqbimh", model.syncTo().get(0));
     }
 }

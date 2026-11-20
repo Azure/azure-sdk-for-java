@@ -232,6 +232,26 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             @BodyParam("application/json") ApprovalDeletionCallbackRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/sync")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> sync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("communityName") String communityName,
+            @PathParam("communityEndpointName") String communityEndpointName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/sync")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> syncSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("communityName") String communityName,
+            @PathParam("communityEndpointName") String communityEndpointName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -1508,6 +1528,179 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
         String communityEndpointName, ApprovalDeletionCallbackRequest body, Context context) {
         return beginHandleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, context)
             .getFinalResult();
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> syncWithResponseAsync(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.sync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communityName, communityEndpointName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> syncWithResponse(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        final String accept = "application/json";
+        return service.syncSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communityName, communityEndpointName, accept, Context.NONE);
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> syncWithResponse(String resourceGroupName, String communityName,
+        String communityEndpointName, Context context) {
+        final String accept = "application/json";
+        return service.syncSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communityName, communityEndpointName, accept, context);
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of communityEndpoint Model Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner>
+        beginSyncAsync(String resourceGroupName, String communityName, String communityEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = syncWithResponseAsync(resourceGroupName, communityName, communityEndpointName);
+        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner>
+        beginSync(String resourceGroupName, String communityName, String communityEndpointName) {
+        Response<BinaryData> response = syncWithResponse(resourceGroupName, communityName, communityEndpointName);
+        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(response,
+            CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class, Context.NONE);
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner>
+        beginSync(String resourceGroupName, String communityName, String communityEndpointName, Context context) {
+        Response<BinaryData> response
+            = syncWithResponse(resourceGroupName, communityName, communityEndpointName, context);
+        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(response,
+            CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class, context);
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommunityEndpointResourceInner> syncAsync(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        return beginSyncAsync(resourceGroupName, communityName, communityEndpointName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunityEndpointResourceInner sync(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        return beginSync(resourceGroupName, communityName, communityEndpointName).getFinalResult();
+    }
+
+    /**
+     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communityName The name of the communityResource Resource.
+     * @param communityEndpointName The name of the Community Endpoint Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return communityEndpoint Model Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunityEndpointResourceInner sync(String resourceGroupName, String communityName,
+        String communityEndpointName, Context context) {
+        return beginSync(resourceGroupName, communityName, communityEndpointName, context).getFinalResult();
     }
 
     /**
