@@ -12,7 +12,7 @@ import com.azure.resourcemanager.batch.models.ResourceType;
  */
 public final class LocationCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01/LocationCheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: 2026-10-01/LocationCheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_AlreadyExists.
@@ -29,7 +29,7 @@ public final class LocationCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/LocationCheckNameAvailability_Available.json
+     * x-ms-original-file: 2026-10-01/LocationCheckNameAvailability_Available.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_Available.

@@ -16,12 +16,7 @@ public enum AuthenticationMode {
     /**
      * The authentication mode using Microsoft Entra ID.
      */
-    AAD("AAD"),
-
-    /**
-     * The authentication mode using task authentication tokens.
-     */
-    TASK_AUTHENTICATION_TOKEN("TaskAuthenticationToken");
+    AAD("AAD");
 
     /**
      * The actual serialized value for a AuthenticationMode instance.

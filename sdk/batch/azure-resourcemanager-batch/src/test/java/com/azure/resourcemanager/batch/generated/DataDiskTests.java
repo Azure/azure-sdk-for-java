@@ -18,37 +18,37 @@ public final class DataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataDisk model = BinaryData.fromString(
-            "{\"lun\":1397433575,\"caching\":\"None\",\"diskSizeGB\":1403476628,\"managedDisk\":{\"storageAccountType\":\"StandardSSD_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\",\"diskEncryptionSet\":{\"id\":\"bq\"}},\"diskEncryptionSet\":{\"id\":\"vmkcx\"}}}")
+            "{\"lun\":1486476697,\"caching\":\"ReadOnly\",\"diskSizeGB\":1247877079,\"managedDisk\":{\"storageAccountType\":\"Standard_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"VMGuestStateOnly\",\"diskEncryptionSet\":{\"id\":\"enwash\"}},\"diskEncryptionSet\":{\"id\":\"dtkcnqxwbpokulp\"}}}")
             .toObject(DataDisk.class);
-        Assertions.assertEquals(1397433575, model.lun());
-        Assertions.assertEquals(CachingType.NONE, model.caching());
-        Assertions.assertEquals(1403476628, model.diskSizeGB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals(1486476697, model.lun());
+        Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
+        Assertions.assertEquals(1247877079, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("bq", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("vmkcx", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals("enwash", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.managedDisk().diskEncryptionSet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataDisk model
-            = new DataDisk().withLun(1397433575)
-                .withCaching(CachingType.NONE)
-                .withDiskSizeGB(1403476628)
-                .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS)
+            = new DataDisk().withLun(1486476697)
+                .withCaching(CachingType.READ_ONLY)
+                .withDiskSizeGB(1247877079)
+                .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_LRS)
                     .withSecurityProfile(new VMDiskSecurityProfile()
-                        .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)
-                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("bq")))
-                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("vmkcx")));
+                        .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("enwash")))
+                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("dtkcnqxwbpokulp")));
         model = BinaryData.fromObject(model).toObject(DataDisk.class);
-        Assertions.assertEquals(1397433575, model.lun());
-        Assertions.assertEquals(CachingType.NONE, model.caching());
-        Assertions.assertEquals(1403476628, model.diskSizeGB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals(1486476697, model.lun());
+        Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
+        Assertions.assertEquals(1247877079, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("bq", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("vmkcx", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals("enwash", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.managedDisk().diskEncryptionSet().id());
     }
 }

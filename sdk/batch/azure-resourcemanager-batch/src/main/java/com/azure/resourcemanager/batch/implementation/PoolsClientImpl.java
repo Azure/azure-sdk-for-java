@@ -38,6 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.batch.fluent.PoolsClient;
 import com.azure.resourcemanager.batch.fluent.models.PoolInner;
 import com.azure.resourcemanager.batch.implementation.models.ListPoolsResult;
+import com.azure.resourcemanager.batch.models.PoolPatch;
 import com.azure.resourcemanager.batch.models.PoolsCreateResponse;
 import com.azure.resourcemanager.batch.models.PoolsDisableAutoScaleResponse;
 import com.azure.resourcemanager.batch.models.PoolsGetResponse;
@@ -124,7 +125,7 @@ public final class PoolsClientImpl implements PoolsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") PoolInner parameters, Context context);
+            @BodyParam("application/json") PoolPatch parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
         @ExpectedResponses({ 200 })
@@ -134,7 +135,7 @@ public final class PoolsClientImpl implements PoolsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") PoolInner parameters, Context context);
+            @BodyParam("application/json") PoolPatch parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
@@ -531,7 +532,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, PoolInner parameters, String ifMatch) {
+        String poolName, PoolPatch parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -582,7 +583,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> updateAsync(String resourceGroupName, String accountName, String poolName,
-        PoolInner parameters) {
+        PoolPatch parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -609,7 +610,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsUpdateResponse updateWithResponse(String resourceGroupName, String accountName, String poolName,
-        PoolInner parameters, String ifMatch, Context context) {
+        PoolPatch parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -662,7 +663,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
+    public PoolInner update(String resourceGroupName, String accountName, String poolName, PoolPatch parameters) {
         final String ifMatch = null;
         return updateWithResponse(resourceGroupName, accountName, poolName, parameters, ifMatch, Context.NONE)
             .getValue();

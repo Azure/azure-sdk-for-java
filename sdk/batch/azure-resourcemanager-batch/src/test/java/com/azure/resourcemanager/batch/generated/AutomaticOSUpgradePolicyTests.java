@@ -12,24 +12,24 @@ public final class AutomaticOSUpgradePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomaticOSUpgradePolicy model = BinaryData.fromString(
-            "{\"disableAutomaticRollback\":true,\"enableAutomaticOSUpgrade\":false,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":false}")
+            "{\"disableAutomaticRollback\":false,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":false,\"osRollingUpgradeDeferral\":false}")
             .toObject(AutomaticOSUpgradePolicy.class);
-        Assertions.assertTrue(model.disableAutomaticRollback());
-        Assertions.assertFalse(model.enableAutomaticOSUpgrade());
-        Assertions.assertTrue(model.useRollingUpgradePolicy());
+        Assertions.assertFalse(model.disableAutomaticRollback());
+        Assertions.assertTrue(model.enableAutomaticOSUpgrade());
+        Assertions.assertFalse(model.useRollingUpgradePolicy());
         Assertions.assertFalse(model.osRollingUpgradeDeferral());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomaticOSUpgradePolicy model = new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(true)
-            .withEnableAutomaticOSUpgrade(false)
-            .withUseRollingUpgradePolicy(true)
+        AutomaticOSUpgradePolicy model = new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(false)
+            .withEnableAutomaticOSUpgrade(true)
+            .withUseRollingUpgradePolicy(false)
             .withOsRollingUpgradeDeferral(false);
         model = BinaryData.fromObject(model).toObject(AutomaticOSUpgradePolicy.class);
-        Assertions.assertTrue(model.disableAutomaticRollback());
-        Assertions.assertFalse(model.enableAutomaticOSUpgrade());
-        Assertions.assertTrue(model.useRollingUpgradePolicy());
+        Assertions.assertFalse(model.disableAutomaticRollback());
+        Assertions.assertTrue(model.enableAutomaticOSUpgrade());
+        Assertions.assertFalse(model.useRollingUpgradePolicy());
         Assertions.assertFalse(model.osRollingUpgradeDeferral());
     }
 }

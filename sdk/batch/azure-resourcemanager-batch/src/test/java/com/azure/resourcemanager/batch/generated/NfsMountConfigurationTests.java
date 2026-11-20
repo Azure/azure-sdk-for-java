@@ -12,21 +12,22 @@ public final class NfsMountConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NfsMountConfiguration model = BinaryData
-            .fromString("{\"source\":\"dhszfjv\",\"relativeMountPath\":\"bgofeljag\",\"mountOptions\":\"mqhldvrii\"}")
+            .fromString(
+                "{\"source\":\"atkzwpcnpw\",\"relativeMountPath\":\"cjaesgvvs\",\"mountOptions\":\"yajguqfhwygzlv\"}")
             .toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("dhszfjv", model.source());
-        Assertions.assertEquals("bgofeljag", model.relativeMountPath());
-        Assertions.assertEquals("mqhldvrii", model.mountOptions());
+        Assertions.assertEquals("atkzwpcnpw", model.source());
+        Assertions.assertEquals("cjaesgvvs", model.relativeMountPath());
+        Assertions.assertEquals("yajguqfhwygzlv", model.mountOptions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsMountConfiguration model = new NfsMountConfiguration().withSource("dhszfjv")
-            .withRelativeMountPath("bgofeljag")
-            .withMountOptions("mqhldvrii");
+        NfsMountConfiguration model = new NfsMountConfiguration().withSource("atkzwpcnpw")
+            .withRelativeMountPath("cjaesgvvs")
+            .withMountOptions("yajguqfhwygzlv");
         model = BinaryData.fromObject(model).toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("dhszfjv", model.source());
-        Assertions.assertEquals("bgofeljag", model.relativeMountPath());
-        Assertions.assertEquals("mqhldvrii", model.mountOptions());
+        Assertions.assertEquals("atkzwpcnpw", model.source());
+        Assertions.assertEquals("cjaesgvvs", model.relativeMountPath());
+        Assertions.assertEquals("yajguqfhwygzlv", model.mountOptions());
     }
 }

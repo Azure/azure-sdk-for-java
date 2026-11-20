@@ -11,7 +11,7 @@ import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParamete
  */
 public final class ApplicationPackageActivateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationPackageActivate.json
+     * x-ms-original-file: 2026-10-01/ApplicationPackageActivate.json
      */
     /**
      * Sample code: ApplicationPackageActivate.

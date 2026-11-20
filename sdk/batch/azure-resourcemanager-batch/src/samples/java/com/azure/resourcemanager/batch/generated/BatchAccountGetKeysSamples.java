@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class BatchAccountGetKeysSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountGetKeys.json
+     * x-ms-original-file: 2026-10-01/BatchAccountGetKeys.json
      */
     /**
      * Sample code: BatchAccountGetKeys.

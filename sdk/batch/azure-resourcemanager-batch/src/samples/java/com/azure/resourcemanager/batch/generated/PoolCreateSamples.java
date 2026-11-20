@@ -63,7 +63,7 @@ import java.util.Map;
  */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration ServiceArtifactReference.
@@ -94,7 +94,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_SecurityProfile.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_SecurityProfile.json
      */
     /**
      * Sample code: CreatePool - SecurityProfile.
@@ -122,7 +122,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_Tags.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_Tags.json
      */
     /**
      * Sample code: CreatePool - Tags.
@@ -145,7 +145,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration OSDisk.
@@ -174,7 +174,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
      */
     /**
      * Sample code: CreatePool - disk encryption set for user subscription accounts.
@@ -206,7 +206,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_MinimalVirtualMachineConfiguration.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal VirtualMachineConfiguration.
@@ -231,7 +231,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration Extensions.
@@ -267,7 +267,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
      */
     /**
      * Sample code: CreatePool - customer managed key for Batch managed accounts.
@@ -302,7 +302,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_UserAssignedIdentities.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_UserAssignedIdentities.json
      */
     /**
      * Sample code: CreatePool - UserAssignedIdentities.
@@ -332,7 +332,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_AcceleratedNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_AcceleratedNetworking.json
      */
     /**
      * Sample code: CreatePool - accelerated networking.
@@ -360,7 +360,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_UpgradePolicy.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_UpgradePolicy.json
      */
     /**
      * Sample code: CreatePool - UpgradePolicy.
@@ -400,7 +400,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_VirtualMachineConfiguration.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_VirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full VirtualMachineConfiguration.
@@ -458,7 +458,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
      */
     /**
      * Sample code: CreatePool - confidential disk encryption set for user subscription accounts.
@@ -501,7 +501,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_SharedImageGallery.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_SharedImageGallery.json
      */
     /**
      * Sample code: CreatePool - Custom Image.
@@ -521,7 +521,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_DualStackNetworking.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_DualStackNetworking.json
      */
     /**
      * Sample code: CreatePool - dual stack networking.
@@ -557,7 +557,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_NoPublicIPAddresses.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_NoPublicIPAddresses.json
      */
     /**
      * Sample code: CreatePool - No public IP.
@@ -581,7 +581,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PoolCreate_PublicIPs.json
+     * x-ms-original-file: 2026-10-01/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.

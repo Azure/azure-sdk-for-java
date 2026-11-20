@@ -21,7 +21,7 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"os\",\"endpoints\":[{\"domainName\":\"ivfcdisyirnx\",\"description\":\"czexrxzbujrtrhqv\",\"endpointDetails\":[{\"port\":1039920222}]}]}]}";
+            = "{\"value\":[{\"category\":\"ljhnmgixhcmav\",\"endpoints\":[{\"domainName\":\"udorh\",\"description\":\"yyprotwyp\",\"endpointDetails\":[{\"port\":2095396733}]},{\"domainName\":\"hu\",\"description\":\"mjkavlgorbmft\",\"endpointDetails\":[{\"port\":1503356934},{\"port\":1649651263},{\"port\":1229612251},{\"port\":2008888087}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,7 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.batchAccounts()
-            .listOutboundNetworkDependenciesEndpoints("eufuqyrxpdlcgql", "ismjqfrddgamqu",
-                com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("tdfuxt", "asiibmiybnnust", com.azure.core.util.Context.NONE);
 
     }
 }

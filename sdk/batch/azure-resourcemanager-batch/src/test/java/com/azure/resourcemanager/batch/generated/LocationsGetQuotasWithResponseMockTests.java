@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class LocationsGetQuotasWithResponseMockTests {
     @Test
     public void testGetQuotasWithResponse() throws Exception {
-        String responseStr = "{\"accountQuota\":2108240379}";
+        String responseStr = "{\"accountQuota\":933017494}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class LocationsGetQuotasWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BatchLocationQuota response
-            = manager.locations().getQuotasWithResponse("mtkhlowkxxpvbr", com.azure.core.util.Context.NONE).getValue();
+            = manager.locations().getQuotasWithResponse("arts", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

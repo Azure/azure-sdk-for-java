@@ -4,6 +4,5 @@
 
 /**
  * Package containing the implementations for Batch.
- * The Batch Management Client.
  */
 package com.azure.resourcemanager.batch.implementation;

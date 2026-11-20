@@ -28,7 +28,7 @@ public final class BatchAccountsSynchronizeAutoStorageKeysWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.batchAccounts()
-            .synchronizeAutoStorageKeysWithResponse("bxyijddtvq", "ttadijae", com.azure.core.util.Context.NONE);
+            .synchronizeAutoStorageKeysWithResponse("eebtijvacvb", "qzbqqxlajrnwxa", com.azure.core.util.Context.NONE);
 
     }
 }

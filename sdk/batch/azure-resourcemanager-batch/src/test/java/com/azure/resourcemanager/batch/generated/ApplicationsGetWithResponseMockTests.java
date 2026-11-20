@@ -21,7 +21,7 @@ public final class ApplicationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"daultxijjumfq\",\"allowUpdates\":false,\"defaultVersion\":\"nqnm\"},\"etag\":\"ngz\",\"tags\":{\"uik\":\"xtbjwgnyfusfzsv\",\"l\":\"hajqglcfh\",\"nzrdpsovwxz\":\"qryxyn\"},\"id\":\"tgoe\",\"name\":\"ybbabpfhvfsl\",\"type\":\"vntjlrigjk\"}";
+            = "{\"properties\":{\"displayName\":\"stmninwjizcilng\",\"allowUpdates\":true,\"defaultVersion\":\"ejjtbxqmul\"},\"etag\":\"lxqzvn\",\"tags\":{\"brqbsmswzi\":\"bycucrwnamikz\",\"vhczznvfby\":\"gfuhokzrusw\",\"vumwmxqh\":\"jsxjwwix\",\"hflzokxco\":\"dvnoamldsehaohdj\"},\"id\":\"e\",\"name\":\"nje\",\"type\":\"agltsxoa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,12 @@ public final class ApplicationsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Application response = manager.applications()
-            .getWithResponse("yawbzasqbu", "ljgkyex", "oguyaip", com.azure.core.util.Context.NONE)
-            .getValue();
+        Application response
+            = manager.applications().getWithResponse("ds", "uwc", "b", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("xtbjwgnyfusfzsv", response.tags().get("uik"));
-        Assertions.assertEquals("daultxijjumfq", response.displayName());
-        Assertions.assertFalse(response.allowUpdates());
-        Assertions.assertEquals("nqnm", response.defaultVersion());
+        Assertions.assertEquals("bycucrwnamikz", response.tags().get("brqbsmswzi"));
+        Assertions.assertEquals("stmninwjizcilng", response.displayName());
+        Assertions.assertTrue(response.allowUpdates());
+        Assertions.assertEquals("ejjtbxqmul", response.defaultVersion());
     }
 }

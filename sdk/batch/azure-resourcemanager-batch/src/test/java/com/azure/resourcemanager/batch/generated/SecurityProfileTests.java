@@ -17,40 +17,40 @@ public final class SecurityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityProfile model = BinaryData.fromString(
-            "{\"securityType\":\"confidentialVM\",\"encryptionAtHost\":false,\"uefiSettings\":{\"secureBootEnabled\":true,\"vTpmEnabled\":false},\"proxyAgentSettings\":{\"enabled\":false,\"imds\":{\"mode\":\"Audit\",\"inVMAccessControlProfileReferenceId\":\"sjswsrms\"},\"wireServer\":{\"mode\":\"Enforce\",\"inVMAccessControlProfileReferenceId\":\"zbchckqqzqioxiy\"}}}")
+            "{\"securityType\":\"trustedLaunch\",\"encryptionAtHost\":true,\"uefiSettings\":{\"secureBootEnabled\":false,\"vTpmEnabled\":true},\"proxyAgentSettings\":{\"enabled\":false,\"imds\":{\"mode\":\"Audit\",\"inVMAccessControlProfileReferenceId\":\"syocogjltdtbnnha\"},\"wireServer\":{\"mode\":\"Enforce\",\"inVMAccessControlProfileReferenceId\":\"kvci\"}}}")
             .toObject(SecurityProfile.class);
-        Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
-        Assertions.assertFalse(model.encryptionAtHost());
-        Assertions.assertTrue(model.uefiSettings().secureBootEnabled());
-        Assertions.assertFalse(model.uefiSettings().vTpmEnabled());
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, model.securityType());
+        Assertions.assertTrue(model.encryptionAtHost());
+        Assertions.assertFalse(model.uefiSettings().secureBootEnabled());
+        Assertions.assertTrue(model.uefiSettings().vTpmEnabled());
         Assertions.assertFalse(model.proxyAgentSettings().enabled());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.proxyAgentSettings().imds().mode());
-        Assertions.assertEquals("sjswsrms", model.proxyAgentSettings().imds().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("syocogjltdtbnnha",
+            model.proxyAgentSettings().imds().inVMAccessControlProfileReferenceId());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.ENFORCE, model.proxyAgentSettings().wireServer().mode());
-        Assertions.assertEquals("zbchckqqzqioxiy",
-            model.proxyAgentSettings().wireServer().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("kvci", model.proxyAgentSettings().wireServer().inVMAccessControlProfileReferenceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityProfile model = new SecurityProfile().withSecurityType(SecurityTypes.CONFIDENTIAL_VM)
-            .withEncryptionAtHost(false)
-            .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(false))
+        SecurityProfile model = new SecurityProfile().withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
+            .withEncryptionAtHost(true)
+            .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(true))
             .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(false)
                 .withImds(new HostEndpointSettings().withMode(HostEndpointSettingsModeTypes.AUDIT)
-                    .withInVMAccessControlProfileReferenceId("sjswsrms"))
+                    .withInVMAccessControlProfileReferenceId("syocogjltdtbnnha"))
                 .withWireServer(new HostEndpointSettings().withMode(HostEndpointSettingsModeTypes.ENFORCE)
-                    .withInVMAccessControlProfileReferenceId("zbchckqqzqioxiy")));
+                    .withInVMAccessControlProfileReferenceId("kvci")));
         model = BinaryData.fromObject(model).toObject(SecurityProfile.class);
-        Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
-        Assertions.assertFalse(model.encryptionAtHost());
-        Assertions.assertTrue(model.uefiSettings().secureBootEnabled());
-        Assertions.assertFalse(model.uefiSettings().vTpmEnabled());
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, model.securityType());
+        Assertions.assertTrue(model.encryptionAtHost());
+        Assertions.assertFalse(model.uefiSettings().secureBootEnabled());
+        Assertions.assertTrue(model.uefiSettings().vTpmEnabled());
         Assertions.assertFalse(model.proxyAgentSettings().enabled());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.proxyAgentSettings().imds().mode());
-        Assertions.assertEquals("sjswsrms", model.proxyAgentSettings().imds().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("syocogjltdtbnnha",
+            model.proxyAgentSettings().imds().inVMAccessControlProfileReferenceId());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.ENFORCE, model.proxyAgentSettings().wireServer().mode());
-        Assertions.assertEquals("zbchckqqzqioxiy",
-            model.proxyAgentSettings().wireServer().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("kvci", model.proxyAgentSettings().wireServer().inVMAccessControlProfileReferenceId());
     }
 }

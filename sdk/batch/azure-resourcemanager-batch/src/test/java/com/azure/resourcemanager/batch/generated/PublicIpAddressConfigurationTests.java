@@ -16,27 +16,29 @@ public final class PublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicIpAddressConfiguration model = BinaryData.fromString(
-            "{\"provision\":\"UserManaged\",\"ipAddressIds\":[\"ujmqlgkfbtndoa\",\"n\",\"bjcntujitc\"],\"ipFamilies\":[\"IPv6\"],\"ipTags\":[{\"ipTagType\":\"ae\",\"tag\":\"ojvdcpzfoqo\"}]}")
+            "{\"provision\":\"BatchManaged\",\"ipAddressIds\":[\"yuuximerqfobwyzn\",\"bykutw\",\"fhpagmhrskdsnf\"],\"ipFamilies\":[\"IPv6\",\"IPv6\",\"IPv6\",\"IPv4\"],\"ipTags\":[{\"ipTagType\":\"mkkzevdlhe\",\"tag\":\"usdsttwv\"},{\"ipTagType\":\"vbbejdcng\",\"tag\":\"m\"},{\"ipTagType\":\"kufgmj\",\"tag\":\"wr\"}]}")
             .toObject(PublicIpAddressConfiguration.class);
-        Assertions.assertEquals(IpAddressProvisioningType.USER_MANAGED, model.provision());
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.ipAddressIds().get(0));
+        Assertions.assertEquals(IpAddressProvisioningType.BATCH_MANAGED, model.provision());
+        Assertions.assertEquals("yuuximerqfobwyzn", model.ipAddressIds().get(0));
         Assertions.assertEquals(IPFamily.IPV6, model.ipFamilies().get(0));
-        Assertions.assertEquals("ae", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("ojvdcpzfoqo", model.ipTags().get(0).tag());
+        Assertions.assertEquals("mkkzevdlhe", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("usdsttwv", model.ipTags().get(0).tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicIpAddressConfiguration model
-            = new PublicIpAddressConfiguration().withProvision(IpAddressProvisioningType.USER_MANAGED)
-                .withIpAddressIds(Arrays.asList("ujmqlgkfbtndoa", "n", "bjcntujitc"))
-                .withIpFamilies(Arrays.asList(IPFamily.IPV6))
-                .withIpTags(Arrays.asList(new IPTag().withIpTagType("ae").withTag("ojvdcpzfoqo")));
+            = new PublicIpAddressConfiguration().withProvision(IpAddressProvisioningType.BATCH_MANAGED)
+                .withIpAddressIds(Arrays.asList("yuuximerqfobwyzn", "bykutw", "fhpagmhrskdsnf"))
+                .withIpFamilies(Arrays.asList(IPFamily.IPV6, IPFamily.IPV6, IPFamily.IPV6, IPFamily.IPV4))
+                .withIpTags(Arrays.asList(new IPTag().withIpTagType("mkkzevdlhe").withTag("usdsttwv"),
+                    new IPTag().withIpTagType("vbbejdcng").withTag("m"),
+                    new IPTag().withIpTagType("kufgmj").withTag("wr")));
         model = BinaryData.fromObject(model).toObject(PublicIpAddressConfiguration.class);
-        Assertions.assertEquals(IpAddressProvisioningType.USER_MANAGED, model.provision());
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.ipAddressIds().get(0));
+        Assertions.assertEquals(IpAddressProvisioningType.BATCH_MANAGED, model.provision());
+        Assertions.assertEquals("yuuximerqfobwyzn", model.ipAddressIds().get(0));
         Assertions.assertEquals(IPFamily.IPV6, model.ipFamilies().get(0));
-        Assertions.assertEquals("ae", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("ojvdcpzfoqo", model.ipTags().get(0).tag());
+        Assertions.assertEquals("mkkzevdlhe", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("usdsttwv", model.ipTags().get(0).tag());
     }
 }

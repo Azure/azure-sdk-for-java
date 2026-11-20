@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityPerimeterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeter model
-            = BinaryData.fromString("{\"id\":\"qyikvy\",\"perimeterGuid\":\"uyav\",\"location\":\"wmn\"}")
-                .toObject(NetworkSecurityPerimeter.class);
-        Assertions.assertEquals("qyikvy", model.id());
-        Assertions.assertEquals("uyav", model.perimeterGuid());
-        Assertions.assertEquals("wmn", model.location());
+        NetworkSecurityPerimeter model = BinaryData
+            .fromString("{\"id\":\"pdnqqskawaoqvmmb\",\"perimeterGuid\":\"qfr\",\"location\":\"lkzmegnitgvkxl\"}")
+            .toObject(NetworkSecurityPerimeter.class);
+        Assertions.assertEquals("pdnqqskawaoqvmmb", model.id());
+        Assertions.assertEquals("qfr", model.perimeterGuid());
+        Assertions.assertEquals("lkzmegnitgvkxl", model.location());
     }
 }

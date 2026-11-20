@@ -13,18 +13,18 @@ public final class CheckNameAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckNameAvailabilityParameters model
-            = BinaryData.fromString("{\"name\":\"a\",\"type\":\"Microsoft.Batch/batchAccounts\"}")
+            = BinaryData.fromString("{\"name\":\"wwpgdakchzyvlixq\",\"type\":\"Microsoft.Batch/batchAccounts\"}")
                 .toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("wwpgdakchzyvlixq", model.name());
         Assertions.assertEquals(ResourceType.MICROSOFT_BATCH_BATCH_ACCOUNTS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityParameters model
-            = new CheckNameAvailabilityParameters().withName("a").withType(ResourceType.MICROSOFT_BATCH_BATCH_ACCOUNTS);
+        CheckNameAvailabilityParameters model = new CheckNameAvailabilityParameters().withName("wwpgdakchzyvlixq")
+            .withType(ResourceType.MICROSOFT_BATCH_BATCH_ACCOUNTS);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("wwpgdakchzyvlixq", model.name());
         Assertions.assertEquals(ResourceType.MICROSOFT_BATCH_BATCH_ACCOUNTS, model.type());
     }
 }

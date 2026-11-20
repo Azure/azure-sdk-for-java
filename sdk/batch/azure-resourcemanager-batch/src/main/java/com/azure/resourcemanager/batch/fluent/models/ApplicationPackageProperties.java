@@ -30,12 +30,16 @@ public final class ApplicationPackageProperties implements JsonSerializable<Appl
     private String format;
 
     /*
-     * The URL for the application package in Azure Storage.
+     * The URL for the application package in Azure Storage. This property is only returned for the PUT application
+     * package (create or update) operation. For the GET application package and POST activate application package
+     * operations, this property is not populated.
      */
     private String storageUrl;
 
     /*
-     * The UTC time at which the Azure Storage URL will expire.
+     * The UTC time at which the Azure Storage URL will expire. This property is only returned for the PUT application
+     * package (create or update) operation. For the GET application package and POST activate application package
+     * operations, this property is not populated.
      */
     private OffsetDateTime storageUrlExpiry;
 
@@ -69,7 +73,9 @@ public final class ApplicationPackageProperties implements JsonSerializable<Appl
     }
 
     /**
-     * Get the storageUrl property: The URL for the application package in Azure Storage.
+     * Get the storageUrl property: The URL for the application package in Azure Storage. This property is only returned
+     * for the PUT application package (create or update) operation. For the GET application package and POST activate
+     * application package operations, this property is not populated.
      * 
      * @return the storageUrl value.
      */
@@ -78,7 +84,9 @@ public final class ApplicationPackageProperties implements JsonSerializable<Appl
     }
 
     /**
-     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
+     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire. This property is only
+     * returned for the PUT application package (create or update) operation. For the GET application package and POST
+     * activate application package operations, this property is not populated.
      * 
      * @return the storageUrlExpiry value.
      */

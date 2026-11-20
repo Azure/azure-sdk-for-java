@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class NetworkSecurityPerimeterReconcileConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-06-01/NspConfigurationReconcile.json
+     * x-ms-original-file: 2026-10-01/NspConfigurationReconcile.json
      */
     /**
      * Sample code: ReconcileNspConfiguration.

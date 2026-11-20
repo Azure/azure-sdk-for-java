@@ -20,40 +20,41 @@ public final class OSDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSDisk model = BinaryData.fromString(
-            "{\"ephemeralOSDiskSettings\":{\"placement\":\"CacheDisk\"},\"caching\":\"ReadOnly\",\"managedDisk\":{\"storageAccountType\":\"Premium_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"DiskWithVMGuestState\",\"diskEncryptionSet\":{\"id\":\"n\"}},\"diskEncryptionSet\":{\"id\":\"ynl\"}},\"diskSizeGB\":1494231655,\"writeAcceleratorEnabled\":false}")
+            "{\"ephemeralOSDiskSettings\":{\"placement\":\"CacheDisk\"},\"caching\":\"ReadOnly\",\"managedDisk\":{\"storageAccountType\":\"Standard_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\",\"diskEncryptionSet\":{\"id\":\"nzgmwznmabik\"}},\"diskEncryptionSet\":{\"id\":\"orgjhxbldt\"}},\"diskSizeGB\":1971592368,\"writeAcceleratorEnabled\":true}")
             .toObject(OSDisk.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.ephemeralOSDiskSettings().placement());
         Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
-        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("n", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("ynl", model.managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(1494231655, model.diskSizeGB());
-        Assertions.assertFalse(model.writeAcceleratorEnabled());
+        Assertions.assertEquals("nzgmwznmabik", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("orgjhxbldt", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(1971592368, model.diskSizeGB());
+        Assertions.assertTrue(model.writeAcceleratorEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSDisk model = new OSDisk()
-            .withEphemeralOSDiskSettings(new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK))
-            .withCaching(CachingType.READ_ONLY)
-            .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.PREMIUM_LRS)
-                .withSecurityProfile(new VMDiskSecurityProfile()
-                    .withSecurityEncryptionType(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)
-                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("n")))
-                .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("ynl")))
-            .withDiskSizeGB(1494231655)
-            .withWriteAcceleratorEnabled(false);
+        OSDisk model
+            = new OSDisk()
+                .withEphemeralOSDiskSettings(new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK))
+                .withCaching(CachingType.READ_ONLY)
+                .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_LRS)
+                    .withSecurityProfile(new VMDiskSecurityProfile()
+                        .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)
+                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("nzgmwznmabik")))
+                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("orgjhxbldt")))
+                .withDiskSizeGB(1971592368)
+                .withWriteAcceleratorEnabled(true);
         model = BinaryData.fromObject(model).toObject(OSDisk.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.ephemeralOSDiskSettings().placement());
         Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
-        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("n", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("ynl", model.managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(1494231655, model.diskSizeGB());
-        Assertions.assertFalse(model.writeAcceleratorEnabled());
+        Assertions.assertEquals("nzgmwznmabik", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("orgjhxbldt", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(1971592368, model.diskSizeGB());
+        Assertions.assertTrue(model.writeAcceleratorEnabled());
     }
 }

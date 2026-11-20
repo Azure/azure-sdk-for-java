@@ -9,7 +9,7 @@ package com.azure.resourcemanager.batch.generated;
  */
 public final class LocationGetQuotasSamples {
     /*
-     * x-ms-original-file: 2025-06-01/LocationGetQuotas.json
+     * x-ms-original-file: 2026-10-01/LocationGetQuotas.json
      */
     /**
      * Sample code: LocationGetQuotas.

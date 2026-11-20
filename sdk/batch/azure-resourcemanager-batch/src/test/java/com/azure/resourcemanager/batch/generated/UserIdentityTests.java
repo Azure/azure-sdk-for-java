@@ -15,21 +15,20 @@ public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserIdentity model = BinaryData
-            .fromString(
-                "{\"userName\":\"udurgkakmokz\",\"autoUser\":{\"scope\":\"Task\",\"elevationLevel\":\"Admin\"}}")
+            .fromString("{\"userName\":\"rlazszrnw\",\"autoUser\":{\"scope\":\"Task\",\"elevationLevel\":\"Admin\"}}")
             .toObject(UserIdentity.class);
-        Assertions.assertEquals("udurgkakmokz", model.username());
+        Assertions.assertEquals("rlazszrnw", model.username());
         Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.ADMIN, model.autoUser().elevationLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentity model = new UserIdentity().withUsername("udurgkakmokz")
+        UserIdentity model = new UserIdentity().withUsername("rlazszrnw")
             .withAutoUser(
                 new AutoUserSpecification().withScope(AutoUserScope.TASK).withElevationLevel(ElevationLevel.ADMIN));
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("udurgkakmokz", model.username());
+        Assertions.assertEquals("rlazszrnw", model.username());
         Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.ADMIN, model.autoUser().elevationLevel());
     }

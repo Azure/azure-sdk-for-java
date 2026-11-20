@@ -11,7 +11,7 @@ public final class SupportedSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedSkuInner model = BinaryData.fromString(
-            "{\"name\":\"kknhxkizvytnrzv\",\"familyName\":\"jraaeranokqguk\",\"capabilities\":[{\"name\":\"vbroylaxxu\",\"value\":\"disdosfjbjsvgj\"}],\"batchSupportEndOfLife\":\"2021-05-25T10:35:46Z\"}")
+            "{\"name\":\"l\",\"familyName\":\"umuaslzkwrrwoycq\",\"capabilities\":[{\"name\":\"hahnomdrkywuhps\",\"value\":\"uurutlwexxwlalni\"}],\"batchSupportEndOfLife\":\"2021-09-30T09:10:25Z\"}")
             .toObject(SupportedSkuInner.class);
     }
 }

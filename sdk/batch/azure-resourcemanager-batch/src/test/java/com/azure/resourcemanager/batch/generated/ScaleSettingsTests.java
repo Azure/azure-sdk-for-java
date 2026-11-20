@@ -6,8 +6,8 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
-import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
+import com.azure.resourcemanager.batch.models.RequestedComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
@@ -16,31 +16,33 @@ public final class ScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleSettings model = BinaryData.fromString(
-            "{\"fixedScale\":{\"resizeTimeout\":\"PT41H2M7S\",\"targetDedicatedNodes\":333571047,\"targetLowPriorityNodes\":1063361933,\"nodeDeallocationOption\":\"Terminate\"},\"autoScale\":{\"formula\":\"xdy\",\"evaluationInterval\":\"PT57H31M36S\"}}")
+            "{\"fixedScale\":{\"resizeTimeout\":\"PT43H49M2S\",\"targetDedicatedNodes\":2053203757,\"targetLowPriorityNodes\":472289460,\"nodeDeallocationOption\":\"Terminate\"},\"autoScale\":{\"formula\":\"mfmtdaaygdvw\",\"evaluationInterval\":\"PT160H21M8S\"}}")
             .toObject(ScaleSettings.class);
-        Assertions.assertEquals(Duration.parse("PT41H2M7S"), model.fixedScale().resizeTimeout());
-        Assertions.assertEquals(333571047, model.fixedScale().targetDedicatedNodes());
-        Assertions.assertEquals(1063361933, model.fixedScale().targetLowPriorityNodes());
-        Assertions.assertEquals(ComputeNodeDeallocationOption.TERMINATE, model.fixedScale().nodeDeallocationOption());
-        Assertions.assertEquals("xdy", model.autoScale().formula());
-        Assertions.assertEquals(Duration.parse("PT57H31M36S"), model.autoScale().evaluationInterval());
+        Assertions.assertEquals(Duration.parse("PT43H49M2S"), model.fixedScale().resizeTimeout());
+        Assertions.assertEquals(2053203757, model.fixedScale().targetDedicatedNodes());
+        Assertions.assertEquals(472289460, model.fixedScale().targetLowPriorityNodes());
+        Assertions.assertEquals(RequestedComputeNodeDeallocationOption.TERMINATE,
+            model.fixedScale().nodeDeallocationOption());
+        Assertions.assertEquals("mfmtdaaygdvw", model.autoScale().formula());
+        Assertions.assertEquals(Duration.parse("PT160H21M8S"), model.autoScale().evaluationInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScaleSettings model = new ScaleSettings()
-            .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT41H2M7S"))
-                .withTargetDedicatedNodes(333571047)
-                .withTargetLowPriorityNodes(1063361933)
-                .withNodeDeallocationOption(ComputeNodeDeallocationOption.TERMINATE))
-            .withAutoScale(
-                new AutoScaleSettings().withFormula("xdy").withEvaluationInterval(Duration.parse("PT57H31M36S")));
+            .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT43H49M2S"))
+                .withTargetDedicatedNodes(2053203757)
+                .withTargetLowPriorityNodes(472289460)
+                .withNodeDeallocationOption(RequestedComputeNodeDeallocationOption.TERMINATE))
+            .withAutoScale(new AutoScaleSettings().withFormula("mfmtdaaygdvw")
+                .withEvaluationInterval(Duration.parse("PT160H21M8S")));
         model = BinaryData.fromObject(model).toObject(ScaleSettings.class);
-        Assertions.assertEquals(Duration.parse("PT41H2M7S"), model.fixedScale().resizeTimeout());
-        Assertions.assertEquals(333571047, model.fixedScale().targetDedicatedNodes());
-        Assertions.assertEquals(1063361933, model.fixedScale().targetLowPriorityNodes());
-        Assertions.assertEquals(ComputeNodeDeallocationOption.TERMINATE, model.fixedScale().nodeDeallocationOption());
-        Assertions.assertEquals("xdy", model.autoScale().formula());
-        Assertions.assertEquals(Duration.parse("PT57H31M36S"), model.autoScale().evaluationInterval());
+        Assertions.assertEquals(Duration.parse("PT43H49M2S"), model.fixedScale().resizeTimeout());
+        Assertions.assertEquals(2053203757, model.fixedScale().targetDedicatedNodes());
+        Assertions.assertEquals(472289460, model.fixedScale().targetLowPriorityNodes());
+        Assertions.assertEquals(RequestedComputeNodeDeallocationOption.TERMINATE,
+            model.fixedScale().nodeDeallocationOption());
+        Assertions.assertEquals("mfmtdaaygdvw", model.autoScale().formula());
+        Assertions.assertEquals(Duration.parse("PT160H21M8S"), model.autoScale().evaluationInterval());
     }
 }
