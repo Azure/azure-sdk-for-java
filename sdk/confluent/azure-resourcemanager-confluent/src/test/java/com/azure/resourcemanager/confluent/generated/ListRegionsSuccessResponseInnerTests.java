@@ -12,18 +12,18 @@ public final class ListRegionsSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListRegionsSuccessResponseInner model = BinaryData.fromString(
-            "{\"data\":[{\"kind\":\"alhbx\",\"id\":\"e\",\"properties\":{\"metadata\":{\"self\":\"v\",\"resourceName\":\"dgwdslfhot\",\"createdTimestamp\":\"cynpwlbjnp\",\"updatedTimestamp\":\"cftadeh\",\"deletedTimestamp\":\"ltyfsop\"},\"spec\":{\"name\":\"uesnzwdejbavo\",\"cloud\":\"zdmohctbqvu\",\"regionName\":\"xdn\",\"packages\":[\"owgujjugwdkcglhs\"]}}}]}")
+            "{\"data\":[{\"kind\":\"mjmwvvjektcx\",\"id\":\"nhwlrsffrzpwvl\",\"properties\":{\"metadata\":{\"self\":\"biqylihkaet\",\"resourceName\":\"tvfcivfsn\",\"createdTimestamp\":\"m\",\"updatedTimestamp\":\"tqhjfbebrjcx\",\"deletedTimestamp\":\"fuwutttxf\"},\"spec\":{\"name\":\"birphxepcyva\",\"cloud\":\"nljky\",\"regionName\":\"j\",\"packages\":[\"j\",\"gidokgjljyoxgvcl\"]}}},{\"kind\":\"gsncghkjeszz\",\"id\":\"ijhtxf\",\"properties\":{\"metadata\":{\"self\":\"fsm\",\"resourceName\":\"eh\",\"createdTimestamp\":\"vecxgodebfqkk\",\"updatedTimestamp\":\"mpukgriw\",\"deletedTimestamp\":\"zlfbxzpuzycispnq\"},\"spec\":{\"name\":\"mgkbrpyydhibn\",\"cloud\":\"qkpikadrgvtqagnb\",\"regionName\":\"nhijggmebfsi\",\"packages\":[\"utrc\"]}}},{\"kind\":\"na\",\"id\":\"mhjrunmpxttdbhr\",\"properties\":{\"metadata\":{\"self\":\"nkxmyskpbhenbtk\",\"resourceName\":\"ywn\",\"createdTimestamp\":\"nrs\",\"updatedTimestamp\":\"lqidyby\",\"deletedTimestamp\":\"zfcl\"},\"spec\":{\"name\":\"xdbabphlwr\",\"cloud\":\"fkts\",\"regionName\":\"sucocmnyyazttbtw\",\"packages\":[\"puedckzywbiexzf\",\"yueaxibxujwb\",\"qwalmuzyoxaepd\",\"zjancuxr\"]}}},{\"kind\":\"wbavxbniwdj\",\"id\":\"zt\",\"properties\":{\"metadata\":{\"self\":\"gnxytxhpzxbz\",\"resourceName\":\"zabglcuhxwt\",\"createdTimestamp\":\"yqiklbbovplwzb\",\"updatedTimestamp\":\"gy\",\"deletedTimestamp\":\"uosvmkfssxqukk\"},\"spec\":{\"name\":\"gmgsxnkjzkde\",\"cloud\":\"pvlopwiyighxpkd\",\"regionName\":\"baiuebbaumny\",\"packages\":[\"edeojnabc\"]}}}]}")
             .toObject(ListRegionsSuccessResponseInner.class);
-        Assertions.assertEquals("alhbx", model.data().get(0).kind());
-        Assertions.assertEquals("e", model.data().get(0).id());
-        Assertions.assertEquals("v", model.data().get(0).metadata().self());
-        Assertions.assertEquals("dgwdslfhot", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("cynpwlbjnp", model.data().get(0).metadata().createdTimestamp());
-        Assertions.assertEquals("cftadeh", model.data().get(0).metadata().updatedTimestamp());
-        Assertions.assertEquals("ltyfsop", model.data().get(0).metadata().deletedTimestamp());
-        Assertions.assertEquals("uesnzwdejbavo", model.data().get(0).spec().name());
-        Assertions.assertEquals("zdmohctbqvu", model.data().get(0).spec().cloud());
-        Assertions.assertEquals("xdn", model.data().get(0).spec().regionName());
-        Assertions.assertEquals("owgujjugwdkcglhs", model.data().get(0).spec().packages().get(0));
+        Assertions.assertEquals("mjmwvvjektcx", model.data().get(0).kind());
+        Assertions.assertEquals("nhwlrsffrzpwvl", model.data().get(0).id());
+        Assertions.assertEquals("biqylihkaet", model.data().get(0).metadata().self());
+        Assertions.assertEquals("tvfcivfsn", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("m", model.data().get(0).metadata().createdTimestamp());
+        Assertions.assertEquals("tqhjfbebrjcx", model.data().get(0).metadata().updatedTimestamp());
+        Assertions.assertEquals("fuwutttxf", model.data().get(0).metadata().deletedTimestamp());
+        Assertions.assertEquals("birphxepcyva", model.data().get(0).spec().name());
+        Assertions.assertEquals("nljky", model.data().get(0).spec().cloud());
+        Assertions.assertEquals("j", model.data().get(0).spec().regionName());
+        Assertions.assertEquals("j", model.data().get(0).spec().packages().get(0));
     }
 }

@@ -14,39 +14,39 @@ public final class OfferDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferDetail model = BinaryData.fromString(
-            "{\"publisherId\":\"vmclw\",\"id\":\"ijcoejctb\",\"planId\":\"aqsqsycbkbfk\",\"planName\":\"ukdkexxppofmxa\",\"termUnit\":\"c\",\"termId\":\"pg\",\"privateOfferId\":\"toc\",\"privateOfferIds\":[\"hvpmoue\",\"hd\"],\"status\":\"Updating\"}")
+            "{\"publisherId\":\"ulexxbczwtr\",\"id\":\"wiqzbqjvsovmyo\",\"planId\":\"acspkwl\",\"planName\":\"zdobpxjmflbvvnch\",\"termUnit\":\"kcciwwzjuqkhr\",\"termId\":\"jiwkuofoskghsau\",\"privateOfferId\":\"mjmvxieduugidyjr\",\"privateOfferIds\":[\"y\"],\"status\":\"Started\"}")
             .toObject(OfferDetail.class);
-        Assertions.assertEquals("vmclw", model.publisherId());
-        Assertions.assertEquals("ijcoejctb", model.id());
-        Assertions.assertEquals("aqsqsycbkbfk", model.planId());
-        Assertions.assertEquals("ukdkexxppofmxa", model.planName());
-        Assertions.assertEquals("c", model.termUnit());
-        Assertions.assertEquals("pg", model.termId());
-        Assertions.assertEquals("toc", model.privateOfferId());
-        Assertions.assertEquals("hvpmoue", model.privateOfferIds().get(0));
-        Assertions.assertEquals(SaaSOfferStatus.UPDATING, model.status());
+        Assertions.assertEquals("ulexxbczwtr", model.publisherId());
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.id());
+        Assertions.assertEquals("acspkwl", model.planId());
+        Assertions.assertEquals("zdobpxjmflbvvnch", model.planName());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.termUnit());
+        Assertions.assertEquals("jiwkuofoskghsau", model.termId());
+        Assertions.assertEquals("mjmvxieduugidyjr", model.privateOfferId());
+        Assertions.assertEquals("y", model.privateOfferIds().get(0));
+        Assertions.assertEquals(SaaSOfferStatus.STARTED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfferDetail model = new OfferDetail().withPublisherId("vmclw")
-            .withId("ijcoejctb")
-            .withPlanId("aqsqsycbkbfk")
-            .withPlanName("ukdkexxppofmxa")
-            .withTermUnit("c")
-            .withTermId("pg")
-            .withPrivateOfferId("toc")
-            .withPrivateOfferIds(Arrays.asList("hvpmoue", "hd"))
-            .withStatus(SaaSOfferStatus.UPDATING);
+        OfferDetail model = new OfferDetail().withPublisherId("ulexxbczwtr")
+            .withId("wiqzbqjvsovmyo")
+            .withPlanId("acspkwl")
+            .withPlanName("zdobpxjmflbvvnch")
+            .withTermUnit("kcciwwzjuqkhr")
+            .withTermId("jiwkuofoskghsau")
+            .withPrivateOfferId("mjmvxieduugidyjr")
+            .withPrivateOfferIds(Arrays.asList("y"))
+            .withStatus(SaaSOfferStatus.STARTED);
         model = BinaryData.fromObject(model).toObject(OfferDetail.class);
-        Assertions.assertEquals("vmclw", model.publisherId());
-        Assertions.assertEquals("ijcoejctb", model.id());
-        Assertions.assertEquals("aqsqsycbkbfk", model.planId());
-        Assertions.assertEquals("ukdkexxppofmxa", model.planName());
-        Assertions.assertEquals("c", model.termUnit());
-        Assertions.assertEquals("pg", model.termId());
-        Assertions.assertEquals("toc", model.privateOfferId());
-        Assertions.assertEquals("hvpmoue", model.privateOfferIds().get(0));
-        Assertions.assertEquals(SaaSOfferStatus.UPDATING, model.status());
+        Assertions.assertEquals("ulexxbczwtr", model.publisherId());
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.id());
+        Assertions.assertEquals("acspkwl", model.planId());
+        Assertions.assertEquals("zdobpxjmflbvvnch", model.planName());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.termUnit());
+        Assertions.assertEquals("jiwkuofoskghsau", model.termId());
+        Assertions.assertEquals("mjmvxieduugidyjr", model.privateOfferId());
+        Assertions.assertEquals("y", model.privateOfferIds().get(0));
+        Assertions.assertEquals(SaaSOfferStatus.STARTED, model.status());
     }
 }

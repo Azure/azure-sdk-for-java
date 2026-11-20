@@ -18,30 +18,30 @@ public final class ConnectorResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorResourceProperties model = BinaryData.fromString(
-            "{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"fozauorsuk\",\"connectorId\":\"wbqpl\",\"connectorState\":\"RUNNING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}}")
+            "{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZURECOSMOSV2SINK\",\"connectorName\":\"skgfmocwahpq\",\"connectorId\":\"tjeaahhvjhh\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}}")
             .toObject(ConnectorResourceProperties.class);
         Assertions.assertEquals(ConnectorType.SOURCE, model.connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE, model.connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("fozauorsuk", model.connectorBasicInfo().connectorName());
-        Assertions.assertEquals("wbqpl", model.connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorBasicInfo().connectorState());
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SINK, model.connectorBasicInfo().connectorClass());
+        Assertions.assertEquals("skgfmocwahpq", model.connectorBasicInfo().connectorName());
+        Assertions.assertEquals("tjeaahhvjhh", model.connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.PROVISIONING, model.connectorBasicInfo().connectorState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectorResourceProperties model = new ConnectorResourceProperties()
             .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SOURCE)
-                .withConnectorClass(ConnectorClass.AZUREBLOBSOURCE)
-                .withConnectorName("fozauorsuk")
-                .withConnectorId("wbqpl")
-                .withConnectorState(ConnectorStatus.RUNNING))
+                .withConnectorClass(ConnectorClass.AZURECOSMOSV2SINK)
+                .withConnectorName("skgfmocwahpq")
+                .withConnectorId("tjeaahhvjhh")
+                .withConnectorState(ConnectorStatus.PROVISIONING))
             .withConnectorServiceTypeInfo(new ConnectorServiceTypeInfoBase())
             .withPartnerConnectorInfo(new PartnerInfoBase());
         model = BinaryData.fromObject(model).toObject(ConnectorResourceProperties.class);
         Assertions.assertEquals(ConnectorType.SOURCE, model.connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE, model.connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("fozauorsuk", model.connectorBasicInfo().connectorName());
-        Assertions.assertEquals("wbqpl", model.connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorBasicInfo().connectorState());
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SINK, model.connectorBasicInfo().connectorClass());
+        Assertions.assertEquals("skgfmocwahpq", model.connectorBasicInfo().connectorName());
+        Assertions.assertEquals("tjeaahhvjhh", model.connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.PROVISIONING, model.connectorBasicInfo().connectorState());
     }
 }

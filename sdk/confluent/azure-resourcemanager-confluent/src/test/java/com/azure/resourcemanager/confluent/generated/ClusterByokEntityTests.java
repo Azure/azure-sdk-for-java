@@ -12,10 +12,10 @@ public final class ClusterByokEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterByokEntity model
-            = BinaryData.fromString("{\"id\":\"gaojf\",\"related\":\"nc\",\"resource_name\":\"mrfhirctymox\"}")
+            = BinaryData.fromString("{\"id\":\"nhl\",\"related\":\"rqnkkzjcjbtr\",\"resource_name\":\"ehvvib\"}")
                 .toObject(ClusterByokEntity.class);
-        Assertions.assertEquals("gaojf", model.id());
-        Assertions.assertEquals("nc", model.related());
-        Assertions.assertEquals("mrfhirctymox", model.resourceName());
+        Assertions.assertEquals("nhl", model.id());
+        Assertions.assertEquals("rqnkkzjcjbtr", model.related());
+        Assertions.assertEquals("ehvvib", model.resourceName());
     }
 }

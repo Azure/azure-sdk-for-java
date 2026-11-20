@@ -12,15 +12,15 @@ public final class EnvironmentRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentRecord model = BinaryData.fromString(
-            "{\"kind\":\"fhmouwq\",\"id\":\"zrfze\",\"metadata\":{\"self\":\"bizikayuhq\",\"resource_name\":\"jbsybbqw\",\"created_at\":\"t\",\"updated_at\":\"gmfpgvmp\",\"deleted_at\":\"as\"},\"display_name\":\"haq\"}")
+            "{\"kind\":\"enr\",\"id\":\"utujba\",\"metadata\":{\"self\":\"uo\",\"resource_name\":\"inyflnorwmduvwp\",\"created_at\":\"vxwmygd\",\"updated_at\":\"gpqch\",\"deleted_at\":\"zepn\"},\"display_name\":\"jcrxgibbdaxcon\"}")
             .toObject(EnvironmentRecord.class);
-        Assertions.assertEquals("fhmouwq", model.kind());
-        Assertions.assertEquals("zrfze", model.id());
-        Assertions.assertEquals("bizikayuhq", model.metadata().self());
-        Assertions.assertEquals("jbsybbqw", model.metadata().resourceName());
-        Assertions.assertEquals("t", model.metadata().createdAt());
-        Assertions.assertEquals("gmfpgvmp", model.metadata().updatedAt());
-        Assertions.assertEquals("as", model.metadata().deletedAt());
-        Assertions.assertEquals("haq", model.displayName());
+        Assertions.assertEquals("enr", model.kind());
+        Assertions.assertEquals("utujba", model.id());
+        Assertions.assertEquals("uo", model.metadata().self());
+        Assertions.assertEquals("inyflnorwmduvwp", model.metadata().resourceName());
+        Assertions.assertEquals("vxwmygd", model.metadata().createdAt());
+        Assertions.assertEquals("gpqch", model.metadata().updatedAt());
+        Assertions.assertEquals("zepn", model.metadata().deletedAt());
+        Assertions.assertEquals("jcrxgibbdaxcon", model.displayName());
     }
 }

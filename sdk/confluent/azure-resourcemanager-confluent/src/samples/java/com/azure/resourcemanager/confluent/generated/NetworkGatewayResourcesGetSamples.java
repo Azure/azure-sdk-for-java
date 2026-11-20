@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class NetworkGatewayResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_Get_MaximumSet.

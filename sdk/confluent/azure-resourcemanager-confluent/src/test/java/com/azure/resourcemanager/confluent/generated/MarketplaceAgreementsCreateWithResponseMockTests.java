@@ -22,7 +22,7 @@ public final class MarketplaceAgreementsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"bxgkqusy\",\"name\":\"ptdacarvvl\",\"type\":\"tymtpoiwenazer\",\"properties\":{\"publisher\":\"sqalsxkdn\",\"product\":\"apfgsdpcvessm\",\"plan\":\"h\",\"licenseTextLink\":\"uipldqq\",\"privacyPolicyLink\":\"ekvalblhtjq\",\"retrieveDatetime\":\"2021-03-22T17:15:26Z\",\"signature\":\"wehtaemxh\",\"accepted\":false}}";
+            = "{\"id\":\"ogjwpindedvabbxb\",\"name\":\"edeilb\",\"type\":\"wfcfxzirzz\",\"properties\":{\"publisher\":\"ypusuvjslczwci\",\"product\":\"jsllfryvd\",\"plan\":\"x\",\"licenseTextLink\":\"q\",\"privacyPolicyLink\":\"frgnawbabgfbktyj\",\"retrieveDatetime\":\"2021-03-16T14:58:43Z\",\"signature\":\"l\",\"accepted\":false}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,23 @@ public final class MarketplaceAgreementsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfluentAgreementResource response = manager.marketplaceAgreements()
-            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("mtdwcky")
-                .withProduct("oejnndljdju")
-                .withPlan("br")
-                .withLicenseTextLink("qyn")
-                .withPrivacyPolicyLink("eysfaqegplw")
-                .withRetrieveDatetime(OffsetDateTime.parse("2021-11-04T02:30:34Z"))
-                .withSignature("w")
-                .withAccepted(false), com.azure.core.util.Context.NONE)
+            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("gziiucijjcea")
+                .withProduct("ijjj")
+                .withPlan("va")
+                .withLicenseTextLink("a")
+                .withPrivacyPolicyLink("knxkvccxetyvkunm")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-06-14T21:15:08Z"))
+                .withSignature("hi")
+                .withAccepted(true), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sqalsxkdn", response.publisher());
-        Assertions.assertEquals("apfgsdpcvessm", response.product());
-        Assertions.assertEquals("h", response.plan());
-        Assertions.assertEquals("uipldqq", response.licenseTextLink());
-        Assertions.assertEquals("ekvalblhtjq", response.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T17:15:26Z"), response.retrieveDatetime());
-        Assertions.assertEquals("wehtaemxh", response.signature());
+        Assertions.assertEquals("ypusuvjslczwci", response.publisher());
+        Assertions.assertEquals("jsllfryvd", response.product());
+        Assertions.assertEquals("x", response.plan());
+        Assertions.assertEquals("q", response.licenseTextLink());
+        Assertions.assertEquals("frgnawbabgfbktyj", response.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-16T14:58:43Z"), response.retrieveDatetime());
+        Assertions.assertEquals("l", response.signature());
         Assertions.assertFalse(response.accepted());
     }
 }

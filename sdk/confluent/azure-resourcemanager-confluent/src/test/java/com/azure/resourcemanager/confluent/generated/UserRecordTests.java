@@ -12,17 +12,17 @@ public final class UserRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserRecord model = BinaryData.fromString(
-            "{\"kind\":\"sbzkf\",\"id\":\"eyvpnqicvinvkj\",\"metadata\":{\"self\":\"xrbuukzclew\",\"resource_name\":\"mlwpazt\",\"created_at\":\"ofncckwyfzqwhxxb\",\"updated_at\":\"qa\",\"deleted_at\":\"feqztppriol\"},\"email\":\"rjaltolmncw\",\"full_name\":\"bqwcsdbnwdcf\",\"auth_type\":\"cqdpfuv\"}")
+            "{\"kind\":\"zphv\",\"id\":\"uyqncygupkvipmd\",\"metadata\":{\"self\":\"xqupevzhf\",\"resource_name\":\"otxhojujby\",\"created_at\":\"lmcuvhixb\",\"updated_at\":\"yfwnylr\",\"deleted_at\":\"o\"},\"email\":\"ttpkiwkkbnujrywv\",\"full_name\":\"lbfpncurd\",\"auth_type\":\"wiithtywub\"}")
             .toObject(UserRecord.class);
-        Assertions.assertEquals("sbzkf", model.kind());
-        Assertions.assertEquals("eyvpnqicvinvkj", model.id());
-        Assertions.assertEquals("xrbuukzclew", model.metadata().self());
-        Assertions.assertEquals("mlwpazt", model.metadata().resourceName());
-        Assertions.assertEquals("ofncckwyfzqwhxxb", model.metadata().createdAt());
-        Assertions.assertEquals("qa", model.metadata().updatedAt());
-        Assertions.assertEquals("feqztppriol", model.metadata().deletedAt());
-        Assertions.assertEquals("rjaltolmncw", model.email());
-        Assertions.assertEquals("bqwcsdbnwdcf", model.fullName());
-        Assertions.assertEquals("cqdpfuv", model.authType());
+        Assertions.assertEquals("zphv", model.kind());
+        Assertions.assertEquals("uyqncygupkvipmd", model.id());
+        Assertions.assertEquals("xqupevzhf", model.metadata().self());
+        Assertions.assertEquals("otxhojujby", model.metadata().resourceName());
+        Assertions.assertEquals("lmcuvhixb", model.metadata().createdAt());
+        Assertions.assertEquals("yfwnylr", model.metadata().updatedAt());
+        Assertions.assertEquals("o", model.metadata().deletedAt());
+        Assertions.assertEquals("ttpkiwkkbnujrywv", model.email());
+        Assertions.assertEquals("lbfpncurd", model.fullName());
+        Assertions.assertEquals("wiithtywub", model.authType());
     }
 }

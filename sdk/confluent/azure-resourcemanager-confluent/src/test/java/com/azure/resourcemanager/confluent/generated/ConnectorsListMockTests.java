@@ -25,7 +25,7 @@ public final class ConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZURECOSMOSV2SINK\",\"connectorName\":\"xigc\",\"connectorId\":\"gxuupbezqccydrtc\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"ky\",\"name\":\"hztgeqmgqzgwld\",\"type\":\"ychillcecfe\"}]}";
+            = "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZUREBLOBSINK\",\"connectorName\":\"jufwbeqrkuorhtss\",\"connectorId\":\"qnmdvhazcvjy\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"qer\",\"name\":\"w\",\"type\":\"iytxt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,14 @@ public final class ConnectorsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConnectorResource> response = manager.connectors()
-            .list("aupia", "cxnafbwqrooh", "uovmaonurjt", "mghihp", 118637187, "cmslclblyjxltbs",
+            .list("wxqcsehchkhufmpq", "mqyjgy", "zulo", "saeuzanhsfnhsenw", 2100110146, "pzfngqjcli",
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ConnectorType.SINK, response.iterator().next().connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SINK,
+        Assertions.assertEquals(ConnectorClass.AZUREBLOBSINK,
             response.iterator().next().connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("xigc", response.iterator().next().connectorBasicInfo().connectorName());
-        Assertions.assertEquals("gxuupbezqccydrtc", response.iterator().next().connectorBasicInfo().connectorId());
+        Assertions.assertEquals("jufwbeqrkuorhtss", response.iterator().next().connectorBasicInfo().connectorName());
+        Assertions.assertEquals("qnmdvhazcvjy", response.iterator().next().connectorBasicInfo().connectorId());
         Assertions.assertEquals(ConnectorStatus.PAUSED,
             response.iterator().next().connectorBasicInfo().connectorState());
     }

@@ -12,16 +12,16 @@ public final class ServiceAccountRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceAccountRecord model = BinaryData.fromString(
-            "{\"kind\":\"iodhkhazxkhnz\",\"id\":\"nlwntoe\",\"metadata\":{\"self\":\"dwbwhkszzcmrvexz\",\"resource_name\":\"bt\",\"created_at\":\"sfraoyzko\",\"updated_at\":\"tlmngu\",\"deleted_at\":\"wqaldsyu\"},\"display_name\":\"imerqfobwyznk\",\"description\":\"kutwpf\"}")
+            "{\"kind\":\"vfcluyovwxnbkfe\",\"id\":\"xscyhwzdgirujbz\",\"metadata\":{\"self\":\"vzzbtdcq\",\"resource_name\":\"niyujv\",\"created_at\":\"l\",\"updated_at\":\"shfssnrbgyef\",\"deleted_at\":\"msgaoj\"},\"display_name\":\"wncot\",\"description\":\"fhir\"}")
             .toObject(ServiceAccountRecord.class);
-        Assertions.assertEquals("iodhkhazxkhnz", model.kind());
-        Assertions.assertEquals("nlwntoe", model.id());
-        Assertions.assertEquals("dwbwhkszzcmrvexz", model.metadata().self());
-        Assertions.assertEquals("bt", model.metadata().resourceName());
-        Assertions.assertEquals("sfraoyzko", model.metadata().createdAt());
-        Assertions.assertEquals("tlmngu", model.metadata().updatedAt());
-        Assertions.assertEquals("wqaldsyu", model.metadata().deletedAt());
-        Assertions.assertEquals("imerqfobwyznk", model.displayName());
-        Assertions.assertEquals("kutwpf", model.description());
+        Assertions.assertEquals("vfcluyovwxnbkfe", model.kind());
+        Assertions.assertEquals("xscyhwzdgirujbz", model.id());
+        Assertions.assertEquals("vzzbtdcq", model.metadata().self());
+        Assertions.assertEquals("niyujv", model.metadata().resourceName());
+        Assertions.assertEquals("l", model.metadata().createdAt());
+        Assertions.assertEquals("shfssnrbgyef", model.metadata().updatedAt());
+        Assertions.assertEquals("msgaoj", model.metadata().deletedAt());
+        Assertions.assertEquals("wncot", model.displayName());
+        Assertions.assertEquals("fhir", model.description());
     }
 }

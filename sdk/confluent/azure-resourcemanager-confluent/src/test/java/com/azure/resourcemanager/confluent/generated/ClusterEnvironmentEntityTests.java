@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterEnvironmentEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterEnvironmentEntity model = BinaryData.fromString(
-            "{\"id\":\"vgrvkffo\",\"environment\":\"zh\",\"related\":\"bibgjmfxumv\",\"resource_name\":\"luyovwxnbkfezzx\"}")
+        ClusterEnvironmentEntity model = BinaryData
+            .fromString("{\"id\":\"cqc\",\"environment\":\"bgq\",\"related\":\"rtalmet\",\"resource_name\":\"wgdsl\"}")
             .toObject(ClusterEnvironmentEntity.class);
-        Assertions.assertEquals("vgrvkffo", model.id());
-        Assertions.assertEquals("zh", model.environment());
-        Assertions.assertEquals("bibgjmfxumv", model.related());
-        Assertions.assertEquals("luyovwxnbkfezzx", model.resourceName());
+        Assertions.assertEquals("cqc", model.id());
+        Assertions.assertEquals("bgq", model.environment());
+        Assertions.assertEquals("rtalmet", model.related());
+        Assertions.assertEquals("wgdsl", model.resourceName());
     }
 }

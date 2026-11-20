@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 public final class OrganizationsActivateResourceMockTests {
     @Test
     public void testActivateResource() throws Exception {
-        String responseStr = "{\"saasId\":\"ljmygvkzqkjjeokb\",\"id\":\"fezrx\",\"name\":\"czurtlei\",\"type\":\"q\"}";
+        String responseStr
+            = "{\"saasId\":\"oevytlyokr\",\"id\":\"o\",\"name\":\"uxvnsasbcrymodi\",\"type\":\"rxklobdxnazpmk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +33,9 @@ public final class OrganizationsActivateResourceMockTests {
 
         SaaSResourceDetailsResponse response = manager.organizations()
             .activateResource(
-                new ActivateSaaSParameterRequest().withSaasGuid("wqqxeysko").withPublisherId("zinkfkbgbzbowxeq"),
+                new ActivateSaaSParameterRequest().withSaasGuid("uytxzvtznapxban").withPublisherId("vvoxczytprwnw"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ljmygvkzqkjjeokb", response.saasId());
+        Assertions.assertEquals("oevytlyokr", response.saasId());
     }
 }

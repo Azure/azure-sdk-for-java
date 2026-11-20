@@ -47,6 +47,20 @@ public interface ConfluentManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the MonitorResourcesClient object to access its operations.
+     * 
+     * @return the MonitorResourcesClient object.
+     */
+    MonitorResourcesClient getMonitorResources();
+
+    /**
+     * Gets the MonitorTagRulesClient object to access its operations.
+     * 
+     * @return the MonitorTagRulesClient object.
+     */
+    MonitorTagRulesClient getMonitorTagRules();
+
+    /**
      * Gets the NetworkGatewayResourcesClient object to access its operations.
      * 
      * @return the NetworkGatewayResourcesClient object.

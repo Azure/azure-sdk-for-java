@@ -12,8 +12,8 @@ public final class SaaSResourceDetailsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SaaSResourceDetailsResponseInner model = BinaryData
-            .fromString("{\"saasId\":\"juqk\",\"id\":\"sa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}")
+            .fromString("{\"saasId\":\"elmqk\",\"id\":\"ahvljuaha\",\"name\":\"uhcdhm\",\"type\":\"ualaexqpvfadmw\"}")
             .toObject(SaaSResourceDetailsResponseInner.class);
-        Assertions.assertEquals("juqk", model.saasId());
+        Assertions.assertEquals("elmqk", model.saasId());
     }
 }

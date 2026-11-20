@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class VnetInjectionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VnetInjectionDetails model = BinaryData
-            .fromString("{\"virtualNetworkResourceId\":\"jakhmsbzjh\",\"subnetResourceId\":\"rzevdphlxaol\"}")
-            .toObject(VnetInjectionDetails.class);
-        Assertions.assertEquals("jakhmsbzjh", model.virtualNetworkResourceId());
-        Assertions.assertEquals("rzevdphlxaol", model.subnetResourceId());
+        VnetInjectionDetails model
+            = BinaryData.fromString("{\"virtualNetworkResourceId\":\"wzwbnguitn\",\"subnetResourceId\":\"uizga\"}")
+                .toObject(VnetInjectionDetails.class);
+        Assertions.assertEquals("wzwbnguitn", model.virtualNetworkResourceId());
+        Assertions.assertEquals("uizga", model.subnetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VnetInjectionDetails model = new VnetInjectionDetails().withVirtualNetworkResourceId("jakhmsbzjh")
-            .withSubnetResourceId("rzevdphlxaol");
+        VnetInjectionDetails model
+            = new VnetInjectionDetails().withVirtualNetworkResourceId("wzwbnguitn").withSubnetResourceId("uizga");
         model = BinaryData.fromObject(model).toObject(VnetInjectionDetails.class);
-        Assertions.assertEquals("jakhmsbzjh", model.virtualNetworkResourceId());
-        Assertions.assertEquals("rzevdphlxaol", model.subnetResourceId());
+        Assertions.assertEquals("wzwbnguitn", model.virtualNetworkResourceId());
+        Assertions.assertEquals("uizga", model.subnetResourceId());
     }
 }

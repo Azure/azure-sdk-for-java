@@ -13,15 +13,15 @@ public final class GetEnvironmentsResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetEnvironmentsResponse model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"pmr\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"qjsdpydnfyhxdeo\",\"resourceName\":\"zi\",\"createdTimestamp\":\"ifsjttgzfbishcb\",\"updatedTimestamp\":\"ajdeyeamdphaga\",\"deletedTimestamp\":\"buxwgip\"}},\"id\":\"onowk\",\"name\":\"shwankixzbinje\",\"type\":\"uttmrywnuzoqft\"},{\"kind\":\"qzrnkcqvyxlwhz\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"qqn\",\"resourceName\":\"lryav\",\"createdTimestamp\":\"heun\",\"updatedTimestamp\":\"qhgyxzkonocukok\",\"deletedTimestamp\":\"axuconuq\"}},\"id\":\"fkbey\",\"name\":\"ewrmjmwvvjektc\",\"type\":\"senhwlrs\"},{\"kind\":\"rzpwvlqdqgbiq\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"tcktvfcivfsnky\",\"resourceName\":\"ctq\",\"createdTimestamp\":\"fbebrjcxer\",\"updatedTimestamp\":\"wutttxfvjrbi\",\"deletedTimestamp\":\"hxepcyvahfnlj\"}},\"id\":\"qxj\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"},{\"kind\":\"gsncghkjeszz\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"fvgxbfsmxneh\",\"resourceName\":\"vecxgodebfqkk\",\"createdTimestamp\":\"mpukgriw\",\"updatedTimestamp\":\"zlfbxzpuzycispnq\",\"deletedTimestamp\":\"hmgkbrpyy\"}},\"id\":\"ibnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}],\"nextLink\":\"ebf\"}")
+            "{\"value\":[{\"kind\":\"xujznbmpowu\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"eualupjmkhf\",\"resourceName\":\"bbcswsrtjri\",\"createdTimestamp\":\"rbpbewtghfgblcg\",\"updatedTimestamp\":\"zvlvqhjkbegib\",\"deletedTimestamp\":\"mxiebw\"}},\"id\":\"loayqcgw\",\"name\":\"tzjuzgwyzmhtxo\",\"type\":\"gmtsavjcbpwxqpsr\"},{\"kind\":\"ftguv\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"mdyvxqtayriw\",\"resourceName\":\"oyq\",\"createdTimestamp\":\"xrmcqibycnojvk\",\"updatedTimestamp\":\"e\",\"deletedTimestamp\":\"sgzvahapjyzhpv\"}},\"id\":\"zcjrvxdjzlmwlx\",\"name\":\"vu\",\"type\":\"fhzovawjvzunluth\"},{\"kind\":\"prnxipeil\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"xdult\",\"resourceName\":\"zbbtdzumveek\",\"createdTimestamp\":\"wozuhkf\",\"updatedTimestamp\":\"sjyofdx\",\"deletedTimestamp\":\"us\"}},\"id\":\"touwaboekqv\",\"name\":\"elnsmvbxw\",\"type\":\"jsflhhcaalnjix\"}],\"nextLink\":\"xyawj\"}")
             .toObject(GetEnvironmentsResponse.class);
-        Assertions.assertEquals("pmr", model.value().get(0).kind());
-        Assertions.assertEquals(Package.ESSENTIALS, model.value().get(0).streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("qjsdpydnfyhxdeo", model.value().get(0).metadata().self());
-        Assertions.assertEquals("zi", model.value().get(0).metadata().resourceName());
-        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).metadata().createdTimestamp());
-        Assertions.assertEquals("ajdeyeamdphaga", model.value().get(0).metadata().updatedTimestamp());
-        Assertions.assertEquals("buxwgip", model.value().get(0).metadata().deletedTimestamp());
-        Assertions.assertEquals("ebf", model.nextLink());
+        Assertions.assertEquals("xujznbmpowu", model.value().get(0).kind());
+        Assertions.assertEquals(Package.ADVANCED, model.value().get(0).streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("eualupjmkhf", model.value().get(0).metadata().self());
+        Assertions.assertEquals("bbcswsrtjri", model.value().get(0).metadata().resourceName());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.value().get(0).metadata().createdTimestamp());
+        Assertions.assertEquals("zvlvqhjkbegib", model.value().get(0).metadata().updatedTimestamp());
+        Assertions.assertEquals("mxiebw", model.value().get(0).metadata().deletedTimestamp());
+        Assertions.assertEquals("xyawj", model.nextLink());
     }
 }

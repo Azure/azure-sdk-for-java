@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class NetworkGatewayResourcesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_Delete_MaximumSet.

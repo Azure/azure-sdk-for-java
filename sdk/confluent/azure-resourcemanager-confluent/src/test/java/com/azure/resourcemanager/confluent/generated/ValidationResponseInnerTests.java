@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationResponseInner model
-            = BinaryData.fromString("{\"info\":{\"uagrttikteusqc\":\"cvhrfsp\",\"bl\":\"kvyklxubyjaffmm\"}}")
-                .toObject(ValidationResponseInner.class);
-        Assertions.assertEquals("cvhrfsp", model.info().get("uagrttikteusqc"));
+        ValidationResponseInner model = BinaryData.fromString("{\"info\":{\"qwpwyawbzasqbuc\":\"bpudcdab\"}}")
+            .toObject(ValidationResponseInner.class);
+        Assertions.assertEquals("bpudcdab", model.info().get("qwpwyawbzasqbuc"));
     }
 }

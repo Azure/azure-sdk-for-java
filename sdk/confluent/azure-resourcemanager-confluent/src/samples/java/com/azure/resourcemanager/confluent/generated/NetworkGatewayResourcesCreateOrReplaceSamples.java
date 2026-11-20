@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkGatewayResourcesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_CreateOrReplace_MaximumSet.

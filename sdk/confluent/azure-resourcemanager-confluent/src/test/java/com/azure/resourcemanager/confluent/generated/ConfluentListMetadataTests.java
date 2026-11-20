@@ -12,12 +12,12 @@ public final class ConfluentListMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentListMetadata model = BinaryData.fromString(
-            "{\"first\":\"owpulpq\",\"last\":\"ylsyxkqjnsje\",\"prev\":\"tiagx\",\"next\":\"sz\",\"total_size\":993241324}")
+            "{\"first\":\"xqtnq\",\"last\":\"ezl\",\"prev\":\"ffiakp\",\"next\":\"qqmtedltmmji\",\"total_size\":1482322760}")
             .toObject(ConfluentListMetadata.class);
-        Assertions.assertEquals("owpulpq", model.first());
-        Assertions.assertEquals("ylsyxkqjnsje", model.last());
-        Assertions.assertEquals("tiagx", model.prev());
-        Assertions.assertEquals("sz", model.next());
-        Assertions.assertEquals(993241324, model.totalSize());
+        Assertions.assertEquals("xqtnq", model.first());
+        Assertions.assertEquals("ezl", model.last());
+        Assertions.assertEquals("ffiakp", model.prev());
+        Assertions.assertEquals("qqmtedltmmji", model.next());
+        Assertions.assertEquals(1482322760, model.totalSize());
     }
 }
