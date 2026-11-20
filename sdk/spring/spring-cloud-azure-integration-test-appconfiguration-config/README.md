@@ -58,9 +58,9 @@ Prerequisites:
 
 The secret can have any value: the live test compares the bound value with a
 direct SDK read without including either value in assertion failures.
-The [test resource template](test-resources.json) provisions these fixtures for
-CI. The test code itself only reads Azure data; it does not provision resources
-or modify configuration, flags, or secrets.
+The [test resource template](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-integration-test-appconfiguration-config/test-resources.json)
+provisions these fixtures for CI. The test code itself only reads Azure data; it
+does not provision resources or modify configuration, flags, or secrets.
 
 The template's `paginationSettings` resource copy loop creates the 101 pagination
 fixtures. `PaginationIT` selects only that prefix, records the actual SDK pipeline
