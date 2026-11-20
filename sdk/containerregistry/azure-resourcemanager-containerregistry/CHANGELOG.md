@@ -24,6 +24,12 @@
 * `withVirtualNetworkRules(java.util.List)` was added
 * `virtualNetworkRules()` was added
 
+### Other Changes
+
+#### `models.SyncProperties` was modified
+
+* `tokenId` is no longer required by client-side validation.
+
 ## 2.57.0-beta.1 (2026-11-09)
 
 - Package api-version 2026-10-15-preview.
