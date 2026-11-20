@@ -12,9 +12,9 @@ public final class GroupQuotaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"msbzjhcrz\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Failed\"},\"id\":\"xaolth\",\"name\":\"trg\",\"type\":\"jbp\"},{\"properties\":{\"displayName\":\"s\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Accepted\"},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"},{\"properties\":{\"displayName\":\"xofpdvhpfxxypi\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Invalid\"},\"id\":\"huyb\",\"name\":\"kpode\",\"type\":\"ooginuvamih\"}],\"nextLink\":\"gnarxzxtheo\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"mdectehfiqscjey\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"InProgress\"},\"id\":\"kgqhcjrefovg\",\"name\":\"kqsleyyvxy\",\"type\":\"jpkcattpng\"},{\"properties\":{\"displayName\":\"cczsq\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Invalid\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}],\"nextLink\":\"mcmatuokthfuiu\"}")
             .toObject(GroupQuotaList.class);
-        Assertions.assertEquals("msbzjhcrz", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("gnarxzxtheo", model.nextLink());
+        Assertions.assertEquals("mdectehfiqscjey", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("mcmatuokthfuiu", model.nextLink());
     }
 }

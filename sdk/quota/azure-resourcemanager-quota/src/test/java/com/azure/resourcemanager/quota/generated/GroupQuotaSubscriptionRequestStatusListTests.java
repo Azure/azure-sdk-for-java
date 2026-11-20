@@ -13,11 +13,11 @@ public final class GroupQuotaSubscriptionRequestStatusListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subscriptionId\":\"kgqhcjrefovg\",\"requestSubmitTime\":\"2021-10-26T09:37:04Z\",\"provisioningState\":\"Invalid\"},\"id\":\"yyvxyqjpkcattpn\",\"name\":\"jcrcczsqpjhvmda\",\"type\":\"v\"},{\"properties\":{\"subscriptionId\":\"ounqecano\",\"requestSubmitTime\":\"2021-02-26T09:02:26Z\",\"provisioningState\":\"Canceled\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"subscriptionId\":\"uozmyzydagfua\",\"requestSubmitTime\":\"2021-02-08T12:28:15Z\",\"provisioningState\":\"Escalated\"},\"id\":\"uokktwhrdxwz\",\"name\":\"wqsmbsur\",\"type\":\"xim\"},{\"properties\":{\"subscriptionId\":\"ocfs\",\"requestSubmitTime\":\"2021-11-18T00:18:58Z\",\"provisioningState\":\"Failed\"},\"id\":\"dystkiiuxhqyud\",\"name\":\"o\",\"type\":\"rq\"}],\"nextLink\":\"poczvyifqrvkdvjs\"}")
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"kv\",\"requestSubmitTime\":\"2021-03-08T06:06:30Z\",\"provisioningState\":\"Canceled\"},\"id\":\"krh\",\"name\":\"hvljuahaquh\",\"type\":\"dhmdua\"},{\"properties\":{\"subscriptionId\":\"xqpvfadmw\",\"requestSubmitTime\":\"2021-02-27T12:21:31Z\",\"provisioningState\":\"Created\"},\"id\":\"xpvgo\",\"name\":\"zlfmisgwbnbbeld\",\"type\":\"wkz\"},{\"properties\":{\"subscriptionId\":\"io\",\"requestSubmitTime\":\"2021-05-06T22:54:03Z\",\"provisioningState\":\"Invalid\"},\"id\":\"auhashsfwx\",\"name\":\"sowzxcugi\",\"type\":\"jooxdjebw\"},{\"properties\":{\"subscriptionId\":\"wwfvov\",\"requestSubmitTime\":\"2021-03-04T13:21:43Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"civyhzceuo\",\"name\":\"gjrwjueiotwmcdyt\",\"type\":\"x\"}],\"nextLink\":\"txnrjaw\"}")
             .toObject(GroupQuotaSubscriptionRequestStatusList.class);
-        Assertions.assertEquals("kgqhcjrefovg", model.value().get(0).properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T09:37:04Z"),
+        Assertions.assertEquals("kv", model.value().get(0).properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T06:06:30Z"),
             model.value().get(0).properties().requestSubmitTime());
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.nextLink());
+        Assertions.assertEquals("txnrjaw", model.nextLink());
     }
 }
