@@ -1,47 +1,50 @@
 {
 	"name": "GitHub Codespaces (Default)",
-	"settings": {
-		"terminal.integrated.profiles.linux": {
-			"bash": {
-				"path": "/bin/bash",
-				"args": []
-			}
-		},
-		"terminal.integrated.defaultProfile.linux": "bash",
-		"go.useGoProxyToCheckForToolUpdates": false,
-		"go.useLanguageServer": true,
-		"go.gopath": "/go",
-		"go.goroot": "/usr/local/go",
-		"go.toolsGopath": "/go/bin",
-		"python.pythonPath": "/opt/python/latest/bin/python",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-		"lldb.executable": "/usr/bin/lldb",
-		"files.watcherExclude": {
-			"**/target/**": true
+	"image": "mcr.microsoft.com/devcontainers/java:3-21-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": true,
+			"mavenVersion": "latest"
 		}
 	},
-	"remoteUser": "codespace",
-	"overrideCommand": false,
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/codespace/workspace,type=bind,consistency=cached",
-	"workspaceFolder": "/home/codespace/workspace",
+	"containerEnv": {
+		"JAVA_HOME": "/usr/lib/jvm/msopenjdk-current"
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "/bin/bash",
+						"args": []
+					}
+				},
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"java.configuration.runtimes": [
+					{
+						"name": "JavaSE-21",
+						"path": "/usr/lib/jvm/msopenjdk-current",
+						"default": true
+					}
+				],
+				"files.watcherExclude": {
+					"**/target/**": true
+				}
+			},
+			"extensions": [
+				"GitHub.vscode-pull-request-github",
+				"MS-vsliveshare.vsliveshare",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"vscjava.vscode-java-pack"
+			]
+		}
+	},
+	"remoteUser": "vscode",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
-	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--privileged" ],
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"GitHub.vscode-pull-request-github",
-		"MS-vsliveshare.vsliveshare",
-		"VisualStudioExptTeam.vscodeintellicode"
-	]
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--privileged" ]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
