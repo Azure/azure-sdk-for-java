@@ -1,0 +1,75 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.netapp.models.Subvolumes com.azure.resourcemanager.netapp.NetAppFilesManager::subvolumes()",
+          "justification": "Intentional breaking change: subvolume operations were removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.netapp.models.EnableSubvolumes",
+          "justification": "Intentional breaking change: subvolume configuration was removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.azure.resourcemanager.netapp.models.SubvolumeInfo",
+          "justification": "Intentional breaking change: subvolume operations were removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.azure.resourcemanager.netapp.models.SubvolumeModel",
+          "justification": "Intentional breaking change: subvolume operations were removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.netapp.models.SubvolumePatchRequest",
+          "justification": "Intentional breaking change: subvolume operations were removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.azure.resourcemanager.netapp.models.Subvolumes",
+          "justification": "Intentional breaking change: subvolume operations were removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old": "interface com.azure.resourcemanager.netapp.models.Volume.Definition",
+          "new": "interface com.azure.resourcemanager.netapp.models.Volume.Definition",
+          "interface": "com.azure.resourcemanager.netapp.models.Volume.DefinitionStages.WithEnableSubvolumes",
+          "justification": "Intentional breaking change: the subvolume configuration stage was removed with subvolume support in API version 2026-09-01."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old": "interface com.azure.resourcemanager.netapp.models.Volume.DefinitionStages.WithCreate",
+          "new": "interface com.azure.resourcemanager.netapp.models.Volume.DefinitionStages.WithCreate",
+          "interface": "com.azure.resourcemanager.netapp.models.Volume.DefinitionStages.WithEnableSubvolumes",
+          "justification": "Intentional breaking change: the subvolume configuration stage was removed with subvolume support in API version 2026-09-01."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.azure.resourcemanager.netapp.models.Volume.DefinitionStages.WithEnableSubvolumes",
+          "justification": "Intentional breaking change: subvolume configuration was removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.netapp.models.EnableSubvolumes com.azure.resourcemanager.netapp.models.Volume::enableSubvolumes()",
+          "justification": "Intentional breaking change: subvolume configuration was removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.netapp.models.EnableSubvolumes com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties::enableSubvolumes()",
+          "justification": "Intentional breaking change: subvolume configuration was removed from the NetApp service API specification for API version 2026-09-01."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties::withEnableSubvolumes(com.azure.resourcemanager.netapp.models.EnableSubvolumes)",
+          "justification": "Intentional breaking change: subvolume configuration was removed from the NetApp service API specification for API version 2026-09-01."
+        }
+      ]
+    }
+  }
+]

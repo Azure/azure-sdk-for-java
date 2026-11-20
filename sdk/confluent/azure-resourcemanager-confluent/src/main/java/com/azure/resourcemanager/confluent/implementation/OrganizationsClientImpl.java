@@ -36,18 +36,22 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SaaSResourceDetailsResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
 import com.azure.resourcemanager.confluent.implementation.models.GetEnvironmentsResponse;
 import com.azure.resourcemanager.confluent.implementation.models.ListClustersSuccessResponse;
 import com.azure.resourcemanager.confluent.implementation.models.ListSchemaRegistryClustersResponse;
 import com.azure.resourcemanager.confluent.implementation.models.OrganizationResourceListResult;
+import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
 import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
+import com.azure.resourcemanager.confluent.models.SaaSData;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -255,6 +259,60 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ListAccessRequestModel body,
             Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SaaSData body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> linkSaaSSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SaaSData body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> activateResource(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ActivateSaaSParameterRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> activateResourceSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ActivateSaaSParameterRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}")
@@ -1432,6 +1490,402 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     public ListRegionsSuccessResponseInner listRegions(String resourceGroupName, String organizationName,
         ListAccessRequestModel body) {
         return listRegionsWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkSaaSWithResponseAsync(String resourceGroupName,
+        String organizationName, SaaSData body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.linkSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String organizationName,
+        SaaSData body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body,
+            Context.NONE);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body, context);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaSAsync(String resourceGroupName, String organizationName, SaaSData body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = linkSaaSWithResponseAsync(resourceGroupName, organizationName, body);
+        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrganizationResourceInner.class, OrganizationResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, organizationName, body);
+        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
+            OrganizationResourceInner.class, OrganizationResourceInner.class, Context.NONE);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaS(String resourceGroupName, String organizationName, SaaSData body, Context context) {
+        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, organizationName, body, context);
+        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
+            OrganizationResourceInner.class, OrganizationResourceInner.class, context);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OrganizationResourceInner> linkSaaSAsync(String resourceGroupName, String organizationName,
+        SaaSData body) {
+        return beginLinkSaaSAsync(resourceGroupName, organizationName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        return beginLinkSaaS(resourceGroupName, organizationName, body).getFinalResult();
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        return beginLinkSaaS(resourceGroupName, organizationName, body, context).getFinalResult();
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaSWithResponseAsync(String resourceGroupName,
+        String organizationName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.latestLinkedSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LatestLinkedSaaSResponseInner> latestLinkedSaaSAsync(String resourceGroupName,
+        String organizationName) {
+        return latestLinkedSaaSWithResponseAsync(resourceGroupName, organizationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String organizationName, Context context) {
+        final String accept = "application/json";
+        return service.latestLinkedSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String organizationName) {
+        return latestLinkedSaaSWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> activateResourceWithResponseAsync(ActivateSaaSParameterRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.activateResource(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateResourceWithResponse(ActivateSaaSParameterRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.activateResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateResourceWithResponse(ActivateSaaSParameterRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.activateResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, context);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResourceAsync(ActivateSaaSParameterRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = activateResourceWithResponseAsync(body);
+        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SaaSResourceDetailsResponseInner.class,
+            SaaSResourceDetailsResponseInner.class, this.client.getContext());
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body) {
+        Response<BinaryData> response = activateResourceWithResponse(body);
+        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(response,
+            SaaSResourceDetailsResponseInner.class, SaaSResourceDetailsResponseInner.class, Context.NONE);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body, Context context) {
+        Response<BinaryData> response = activateResourceWithResponse(body, context);
+        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(response,
+            SaaSResourceDetailsResponseInner.class, SaaSResourceDetailsResponseInner.class, context);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SaaSResourceDetailsResponseInner> activateResourceAsync(ActivateSaaSParameterRequest body) {
+        return beginActivateResourceAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body) {
+        return beginActivateResource(body).getFinalResult();
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body, Context context) {
+        return beginActivateResource(body, context).getFinalResult();
     }
 
     /**

@@ -219,11 +219,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldProtectedResourcesGetResponse> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
-                context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -268,8 +268,9 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldProtectedResourcesGetResponse getWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, protectedResourceName, accept, context);
     }
 
@@ -314,10 +315,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, NeuroShieldProtectedResourceInner resource,
         String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
                 contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -342,11 +344,12 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource, String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            contentType, accept, resource, Context.NONE);
+        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, contentType, accept, resource,
+            Context.NONE);
     }
 
     /**
@@ -369,11 +372,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, NeuroShieldProtectedResourceInner resource, String ifMatch, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            contentType, accept, resource, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, contentType, accept, resource, context);
     }
 
     /**
@@ -620,10 +623,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
+        final String apiVersion = "2026-10-01-preview";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-                context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -644,9 +648,9 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            Context.NONE);
+        final String apiVersion = "2026-10-01-preview";
+        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, Context.NONE);
     }
 
     /**
@@ -667,9 +671,9 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String ifMatch, Context context) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, ifMatch,
-            context);
+        final String apiVersion = "2026-10-01-preview";
+        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, ifMatch, context);
     }
 
     /**
@@ -882,10 +886,11 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldProtectedResourceInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldProtectedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -951,10 +956,10 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldProtectedResourceInner> listSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldProtectedResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, skipToken, accept, Context.NONE);
+        Response<NeuroShieldProtectedResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -977,10 +982,10 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldProtectedResourceInner> listSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        Response<NeuroShieldProtectedResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, skipToken, accept, context);
+        Response<NeuroShieldProtectedResourceListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1046,11 +1051,12 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldInventoryUploadRequestResultInner>> triggerInventoryUploadWithResponseAsync(
         String resourceGroupName, String neuroShieldName, String protectedResourceName) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.triggerInventoryUpload(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, neuroShieldName,
-                protectedResourceName, accept, context))
+            .withContext(context -> service.triggerInventoryUpload(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1091,8 +1097,9 @@ public final class NeuroShieldProtectedResourcesClientImpl implements NeuroShiel
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldInventoryUploadRequestResultInner> triggerInventoryUploadWithResponse(
         String resourceGroupName, String neuroShieldName, String protectedResourceName, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.triggerInventoryUploadSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.triggerInventoryUploadSync(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, accept,
             context);
     }

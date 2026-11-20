@@ -10,9 +10,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileConstants;
@@ -351,6 +353,27 @@ public class ModelHelper {
         } else {
             return stringEncoded.getContent();
         }
+    }
+
+    /**
+     * Builds the {@code x-ms-file-rename-source} value from a client resource URL whose path is the raw (unencoded)
+     * share and resource path, such as the value returned by {@code ShareFileClient#getFileUrl()}.
+     * <p>
+     * The path is percent-encoded exactly once and is never URL-decoded first, so a literal {@code %} in a file name
+     * is preserved. The scheme, host, port, and query are left unchanged. Do not use this for caller-supplied URLs,
+     * which may already be percent-encoded; those use {@code Utility#encodeUrlPath(String)}.
+     *
+     * @param rawResourceUrl The resource URL with a raw, unencoded path.
+     * @return The rename source URL with its path encoded once.
+     */
+    public static String encodeRenameSourceUrl(String rawResourceUrl) {
+        UrlBuilder builder = UrlBuilder.parse(rawResourceUrl);
+        String path = builder.getPath();
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        builder.setPath(Utility.urlEncode(path));
+        return builder.toString();
     }
 
     /**
@@ -847,5 +870,24 @@ public class ModelHelper {
                 encodedFileName == null ? null : decodeName(encodedFileName)));
         }
         return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
+    }
+
+    /**
+     * Determines whether a failure is a 409 Conflict that the service answered with the given error code.
+     *
+     * <p>The status code alone does not say why the service refused a request: it also answers 409 for reasons such as
+     * ShareBeingDeleted or ResourceTypeMismatch. Methods that treat a conflict as "already exists" use this so that
+     * other conflicts still fail.</p>
+     *
+     * @param throwable The failure.
+     * @param errorCode The error code of the conflict to match.
+     * @return Whether the failure is a {@link ShareStorageException} with status code 409 and the given error code.
+     */
+    public static boolean isConflictWithErrorCode(Throwable throwable, ShareErrorCode errorCode) {
+        if (!(throwable instanceof ShareStorageException)) {
+            return false;
+        }
+        ShareStorageException e = (ShareStorageException) throwable;
+        return e.getStatusCode() == 409 && errorCode.equals(e.getErrorCode());
     }
 }

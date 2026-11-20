@@ -28,6 +28,7 @@ import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -363,7 +364,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
      * contains a {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status code
      * is 201, a new page blob was successfully created. If status code is 409, an append blob already existed at this
-     * location.
+     * location. Errors with a {@link BlobStorageException} if the blob could not be created for any other reason, for
+     * example when a blob of a different type already exists at this location (status code 409, error code
+     * InvalidBlobType).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
@@ -379,8 +382,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             options = options == null ? new AppendBlobCreateOptions() : options;
             options.setRequestConditions(
                 new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409, t -> {
+            return createWithResponse(options, context)
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.BLOB_ALREADY_EXISTS), t -> {
                     HttpResponse response = ((BlobStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));

@@ -4,16 +4,22 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlEntry;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControls;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
+import java.util.Arrays;
 
 /**
  * Samples for Projects Create.
  */
 public final class ProjectsCreateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/CreateProjectMin.json
+     * x-ms-original-file: 2026-11-15-preview/CreateProjectMin.json
      */
     /**
      * Sample code: Create Project Min.
@@ -31,7 +37,29 @@ public final class ProjectsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/CreateProject.json
+     * x-ms-original-file: 2026-11-15-preview/CreateProjectWithToolControls.json
+     */
+    /**
+     * Sample code: Create a Foundry project with tool controls.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createAFoundryProjectWithToolControls(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.projects()
+            .define("myProject")
+            .withExistingAccount("myResourceGroup", "myAccount")
+            .withRegion("westus")
+            .withProperties(new ProjectProperties().withDisplayName("My project")
+                .withToolControls(new ToolControls().withDefaultAction(ToolControlsDefaultAction.DENY)
+                    .withAllowedTools(Arrays.asList(new ToolControlEntry().withType(ToolControlType.CODE_INTERPRETER),
+                        new ToolControlEntry().withType(ToolControlType.MCP)
+                            .withServerUrl("https://*.contoso.com/mcp")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-15-preview/CreateProject.json
      */
     /**
      * Sample code: Create Project.
@@ -43,8 +71,12 @@ public final class ProjectsCreateSamples {
             .define("testProject1")
             .withExistingAccount("myResourceGroup", "testCreate1")
             .withRegion("West US")
-            .withProperties(
-                new ProjectProperties().withDisplayName("p1").withDescription("Description of this project"))
+            .withProperties(new ProjectProperties().withDisplayName("p1")
+                .withDescription("Description of this project")
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount")
+                    .withVectorStore(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService")))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceLoadBalancerConfiguration;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceMigrationStatus;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
@@ -183,6 +184,34 @@ public final class NetworkVirtualApplianceInner extends Resource {
             this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
         }
         this.innerProperties().withNvaSku(nvaSku);
+        return this;
+    }
+
+    /**
+     * Get the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @return the loadBalancerConfiguration value.
+     */
+    public NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerConfiguration();
+    }
+
+    /**
+     * Set the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @param loadBalancerConfiguration the loadBalancerConfiguration value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withLoadBalancerConfiguration(NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withLoadBalancerConfiguration(loadBalancerConfiguration);
         return this;
     }
 

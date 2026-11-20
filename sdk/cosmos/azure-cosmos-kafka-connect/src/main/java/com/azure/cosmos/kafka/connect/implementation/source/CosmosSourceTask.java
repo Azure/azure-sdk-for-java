@@ -17,41 +17,42 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
-import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosSourceTask extends SourceTask {
+public class CosmosSourceTask extends AsyncSourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
     private static final String METADATA_ATTRIBUTE_NAME = "metadata";
     private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
-    private CosmosClientCacheItem cosmosClientItem;
-    private CosmosClientCacheItem throughputControlCosmosClientItem;
+    private volatile CosmosClientCacheItem cosmosClientItem;
+    private volatile CosmosClientCacheItem throughputControlCosmosClientItem;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
 
-    private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+    private final PriorityQueue<ScheduledTaskUnit> taskUnitsQueue = new PriorityQueue<>();
 
-    private long lastLogTimeMs = System.currentTimeMillis();
+    private volatile long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
 
     @Override
@@ -70,7 +71,7 @@ public class CosmosSourceTask extends SourceTask {
             if (this.taskConfig.getMetadataTaskUnit() != null) {
                 // adding metadata task units into the head of the queue
                 LOGGER.info("Adding metadata task to task {}", this.taskConfig.getTaskId());
-                this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(this.taskConfig.getMetadataTaskUnit(), 0));
             }
 
             LOGGER.info(
@@ -82,7 +83,7 @@ public class CosmosSourceTask extends SourceTask {
 
             for (FeedRangeTaskUnit taskUnit : this.taskConfig.getFeedRangeTaskUnits()) {
                 this.applyContinuationStateFromOffsetIfExists(taskUnit);
-                this.taskUnitsQueue.add(taskUnit);
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, 0));
             }
 
             LOGGER.info("Creating the cosmos client");
@@ -166,58 +167,78 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public List<SourceRecord> poll() {
-        // do not poll it from the queue yet
-        // we need to make sure not losing tasks for failure cases
-        ITaskUnit taskUnit = this.taskUnitsQueue.poll();
-        try {
-            if (taskUnit == null) {
+    protected Mono<List<SourceRecord>> pollTask() {
+        return Mono.defer(() -> {
+            // do not poll it from the queue yet
+            // we need to make sure not losing tasks for failure cases
+            ScheduledTaskUnit scheduledTaskUnit = this.taskUnitsQueue.poll();
+            if (scheduledTaskUnit == null) {
                 // there is no task to do
-                return new ArrayList<>();
+                return Mono.just(new ArrayList<>());
             }
 
-            List<SourceRecord> results = new ArrayList<>();
+            ITaskUnit taskUnit = scheduledTaskUnit.getTaskUnit();
+            Mono<List<SourceRecord>> poll;
             if (taskUnit instanceof MetadataTaskUnit) {
-                results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
-                LOGGER.info(
-                    "Return {} metadata records, databaseName {}", results.size(), ((MetadataTaskUnit) taskUnit).getDatabaseName());
-
+                poll = Mono.fromSupplier(() -> {
+                    List<SourceRecord> results = executeMetadataTask((MetadataTaskUnit) taskUnit);
+                    LOGGER.info(
+                        "Return {} metadata records, databaseName {}",
+                        results.size(),
+                        ((MetadataTaskUnit) taskUnit).getDatabaseName());
+                    return results;
+                });
             } else {
                 Stopwatch stopwatch = Stopwatch.createStarted();
 
                 LOGGER.trace("Polling for task {}", taskUnit);
-                Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
-                results.addAll(feedRangeTaskResults.getLeft());
+                poll = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit)
+                    .map(feedRangeTaskResult -> {
+                        List<SourceRecord> results = feedRangeTaskResult.records;
 
-                // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
-                if (!feedRangeTaskResults.getRight()) {
-                    LOGGER.trace("Adding task {} back to queue", taskUnit);
-                    this.taskUnitsQueue.add(taskUnit);
-                }
+                        // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
+                        if (!feedRangeTaskResult.removeTaskUnit) {
+                            LOGGER.trace("Adding task {} back to queue", taskUnit);
+                            int pollDelayInMs = getPollDelayInMs(
+                                feedRangeTaskResult.noChanges,
+                                this.taskConfig.getChangeFeedConfig().getPollDelayInMs());
+                            this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, pollDelayInMs));
+                        }
 
-                stopwatch.stop();
-                
-                // Update count for this feed range
-                String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
-                feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
-                    if (loggingContext == null) {
-                        loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
-                    }
-                    loggingContext.increaseCount((long) results.size());
-                    return loggingContext;
-                });
+                        stopwatch.stop();
 
-                logFeedRangeCounts(false);
+                        // Update count for this feed range
+                        String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
+                        feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
+                            if (loggingContext == null) {
+                                loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
+                            }
+                            loggingContext.increaseCount((long) results.size());
+                            return loggingContext;
+                        });
+
+                        logFeedRangeCounts(false);
+                        return results;
+                    });
             }
 
-            return results;
-        } catch (Exception e) {
-            // for error cases, we should always put the task back to the queue
-            this.taskUnitsQueue.add(taskUnit);
-            LOGGER.warn("Polling task failed", e);
+            // The wait is part of the cancellable poll, so stop() cancelling the in-flight poll also releases it.
+            long delayInMs = scheduledTaskUnit.getDelayInMs();
+            if (delayInMs > 0) {
+                poll = Mono.delay(Duration.ofMillis(delayInMs)).then(poll);
+            }
 
-            throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
-        }
+            return poll.onErrorMap(error -> {
+                // for error cases, we should always put the task back to the queue
+                this.taskUnitsQueue.add(new ScheduledTaskUnit(taskUnit, 0));
+                LOGGER.warn("Polling task failed", error);
+
+                if (error instanceof Error) {
+                    return error;
+                }
+                return KafkaCosmosExceptionsHelper.convertToConnectException(error, "PollTask failed");
+            });
+        });
     }
 
     private void logFeedRangeCounts(boolean flushLogs) {
@@ -310,7 +331,7 @@ public class CosmosSourceTask extends SourceTask {
         return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
-    private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
+    private Mono<FeedRangeTaskResult> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosAsyncContainer container =
             this.cosmosClientItem
                 .getClient()
@@ -340,17 +361,59 @@ public class CosmosSourceTask extends SourceTask {
             .next()
             .map(feedResponse -> {
                 List<SourceRecord> records = handleSuccessfulResponse(feedResponse, feedRangeTaskUnit);
-                return Pair.of(records, false);
+                return new FeedRangeTaskResult(
+                    records,
+                    false,
+                    ModelBridgeInternal.getNoChangesFromFeedResponse(feedResponse));
             })
             .onErrorResume(throwable -> {
                 if (KafkaCosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
                     return this.handleFeedRangeGone(feedRangeTaskUnit)
-                        .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
+                        .map(shouldRemoveOriginalTaskUnit ->
+                            new FeedRangeTaskResult(new ArrayList<>(), shouldRemoveOriginalTaskUnit, false));
                 }
-
                 return Mono.error(throwable);
-            })
-            .block();
+            });
+    }
+
+    static final class ScheduledTaskUnit implements Comparable<ScheduledTaskUnit> {
+        private final ITaskUnit taskUnit;
+        private final long availableAtNanos;
+
+        ScheduledTaskUnit(ITaskUnit taskUnit, int delayInMs) {
+            this.taskUnit = taskUnit;
+            this.availableAtNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(delayInMs);
+        }
+
+        ITaskUnit getTaskUnit() {
+            return this.taskUnit;
+        }
+
+        long getDelayInMs() {
+            long remainingNanos = this.availableAtNanos - System.nanoTime();
+            return remainingNanos <= 0 ? 0 : (remainingNanos + 999_999) / 1_000_000;
+        }
+
+        @Override
+        public int compareTo(ScheduledTaskUnit other) {
+            return Long.compare(this.availableAtNanos, other.availableAtNanos);
+        }
+    }
+
+    static int getPollDelayInMs(boolean noChanges, int configuredPollDelayInMs) {
+        return noChanges ? configuredPollDelayInMs : 0;
+    }
+
+    private static final class FeedRangeTaskResult {
+        private final List<SourceRecord> records;
+        private final boolean removeTaskUnit;
+        private final boolean noChanges;
+
+        private FeedRangeTaskResult(List<SourceRecord> records, boolean removeTaskUnit, boolean noChanges) {
+            this.records = records;
+            this.removeTaskUnit = removeTaskUnit;
+            this.noChanges = noChanges;
+        }
     }
 
     private List<SourceRecord> handleSuccessfulResponse(
@@ -435,7 +498,7 @@ public class CosmosSourceTask extends SourceTask {
                                 feedRangeTaskUnit.getTopic());
                         applyContinuationStateFromOffsetIfExists(childTaskUnit);
 
-                        this.taskUnitsQueue.add(childTaskUnit);
+                        this.taskUnitsQueue.add(new ScheduledTaskUnit(childTaskUnit, 0));
                     }
 
                     // remove the current task unit from the queue
@@ -539,7 +602,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public void stop() {
+    protected void stopTask() {
         LOGGER.info("Stopping CosmosSourceTask");
         this.logFeedRangeCounts(true);
         this.cleanup();

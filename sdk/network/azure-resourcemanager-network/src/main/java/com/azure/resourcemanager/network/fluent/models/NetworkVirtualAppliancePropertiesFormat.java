@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceLoadBalancerConfiguration;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceMigrationStatus;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
@@ -34,6 +35,13 @@ public final class NetworkVirtualAppliancePropertiesFormat
      * Network Virtual Appliance SKU.
      */
     private VirtualApplianceSkuProperties nvaSku;
+
+    /*
+     * Configuration of the internal load balancer for a managed Network Virtual Appliance in a virtual hub or virtual
+     * network. Not applicable to partner-managed load balancers on SaaS NVAs. When omitted on create or update, Default
+     * distribution and a 5-minute idle timeout are used.
+     */
+    private NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration;
 
     /*
      * Address Prefix.
@@ -184,6 +192,31 @@ public final class NetworkVirtualAppliancePropertiesFormat
      */
     public NetworkVirtualAppliancePropertiesFormat withNvaSku(VirtualApplianceSkuProperties nvaSku) {
         this.nvaSku = nvaSku;
+        return this;
+    }
+
+    /**
+     * Get the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @return the loadBalancerConfiguration value.
+     */
+    public NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration() {
+        return this.loadBalancerConfiguration;
+    }
+
+    /**
+     * Set the loadBalancerConfiguration property: Configuration of the internal load balancer for a managed Network
+     * Virtual Appliance in a virtual hub or virtual network. Not applicable to partner-managed load balancers on SaaS
+     * NVAs. When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+     * 
+     * @param loadBalancerConfiguration the loadBalancerConfiguration value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat
+        withLoadBalancerConfiguration(NetworkVirtualApplianceLoadBalancerConfiguration loadBalancerConfiguration) {
+        this.loadBalancerConfiguration = loadBalancerConfiguration;
         return this;
     }
 
@@ -574,6 +607,9 @@ public final class NetworkVirtualAppliancePropertiesFormat
         if (nvaSku() != null) {
             nvaSku().validate();
         }
+        if (loadBalancerConfiguration() != null) {
+            loadBalancerConfiguration().validate();
+        }
         if (virtualApplianceNics() != null) {
             virtualApplianceNics().forEach(e -> e.validate());
         }
@@ -607,6 +643,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("nvaSku", this.nvaSku);
+        jsonWriter.writeJsonField("loadBalancerConfiguration", this.loadBalancerConfiguration);
         jsonWriter.writeArrayField("bootStrapConfigurationBlobs", this.bootStrapConfigurationBlobs,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("virtualHub", this.virtualHub);
@@ -648,6 +685,9 @@ public final class NetworkVirtualAppliancePropertiesFormat
                 if ("nvaSku".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.nvaSku
                         = VirtualApplianceSkuProperties.fromJson(reader);
+                } else if ("loadBalancerConfiguration".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.loadBalancerConfiguration
+                        = NetworkVirtualApplianceLoadBalancerConfiguration.fromJson(reader);
                 } else if ("addressPrefix".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.addressPrefix = reader.getString();
                 } else if ("addressPrefixV6".equals(fieldName)) {

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RaiBlocklistItemsBatchAddSamples {
     /*
-     * x-ms-original-file: 2026-11-01/AddRaiBlocklistItems.json
+     * x-ms-original-file: 2026-11-15-preview/AddRaiBlocklistItems.json
      */
     /**
      * Sample code: AddRaiBlocklistItems.
