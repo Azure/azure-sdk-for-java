@@ -92,6 +92,12 @@
       <version>3.5.14</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core-test</artifactId>
+      <version>6.2.18</version> <!-- {x-version-update;springboot3_org.springframework:spring-core-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
     <!-- Add mockito-core 4.11.0 to work with Java 21 -->
     <dependency>
