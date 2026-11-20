@@ -425,7 +425,7 @@ public interface RoutePolicy {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration();
+    ValidateConfigurationResponseV2 validateConfiguration();
 
     /**
      * Validates the configuration of the resources.
@@ -436,7 +436,7 @@ public interface RoutePolicy {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(Context context);
+    ValidateConfigurationResponseV2 validateConfiguration(Context context);
 
     /**
      * Commits the configuration of the given resources.

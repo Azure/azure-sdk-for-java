@@ -12,18 +12,18 @@ public final class FeatureFlagPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureFlagProperties model
-            = BinaryData.fromString("{\"featureFlagName\":\"cyoseqcazisvbrqg\",\"featureFlagValue\":\"jp\"}")
+            = BinaryData.fromString("{\"featureFlagName\":\"rab\",\"featureFlagValue\":\"rwwxywpj\"}")
                 .toObject(FeatureFlagProperties.class);
-        Assertions.assertEquals("cyoseqcazisvbrqg", model.featureFlagName());
-        Assertions.assertEquals("jp", model.featureFlagValue());
+        Assertions.assertEquals("rab", model.featureFlagName());
+        Assertions.assertEquals("rwwxywpj", model.featureFlagValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FeatureFlagProperties model
-            = new FeatureFlagProperties().withFeatureFlagName("cyoseqcazisvbrqg").withFeatureFlagValue("jp");
+            = new FeatureFlagProperties().withFeatureFlagName("rab").withFeatureFlagValue("rwwxywpj");
         model = BinaryData.fromObject(model).toObject(FeatureFlagProperties.class);
-        Assertions.assertEquals("cyoseqcazisvbrqg", model.featureFlagName());
-        Assertions.assertEquals("jp", model.featureFlagValue());
+        Assertions.assertEquals("rab", model.featureFlagName());
+        Assertions.assertEquals("rwwxywpj", model.featureFlagValue());
     }
 }

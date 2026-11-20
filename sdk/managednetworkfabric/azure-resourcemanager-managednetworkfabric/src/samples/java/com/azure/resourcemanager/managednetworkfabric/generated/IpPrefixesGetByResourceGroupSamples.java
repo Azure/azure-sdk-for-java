@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class IpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-15/IpPrefixes_Get.json
+     * x-ms-original-file: 2026-01-15-preview/IpPrefixes_Get.json
      */
     /**
      * Sample code: IpPrefixes_Get_MaximumSet_Gen.

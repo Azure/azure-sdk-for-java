@@ -12,9 +12,9 @@ public final class CommonPostActionResponseForDeviceROCommandsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonPostActionResponseForDeviceROCommands model = BinaryData.fromString(
-            "{\"configurationState\":\"DeferredControl\",\"outputUrl\":\"l\",\"deviceConfigurationPreview\":\"pkvegeatt\"}")
+            "{\"configurationState\":\"CommitStaged\",\"outputUrl\":\"jnwosst\",\"deviceConfigurationPreview\":\"xt\"}")
             .toObject(CommonPostActionResponseForDeviceROCommands.class);
-        Assertions.assertEquals("l", model.outputUrl());
-        Assertions.assertEquals("pkvegeatt", model.deviceConfigurationPreview());
+        Assertions.assertEquals("jnwosst", model.outputUrl());
+        Assertions.assertEquals("xt", model.deviceConfigurationPreview());
     }
 }

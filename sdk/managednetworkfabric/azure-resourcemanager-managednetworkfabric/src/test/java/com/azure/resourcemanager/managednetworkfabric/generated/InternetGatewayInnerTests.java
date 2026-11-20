@@ -15,35 +15,34 @@ public final class InternetGatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewayInner model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"s\",\"internetGatewayRuleId\":\"rb\",\"ipv4Address\":\"xsjybvitvqk\",\"port\":308344292,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Infrastructure\",\"networkFabricControllerId\":\"tggmuwdchozfnkfe\",\"lastOperation\":{\"details\":\"xn\"},\"provisioningState\":\"Failed\"},\"location\":\"zvoaikna\",\"tags\":{\"phvxz\":\"uwiguyxlyk\",\"pejtl\":\"wxh\",\"rxhxkn\":\"exaonwivkcq\",\"upijubyqjfkakfq\":\"ccrmmk\"},\"id\":\"rke\",\"name\":\"yildudxjascow\",\"type\":\"f\"}")
+            "{\"properties\":{\"annotation\":\"yubhiqdx\",\"internetGatewayRuleId\":\"rnpnuhzafccnuh\",\"ipv4Address\":\"gbylbuig\",\"port\":2023850550,\"type\":\"Workload\",\"internetGatewayType\":\"Infrastructure\",\"networkFabricControllerId\":\"rkdlb\",\"lastOperation\":{\"details\":\"xvhcs\"},\"provisioningState\":\"Deleting\"},\"location\":\"wxaeaovure\",\"tags\":{\"bdweade\":\"d\",\"mvmmagoaqylkjz\":\"zmwntopagt\"},\"id\":\"jiuazjc\",\"name\":\"mxitpfinzcpd\",\"type\":\"tkrlgjmtbd\"}")
             .toObject(InternetGatewayInner.class);
-        Assertions.assertEquals("zvoaikna", model.location());
-        Assertions.assertEquals("uwiguyxlyk", model.tags().get("phvxz"));
-        Assertions.assertEquals("s", model.annotation());
-        Assertions.assertEquals("rb", model.internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, model.typePropertiesType());
+        Assertions.assertEquals("wxaeaovure", model.location());
+        Assertions.assertEquals("d", model.tags().get("bdweade"));
+        Assertions.assertEquals("yubhiqdx", model.annotation());
+        Assertions.assertEquals("rnpnuhzafccnuh", model.internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.WORKLOAD, model.typePropertiesType());
         Assertions.assertEquals(GatewayType.INFRASTRUCTURE, model.internetGatewayType());
-        Assertions.assertEquals("tggmuwdchozfnkfe", model.networkFabricControllerId());
+        Assertions.assertEquals("rkdlb", model.networkFabricControllerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayInner model = new InternetGatewayInner().withLocation("zvoaikna")
-            .withTags(
-                mapOf("phvxz", "uwiguyxlyk", "pejtl", "wxh", "rxhxkn", "exaonwivkcq", "upijubyqjfkakfq", "ccrmmk"))
-            .withAnnotation("s")
-            .withInternetGatewayRuleId("rb")
-            .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
+        InternetGatewayInner model = new InternetGatewayInner().withLocation("wxaeaovure")
+            .withTags(mapOf("bdweade", "d", "mvmmagoaqylkjz", "zmwntopagt"))
+            .withAnnotation("yubhiqdx")
+            .withInternetGatewayRuleId("rnpnuhzafccnuh")
+            .withTypePropertiesType(GatewayType.WORKLOAD)
             .withInternetGatewayType(GatewayType.INFRASTRUCTURE)
-            .withNetworkFabricControllerId("tggmuwdchozfnkfe");
+            .withNetworkFabricControllerId("rkdlb");
         model = BinaryData.fromObject(model).toObject(InternetGatewayInner.class);
-        Assertions.assertEquals("zvoaikna", model.location());
-        Assertions.assertEquals("uwiguyxlyk", model.tags().get("phvxz"));
-        Assertions.assertEquals("s", model.annotation());
-        Assertions.assertEquals("rb", model.internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, model.typePropertiesType());
+        Assertions.assertEquals("wxaeaovure", model.location());
+        Assertions.assertEquals("d", model.tags().get("bdweade"));
+        Assertions.assertEquals("yubhiqdx", model.annotation());
+        Assertions.assertEquals("rnpnuhzafccnuh", model.internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.WORKLOAD, model.typePropertiesType());
         Assertions.assertEquals(GatewayType.INFRASTRUCTURE, model.internetGatewayType());
-        Assertions.assertEquals("tggmuwdchozfnkfe", model.networkFabricControllerId());
+        Assertions.assertEquals("rkdlb", model.networkFabricControllerId());
     }
 
     // Use "Map.of" if available

@@ -12,21 +12,21 @@ public final class StationConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StationConnectionProperties model = BinaryData
-            .fromString("{\"keepaliveIdleTime\":1757090605,\"probeInterval\":769762169,\"probeCount\":1892888275}")
+            .fromString("{\"keepaliveIdleTime\":1074907547,\"probeInterval\":1990870573,\"probeCount\":959698517}")
             .toObject(StationConnectionProperties.class);
-        Assertions.assertEquals(1757090605, model.keepaliveIdleTime());
-        Assertions.assertEquals(769762169, model.probeInterval());
-        Assertions.assertEquals(1892888275, model.probeCount());
+        Assertions.assertEquals(1074907547, model.keepaliveIdleTime());
+        Assertions.assertEquals(1990870573, model.probeInterval());
+        Assertions.assertEquals(959698517, model.probeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StationConnectionProperties model = new StationConnectionProperties().withKeepaliveIdleTime(1757090605)
-            .withProbeInterval(769762169)
-            .withProbeCount(1892888275);
+        StationConnectionProperties model = new StationConnectionProperties().withKeepaliveIdleTime(1074907547)
+            .withProbeInterval(1990870573)
+            .withProbeCount(959698517);
         model = BinaryData.fromObject(model).toObject(StationConnectionProperties.class);
-        Assertions.assertEquals(1757090605, model.keepaliveIdleTime());
-        Assertions.assertEquals(769762169, model.probeInterval());
-        Assertions.assertEquals(1892888275, model.probeCount());
+        Assertions.assertEquals(1074907547, model.keepaliveIdleTime());
+        Assertions.assertEquals(1990870573, model.probeInterval());
+        Assertions.assertEquals(959698517, model.probeCount());
     }
 }

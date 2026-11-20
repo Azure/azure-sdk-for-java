@@ -15,6 +15,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.io.IOException;
 
@@ -247,6 +248,16 @@ public final class NetworkInterfaceInner extends ProxyResource {
      */
     public ConfigurationState configurationState() {
         return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the operationalState property: Operational state of networkInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
     }
 
     /**

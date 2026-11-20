@@ -13,15 +13,14 @@ public final class NniBmpPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NniBmpPatchProperties model
-            = BinaryData.fromString("{\"configurationState\":\"Disabled\"}").toObject(NniBmpPatchProperties.class);
-        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.configurationState());
+            = BinaryData.fromString("{\"configurationState\":\"Enabled\"}").toObject(NniBmpPatchProperties.class);
+        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.configurationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NniBmpPatchProperties model
-            = new NniBmpPatchProperties().withConfigurationState(BmpConfigurationState.DISABLED);
+        NniBmpPatchProperties model = new NniBmpPatchProperties().withConfigurationState(BmpConfigurationState.ENABLED);
         model = BinaryData.fromObject(model).toObject(NniBmpPatchProperties.class);
-        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.configurationState());
+        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.configurationState());
     }
 }

@@ -12,18 +12,18 @@ public final class NetworkDeviceUpgradeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDeviceUpgradeRequest model
-            = BinaryData.fromString("{\"version\":\"yresgzsdtmwbyorj\",\"rwDeviceConfigUrl\":\"bchycha\"}")
+            = BinaryData.fromString("{\"version\":\"mgsdaluyckhefrbh\",\"rwDeviceConfigUrl\":\"uerbgpxebjl\"}")
                 .toObject(NetworkDeviceUpgradeRequest.class);
-        Assertions.assertEquals("yresgzsdtmwbyorj", model.version());
-        Assertions.assertEquals("bchycha", model.rwDeviceConfigUrl());
+        Assertions.assertEquals("mgsdaluyckhefrbh", model.version());
+        Assertions.assertEquals("uerbgpxebjl", model.rwDeviceConfigUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDeviceUpgradeRequest model
-            = new NetworkDeviceUpgradeRequest().withVersion("yresgzsdtmwbyorj").withRwDeviceConfigUrl("bchycha");
+            = new NetworkDeviceUpgradeRequest().withVersion("mgsdaluyckhefrbh").withRwDeviceConfigUrl("uerbgpxebjl");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceUpgradeRequest.class);
-        Assertions.assertEquals("yresgzsdtmwbyorj", model.version());
-        Assertions.assertEquals("bchycha", model.rwDeviceConfigUrl());
+        Assertions.assertEquals("mgsdaluyckhefrbh", model.version());
+        Assertions.assertEquals("uerbgpxebjl", model.rwDeviceConfigUrl());
     }
 }

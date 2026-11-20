@@ -12,8 +12,8 @@ public final class NetworkDeviceRwCommandResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDeviceRwCommandResponseProperties model
-            = BinaryData.fromString("{\"configurationState\":\"Provisioning\",\"outputUrl\":\"niuarlcjiwgsxfai\"}")
+            = BinaryData.fromString("{\"configurationState\":\"DeferredControl\",\"outputUrl\":\"tqqykbkkteozejog\"}")
                 .toObject(NetworkDeviceRwCommandResponseProperties.class);
-        Assertions.assertEquals("niuarlcjiwgsxfai", model.outputUrl());
+        Assertions.assertEquals("tqqykbkkteozejog", model.outputUrl());
     }
 }

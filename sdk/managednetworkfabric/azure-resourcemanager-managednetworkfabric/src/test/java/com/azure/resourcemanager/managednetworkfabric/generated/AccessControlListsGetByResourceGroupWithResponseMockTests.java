@@ -27,7 +27,7 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"wgljfatezdxqhjep\",\"configurationType\":\"File\",\"aclsUrl\":\"myomjeflgnieeq\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"nnduxkepga\",\"sequenceNumber\":9201835691172142957,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"uterrcanlpfqddww\",\"sequenceNumber\":8521131056616640540,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"my\",\"sequenceNumber\":1495221622507288048,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]}],\"lastSyncedTime\":\"2021-06-19T06:45:38Z\",\"aclType\":\"ControlPlaneAcl\",\"deviceRole\":\"CE\",\"globalAccessControlListActions\":{\"enableCount\":\"True\"},\"lastOperation\":{\"details\":\"d\"},\"networkFabricIds\":[\"jzxr\",\"xjiraupirvdonkaq\",\"gvgjg\"],\"controlPlaneAclConfiguration\":[{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{}]},{\"ipAddressType\":\"IPv6\",\"matchConfigurations\":[{},{},{}]}],\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"hnx\",\"tags\":{\"wq\":\"frnkts\",\"kstt\":\"arjteqlujmmknia\"},\"id\":\"imeztas\",\"name\":\"l\",\"type\":\"mecweohlerpt\"}";
+            = "{\"properties\":{\"annotation\":\"plpdzriettnmiuf\",\"configurationType\":\"File\",\"aclsUrl\":\"qmlmbyqyeku\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"egumydogrtfwzecg\",\"sequenceNumber\":5184991116845782739,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"iiqwqbv\",\"sequenceNumber\":8160481076351808659,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"tnkruywrxnks\",\"sequenceNumber\":1925056431742315101,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{}]}],\"lastSyncedTime\":\"2021-10-29T19:18:36Z\",\"aclType\":\"Management\",\"deviceRole\":\"ToR\",\"globalAccessControlListActions\":{\"enableCount\":\"False\"},\"lastOperation\":{\"details\":\"iptqhatfg\"},\"networkFabricIds\":[\"bxgfhgkdmsflhh\",\"upqovuwhv\",\"ihmqhqjdcbgc\"],\"controlPlaneAclConfiguration\":[{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{}]},{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{},{}]},{\"ipAddressType\":\"IPv4\",\"matchConfigurations\":[{},{},{}]}],\"configurationState\":\"Provisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"zdxcmpdmdsypk\",\"tags\":{\"joupxehsbec\":\"hieh\",\"vyhgpgjdrng\":\"uvkbaoq\",\"i\":\"djeepukuofz\"},\"id\":\"tvucyackgkavpmgt\",\"name\":\"cohfksixv\",\"type\":\"kpcesmurj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,21 +37,21 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessControlList response = manager.accessControlLists()
-            .getByResourceGroupWithResponse("fb", "b", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("kimntxdvlqmn", "hdhoyvpdu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hnx", response.location());
-        Assertions.assertEquals("frnkts", response.tags().get("wq"));
-        Assertions.assertEquals("wgljfatezdxqhjep", response.annotation());
+        Assertions.assertEquals("zdxcmpdmdsypk", response.location());
+        Assertions.assertEquals("hieh", response.tags().get("joupxehsbec"));
+        Assertions.assertEquals("plpdzriettnmiuf", response.annotation());
         Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
-        Assertions.assertEquals("myomjeflgnieeq", response.aclsUrl());
+        Assertions.assertEquals("qmlmbyqyeku", response.aclsUrl());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, response.defaultAction());
-        Assertions.assertEquals("nnduxkepga", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(9201835691172142957L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals("egumydogrtfwzecg", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(5184991116845782739L, response.matchConfigurations().get(0).sequenceNumber());
         Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals(AclType.CONTROL_PLANE_ACL, response.aclType());
-        Assertions.assertEquals(DeviceRole.CE, response.deviceRole());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, response.globalAccessControlListActions().enableCount());
+        Assertions.assertEquals(AclType.MANAGEMENT, response.aclType());
+        Assertions.assertEquals(DeviceRole.TOR, response.deviceRole());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, response.globalAccessControlListActions().enableCount());
         Assertions.assertEquals(IpAddressType.IPV4, response.controlPlaneAclConfiguration().get(0).ipAddressType());
     }
 }

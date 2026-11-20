@@ -14,21 +14,20 @@ public final class AggregateRoutePatchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AggregateRoutePatchConfiguration model = BinaryData.fromString(
-            "{\"ipv4Routes\":[{\"prefix\":\"wamec\"}],\"ipv6Routes\":[{\"prefix\":\"ioulndhzyoe\"},{\"prefix\":\"jhtollh\"},{\"prefix\":\"vidmytzl\"},{\"prefix\":\"glxpnovyoanfbcsw\"}]}")
+            "{\"ipv4Routes\":[{\"prefix\":\"apfjiik\"},{\"prefix\":\"jdiq\"}],\"ipv6Routes\":[{\"prefix\":\"ejhpclbiedfsbwc\"}]}")
             .toObject(AggregateRoutePatchConfiguration.class);
-        Assertions.assertEquals("wamec", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("ioulndhzyoe", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("apfjiik", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("ejhpclbiedfsbwc", model.ipv6Routes().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AggregateRoutePatchConfiguration model = new AggregateRoutePatchConfiguration()
-            .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("wamec")))
-            .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("ioulndhzyoe"),
-                new AggregateRoute().withPrefix("jhtollh"), new AggregateRoute().withPrefix("vidmytzl"),
-                new AggregateRoute().withPrefix("glxpnovyoanfbcsw")));
+            .withIpv4Routes(
+                Arrays.asList(new AggregateRoute().withPrefix("apfjiik"), new AggregateRoute().withPrefix("jdiq")))
+            .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("ejhpclbiedfsbwc")));
         model = BinaryData.fromObject(model).toObject(AggregateRoutePatchConfiguration.class);
-        Assertions.assertEquals("wamec", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("ioulndhzyoe", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("apfjiik", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("ejhpclbiedfsbwc", model.ipv6Routes().get(0).prefix());
     }
 }

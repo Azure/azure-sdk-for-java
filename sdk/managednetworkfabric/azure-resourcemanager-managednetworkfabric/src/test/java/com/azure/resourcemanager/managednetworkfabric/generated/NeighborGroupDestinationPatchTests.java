@@ -12,20 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupDestinationPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupDestinationPatch model = BinaryData.fromString(
-            "{\"ipv4Addresses\":[\"gelg\",\"ewikfyaqandmym\",\"qoq\"],\"ipv6Addresses\":[\"ovsfb\",\"bvzo\",\"axmfmvsmcwoxfa\"]}")
+        NeighborGroupDestinationPatch model = BinaryData
+            .fromString(
+                "{\"ipv4Addresses\":[\"udpabcreuwzos\",\"yjxvc\"],\"ipv6Addresses\":[\"ormrexzv\",\"ubewgzygba\"]}")
             .toObject(NeighborGroupDestinationPatch.class);
-        Assertions.assertEquals("gelg", model.ipv4Addresses().get(0));
-        Assertions.assertEquals("ovsfb", model.ipv6Addresses().get(0));
+        Assertions.assertEquals("udpabcreuwzos", model.ipv4Addresses().get(0));
+        Assertions.assertEquals("ormrexzv", model.ipv6Addresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NeighborGroupDestinationPatch model
-            = new NeighborGroupDestinationPatch().withIpv4Addresses(Arrays.asList("gelg", "ewikfyaqandmym", "qoq"))
-                .withIpv6Addresses(Arrays.asList("ovsfb", "bvzo", "axmfmvsmcwoxfa"));
+            = new NeighborGroupDestinationPatch().withIpv4Addresses(Arrays.asList("udpabcreuwzos", "yjxvc"))
+                .withIpv6Addresses(Arrays.asList("ormrexzv", "ubewgzygba"));
         model = BinaryData.fromObject(model).toObject(NeighborGroupDestinationPatch.class);
-        Assertions.assertEquals("gelg", model.ipv4Addresses().get(0));
-        Assertions.assertEquals("ovsfb", model.ipv6Addresses().get(0));
+        Assertions.assertEquals("udpabcreuwzos", model.ipv4Addresses().get(0));
+        Assertions.assertEquals("ormrexzv", model.ipv6Addresses().get(0));
     }
 }

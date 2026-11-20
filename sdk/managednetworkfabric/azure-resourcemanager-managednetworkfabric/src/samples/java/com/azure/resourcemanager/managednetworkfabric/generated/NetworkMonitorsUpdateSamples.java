@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class NetworkMonitorsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkMonitors_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkMonitors_Update.json
      */
     /**
      * Sample code: NetworkMonitors_Update.

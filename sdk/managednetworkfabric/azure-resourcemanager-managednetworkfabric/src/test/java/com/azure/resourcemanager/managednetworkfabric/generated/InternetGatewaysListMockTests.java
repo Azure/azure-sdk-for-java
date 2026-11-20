@@ -23,7 +23,7 @@ public final class InternetGatewaysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"opqqiyjrehe\",\"internetGatewayRuleId\":\"h\",\"ipv4Address\":\"gmx\",\"port\":2009136030,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"gro\",\"lastOperation\":{\"details\":\"sqdzyy\"},\"provisioningState\":\"Succeeded\"},\"location\":\"tgqpqfwuplfjkb\",\"tags\":{\"ta\":\"useimuipg\"},\"id\":\"xbfhb\",\"name\":\"pldzipheife\",\"type\":\"zn\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"bsbkvfk\",\"internetGatewayRuleId\":\"bbpoijs\",\"ipv4Address\":\"ru\",\"port\":697078351,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"knarscxnk\",\"lastOperation\":{\"details\":\"inzosxrs\"},\"provisioningState\":\"Canceled\"},\"location\":\"jw\",\"tags\":{\"vuxqactoqqehnqi\":\"xvezwwqchxowp\",\"lbkize\":\"rgnvuolvptv\"},\"id\":\"brwlpe\",\"name\":\"misoiq\",\"type\":\"etzgwywyxbwuam\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class InternetGatewaysListMockTests {
 
         PagedIterable<InternetGateway> response = manager.internetGateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tgqpqfwuplfjkb", response.iterator().next().location());
-        Assertions.assertEquals("useimuipg", response.iterator().next().tags().get("ta"));
-        Assertions.assertEquals("opqqiyjrehe", response.iterator().next().annotation());
-        Assertions.assertEquals("h", response.iterator().next().internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("jw", response.iterator().next().location());
+        Assertions.assertEquals("xvezwwqchxowp", response.iterator().next().tags().get("vuxqactoqqehnqi"));
+        Assertions.assertEquals("bsbkvfk", response.iterator().next().annotation());
+        Assertions.assertEquals("bbpoijs", response.iterator().next().internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().typePropertiesType());
         Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().internetGatewayType());
-        Assertions.assertEquals("gro", response.iterator().next().networkFabricControllerId());
+        Assertions.assertEquals("knarscxnk", response.iterator().next().networkFabricControllerId());
     }
 }

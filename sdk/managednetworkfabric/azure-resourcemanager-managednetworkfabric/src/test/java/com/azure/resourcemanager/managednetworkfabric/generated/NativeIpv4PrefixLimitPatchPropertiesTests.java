@@ -14,22 +14,26 @@ public final class NativeIpv4PrefixLimitPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NativeIpv4PrefixLimitPatchProperties model = BinaryData.fromString(
-            "{\"prefixLimits\":[{\"maximumRoutes\":157640432,\"threshold\":1869847736,\"idleTimeExpiry\":124766447}]}")
+            "{\"prefixLimits\":[{\"maximumRoutes\":1763969185,\"threshold\":355984531,\"idleTimeExpiry\":461529299},{\"maximumRoutes\":1750807185,\"threshold\":276428339,\"idleTimeExpiry\":1016183483}]}")
             .toObject(NativeIpv4PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(157640432, model.prefixLimits().get(0).maximumRoutes());
-        Assertions.assertEquals(1869847736, model.prefixLimits().get(0).threshold());
-        Assertions.assertEquals(124766447, model.prefixLimits().get(0).idleTimeExpiry());
+        Assertions.assertEquals(1763969185, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(355984531, model.prefixLimits().get(0).threshold());
+        Assertions.assertEquals(461529299, model.prefixLimits().get(0).idleTimeExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NativeIpv4PrefixLimitPatchProperties model = new NativeIpv4PrefixLimitPatchProperties()
-            .withPrefixLimits(Arrays.asList(new PrefixLimitPatchProperties().withMaximumRoutes(157640432)
-                .withThreshold(1869847736)
-                .withIdleTimeExpiry(124766447)));
+        NativeIpv4PrefixLimitPatchProperties model
+            = new NativeIpv4PrefixLimitPatchProperties().withPrefixLimits(Arrays.asList(
+                new PrefixLimitPatchProperties().withMaximumRoutes(1763969185)
+                    .withThreshold(355984531)
+                    .withIdleTimeExpiry(461529299),
+                new PrefixLimitPatchProperties().withMaximumRoutes(1750807185)
+                    .withThreshold(276428339)
+                    .withIdleTimeExpiry(1016183483)));
         model = BinaryData.fromObject(model).toObject(NativeIpv4PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(157640432, model.prefixLimits().get(0).maximumRoutes());
-        Assertions.assertEquals(1869847736, model.prefixLimits().get(0).threshold());
-        Assertions.assertEquals(124766447, model.prefixLimits().get(0).idleTimeExpiry());
+        Assertions.assertEquals(1763969185, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(355984531, model.prefixLimits().get(0).threshold());
+        Assertions.assertEquals(461529299, model.prefixLimits().get(0).idleTimeExpiry());
     }
 }

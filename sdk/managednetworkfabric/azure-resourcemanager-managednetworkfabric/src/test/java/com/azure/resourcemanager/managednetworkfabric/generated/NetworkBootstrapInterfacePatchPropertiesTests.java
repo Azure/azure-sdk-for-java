@@ -12,23 +12,22 @@ public final class NetworkBootstrapInterfacePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkBootstrapInterfacePatchProperties model = BinaryData
-            .fromString(
-                "{\"serialNumber\":\"gzx\",\"additionalDescription\":\"safvflyqauuohsk\",\"annotation\":\"ntxdvlqmn\"}")
+            .fromString("{\"serialNumber\":\"gc\",\"additionalDescription\":\"cyfrho\",\"annotation\":\"v\"}")
             .toObject(NetworkBootstrapInterfacePatchProperties.class);
-        Assertions.assertEquals("ntxdvlqmn", model.annotation());
-        Assertions.assertEquals("gzx", model.serialNumber());
-        Assertions.assertEquals("safvflyqauuohsk", model.additionalDescription());
+        Assertions.assertEquals("v", model.annotation());
+        Assertions.assertEquals("gc", model.serialNumber());
+        Assertions.assertEquals("cyfrho", model.additionalDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkBootstrapInterfacePatchProperties model
-            = new NetworkBootstrapInterfacePatchProperties().withAnnotation("ntxdvlqmn")
-                .withSerialNumber("gzx")
-                .withAdditionalDescription("safvflyqauuohsk");
+            = new NetworkBootstrapInterfacePatchProperties().withAnnotation("v")
+                .withSerialNumber("gc")
+                .withAdditionalDescription("cyfrho");
         model = BinaryData.fromObject(model).toObject(NetworkBootstrapInterfacePatchProperties.class);
-        Assertions.assertEquals("ntxdvlqmn", model.annotation());
-        Assertions.assertEquals("gzx", model.serialNumber());
-        Assertions.assertEquals("safvflyqauuohsk", model.additionalDescription());
+        Assertions.assertEquals("v", model.annotation());
+        Assertions.assertEquals("gc", model.serialNumber());
+        Assertions.assertEquals("cyfrho", model.additionalDescription());
     }
 }

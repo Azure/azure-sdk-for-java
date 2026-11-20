@@ -23,7 +23,7 @@ public final class IpCommunitiesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"jtk\",\"networkFabricId\":\"myjdbcknsojtmpd\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":5843239366804985563,\"wellKnownCommunities\":[\"LocalAS\"],\"communityMembers\":[\"va\",\"tkcen\"]},{\"action\":\"Permit\",\"sequenceNumber\":1341916419942847465,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"nppxxeysqe\",\"fwugo\",\"ys\",\"munvzmvnbcklssx\"]}],\"lastOperation\":{\"details\":\"svfsuk\"},\"configurationState\":\"Provisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\"},\"location\":\"kpnne\",\"tags\":{\"or\":\"ez\"},\"id\":\"zwk\",\"name\":\"ohjx\",\"type\":\"cmmvuamorhkn\"}";
+            = "{\"properties\":{\"annotation\":\"wphbuzmvjil\",\"networkFabricId\":\"bmfkctpa\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":6424741102070043711,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoAdvertise\",\"NoAdvertise\",\"NoAdvertise\"],\"communityMembers\":[\"mwnuvjdywpfxi\",\"jfk\",\"njtksw\",\"yjdbc\"]}],\"lastOperation\":{\"details\":\"ojtmpdkcbpk\"},\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\"},\"location\":\"kcendwgus\",\"tags\":{\"fwugo\":\"nppxxeysqe\",\"munvzmvnbcklssx\":\"ys\",\"vfsukpkieal\":\"uk\",\"or\":\"ckpnnenrcez\"},\"id\":\"zwk\",\"name\":\"ohjx\",\"type\":\"cmmvuamorhkn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class IpCommunitiesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IpCommunity response = manager.ipCommunities()
-            .getByResourceGroupWithResponse("vjdywpfxi", "jfk", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("qnqqzqdvg", "omtkgoynya", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kpnne", response.location());
-        Assertions.assertEquals("ez", response.tags().get("or"));
-        Assertions.assertEquals("jtk", response.annotation());
+        Assertions.assertEquals("kcendwgus", response.location());
+        Assertions.assertEquals("nppxxeysqe", response.tags().get("fwugo"));
+        Assertions.assertEquals("wphbuzmvjil", response.annotation());
         Assertions.assertEquals(CommunityActionTypes.DENY, response.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(5843239366804985563L, response.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS,
+        Assertions.assertEquals(6424741102070043711L, response.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
             response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("va", response.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("mwnuvjdywpfxi", response.ipCommunityRules().get(0).communityMembers().get(0));
     }
 }

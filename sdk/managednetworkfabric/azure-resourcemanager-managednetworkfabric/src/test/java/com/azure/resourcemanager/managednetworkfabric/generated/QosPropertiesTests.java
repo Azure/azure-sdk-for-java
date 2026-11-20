@@ -13,14 +13,14 @@ public final class QosPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QosProperties model
-            = BinaryData.fromString("{\"qosConfigurationState\":\"Disabled\"}").toObject(QosProperties.class);
-        Assertions.assertEquals(QosConfigurationState.DISABLED, model.qosConfigurationState());
+            = BinaryData.fromString("{\"qosConfigurationState\":\"Enabled\"}").toObject(QosProperties.class);
+        Assertions.assertEquals(QosConfigurationState.ENABLED, model.qosConfigurationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QosProperties model = new QosProperties().withQosConfigurationState(QosConfigurationState.DISABLED);
+        QosProperties model = new QosProperties().withQosConfigurationState(QosConfigurationState.ENABLED);
         model = BinaryData.fromObject(model).toObject(QosProperties.class);
-        Assertions.assertEquals(QosConfigurationState.DISABLED, model.qosConfigurationState());
+        Assertions.assertEquals(QosConfigurationState.ENABLED, model.qosConfigurationState());
     }
 }

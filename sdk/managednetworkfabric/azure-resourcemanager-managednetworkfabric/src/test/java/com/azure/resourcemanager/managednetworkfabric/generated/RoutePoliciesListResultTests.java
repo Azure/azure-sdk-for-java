@@ -15,18 +15,18 @@ public final class RoutePoliciesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutePoliciesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"annotation\":\"jcvmkkbp\",\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":3324945329555913943,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"d\"}],\"networkFabricId\":\"iembrwqwvcwc\",\"addressFamilyType\":\"IPv6\",\"lastOperation\":{\"details\":\"rgpdlbtbxhyfwjfq\"},\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\"},\"location\":\"e\",\"tags\":{\"pbhj\":\"kbqfzbvttqjntvhn\",\"uxyeeafdxsuwly\":\"ugcupcyfrhooyvm\",\"hj\":\"xzhgbspdx\"},\"id\":\"u\",\"name\":\"k\",\"type\":\"xqomzdfaupqve\"},{\"properties\":{\"annotation\":\"zwnkbjqpz\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":2841731151744469955,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"sochtuxap\"},{\"sequenceNumber\":1183271586003783289,\"condition\":{},\"action\":{\"actionType\":\"Permit\"},\"annotation\":\"lbxmynslcvynavwt\"},{\"sequenceNumber\":968921338925482263,\"condition\":{},\"action\":{\"actionType\":\"Permit\"},\"annotation\":\"z\"}],\"networkFabricId\":\"oddcaqi\",\"addressFamilyType\":\"IPv6\",\"lastOperation\":{\"details\":\"jmjxkhbucmz\"},\"configurationState\":\"Accepted\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\"},\"location\":\"ktavcebgodjfypla\",\"tags\":{\"bnzot\":\"secedsoqwexi\"},\"id\":\"ikf\",\"name\":\"jqdfadgywyla\",\"type\":\"etqj\"}],\"nextLink\":\"hyst\"}")
+            "{\"value\":[{\"properties\":{\"annotation\":\"uzntbpcadd\",\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":4105843624279122355,\"condition\":{},\"action\":{\"actionType\":\"Continue\"},\"annotation\":\"rrpl\"},{\"sequenceNumber\":9210623057445157324,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"jjfzizxlbi\"},{\"sequenceNumber\":1873484852825866653,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"rxknfv\"}],\"networkFabricId\":\"symagbahdbtjmku\",\"addressFamilyType\":\"IPv4\",\"lastOperation\":{\"details\":\"lb\"},\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\"},\"location\":\"vpanloqov\",\"tags\":{\"atucujtju\":\"gqtquirgopg\",\"hquoqhqrcsksx\":\"vyjxux\",\"agvyjcdpncvfyeqy\":\"fhlrvuv\"},\"id\":\"diijcsapq\",\"name\":\"ipajsnivnmev\",\"type\":\"jb\"},{\"properties\":{\"annotation\":\"wrf\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":1551228481544961022,\"condition\":{},\"action\":{\"actionType\":\"Continue\"},\"annotation\":\"seodvlmdzgv\"}],\"networkFabricId\":\"ykzzugctygbb\",\"addressFamilyType\":\"IPv4\",\"lastOperation\":{\"details\":\"vvcrsm\"},\"configurationState\":\"CommitRollbackFailed\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\"},\"location\":\"umnru\",\"tags\":{\"cvpkb\":\"keqjftvltjop\",\"zadzglmuu\":\"ltnowpajfhxsmub\",\"erkqpyfj\":\"psuhsypxmuldhf\"},\"id\":\"kbyws\",\"name\":\"uqfmxbdjkmnxsg\",\"type\":\"nowxhyvdbrdvsv\"}],\"nextLink\":\"btycvl\"}")
             .toObject(RoutePoliciesListResult.class);
-        Assertions.assertEquals("e", model.value().get(0).location());
-        Assertions.assertEquals("kbqfzbvttqjntvhn", model.value().get(0).tags().get("pbhj"));
-        Assertions.assertEquals("jcvmkkbp", model.value().get(0).annotation());
+        Assertions.assertEquals("vpanloqov", model.value().get(0).location());
+        Assertions.assertEquals("gqtquirgopg", model.value().get(0).tags().get("atucujtju"));
+        Assertions.assertEquals("uzntbpcadd", model.value().get(0).annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).defaultAction());
-        Assertions.assertEquals("d", model.value().get(0).statements().get(0).annotation());
-        Assertions.assertEquals(3324945329555913943L, model.value().get(0).statements().get(0).sequenceNumber());
-        Assertions.assertEquals(RoutePolicyActionType.DENY,
+        Assertions.assertEquals("rrpl", model.value().get(0).statements().get(0).annotation());
+        Assertions.assertEquals(4105843624279122355L, model.value().get(0).statements().get(0).sequenceNumber());
+        Assertions.assertEquals(RoutePolicyActionType.CONTINUE,
             model.value().get(0).statements().get(0).action().actionType());
-        Assertions.assertEquals("iembrwqwvcwc", model.value().get(0).networkFabricId());
-        Assertions.assertEquals(AddressFamilyType.IPV6, model.value().get(0).addressFamilyType());
-        Assertions.assertEquals("hyst", model.nextLink());
+        Assertions.assertEquals("symagbahdbtjmku", model.value().get(0).networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV4, model.value().get(0).addressFamilyType());
+        Assertions.assertEquals("btycvl", model.nextLink());
     }
 }

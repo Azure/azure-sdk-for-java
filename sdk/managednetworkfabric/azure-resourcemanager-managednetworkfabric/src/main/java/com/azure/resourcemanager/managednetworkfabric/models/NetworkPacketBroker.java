@@ -101,6 +101,13 @@ public interface NetworkPacketBroker {
     List<String> neighborGroupIds();
 
     /**
+     * Gets the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule.
+     * 
+     * @return the sourceNetworkTapRuleId value.
+     */
+    String sourceNetworkTapRuleId();
+
+    /**
      * Gets the lastOperation property: Details of the last operation performed on the resource.
      * 
      * @return the lastOperation value.
@@ -217,7 +224,8 @@ public interface NetworkPacketBroker {
          * The stage of the NetworkPacketBroker definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithSourceNetworkTapRuleId {
             /**
              * Executes the create request.
              * 
@@ -259,6 +267,19 @@ public interface NetworkPacketBroker {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
+        /**
+         * The stage of the NetworkPacketBroker definition allowing to specify sourceNetworkTapRuleId.
+         */
+        interface WithSourceNetworkTapRuleId {
+            /**
+             * Specifies the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule..
+             * 
+             * @param sourceNetworkTapRuleId ARM resource ID of the source Network Tap Rule.
+             * @return the next definition stage.
+             */
+            WithCreate withSourceNetworkTapRuleId(String sourceNetworkTapRuleId);
+        }
     }
 
     /**
@@ -271,7 +292,7 @@ public interface NetworkPacketBroker {
     /**
      * The template for NetworkPacketBroker update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -303,6 +324,19 @@ public interface NetworkPacketBroker {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the NetworkPacketBroker update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: NetworkPacketBroker patch properties..
+             * 
+             * @param properties NetworkPacketBroker patch properties.
+             * @return the next definition stage.
+             */
+            Update withProperties(NetworkPacketBrokerPatchProperties properties);
         }
 
         /**

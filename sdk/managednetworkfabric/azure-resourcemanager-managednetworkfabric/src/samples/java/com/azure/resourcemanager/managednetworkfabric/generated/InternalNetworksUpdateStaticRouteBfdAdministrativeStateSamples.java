@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksUpdateStaticRouteBfdAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
      */
     /**
      * Sample code: InternalNetworks_UpdateStaticRouteBfdAdministrativeState.

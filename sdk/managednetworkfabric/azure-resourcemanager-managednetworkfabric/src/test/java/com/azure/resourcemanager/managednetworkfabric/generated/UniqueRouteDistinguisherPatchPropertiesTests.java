@@ -15,10 +15,9 @@ public final class UniqueRouteDistinguisherPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         UniqueRouteDistinguisherPatchProperties model = BinaryData
             .fromString(
-                "{\"uniqueRdConfigurationState\":\"Disabled\",\"nniDerivedUniqueRdConfigurationState\":\"Disabled\"}")
+                "{\"uniqueRdConfigurationState\":\"Enabled\",\"nniDerivedUniqueRdConfigurationState\":\"Disabled\"}")
             .toObject(UniqueRouteDistinguisherPatchProperties.class);
-        Assertions.assertEquals(UniqueRouteDistinguisherConfigurationState.DISABLED,
-            model.uniqueRdConfigurationState());
+        Assertions.assertEquals(UniqueRouteDistinguisherConfigurationState.ENABLED, model.uniqueRdConfigurationState());
         Assertions.assertEquals(NNIDerivedUniqueRouteDistinguisherConfigurationState.DISABLED,
             model.nniDerivedUniqueRdConfigurationState());
     }
@@ -26,11 +25,10 @@ public final class UniqueRouteDistinguisherPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UniqueRouteDistinguisherPatchProperties model = new UniqueRouteDistinguisherPatchProperties()
-            .withUniqueRdConfigurationState(UniqueRouteDistinguisherConfigurationState.DISABLED)
+            .withUniqueRdConfigurationState(UniqueRouteDistinguisherConfigurationState.ENABLED)
             .withNniDerivedUniqueRdConfigurationState(NNIDerivedUniqueRouteDistinguisherConfigurationState.DISABLED);
         model = BinaryData.fromObject(model).toObject(UniqueRouteDistinguisherPatchProperties.class);
-        Assertions.assertEquals(UniqueRouteDistinguisherConfigurationState.DISABLED,
-            model.uniqueRdConfigurationState());
+        Assertions.assertEquals(UniqueRouteDistinguisherConfigurationState.ENABLED, model.uniqueRdConfigurationState());
         Assertions.assertEquals(NNIDerivedUniqueRouteDistinguisherConfigurationState.DISABLED,
             model.nniDerivedUniqueRdConfigurationState());
     }

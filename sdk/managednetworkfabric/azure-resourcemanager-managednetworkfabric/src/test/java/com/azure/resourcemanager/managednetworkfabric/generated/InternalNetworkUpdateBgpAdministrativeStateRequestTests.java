@@ -13,19 +13,19 @@ public final class InternalNetworkUpdateBgpAdministrativeStateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkUpdateBgpAdministrativeStateRequest model
-            = BinaryData.fromString("{\"neighborAddress\":\"sdbpokszanmh\",\"administrativeState\":\"Enabled\"}")
+            = BinaryData.fromString("{\"neighborAddress\":\"jgwecywnfyszzacz\",\"administrativeState\":\"Disabled\"}")
                 .toObject(InternalNetworkUpdateBgpAdministrativeStateRequest.class);
-        Assertions.assertEquals("sdbpokszanmh", model.neighborAddress());
-        Assertions.assertEquals(BgpAdministrativeState.ENABLED, model.administrativeState());
+        Assertions.assertEquals("jgwecywnfyszzacz", model.neighborAddress());
+        Assertions.assertEquals(BgpAdministrativeState.DISABLED, model.administrativeState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternalNetworkUpdateBgpAdministrativeStateRequest model
-            = new InternalNetworkUpdateBgpAdministrativeStateRequest().withNeighborAddress("sdbpokszanmh")
-                .withAdministrativeState(BgpAdministrativeState.ENABLED);
+            = new InternalNetworkUpdateBgpAdministrativeStateRequest().withNeighborAddress("jgwecywnfyszzacz")
+                .withAdministrativeState(BgpAdministrativeState.DISABLED);
         model = BinaryData.fromObject(model).toObject(InternalNetworkUpdateBgpAdministrativeStateRequest.class);
-        Assertions.assertEquals("sdbpokszanmh", model.neighborAddress());
-        Assertions.assertEquals(BgpAdministrativeState.ENABLED, model.administrativeState());
+        Assertions.assertEquals("jgwecywnfyszzacz", model.neighborAddress());
+        Assertions.assertEquals(BgpAdministrativeState.DISABLED, model.administrativeState());
     }
 }

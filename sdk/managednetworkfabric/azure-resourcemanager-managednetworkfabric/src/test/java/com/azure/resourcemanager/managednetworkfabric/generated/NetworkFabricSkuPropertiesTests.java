@@ -12,9 +12,9 @@ public final class NetworkFabricSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkFabricSkuProperties model = BinaryData.fromString(
-            "{\"type\":\"SingleRack\",\"maxComputeRacks\":91394578,\"maximumServerCount\":223502884,\"supportedVersions\":[\"xzduvxdmxexat\",\"dmnrsenxoirx\",\"ddmiploisjkzso\"],\"details\":\"nntwg\",\"provisioningState\":\"Deleting\"}")
+            "{\"type\":\"SingleRack\",\"maxComputeRacks\":1345633295,\"maximumServerCount\":1807547374,\"supportedVersions\":[\"ychakvy\",\"fbqvumkxqj\",\"iuepmaxfnzlpqmp\",\"t\"],\"details\":\"fvulb\",\"provisioningState\":\"Accepted\"}")
             .toObject(NetworkFabricSkuProperties.class);
-        Assertions.assertEquals(91394578, model.maxComputeRacks());
-        Assertions.assertEquals(223502884, model.maximumServerCount());
+        Assertions.assertEquals(1345633295, model.maxComputeRacks());
+        Assertions.assertEquals(1807547374, model.maximumServerCount());
     }
 }

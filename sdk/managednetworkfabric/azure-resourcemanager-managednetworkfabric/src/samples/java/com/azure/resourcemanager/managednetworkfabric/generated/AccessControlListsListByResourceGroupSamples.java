@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class AccessControlListsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-15/AccessControlLists_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-15-preview/AccessControlLists_ListByResourceGroup.json
      */
     /**
      * Sample code: AccessControlLists_ListByResourceGroup_MaximumSet_Gen.

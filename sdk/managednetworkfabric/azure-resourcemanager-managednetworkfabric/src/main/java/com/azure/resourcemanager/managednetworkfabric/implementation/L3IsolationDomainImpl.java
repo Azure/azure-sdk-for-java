@@ -32,7 +32,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteRoutePol
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteRoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import java.util.Collections;
 import java.util.Map;
 
@@ -245,11 +245,11 @@ public final class L3IsolationDomainImpl
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration() {
+    public ValidateConfigurationResponseV2 validateConfiguration() {
         return serviceManager.l3IsolationDomains().validateConfiguration(resourceGroupName, l3IsolationDomainName);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(Context context) {
         return serviceManager.l3IsolationDomains()
             .validateConfiguration(resourceGroupName, l3IsolationDomainName, context);
     }

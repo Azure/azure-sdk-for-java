@@ -23,7 +23,7 @@ public final class NetworkDeviceSkusGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"model\":\"fift\",\"manufacturer\":\"upuukpsw\",\"supportedVersions\":[{\"version\":\"uchcfndijzpvc\",\"vendorOsVersion\":\"butmxtijs\",\"vendorFirmwareVersion\":\"tdp\",\"isDefault\":\"True\"},{\"version\":\"wibwcdxymns\",\"vendorOsVersion\":\"qtmhff\",\"vendorFirmwareVersion\":\"nvrdtdl\",\"isDefault\":\"True\"},{\"version\":\"gh\",\"vendorOsVersion\":\"lh\",\"vendorFirmwareVersion\":\"zljyogcpw\",\"isDefault\":\"True\"}],\"supportedRoleTypes\":[\"TS\",\"CE\",\"Management\",\"Management\"],\"interfaces\":[{\"identifier\":\"eljmfolqdi\",\"interfaceType\":\"v\",\"supportedConnectorTypes\":[{}]}],\"provisioningState\":\"Updating\"},\"id\":\"hghkf\",\"name\":\"wnlpbawtp\",\"type\":\"nkiwxlplqnil\"}";
+            = "{\"properties\":{\"model\":\"rtaevq\",\"manufacturer\":\"dhpkiiunyr\",\"supportedVersions\":[{\"version\":\"elowsmrvdtqhr\",\"vendorOsVersion\":\"qs\",\"vendorFirmwareVersion\":\"ynupski\",\"isDefault\":\"False\"},{\"version\":\"hamefzzgwjoaued\",\"vendorOsVersion\":\"pndou\",\"vendorFirmwareVersion\":\"fcfgqinaokxo\",\"isDefault\":\"True\"},{\"version\":\"hmzassrsqzuk\",\"vendorOsVersion\":\"txtdmutd\",\"vendorFirmwareVersion\":\"qq\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"ToR\",\"NPB\",\"ToR\"],\"interfaces\":[{\"identifier\":\"drtwqjftyaqd\",\"interfaceType\":\"fnomciw\",\"supportedConnectorTypes\":[{}]},{\"identifier\":\"g\",\"interfaceType\":\"fnd\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"ilfvrpbcgd\",\"interfaceType\":\"fxoffckejxomngu\",\"supportedConnectorTypes\":[{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"ttrnksvxim\",\"name\":\"n\",\"type\":\"iycxuyzrnngnm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class NetworkDeviceSkusGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkDeviceSku response
-            = manager.networkDeviceSkus().getWithResponse("fg", com.azure.core.util.Context.NONE).getValue();
+            = manager.networkDeviceSkus().getWithResponse("fobpyeo", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("fift", response.model());
-        Assertions.assertEquals("upuukpsw", response.manufacturer());
-        Assertions.assertEquals("uchcfndijzpvc", response.supportedVersions().get(0).version());
-        Assertions.assertEquals("butmxtijs", response.supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("tdp", response.supportedVersions().get(0).vendorFirmwareVersion());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, response.supportedVersions().get(0).isDefault());
-        Assertions.assertEquals(NetworkDeviceRoleName.TS, response.supportedRoleTypes().get(0));
-        Assertions.assertEquals("eljmfolqdi", response.interfaces().get(0).identifier());
-        Assertions.assertEquals("v", response.interfaces().get(0).interfaceType());
+        Assertions.assertEquals("rtaevq", response.model());
+        Assertions.assertEquals("dhpkiiunyr", response.manufacturer());
+        Assertions.assertEquals("elowsmrvdtqhr", response.supportedVersions().get(0).version());
+        Assertions.assertEquals("qs", response.supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("ynupski", response.supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, response.supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(NetworkDeviceRoleName.TOR, response.supportedRoleTypes().get(0));
+        Assertions.assertEquals("drtwqjftyaqd", response.interfaces().get(0).identifier());
+        Assertions.assertEquals("fnomciw", response.interfaces().get(0).interfaceType());
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceRwCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceRwCommand model = BinaryData.fromString("{\"command\":\"kgtzqnwqsttewu\",\"commandUrl\":\"ysjeufjx\"}")
-            .toObject(DeviceRwCommand.class);
-        Assertions.assertEquals("kgtzqnwqsttewu", model.command());
-        Assertions.assertEquals("ysjeufjx", model.commandUrl());
+        DeviceRwCommand model
+            = BinaryData.fromString("{\"command\":\"xx\",\"commandUrl\":\"fcwrri\"}").toObject(DeviceRwCommand.class);
+        Assertions.assertEquals("xx", model.command());
+        Assertions.assertEquals("fcwrri", model.commandUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceRwCommand model = new DeviceRwCommand().withCommand("kgtzqnwqsttewu").withCommandUrl("ysjeufjx");
+        DeviceRwCommand model = new DeviceRwCommand().withCommand("xx").withCommandUrl("fcwrri");
         model = BinaryData.fromObject(model).toObject(DeviceRwCommand.class);
-        Assertions.assertEquals("kgtzqnwqsttewu", model.command());
-        Assertions.assertEquals("ysjeufjx", model.commandUrl());
+        Assertions.assertEquals("xx", model.command());
+        Assertions.assertEquals("fcwrri", model.commandUrl());
     }
 }

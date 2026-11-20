@@ -12,7 +12,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurati
  */
 public final class NetworkFabricsValidateConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ValidateConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ValidateConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_ValidateConfiguration_MaximumSet_Gen.

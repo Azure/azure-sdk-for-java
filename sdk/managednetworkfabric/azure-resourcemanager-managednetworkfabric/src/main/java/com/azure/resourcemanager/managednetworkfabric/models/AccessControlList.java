@@ -671,7 +671,7 @@ public interface AccessControlList {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration();
+    ValidateConfigurationResponseV2 validateConfiguration();
 
     /**
      * Implements the operation to the underlying resources.
@@ -682,5 +682,5 @@ public interface AccessControlList {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(Context context);
+    ValidateConfigurationResponseV2 validateConfiguration(Context context);
 }
