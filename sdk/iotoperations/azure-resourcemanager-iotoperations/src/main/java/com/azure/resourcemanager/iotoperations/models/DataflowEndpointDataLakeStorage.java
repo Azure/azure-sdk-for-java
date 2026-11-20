@@ -22,7 +22,9 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
     private DataflowEndpointDataLakeStorageAuthentication authentication;
 
     /*
-     * Host of the Azure Data Lake in the form of <account>.blob.core.windows.net .
+     * Host of the Azure Data Lake in the form of <account>.blob.core.windows.net (Azure Public) or
+     * <account>.blob.core.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.blob\.core\.(windows\.net|usgovcloudapi\.net)`.
      */
     private String host;
 
@@ -61,7 +63,9 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
     }
 
     /**
-     * Get the host property: Host of the Azure Data Lake in the form of &lt;account&gt;.blob.core.windows.net .
+     * Get the host property: Host of the Azure Data Lake in the form of &lt;account&gt;.blob.core.windows.net (Azure
+     * Public) or &lt;account&gt;.blob.core.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.blob\.core\.(windows\.net|usgovcloudapi\.net)`.
      * 
      * @return the host value.
      */
@@ -70,7 +74,9 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
     }
 
     /**
-     * Set the host property: Host of the Azure Data Lake in the form of &lt;account&gt;.blob.core.windows.net .
+     * Set the host property: Host of the Azure Data Lake in the form of &lt;account&gt;.blob.core.windows.net (Azure
+     * Public) or &lt;account&gt;.blob.core.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.blob\.core\.(windows\.net|usgovcloudapi\.net)`.
      * 
      * @param host the host value to set.
      * @return the DataflowEndpointDataLakeStorage object itself.

@@ -13,14 +13,14 @@ public final class BrokerRetainMessagesDynamicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerRetainMessagesDynamic model
-            = BinaryData.fromString("{\"mode\":\"Enabled\"}").toObject(BrokerRetainMessagesDynamic.class);
-        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+            = BinaryData.fromString("{\"mode\":\"Disabled\"}").toObject(BrokerRetainMessagesDynamic.class);
+        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerRetainMessagesDynamic model = new BrokerRetainMessagesDynamic().withMode(OperationalMode.ENABLED);
+        BrokerRetainMessagesDynamic model = new BrokerRetainMessagesDynamic().withMode(OperationalMode.DISABLED);
         model = BinaryData.fromObject(model).toObject(BrokerRetainMessagesDynamic.class);
-        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
     }
 }

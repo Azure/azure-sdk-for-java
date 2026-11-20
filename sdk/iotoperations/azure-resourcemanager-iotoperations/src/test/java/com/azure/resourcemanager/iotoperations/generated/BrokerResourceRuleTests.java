@@ -14,21 +14,21 @@ public final class BrokerResourceRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerResourceRule model = BinaryData.fromString(
-            "{\"method\":\"Publish\",\"clientIds\":[\"hjdauwhvylwz\",\"tdhxujznbmpowuwp\"],\"topics\":[\"lve\",\"alupjm\",\"hfxobbcswsrtj\",\"iplrbpbewtghfgb\"]}")
+            "{\"method\":\"Connect\",\"clientIds\":[\"ws\",\"crgvxpvgom\",\"lf\",\"isgwbnbbeldawkz\"],\"topics\":[\"io\",\"rqhakauha\",\"hsfwxosowzxcug\"]}")
             .toObject(BrokerResourceRule.class);
-        Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
-        Assertions.assertEquals("hjdauwhvylwz", model.clientIds().get(0));
-        Assertions.assertEquals("lve", model.topics().get(0));
+        Assertions.assertEquals(BrokerResourceDefinitionMethods.CONNECT, model.method());
+        Assertions.assertEquals("ws", model.clientIds().get(0));
+        Assertions.assertEquals("io", model.topics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerResourceRule model = new BrokerResourceRule().withMethod(BrokerResourceDefinitionMethods.PUBLISH)
-            .withClientIds(Arrays.asList("hjdauwhvylwz", "tdhxujznbmpowuwp"))
-            .withTopics(Arrays.asList("lve", "alupjm", "hfxobbcswsrtj", "iplrbpbewtghfgb"));
+        BrokerResourceRule model = new BrokerResourceRule().withMethod(BrokerResourceDefinitionMethods.CONNECT)
+            .withClientIds(Arrays.asList("ws", "crgvxpvgom", "lf", "isgwbnbbeldawkz"))
+            .withTopics(Arrays.asList("io", "rqhakauha", "hsfwxosowzxcug"));
         model = BinaryData.fromObject(model).toObject(BrokerResourceRule.class);
-        Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
-        Assertions.assertEquals("hjdauwhvylwz", model.clientIds().get(0));
-        Assertions.assertEquals("lve", model.topics().get(0));
+        Assertions.assertEquals(BrokerResourceDefinitionMethods.CONNECT, model.method());
+        Assertions.assertEquals("ws", model.clientIds().get(0));
+        Assertions.assertEquals("io", model.topics().get(0));
     }
 }

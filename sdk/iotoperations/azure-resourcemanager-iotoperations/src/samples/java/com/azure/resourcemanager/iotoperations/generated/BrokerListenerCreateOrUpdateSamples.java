@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -65,7 +65,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-10-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -85,7 +85,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-10-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.
@@ -107,8 +107,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
                         .withProtocol(BrokerProtocolType.WEB_SOCKETS)
                         .withTls(new TlsCertMethod().withMode(TlsCertMethodMode.AUTOMATIC)
                             .withCertManagerCertificateSpec(new CertManagerCertificateSpec()
-                                .withIssuerRef(new CertManagerIssuerRef().withGroup("jtmuladdkpasfpoyvewekmiy")
-                                    .withKind(CertManagerIssuerKind.ISSUER)
+                                .withIssuerRef(new CertManagerIssuerRef().withKind(CertManagerIssuerKind.ISSUER)
                                     .withName("example-issuer")))),
                     new ListenerPort().withAuthenticationRef("example-authentication").withPort(1883),
                     new ListenerPort().withAuthenticationRef("example-authentication")
